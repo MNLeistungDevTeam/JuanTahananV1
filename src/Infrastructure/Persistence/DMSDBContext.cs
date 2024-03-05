@@ -2,15 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using DMS.Domain.Entities;
-using Template.Infrastructure;
+using DMS.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence;
 
-public partial class MNLTemplateDBContext : DbContext
+public partial class DMSDBContext : DbContext
 {
-    public MNLTemplateDBContext(DbContextOptions<MNLTemplateDBContext> options)
+    public DMSDBContext(DbContextOptions<DMSDBContext> options)
         : base(options)
     {
     }
@@ -69,7 +69,7 @@ public partial class MNLTemplateDBContext : DbContext
     {
         modelBuilder.Entity<ApplicantsPersonalInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Applican__3214EC07A4EDCED5");
+            entity.HasKey(e => e.Id).HasName("PK__Applican__3214EC0702F3BDFC");
 
             entity.ToTable("ApplicantsPersonalInformation");
 
@@ -79,7 +79,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<AuditTrail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AuditTra__3214EC079F535F52");
+            entity.HasKey(e => e.Id).HasName("PK__AuditTra__3214EC0732BA9889");
 
             entity.ToTable("AuditTrail");
 
@@ -106,7 +106,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<BarrowersInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Barrower__3214EC07130ED2AD");
+            entity.HasKey(e => e.Id).HasName("PK__Barrower__3214EC07BC9FB958");
 
             entity.ToTable("BarrowersInformation");
 
@@ -168,7 +168,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<CollateralInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Collater__3214EC07777A964B");
+            entity.HasKey(e => e.Id).HasName("PK__Collater__3214EC0791E7FB80");
 
             entity.ToTable("CollateralInformation");
 
@@ -185,7 +185,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Document>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07E0F4E40B");
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC0702C399FF");
 
             entity.ToTable("Document");
 
@@ -211,7 +211,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<DocumentType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC077EFB62B6");
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07CC34383E");
 
             entity.ToTable("DocumentType");
 
@@ -223,7 +223,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Form2Page>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Form2Pag__3214EC07FF343032");
+            entity.HasKey(e => e.Id).HasName("PK__Form2Pag__3214EC0768A31904");
 
             entity.ToTable("Form2Page");
 
@@ -337,7 +337,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<LoanParticularsInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__LoanPart__3214EC074811EABE");
+            entity.HasKey(e => e.Id).HasName("PK__LoanPart__3214EC07B22F74A6");
 
             entity.ToTable("LoanParticularsInformation");
 
@@ -350,7 +350,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<ModeOfPayment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModeOfPa__3214EC07C73F2B5C");
+            entity.HasKey(e => e.Id).HasName("PK__ModeOfPa__3214EC0783824B4F");
 
             entity.ToTable("ModeOfPayment");
 
@@ -360,7 +360,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Module>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC07DB542784");
+            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC0785B3DD7C");
 
             entity.ToTable("Module");
 
@@ -384,7 +384,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<ModuleStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC0753BF3D45");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC074436A0FB");
 
             entity.ToTable("ModuleStatus");
 
@@ -399,7 +399,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<PropertyType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC0705364C00");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC070343F773");
 
             entity.ToTable("PropertyType");
 
@@ -409,7 +409,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<PurposeOfLoan>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PurposeO__3214EC07BBBD1199");
+            entity.HasKey(e => e.Id).HasName("PK__PurposeO__3214EC079C0F67CB");
 
             entity.ToTable("PurposeOfLoan");
 
@@ -426,7 +426,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC0786E16E5A");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC076509E855");
 
             entity.ToTable("Role");
 
@@ -441,7 +441,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<RoleAccess>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__RoleAcce__3214EC07FA5ADE0A");
+            entity.HasKey(e => e.Id).HasName("PK__RoleAcce__3214EC07C6EEC52F");
 
             entity.ToTable("RoleAccess");
 
@@ -451,7 +451,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Spouse>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Spouse__3214EC0777BD2CC4");
+            entity.HasKey(e => e.Id).HasName("PK__Spouse__3214EC07C43A2986");
 
             entity.ToTable("Spouse");
 
@@ -488,7 +488,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC070080525E");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0744333A66");
 
             entity.ToTable("User");
 
@@ -526,7 +526,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<UserActivity>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserActi__3214EC07EF30D984");
+            entity.HasKey(e => e.Id).HasName("PK__UserActi__3214EC07C698572E");
 
             entity.ToTable("UserActivity");
 
@@ -543,7 +543,7 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<UserApprover>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserAppr__3214EC07D23D9B49");
+            entity.HasKey(e => e.Id).HasName("PK__UserAppr__3214EC07D7B7624D");
 
             entity.ToTable("UserApprover");
 
@@ -552,21 +552,21 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<UserDocument>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserDocu__3214EC074B51DA21");
+            entity.HasKey(e => e.Id).HasName("PK__UserDocu__3214EC072C4DD457");
 
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC07E15F68FB");
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC073D7D415D");
 
             entity.ToTable("UserRole");
         });
 
         modelBuilder.Entity<UserToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserToke__3214EC07F9FBCB5C");
+            entity.HasKey(e => e.Id).HasName("PK__UserToke__3214EC079E0C890D");
 
             entity.ToTable("UserToken");
 

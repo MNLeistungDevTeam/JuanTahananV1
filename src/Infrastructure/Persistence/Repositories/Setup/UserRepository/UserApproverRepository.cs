@@ -6,10 +6,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
 public class UserApproverRepository : IUserApproverRepository
 {
-    private readonly MNLTemplateDBContext _context;
+    private readonly DMSDBContext _context;
     private readonly EfCoreHelper<UserApprover> _contextHelper;
 
-    public UserApproverRepository(MNLTemplateDBContext context)
+    public UserApproverRepository(DMSDBContext context)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<UserApprover>(context);

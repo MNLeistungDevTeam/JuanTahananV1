@@ -16,13 +16,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository
 {
     public class UserRoleRepository : IUserRoleRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<UserRole> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public UserRoleRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public UserRoleRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<UserRole>(context);

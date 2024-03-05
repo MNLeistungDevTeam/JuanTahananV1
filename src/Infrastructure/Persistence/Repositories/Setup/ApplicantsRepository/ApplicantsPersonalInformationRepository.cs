@@ -14,13 +14,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
     public class ApplicantsPersonalInformationRepository : IApplicantsPersonalInformationRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<ApplicantsPersonalInformation> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public ApplicantsPersonalInformationRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public ApplicantsPersonalInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<ApplicantsPersonalInformation>(context);

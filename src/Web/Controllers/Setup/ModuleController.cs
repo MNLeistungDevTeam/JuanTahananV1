@@ -23,9 +23,9 @@ namespace DMS.Web.Controllers.Setup;
 public class ModuleController : Controller
 {
     private readonly IModuleRepository _moduleRepo;
-    private readonly MNLTemplateDBContext _context;
+    private readonly DMSDBContext _context;
 
-    public ModuleController(IModuleRepository moduleRepo, MNLTemplateDBContext context)
+    public ModuleController(IModuleRepository moduleRepo, DMSDBContext context)
     {
         _moduleRepo = moduleRepo;
         _context = context;

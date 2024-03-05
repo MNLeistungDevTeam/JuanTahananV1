@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
     public class SpouseRepository : ISpouseRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<Spouse> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public SpouseRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public SpouseRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<Spouse>(context);

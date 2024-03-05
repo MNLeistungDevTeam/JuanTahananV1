@@ -9,14 +9,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
 public class UserRepository : IUserRepository
 {
-    private readonly MNLTemplateDBContext _context;
+    private readonly DMSDBContext _context;
     private readonly EfCoreHelper<User> _contextHelper;
     private readonly IUserApproverRepository _userApproverRepo;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
 
     public UserRepository(
-        MNLTemplateDBContext context,
+        DMSDBContext context,
         ISQLDatabaseService db,
         IMapper mapper,
         IUserApproverRepository userApproverRepo)

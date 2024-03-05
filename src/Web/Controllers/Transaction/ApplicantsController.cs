@@ -1,4 +1,16 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
+using DMS.Domain.Enums;
+using DMS.Infrastructure.Persistence;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,18 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Interfaces.Setup.DocumentRepository;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
-using Template.Domain.Enums;
-using Template.Infrastructure.Persistence;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
 
 namespace Template.Web.Controllers.Transaction
 {
@@ -36,9 +36,22 @@ namespace Template.Web.Controllers.Transaction
         private readonly IEmailService _emailService;
         private readonly IDocumentRepository _documentRepo;
         private readonly IForm2PageRepository _form2PageRepo;
-        private MNLTemplateDBContext _context;
+        private DMSDBContext _context;
 
-        public ApplicantsController(IUserRepository userRepo, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo, ILoanParticularsInformationRepository loanParticularsInformationRepo, ICollateralInformationRepository collateralInformationRepo, IBarrowersInformationRepository barrowersInformationRepo, ISpouseRepository spouseRepo, IMapper mapper, IAuthenticationService authService, IUserRoleRepository userRoleRepo, IEmailService emailService, IDocumentRepository documentRepo, IForm2PageRepository form2PageRepo, MNLTemplateDBContext context)
+        public ApplicantsController(
+            IUserRepository userRepo,
+            IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+            ILoanParticularsInformationRepository loanParticularsInformationRepo,
+            ICollateralInformationRepository collateralInformationRepo,
+            IBarrowersInformationRepository barrowersInformationRepo,
+            ISpouseRepository spouseRepo,
+            IMapper mapper,
+            IAuthenticationService authService,
+            IUserRoleRepository userRoleRepo,
+            IEmailService emailService,
+            IDocumentRepository documentRepo,
+            IForm2PageRepository form2PageRepo,
+            DMSDBContext context)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -147,7 +160,7 @@ namespace Template.Web.Controllers.Transaction
                 }
                 else
                 {
-                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync((int)model.ApplicantsPersonalInformation.Id));
+                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync(model.ApplicantsPersonalInformation.Id));
                     await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(model.ApplicantsPersonalInformation));
                 }
                 if (model.ApplicantsPersonalInformation.Id != 0)

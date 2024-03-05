@@ -42,14 +42,14 @@ public static class DependencyInjectionConfig
             options.UseSqlServer(defaultConstr);
         });
 
-        services.AddDbContext<MNLTemplateDBContext>(options =>
+        services.AddDbContext<DMSDBContext>(options =>
         {
             options.EnableSensitiveDataLogging();
             options.UseSqlServer(defaultConstr);
         });
 
         services.AddScoped<IReportDbContext>(provider => provider.GetRequiredService<ReportDbContext>());
-        //services.AddScoped<IMNLTemplateDBContext>(provider => provider.GetRequiredService<MNLTemplateDBContext>());
+        //services.AddScoped<IDMSDBContext>(provider => provider.GetRequiredService<DMSDBContext>());
         services.Configure<FtpServerConfigModel>(options =>
         {
             options.FtpUser = configuration["FtpServer:FtpUser"];

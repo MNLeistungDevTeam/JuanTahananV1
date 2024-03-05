@@ -6,11 +6,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
 public class UserTokenRepository : IUserTokenRepository
 {
-    private readonly MNLTemplateDBContext _context;
+    private readonly DMSDBContext _context;
     private readonly EfCoreHelper<UserToken> _contextHelper;
 
     public UserTokenRepository(
-        MNLTemplateDBContext context)
+        DMSDBContext context)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<UserToken>(_context);

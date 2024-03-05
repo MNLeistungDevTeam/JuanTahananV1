@@ -9,13 +9,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
 {
     public class DocumentTypeRepository : IDocumentTypeRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<DocumentType> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public DocumentTypeRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public DocumentTypeRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<DocumentType>(context);

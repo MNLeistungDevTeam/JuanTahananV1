@@ -7,12 +7,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
 public class UserActivityRepository : IUserActivityRepository
 {
-    private readonly MNLTemplateDBContext _context;
+    private readonly DMSDBContext _context;
     private readonly EfCoreHelper<UserActivity> _contextHelper;
     private readonly ISQLDatabaseService _db;
 
     public UserActivityRepository(
-        MNLTemplateDBContext context,
+        DMSDBContext context,
         ISQLDatabaseService db)
     {
         _context = context;

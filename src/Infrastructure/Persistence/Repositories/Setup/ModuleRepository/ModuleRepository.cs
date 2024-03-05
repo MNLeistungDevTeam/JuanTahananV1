@@ -10,13 +10,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
 {
     public class ModuleRepository : IModuleRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<Module> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public ModuleRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public ModuleRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<Module>(context);

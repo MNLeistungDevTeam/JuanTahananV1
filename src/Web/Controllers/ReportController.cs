@@ -40,9 +40,9 @@ public class ReportController : Controller
     private readonly ISpouseRepository _spouseRepo;
     private readonly IMapper _mapper;
     private readonly IForm2PageRepository _form2PageRepo;
-    private MNLTemplateDBContext _tmpcontext;
+    private DMSDBContext _tmpcontext;
 
-    public ReportController(ReportDbContext context, IWebHostEnvironment hostingEnvironment, IUserRepository userRepo, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo, ILoanParticularsInformationRepository loanParticularsInformationRepo, ICollateralInformationRepository collateralInformationRepo, IBarrowersInformationRepository barrowersInformationRepo, ISpouseRepository spouseRepo, IMapper mapper, IForm2PageRepository form2PageRepo, MNLTemplateDBContext tmpcontext)
+    public ReportController(ReportDbContext context, IWebHostEnvironment hostingEnvironment, IUserRepository userRepo, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo, ILoanParticularsInformationRepository loanParticularsInformationRepo, ICollateralInformationRepository collateralInformationRepo, IBarrowersInformationRepository barrowersInformationRepo, ISpouseRepository spouseRepo, IMapper mapper, IForm2PageRepository form2PageRepo, DMSDBContext tmpcontext)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;

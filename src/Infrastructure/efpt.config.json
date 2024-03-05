@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 3,
-   "ContextClassName": "MNLTemplateDBContext",
+   "ContextClassName": "DMSDBContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
@@ -9,7 +9,7 @@
    "OutputContextPath": "Persistence",
    "OutputPath": null,
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "Template.Infrastructure",
+   "ProjectRootNamespace": "DMS.Infrastructure",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 1,
@@ -116,7 +116,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "desktop-dn7v041.dbDMSJUANTAHANAN.dbo",
+   "UiHint": "mnl.eiDOCRS2023.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
@@ -134,7 +134,6 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
-   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,

@@ -14,13 +14,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
     public class BarrowersInformationRepository : IBarrowersInformationRepository
     {
-        private readonly MNLTemplateDBContext _context;
+        private readonly DMSDBContext _context;
         private readonly EfCoreHelper<BarrowersInformation> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public BarrowersInformationRepository(MNLTemplateDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public BarrowersInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<BarrowersInformation>(context);
