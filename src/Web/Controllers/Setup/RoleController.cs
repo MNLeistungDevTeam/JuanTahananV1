@@ -187,7 +187,7 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetRoleById(int id) =>
             Ok(await _roleRepo.GetByIdAsync(id));
         public async Task<IActionResult> GetAllRoles() =>
-            Ok(await _roleRepo.SpGetAllRoles());
+            Ok(await _roleRepo.GetAllRolesAsync());
 
         public async Task<IActionResult> GetUsers(int roleId)
         {

@@ -36,11 +36,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
         public async Task<RoleAccess> SaveAsync(RoleAccessModel model)
         {
+            var _roleaccess = _mapper.Map<RoleAccessModel>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<RoleAccessModel>(await CreateAsync(model));
+                _roleaccess = _mapper.Map<RoleAccessModel>(await CreateAsync(model));
             else
-                model = _mapper.Map<RoleAccessModel>(await UpdateAsync(model));
-            return _mapper.Map<RoleAccess>(model);
+                _roleaccess = _mapper.Map<RoleAccessModel>(await UpdateAsync(model));
+            return _roleaccess;
         }
         public async Task<RoleAccess> CreateAsync(RoleAccessModel model)
         {

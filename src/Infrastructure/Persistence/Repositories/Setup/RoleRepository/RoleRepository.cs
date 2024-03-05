@@ -31,7 +31,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             _db = db;
             _roleAccessRepo = roleAccessRepo;
         }
-        public async Task<List<RoleModel>> SpGetAllRoles() =>
+        public async Task<List<RoleModel>> GetAllRolesAsync() =>
         (await _db.LoadDataAsync<RoleModel, dynamic>("spRole_GetAllRoles", new { })).ToList();
         public async Task<Role?> GetByIdAsync(int id) =>
         await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);

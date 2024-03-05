@@ -11,6 +11,7 @@ namespace DMS.Application.Interfaces.Setup.UserRepository
 {
     public interface IUserRoleRepository
     {
+        Task SaveBenificiaryAsync(int userId);
         Task<List<UserRoleModel>> SpGetAllRoles();
         Task<UserRole?> GetByIdAsync(int id);
         Task<UserRole?> GetUserRoleAsync(int UserId);
