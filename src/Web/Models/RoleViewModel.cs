@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
+﻿using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.UserDto;
+using System.Collections.Generic;
+using DMS.Domain.Entities;
 
-namespace Template.Web.Models
+namespace DMS.Web.Models
 {
     public class RoleViewModel
     {

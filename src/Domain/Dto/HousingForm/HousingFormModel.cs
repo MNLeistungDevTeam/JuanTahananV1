@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DMS.Domain.Dto.ApplicantsDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.ApplicantsDto;
 
-namespace Template.Domain.Dto.HousingForm
+namespace DMS.Domain.Dto.HousingForm
 {
     public class HousingFormModel
     {

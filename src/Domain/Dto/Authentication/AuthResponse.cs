@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.Authentication
+namespace DMS.Domain.Dto.Authentication
 {
     public class AuthResponse
     {

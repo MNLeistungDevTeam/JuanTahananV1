@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Template.Infrastructure.PredefinedReports
+namespace DMS.Infrastructure.PredefinedReports
 {
     public static class ReportsFactory
     {

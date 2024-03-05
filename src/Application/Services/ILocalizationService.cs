@@ -1,4 +1,4 @@
-﻿namespace Template.Application.Services;
+﻿namespace DMS.Application.Services;
 
 public interface ILocalizationService
 {

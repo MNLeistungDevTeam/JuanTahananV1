@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.ApplicantsDto
+namespace DMS.Domain.Dto.ApplicantsDto
 {
     public class SpouseModel
     {

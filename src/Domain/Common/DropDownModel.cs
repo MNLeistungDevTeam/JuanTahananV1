@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Template.Domain.Common;
+namespace DMS.Domain.Common;
 
 public class DropDownModel
 {

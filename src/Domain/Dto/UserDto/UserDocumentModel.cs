@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.UserDto
+namespace DMS.Domain.Dto.UserDto
 {
     public class UserDocumentModel
     {

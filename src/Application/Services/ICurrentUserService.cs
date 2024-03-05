@@ -1,6 +1,6 @@
-﻿using Template.Domain.Dto.UserDto;
+﻿using DMS.Domain.Dto.UserDto;
 
-namespace Template.Application.Services;
+namespace DMS.Application.Services;
 
 public interface ICurrentUserService
 {

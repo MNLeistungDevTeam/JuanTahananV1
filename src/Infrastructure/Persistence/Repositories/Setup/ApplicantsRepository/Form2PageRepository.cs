@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.ApplicantsDto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
     public class Form2PageRepository : IForm2PageRepository
     {

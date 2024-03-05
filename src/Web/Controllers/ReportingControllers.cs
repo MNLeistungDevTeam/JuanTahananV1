@@ -5,7 +5,7 @@ using DevExpress.AspNetCore.Reporting.ReportDesigner.Native.Services;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer.Native.Services;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 public class CustomWebDocumentViewerController : WebDocumentViewerController
 {

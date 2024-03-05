@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Template.Domain.ReportEntities;
+﻿using DMS.Domain.ReportEntities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Template.Application.Interfaces.Setup;
+namespace DMS.Application.Interfaces.Setup;
 
 public interface IReportDbContext
 {

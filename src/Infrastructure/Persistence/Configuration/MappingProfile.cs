@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Dto.DocumentDto;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.DocumentDto;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Configuration;
+namespace DMS.Infrastructure.Persistence.Configuration;
 
 public class MappingProfile : Profile
 {

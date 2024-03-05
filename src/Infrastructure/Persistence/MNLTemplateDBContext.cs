@@ -3,10 +3,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Template.Domain.Entities;
+using DMS.Domain.Entities;
 using Template.Infrastructure;
 
-namespace Template.Infrastructure.Persistence;
+namespace DMS.Infrastructure.Persistence;
 
 public partial class MNLTemplateDBContext : DbContext
 {
@@ -67,24 +67,26 @@ public partial class MNLTemplateDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=Template.Database;Integrated Security=true");
-
         modelBuilder.Entity<ApplicantsPersonalInformation>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Applican__3214EC07A4EDCED5");
+
             entity.ToTable("ApplicantsPersonalInformation");
 
             entity.Property(e => e.Code).IsRequired();
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<AuditTrail>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__AuditTra__3214EC079F535F52");
+
             entity.ToTable("AuditTrail");
 
             entity.Property(e => e.Action)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.ChangeDate).HasDefaultValueSql("getdate()");
+            entity.Property(e => e.ChangeDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ColumnName)
                 .IsRequired()
                 .HasMaxLength(4000);
@@ -104,6 +106,8 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<BarrowersInformation>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Barrower__3214EC07130ED2AD");
+
             entity.ToTable("BarrowersInformation");
 
             entity.Property(e => e.BusinessBaranggayName).HasMaxLength(255);
@@ -121,7 +125,7 @@ public partial class MNLTemplateDBContext : DbContext
             entity.Property(e => e.Citizenship)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.DepartmentName).HasMaxLength(100);
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.EmployerName).HasMaxLength(100);
@@ -164,10 +168,12 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<CollateralInformation>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Collater__3214EC07777A964B");
+
             entity.ToTable("CollateralInformation");
 
             entity.Property(e => e.CollateralReason).IsRequired();
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.DeveloperName).IsRequired();
             entity.Property(e => e.ExistingTotalFloorArea).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.LandArea).HasColumnType("decimal(18, 2)");
@@ -179,17 +185,19 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Document>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07E0F4E40B");
+
             entity.ToTable("Document");
 
             entity.Property(e => e.Code)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETUTCDATE()");
-            entity.Property(e => e.DateModified).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getutcdate())");
             entity.Property(e => e.FileType)
                 .IsRequired()
                 .HasMaxLength(50);
-            entity.Property(e => e.Guid).HasDefaultValueSql("NEWID()");
+            entity.Property(e => e.Guid).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Location)
                 .IsRequired()
                 .HasMaxLength(500);
@@ -203,9 +211,11 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<DocumentType>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC077EFB62B6");
+
             entity.ToTable("DocumentType");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -213,11 +223,13 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Form2Page>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Form2Pag__3214EC07FF343032");
+
             entity.ToTable("Form2Page");
 
             entity.Property(e => e.Agreement)
                 .IsRequired()
-                .HasDefaultValueSql("1");
+                .HasDefaultValueSql("((1))");
             entity.Property(e => e.Amortization1).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Amortization2).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Amortization3).HasColumnType("decimal(18, 2)");
@@ -254,7 +266,7 @@ public partial class MNLTemplateDBContext : DbContext
             entity.Property(e => e.CreditorAndAddress1).HasMaxLength(255);
             entity.Property(e => e.CreditorAndAddress2).HasMaxLength(255);
             entity.Property(e => e.CreditorAndAddress3).HasMaxLength(255);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Email).HasMaxLength(355);
             entity.Property(e => e.FirstName).HasMaxLength(255);
             entity.Property(e => e.HighestAmount1).HasColumnType("decimal(18, 2)");
@@ -325,9 +337,11 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<LoanParticularsInformation>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__LoanPart__3214EC074811EABE");
+
             entity.ToTable("LoanParticularsInformation");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.DesiredLoanAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ExistingHousingApplicationNumber)
                 .IsRequired()
@@ -336,14 +350,18 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<ModeOfPayment>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__ModeOfPa__3214EC07C73F2B5C");
+
             entity.ToTable("ModeOfPayment");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).IsRequired();
         });
 
         modelBuilder.Entity<Module>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC07DB542784");
+
             entity.ToTable("Module");
 
             entity.Property(e => e.Action).HasMaxLength(255);
@@ -354,24 +372,26 @@ public partial class MNLTemplateDBContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.Controller).HasMaxLength(255);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.Icon)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.ModuleStatusId).HasDefaultValueSql("1");
+            entity.Property(e => e.ModuleStatusId).HasDefaultValueSql("((1))");
         });
 
         modelBuilder.Entity<ModuleStatus>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC0753BF3D45");
+
             entity.ToTable("ModuleStatus");
 
             entity.Property(e => e.Color)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -379,17 +399,21 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<PropertyType>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC0705364C00");
+
             entity.ToTable("PropertyType");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).IsRequired();
         });
 
         modelBuilder.Entity<PurposeOfLoan>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__PurposeO__3214EC07BBBD1199");
+
             entity.ToTable("PurposeOfLoan");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).IsRequired();
         });
 
@@ -402,9 +426,11 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC0786E16E5A");
+
             entity.ToTable("Role");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("getdate()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -415,20 +441,24 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<RoleAccess>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__RoleAcce__3214EC07FA5ADE0A");
+
             entity.ToTable("RoleAccess");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("getdate()");
-            entity.Property(e => e.DateModified).HasDefaultValueSql("getdate()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<Spouse>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__Spouse__3214EC0777BD2CC4");
+
             entity.ToTable("Spouse");
 
             entity.Property(e => e.Citizenship)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.FirstName)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -458,9 +488,11 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC070080525E");
+
             entity.ToTable("User");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255);
@@ -468,7 +500,7 @@ public partial class MNLTemplateDBContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50);
             entity.Property(e => e.Gender).HasMaxLength(10);
-            entity.Property(e => e.IsDark).HasDefaultValueSql("0");
+            entity.Property(e => e.IsDark).HasDefaultValueSql("((0))");
             entity.Property(e => e.LastName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -494,6 +526,8 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<UserActivity>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__UserActi__3214EC07EF30D984");
+
             entity.ToTable("UserActivity");
 
             entity.Property(e => e.Action)
@@ -509,26 +543,34 @@ public partial class MNLTemplateDBContext : DbContext
 
         modelBuilder.Entity<UserApprover>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__UserAppr__3214EC07D23D9B49");
+
             entity.ToTable("UserApprover");
 
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("getdate()");
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<UserDocument>(entity =>
         {
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("GETDATE()");
+            entity.HasKey(e => e.Id).HasName("PK__UserDocu__3214EC074B51DA21");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<UserRole>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC07E15F68FB");
+
             entity.ToTable("UserRole");
         });
 
         modelBuilder.Entity<UserToken>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__UserToke__3214EC07F9FBCB5C");
+
             entity.ToTable("UserToken");
 
-            entity.Property(e => e.CreatedDate).HasDefaultValueSql("getdate()");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.RefreshToken)
                 .IsRequired()
                 .HasMaxLength(1000);

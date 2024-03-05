@@ -4,7 +4,7 @@ using System.Reflection;
 using System;
 using System.Linq;
 
-namespace Template.Web.Controllers
+namespace DMS.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

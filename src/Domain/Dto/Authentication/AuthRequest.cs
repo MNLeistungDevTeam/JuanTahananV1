@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Template.Domain.Dto.Authentication
+namespace DMS.Domain.Dto.Authentication
 {
     public class AuthRequest
     {

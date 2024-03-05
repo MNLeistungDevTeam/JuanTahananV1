@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Template.Web.Controllers.Setup
+namespace DMS.Web.Controllers.Setup
 {
     public class BeneficiaryController : Controller
     {

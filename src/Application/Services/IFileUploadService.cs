@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Template.Application.Services;
+namespace DMS.Application.Services;
 
 public interface IFileUploadService
 {

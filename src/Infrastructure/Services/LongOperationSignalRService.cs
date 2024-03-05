@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Template.Application.Services;
-using Template.Infrastructure.Hubs;
+using DMS.Application.Services;
+using DMS.Infrastructure.Hubs;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class LongOperationSignalRService : ILongOperationSignalRService
 {

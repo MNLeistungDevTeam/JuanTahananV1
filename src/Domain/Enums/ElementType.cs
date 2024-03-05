@@ -1,4 +1,4 @@
-﻿namespace Template.Domain.Enums
+﻿namespace DMS.Domain.Enums
 {
     public enum ElementType
     {

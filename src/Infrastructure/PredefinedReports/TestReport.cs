@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.PredefinedReports
+﻿namespace DMS.Infrastructure.PredefinedReports
 {
     public partial class TestReport : DevExpress.XtraReports.UI.XtraReport {
         public TestReport() {

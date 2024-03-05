@@ -1,6 +1,6 @@
 ﻿using DevExpress.XtraReports.UI;
 using System.ServiceModel;
-using Template.Infrastructure.PredefinedReports;
+using DMS.Infrastructure.PredefinedReports;
 
 public class CustomReportStorageWebExtension : DevExpress.XtraReports.Web.Extensions.ReportStorageWebExtension
 {

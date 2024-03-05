@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.ValidationsHelper
+namespace DMS.Domain.ValidationsHelper
 {
     public class ValidationHelper : ValidationAttribute
     {

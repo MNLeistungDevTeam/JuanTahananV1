@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.ValidationsHelper
+namespace DMS.Domain.ValidationsHelper
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class CheckboxMultiValidationHelper : ValidationAttribute

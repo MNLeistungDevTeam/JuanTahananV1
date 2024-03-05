@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace Template.Domain.Dto.Authentication
+namespace DMS.Domain.Dto.Authentication
 {
     public class RefreshTokenRequest
     {

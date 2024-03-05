@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.Resources;
+﻿namespace DMS.Infrastructure.Resources;
 
 public class SharedResources
 {

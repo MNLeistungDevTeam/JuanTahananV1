@@ -1,16 +1,16 @@
 ﻿using DevExpress.Compatibility.System.Web;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraReports.UI;
+using DMS.Domain.Dto.HousingForm;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using Template.Domain.Dto.BenificiaryDto;
-using Template.Domain.Dto.HousingForm;
-using Template.Domain.Entities;
+using DMS.Domain.Dto.BenificiaryDto;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.PredefinedReports
+namespace DMS.Infrastructure.PredefinedReports
 {
     public partial class HousingForm : DevExpress.XtraReports.UI.XtraReport
     {

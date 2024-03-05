@@ -1,7 +1,7 @@
-﻿using Template.Domain.Dto.DocumentDto;
-using Template.Domain.Entities;
+﻿using DMS.Domain.Dto.DocumentDto;
+using DMS.Domain.Entities;
 
-namespace Template.Application.Interfaces.Setup.DocumentRepository;
+namespace DMS.Application.Interfaces.Setup.DocumentRepository;
 
 public interface IDocumentTypeRepository
 {

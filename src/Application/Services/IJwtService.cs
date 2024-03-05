@@ -1,7 +1,7 @@
-﻿using Template.Domain.Dto.Authentication;
-using Template.Domain.Entities;
+﻿using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Entities;
 
-namespace Template.Application.Services;
+namespace DMS.Application.Services;
 
 public interface IJwtService
 {

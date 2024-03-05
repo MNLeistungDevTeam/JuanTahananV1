@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.PredefinedReports
+﻿namespace DMS.Infrastructure.PredefinedReports
 {
     partial class HousingForm
     {
@@ -3874,7 +3874,7 @@
             // 
             // objectDataSource1
             // 
-            this.objectDataSource1.DataSource = typeof(global::Template.Domain.Dto.HousingForm.HousingFormModel);
+            this.objectDataSource1.DataSource = typeof(global::DMS.Domain.Dto.HousingForm.HousingFormModel);
             this.objectDataSource1.Name = "objectDataSource1";
             // 
             // Data

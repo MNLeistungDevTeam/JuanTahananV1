@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.ApplicantsDto
+namespace DMS.Domain.Dto.ApplicantsDto
 {
     public class ApplicantsPersonalInformationModel
     {
@@ -18,7 +18,7 @@ namespace Template.Domain.Dto.ApplicantsDto
         public long HousingAccountNumber { get; set; }
 
         [Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
-        [Range(0, 999999999999)] 
+        [Range(0, 999999999999)]
         public long PagibigNumber { get; set; }
         public DateTime DateCreated { get; set; }
 

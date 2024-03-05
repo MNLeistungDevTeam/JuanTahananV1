@@ -84,7 +84,7 @@
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Template.Infrastructure.csproj" />
+    <ProjectReference Include="..\Infrastructure\DMS.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\js\Setup\Applicants\" />

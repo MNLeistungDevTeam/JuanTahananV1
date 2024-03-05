@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Web.Controllers.Services
+namespace DMS.Web.Controllers.Services
 {
     public class ModelStateValidationsAttribute : ActionFilterAttribute
     {

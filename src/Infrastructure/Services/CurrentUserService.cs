@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.UserDto;
+﻿using DMS.Domain.Dto.UserDto;
+using Microsoft.AspNetCore.Http;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

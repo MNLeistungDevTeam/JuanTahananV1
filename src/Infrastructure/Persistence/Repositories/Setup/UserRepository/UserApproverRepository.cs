@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.UserRepository;
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
 public class UserApproverRepository : IUserApproverRepository
 {

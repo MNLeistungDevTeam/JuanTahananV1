@@ -1,10 +1,10 @@
 ﻿
+using DMS.Domain.Dto.FtpServerConfigDto;
 using Microsoft.Extensions.Options;
 using System.Net;
-using Template.Application.Services;
-using Template.Domain.Dto.FtpServerConfigDto;
+using DMS.Application.Services;
 
-namespace Template.Infrastructure.Services
+namespace DMS.Infrastructure.Services
 {
     public class FtpDownloaderService : IFtpDownloaderService
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Template.Web.Controllers.Transaction;
+namespace DMS.Web.Controllers.Transaction;
 
 [Authorize]
 public class TransactionController : Controller

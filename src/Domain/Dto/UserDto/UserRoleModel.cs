@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.UserDto
+namespace DMS.Domain.Dto.UserDto
 {
     public class UserRoleModel
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         [Display(Name = "Users", Prompt = "Select users")]
-        [Required(ErrorMessage ="this field is required")]
-        public int[]? UsersId { get; set; }  
+        [Required(ErrorMessage = "this field is required")]
+        public int[]? UsersId { get; set; }
         public int RoleId { get; set; }
         public DateTime JoinedDate { get; set; }
         public DateTime Status { get; set; }

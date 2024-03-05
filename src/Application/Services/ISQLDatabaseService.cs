@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Template.Application.Services;
+namespace DMS.Application.Services;
 
 public interface ISQLDatabaseService
 {

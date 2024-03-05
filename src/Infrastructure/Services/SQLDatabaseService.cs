@@ -2,9 +2,9 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using Template.Application.Services;
+using DMS.Application.Services;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class SQLDatabaseService : ISQLDatabaseService
 {

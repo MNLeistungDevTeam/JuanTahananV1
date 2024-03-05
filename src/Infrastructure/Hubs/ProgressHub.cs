@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Template.Infrastructure.Hubs;
+namespace DMS.Infrastructure.Hubs;
 
 public class ProgressHub : Hub
 {

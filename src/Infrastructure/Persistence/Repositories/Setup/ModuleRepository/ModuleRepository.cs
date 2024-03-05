@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using DevExpress.XtraReports.Design;
+using DMS.Domain.Dto.ModuleDto;
 using Microsoft.EntityFrameworkCore;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
 {
     public class ModuleRepository : IModuleRepository
     {

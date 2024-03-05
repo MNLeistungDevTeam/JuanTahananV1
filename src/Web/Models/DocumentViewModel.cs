@@ -1,7 +1,7 @@
 ﻿
-using Template.Domain.Dto.DocumentDto;
+using DMS.Domain.Dto.DocumentDto;
 
-namespace Template.Web.Models
+namespace DMS.Web.Models
 {
     public class DocumentViewModel
     {

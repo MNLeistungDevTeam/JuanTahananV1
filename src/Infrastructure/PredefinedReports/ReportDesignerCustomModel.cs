@@ -1,6 +1,6 @@
 ﻿using DevExpress.XtraReports.Web.ReportDesigner;
 
-namespace Template.Infrastructure.PredefinedReports
+namespace DMS.Infrastructure.PredefinedReports
 {
     public class ReportDesignerCustomModel
     {

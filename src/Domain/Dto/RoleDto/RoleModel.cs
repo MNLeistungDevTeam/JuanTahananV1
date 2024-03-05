@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.RoleDto
+namespace DMS.Domain.Dto.RoleDto
 {
     public class RoleModel
     {
         public int Id { get; set; }
-        [Display(Name = "Code",Prompt = "Input Code")]
+        [Display(Name = "Code", Prompt = "Input Code")]
         [Required(ErrorMessage = "this field is required")]
         public string? Name { get; set; }
         [Display(Name = "Description", Prompt = "Input Description")]

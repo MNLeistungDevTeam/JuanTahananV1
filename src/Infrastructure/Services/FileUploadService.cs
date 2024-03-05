@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.UserDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.SignalR;
 using System.ComponentModel.Design;
-using Template.Application.Interfaces.Setup.DocumentRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
-using Template.Infrastructure.Hubs;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Hubs;
 
-namespace Template.Infrastructure.Services
+namespace DMS.Infrastructure.Services
 {
     public class FileUploadService : IFileUploadService
     {

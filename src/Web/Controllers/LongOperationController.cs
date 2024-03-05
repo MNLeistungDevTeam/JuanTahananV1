@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Template.Application.Services;
+using DMS.Application.Services;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 [Authorize]
 public class LongOperationController : Controller

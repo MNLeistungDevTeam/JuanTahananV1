@@ -1,6 +1,6 @@
-﻿using Template.Domain.Entities;
+﻿using DMS.Domain.Entities;
 
-namespace Template.Application.Interfaces.Setup.UserRepository;
+namespace DMS.Application.Interfaces.Setup.UserRepository;
 
 public interface IUserTokenRepository
 {
