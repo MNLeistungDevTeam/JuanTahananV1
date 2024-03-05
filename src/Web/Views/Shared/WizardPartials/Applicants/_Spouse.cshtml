@@ -1,0 +1,231 @@
+﻿@model ApplicantViewModel
+<input hidden type="text" class="form-control" asp-for="SpouseModel.ApplicantsPersonalInformationId">
+<input hidden type="text" class="form-control" asp-for="SpouseModel.Id">
+<div class="row gy-2">
+    <div class="col-md-12">
+        <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Spouse's Data'</span>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.FirstName"></label>
+            <input type="text" class="form-control rounded-3" asp-for="SpouseModel.FirstName">
+            <span asp-validation-for="SpouseModel.FirstName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.MiddleName"></label>
+            <input type="text" class="form-control rounded-3" asp-for="SpouseModel.MiddleName">
+            <span asp-validation-for="SpouseModel.MiddleName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.LastName"></label>
+            <input type="text" class="form-control rounded-3" asp-for="SpouseModel.LastName">
+            <span asp-validation-for="SpouseModel.LastName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.Suffix"></label>
+            <input type="text" class="form-control rounded-3" asp-for="SpouseModel.Suffix">
+            <span asp-validation-for="SpouseModel.Suffix" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.Citizenship"></label>
+            <input type="text" class="form-control rounded-3" asp-for="SpouseModel.Citizenship">
+            <span asp-validation-for="SpouseModel.Citizenship" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
+            <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="SpouseModel.BirthDate">
+            <span asp-validation-for="SpouseModel.BirthDate" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.PagibigMidNumber"></label>
+            <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.PagibigMidNumber">
+            <span asp-validation-for="SpouseModel.PagibigMidNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.TinNumber"></label>
+            <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.TinNumber">
+            <span asp-validation-for="SpouseModel.TinNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+            Employment Information
+        </h3>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.BusinessNumber"></label>
+            <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessNumber">
+            <span asp-validation-for="SpouseModel.BusinessNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-check form-check-inline">
+            <input asp-for="SpouseModel.IsSpouseAddressAbroad" type="checkbox" class="form-check-input">
+            <label class="form-check-label header-title" asp-for="SpouseModel.IsSpouseAddressAbroad"></label>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentUnitName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentUnitName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentUnitName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBuildingName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentBuildingName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentBuildingName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentLotName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentLotName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentLotName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentStreetName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentStreetName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentStreetName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentSubdivisionName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentSubdivisionName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentSubdivisionName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBaranggayName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentBaranggayName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentBaranggayName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentMunicipalityName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentMunicipalityName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentMunicipalityName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentProvinceName"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentProvinceName">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentProvinceName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3" col="9">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
+            <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentZipCode">
+            <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label asp-for="SpouseModel.PreparedMailingAddress" class="form-label fw-normal"></label>
+            <select asp-for="SpouseModel.PreparedMailingAddress" class="rounded-4">
+                <option value="Present Home Address">Present Home Address</option>
+                <option value="Employer/Business Address">Employer/Business Address</option>
+                <option value="Permanent Home Address">Permanent Home Address</option>
+            </select>
+            <span asp-validation-for="SpouseModel.PreparedMailingAddress" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="SpouseModel.IndustryId"></label>
+            <select asp-for="SpouseModel.IndustryId" class="rounded-4">
+                <option value="1">Accounting</option>
+                <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
+                <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
+                <option value="4">Basic Materials</option>
+                <option value="5">
+                    Business Process Outsourcing
+                    (BPO)
+                </option>
+                <option value="6">
+                    Construction
+                </option>
+                <option value="7">Education & Training </option>
+                <option value="8">
+                    Electricity, Gas and Water
+                    Supply
+                </option>
+                <option value="9">
+                    Extra-Territorial Organization &
+                    Bodies
+                </option>
+                <option value="10">
+                    Financial Services/Intermediation
+                </option>
+                <option value="11">
+                    HR/Recruitment
+                </option>
+                <option value="12">
+                    Health and Social Work;
+                    Health and Medical Services
+                </option>
+                <option value="13">
+                    Life Sciences
+                </option>
+                <option value="14">
+                    Management
+                </option>
+                <option value="15">
+                    Manufacturing
+                </option>
+                <option value="16">
+                    Media
+                </option>
+                <option value="17">
+                    Mining and Quanrying
+                </option>
+                <option value="18">
+                    Other Community, Social & Personal Service Activities
+                </option>
+                <option value="19">
+                    Public Administration & Defense;
+                    Compulsory Social Security
+                </option>
+                <option value="20">
+                    Technology
+                </option>
+                <option value="21">
+                    Transport, Storage
+                </option>
+                <option value="22">
+                    Transport, Storage and Communications
+                </option>
+                <option value="23">
+                    Travel and Leisure
+                </option>
+                <option value="24">
+                    Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
+                </option>
+            </select>
+            <span asp-validation-for="SpouseModel.IndustryId" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[PurposeOfLoan]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+	[Description] NVARCHAR(MAX) NOT NULL,
+	[DateCreated] DATETIME2 NOT NULL DEFAULT (GETDATE()), 
+    [CreatedById] INT NOT NULL,
+)

@@ -1,0 +1,103 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@model ApplicantViewModel
+
+@{
+
+}
+<div class="card rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        @if (string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformation.Code))
+        {
+            <h3 class="text-dark float-start fw-semibold">Adding Beneficiary</h3>
+        }
+        else
+        {
+            <h3 class="text-dark float-start fw-semibold">Update Beneficiary - @Model.ApplicantsPersonalInformation.Code</h3>
+        }
+    </div>
+    <div class="card-body">
+        <div id="rootwizard">
+            <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
+                <li class="nav-item" data-target-form="#loanparticulars">
+                    <a href="#first" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+                <li class="nav-item" data-target-form="#collateraldata">
+                    <a href="#second" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+                <li class="nav-item" data-target-form="#spousedata">
+                    <a href="#third" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+                <li class="nav-item" data-target-form="#form2">
+                    <a href="#fourth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content mb-0 b-0">
+
+                <div class="tab-pane" id="first">
+                    <form id="loanparticulars" method="post" action="#" class="form-horizontal needs-validation" novalidate>
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformation.Id">
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformation.UserId">
+                        @await Html.PartialAsync("WizardPartials/Applicants/_LoanParticulars")
+                    </form>
+                    <ul class="list-inline wizard mb-0 mt-2">
+                        <li class="next list-inline-item float-end">
+                            <a href="javascript:void(0);" class="btn btn-light waves-effect waves-light">Next</i></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-pane fade" id="second">
+                    <form id="collateraldata" method="post" action="#" class="form-horizontal needs-validation" novalidate>
+                        @await Html.PartialAsync("WizardPartials/Applicants/_Barrowers")
+                    </form>
+                    <ul class="pager wizard mb-0 list-inline">
+                        <li class="previous list-inline-item">
+                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                        </li>
+                        <li class="next list-inline-item float-end">
+                            <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-pane fade" id="third">
+                    <form id="spousedata" method="post" action="#" class="form-horizontal needs-validation" novalidate>
+                        @await Html.PartialAsync("WizardPartials/Applicants/_Spouse")
+                    </form>
+                    <ul class="pager wizard mb-0 list-inline mt-1">
+                        <li class="previous list-inline-item">
+                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                        </li>
+                        <li class="next list-inline-item float-end">
+                            <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="fourth">
+                    <form id="form2" method="post" action="#" class="form-horizontal needs-validation" novalidate>
+                        @await Html.PartialAsync("WizardPartials/Applicants/_Form2Page")
+                    </form>
+                    <ul class="pager wizard mb-0 list-inline mt-1">
+                        <li class="previous list-inline-item">
+                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                        </li>
+                        <li class="next list-inline-item float-end">
+                            <button type="button" class="btn btn-primary submit-form">Submit</button>
+                        </li>
+                    </ul>
+                </div>
+            </div> <!-- tab-content -->
+        </div> <!-- end #rootwizard-->
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/setup/applicants/housingloanapplications.js" asp-append-version="true"></script>
+    <script src="~/js/setup/applicants/loanparticulars.js" asp-append-version="true"></script>
+}

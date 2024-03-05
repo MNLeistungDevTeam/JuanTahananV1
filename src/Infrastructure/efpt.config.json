@@ -1,0 +1,142 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "MNLTemplateDBContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Persistence",
+   "OutputPath": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Template.Infrastructure",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 1,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[ApplicantsPersonalInformation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AuditTrail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BarrowersInformation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CollateralInformation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Document]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DocumentType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Form2Page]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[JsonDataConnections]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LoanParticularsInformation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ModeOfPayment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Module]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ModuleStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PurposeOfLoan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Reports]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Role]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoleAccess]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Spouse]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SqlDataConnections]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserActivity]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserApprover]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserDocuments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserRole]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserToken]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "..\\Database\\Template.Database.sqlproj",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

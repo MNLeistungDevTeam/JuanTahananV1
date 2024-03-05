@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/Module/spModule_GetAllModuleList.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/Module/spModule_GetAllModuleType.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/Portal/spPortal_Getall.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/User/spUser_Get.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/User/spUser_GetAll.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/User/spUser_GetByUserName.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Stored Procedures/Setup/User/spUser_GetByUserRoleId.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/AuditTrail/AuditTrail.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Company/Company.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Company/CompanyLogo.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Company/CompanySetting.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Document/Document.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Document/DocumentType.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Module/ModuleList.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Module/ModuleType.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Portal/ModuleDesignatedPortal.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Portal/Portal.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Portal/UserDesignatedPortal.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Role/Role.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Role/RoleAccess.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/Status/ModuleStatus.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/User/User.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/User/UserActivity.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/User/UserApprover.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/User/UserRole.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/Tables/Setup/User/UserToken.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/dbo/Stored Procedures/deleteAllDataFromAllTables.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/dbo/Tables/JsonDataConnections.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/dbo/Tables/Reports.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Database/dbo/Tables/SqlDataConnections.sql" dialect="TSQL" />
+  </component>
+</project>

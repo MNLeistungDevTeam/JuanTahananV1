@@ -1,0 +1,123 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@model RoleViewModel
+
+@{
+
+}
+
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <h3 class="text-dark float-start fw-semibold">Roles</h3>
+    </div>
+    <div class="card-body">
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <button id="btn_add_role" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
+                        <button id="btn_edit_role" class="btn btn-light btn-sm waves-effect btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                        <button id="btn_delete_role" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
+                        <button id="btn_view_role" class="btn btn-light btn-sm waves-effect btn_view" disabled><span class="mdi mdi-account-group"></span> View</button>
+                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_role"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input bound="tbl_role" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_role">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Total Modules</th>
+                            <th>Total Users</th>
+                            <th>Disabled</th>
+                            <th>Date Created</th>
+                            <th>Date Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Standard modal content -->
+<div id="modal-role" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4">
+            <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <h3 class="text-dark float-start fw-semibold">Roles</h3>
+            </div>
+            <div class="modal-body">
+                <form id="role_form" class="needs-validation" novalidate method="post" action="/Role/SaveRole">
+                    <input hidden type="text" asp-for="Role.Id" class="form-control form-control-sm">
+                    <div class="row gy-2">
+                        <div class="col-md-3">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Role.Name" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Role.Name" required>
+                                <span asp-validation-for="Role.Name" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Role.Description" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Role.Description" required>
+                                <span asp-validation-for="Role.Description" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center align-items-end">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Role.AdminAccess" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label fw-normal" asp-for="Role.AdminAccess">Admin Access</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Role.IsDisabled" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label fw-normal" asp-for="Role.IsDisabled"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-sm table-bordered nowrap w-100" id="tbl-role-add">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Module</th>
+                                        <th>View</th>
+                                        <th>Create</th>
+                                        <th>Modify</th>
+                                        <th>Delete</th>
+                                        <th>Full Access</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+                    <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect mb-2" data-bs-dismiss="modal">Close</button>
+                </form>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section Scripts {
+    <script src="~/js/Setup/Role/RoleSetup.js" asp-append-version="true"></script>
+}

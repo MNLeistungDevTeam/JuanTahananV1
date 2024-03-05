@@ -1,0 +1,140 @@
+﻿@{
+    var items = (List<ApplicantViewModel>)ViewBag.items;
+}
+
+<div class="row gy-4">
+    <div class="col-xl-6">
+        <div class="input-group float-start" style="width:350px;">
+            <input bound="tbl_module" type="search" class="form-control" placeholder="Search..." />
+            <span class="input-group-text"><i class="fe-search"></i></span>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        @*         <a type="button" asp-controller="Applicants" asp-action="HLF068" class="btn btn-light float-end waves-effect waves-light">
+        <i class="fas fa-user-plus me-1"></i>
+        Add Beneficiary
+        </a> *@
+    </div>
+    <div class="col-xl-12">
+        <div class="row application-container">
+            @foreach (var item in items)
+            {
+                <div class="col-xxl-4">
+                    <div class="card rounded-4 beneficiary-card">
+                        <div class="card-header rounded-4 rounded-bottom">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="m-0 font-16 fw-semibold">
+                                        Application @(item.ApplicantsPersonalInformation?.Code ?? "")
+                                    </h6>
+                                </div>
+                                <div class="col-auto">
+                                    @{
+                                        var validationIds = new[] { item.LoanParticularsInformation?.Id ?? 0, item.CollateralInformation?.Id ?? 0, item.BarrowersInformationModel?.Id ?? 0, item.SpouseModel?.Id ?? 0 };
+                                        if (validationIds.Any(x => x == 0))
+                                        {
+                                            <span class="badge text-bg-danger rounded-4 px-3 py-1 font-16">Incomplete Details!</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Waiting for Approval!</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="row gy-1">
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-normal">
+                                        Buyer
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
+                                        @(item.BarrowersInformationModel?.Name ?? "")
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-normal">
+                                        Developer
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
+                                        @(item.CollateralInformation?.DeveloperName ?? "")
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-normal">
+                                        Unit
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
+                                        @(item?.CollateralInformation?.LotUnitNumber ?? 0)
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-normal">
+                                        Date Submitted
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
+                                        @(item.ApplicantsPersonalInformation?.DateCreated.ToString("yyyy-MM-dd") ?? "")
+                                    </h6>
+                                </div>
+                                <div class="col-12"></div>
+                                <div class="col-12"></div>
+                                <div class="col-12"></div>
+                                <div class="col-6">
+                                    <h6 class="m-0 font-16 fw-normal">
+                                        Documents
+                                    </h6>
+                                </div>
+                                <div class="col-6">
+                                    @{
+                                        var totalDocuments = item.ApplicationSubmittedDocumentModels?.Count ?? 0;
+                                        var totalSubmittedDocuments = item.ApplicationSubmittedDocumentModels?.Count(x => x.TotalUploadedDocuments != 0) ?? 0;
+                                        if (totalDocuments == totalSubmittedDocuments)
+                                        {
+                                            <h6 class="m-0 font-16 fw-semibold text-truncate text-success">
+                                                Submitted
+                                            </h6>
+                                        }
+                                        else if (totalSubmittedDocuments == 0)
+                                        {
+                                            <h6 class="m-0 font-16 fw-semibold text-truncate text-danger">
+                                                Not Submitted
+                                            </h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="m-0 font-16 fw-semibold text-truncate text-warning">
+                                                Incomplete
+                                            </h6>
+                                        }
+                                    }
+
+                                </div>
+                                <div class="col-12"></div>
+                                <div class="col-12"></div>
+                                <div class="col-12"></div>
+                                <div class="col-6">
+                                </div>
+                                <div class="col-6 text-end p-0">
+                                    <h6 class="m-0 font-16 fw-normal text-truncate text-muted">
+                                        View full details
+                                        <i class="fas fa-arrow-right"></i>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

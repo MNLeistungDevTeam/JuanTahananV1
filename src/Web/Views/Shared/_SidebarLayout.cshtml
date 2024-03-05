@@ -1,0 +1,147 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@using Template.Application.Services
+
+@inject IStringLocalizer<SharedResources> localizer
+@inject ICurrentUserService _currentUser;
+@inject IFtpDownloaderService _ftpDownloaderService;
+@{
+    ViewData["MainTitle"] = localizer["eiDOC"];
+    var users = await _currentUser.GetUserInfo();
+    ViewData["Profile"] = "/images/user/default.png";
+    ViewData["Position"] = users.Position;
+    ViewData["Name"] = users.Name;
+    if (!string.IsNullOrWhiteSpace(users.ProfilePicture))
+    {
+        var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
+        if (System.IO.File.Exists(profile))
+        ViewData["Profile"] = profile;
+    }
+
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] | @ViewData["MainTitle"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="MNLeistung.de" name="author" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/favico.png">
+
+    <!-- Thirdparty css -->
+    @RenderSection("Links", false)
+
+    <link rel="stylesheet" href="~/css/datatables.bundle.css" id="app-style" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.thirdparty.bundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/hypertheme.css" asp-append-version="true" rel="stylesheet" />
+</head>
+
+<body>
+    <input type="hidden" id="txtBaseUrl" value="@(@Url.Content("~"))/" />
+
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- ========== Topbar Start ========== -->
+        <partial name="_Topbar" />
+        <!-- ========== Topbar End ========== -->
+        <!-- ========== Horizontal Menu Start ========== -->
+        <partial name="_Sidebar" />
+        <!-- ========== Horizontal Menu End ========== -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+@*                                         @Html.Raw(ViewData["Breads"])
+                                        <li class="breadcrumb-item active">@ViewData["Title"]</li> *@
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">@ViewData["Title"]</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    <div class="content-layer-page">
+                        <!-- Pre-loader -->
+                        <div id="preloader">
+                            <div id="status">
+                                <div class="bouncing-loader"><div></div><div></div><div></div></div>
+                            </div>
+                        </div>
+                        <!-- End Preloader-->
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="rightside-menu">
+                    <div class="card card-header-theme rounded-4">
+                        <div class="card-body">
+                            <div class="row gy-2 mb-2 mt-1">
+                                <div class="col-12">
+                                    <h2 class="m-0 text-black fw-semibold text-center">Total Application</h2>
+                                </div>
+                                <div class="col-12">
+                                    <h1 id="totalApplications" class="m-0 text-theme-primary fw-bold text-center display-2 text-truncate">0</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded-4">
+                        <div class="card-header card-header-theme p-2 rounded-4 rounded-bottom">
+                            <h2 class="m-0 text-theme-primary fw-semibold text-center">News and Updates</h2>
+                        </div>
+                        <div class="card-body p-2">
+                            <img class="card-img-top rounded-3" src="~/lib/CodeFox/images/projects/project-1.jpg" alt="project image cap">
+                            <p class="text-dark font-15 my-3">
+                                Welcome to the newest phase of modern living. Discover your dream home in our freshly built community. Elevate your lifestyle in our newly constructed homes. Experience sophistication and comfort in every detail.
+                                <br />
+                                <br />
+                                <a href="javascript:void(0);" class="fw-normal text-danger text-">
+                                    <u>Read More</u>
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content -->
+            <!-- Footer Start -->
+            <button type="button" class="btn btn-soft-warning rounded-pill fab-news waves-effect waves-light">See News</button>
+@*             <partial name="_Footer" />
+            <!-- end Footer --> *@
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- END wrapper -->
+    <!-- Theme Settings -->
+    <partial name="_ThemeSettings" />
+
+    <!-- Thirdparty js -->
+    <script src="~/js/site.thirdparty.bundle.js" asp-append-version="true"></script>
+    <script src="~/js/datatables.bundle.js" asp-append-version="true"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/longRunningTask.js" asp-append-version="true"></script>
+    <script src="~/js/sessionChecker.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/uploader.js" asp-append-version="true"></script>
+    <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.9.3/countUp.min.js" integrity="sha512-fojFLrCKRmoGiEXroMMaF88NlzkQLbBGIQ0LwgmxDM6vGSh6fnm04ClpwheRDrLnY+gi/1CfOWV5+YqcPSSh7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @RenderSection("Scripts", false)
+
+</body>
+
+</html>

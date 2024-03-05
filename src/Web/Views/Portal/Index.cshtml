@@ -1,0 +1,75 @@
+﻿@* @model PortalViewModel;
+
+<div class="card mt-5">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-2 align-items-md-center">
+                <button class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
+                <button class="btn btn-light btn-sm waves-effect btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                <button class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
+                <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_portal"><span class="mdi mdi-refresh"></span> Refresh</button>
+            </div>
+            <div class="col-md-6 mb-2">
+                <div class="input-group float-end" style="width:250px;">
+                    <input bound="tbl_portal" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                    <span class="input-group-text"><i class="fe-search"></i></span>
+                </div>
+            </div>
+        </div>
+        <table class="table table-sm table-bordered nowrap w-100" id="tbl_portal">
+            <thead class="table-light">
+                <tr>
+                    <th></th>
+                    <th>Description</th>
+                    <th>View Name</th>
+                    <th>Created By</th>
+                    <th>Date Created</th>
+                    <th>Modified By</th>
+                    <th>Date Modified</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<!-- Standard modal content -->
+<div id="portal_modal" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded">
+            <div class="modal-header modal-header-color p-2">
+                <h4 class="modal-title model-header-color-font">Portal</h4>
+            </div>
+            <div class="modal-body">
+                <form id="portal_form" class="needs-validation" novalidate method="post" action="/Portal/SavePortal">
+                    <input hidden type="text" asp-for="PortalModel.Id" class="form-control form-control-sm">
+                    <div class="row gy-2">
+                        <div class="col-12">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="PortalModel.Description" required></label>
+                                <input type="text" class="form-control" asp-for="PortalModel.Description" placeholder="Portal Name..." required>
+                                <span asp-validation-for="PortalModel.Description" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="PortalModel.ViewName" required></label>
+                                <div class="input-group flex-nowrap">
+                                    <input type="text" class="form-control" asp-for="PortalModel.ViewName" placeholder="Index Name..." required>
+                                    <span class="input-group-text fw-bold">.cshtml</span>
+                                    <span asp-validation-for="PortalModel.ViewName" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <h4 class="header-title pb-2 mb-2 border-bottom-dashed"></h4>
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+                    <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect" data-bs-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section Scripts {
+    <script src="~/js/setup/portal/portalsetup.js" asp-append-version="true"></script>
+} *@

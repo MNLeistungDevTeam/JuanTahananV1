@@ -1,0 +1,174 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@using Template.Application.Services
+
+@inject IStringLocalizer<SharedResources> localizer
+@inject ICurrentUserService _currentUser;
+@inject IFtpDownloaderService _ftpDownloaderService;
+@{
+    Layout = "_SidebarLayout";
+    var users = await _currentUser.GetUserInfo();
+    ViewData["Profile"] = "/images/user/default.png";
+    ViewData["Position"] = users.Position;
+    ViewData["Name"] = users.Name;
+    if (!string.IsNullOrWhiteSpace(users.ProfilePicture))
+    {
+        var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
+        ViewData["Profile"] = profile;
+    }
+
+
+}
+<div class="row">
+    <div class="col-xl-3">
+        <div class="row gx-2 gy-2 mb-2">
+            <div class="col-md-3 col-xl-12 mb-2 mb-md-0">
+                <div class="account-tab-trigger card card-body mb-0 p-2 h-100 active rounded-4" data-tab="#profile">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="mdi mdi-account-cog-outline font-22 text-dark"></i>
+                            </td>
+                            <td class="ps-2">
+                                <h4 class="fw-bold m-0 text-secondary dwadaw">Profile</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="ps-2">
+                                <p class="text-muted m-0">You can update your basic profile information here</p>
+                                <br />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-3 col-xl-12 mb-2 mb-md-0">
+                <div class="account-tab-trigger card card-body mb-0 p-2 h-100 rounded-4" data-tab="#password">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="mdi mdi-key-outline font-22 text-dark"></i>
+                            </td>
+                            <td class="ps-2">
+                                <h4 class="fw-bold m-0 text-secondary">Password</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="ps-2">
+                                <p class="text-muted m-0">Strengthen your account security by keeping your password up-to-date</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-3 col-xl-12 mb-2 mb-md-0">
+                <div class="account-tab-trigger card card-body mb-0 p-2 h-100 rounded-4" data-tab="#address">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="mdi mdi-key-outline font-22 text-dark"></i>
+                            </td>
+                            <td class="ps-2">
+                                <h4 class="fw-bold m-0 text-secondary">Address</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="ps-2">
+                                <p class="text-muted m-0">Strengthen your account security by keeping your password up-to-date</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-3 col-xl-12 mb-2 mb-md-0">
+                <div class="account-tab-trigger card card-body mb-0 p-2 h-100 rounded-4" data-tab="#contact">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="mdi mdi-key-outline font-22 text-dark"></i>
+                            </td>
+                            <td class="ps-2">
+                                <h4 class="fw-bold m-0 text-secondary">Contact</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="ps-2">
+                                <p class="text-muted m-0">Strengthen your account security by keeping your password up-to-date</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="d-none">
+            <ul class="nav flex-column nav-pills nav-pills-tab">
+                <li class="nav-item">
+                    <a href="#profile" data-bs-toggle="tab" aria-expanded="false" class="nav-link active show"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#password" data-bs-toggle="tab" aria-expanded="false" class="nav-link"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#address" data-bs-toggle="tab" aria-expanded="false" class="nav-link"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" data-bs-toggle="tab" aria-expanded="false" class="nav-link"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-xl-9">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="tab-content p-0">
+                    <div class="tab-pane active show" id="profile">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <img class="card-img-top rounded-3" src="~/lib/CodeFox/images/projects/project-1.jpg" alt="project image cap" height="300">
+                            </div>
+                            <div class="col-xl-12 d-flex justify-content-center">
+                                <div class="auth-avatar mt-n5 overflow-hidden">
+                                    <label for="avatar-input" class="avatar-label">
+                                        <span>
+                                            <div class="avatar-container">
+                                                <img src="@ViewData["Profile"]" alt="A" class="img-fluid rounded-circle mx-auto img-thumbnail avatar-xxxl border-light user-profile">
+                                                <div class="hover-overlay"></div>
+                                            </div>
+                                            <div class="click-to-change">
+                                                <span class="text-white text-truncate">Change profile</span>
+                                            </div>
+                                        </span>
+                                    </label>
+                                    <input type="file" id="avatar-input" class="d-none" accept="image/*">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="password">
+                        <h3 class="mt-0">Password Settings</h3>
+                        <p class="text-muted">Please provide your current password and confirm the new one to proceed.</p>
+
+                    </div>
+                    <div class="tab-pane" id="address">
+                        <h3 class="mt-0">Address information</h3>
+                        <p class="text-muted">Please provide your current password and confirm the new one to proceed.</p>
+
+                    </div>
+                    <div class="tab-pane" id="contact">
+                        <h3 class="mt-0">Contact information</h3>
+                        <p class="text-muted">Please provide your current password and confirm the new one to proceed.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/setup/account/profile.js" asp-append-version="true"></script>
+}

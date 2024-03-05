@@ -1,0 +1,64 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@model ModuleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@localizer["Home"]</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row p-1">
+                    <label class="col-1 col-form-label" for="userInput">User</label>
+                    <div class="col-5">
+                        <input type="text" class="form-control" id="userInput" placeholder="User" />
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <label class="col-1 col-form-label" for="messageInput">Message</label>
+                    <div class="col-5">
+                        <input type="text" class="form-control" id="messageInput"  placeholder="Message" />
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-6 text-end">
+                        <input type="button" class="btn btn-primary" id="sendButton" value="Send Message" />
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-6">
+                        <hr />
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-6">
+                        <ul id="messagesList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/chat.js" asp-version="true"></script>
+}
+

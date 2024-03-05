@@ -1,0 +1,123 @@
+﻿@using Template.Application.Interfaces.Setup.ModuleRepository
+@using Template.Application.Services;
+@using Template.Web.Controllers.Services
+@inject IModuleRepository _moduleRepo;
+@inject IStringLocalizer<SharedResources> localizer
+@inject IFtpDownloaderService _ftpDownloaderService
+
+@{
+    var getModules = await _moduleRepo.SpGetAllUserModules();
+}
+<div class="leftside-menu rounded-4 overflow-hidden">
+
+    <!-- Brand Logo Light -->
+    <a asp-controller="Home" asp-action="Index" class="logo logo-light">
+        <span class="logo-lg">
+            <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="logo" style="height:40px;">
+        </span>
+        <span class="logo-sm">
+            <img src="~/images/companylogo/mnl_logo_light.png" alt="small logo">
+        </span>
+    </a>
+
+    <!-- Brand Logo Dark -->
+    <a asp-controller="Home" asp-action="Index" class="logo logo-dark">
+        <span class="logo-lg">
+            <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="dark logo" style="height:40px;">
+        </span>
+        <span class="logo-sm">
+            <img src="~/images/companylogo/mnl_logo_dark.png" alt="small logo">
+        </span>
+    </a>
+
+    <!-- Full Sidebar Menu Close Button -->
+    <div class="button-close-fullsidebar">
+        <i class="ri-close-fill align-middle"></i>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="h-100" id="leftside-menu-container" data-simplebar>
+
+        <!--- Sidemenu -->
+        <ul class="side-nav">
+            <li class="side-nav-item d-flex align-items-center justify-content-center">
+                <div class="side-profile mb-3">
+                    <div class="auth-avatar text-center">
+                        <img src="@ViewData["Profile"]" alt="A" class="img-fluid rounded-circle mx-auto avatar-xxxl img-thumbnail user-profile">
+                        <div class="mx-auto d-none" style="width: 140px; height: 140px; font-size: 50px;"><span class="auth-initial-avatar avatar-title fw-bold text-white rounded-circle" style="background-color: #000;">A</span></div>
+                    </div>
+                    <h4 class="mt-3 mb-0 text-dark fw-bold text-center">@ViewData["Name"]</h4>
+                    <small class="d-block text-truncate text-center text-dark fw-semibold">@ViewData["Position"]</small>
+                </div>
+            </li>
+            @foreach (var item in getModules.Where(x => x.ParentModuleId == null && x.IsVisible || x.ParentModuleId == 0).OrderBy(o => o.Ordinal))
+            {
+                var subModules = getModules.Where(x => x.ParentModuleId == item.Id && x.IsVisible).OrderBy(o => o.Ordinal).ToList();
+
+                @if (subModules.Any())
+                {
+                    <li class="side-nav-item">
+                        <a data-bs-toggle="collapse" href="#sidebar@(item.BreadName.Replace(" ","_"))" aria-expanded="false" aria-controls="sidebar@(item.BreadName.Replace(" ","_"))" class="side-nav-link">
+                            <i class="@item.Icon"></i>
+                            <span> @item.Description </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebar@(item.BreadName.Replace(" ","_"))">
+                            <ul class="side-nav-second-level">
+                                @foreach (var sub in subModules)
+                                {
+                                    var subSubModules = getModules.Where(x => x.ParentModuleId == sub.Id && x.IsVisible).OrderBy(x => x.Ordinal).ToList();
+                                    @if (subSubModules.Any())
+                                    {
+                                        <li class="side-nav-item">
+                                            <a data-bs-toggle="collapse" href="#subSidebar@(sub.BreadName.Replace(" ","_"))" aria-expanded="false" aria-controls="subSidebar@(sub.BreadName.Replace(" ","_"))" class="side-nav-link">
+                                                <i class="@sub.Icon"></i>
+                                                <span> @sub.Description </span>
+                                                <span class="menu-arrow"></span>
+                                            </a>
+                                            <div class="collapse" id="subSidebar@(sub.BreadName.Replace(" ","_"))">
+                                                <ul class="side-nav-third-level">
+                                                    @foreach (var subSub in subSubModules.OrderBy(o => o.Ordinal))
+                                                    {
+                                                        <li>
+                                                            <a asp-controller="@subSub.Controller" asp-action="@subSub.Action">@subSub.Description</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a asp-controller="@sub.Controller" asp-action="@sub.Action">@sub.Description</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="side-nav-item">
+                        <a asp-controller="@item.Controller" asp-action="@item.Action" class="side-nav-link">
+                            <i class="@item.Icon"></i>
+                            <span> @localizer[item.Description] </span>
+                        </a>
+                    </li>
+                }
+            }
+            <li class="side-nav-item">
+                <a asp-controller="Account" asp-action="LogOff" class="side-nav-link">
+                    <i class="mdi mdi-logout"></i>
+                    <span> @localizer["Log Out"] </span>
+                </a>
+            </li>
+        </ul>
+        <!--- End Sidemenu -->
+
+        <div class="clearfix"></div>
+    </div>
+    <!-- End Sidebar -->
+</div>

@@ -1,0 +1,150 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@model ModuleViewModel
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <h3 class="text-dark float-start fw-semibold">Module</h3>
+    </div>
+    <div class="card-body">
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <button id="btn_add_module" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
+                        <button id="btn_edit_module" class="btn btn-light btn-sm waves-effect btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                        <button id="btn_delete_module" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
+                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_module"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input bound="tbl_module" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_module">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th>Status</th>
+                            <th>Code</th>
+                            <th>Order</th>
+                            <th>Description</th>
+                            <th>BreadTitle</th>
+                            <th>Controller / Action</th>
+                            <th>Parent Module</th>
+                            <th>Icon</th>
+                            <th>Show Bread</th>
+                            <th>Visibility</th>
+                            <th>Created By</th>
+                            <th>Date Created</th>
+                            <th>Modified By</th>
+                            <th>Date Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Standard modal content -->
+<div id="modal-module" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4">
+            <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <h3 class="text-dark float-start fw-semibold">Module</h3>
+            </div>
+            <div class="modal-body">
+                <form id="module_form" enctype="multipart/form-data" class="needs-validation" novalidate method="post" action="/Module/SaveModule" role="form">
+                    <input hidden type="text" asp-for="Module.Id" class="form-control form-control-sm">
+                    <div class="row gy-2">
+                        <div class="col-md-3">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Module.Code" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Module.Code" required>
+                                <span asp-validation-for="Module.Code" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Module.BreadName" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Module.BreadName" required>
+                                <span asp-validation-for="Module.BreadName" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Module.Description" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Module.Description" required>
+                                <span asp-validation-for="Module.Description" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label asp-for="Module.Controller" class="form-label fw-normal"></label>
+                                <select asp-for="Module.Controller" class="rounded-4" placeholder="Select Controller">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label asp-for="Module.Action" class="form-label fw-normal"></label>
+                                <select asp-for="Module.Action" class="rounded-4" placeholder="Select Action">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label asp-for="Module.Ordinal" class="form-label fw-normal" required></label>
+                                <input asp-for="Module.Ordinal" class="text-center form-control" data-bts-min="1" data-toggle="touchspin" value="1" type="number" data-bts-button-down-class="btn waves-effect waves-light btn-light" data-bts-button-up-class="btn waves-effect waves-light btn-light" required>
+                                <span asp-validation-for="Module.Ordinal" class="invalid-tooltip"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label asp-for="Module.ParentModuleId" class="form-label fw-normal"></label>
+                                <select asp-for="Module.ParentModuleId" class="rounded-4" placeholder="Select Parent Module">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label asp-for="Module.ModuleStatusId" class="form-label fw-normal" required></label>
+                                <select asp-for="Module.ModuleStatusId" class="rounded-4" placeholder="Select Status" required>
+                                </select>
+                                <span asp-validation-for="Module.ModuleStatusId" class="invalid-tooltip"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative">
+                                <label class="form-label fw-normal" asp-for="Module.Icon" required></label>
+                                <input type="text" class="form-control rounded-3" asp-for="Module.Icon" required>
+                                <span asp-validation-for="Module.Icon" class="invalid-tooltip"> </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h4 class="header-title pb-2 mb-2 border-bottom-dashed"></h4>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Module.IsVisible" type="checkbox" class="form-check-input">
+                        <label class="form-check-label fw-normal" asp-for="Module.IsVisible"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Module.IsBreaded" type="checkbox" class="form-check-input">
+                        <label class="form-check-label fw-normal" asp-for="Module.IsBreaded"></label>
+                    </div>
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+                    <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect" data-bs-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section Scripts {
+    <script src="~/js/Setup/Module/ModuleManagementScript.js" asp-append-version="true"></script>
+}

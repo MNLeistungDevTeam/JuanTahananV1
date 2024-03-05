@@ -1,0 +1,156 @@
+﻿:root {
+    --ct-body-bg: #fafbfe;
+    --ct-box-shadow-sm: 0px 0px 35px 0px rgba(154, 161, 171, 0.15);
+}
+html[data-bs-theme="light"] {
+
+}
+html[data-bs-theme="dark"] {
+    --ct-body-bg: #343a40;
+    --ct-box-shadow-sm: 0px 0px 35px 0px rgba(49, 57, 66, 0.5);
+    --ct-menu-bg: #3a444e;
+}
+.left-side-menu {
+    border-right: 0px solid var(--ct-border-color);
+}
+html:not([layout-setup="full"]) .fab-news {
+    position: fixed;
+    z-index: 1000;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+}
+
+html[data-sidenav-size="condensed"] .fab-news {
+    bottom: 70px;
+    right: 20px;
+}
+.rightside-menu {
+    bottom: 0;
+    top: 3.4rem;
+    position: absolute;
+    width: calc(var(--ct-leftbar-width) + 10rem);
+    min-width: calc(var(--ct-leftbar-width) + 10rem);
+    background: none;
+    padding: 0.8rem;
+    -webkit-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+    right: 0;
+}
+html:not([layout-setup="full"]) .content-layer-page {
+    margin-right: calc(var(--ct-leftbar-width) + 10rem);
+}
+@media (max-width: 1400px) {
+    html:not([layout-setup="full"]) .fab-news {
+        display: block;
+    }
+    html:not([layout-setup="full"]) .rightside-menu {
+        display: none;
+    }
+    html:not([layout-setup="full"]) .content-layer-page {
+        margin-right: inherit;
+    }
+}
+#preloader {
+    z-index: 2;
+}
+#status {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 55%;
+    top: 50%;
+    margin: -40px 0 0 -40px;
+    -webkit-transition: all .25s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+
+html[data-sidenav-size="condensed"] #status {
+    left: 50%;
+    top: 50%;
+}
+.logo {
+    transition: all 0.1s ease-in-out;
+}
+.img-thumbnail {
+    padding: 0;
+    border: 4px solid var(--ct-gray-400);
+}
+.timeline-alt .timeline-item:before {
+    width: 4px;
+    background-color: var(--ct-gray-300)
+}
+.timeline-alt .timeline-item .timeline-icon {
+    font-size:18px;
+    background-color:transparent;
+}
+.bouncing-loader > div {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.2s;
+    background: #FEC10E;
+}
+    .bouncing-loader > div:nth-child(2) {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.3s;
+        background: #FEC10E;
+    }
+    .bouncing-loader > div:nth-child(3) {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.4s;
+        background: #FEC10E;
+    }
+
+html[data-bs-theme="light"] .notification-list .notify-item.unread-noti {
+    background-color: #FEF5E5;
+}
+
+.calendar-widget .datepicker-inline,
+.calendar-widget table {
+    width: 100%;
+}
+
+    .calendar-widget .datepicker-inline tr td,
+    .calendar-widget .datepicker-inline tr th,
+    .calendar-widget .datepicker-inline tr td.active.day,
+    .calendar-widget .datepicker-inline tr td.today.day,
+    .calendar-widget table tr td,
+    .calendar-widget table tr th,
+    .calendar-widget table tr td.active.day,
+    .calendar-widget table tr td.today.day {
+        background-color: transparent !important;
+    }
+
+        .calendar-widget .datepicker-inline tr td.active.day,
+        .calendar-widget .datepicker-inline tr td.today.day,
+        .calendar-widget table tr td.active.day,
+        .calendar-widget table tr td.today.day {
+            color: #fa6767 !important;
+            text-shadow: none;
+            font-weight: 700;
+        }
+
+            .calendar-widget .datepicker-inline tr td.active.day:hover,
+            .calendar-widget .datepicker-inline tr td.today.day:hover,
+            .calendar-widget table tr td.active.day:hover,
+            .calendar-widget table tr td.today.day:hover {
+                background-color: transparent !important;
+            }
+
+    .calendar-widget .datepicker-inline td,
+    .calendar-widget .datepicker-inline th,
+    .calendar-widget table td,
+    .calendar-widget table th {
+        height: 45px;
+    }
+
+    .calendar-widget .datepicker-inline .datepicker-switch,
+    .calendar-widget .datepicker-inline .prev,
+    .calendar-widget .datepicker-inline .next,
+    .calendar-widget table .datepicker-switch,
+    .calendar-widget table .prev,
+    .calendar-widget table .next {
+        font-size: 1.1rem;
+        background-color: rgba(var(--ct-primary-rgb), 0.1) !important;
+        border-radius: 0;
+        color: var(--ct-primary);
+    }

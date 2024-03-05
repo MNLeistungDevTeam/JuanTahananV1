@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[CollateralInformation]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+	[ApplicantsPersonalInformationId] INT NOT NULL,
+    [Province] NVARCHAR(MAX) NOT NULL,
+    [Municipality] NVARCHAR(MAX) NOT NULL,
+    [Street] NVARCHAR(MAX) NOT NULL,
+    [DeveloperName] NVARCHAR(MAX) NOT NULL,
+    [PropertyTypeId] INT NOT NULL,
+    [TctOctCctNumber] INT NULL,
+    [TaxDeclrationNumber] INT NULL,
+    [LotUnitNumber] INT NULL,
+    [BlockBuildingNumber] INT NULL,
+    [IsMortgage] BIT NULL,
+    [CollateralReason] NVARCHAR(MAX) NOT NULL,
+    [LandArea] DECIMAL(18, 2) NULL,
+    [HouseAge] INT NULL,
+    [NumberOfStoreys] INT NULL,
+    [ProposedNoOfStoreys] INT NULL,
+    [ExistingTotalFloorArea] DECIMAL(18, 2) NULL,
+    [ProposedTotalFloorArea] DECIMAL(18, 2) NULL,
+    [DateCreated] DATETIME2 NOT NULL DEFAULT (GETDATE()), 
+    [CreatedById] INT NOT NULL, 
+    [DateModified] DATETIME2 NULL, 
+    [ModifiedById] INT NULL,
+    [DateDeleted] DATETIME2 NULL, 
+    [DeletedById] INT NULL
+)

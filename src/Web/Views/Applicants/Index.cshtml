@@ -1,0 +1,48 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@model RoleViewModel
+
+@{
+
+}
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <h3 class="text-dark float-start fw-semibold">Beneficiaries</h3>
+    </div>
+    <div class="card-body">
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <a asp-controller="Applicants" asp-action="HLF068" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</a>
+                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_beneficiaries"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input bound="tbl_beneficiaries" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_beneficiaries">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Beneficiary Details</th>
+                            <th>Applications</th>
+                            <th>Joined Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/setup/applicants/beneficiariesmanagement.js" asp-append-version="true"></script>
+}

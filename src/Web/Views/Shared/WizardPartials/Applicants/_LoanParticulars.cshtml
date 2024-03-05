@@ -1,0 +1,220 @@
+﻿@model ApplicantViewModel
+<div class="row gy-2">
+    <div class="col-md-12">
+        <h3 class="text-dark float-start">
+            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Loan Particulars</span>
+        </h3>
+    </div>
+    <input hidden type="text" class="form-control" asp-for="LoanParticularsInformation.Id">
+    <input hidden type="text" class="form-control" asp-for="LoanParticularsInformation.ApplicantsPersonalInformationId">
+    <input hidden type="text" class="form-control" asp-for="CollateralInformation.Id">
+    <input hidden type="text" class="form-control" asp-for="CollateralInformation.ApplicantsPersonalInformationId">
+    <div class="col-md-12">
+        <div class="position-relative">
+            <label asp-for="LoanParticularsInformation.PurposeOfLoanId" class="form-label fw-normal" required></label>
+            <select asp-for="LoanParticularsInformation.PurposeOfLoanId" class="rounded-4" required asp-items="@(new SelectList(ViewBag.purposeloan, "value", "text"))">
+            </select>
+            <span asp-validation-for="LoanParticularsInformation.PurposeOfLoanId" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="LoanParticularsInformation.ExistingHousingApplicationNumber" required></label>
+            @if (!Model.LoanParticularsInformation.ExistingChecker)
+            {
+                <input disabled type="text" class="form-control rounded-3" asp-for="LoanParticularsInformation.ExistingHousingApplicationNumber">
+            }
+            else
+            {
+                <input type="text" class="form-control rounded-3" asp-for="LoanParticularsInformation.ExistingHousingApplicationNumber">
+            }
+            <span asp-validation-for="LoanParticularsInformation.ExistingHousingApplicationNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-check form-check-inline">
+            <input asp-for="LoanParticularsInformation.ExistingChecker" type="checkbox" class="form-check-input">
+            <label class="form-check-label header-title" asp-for="LoanParticularsInformation.ExistingChecker"></label>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="LoanParticularsInformation.DesiredLoanAmount" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="LoanParticularsInformation.DesiredLoanAmount">
+            <span asp-validation-for="LoanParticularsInformation.DesiredLoanAmount" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative" id="datepicker5">
+            <label asp-for="LoanParticularsInformation.DesiredLoanTermYears" class="form-label fw-normal" required></label>
+            <input asp-for="LoanParticularsInformation.DesiredLoanTermYears" type="number" class="form-control rounded-3 text-center">
+            <span asp-validation-for="LoanParticularsInformation.DesiredLoanTermYears" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label asp-for="LoanParticularsInformation.RepricingPeriod" class="form-label fw-normal" required></label>
+            <select asp-for="LoanParticularsInformation.RepricingPeriod" class="rounded-4" required>
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+            <span asp-validation-for="LoanParticularsInformation.RepricingPeriod" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <label asp-for="LoanParticularsInformation.ModeOfPaymentId" class="form-label fw-normal" required></label>
+            <select asp-for="LoanParticularsInformation.ModeOfPaymentId" class="rounded-4" required asp-items="@(new SelectList(ViewBag.modeOfPayment, "value", "text"))">
+            </select>
+            <span asp-validation-for="LoanParticularsInformation.Id" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Collateral</span>
+        </h3>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.Province" required></label>
+            <input type="text" class="form-control rounded-3" asp-for="CollateralInformation.Province" required>
+            <span asp-validation-for="CollateralInformation.Province" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.Municipality"></label>
+            <input type="text" class="form-control rounded-3" asp-for="CollateralInformation.Municipality" required>
+            <span asp-validation-for="CollateralInformation.Municipality" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.Street"></label>
+            <input type="text" class="form-control rounded-3" asp-for="CollateralInformation.Street">
+            <span asp-validation-for="CollateralInformation.Street" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.DeveloperName" required></label>
+            <input type="text" class="form-control rounded-3" asp-for="CollateralInformation.DeveloperName" required>
+            <span asp-validation-for="CollateralInformation.DeveloperName" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label asp-for="CollateralInformation.PropertyTypeId" class="form-label fw-normal" required></label>
+            <select asp-for="CollateralInformation.PropertyTypeId" class="rounded-4" required asp-items="@(new SelectList(ViewBag.propertTye, "value", "text"))">
+            </select>
+            <span asp-validation-for="CollateralInformation.PropertyTypeId" class="invalid-tooltip"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.TctOctCctNumber" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.TctOctCctNumber" required>
+            <span asp-validation-for="CollateralInformation.TctOctCctNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.TaxDeclrationNumber" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.TaxDeclrationNumber" required>
+            <span asp-validation-for="CollateralInformation.TaxDeclrationNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.LotUnitNumber" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.LotUnitNumber" required>
+            <span asp-validation-for="CollateralInformation.LotUnitNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.BlockBuildingNumber" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.BlockBuildingNumber" required>
+            <span asp-validation-for="CollateralInformation.BlockBuildingNumber" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-check form-check-inline">
+            <input asp-for="CollateralInformation.IsMortgage" type="checkbox" class="form-check-input">
+            <label class="form-check-label header-title" asp-for="CollateralInformation.IsMortgage"></label>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.LandArea" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.LandArea" required>
+            <span asp-validation-for="CollateralInformation.LandArea" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.HouseAge" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.HouseAge" required>
+            <span asp-validation-for="CollateralInformation.HouseAge" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-12">
+        <div class="form-check form-check-inline">
+            <input asp-for="CollateralInformation.ExistingReasonChecker" type="checkbox" class="form-check-input">
+            <label class="form-check-label header-title" asp-for="CollateralInformation.ExistingReasonChecker"></label>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.CollateralReason"></label>
+            @if (!Model.CollateralInformation.ExistingReasonChecker)
+            {
+                <textarea disabled type="text" class="form-control rounded-3" asp-for="CollateralInformation.CollateralReason" rows="5"></textarea>
+            }else{
+                <textarea type="text" class="form-control rounded-3" asp-for="CollateralInformation.CollateralReason" rows="5"></textarea>
+            }
+        </div>
+    </div>
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.NumberOfStoreys" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.NumberOfStoreys" required>
+            <span asp-validation-for="CollateralInformation.NumberOfStoreys" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.ProposedNoOfStoreys" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.ProposedNoOfStoreys" required>
+            <span asp-validation-for="CollateralInformation.ProposedNoOfStoreys" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.ExistingTotalFloorArea" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.ExistingTotalFloorArea" required>
+            <span asp-validation-for="CollateralInformation.ExistingTotalFloorArea" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="position-relative">
+            <label class="form-label fw-normal" asp-for="CollateralInformation.ProposedTotalFloorArea" required></label>
+            <input type="number" class="form-control rounded-3" asp-for="CollateralInformation.ProposedTotalFloorArea" required>
+            <span asp-validation-for="CollateralInformation.ProposedTotalFloorArea" class="invalid-tooltip"> </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
