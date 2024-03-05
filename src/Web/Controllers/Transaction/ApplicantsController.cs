@@ -1,32 +1,21 @@
 ﻿using AutoMapper;
-using DevExpress.Xpo.Helpers;
-using DevExpress.XtraRichEdit.Import.Doc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MimeKit.Cryptography;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Template.Application.Interfaces.Setup.ApplicantsRepository;
 using Template.Application.Interfaces.Setup.DocumentRepository;
 using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.RoleRepository;
 using Template.Application.Interfaces.Setup.UserRepository;
 using Template.Application.Services;
-using Template.Domain.Common;
 using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.RoleDto;
 using Template.Domain.Dto.UserDto;
 using Template.Domain.Entities;
 using Template.Domain.Enums;
 using Template.Infrastructure.Persistence;
-using Template.Infrastructure.Persistence.Repositories.Setup.UserRepository;
-using Template.Infrastructure.Services;
 using Template.Web.Controllers.Services;
 using Template.Web.Models;
 
@@ -71,6 +60,7 @@ namespace Template.Web.Controllers.Transaction
         {
             return View();
         }
+
         [ModuleServices(ModuleCodes.HLF068, typeof(IModuleRepository))]
         public async Task<IActionResult> HLF068(int UserId)
         {
@@ -81,7 +71,8 @@ namespace Template.Web.Controllers.Transaction
                     .GetAllAsync())
                     .Where(x => x.UserId == UserId)
                     .OrderByDescending(x => x.DateCreated)
-                    .FirstOrDefault() ?? new ApplicantsPersonalInformation() { 
+                    .FirstOrDefault() ?? new ApplicantsPersonalInformation()
+                    {
                         UserId = UserId
                     };
                 model.ApplicantsPersonalInformation = _mapper.Map<ApplicantsPersonalInformationModel>(latestApplicationForm);
@@ -95,14 +86,18 @@ namespace Template.Web.Controllers.Transaction
             ViewBag.modeOfPayment = await _context.ModeOfPayments.Select(x => new { text = x.Description, value = x.Id }).ToListAsync();
             ViewBag.propertTye = await _context.PropertyTypes.Select(x => new { text = x.Description, value = x.Id }).ToListAsync();
             return View(model);
-        }
 
+
+
+
+
+        }
 
         [ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
         {
             var items = new List<ApplicantViewModel>();
-            foreach(var item in await _applicantsPersonalInformationRepo.GetAllAsync())
+            foreach (var item in await _applicantsPersonalInformationRepo.GetAllAsync())
             {
                 items.Add(new ApplicantViewModel()
                 {
@@ -112,11 +107,12 @@ namespace Template.Web.Controllers.Transaction
                     CollateralInformation = _mapper.Map<CollateralInformationModel>(await _collateralInformationRepo.GetByApplicationInfoIdAsync(item.Id)),
                     SpouseModel = _mapper.Map<SpouseModel>(await _spouseRepo.GetByApplicationInfoIdAsync(item.Id)),
                     ApplicationSubmittedDocumentModels = await _documentRepo.SpGetAllApplicationSubmittedDocuments(item.Id)
-                }); 
+                });
             }
             ViewBag.items = items;
             return View(items);
         }
+
         [HttpPost]
         [ModelStateValidations(typeof(ApplicantViewModel))]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel model)
@@ -125,9 +121,9 @@ namespace Template.Web.Controllers.Transaction
             {
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
+
                 if (model.ApplicantsPersonalInformation.Id == 0)
                 {
-
                     if (model.ApplicantsPersonalInformation.UserId == 0)
                     {
                         user = await RegisterBenefeciary(new UserModel()
@@ -156,7 +152,7 @@ namespace Template.Web.Controllers.Transaction
                 }
                 if (model.ApplicantsPersonalInformation.Id != 0)
                 {
-                    if(user.Id == 0)
+                    if (user.Id == 0)
                     {
                         user = await _userRepo.GetByIdAsync(model.ApplicantsPersonalInformation.UserId);
                     }
@@ -165,7 +161,6 @@ namespace Template.Web.Controllers.Transaction
                     model.CollateralInformation.ApplicantsPersonalInformationId = model.ApplicantsPersonalInformation.Id;
                     model.SpouseModel.ApplicantsPersonalInformationId = model.ApplicantsPersonalInformation.Id;
                     model.Form2PageModel.ApplicantsPersonalInformationId = model.ApplicantsPersonalInformation.Id;
-
 
                     var loan = await _loanParticularsInformationRepo.GetByIdAsync(model.LoanParticularsInformation.Id);
                     var collateral = await _collateralInformationRepo.GetByIdAsync(model.CollateralInformation.Id);
@@ -192,7 +187,7 @@ namespace Template.Web.Controllers.Transaction
                         spouse.MergeNonNullData(model.SpouseModel);
                         model.SpouseModel = _mapper.Map<SpouseModel>(spouse);
                     }
-                    if(model.Form2PageModel.Id != 0)
+                    if (model.Form2PageModel.Id != 0)
                     {
                         form2.MergeNonNullData(model.Form2PageModel);
                         model.Form2PageModel = _mapper.Map<Form2PageModel>(form2);
@@ -200,10 +195,10 @@ namespace Template.Web.Controllers.Transaction
                     await _loanParticularsInformationRepo.SaveAsync(model.LoanParticularsInformation);
                     await _barrowersInformationRepo.SaveAsync(model.BarrowersInformationModel);
                     await _collateralInformationRepo.SaveAsync(model.CollateralInformation);
+
                     await _spouseRepo.SaveAsync(model.SpouseModel);
                     await _form2PageRepo.SaveAsync(model.Form2PageModel);
                 }
-
 
                 return Ok(user.Id);
             }
@@ -212,6 +207,7 @@ namespace Template.Web.Controllers.Transaction
                 return BadRequest(ex.Message);
             }
         }
+
         public async Task<string> GenerateTemporaryUsernameAsync()
         {
             string temporaryUsername;
@@ -230,7 +226,6 @@ namespace Template.Web.Controllers.Transaction
             return (await _userRepo.GetAllAsync()).Any(x => x.UserName == username);
         }
 
-
         [ModelStateValidations(typeof(UserModel))]
         public async Task<User> RegisterBenefeciary(UserModel user)
         {
@@ -243,13 +238,16 @@ namespace Template.Web.Controllers.Transaction
             });
             return userData;
         }
+
         public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
             Ok(await _userRepo.spGetByRoleName(roleName));
 
         public async Task<IActionResult> GetPurposeOfLoan() =>
-            Ok(await _context.PurposeOfLoans.Select(x => new {text = x.Description ,value = x.Id}).ToListAsync());
+            Ok(await _context.PurposeOfLoans.Select(x => new { text = x.Description, value = x.Id }).ToListAsync());
+
         public async Task<IActionResult> GetModeOfPayment() =>
             Ok(await _context.ModeOfPayments.Select(x => new { text = x.Description, value = x.Id }).ToListAsync());
+
         public async Task<IActionResult> GetPropertyType() =>
             Ok(await _context.PropertyTypes.Select(x => new { text = x.Description, value = x.Id }).ToListAsync());
     }

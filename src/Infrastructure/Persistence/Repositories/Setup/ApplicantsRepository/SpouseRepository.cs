@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Template.Application.Interfaces.Setup.ApplicantsRepository;
 using Template.Application.Services;
 using Template.Domain.Dto.ApplicantsDto;
@@ -31,32 +26,47 @@ namespace Template.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepos
 
         public async Task<Spouse?> GetByIdAsync(int id) =>
     await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<Spouse?> GetByApplicationInfoIdAsync(int id) =>
      await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
         public async Task<Spouse> SaveAsync(SpouseModel model)
         {
+            var _spouce = _mapper.Map<Spouse>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<SpouseModel>(await CreateAsync(model));
+
+                _spouce = await CreateAsync(_spouce);
             else
-                model = _mapper.Map<SpouseModel>(await UpdateAsync(model));
-            return _mapper.Map<Spouse>(model);
+
+                _spouce = await UpdateAsync(_spouce);
+
+            return _spouce;
         }
-        public async Task<Spouse> CreateAsync(SpouseModel model)
+
+        public async Task<Spouse> CreateAsync(Spouse model)
         {
-            model.DateCreated = DateTime.UtcNow;
+            model.DateCreated = DateTime.Now;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Spouse>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+
+            var _spouse = _mapper.Map<Spouse>(model);
+
+            _spouse = await _contextHelper.CreateAsync(_spouse, "DateModified", "ModifiedById");
+            return _spouse;
         }
-        public async Task<Spouse> UpdateAsync(SpouseModel model)
+
+        public async Task<Spouse> UpdateAsync(Spouse model)
         {
-            model.DateModified = DateTime.UtcNow;
+            model.DateModified = DateTime.Now;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Spouse>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+
+            var _spouse = _mapper.Map<Spouse>(model);
+
+            _spouse = await _contextHelper.UpdateAsync(_spouse, "DateCreated", "CreatedById");
+
+            return _spouse;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -68,6 +78,7 @@ namespace Template.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepos
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.Spouses.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -75,7 +86,6 @@ namespace Template.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepos
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

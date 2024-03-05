@@ -13,8 +13,8 @@ namespace Template.Application.Interfaces.Setup.ApplicantsRepository
         Task<Spouse?> GetByIdAsync(int id);
         Task<Spouse> SaveAsync(SpouseModel model);
         Task<Spouse?> GetByApplicationInfoIdAsync(int id);
-        Task<Spouse> CreateAsync(SpouseModel model);
-        Task<Spouse> UpdateAsync(SpouseModel model);
+        Task<Spouse> CreateAsync(Spouse spouse);
+        Task<Spouse> UpdateAsync(Spouse spouse);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

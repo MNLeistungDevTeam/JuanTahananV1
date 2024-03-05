@@ -46,7 +46,7 @@
     [PositionName] NVARCHAR(100) NULL,
     [DepartmentName] NVARCHAR(100) NULL,
     [YearsEmployment] INT NULL,
-    [NumberOfDependent] INT(25) NULL,
+    [NumberOfDependent] INT NULL,
     [BusinessUnitName] NVARCHAR(255) NULL,
     [BusinessBuildingName] NVARCHAR(255) NULL,
     [BusinessLotName] NVARCHAR(255) NULL,
