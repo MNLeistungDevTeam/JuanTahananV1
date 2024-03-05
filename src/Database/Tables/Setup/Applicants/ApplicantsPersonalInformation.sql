@@ -10,5 +10,6 @@
     [DateModified] DATETIME2 NULL, 
     [ModifiedById] INT NULL,
     [DateDeleted] DATETIME2 NULL, 
-    [DeletedById] INT NULL
+    [DeletedById] INT NULL,
+    CompanyId INT NULL
 )
