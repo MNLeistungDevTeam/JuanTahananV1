@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DevExpress.Xpo.Helpers;
 using DevExpress.XtraRichEdit.Import.Doc;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,26 +14,24 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Interfaces.Setup.DocumentRepository;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.RoleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Common;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
-using Template.Domain.Enums;
-using Template.Infrastructure.Persistence;
-using Template.Infrastructure.Persistence.Repositories.Setup.UserRepository;
-using Template.Infrastructure.Services;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.RoleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Common;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence;
+using DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
+using DMS.Infrastructure.Services;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers.Transaction
+namespace DMS.Web.Controllers.Transaction
 {
     [Authorize]
     public class ApplicantsController : Controller

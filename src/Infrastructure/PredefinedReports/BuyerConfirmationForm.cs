@@ -1,10 +1,9 @@
 ﻿
+using DMS.Domain.Dto.BenificiaryDto;
 using System.ComponentModel;
 
-using Template.Domain.Dto.BenificiaryDto;
 
-
-namespace Template.Infrastructure.PredefinedReports
+namespace DMS.Infrastructure.PredefinedReports
 {
     public partial class BuyerConfirmationForm : DevExpress.XtraReports.UI.XtraReport
     {

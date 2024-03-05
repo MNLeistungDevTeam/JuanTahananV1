@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.ValidationsHelper;
+using DMS.Domain.ValidationsHelper;
 
-namespace Template.Domain.Dto.ModuleDto
+namespace DMS.Domain.Dto.ModuleDto
 {
     public class ModuleModel
     {
@@ -20,7 +20,7 @@ namespace Template.Domain.Dto.ModuleDto
         [DisplayName("Parent Module")]
         public int? ParentModuleId { get; set; }
         [Display(Name = "Code", Prompt = "Enter the code...")]
-        [Required(ErrorMessage ="this field is required!")]
+        [Required(ErrorMessage = "this field is required!")]
         public string? Code { get; set; }
         [DisplayName("Bread Title")]
         [Required(ErrorMessage = "this field is required!")]
@@ -57,7 +57,7 @@ namespace Template.Domain.Dto.ModuleDto
         public string? ModifiedBy { get; set; }
         public string? ParentModuleName { get; set; }
         public string? StatusName { get; set; }
-        public string? StatusColor { get; set;}
+        public string? StatusColor { get; set; }
 
     }
 }

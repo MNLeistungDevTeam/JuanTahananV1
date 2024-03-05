@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Template.Domain.Entities;
+namespace DMS.Domain.Entities;
 
 public partial class LoanParticularsInformation
 {

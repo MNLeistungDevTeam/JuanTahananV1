@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Template.Domain.Dto.ApplicantsDto
+namespace DMS.Domain.Dto.ApplicantsDto
 {
     public class BarrowersInformationModel
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Localization;
-using Template.Application.Services;
-using Template.Infrastructure.Resources;
+using DMS.Application.Services;
+using DMS.Infrastructure.Resources;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class LocalizationService : ILocalizationService
 {

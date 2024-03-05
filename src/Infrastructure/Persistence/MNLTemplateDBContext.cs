@@ -3,10 +3,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Template.Domain.Entities;
+using DMS.Domain.Entities;
 using Template.Infrastructure;
 
-namespace Template.Infrastructure.Persistence;
+namespace DMS.Infrastructure.Persistence;
 
 public partial class MNLTemplateDBContext : DbContext
 {

@@ -1,5 +1,7 @@
 ﻿
 
+using DMS.Domain.Dto.DocumentDto;
+using DMS.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,17 +13,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Interfaces.Setup.DocumentRepository;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.DocumentDto;
-using Template.Domain.Enums;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers.Setup
+namespace DMS.Web.Controllers.Setup
 {
     [Authorize]
     public class DocumentController : Controller

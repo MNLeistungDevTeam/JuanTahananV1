@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Template.Web.Models;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers.Services
+namespace DMS.Web.Controllers.Services
 {
     public static class ViewModelExtensions
     {

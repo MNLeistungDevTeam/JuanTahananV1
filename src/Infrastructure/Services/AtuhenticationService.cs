@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Dto.UserDto;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using Shyjus.BrowserDetection;
 using System.Text;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.Authentication;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
-using Template.Infrastructure.Persistence.Configuration;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence.Configuration;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

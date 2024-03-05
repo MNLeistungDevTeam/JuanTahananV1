@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 [Authorize]
 public class ChatController : Controller

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using Template.Application.Services;
+using DMS.Application.Services;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 [Authorize]
 public class LocalizationController : Controller

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.DocumentDto
+namespace DMS.Domain.Dto.DocumentDto
 {
     public class ApplicationSubmittedDocumentModel
     {

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Dto.DocumentDto;
-using Template.Domain.Entities;
+﻿using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.DocumentDto;
+using System.Collections.Generic;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Domain.Entities;
 
-namespace Template.Web.Models
+namespace DMS.Web.Models
 {
     public class ApplicantViewModel
     {

@@ -1,12 +1,12 @@
-﻿using MimeKit;
+﻿using DMS.Domain.Dto.UserDto;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.UserDto;
 
-namespace Template.Application.Services
+namespace DMS.Application.Services
 {
     public interface IEmailService
     {

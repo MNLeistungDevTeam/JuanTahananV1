@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Template.Web.Models;
+namespace DMS.Web.Models;
 
 public class LoginViewModel
 {

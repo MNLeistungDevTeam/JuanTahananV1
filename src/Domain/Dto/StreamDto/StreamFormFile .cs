@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Template.Domain.Dto.StreamDto
+namespace DMS.Domain.Dto.StreamDto
 {
     public class StreamFormFile : IFormFile
     {

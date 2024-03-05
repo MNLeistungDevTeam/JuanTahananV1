@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Enums
+namespace DMS.Domain.Enums
 {
     public enum ModuleCodes
     {

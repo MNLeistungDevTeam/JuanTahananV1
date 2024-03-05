@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Template.Domain.Dto.ModuleDto;
+﻿using DMS.Domain.Dto.ModuleDto;
+using System.Collections.Generic;
 
 
 
-namespace Template.Web.Models
+namespace DMS.Web.Models
 {
     public class ModuleViewModel
     {

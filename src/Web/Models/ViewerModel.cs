@@ -1,6 +1,6 @@
 using DevExpress.XtraReports.Web.WebDocumentViewer;
 
-namespace Template.Web.Models
+namespace DMS.Web.Models
 {
     public class ViewerModel
     {

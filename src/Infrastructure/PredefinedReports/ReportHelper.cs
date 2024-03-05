@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Infrastructure.PredefinedReports
+namespace DMS.Infrastructure.PredefinedReports
 {
     public class ReportHelper : XtraReport
     {

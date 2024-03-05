@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DMS.Domain.ReportEntities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Template.Application.Interfaces.Setup;
-using Template.Domain.ReportEntities;
+using DMS.Application.Interfaces.Setup;
 
-namespace Template.Infrastructure.Persistence
+namespace DMS.Infrastructure.Persistence
 {
     public class ReportDbContext : DbContext, IReportDbContext
     {

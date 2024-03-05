@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 #nullable disable
-namespace Template.Domain.Dto.ApplicantsDto
+namespace DMS.Domain.Dto.ApplicantsDto
 {
     public class Form2PageModel
     {

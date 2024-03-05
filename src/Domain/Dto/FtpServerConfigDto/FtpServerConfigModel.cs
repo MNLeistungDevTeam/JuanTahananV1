@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.FtpServerConfigDto
+namespace DMS.Domain.Dto.FtpServerConfigDto
 {
     public class FtpServerConfigModel
     {

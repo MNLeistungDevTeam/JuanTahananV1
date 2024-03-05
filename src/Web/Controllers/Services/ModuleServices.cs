@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMS.Domain.Enums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Domain.Enums;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
 
-namespace Template.Web.Controllers.Services
+namespace DMS.Web.Controllers.Services
 {
     public class ModuleServicesAttribute : ActionFilterAttribute
     {

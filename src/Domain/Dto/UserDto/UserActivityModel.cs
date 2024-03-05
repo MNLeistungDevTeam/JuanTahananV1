@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Template.Domain.Dto.UserDto;
+namespace DMS.Domain.Dto.UserDto;
 
 public class UserActivityModel
 {

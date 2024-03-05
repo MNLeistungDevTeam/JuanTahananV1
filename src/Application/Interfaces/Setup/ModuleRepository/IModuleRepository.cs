@@ -1,12 +1,12 @@
-﻿using System;
+﻿using DMS.Domain.Dto.ModuleDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Entities;
+using DMS.Domain.Entities;
 
-namespace Template.Application.Interfaces.Setup.ModuleRepository
+namespace DMS.Application.Interfaces.Setup.ModuleRepository
 {
     public interface IModuleRepository
     {

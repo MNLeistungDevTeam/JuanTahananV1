@@ -5,6 +5,7 @@ using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.ReportDesigner;
 using DevExpress.XtraReports.Web.WebDocumentViewer;
+using DMS.Domain.Dto.ApplicantsDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Entities;
-using Template.Domain.Enums;
-using Template.Infrastructure.Persistence;
-using Template.Infrastructure.PredefinedReports;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Domain.Entities;
+using DMS.Domain.Enums;
+using DMS.Infrastructure.Persistence;
+using DMS.Infrastructure.PredefinedReports;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 [Authorize]
 public class ReportController : Controller

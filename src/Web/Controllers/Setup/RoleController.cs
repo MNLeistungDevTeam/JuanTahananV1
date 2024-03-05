@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DevExpress.DirectX.Common.DirectWrite;
 using DevExpress.Drawing.Internal.Fonts.Interop;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +14,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.RoleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
-using Template.Domain.Enums;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.RoleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Entities;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers.Setup
+namespace DMS.Web.Controllers.Setup
 {
     [Authorize]
     public class RoleController : Controller

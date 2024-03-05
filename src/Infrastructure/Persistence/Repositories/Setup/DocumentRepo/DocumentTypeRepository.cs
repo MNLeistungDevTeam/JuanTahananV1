@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.DocumentDto;
 using Microsoft.EntityFrameworkCore;
-using Template.Application.Interfaces.Setup.DocumentRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.DocumentDto;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
 {
     public class DocumentTypeRepository : IDocumentTypeRepository
     {

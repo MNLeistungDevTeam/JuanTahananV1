@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.ApplicantsDto
+namespace DMS.Domain.Dto.ApplicantsDto
 {
     public class CollateralInformationModel
     {
@@ -14,11 +14,11 @@ namespace Template.Domain.Dto.ApplicantsDto
         public int? ApplicantsPersonalInformationId { get; set; } = 0;
 
         public string? Province { get; set; }
-                  
+
         public string? Municipality { get; set; }
-                   
+
         public string? Street { get; set; }
-        [Display(Name = "Name of Developer / Registered Title Holder",Prompt = "input developer name")]
+        [Display(Name = "Name of Developer / Registered Title Holder", Prompt = "input developer name")]
         public string? DeveloperName { get; set; }
         [Display(Name = "Property Type", Prompt = "Select property type")]
         public int PropertyTypeId { get; set; }

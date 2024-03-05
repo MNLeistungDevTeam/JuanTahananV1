@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.UserDto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.UserRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository
 {
     public class UserRoleRepository : IUserRoleRepository
     {

@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
+using DMS.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ApplicantsRepository;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Enums;
-using Template.Infrastructure.Persistence.Repositories.Setup.ModuleRepository;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers;
+namespace DMS.Web.Controllers;
 
 [Authorize]
 public class HomeController : Controller

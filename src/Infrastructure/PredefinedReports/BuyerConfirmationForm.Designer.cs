@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.PredefinedReports
+﻿namespace DMS.Infrastructure.PredefinedReports
 {
     partial class BuyerConfirmationForm
     {
@@ -651,7 +651,7 @@
             // 
             // objectDataSource1
             // 
-            this.objectDataSource1.DataSource = typeof(global::Template.Domain.Dto.BenificiaryDto.BenificiaryReportModel);
+            this.objectDataSource1.DataSource = typeof(global::DMS.Domain.Dto.BenificiaryDto.BenificiaryReportModel);
             this.objectDataSource1.Name = "objectDataSource1";
             // 
             // BuyerConfirmationForm

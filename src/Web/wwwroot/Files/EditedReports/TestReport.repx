@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XtraReportsLayoutSerializer SerializerVersion="22.2.8.0" Ref="1" ControlType="Template.Infrastructure.PredefinedReports.TestReport, Template.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Report" PageWidth="850" PageHeight="1100" Version="22.2" EventsInfo="Report,BeforePrint,TestReport_BeforePrint" DataMember="Categories" DataSource="#Ref-0" Font="Arial, 9.75pt">
+<XtraReportsLayoutSerializer SerializerVersion="22.2.8.0" Ref="1" ControlType="DMS.Infrastructure.PredefinedReports.TestReport, Template.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Report" PageWidth="850" PageHeight="1100" Version="22.2" EventsInfo="Report,BeforePrint,TestReport_BeforePrint" DataMember="Categories" DataSource="#Ref-0" Font="Arial, 9.75pt">
   <Bands>
     <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin" />
     <Item2 Ref="3" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="60">

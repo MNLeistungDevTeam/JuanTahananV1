@@ -1,12 +1,12 @@
-﻿using System;
+﻿using DMS.Domain.Dto.ApplicantsDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.ApplicantsDto;
-using Template.Domain.Entities;
+using DMS.Domain.Entities;
 
-namespace Template.Application.Interfaces.Setup.ApplicantsRepository
+namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
     public interface IForm2PageRepository
     {

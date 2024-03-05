@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DMS.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,16 +9,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.ModuleRepository;
-using Template.Domain.Common;
-using Template.Domain.Dto.ModuleDto;
-using Template.Domain.Entities;
-using Template.Domain.Enums;
-using Template.Infrastructure.Persistence;
-using Template.Web.Controllers.Services;
-using Template.Web.Models;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Domain.Common;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 
-namespace Template.Web.Controllers.Setup;
+namespace DMS.Web.Controllers.Setup;
 
 [Authorize]
 public class ModuleController : Controller

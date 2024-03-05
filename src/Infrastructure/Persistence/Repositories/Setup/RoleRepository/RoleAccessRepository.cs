@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using DMS.Domain.Dto.RoleDto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Application.Interfaces.Setup.RoleRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Entities;
+using DMS.Application.Interfaces.Setup.RoleRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
 
-namespace Template.Infrastructure.Persistence.Repositories.Setup.RoleRepository
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
 {
     public class RoleAccessRepository : IRoleAccessRepository
     {

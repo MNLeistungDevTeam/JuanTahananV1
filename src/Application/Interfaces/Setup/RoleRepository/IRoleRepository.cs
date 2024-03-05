@@ -1,12 +1,12 @@
-﻿using System;
+﻿using DMS.Domain.Dto.RoleDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.RoleDto;
-using Template.Domain.Entities;
+using DMS.Domain.Entities;
 
-namespace Template.Application.Interfaces.Setup.RoleRepository
+namespace DMS.Application.Interfaces.Setup.RoleRepository
 {
     public interface IRoleRepository
     {

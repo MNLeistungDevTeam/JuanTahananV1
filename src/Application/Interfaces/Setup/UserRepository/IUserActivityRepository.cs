@@ -1,7 +1,7 @@
-﻿using Template.Domain.Entities;
-using Template.Domain.Dto.UserDto;
+﻿using DMS.Domain.Entities;
+using DMS.Domain.Dto.UserDto;
 
-namespace Template.Application.Interfaces.Setup.UserRepository;
+namespace DMS.Application.Interfaces.Setup.UserRepository;
 
 public interface IUserActivityRepository
 {

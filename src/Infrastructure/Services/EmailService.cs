@@ -6,14 +6,14 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Template.Domain.Dto.UserDto;
-using Template.Domain.Dto.EmailSettingsDto;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Security;
-using Template.Application.Services;
+using DMS.Application.Services;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Dto.EmailSettingsDto;
 
-namespace Template.Infrastructure.Services
+namespace DMS.Infrastructure.Services
 {
     public class EmailService : IEmailService
     {

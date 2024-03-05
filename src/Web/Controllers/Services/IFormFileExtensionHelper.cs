@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
-using Template.Domain.Dto.StreamDto;
+using DMS.Domain.Dto.StreamDto;
 
-namespace Template.Web.Controllers.Services
+namespace DMS.Web.Controllers.Services
 {
     public static class IFormFileExtensionHelper
     {

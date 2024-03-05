@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.EmailSettingsDto
+namespace DMS.Domain.Dto.EmailSettingsDto
 {
     public class EmailSettingsModel
     {

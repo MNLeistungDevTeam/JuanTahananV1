@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.Persistence.Configuration;
+﻿namespace DMS.Infrastructure.Persistence.Configuration;
 
 public class JWTConfiguration
 {

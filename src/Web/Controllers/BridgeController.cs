@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DMS.Domain.Dto.UserDto;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Template.Application.Services;
-using Template.Domain.Dto.UserDto;
+using DMS.Application.Services;
 
-namespace Template.Web.Controllers
+namespace DMS.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

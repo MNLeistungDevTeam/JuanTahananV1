@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DMS.Domain.Common;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Template.Domain.Common;
 
-namespace Template.Domain.Dto.UserDto;
+namespace DMS.Domain.Dto.UserDto;
 
 public class UserModel
 {

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Domain.Dto.DocumentDto
+namespace DMS.Domain.Dto.DocumentDto
 {
     public class DocumentTypeModel
     {
         public int Id { get; set; }
-        [Display(Name = "File Name",Prompt = "Input filename")]
+        [Display(Name = "File Name", Prompt = "Input filename")]
         [StringLength(255)]
         [Required(ErrorMessage = "this field is required!")]
         public string? Description { get; set; }

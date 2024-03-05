@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Template.Domain.ReportEntities
+namespace DMS.Domain.ReportEntities
 {
     public class JsonDataConnectionDescription : DataConnection { }
 }

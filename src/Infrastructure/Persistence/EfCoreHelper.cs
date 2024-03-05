@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Template.Infrastructure.Persistence;
+namespace DMS.Infrastructure.Persistence;
 
 public class EfCoreHelper<T> where T : class
 {

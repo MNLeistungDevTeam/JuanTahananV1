@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.Options;
+﻿using DMS.Domain.Dto.Authentication;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Template.Application.Interfaces.Setup.UserRepository;
-using Template.Application.Services;
-using Template.Domain.Dto.Authentication;
-using Template.Domain.Entities;
-using Template.Infrastructure.Persistence.Configuration;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence.Configuration;
 
-namespace Template.Infrastructure.Services;
+namespace DMS.Infrastructure.Services;
 
 public class JwtService : IJwtService
 {

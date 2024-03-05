@@ -19,10 +19,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
 using Template.Application;
-using Template.Application.Services;
+using DMS.Application.Services;
 using Template.Infrastructure;
-using Template.Infrastructure.Hubs;
-using Template.Infrastructure.Persistence.Configuration;
+using DMS.Infrastructure.Hubs;
+using DMS.Infrastructure.Persistence.Configuration;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder()

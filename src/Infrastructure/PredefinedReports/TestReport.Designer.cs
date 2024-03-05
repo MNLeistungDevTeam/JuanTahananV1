@@ -1,4 +1,4 @@
-﻿namespace Template.Infrastructure.PredefinedReports
+﻿namespace DMS.Infrastructure.PredefinedReports
 {
     partial class TestReport {
         /// <summary>
