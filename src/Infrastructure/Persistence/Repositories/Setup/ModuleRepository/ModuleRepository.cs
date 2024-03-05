@@ -24,40 +24,81 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
             _mapper = mapper;
             _db = db;
         }
+
+        #region GETTERS
+
         public async Task<Module?> GetByIdAsync(int id) =>
             await _context.Modules.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<List<ModuleModel>> Module_GetAllModuleList() =>
         (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetAllModules", new { })).ToList();
+
         public async Task<List<ModuleModel>> SpGetAllUserModules() =>
-        (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetAllUserModules", new { userId = _currentUserService.GetCurrentUserId()})).ToList();
+        (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetAllUserModules", new { userId = _currentUserService.GetCurrentUserId() })).ToList();
+
+        #endregion GETTERS
+
+        /* public async Task<Module> SaveAsync(ModuleModel model)
+         {
+             if (model.Id == 0)
+                 model = _mapper.Map<ModuleModel>(await CreateAsync(model));
+             else
+                 model = _mapper.Map<ModuleModel>(await UpdateAsync(model));
+             return _mapper.Map<Module>(model);
+         }
+
+         public async Task<Module> CreateAsync(ModuleModel model)
+         {
+             model.DateCreated = DateTime.UtcNow;
+             model.CreatedById = _currentUserService.GetCurrentUserId();
+             var mapped = _mapper.Map<Module>(model);
+             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
+             return mapped;
+         }
+
+         public async Task<Module> UpdateAsync(ModuleModel model)
+         {
+             model.DateModified = DateTime.UtcNow;
+             model.ModifiedById = _currentUserService.GetCurrentUserId();
+             var mapped = _mapper.Map<Module>(model);
+             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
+             return mapped;
+         }*/
+
         public async Task<Module> SaveAsync(ModuleModel model)
         {
-            if (model.Id == 0)
-                model = _mapper.Map<ModuleModel>(await CreateAsync(model));
+            var _model = _mapper.Map<Module>(model);
+
+            if (_model.Id == 0)
+                _model = await CreateAsync(_model);
             else
-                model = _mapper.Map<ModuleModel>(await UpdateAsync(model));
-            return _mapper.Map<Module>(model);
+                _model = await UpdateAsync(_model);
+
+            return _model;
         }
-        public async Task<Module> CreateAsync(ModuleModel model)
+
+        public async Task<Module> CreateAsync(Module model)
         {
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Module>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+
+            return model;
         }
-        public async Task<Module> UpdateAsync(ModuleModel model)
+
+        public async Task<Module> UpdateAsync(Module model)
         {
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Module>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+
+            return model;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
-            if(entity != null)
+            if (entity != null)
             {
                 entity.DateDeleted = DateTime.Now;
                 entity.DeletedById = _currentUserService.GetCurrentUserId();
@@ -65,6 +106,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.Modules.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -72,7 +114,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
+
     }
 }

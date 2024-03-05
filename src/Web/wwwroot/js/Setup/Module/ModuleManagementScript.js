@@ -8,6 +8,9 @@
     var controllerDropdown, $controllerDropdown;
     var parentmoduleDropdown, $parentmoduleDropdown;
     var modulestatusDropdown, $modulestatusDropdown;
+
+    rebindValidators();
+
     $('select').selectize();
     $controllerDropdown = $('#Module_Controller').selectize({
         valueField: 'value',
@@ -50,7 +53,7 @@
     actionDropdown = $actionDropdown[0].selectize;
     modulestatusDropdown = $modulestatusDropdown[0].selectize;
     if ($tbl_module) {
-        var tbl_module= $("#tbl_module").DataTable({
+        var tbl_module = $("#tbl_module").DataTable({
             ajax: {
                 url: '/Module/GetAllModules',
                 method: 'GET',
@@ -180,7 +183,6 @@
             },
             select: {
                 style: "os"
-
             },
             scrollY: '24rem',
             scrollX: true,
@@ -200,7 +202,6 @@
             CheckRows(tbl_module);
         })
     }
-
 
     var btn_edit_module = $('#btn_edit_module').on('click', function (e) {
         e.preventDefault();
@@ -250,30 +251,50 @@
             }
         })
     })
-    $form.on('submit', function (e) {
-        e.preventDefault();
-        var button = $(this).find('button[type="submit"]');
-        if (!$(this).valid())
-            return;
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            data: $(this).serialize(),
-            beforeSend: function () {
-                button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
-            },
-            success: function (data) {
-                button.html('Save').attr('disabled', false);
-                tbl_module.ajax.reload();
-                $modal.modal('hide');
-                messageBox(`Module Successfully ${data}`, "success", true);
-            },
-            error: async function (jqXHR, textStatus, errorThrown) {
-                button.html('Save').attr('disabled', false);
-                messageBox(jqXHR.responseText, "danger", true);
+
+    function rebindValidators() {
+        let $form = $('#module_form');
+        $form.unbind();
+        $form.data("validator", null);
+        $.validator.unobtrusive.parse($form);
+        $form.validate($form.data("unobtrusiveValidation").options);
+        $form.data("validator").settings.ignore = "";
+
+        $form.on('submit', function (e) {
+            e.preventDefault();
+            var button = $(this).find('button[type="submit"]');
+            var formData = new FormData(e.target);
+
+            if (!$(this).valid()) {
+                messageBox("Please fill up all required fields.", "error", true);
+                return;
             }
-        });
-    })
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
+                },
+                success: function (data) {
+                    button.html('Save').attr('disabled', false);
+                    tbl_module.ajax.reload();
+                    $modal.modal('hide');
+                    messageBox(`Module Successfully ${data}`, "success", true);
+                },
+                error: async function (jqXHR, textStatus, errorThrown) {
+                    button.html('Save').attr('disabled', false);
+                    messageBox(jqXHR.responseText, "danger", true);
+                }
+            });
+        })
+
+    }
+    
     function applyModuleType(id = 0) {
         clearForm($form);
         $(`[name="Module.IsVisible"]`).prop('checked', true);
@@ -292,10 +313,10 @@
                 $('[name="Module.Description"]').val(callback.Description);
                 $('[name="Module.Code"]').val(callback.Code);
                 $('[name="Module.BreadName"]').val(callback.BreadName);
-                $('[name="Module.Ordinal"]').val(callback.Ordinal);   
+                $('[name="Module.Ordinal"]').val(callback.Ordinal);
                 $('[name="Module.Icon"]').val(callback.Icon);
                 $('[name="Module.Id"]').val(callback.Id);
-                fetchController(callback.Controller);
+                fetchController(callback.Controller, callback.Action);
                 fetchModuleStatus(callback.ModuleStatusId);
                 fetchParentModule(callback.Id, callback.ParentModuleId);
             })
@@ -307,17 +328,17 @@
         $modal.modal('show');
     }
 
-    function fetchModule(id,callback) {
+    function fetchModule(id, callback) {
         $.ajax({
             url: `/Module/GetModuleById`,
-            method:'GET',
+            method: 'GET',
             data: {
-                id : id
+                id: id
             },
-            success:callback
+            success: callback
         })
     }
-    function fetchController(controller = '') {
+    function fetchController(controller = '', action = '') {
         controllerDropdown.setValue(-1, false);
         controllerDropdown.clearOptions();
         controllerDropdown.load(function (callback) {
@@ -336,10 +357,10 @@
             });
         })
         controllerDropdown.on('change', function (data) {
-            fetchActionByControllerName(data);
+            fetchActionByControllerName(data, action);
         })
     }
-    function fetchParentModule(id = 0,parentId = 0) {
+    function fetchParentModule(id = 0, parentId = 0) {
         parentmoduleDropdown.setValue(-1, false);
         parentmoduleDropdown.clearOptions();
         parentmoduleDropdown.load(function (callback) {
@@ -377,15 +398,17 @@
             });
         })
     }
-    function fetchActionByControllerName(value) {
+    function fetchActionByControllerName(value, action) {
         actionDropdown.setValue(-1, false);
         actionDropdown.clearOptions();
         actionDropdown.load(function (callback) {
             $.ajax({
-                url: `/api/collection/getactionsforcontroller/${value}`,
+                url: `/api/collection/GetActionsForController/${value}`,
                 type: 'get',
                 datatype: 'json',
                 success: function (data) {
+                    actionDropdown.addOption(data);
+                    actionDropdown.setValue(action);
                     callback(data);
                 },
                 error: function () {

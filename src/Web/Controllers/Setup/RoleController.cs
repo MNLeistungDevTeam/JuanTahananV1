@@ -33,6 +33,7 @@ namespace DMS.Web.Controllers.Setup
         private readonly IMapper _mapper;
         private readonly IUserRoleRepository _userRoleRepo;
         private readonly IUserRepository userRepo;
+
         public RoleController(IRoleRepository roleRepo, IRoleAccessRepository roleAccessRepo, IModuleRepository moduleRepo, IMapper mapper, IUserRoleRepository userRoleRepo, IUserRepository userRepo)
         {
             _roleRepo = roleRepo;
@@ -42,11 +43,13 @@ namespace DMS.Web.Controllers.Setup
             _userRoleRepo = userRoleRepo;
             this.userRepo = userRepo;
         }
+
         [ModuleServices(ModuleCodes.Role, typeof(IModuleRepository))]
         public IActionResult Index()
         {
             return View();
         }
+
         [ModuleServices(ModuleCodes.UserRole, typeof(IModuleRepository))]
         public async Task<IActionResult> UserRole(int id)
         {
@@ -55,6 +58,7 @@ namespace DMS.Web.Controllers.Setup
                 Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
             });
         }
+
         public async Task<IActionResult> GetRoleSetupAccess(int id)
         {
             var lists = new List<HybridRoles>();
@@ -62,7 +66,7 @@ namespace DMS.Web.Controllers.Setup
             var items = (await _moduleRepo.Module_GetAllModuleList()).ToList();
             for (int i = 0; i < items.Count; ++i)
             {
-                 var item = items[i];
+                var item = items[i];
                 var roleaccess = (await _roleAccessRepo.GetAllAsync()).FirstOrDefault(x => x.RoleId == role.Id && x.ModuleId == item.Id) ?? new RoleAccess()
                 {
                     Id = 0,
@@ -73,7 +77,7 @@ namespace DMS.Web.Controllers.Setup
                     CanModify = false,
                 };
                 lists.Add(new HybridRoles(
-                    canModify : roleaccess.CanModify,
+                    canModify: roleaccess.CanModify,
                     index: i,
                     id: roleaccess.Id,
                     roleId: role.Id,
@@ -86,6 +90,7 @@ namespace DMS.Web.Controllers.Setup
             }
             return Ok(lists);
         }
+
         [HttpPost]
         [ModelStateValidations(typeof(RoleViewModel))]
         public async Task<IActionResult> SaveUserRole(RoleViewModel model)
@@ -120,6 +125,7 @@ namespace DMS.Web.Controllers.Setup
                 return BadRequest(new { Errors = ex.ToString() });
             }
         }
+
         [HttpPost]
         [ModelStateValidations(typeof(RoleViewModel))]
         public async Task<IActionResult> SaveRole(RoleViewModel model)
@@ -137,7 +143,7 @@ namespace DMS.Web.Controllers.Setup
                             item.RoleId = role.Id;
                             await _roleAccessRepo.SaveAsync(item);
                         }
-                        return Ok("added");
+                        return Ok();
                     }
                     return BadRequest(new { Errors = "Adding role failed." });
                 }
@@ -150,7 +156,7 @@ namespace DMS.Web.Controllers.Setup
                         return NotFound(new { Message = "Role not found." });
                     }
                     model.Role.IsLocked = role.IsLocked; // Ensure IsLocked is properly handled
-                   await _roleRepo.SaveAsync(model.Role);
+                    await _roleRepo.SaveAsync(model.Role);
 
                     // Update RoleAccess items
                     foreach (var item in model.RoleAccess)
@@ -173,19 +179,21 @@ namespace DMS.Web.Controllers.Setup
                         existingRoleAccess.ModuleId = item.ModuleId;
                         await _roleAccessRepo.SaveAsync(_mapper.Map<RoleAccessModel>(existingRoleAccess));
                     }
-                    return Ok("updated");
+                    return Ok();
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Errors = ex.ToString()});
+                return BadRequest(new { Errors = ex.ToString() });
             }
         }
 
         public async Task DeleteRoles(int[] ids) =>
             await _roleRepo.BatchDeleteAsync(ids);
+
         public async Task<IActionResult> GetRoleById(int id) =>
             Ok(await _roleRepo.GetByIdAsync(id));
+
         public async Task<IActionResult> GetAllRoles() =>
             Ok(await _roleRepo.SpGetAllRoles());
 
@@ -200,16 +208,17 @@ namespace DMS.Web.Controllers.Setup
                 usersWithoutRole = usersWithoutRole.Where(x => !userRoles.Contains(x.Id)).ToList();
             }
 
-            return Ok(usersWithoutRole.Select(x => new {
+            return Ok(usersWithoutRole.Select(x => new
+            {
                 text = x.Name,
                 value = x.Id,
                 position = x.Position
             }));
         }
 
-
         public async Task<IActionResult> GetUserRoles(int RoleId) =>
             Ok(((await _userRoleRepo.SpGetAllRoles())).Where(x => x.RoleId == RoleId));
+
         public async Task RemoveFromRole(int[] ids) =>
             await _userRoleRepo.BatchDeleteAsync(ids);
     }

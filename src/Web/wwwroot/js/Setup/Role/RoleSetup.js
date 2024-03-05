@@ -5,6 +5,7 @@
     const $form = $("#role_form");
     const $role_add = $('#tbl-role-add');
 
+
     if ($tbl_role) {
         var tbl_role = $("#tbl_role").DataTable({
             ajax: {
@@ -89,7 +90,6 @@
             },
             select: {
                 style: "os"
-
             },
             scrollY: '24rem',
             scrollX: true,
@@ -135,7 +135,6 @@
             }
             currentElement = currentElement.parent();
         }
-
     }
     if ($role_add) {
         var role_add = $("#tbl-role-add").DataTable({
@@ -162,7 +161,6 @@
                         ${data.ModuleName}
                         `;
                     }
-
                 },
                 {
                     data: null,
@@ -239,6 +237,7 @@
                     // Check all checkboxes in the table
                     $("[id^='RoleAccess_FullAccess'], [id^='RoleAccess_CanCreate'], [id^='RoleAccess_CanModify'], [id^='RoleAccess_CanDelete'], [id^='RoleAccess_CanRead']").prop("checked", true);
                 }
+                checkIfRoleAdminAccess();
             },
             language: {
                 "zeroRecords": "No Records Found....",
@@ -319,6 +318,7 @@
         $('[name="Role.IsDisabled"]').val(false);
         $("[name='Role.AdminAccess']").prop("checked", false);
         $("[name='Role.AdminAccess']").val(false);
+
         if (id != 0) {
             fetchRole(id, function (callback) {
                 $('[name="Role.Id"]').val(callback.Id);
@@ -335,7 +335,6 @@
         $modal.modal('show')
     }
 
-
     function fetchRole(id, callback) {
         $.ajax({
             url: `/Role/GetRoleById`,
@@ -350,8 +349,10 @@
     $form.on('submit', function (e) {
         e.preventDefault();
         var button = $(this).find('button[type="submit"]');
+
         if (!$(this).valid())
             return;
+
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -371,6 +372,7 @@
             }
         });
     })
+
     $(document).on('change', `[id^='RoleAccess_CanCreate['], [id^='RoleAccess_CanModify['], [id^='RoleAccess_CanDelete['], [id^='RoleAccess_CanRead[']`, function () {
         let Id = $(this).prop("id");
         let IdNum = getIdNum(Id);
@@ -381,17 +383,37 @@
         $(`input[id='RoleAccess_FullAccess[${IdNum}]']`).prop("checked", canCreate && canModify && canDelete && canRead);
         checkIfRoleAdminAccess();
     });
+
+    //$(document).on('change', `[id^='RoleAccess_CanCreate['], [id^='RoleAccess_CanModify['], [id^='RoleAccess_CanDelete['], [id^='RoleAccess_CanRead[']`, function () {
+    //    let Id = $(this).prop("id");
+    //    let start = Id.indexOf("[");
+    //    let end = Id.indexOf("]");
+    //    let IdNum = Id.substring(start + 1, end);
+
+    //    const canCreate = $(`input[id='RoleAccess_CanCreate[${IdNum}]']`).prop("checked");
+    //    const canModify = $(`input[id='RoleAccess_CanModify[${IdNum}]']`).prop("checked");
+    //    const canDelete = $(`input[id='RoleAccess_CanDelete[${IdNum}]']`).prop("checked");
+    //    const canRead = $(`input[id='RoleAccess_CanRead[${IdNum}]']`).prop("checked");
+    //    $(`input[id='RoleAccess_FullAccess[${IdNum}]']`).prop("checked", canCreate && canModify && canDelete && canRead);
+
+    //    checkIfRoleAdminAccess();
+    //});
+
     // Event listener for admin access checkbox change
-    $("[name='Role.AdminAccess']").on("change", function () {
+    $(document).on('change', '[name="Role.AdminAccess"]', function () {
         let isChecked = $(this).prop("checked");
+
         // Check all checkboxes in the table if admin access is checked
         $("[id^='RoleAccess_FullAccess'], [id^='RoleAccess_CanCreate'], [id^='RoleAccess_CanModify'], [id^='RoleAccess_CanDelete'], [id^='RoleAccess_CanRead']").prop("checked", isChecked);
+        $("[id^='RoleAccess_FullAccess'], [id^='RoleAccess_CanCreate'], [id^='RoleAccess_CanModify'], [id^='RoleAccess_CanDelete'], [id^='RoleAccess_CanRead']").val(isChecked);
     });
     $(document).on('change', "[id^='RoleAccess_FullAccess[']", function () {
         let Id = $(this).prop("id");
         let IdNum = getIdNum(Id);
         let checked = $(this).prop("checked");
+
         $(`[id^='RoleAccess_CanCreate[${IdNum}]'], [id^='RoleAccess_CanModify[${IdNum}]'], [id^='RoleAccess_CanDelete[${IdNum}]'], [id^='RoleAccess_CanRead[${IdNum}]']`).prop("checked", checked);
+        $(`[id^='RoleAccess_CanCreate[${IdNum}]'], [id^='RoleAccess_CanModify[${IdNum}]'], [id^='RoleAccess_CanDelete[${IdNum}]'], [id^='RoleAccess_CanRead[${IdNum}]']`).val(checked);
         checkIfRoleAdminAccess();
     });
 
@@ -410,16 +432,13 @@
 
         // Update the state of the "Admin Access" checkbox
         adminAccessCheckbox.prop("checked", allChecked);
-        adminAccessCheckbox.val(allChecked); // Update the value attribute if needed
+        adminAccessCheckbox.val(allChecked);
+        // Update the value attribute if needed
     }
-
-
 
     function getIdNum(id) {
         let start = id.indexOf("[");
         let end = id.indexOf("]");
         return id.substring(start + 1, end);
     }
-
-
 })
