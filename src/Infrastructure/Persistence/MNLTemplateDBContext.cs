@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Template.Domain.Entities;
 using Template.Infrastructure;
 
 namespace Template.Infrastructure.Persistence;
