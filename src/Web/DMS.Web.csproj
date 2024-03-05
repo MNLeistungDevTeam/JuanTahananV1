@@ -84,6 +84,8 @@
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application\DMS.Application.csproj" />
+    <ProjectReference Include="..\Domain\DMS.Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\DMS.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
