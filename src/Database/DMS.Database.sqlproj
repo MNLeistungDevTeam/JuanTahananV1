@@ -80,6 +80,11 @@
     <Folder Include="Tables\Setup\Collateral" />
     <Folder Include="Tables\Setup\Borrowers" />
     <Folder Include="Tables\Setup\Spouse" />
+    <Folder Include="Tables\Setup\Company" />
+    <Folder Include="Tables\Setup\Address" />
+    <Folder Include="Stored Procedures\Setup\Company" />
+    <Folder Include="Tables\Setup\Address\Country" />
+    <Folder Include="Stored Procedures\Setup\Entity" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -116,6 +121,17 @@
     <Build Include="Stored Procedures\Setup\Document\spDocument_GetAllApplicationSubmittedDocuments.sql" />
     <Build Include="Tables\Setup\Document\UserDocuments.sql" />
     <Build Include="Tables\Setup\Applicants\Form2Page.sql" />
+    <Build Include="Tables\Setup\Company\Company.sql" />
+    <Build Include="Tables\Setup\Company\CompanyLogo.sql" />
+    <Build Include="Tables\Setup\Company\CompanySetting.sql" />
+    <Build Include="Tables\Setup\Address\Address.sql" />
+    <Build Include="Tables\Setup\Address\AddressType.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompany_Get.sql" />
+    <Build Include="Tables\Setup\Address\Country\Country.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompany_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetAllByCompanyId.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetByDesc.sql" />
+    <Build Include="Stored Procedures\Setup\Entity\spAddress_GetByReferenceId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -32,4 +32,9 @@
     <Compile Update="PredefinedReports\TestReport.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Repositories\Setup\CompanyLogoRepo\" />
+    <Folder Include="Persistence\Repositories\Setup\AddressTypeRepo\" />
+  </ItemGroup>
+
 </Project>
