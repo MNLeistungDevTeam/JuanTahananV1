@@ -85,6 +85,7 @@
     <Folder Include="Stored Procedures\Setup\Company" />
     <Folder Include="Tables\Setup\Address\Country" />
     <Folder Include="Stored Procedures\Setup\Entity" />
+    <Folder Include="Stored Procedures\Setup\Country" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -132,6 +133,9 @@
     <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetAllByCompanyId.sql" />
     <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetByDesc.sql" />
     <Build Include="Stored Procedures\Setup\Entity\spAddress_GetByReferenceId.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_Get.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_GetByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
