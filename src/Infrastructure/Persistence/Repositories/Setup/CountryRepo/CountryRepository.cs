@@ -111,13 +111,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CountryRepo
 
                 if (model.Id == 0)
                 {
-                    if (modules.FirstOrDefault(m => m.CountryCode == model.CountryCode) != null) throw new Exception("Country Code already exists!");
-                    if (modules.FirstOrDefault(m => m.CountryName == model.CountryName) != null) throw new Exception("Country Name already exists!");
+                    if (modules.FirstOrDefault(m => m.Code == model.Code) != null) throw new Exception("Country Code already exists!");
+                    if (modules.FirstOrDefault(m => m.Name == model.Name) != null) throw new Exception("Country Name already exists!");
                 }
                 else
                 {
-                    if (modules.FirstOrDefault(m => m.Id != model.Id && m.CountryCode == model.CountryCode) != null) throw new Exception("Country Code already exists!");
-                    if (modules.FirstOrDefault(m => m.Id != model.Id && m.CountryName == model.CountryName) != null) throw new Exception("Country Name already exists!");
+                    if (modules.FirstOrDefault(m => m.Id != model.Id && m.Code == model.Code) != null) throw new Exception("Country Code already exists!");
+                    if (modules.FirstOrDefault(m => m.Id != model.Id && m.Name == model.Name) != null) throw new Exception("Country Name already exists!");
                 }
             }
             catch (Exception)

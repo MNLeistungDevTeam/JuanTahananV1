@@ -19,31 +19,31 @@ namespace DMS.Domain.Dto.CompanyDto
         public DateTime DateModified { get; set; }
 
         [DisplayName("BIR 2307 Basis")]
-        [Required(ErrorMessage = "BIR 2307 Basis is required.")]
+        //[Required(ErrorMessage = "BIR 2307 Basis is required.")]
         public int Bir2307Basis { get; set; }
 
         [DisplayName("Accounting Period")]
-        [Required(ErrorMessage = "Accounting Period is required.")]
+        //[Required(ErrorMessage = "Accounting Period is required.")]
         public string? AccountingPeriod { get; set; }
 
         [DisplayName("Posting Period")]
-        [Required(ErrorMessage = "Posting Period is required."), Range(1, 28)]
+        //[Required(ErrorMessage = "Posting Period is required."), Range(1, 28)]
         public int? PostingPeriod { get; set; }
 
         [DisplayName("Inventory Evaluation Method")]
-        [Required(ErrorMessage = "Inventory Evaluation Method is required.")]
+        //[Required(ErrorMessage = "Inventory Evaluation Method is required.")]
         public int? InvEvalMethodId { get; set; }
 
         [DisplayName("Period From")]
-        [Required(ErrorMessage = "Period From is required.")]
+        //[Required(ErrorMessage = "Period From is required.")]
         public string? AcctgPeriodFrom { get; set; }
 
         [DisplayName("Period To")]
-        [Required(ErrorMessage = "Period To")]
+        //[Required(ErrorMessage = "Period To")]
         public string? AcctgPeriodTo { get; set; }
 
         [DisplayName("Transaction Series Count")]
-        [Required(ErrorMessage = "Transaction Series Count")]
+        //[Required(ErrorMessage = "Transaction Series Count")]
         public int TransactionSeriesCount { get; set; }
 
         [DisplayName("Bypass AP Approval")]

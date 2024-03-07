@@ -2,6 +2,7 @@
 using DMS.Application.Interfaces.Setup.CompanyLogoRepo;
 using DMS.Application.Interfaces.Setup.CompanyRepo;
 using DMS.Application.Interfaces.Setup.CompanySettingRepo;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Enums;
@@ -29,7 +30,7 @@ namespace DMS.Web.Controllers.Setup
         private readonly IAddressRepository _addressRepo;
         private readonly IFileUploadService _fileUploadService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly IRoleAccessRepository _roleAccessRepo;
 
         public CompanyController(
             ICompanyRepository companyRepo,
@@ -38,7 +39,7 @@ namespace DMS.Web.Controllers.Setup
             IFileUploadService fileUploadService,
             IWebHostEnvironment webHostEnvironment,
             IAddressRepository addressRepo,
-            ICurrentUserService currentUserService)
+            IRoleAccessRepository roleAccessRepo)
         {
             _companyRepo = companyRepo;
             _companySettingsRepo = companySettingsRepo;
@@ -47,7 +48,8 @@ namespace DMS.Web.Controllers.Setup
             _webHostEnvironment = webHostEnvironment;
             _addressRepo = addressRepo;
 
-            _currentUserService = currentUserService;
+         
+            _roleAccessRepo = roleAccessRepo;
         }
 
         #endregion Fields
@@ -58,7 +60,7 @@ namespace DMS.Web.Controllers.Setup
         {
             try
             {
-                var roleAccess = await _currentUserService.GetRoleAccess(ModuleCodes2.CONST_COMP);
+                var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_COMP);
 
                 if (roleAccess is null) { return View("AccessDenied"); }
                 if (!roleAccess.CanRead) { return View("AccessDenied"); }
@@ -83,7 +85,8 @@ namespace DMS.Web.Controllers.Setup
         {
             try
             {
-                var roleAccess = await _currentUserService.GetRoleAccess(ModuleCodes2.CONST_COMP);
+                var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_COMP);
+
 
                 if (roleAccess is null) { return View("AccessDenied"); }
                 if (!roleAccess.CanCreate) { return View("AccessDenied"); }
@@ -119,7 +122,8 @@ namespace DMS.Web.Controllers.Setup
                 var companyLogo = await _companyLogoRepo.GetByCompanyId(companyId);
                 var companySettings = new CompanySettingModel();
 
-                var roleAccess = await _currentUserService.GetRoleAccess(ModuleCodes2.CONST_COMP);
+                var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_COMP);
+
 
                 if (roleAccess is null) { return View("AccessDenied"); }
                 if (!roleAccess.CanRead) { return View("AccessDenied"); }
@@ -184,7 +188,7 @@ namespace DMS.Web.Controllers.Setup
 
             return Ok(data);
         }
-        
+
         public async Task<IActionResult> GetCompanyAddresses(int companyId)
         {
             //int compId = int.Parse(User.FindFirstValue("Company"));

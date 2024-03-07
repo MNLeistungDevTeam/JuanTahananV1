@@ -58,7 +58,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.AddressTypeRepo
 
         public async Task<AddressType> CreateAsync(AddressType address, int createdById)
         {
-            address.CreatedBy = createdById;
+            address.CreatedById = createdById;
             address.DateCreated = DateTime.UtcNow;
             var result = await _contextHelper.CreateAsync(address, "ModifiedById", "DateModified");
 
@@ -67,7 +67,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.AddressTypeRepo
 
         public async Task<AddressType> UpdateAsync(AddressType address, int modifiedById)
         {
-            address.ModifiedBy = modifiedById;
+            address.ModifiedById = modifiedById;
             address.DateModified = DateTime.UtcNow;
             var result = await _contextHelper.UpdateAsync(address, "CreatedById", "DateCreated");
 

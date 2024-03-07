@@ -4,7 +4,7 @@
 AS
 BEGIN
 	SELECT
-		a.*, c.CountryCode
+		a.*, c.Code
 	FROM
 		[Address] a
 		LEFT JOIN Country c ON a.CountryId = c.Id

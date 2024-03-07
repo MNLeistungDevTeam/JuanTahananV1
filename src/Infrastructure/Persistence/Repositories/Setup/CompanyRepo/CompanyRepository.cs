@@ -8,10 +8,7 @@ using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
-using DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
 {

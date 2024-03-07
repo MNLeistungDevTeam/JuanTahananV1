@@ -8,6 +8,6 @@ SELECT
 FROM Country
 	LEFT JOIN [User] RegUser ON Country.CreatedById = RegUser.Id 
 	LEFT JOIN [User] ModBy ON  Country.ModifiedById = ModBy.Id 
-WHERE CountryName = @countryName
+WHERE [Name] = @countryName
 RETURN 0
  

@@ -1,5 +1,13 @@
-﻿using DMS.Domain.Dto.Authentication;
+﻿using DMS.Application.Interfaces.Setup.CompanyRepo;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Entities;
 using DMS.Domain.Enums;
+using DMS.Infrastructure.Hubs;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -8,16 +16,10 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Application.Services;
-using DMS.Domain.Entities;
-using DMS.Infrastructure.Hubs;
-using DMS.Web.Controllers.Services;
-using DMS.Web.Models;
 
 namespace DMS.Web.Controllers.Authentication;
 
@@ -28,32 +30,43 @@ public class AccountController : Controller
     private readonly IHubContext<AuthenticationHub> _hubContext;
     private readonly IJwtService _jwtService;
     private readonly IUserTokenRepository _userTokenRepo;
+    private readonly ICompanyRepository _companyRepo;
 
     public AccountController(
         Application.Services.IAuthenticationService authService,
         IHubContext<AuthenticationHub> hubContext,
         IJwtService jwtService,
-        IUserTokenRepository userTokenRepo)
+        IUserTokenRepository userTokenRepo,
+        ICompanyRepository companyRepo)
     {
         _authService = authService;
         _hubContext = hubContext;
         _jwtService = jwtService;
         _userTokenRepo = userTokenRepo;
+        _companyRepo = companyRepo;
     }
 
     [AllowAnonymous]
-    public IActionResult Login(string returnUrl)
+    public async Task<IActionResult> Login(string returnUrl)
     {
         try
         {
-            if (User.Identity is { IsAuthenticated: true })
+           if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToLocal(returnUrl);
             }
 
-            var model = new LoginViewModel { ReturnUrl = returnUrl };
+            var companies = await _companyRepo.GetCompanies();
 
-            return View(model);
+            var companylist = companies.ToList();
+
+            var viewModel = new LoginViewModel
+            {
+                Company = companylist,
+                ReturnUrl = returnUrl
+            };
+
+            return View(viewModel);
         }
         catch (Exception ex)
         {
@@ -94,6 +107,7 @@ public class AccountController : Controller
         await _hubContext.Clients.All.SendAsync("CheckIfAuthenticated");
         return RedirectToAction("Login", "Account");
     }
+
     [ModuleServices(ModuleCodes.Profile, typeof(IModuleRepository))]
     public IActionResult Profile()
     {
@@ -260,7 +274,8 @@ public class AccountController : Controller
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, model.Id.ToString()),
-            new Claim(ClaimTypes.Role, model.Id.ToString())
+            new Claim(ClaimTypes.Role, model.Id.ToString()),
+            new Claim("Company", model.CompanyId.ToString())
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

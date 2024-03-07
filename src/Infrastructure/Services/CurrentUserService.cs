@@ -12,13 +12,12 @@ public class CurrentUserService : ICurrentUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserRepository _userRepository;
-    private readonly IRoleAccessRepository _roleAccessRepo;
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IRoleAccessRepository roleAccessRepo)
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
     {
         _httpContextAccessor = httpContextAccessor;
         _userRepository = userRepository;
-        _roleAccessRepo = roleAccessRepo;
+    
     }
 
     public int GetCurrentUserId()
@@ -34,10 +33,6 @@ public class CurrentUserService : ICurrentUserService
         return data;
     }
 
-    public async Task<RoleAccessModel> GetRoleAccess(string moduleCode)
-    {
-        var userId = GetCurrentUserId();
-        return await _roleAccessRepo.GetByModuleCode(userId, moduleCode);
-    }
+     
 
 }

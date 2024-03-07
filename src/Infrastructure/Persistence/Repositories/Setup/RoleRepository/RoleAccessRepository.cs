@@ -36,6 +36,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             return data ?? new();
         }
 
+        public async Task<RoleAccessModel> GetCurrentUserRoleAccessByModuleAsync(string moduleCode)
+        {
+            var userId = _currentUserService.GetCurrentUserId();
+            return await GetByModuleCode(userId, moduleCode);
+        }
+
         public async Task<List<RoleAccess>?> GetAllAsync() =>
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
 

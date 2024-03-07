@@ -51,7 +51,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.AddressRepo
                 address = string.Join(", ",
                 data.StreetAddress1,
                 data.CityMunicipality,
-                country.CountryName,
+                country.Name,
                 data.PostalCode);
             }
             return address;

@@ -21,6 +21,7 @@ using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Entities;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
+using RoleAccessModel = DMS.Domain.Dto.RoleDto.RoleAccessModel;
 
 namespace DMS.Web.Controllers.Setup
 {

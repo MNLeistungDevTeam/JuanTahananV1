@@ -1,20 +1,27 @@
 ﻿@using Microsoft.AspNetCore.Hosting
 @using DMS.Application.Services
 
+
+
 @inject IStringLocalizer<SharedResources> localizer
 @inject ICurrentUserService _currentUser;
 @inject IFtpDownloaderService _ftpDownloaderService;
+
+
 @{
     ViewData["MainTitle"] = localizer["eiDOC"];
     var users = await _currentUser.GetUserInfo();
     ViewData["Profile"] = "/images/user/default.png";
     ViewData["Position"] = users.Position;
     ViewData["Name"] = users.Name;
+
+
+
     if (!string.IsNullOrWhiteSpace(users.ProfilePicture))
     {
         var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
         if (System.IO.File.Exists(profile))
-        ViewData["Profile"] = profile;
+            ViewData["Profile"] = profile;
     }
 
 
@@ -43,6 +50,7 @@
 
 <body>
     <input type="hidden" id="txtBaseUrl" value="@(@Url.Content("~"))/" />
+    <div id="Layout-defaultLogo" hidden>@Url.Content("~/images/JuanTahananAssets/Logo/JuanTahananLogo.png")</div>
 
     <!-- Begin page -->
     <div id="wrapper">
@@ -66,7 +74,7 @@
                             <div class="page-title-box">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-@*                                         @Html.Raw(ViewData["Breads"])
+                                        @*                                         @Html.Raw(ViewData["Breads"])
                                         <li class="breadcrumb-item active">@ViewData["Title"]</li> *@
                                     </ol>
                                 </div>
@@ -119,7 +127,7 @@
             <!-- content -->
             <!-- Footer Start -->
             <button type="button" class="btn btn-soft-warning rounded-pill fab-news waves-effect waves-light">See News</button>
-@*             <partial name="_Footer" />
+            @*             <partial name="_Footer" />
             <!-- end Footer --> *@
         </div>
         <!-- ============================================================== -->

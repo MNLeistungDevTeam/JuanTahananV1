@@ -3,7 +3,7 @@ AS
 BEGIN
 	SELECT
 		c.*,
-		CONCAT(a.StreetAddress1, ' ', a.StreetAddress2, ' ', a.Baranggay, ' ', a.CityMunicipality, ' ', a.StateProvince, ' ', a.Region, ' ', co.CountryCode) [Address],
+		CONCAT(a.StreetAddress1, ' ', a.StreetAddress2, ' ', a.Baranggay, ' ', a.CityMunicipality, ' ', a.StateProvince, ' ', a.Region, ' ', co.Code) [Address],
 		EOMONTH(DATEADD(MONTH, -1, GETDATE())) MinDate,
 		DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), ISNULL(c.PostingPeriod, DAY(EOMONTH(GETDATE())))) MaxDate
 	FROM Company c
