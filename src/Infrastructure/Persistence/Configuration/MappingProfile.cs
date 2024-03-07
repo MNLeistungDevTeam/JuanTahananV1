@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using DevExpress.XtraRichEdit.Model;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
+using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Dto.UserDto;
@@ -19,6 +22,7 @@ public class MappingProfile : Profile
         CreateMap<RoleAccess, RoleAccessModel>().ReverseMap();
         CreateMap<UserRole, UserRoleModel>().ReverseMap();
         CreateMap<DocumentType, DocumentTypeModel>().ReverseMap();
+        CreateMap<Document, DocumentModel>().ReverseMap();
         CreateMap<ApplicantsPersonalInformation, ApplicantsPersonalInformationModel>().ReverseMap();
         CreateMap<LoanParticularsInformation, LoanParticularsInformationModel>().ReverseMap();
         CreateMap<CollateralInformation, CollateralInformationModel>().ReverseMap();
@@ -26,5 +30,13 @@ public class MappingProfile : Profile
         CreateMap<Spouse, SpouseModel>().ReverseMap();
         CreateMap<UserDocument, UserDocumentModel>().ReverseMap();
         CreateMap<Form2Page, Form2PageModel>().ReverseMap();
+
+        CreateMap<Company, CompanyModel>().ReverseMap();
+        CreateMap<CompanySetting, CompanySettingModel>().ReverseMap();
+        CreateMap<CompanyLogo, CompanyLogoModel>().ReverseMap();
+
+        CreateMap<Address, AddressModel>().ReverseMap();
+        CreateMap<AddressType, AddressTypeModel>().ReverseMap();
+        CreateMap<Country, CountryModel>().ReverseMap();
     }
 }

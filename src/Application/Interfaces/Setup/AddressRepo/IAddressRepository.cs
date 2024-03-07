@@ -11,15 +11,28 @@ namespace DMS.Application.Interfaces.Setup.AddressRepo
 
     public interface IAddressRepository
     {
-        Task<Address> CreateAsync(Address address, int userId);
+        Task<IEnumerable<AddressModel>> GetDefaultAddress(string code);
 
-        Task<Address> SaveAsync(Address address, int userId);
+        Task<string?> GetCompanyDefaultAddress(int Id);
 
-        Task<Address> UpdateAsync(Address address, int userId);
+        Task BatchDeleteAsync(List<Address> addresses);
 
         Task BatchDeleteAsync(int[] ids);
 
-        Task<AddressModel> GetByRefIdAsync(int referenceId, int referenceType);
-        Task<Address?> GetByRefId2Async(int referenceId, int referenceType);
+        Task<Address> CreateAsync(Address address, int createdById);
+
+        Task DeleteAsync(int id);
+
+        Task<List<Address>> GetAllAsync();
+
+        Task<Address?> GetByIdAsync(int id);
+
+        Task<IEnumerable<AddressModel>> GetByReferenceId(int referenceId, int referenceType);
+
+        Task<List<Address>> GetByRefTypeId(int referenceType, int referenceId);
+
+        Task<Address> SaveAsync(AddressModel addressModel, int userId);
+
+        Task<Address> UpdateAsync(Address address, int modifiedById);
     }
 }

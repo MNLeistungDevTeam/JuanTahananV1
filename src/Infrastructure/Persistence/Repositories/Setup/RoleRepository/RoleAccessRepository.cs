@@ -30,6 +30,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         public async Task<RoleAccess?> GetRoleAccessAsync(int roleId, int ModuleId) =>
             await _context.RoleAccesses.AsNoTracking().FirstOrDefaultAsync(x => x.RoleId == roleId && x.ModuleId == ModuleId);
 
+        public async Task<RoleAccessModel> GetByModuleCode(int userId, string moduleCode)
+        {
+            var data = await _db.LoadSingleAsync<RoleAccessModel, dynamic>("spRoleAccess_GetByModuleCode", new { userId, moduleCode });
+            return data ?? new();
+        }
+
         public async Task<List<RoleAccess>?> GetAllAsync() =>
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
 

@@ -10,14 +10,26 @@ namespace DMS.Application.Interfaces.Setup.CompanyLogoRepo
 {
     public interface ICompanyLogoRepository
     {
-        Task BatchDeleteAsync(CompanyLogo[] module);
-        Task<CompanyLogo> CreateAsync(CompanyLogo module, int userId, params string[] excludes);
-        Task<CompanyLogoModel> GetByDescAsync(int companyId, string description);
-        Task<IEnumerable<CompanyLogoModel>> GetByCompanyIdAsync(int companyId);
-        Task<CompanyLogo> UpdateAsync(CompanyLogo module, int userId, params string[] excludes);
-        Task<List<CompanyLogo>> GetAllAsync();
+        Task<CompanyLogo> SaveAsync(CompanyLogo companyLogo, int userId);
+
+        Task<IEnumerable<CompanyLogoModel>> GetByCompanyId(int companyId);
+
+        Task<List<CompanyLogo>> GetByCompanyIdAsync(int id);
+
+        Task BatchDeleteAsync(List<CompanyLogo> companyLogos);
+
+        Task<CompanyLogoModel?> GetByDesc(int companyId, string description);
+
+        Task BatchDeleteAsync(int[] ids);
+
+        Task<CompanyLogo> CreateAsync(CompanyLogo companySetting, int createdById);
+
         Task DeleteAsync(int id);
-        Task<CompanyLogo> SaveAsync(CompanyLogo model, int userId);
+
+        Task<List<CompanyLogo>> GetAllAsync();
+
         Task<CompanyLogo?> GetByIdAsync(int id);
+
+        Task<CompanyLogo> UpdateAsync(CompanyLogo companySetting, int modifiedById);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.CompanyDto;
+using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,26 @@ namespace DMS.Application.Interfaces.Setup.CompanyRepo
 {
     public interface ICompanyRepository
     {
-        Task<Company?> GetByIdAsync2(int companyId);
-        Task DeleteAsync(int id);
-        Task<IEnumerable<CompanyModel>> GetAllAsync();
-        Task<CompanyModel?> GetByIdAsync(int id);
-        Task<Company?> GetByCodeAsync(string code);
-        Task<CompanyInfoModel> GetInfoAsync(int companyId);
-        Task SaveAsync(Company model, List<CompanyLogo> clModel, List<Address> aModel, int userId, string webHostingEnv, CompanySetting csModel);
-        Task<Company> CreateAsync(Company module, int userId);
-        Task<Company> UpdateAsync(Company module, int userId);
         Task BatchDeleteAsync(int[] ids);
+
+        Task<Company> CreateAsync(Company company, int createdById);
+
+        Task DeleteAsync(int id);
+
+        Task<List<Company>> GetAllAsync();
+
+        Task<Company?> GetByIdAsync(int id);
+
+        Task<IEnumerable<CompanyModel>> GetCompanies();
+
+        Task<CompanyModel?> GetCompany(int id);
+
+        Task<Company?> GetCompanyByCode(string code);
+
+        Task<CompanyInfoModel?> GetCompanyInfo(int companyId);
+
+        Task SaveAsync(CompanyModel model, List<CompanyLogoModel> clModel, List<AddressModel> aModel, CompanySettingModel csModel, int userId, string webHostingEnv);
+
+        Task<Company> UpdateAsync(Company company, int modifiedById);
     }
 }

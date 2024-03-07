@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Entities;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 
 namespace DMS.Infrastructure.Services;
 
@@ -9,10 +12,13 @@ public class CurrentUserService : ICurrentUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserRepository _userRepository;
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+    private readonly IRoleAccessRepository _roleAccessRepo;
+
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IRoleAccessRepository roleAccessRepo)
     {
         _httpContextAccessor = httpContextAccessor;
         _userRepository = userRepository;
+        _roleAccessRepo = roleAccessRepo;
     }
 
     public int GetCurrentUserId()
@@ -27,4 +33,11 @@ public class CurrentUserService : ICurrentUserService
         var data = await _userRepository.GetUserByIdAsync(userId);
         return data;
     }
+
+    public async Task<RoleAccessModel> GetRoleAccess(string moduleCode)
+    {
+        var userId = GetCurrentUserId();
+        return await _roleAccessRepo.GetByModuleCode(userId, moduleCode);
+    }
+
 }

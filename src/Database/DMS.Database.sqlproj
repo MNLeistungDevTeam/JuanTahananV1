@@ -86,6 +86,7 @@
     <Folder Include="Tables\Setup\Address\Country" />
     <Folder Include="Stored Procedures\Setup\Entity" />
     <Folder Include="Stored Procedures\Setup\Country" />
+    <Folder Include="Tables\Others" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -136,6 +137,7 @@
     <Build Include="Stored Procedures\Setup\Country\spCountry_Get.sql" />
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetAll.sql" />
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetByName.sql" />
+    <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByModuleCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

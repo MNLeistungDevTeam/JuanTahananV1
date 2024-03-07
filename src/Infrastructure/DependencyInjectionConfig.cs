@@ -20,6 +20,18 @@ using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository;
 using DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository;
 using DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 using DMS.Infrastructure.Services;
+using DMS.Application.Interfaces.Setup.CompanyRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo;
+using DMS.Application.Interfaces.Setup.CompanySettingRepo;
+using DMS.Application.Interfaces.Setup.CompanyLogoRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.AddressRepo;
+using DMS.Application.Interfaces.Setup.AddressRepo;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using DMS.Infrastructure.Persistence.Repositories.Setup.CountryRepo;
+using DMS.Application.Interfaces.Setup.CountryRepo;
 
 namespace Template.Infrastructure;
 
@@ -92,6 +104,14 @@ public static class DependencyInjectionConfig
         services.AddScoped<ISpouseRepository, SpouseRepository>();
         services.AddScoped<IUserDocumentRepository, UserDocumentRepository>();
         services.AddScoped<IForm2PageRepository,Form2PageRepository>();
+        services.AddScoped<ICompanyRepository,CompanyRepository>();
+        services.AddScoped<ICompanySettingRepository,CompanySettingRepository>();
+        services.AddScoped<ICompanyLogoRepository,CompanyLogoRepository>();
+
+        services.AddScoped<IAddressRepository,AddressRepository>();
+        services.AddScoped<ICountryRepository,CountryRepository>();
+
+
         return services;
     }
 }
