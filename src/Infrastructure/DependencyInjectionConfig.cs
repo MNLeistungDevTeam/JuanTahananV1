@@ -32,6 +32,8 @@ using DMS.Application.Interfaces.Setup.AddressRepo;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DMS.Infrastructure.Persistence.Repositories.Setup.CountryRepo;
 using DMS.Application.Interfaces.Setup.CountryRepo;
+using DMS.Application.Interfaces.Setup.AddressTypeRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.AddressTypeRepo;
 
 namespace Template.Infrastructure;
 
@@ -109,6 +111,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICompanyLogoRepository,CompanyLogoRepository>();
 
         services.AddScoped<IAddressRepository,AddressRepository>();
+        services.AddScoped<IAddressTypeRepository,AddressTypeRepository>();
         services.AddScoped<ICountryRepository,CountryRepository>();
 
 
