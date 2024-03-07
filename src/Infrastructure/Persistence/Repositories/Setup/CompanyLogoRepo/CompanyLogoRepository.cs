@@ -74,7 +74,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
 
         public async Task<CompanyLogo> CreateAsync(CompanyLogo companyLogo, int createdById)
         {
-            companyLogo.CreatedBy = createdById;
+            companyLogo.CreatedById = createdById;
             companyLogo.DateCreated = DateTime.Now;
             var result = await _contextHelper.CreateAsync(companyLogo, "ModifiedById", "DateModified");
 
@@ -83,7 +83,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
 
         public async Task<CompanyLogo> UpdateAsync(CompanyLogo companyLogo, int modifiedById)
         {
-            companyLogo.ModifiedBy = modifiedById;
+            companyLogo.ModifiedById = modifiedById;
             companyLogo.DateModified = DateTime.Now;
             var result = await _contextHelper.UpdateAsync(companyLogo, "CreatedById", "DateCreated");
 

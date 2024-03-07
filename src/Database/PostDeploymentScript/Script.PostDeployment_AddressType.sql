@@ -1,7 +1,6 @@
-﻿
-IF NOT EXISTS (SELECT 1 FROM [dbo].[AddressType])
+﻿IF NOT EXISTS (SELECT 1 FROM [dbo].[AddressType])
 BEGIN
-    INSERT INTO [dbo].[AddressType]
+ INSERT INTO [dbo].[AddressType]
            ([Code]
            ,[Name]
            ,CreatedById

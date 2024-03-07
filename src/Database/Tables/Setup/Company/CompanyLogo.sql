@@ -3,10 +3,10 @@
     [Description]  NVARCHAR (255) NOT NULL,
     [Location]     NVARCHAR (255) NOT NULL,
     [IsDisabled]   BIT            DEFAULT ((0)) NOT NULL,
-    [CreatedBy]    INT            NOT NULL,
+    [CreatedById]    INT            NOT NULL,
     [DateCreated]  DATETIME2 (7)  DEFAULT (getdate()) NOT NULL,
-    [ModifiedBy]   INT            NOT NULL,
-    [DateModified] DATETIME2 (7)  DEFAULT (getdate()) NOT NULL,
+    [ModifiedById]   INT          NULL,
+    [DateModified] DATETIME2 (7)  NULL,
     [CompanyId]    INT            NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_CompanyLogo_Company] FOREIGN KEY ([CompanyId]) REFERENCES [dbo].[Company] ([Id])

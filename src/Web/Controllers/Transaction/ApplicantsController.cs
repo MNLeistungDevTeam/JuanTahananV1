@@ -123,11 +123,19 @@ namespace Template.Web.Controllers.Transaction
         }
 
         [HttpPost]
-        [ModelStateValidations(typeof(ApplicantViewModel))]
+       
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
         {
             try
             {
+
+
+                if (!ModelState.IsValid)
+                {
+                    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+                }
+
+
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
 
@@ -163,6 +171,9 @@ namespace Template.Web.Controllers.Transaction
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
                     applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData));
                 }
+
+
+
                 else
                 {
                     applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformation.Id));

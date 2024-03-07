@@ -138,7 +138,6 @@
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetAll.sql" />
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetByName.sql" />
     <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByModuleCode.sql" />
-    <Build Include="PostDeploymentScript\PostDeployment_AddressType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
@@ -161,6 +160,8 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_PropertyType.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_FormatBytes.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Country.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_AddressType.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_ModeOfPayment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Template.Database.refactorlog" />
