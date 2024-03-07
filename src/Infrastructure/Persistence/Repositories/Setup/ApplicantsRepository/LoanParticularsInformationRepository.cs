@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.ApplicantsDto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -20,7 +15,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public LoanParticularsInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public LoanParticularsInformationRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<LoanParticularsInformation>(context);
@@ -31,32 +30,40 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<LoanParticularsInformation?> GetByIdAsync(int id) =>
             await _context.LoanParticularsInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<LoanParticularsInformation?> GetByApplicationIdAsync(int id) =>
             await _context.LoanParticularsInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
         public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model)
         {
-            if (model.Id == 0)
-                model = _mapper.Map<LoanParticularsInformationModel>(await CreateAsync(model));
+            var _model = _mapper.Map<LoanParticularsInformation>(model);
+
+            if (_model.Id == 0)
+                _model = await CreateAsync(_model);
             else
-                model = _mapper.Map<LoanParticularsInformationModel>(await UpdateAsync(model));
-            return _mapper.Map<LoanParticularsInformation>(model);
+                _model = await UpdateAsync(_model);
+
+            return _model;
         }
-        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformationModel model)
+
+        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation model)
         {
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<LoanParticularsInformation>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+
+            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return model;
         }
-        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformationModel model)
+
+        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation model)
         {
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<LoanParticularsInformation>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+
+            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return model;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -68,6 +75,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.LoanParticularsInformations.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -75,7 +83,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

@@ -13,8 +13,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<LoanParticularsInformation?> GetByIdAsync(int id);
         Task<LoanParticularsInformation?> GetByApplicationIdAsync(int id);
         Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model);
-        Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformationModel model);
-        Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformationModel model);
+        Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation model);
+        Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

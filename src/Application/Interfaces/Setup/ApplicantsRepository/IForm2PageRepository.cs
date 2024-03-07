@@ -13,8 +13,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<Form2Page?> GetByIdAsync(int id);
         Task<Form2Page?> GetByApplicationInfoIdAsync(int id);
         Task<Form2Page> SaveAsync(Form2PageModel model);
-        Task<Form2Page> CreateAsync(Form2PageModel model);
-        Task<Form2Page> UpdateAsync(Form2PageModel model);
+        Task<Form2Page> CreateAsync(Form2Page model);
+        Task<Form2Page> UpdateAsync(Form2Page model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

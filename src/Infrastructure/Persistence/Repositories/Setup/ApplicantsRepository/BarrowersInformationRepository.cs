@@ -20,7 +20,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public BarrowersInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public BarrowersInformationRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<BarrowersInformation>(context);
@@ -35,27 +39,30 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             await _context.BarrowersInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
         public async Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model)
         {
+            var _model = _mapper.Map<BarrowersInformation>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<BarrowersInformationModel>(await CreateAsync(model));
+                _model = await CreateAsync(_model);
             else
-                model = _mapper.Map<BarrowersInformationModel>(await UpdateAsync(model));
-            return _mapper.Map<BarrowersInformation>(model);
+                _model = await UpdateAsync(_model);
+
+            return _model;
         }
-        public async Task<BarrowersInformation> CreateAsync(BarrowersInformationModel model)
+        public async Task<BarrowersInformation> CreateAsync(BarrowersInformation model)
         {
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<BarrowersInformation>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+
+            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return model;
         }
-        public async Task<BarrowersInformation> UpdateAsync(BarrowersInformationModel model)
+        public async Task<BarrowersInformation> UpdateAsync(BarrowersInformation model)
         {
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<BarrowersInformation>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+            
+            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return model;
         }
         public async Task DeleteAsync(int id)
         {

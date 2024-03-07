@@ -68,6 +68,8 @@ namespace Template.Web.Controllers.Transaction
             _context = context;
         }
 
+        #region Views
+
         [ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
         public IActionResult Index()
         {
@@ -99,12 +101,11 @@ namespace Template.Web.Controllers.Transaction
             ViewBag.modeOfPayment = await _context.ModeOfPayments.Select(x => new { text = x.Description, value = x.Id }).ToListAsync();
             ViewBag.propertTye = await _context.PropertyTypes.Select(x => new { text = x.Description, value = x.Id }).ToListAsync();
             return View(model);
-
-
-
-
-
         }
+
+        #endregion Views
+
+        #region Modules Api
 
         [ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
@@ -263,5 +264,7 @@ namespace Template.Web.Controllers.Transaction
 
         public async Task<IActionResult> GetPropertyType() =>
             Ok(await _context.PropertyTypes.Select(x => new { text = x.Description, value = x.Id }).ToListAsync());
+
+        #endregion Modules Api
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
 using DMS.Domain.Entities;
+using DevExpress.XtraRichEdit.Commands;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -20,7 +21,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public CollateralInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public CollateralInformationRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<CollateralInformation>(context);
@@ -31,32 +36,40 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<CollateralInformation?> GetByIdAsync(int id) =>
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<CollateralInformation?> GetByApplicationInfoIdAsync(int id) =>
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
         public async Task<CollateralInformation> SaveAsync(CollateralInformationModel model)
         {
+            var _model = _mapper.Map<CollateralInformation>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<CollateralInformationModel>(await CreateAsync(model));
+                _model = await CreateAsync(_model);
             else
-                model = _mapper.Map<CollateralInformationModel>(await UpdateAsync(model));
-            return _mapper.Map<CollateralInformation>(model);
+                _model = await UpdateAsync(_model);
+
+            return _model;
         }
-        public async Task<CollateralInformation> CreateAsync(CollateralInformationModel model)
+
+        public async Task<CollateralInformation> CreateAsync(CollateralInformation model)
         {
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<CollateralInformation>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+
+            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return model;
         }
-        public async Task<CollateralInformation> UpdateAsync(CollateralInformationModel model)
+
+        public async Task<CollateralInformation> UpdateAsync(CollateralInformation model)
         {
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<CollateralInformation>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+
+            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return model;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -68,6 +81,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.CollateralInformations.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -75,7 +89,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

@@ -16,7 +16,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public SpouseRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public SpouseRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<Spouse>(context);
@@ -50,10 +54,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             model.DateCreated = DateTime.Now;
             model.CreatedById = _currentUserService.GetCurrentUserId();
 
-            var _spouse = _mapper.Map<Spouse>(model);
-
-            _spouse = await _contextHelper.CreateAsync(_spouse, "DateModified", "ModifiedById");
-            return _spouse;
+            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return model;
         }
 
         public async Task<Spouse> UpdateAsync(Spouse model)
@@ -61,11 +63,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             model.DateModified = DateTime.Now;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
 
-            var _spouse = _mapper.Map<Spouse>(model);
-
-            _spouse = await _contextHelper.UpdateAsync(_spouse, "DateCreated", "CreatedById");
-
-            return _spouse;
+            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return model;
         }
 
         public async Task DeleteAsync(int id)

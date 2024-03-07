@@ -14,8 +14,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<ApplicantsPersonalInformation?> GetbyUserId(int id);
         Task<List<ApplicantsPersonalInformation>?> GetAllAsync();
         Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model);
-        Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformationModel model);
-        Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformationModel model);
+        Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation model);
+        Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

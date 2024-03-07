@@ -99,7 +99,7 @@ $(() => {
         //tbl_beneficiaries.on('click', 'tbody tr', function () {
         //    var data = tbl_beneficiaries.row(this).data();
         //    if (data) {
-        //        var id = data.Id; 
+        //        var id = data.Id;
         //        location.href = '/Applicants/HLF068?UserId=' + id;
         //    }
         //});

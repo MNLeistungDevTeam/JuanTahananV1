@@ -5,7 +5,6 @@
     const $form = $("#role_form");
     const $role_add = $('#tbl-role-add');
 
-
     if ($tbl_role) {
         var tbl_role = $("#tbl_role").DataTable({
             ajax: {
@@ -265,7 +264,7 @@
     var btn_edit_role = $('#btn_edit_role').on('click', function (e) {
         e.preventDefault();
         var id = tbl_role.rows('.selected').data().pluck('Id').toArray()[0];
-        applyRole(id);
+        applyRole(id);  
     });
     var btn_view_role = $('#btn_view_role').on('click', function (e) {
         e.preventDefault();
@@ -384,21 +383,6 @@
         checkIfRoleAdminAccess();
     });
 
-    //$(document).on('change', `[id^='RoleAccess_CanCreate['], [id^='RoleAccess_CanModify['], [id^='RoleAccess_CanDelete['], [id^='RoleAccess_CanRead[']`, function () {
-    //    let Id = $(this).prop("id");
-    //    let start = Id.indexOf("[");
-    //    let end = Id.indexOf("]");
-    //    let IdNum = Id.substring(start + 1, end);
-
-    //    const canCreate = $(`input[id='RoleAccess_CanCreate[${IdNum}]']`).prop("checked");
-    //    const canModify = $(`input[id='RoleAccess_CanModify[${IdNum}]']`).prop("checked");
-    //    const canDelete = $(`input[id='RoleAccess_CanDelete[${IdNum}]']`).prop("checked");
-    //    const canRead = $(`input[id='RoleAccess_CanRead[${IdNum}]']`).prop("checked");
-    //    $(`input[id='RoleAccess_FullAccess[${IdNum}]']`).prop("checked", canCreate && canModify && canDelete && canRead);
-
-    //    checkIfRoleAdminAccess();
-    //});
-
     // Event listener for admin access checkbox change
     $(document).on('change', '[name="Role.AdminAccess"]', function () {
         let isChecked = $(this).prop("checked");
@@ -441,4 +425,55 @@
         let end = id.indexOf("]");
         return id.substring(start + 1, end);
     }
+
+    //function objectifyForm() {
+    //    var formArray = $form.serializeArray();
+
+    //    //serialize data function
+    //    var returnArray = [];
+    //    var roleArray = {};
+    //    var roleAccessRaw = {};
+    //    var roleAccessFinal = [];
+    //    var antiForgeryToken = "";
+    //    var roleModuleAccessLenght = $("input[name$='RoleId']").length;
+
+    //    for (var i = 0; i < formArray.length; i++) {
+    //        if (formArray[i]['name'].includes("Role.")) {
+    //            roleArray[formArray[i]['name'].replace("Role.", "")] = formArray[i]['value']
+    //        } else if (formArray[i]['name'].includes("RoleAccess")) {
+    //            if (!roleAccessRaw.hasOwnProperty(formArray[i]['name'].replace("RoleAccess", "")))
+    //                roleAccessRaw[formArray[i]['name'].replace("RoleAccess", "")] = formArray[i]['value']
+    //        } else if (formArray[i]['name'] == "__RequestVerificationToken") {
+    //            antiForgeryToken = formArray[i]['value'];
+    //        }
+    //    }
+
+    //    console.log(returnArray);
+    //    console.log(roleArray);
+    //    console.log(roleAccessRaw);
+    //    console.log(roleAccessFinal);
+    //    console.log(antiForgeryToken);
+    //    console.log(roleModuleAccessLenght);
+
+    //    for (var i = 0; i < roleModuleAccessLenght; i++) {
+    //        roleAccessFinal.push({
+    //            Id: roleAccessRaw[`[${i}].Id`],
+    //            CanCreate: roleAccessRaw[`[${i}].CanCreate`],
+    //            CanModify: roleAccessRaw[`[${i}].CanModify`],
+    //            CanRead: roleAccessRaw[`[${i}].CanRead`],
+    //            CanDelete: roleAccessRaw[`[${i}].CanDelete`],
+    //            FullAccess: roleAccessRaw[`[${i}].FullAccess`],
+    //            RoleId: roleAccessRaw[`[${i}].RoleId`],
+    //            ModuleId: roleAccessRaw[`[${i}].ModuleId`],
+    //        })
+    //    }
+
+    //    returnArray = {
+    //        __RequestVerificationToken: antiForgeryToken,
+    //        Role: roleArray,
+    //        RoleAccesses: roleAccessFinal
+    //    };
+
+    //    return returnArray;
+    //}
 })

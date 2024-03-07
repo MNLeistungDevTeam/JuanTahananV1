@@ -13,8 +13,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<BarrowersInformation?> GetByIdAsync(int id);
         Task<BarrowersInformation?> GetByApplicationInfoIdAsync(int id);
         Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model);
-        Task<BarrowersInformation> CreateAsync(BarrowersInformationModel model);
-        Task<BarrowersInformation> UpdateAsync(BarrowersInformationModel model);
+        Task<BarrowersInformation> CreateAsync(BarrowersInformation model);
+        Task<BarrowersInformation> UpdateAsync(BarrowersInformation model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

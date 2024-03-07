@@ -19,7 +19,12 @@ namespace DMS.Infrastructure.Services
         private readonly IUserDocumentRepository _userDocumentRepo;
         private readonly IMapper _mapper;
 
-        public FileUploadService(IDocumentRepository documentRepository, IFtpDownloaderService ftpDownloaderService, IHubContext<UploaderHub> hubContext, IUserDocumentRepository userDocumentRepo, IMapper mapper)
+        public FileUploadService(
+            IDocumentRepository documentRepository,
+            IFtpDownloaderService ftpDownloaderService,
+            IHubContext<UploaderHub> hubContext,
+            IUserDocumentRepository userDocumentRepo,
+            IMapper mapper)
         {
             _documentRepository = documentRepository;
             _ftpDownloaderService = ftpDownloaderService;
@@ -37,7 +42,7 @@ namespace DMS.Infrastructure.Services
             int DocumentId
             )
         {
-            foreach ( var file in files.Where(x => x.Length >= 0) )
+            foreach (var file in files.Where(x => x.Length >= 0))
             {
                 if (!(file.Length <= 100 * 1024 * 1024)) // Check if file size exceeds 100 MB
                 {
@@ -54,8 +59,9 @@ namespace DMS.Infrastructure.Services
                         await _ftpDownloaderService.DeleteFileAsync(existingDocument.Location);
                         await _documentRepository.DeleteAsync(existingDocument.Id);
                     }
-                    await _ftpDownloaderService.Upload(stream, filePath,progressCallback:async progress =>{
-                       await  _hubContext.Clients.All.SendAsync("UpdateSwalProgress", progress);
+                    await _ftpDownloaderService.Upload(stream, filePath, progressCallback: async progress =>
+                    {
+                        await _hubContext.Clients.All.SendAsync("UpdateSwalProgress", progress);
                     });
                     Document document = new()
                     {
@@ -73,7 +79,7 @@ namespace DMS.Infrastructure.Services
                     if (existingDocument != null)
                     {
                         var userDoc = await _userDocumentRepo.GetByDocumentIdAsync(existingDocument.Id);
-                        if(userDoc == null)
+                        if (userDoc == null)
                         {
                             throw new Exception();
                         }
@@ -113,14 +119,13 @@ namespace DMS.Infrastructure.Services
             if (document != null)
             {
                 var userDoc = await _userDocumentRepo.GetByDocumentIdAsync(documentId);
-                if(userDoc != null)
+                if (userDoc != null)
                 {
                     var filePath = Path.Combine(rootFolder, document.Location);
                     await _ftpDownloaderService.DeleteFileAsync(document.Location);
                     await _userDocumentRepo.DeleteAsync(userDoc.Id);
                     await _documentRepository.DeleteAsync(documentId);
                 }
-
             }
         }
 
