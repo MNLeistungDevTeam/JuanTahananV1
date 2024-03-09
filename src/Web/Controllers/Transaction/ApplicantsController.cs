@@ -92,10 +92,8 @@ namespace Template.Web.Controllers.Transaction
 
         //OLD
 
-
-
-        [Route("[controller]/HLF069/{applicantCode}")]
-        public async Task<IActionResult> HLF068(string applicantCode)
+        [Route("[controller]/HLF069old/{applicantCode}")]
+        public async Task<IActionResult> HLF068(string applicantCode = null)
         {
             var vwModel = new ApplicantViewModel();
             int userId = 0;
@@ -166,11 +164,9 @@ namespace Template.Web.Controllers.Transaction
         }
 
 
-
-
-
+ 
         [Route("[controller]/HLF068/{applicantCode?}")]
-        public async Task<IActionResult> HLF069(string? applicantCode)
+        public async Task<IActionResult> HLF069(string? applicantCode = null)
         {
             var vwModel = new ApplicantViewModel();
     

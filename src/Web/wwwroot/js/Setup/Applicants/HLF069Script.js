@@ -240,18 +240,19 @@ $(function () {
                     messageBox("Successfully", "success", true);
 
                     if (applicantInfoIdVal == 0) {
-
-                        location.href = "/Applicants/HLF069/" + response;
-
                         loader.close();
+                        setTimeout(function () {
+                            window.location.href = "/Applicants/HLF068/" + response;
+                        }, 2000);
                     }
                     else {
-                        location.href = "Applicants/ApplicantRequests";
+                        loader.close();
 
+                        setTimeout(function () {
+                            // Redirect to the specified location
+                            window.location.href = "/Applicants/ApplicantRequests";
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     }
-
-
-       
                 },
                 error: async function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.responseText);
