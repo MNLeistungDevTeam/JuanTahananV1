@@ -1,4 +1,4 @@
-﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).attr('data-value');
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();

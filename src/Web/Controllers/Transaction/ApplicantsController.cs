@@ -88,7 +88,7 @@ namespace Template.Web.Controllers.Transaction
             return View();
         }
 
-       //[ModuleServices(ModuleCodes.HLF068, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.HLF068, typeof(IModuleRepository))]
 
         //OLD
 
@@ -163,13 +163,10 @@ namespace Template.Web.Controllers.Transaction
             return View(vwModel);
         }
 
-
- 
         [Route("[controller]/HLF068/{applicantCode?}")]
         public async Task<IActionResult> HLF069(string? applicantCode = null)
         {
             var vwModel = new ApplicantViewModel();
-    
 
             //check if applicant code not null go to edit form
             if (applicantCode != null)
@@ -191,10 +188,6 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.ApplicantsPersonalInformationModel.Code = applicantinfo.Code;
                 }
 
-                //if (applicantloaninfo.ExistingHousingApplicationNumber == null) {
-                //    applicantloaninfo.ExistingHousingApplicationNumber = string.Empty;
-
-                //}
                 var spouseInfo = await _spouseRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
                 if (spouseInfo != null)
@@ -226,12 +219,6 @@ namespace Template.Web.Controllers.Transaction
 
             return View(vwModel);
         }
-
-
-
-
-
-
 
         [ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
@@ -409,6 +396,7 @@ namespace Template.Web.Controllers.Transaction
             }
         }
 
+        [HttpPost]
         public async Task<IActionResult> SaveHLF069(ApplicantViewModel vwModel)
         {
             try
@@ -486,6 +474,9 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
 
@@ -500,57 +491,9 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
-                    //applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.Id));
-
-                    //applicationData = await _applicantsPersonalInformationRepo.GetAsync(vwModel.ApplicantsPersonalInformationModel.Id);
-
-                    // await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(vwModel.ApplicantsPersonalInformationModel));
-
-                    //if (user.Id == 0)
-                    //{
-                    //    user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
-                    //}
-                    //vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
-                    //vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
-                    //vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
-                    //vwModel.SpouseModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
-                    //vwModel.Form2PageModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
-
-                    //var loan = await _loanParticularsInformationRepo.GetByIdAsync(vwModel.LoanParticularsInformationModel.Id);
-                    //var collateral = await _collateralInformationRepo.GetByIdAsync(vwModel.CollateralInformationModel.Id);
-                    //var barrow = await _barrowersInformationRepo.GetByIdAsync(vwModel.BarrowersInformationModel.Id);
-                    //var spouse = await _spouseRepo.GetByIdAsync(vwModel.SpouseModel.Id);
-                    //var form2 = await _form2PageRepo.GetByIdAsync(vwModel.Form2PageModel.Id);
-
-                    //if (vwModel.LoanParticularsInformationModel.Id != 0)
-                    //{
-                    //    loan.MergeNonNullData(vwModel.LoanParticularsInformationModel);
-                    //    vwModel.LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(loan);
-                    //}
-                    //if (vwModel.CollateralInformationModel.Id != 0)
-                    //{
-                    //    collateral.MergeNonNullData(vwModel.CollateralInformationModel);
-                    //    vwModel.CollateralInformationModel = _mapper.Map<CollateralInformationModel>(collateral);
-                    //}
-                    //if (vwModel.BarrowersInformationModel.Id != 0)
-                    //{
-                    //    barrow.MergeNonNullData(vwModel.BarrowersInformationModel);
-                    //    vwModel.BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(barrow);
-                    //}
-                    //if (vwModel.SpouseModel.Id != 0)
-                    //{
-                    //    spouse.MergeNonNullData(vwModel.SpouseModel);
-                    //    vwModel.SpouseModel = _mapper.Map<SpouseModel>(spouse);
-                    //}
-                    //if (vwModel.Form2PageModel.Id != 0)
-                    //{
-                    //    form2.MergeNonNullData(vwModel.Form2PageModel);
-                    //    vwModel.Form2PageModel = _mapper.Map<Form2PageModel>(form2);
-                    //}
-
-
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel);
 
+                    user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -583,9 +526,7 @@ namespace Template.Web.Controllers.Transaction
 
                 // last stage pass parameter code
 
-
-
-                var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
+                var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
 
                 return Ok(applicantdata.Code);
             }
