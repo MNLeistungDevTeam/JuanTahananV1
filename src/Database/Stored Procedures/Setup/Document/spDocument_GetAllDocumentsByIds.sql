@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spDocument_GetAllDocumentsByIds]
-    @ApplicationId INT,
-	@DocumentTypeId INT
+    @applicationId INT,
+	@documentTypeId INT
 AS
-BEGIN
+ 
     SELECT
         d.Id,
         d.[Name],
@@ -14,6 +14,6 @@ BEGIN
         UserDocuments usrd
     LEFT JOIN
         Document d ON d.Id = usrd.DocumentId
-	    WHERE usrd.DocumentTypeId = @DocumentTypeId
-	    AND usrd.ApplicantsPersonalInformationId = @ApplicationId
-END
+	    WHERE usrd.DocumentTypeId = @documentTypeId
+	    AND usrd.ApplicantsPersonalInformationId = @applicationId
+RETURN 0

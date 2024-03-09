@@ -164,6 +164,7 @@ namespace DMS.Infrastructure.Services
             int referenceId,
             string referenceNo,
             int referenceType,
+            int documentTypeId,
             int userId,
             int companyId)
         {
@@ -211,6 +212,7 @@ namespace DMS.Infrastructure.Services
                     Name = formFile.FileName,
                     Location = filePath,
                     Size = (int)formFile.Length,
+                    DocumentTypeId = documentTypeId,
                     FileType = contentType,
                     IsFolder = false,
                     CompanyId = companyId,

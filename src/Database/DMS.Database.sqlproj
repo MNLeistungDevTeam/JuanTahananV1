@@ -161,6 +161,8 @@
     <Build Include="Stored Procedures\Setup\CollateralInformation\spCollateralInformationModel_GetByApplicantId.sql" />
     <Build Include="Stored Procedures\Setup\Form2Page\spForm2Page_GetByApplicantId.sql" />
     <Build Include="Stored Procedures\Setup\Spouse\spSpouse_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetDocumentsByApplicantInformationCode.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

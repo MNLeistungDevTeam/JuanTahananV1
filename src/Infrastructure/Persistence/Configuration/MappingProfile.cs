@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.XtraRichEdit.Model;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;

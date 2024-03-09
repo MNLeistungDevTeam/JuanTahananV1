@@ -13,4 +13,5 @@ public interface IDocumentTypeRepository
     Task DeleteAsync(int id);
     Task BatchDeleteAsync(int[] ids);
     Task<List<DocumentInfo>> SpGetAllDocumentsByIds(int ApplicationId, int DocumentTypeId);
+    Task<IEnumerable<DocumentTypeModel?>> GetByApplicantCodeAsync(string applicantCode);
 }

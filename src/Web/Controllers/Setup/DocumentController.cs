@@ -1,7 +1,12 @@
-﻿
-
+﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Enums;
+using DMS.Web.Controllers.Services;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,13 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.Interfaces.Setup.DocumentRepository;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Application.Services;
-using DMS.Web.Controllers.Services;
-using DMS.Web.Models;
 
 namespace DMS.Web.Controllers.Setup
 {
@@ -52,20 +50,43 @@ namespace DMS.Web.Controllers.Setup
         {
             return View();
         }
-        [ModuleServices(ModuleCodes.DocumentUpload, typeof(IModuleRepository))]
-        public async Task<IActionResult> DocumentUpload(int Id)
+
+        //[ModuleServices(ModuleCodes.DocumentUpload, typeof(IModuleRepository))]
+
+        [Route("[controller]/DocumentUpload/{applicantCode?}")]
+        public async Task<IActionResult> DocumentUpload(string applicantCode = null)
         {
-            var user = await _userRepository.GetByIdAsync(Id);
-            var info = await _applicantsPersonalInformationRepo.GetbyUserId(user.Id);
-            ViewBag.Appplications = info;
-            ViewBag.Id = info.UserId;
-            ViewBag.Barrowers = await _barrowersInformationRepo.GetByApplicationInfoIdAsync(info.Id);
-            ViewBag.ApplicationCode = info.Code;
+            int userId = 0;
+            int applicantId = 0;
+            if (applicantCode != null)
+            {
+                var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+
+                if (applicantinfo == null)
+                {
+                    return BadRequest($"{applicantCode}: no record Found!");
+                }
+
+                //var user = await _userRepository.GetByIdAsync(applicantinfo.UserId);
+                userId = applicantinfo.UserId;
+                applicantCode = applicantinfo?.Code;
+                applicantId = applicantinfo.Id;
+            }
+
+            ViewBag.Id = userId;
+            ViewBag.AppplicationId = applicantId;
+            ViewBag.ApplicationCode = applicantCode != null ? applicantCode : string.Empty;
+
             return View();
         }
 
         public async Task<IActionResult> GetAllUploadedDocuments(int applicationId) =>
             Ok(await _documentRepo.SpGetAllApplicationSubmittedDocuments(applicationId));
+
+        [HttpGet("Document/GetDocumentsByApplicant/{applicantCode}")]
+        public async Task<IActionResult> GetDocumentsByApplicant(string applicantCode) =>
+           Ok(await _documentTypeRepo.GetByApplicantCodeAsync(applicantCode));
+
         public async Task<IActionResult> UploadProfile(IFormFile file)
         {
             try
@@ -114,7 +135,8 @@ namespace DMS.Web.Controllers.Setup
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-        public async Task DocumentUploadFile(IFormFile? file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
+
+        public async Task DocumentUploadFileOnFTP(IFormFile? file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
         {
             if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
             {
@@ -139,14 +161,66 @@ namespace DMS.Web.Controllers.Setup
                 DocumentId.Value
             );
         }
+
+        public async Task DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
+        {
+            try
+            {
+                if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
+                {
+                    throw new ArgumentNullException("One or more parameters is null.");
+                }
+
+                var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
+
+                var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
+
+                //var users = await _userRepository.GetAllAsync();
+                //var user = users.FirstOrDefault(x => x.Id == application?.UserId);
+
+                //if (user == null)
+                //{
+                //    throw new InvalidOperationException("User not found.");
+                //}
+
+                //await _uploadService.UploadFiles(
+                //    new List<IFormFile> { file },
+                //    "Ftp_eiDOC2024",
+                //    $"Documents\\{user.FirstName + "-" + user.Id}",
+                //    application.Id,
+                //    DocumentTypeId.Value,
+                //DocumentId.Value
+                //);
+
+                int userId = application.UserId;
+                int companyId = application.CompanyId ?? 0;
+                int documentTypeId = documentType.Id;
+
+                var rootFolder = _hostingEnvironment.WebRootPath;
+                var saveLocation = Path.Combine("Files", "Documents", "Applicant", documentType.Description, application.Code ?? "");
+                var referenceType = (int)DocumentReferenceType.Applicant;
+                int referenceId = application.Id;
+
+                List<IFormFile> fileList = new List<IFormFile> { file };
+
+                await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpDelete]
         public async Task DocumentDelete(int DocumentId)
         {
-            await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024");
+            //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
+            await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local 
         }
 
         public async Task<IActionResult> GetAllDocumentTypes() =>
             Ok(await _documentTypeRepo.SpGetAllUserDocumentTypes());
+
         [HttpPost]
         public async Task<IActionResult> Savedocument(DocumentViewModel model)
         {
@@ -187,13 +261,19 @@ namespace DMS.Web.Controllers.Setup
                 return Ok("added");
             }
         }
+
         public async Task<IActionResult> GetDocumentById(int id) =>
             Ok((await _documentTypeRepo.SpGetAllUserDocumentTypes()).FirstOrDefault(x => x.Id == id));
+
         [HttpDelete]
         public async Task DeleteDocuments(int[] ids) =>
             await _documentTypeRepo.BatchDeleteAsync(ids);
 
         public async Task<IActionResult> GetFileList(int ApplicationId, int DocumentTypeId) =>
             Ok(await _documentTypeRepo.SpGetAllDocumentsByIds(ApplicationId, DocumentTypeId));
+
+        [Route("[controller]/GetApplicantUploadedDocuments/{applicantCode?}")]
+        public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
+         Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
     }
 }

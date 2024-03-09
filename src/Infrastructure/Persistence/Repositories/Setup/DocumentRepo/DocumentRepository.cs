@@ -1,10 +1,8 @@
-﻿
-
-using DMS.Domain.Dto.DocumentDto;
-using Microsoft.EntityFrameworkCore;
-using DMS.Application.Interfaces.Setup.DocumentRepository;
+﻿using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
 {
@@ -14,6 +12,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
         private readonly EfCoreHelper<Document> _contextHelper;
         private readonly ICurrentUserService _currentUserService;
         private readonly ISQLDatabaseService _db;
+
         public DocumentRepository(DMSDBContext context, ICurrentUserService currentUserService, ISQLDatabaseService db)
         {
             _context = context;
@@ -21,18 +20,22 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             _currentUserService = currentUserService;
             _db = db;
         }
+
         public async Task<List<ApplicationSubmittedDocumentModel>> SpGetAllApplicationSubmittedDocuments(int ApplicationId) =>
             (await _db.LoadDataAsync<ApplicationSubmittedDocumentModel, dynamic>("spDocument_GetAllApplicationSubmittedDocuments", new { ApplicationId })).ToList();
+
         public async Task<Document?> GetById(int id)
         {
             var result = await _contextHelper.GetByIdAsync(id);
             return result;
         }
-        public async Task<Document?> GetCode(int refId, string refNo,int documentType)
+
+        public async Task<Document?> GetCode(int refId, string refNo, int documentType)
         {
             var result = await _context.Documents.AsNoTracking().FirstOrDefaultAsync(x => x.ReferenceId == refId && x.ReferenceNo == refNo && x.DocumentTypeId == documentType);
             return result;
         }
+
         public async Task<List<Document>> GetByIds(int[] ids)
         {
             var result = await _context.Documents.Where(d => ids.Contains(d.Id)).ToListAsync();
@@ -44,6 +47,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             var result = await _contextHelper.GetAllAsync();
             return result;
         }
+
+        public async Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByCode(string applicantCode) =>
+             (await _db.LoadDataAsync<DocumentModel, dynamic>("spDocument_GetApplicantDocumentsByCode", new { applicantCode }));
 
         public async Task<Document> SaveAsync(Document document)
         {

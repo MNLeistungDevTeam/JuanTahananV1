@@ -66,7 +66,7 @@ $(() => {
                                 <i class="mdi mdi-dots-horizontal"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-animated" style="">
-                                ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Document/DocumentUpload/${data.Id}">Upload Document</a>` : ''}
+                                ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Document</a>` : ''}
                                 <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Housing Application</a>
                                 ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Report/LatestHousingForm?userId=${data.Id}">View PDF</a>` : ''}
                             </div>
