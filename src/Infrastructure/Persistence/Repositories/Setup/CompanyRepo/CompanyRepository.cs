@@ -93,11 +93,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
             }
         }
 
-        public async Task<CompanyInfoModel?> GetCompanyInfo(int companyId)
+        public async Task<CompanyInfoModel?> GetCompanyInfo(int loanPurposeId)
         {
             try
             {
-                var data = await _db.LoadSingleAsync<CompanyInfoModel, dynamic>("spCompany_GetInfo", new { companyId });
+                var data = await _db.LoadSingleAsync<CompanyInfoModel, dynamic>("spCompany_GetInfo", new { loanPurposeId });
                 return data;
             }
             catch (Exception)
@@ -155,9 +155,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
                 if (clModel is not null && clModel.Any())
                 {
                     var clList = new List<CompanyLogo>();
-                    foreach (var _companyLogo in clModel)
+                    foreach (var _loanPurposeLogo in clModel)
                     {
-                        var _clModel = _mapper.Map<CompanyLogo>(_companyLogo);
+                        var _clModel = _mapper.Map<CompanyLogo>(_loanPurposeLogo);
                         _clModel.CompanyId = _cModel.Id;
 
                         if (!string.IsNullOrEmpty(_clModel.Location))
@@ -209,13 +209,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
             }
         }
 
-        public async Task<Company> CreateAsync(Company company, int createdById)
+        public async Task<Company> CreateAsync(Company loanPurpose, int createdById)
         {
             try
             {
-                company.CreatedById = createdById;
-                company.DateCreated = DateTime.UtcNow;
-                var result = await _contextHelper.CreateAsync(company, "ModifiedById", "DateModified");
+                loanPurpose.CreatedById = createdById;
+                loanPurpose.DateCreated = DateTime.UtcNow;
+                var result = await _contextHelper.CreateAsync(loanPurpose, "ModifiedById", "DateModified");
 
                 return result;
             }
@@ -225,13 +225,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
             }
         }
 
-        public async Task<Company> UpdateAsync(Company company, int modifiedById)
+        public async Task<Company> UpdateAsync(Company loanPurpose, int modifiedById)
         {
             try
             {
-                company.ModifiedById = modifiedById;
-                company.DateModified = DateTime.UtcNow;
-                var result = await _contextHelper.UpdateAsync(company, "CreatedById", "DateCreated");
+                loanPurpose.ModifiedById = modifiedById;
+                loanPurpose.DateModified = DateTime.UtcNow;
+                var result = await _contextHelper.UpdateAsync(loanPurpose, "CreatedById", "DateCreated");
 
                 return result;
             }
@@ -269,13 +269,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyRepo
             }
         }
 
-        private async void DeleteProfilePictures(int companyId, List<CompanyLogo> logoList, string webHostingEnv)
+        private async void DeleteProfilePictures(int loanPurposeId, List<CompanyLogo> logoList, string webHostingEnv)
         {
             try
             {
-                var company = await GetByIdAsync(companyId);
+                var loanPurpose = await GetByIdAsync(loanPurposeId);
 
-                if (company == null)
+                if (loanPurpose == null)
                     return;
 
                 foreach (var item in logoList)

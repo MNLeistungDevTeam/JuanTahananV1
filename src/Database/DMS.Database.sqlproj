@@ -87,6 +87,15 @@
     <Folder Include="Stored Procedures\Setup\Entity" />
     <Folder Include="Stored Procedures\Setup\Country" />
     <Folder Include="Tables\Others" />
+    <Folder Include="Stored Procedures\Setup\ApplicantsPersonalInformation" />
+    <Folder Include="Stored Procedures\Setup\PurposeOfLoan" />
+    <Folder Include="Stored Procedures\Setup\ModeOfPayment" />
+    <Folder Include="Stored Procedures\Setup\PropertyType" />
+    <Folder Include="Stored Procedures\Setup\LoanParticularInformation" />
+    <Folder Include="Stored Procedures\Setup\BarrowerInformation" />
+    <Folder Include="Stored Procedures\Setup\CollateralInformation" />
+    <Folder Include="Stored Procedures\Setup\Form2Page" />
+    <Folder Include="Stored Procedures\Setup\Spouse" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -138,6 +147,20 @@
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetAll.sql" />
     <Build Include="Stored Procedures\Setup\Country\spCountry_GetByName.sql" />
     <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByModuleCode.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetByCode.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetByUserId.sql" />
+    <Build Include="Stored Procedures\Setup\PurposeOfLoan\spPurposeOfLoan_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PurposeOfLoan\spPurposeOfLoan_Get.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyType\spPropertyType_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyType\spPropertyType_Get.sql" />
+    <Build Include="Stored Procedures\Setup\ModeOfPayment\spModeOfPayment_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\ModeOfPayment\spModeOfPayment_Get.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_Get.sql" />
+    <Build Include="Stored Procedures\Setup\LoanParticularInformation\spLoanParticularsInformation_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\BarrowerInformation\spBarrowersInformationModel_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\CollateralInformation\spCollateralInformationModel_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Form2Page\spForm2Page_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Spouse\spSpouse_GetByApplicantId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

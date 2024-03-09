@@ -34,6 +34,12 @@ using DMS.Infrastructure.Persistence.Repositories.Setup.CountryRepo;
 using DMS.Application.Interfaces.Setup.CountryRepo;
 using DMS.Application.Interfaces.Setup.AddressTypeRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.AddressTypeRepo;
+using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.PurposeOfLoanRepo;
+using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
+using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.PropertyTypeRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ModeOfPaymentRepo;
 
 namespace Template.Infrastructure;
 
@@ -91,7 +97,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
         services.AddScoped<IModuleRepository, ModuleRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<IRoleAccessRepository,RoleAccessRepository>();
+        services.AddScoped<IRoleAccessRepository, RoleAccessRepository>();
         services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserApproverRepository, UserApproverRepository>();
@@ -99,21 +105,24 @@ public static class DependencyInjectionConfig
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IDocumentRepository, DocumentRepository>();
         services.AddScoped<ILongOperationSignalRService, LongOperationSignalRService>();
-        services.AddScoped<IApplicantsPersonalInformationRepository,ApplicantsPersonalInformationRepository>();
-        services.AddScoped<ICollateralInformationRepository,CollateralInformationRepository>();
-        services.AddScoped<IBarrowersInformationRepository,BarrowersInformationRepository>();
+        services.AddScoped<IApplicantsPersonalInformationRepository, ApplicantsPersonalInformationRepository>();
+        services.AddScoped<ICollateralInformationRepository, CollateralInformationRepository>();
+        services.AddScoped<IBarrowersInformationRepository, BarrowersInformationRepository>();
         services.AddScoped<ILoanParticularsInformationRepository, LoanParticularsInformationRepository>();
         services.AddScoped<ISpouseRepository, SpouseRepository>();
         services.AddScoped<IUserDocumentRepository, UserDocumentRepository>();
-        services.AddScoped<IForm2PageRepository,Form2PageRepository>();
-        services.AddScoped<ICompanyRepository,CompanyRepository>();
-        services.AddScoped<ICompanySettingRepository,CompanySettingRepository>();
-        services.AddScoped<ICompanyLogoRepository,CompanyLogoRepository>();
+        services.AddScoped<IForm2PageRepository, Form2PageRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<ICompanySettingRepository, CompanySettingRepository>();
+        services.AddScoped<ICompanyLogoRepository, CompanyLogoRepository>();
 
-        services.AddScoped<IAddressRepository,AddressRepository>();
-        services.AddScoped<IAddressTypeRepository,AddressTypeRepository>();
-        services.AddScoped<ICountryRepository,CountryRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IAddressTypeRepository, AddressTypeRepository>();
+        services.AddScoped<ICountryRepository, CountryRepository>();
 
+        services.AddScoped<IPurposeOfLoanRepository, PurposeOfLoanRepository>();
+        services.AddScoped<IModeOfPaymentRepository, ModeOfPaymentRepository>();
+        services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
 
         return services;
     }

@@ -24,8 +24,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo
 
         #region Read
 
-        public async Task<CompanySetting?> GetByCompanyIdAsync(int companyId) =>
-            await _context.CompanySettings.FirstOrDefaultAsync(m => m.CompanyId == companyId);
+        public async Task<CompanySetting?> GetByCompanyIdAsync(int loanPurposeId) =>
+            await _context.CompanySettings.FirstOrDefaultAsync(m => m.CompanyId == loanPurposeId);
 
         public async Task<CompanySetting?> GetByIdAsync(int id)
         {

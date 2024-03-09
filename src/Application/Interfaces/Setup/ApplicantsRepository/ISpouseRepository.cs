@@ -17,5 +17,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<Spouse> UpdateAsync(Spouse spouse);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<SpouseModel?> GetByApplicantIdAsync(int applicantId);
     }
 }

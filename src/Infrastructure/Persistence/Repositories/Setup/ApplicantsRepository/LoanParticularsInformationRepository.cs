@@ -31,8 +31,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<LoanParticularsInformation?> GetByIdAsync(int id) =>
             await _context.LoanParticularsInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<LoanParticularsInformation?> GetByApplicationIdAsync(int id) =>
             await _context.LoanParticularsInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
+        public async Task<LoanParticularsInformationModel?> GetByApplicantIdAsync(int applicantId) =>
+            await _db.LoadSingleAsync<LoanParticularsInformationModel, dynamic>("spLoanParticularsInformation_GetByApplicantId", new { applicantId });
+
         public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model)
         {
             if (model.Id == 0)
@@ -41,6 +46,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 model = _mapper.Map<LoanParticularsInformationModel>(await UpdateAsync(model));
             return _mapper.Map<LoanParticularsInformation>(model);
         }
+
         public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformationModel model)
         {
             model.DateCreated = DateTime.UtcNow;
@@ -49,6 +55,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
             return mapped;
         }
+
         public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformationModel model)
         {
             model.DateModified = DateTime.UtcNow;
@@ -57,6 +64,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
             return mapped;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -68,6 +76,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.LoanParticularsInformations.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -75,7 +84,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

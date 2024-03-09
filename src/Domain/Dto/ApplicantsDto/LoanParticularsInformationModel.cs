@@ -13,16 +13,23 @@ namespace DMS.Domain.Dto.ApplicantsDto
     public class LoanParticularsInformationModel
     {
         public int Id { get; set; }
+
         [Display(Name = "Purpose of Loan", Prompt = "Select Purpose of Loan")]
         public int PurposeOfLoanId { get; set; }
+
         public int ApplicantsPersonalInformationId { get; set; }
+
         [Required(ErrorMessage = "this field is required")]
         [Display(Name = "Desired Re-Pricing Pediod (Years)", Prompt = "Select Re-pracing Period")]
         public int RepricingPeriod { get; set; }
+
         [Display(Name = "Loan Term Years", Prompt = "Input Year")]
+        [Range(0, 30, ErrorMessage = "Loan Term Years must between 1 - 30")]
         public int DesiredLoanTermYears { get; set; }
+
         [Display(Name = "Mode of Payment (MOP)", Prompt = "Select mode of payment")]
         public int ModeOfPaymentId { get; set; }
+
         [DisplayName("With Existing Housing Application")]
         public bool ExistingChecker
         {
@@ -31,11 +38,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
                 return !string.IsNullOrEmpty(ExistingHousingApplicationNumber);
             }
         }
+
         [Display(Name = "Desired Loan Amount", Prompt = "Input desired loan amount")]
         public decimal DesiredLoanAmount { get; set; }
+
         [StringLength(14)]
         [Display(Name = "Indicate Housing Application No.", Prompt = "Input existing application no.")]
-        public string? ExistingHousingApplicationNumber { get; set; }
+        public string? ExistingHousingApplicationNumber { get; set; } = string.Empty;
 
         public DateTime DateCreated { get; set; }
 

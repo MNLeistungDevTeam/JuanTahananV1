@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
 using DMS.Domain.Entities;
+using DevExpress.CodeParser;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -31,10 +32,22 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<ApplicantsPersonalInformation?> GetByIdAsync(int id) =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<ApplicantsPersonalInformation?> GetbyUserId(int id) =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == id);
+
         public async Task<List<ApplicantsPersonalInformation>?> GetAllAsync() =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().ToListAsync();
+
+        public async Task<ApplicantsPersonalInformationModel?> GetAsync(int id) =>
+         await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_Get", new { id });
+
+        public async Task<ApplicantsPersonalInformationModel?> GetByCodeAsync(string code) =>
+          await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByCode", new { code });
+
+        public async Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId) =>
+          await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
+
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model)
         {
             if (model.Id == 0)
@@ -43,6 +56,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 model = _mapper.Map<ApplicantsPersonalInformationModel>(await UpdateAsync(model));
             return _mapper.Map<ApplicantsPersonalInformation>(model);
         }
+
         public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformationModel model)
         {
             model.DateCreated = DateTime.UtcNow;
@@ -51,6 +65,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
             return mapped;
         }
+
         public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformationModel model)
         {
             model.DateModified = DateTime.UtcNow;
@@ -59,6 +74,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
             return mapped;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -70,6 +86,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.ApplicantsPersonalInformations.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -77,7 +94,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

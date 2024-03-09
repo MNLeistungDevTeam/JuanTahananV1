@@ -7,13 +7,13 @@
 }
 <div class="card rounded-4">
     <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-        @if (string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformation.Code))
+        @if (string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code))
         {
             <h3 class="text-dark float-start fw-semibold">Adding Beneficiary</h3>
         }
         else
         {
-            <h3 class="text-dark float-start fw-semibold">Update Beneficiary - @Model.ApplicantsPersonalInformation.Code</h3>
+            <h3 class="text-dark float-start fw-semibold">Update Beneficiary - @Model.ApplicantsPersonalInformationModel.Code</h3>
         }
     </div>
     <div class="card-body">
@@ -41,8 +41,8 @@
 
                 <div class="tab-pane" id="first">
                     <form id="loanparticulars" method="post" action="#" class="form-horizontal needs-validation" novalidate>
-                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformation.Id">
-                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformation.UserId">
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.Id">
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.UserId">
                         @await Html.PartialAsync("WizardPartials/Applicants/_LoanParticulars")
                     </form>
                     <ul class="list-inline wizard mb-0 mt-2">

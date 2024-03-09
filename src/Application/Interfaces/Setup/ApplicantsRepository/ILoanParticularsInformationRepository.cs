@@ -17,5 +17,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformationModel model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<LoanParticularsInformationModel?> GetByApplicantIdAsync(int applicantId);
     }
 }

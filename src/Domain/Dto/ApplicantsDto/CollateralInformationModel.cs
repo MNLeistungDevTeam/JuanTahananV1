@@ -24,7 +24,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int PropertyTypeId { get; set; }
         [Display(Name = "TCT/OCT/CCT Number", Prompt = "Input number")]
         public int? TctOctCctNumber { get; set; }
-        [Display(Name = "Tax Declration Number", Prompt = "Input number")]
+        [Display(Name = "Tax Declaration Number", Prompt = "Input number")]
         public int? TaxDeclrationNumber { get; set; }
         [Display(Name = "Lot Unit Number", Prompt = "Input number")]
         public int? LotUnitNumber { get; set; } = 0;
@@ -41,7 +41,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
             }
         }
         [Display(Name = "Reason for use of offsite collateral", Prompt = "Input reason")]
-        public string? CollateralReason { get; set; }
+        public string? CollateralReason { get; set; } = string.Empty;
         [Display(Name = "Land Area / Floor Area", Prompt = "Input sqm")]
         public decimal? LandArea { get; set; }
         [Display(Name = "Age of House (for purchase of residential unit)", Prompt = "Input sqm")]

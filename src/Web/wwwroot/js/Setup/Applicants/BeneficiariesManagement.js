@@ -59,6 +59,7 @@ $(() => {
                     orderable: !0,
                     className: 'align-middle text-center',
                     render: function (data) {
+                        let applicantCode = data.ApplicantCode != null ? `/${data.ApplicantCode}` : "";
                         return `
                         <div class="dropdown btn-group">
                             <button class="btn btn-light waves-effect" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,7 +67,7 @@ $(() => {
                             </button>
                             <div class="dropdown-menu dropdown-menu-animated" style="">
                                 ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Document/DocumentUpload/${data.Id}">Upload Document</a>` : ''}
-                                <a class="dropdown-item" href="/Applicants/HLF068?UserId=${data.Id}">Housing Application</a>
+                                <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Housing Application</a>
                                 ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Report/LatestHousingForm?userId=${data.Id}">View PDF</a>` : ''}
                             </div>
                         </div>
@@ -99,7 +100,7 @@ $(() => {
         //tbl_beneficiaries.on('click', 'tbody tr', function () {
         //    var data = tbl_beneficiaries.row(this).data();
         //    if (data) {
-        //        var id = data.Id; 
+        //        var id = data.Id;
         //        location.href = '/Applicants/HLF068?UserId=' + id;
         //    }
         //});

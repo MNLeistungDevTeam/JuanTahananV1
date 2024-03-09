@@ -39,15 +39,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
             return data;
         }
 
-        public async Task<IEnumerable<CompanyLogoModel>> GetByCompanyId(int companyId)
+        public async Task<IEnumerable<CompanyLogoModel>> GetByCompanyId(int loanPurposeId)
         {
-            var data = await _db.LoadDataAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetAllByCompanyId", new { companyId });
+            var data = await _db.LoadDataAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetAllByCompanyId", new { loanPurposeId });
             return data;
         }
 
-        public async Task<CompanyLogoModel?> GetByDesc(int companyId, string description)
+        public async Task<CompanyLogoModel?> GetByDesc(int loanPurposeId, string description)
         {
-            var data = await _db.LoadSingleAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetByDesc", new { companyId, description });
+            var data = await _db.LoadSingleAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetByDesc", new { loanPurposeId, description });
             return data;
         }
 
@@ -58,34 +58,34 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
             return data;
         }
 
-        public async Task<CompanyLogo> SaveAsync(CompanyLogo companyLogo, int userId)
+        public async Task<CompanyLogo> SaveAsync(CompanyLogo loanPurposeLogo, int userId)
         {
-            if (companyLogo.Id == 0)
+            if (loanPurposeLogo.Id == 0)
             {
-                companyLogo = await CreateAsync(companyLogo, userId);
+                loanPurposeLogo = await CreateAsync(loanPurposeLogo, userId);
             }
             else
             {
-                companyLogo = await UpdateAsync(companyLogo, userId);
+                loanPurposeLogo = await UpdateAsync(loanPurposeLogo, userId);
             }
 
-            return companyLogo;
+            return loanPurposeLogo;
         } 
 
-        public async Task<CompanyLogo> CreateAsync(CompanyLogo companyLogo, int createdById)
+        public async Task<CompanyLogo> CreateAsync(CompanyLogo loanPurposeLogo, int createdById)
         {
-            companyLogo.CreatedById = createdById;
-            companyLogo.DateCreated = DateTime.Now;
-            var result = await _contextHelper.CreateAsync(companyLogo, "ModifiedById", "DateModified");
+            loanPurposeLogo.CreatedById = createdById;
+            loanPurposeLogo.DateCreated = DateTime.Now;
+            var result = await _contextHelper.CreateAsync(loanPurposeLogo, "ModifiedById", "DateModified");
 
             return result;
         }
 
-        public async Task<CompanyLogo> UpdateAsync(CompanyLogo companyLogo, int modifiedById)
+        public async Task<CompanyLogo> UpdateAsync(CompanyLogo loanPurposeLogo, int modifiedById)
         {
-            companyLogo.ModifiedById = modifiedById;
-            companyLogo.DateModified = DateTime.Now;
-            var result = await _contextHelper.UpdateAsync(companyLogo, "CreatedById", "DateCreated");
+            loanPurposeLogo.ModifiedById = modifiedById;
+            loanPurposeLogo.DateModified = DateTime.Now;
+            var result = await _contextHelper.UpdateAsync(loanPurposeLogo, "CreatedById", "DateCreated");
 
             return result;
         }
@@ -108,9 +108,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
             }
         }
 
-        public async Task BatchDeleteAsync(List<CompanyLogo> companyLogos)
+        public async Task BatchDeleteAsync(List<CompanyLogo> loanPurposeLogos)
         {
-            await _contextHelper.BatchDeleteAsync(companyLogos);
+            await _contextHelper.BatchDeleteAsync(loanPurposeLogos);
         }
     }
 }

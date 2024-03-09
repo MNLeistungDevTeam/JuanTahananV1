@@ -30,6 +30,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<Spouse?> GetByApplicationInfoIdAsync(int id) =>
      await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+        
+        public async Task<SpouseModel?> GetByApplicantIdAsync(int applicantId) =>
+            await _db.LoadSingleAsync<SpouseModel, dynamic>("spSpouse_GetByApplicantId", new { applicantId });
 
         public async Task<Spouse> SaveAsync(SpouseModel model)
         {
