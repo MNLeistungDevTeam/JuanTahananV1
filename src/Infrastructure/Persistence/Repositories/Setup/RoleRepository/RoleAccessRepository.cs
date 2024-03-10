@@ -45,6 +45,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         public async Task<List<RoleAccess>?> GetAllAsync() =>
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
 
+
+
+
+        public async Task<IEnumerable<RoleAccessModel>> GetRoleByModuleCodeAsync(int userId, string? moduleCode) =>
+          await _db.LoadDataAsync<RoleAccessModel, dynamic>("spRoleAccess_GetRoleByModuleCode", new { userId, moduleCode });
+
+
+
+
         public async Task<RoleAccess> SaveAsync(RoleAccessModel model)
         {
             var _roleAccess = _mapper.Map<RoleAccess>(model);

@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace DMS.Domain.Entities;
 
-public partial class ModeOfPayment
+public partial class NotificationPriorityLevel
 {
     public int Id { get; set; }
 
-    public string Description { get; set; }
+    public string LevelName { get; set; }
 
-    public DateTime DateCreated { get; set; }
+    public DateTime? DateCreated { get; set; }
 
-    public int CreatedById { get; set; }
-
-    public int? ModifiedById { get; set; }
+    public int? CreatedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public int? ModifiedById { get; set; }
 }

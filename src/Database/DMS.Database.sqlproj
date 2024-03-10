@@ -96,6 +96,8 @@
     <Folder Include="Stored Procedures\Setup\CollateralInformation" />
     <Folder Include="Stored Procedures\Setup\Form2Page" />
     <Folder Include="Stored Procedures\Setup\Spouse" />
+    <Folder Include="Tables\Additional Features" />
+    <Folder Include="Tables\Additional Features\Notification" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -163,6 +165,12 @@
     <Build Include="Stored Procedures\Setup\Spouse\spSpouse_GetByApplicantId.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetDocumentsByApplicantInformationCode.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByCode.sql" />
+    <Build Include="Tables\Additional Features\Notification\Notification.sql" />
+    <Build Include="Tables\Additional Features\Notification\NotificationReceiver.sql" />
+    <Build Include="Tables\Additional Features\Notification\NotificationPriorityLevel.sql" />
+    <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetRoleByModuleCode.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModule_GetByCode.sql" />
+    <Build Include="Tables\Setup\Module\ModuleType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -44,5 +44,6 @@ namespace DMS.Domain.Dto.RoleDto
         public int? ModifiedById { get; set; }
 
         public DateTime? DateModified { get; set; }
+        public int? UserId { get; set; }
     }
 }

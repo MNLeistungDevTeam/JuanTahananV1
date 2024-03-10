@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 namespace DMS.Domain.Entities;
 
-public partial class ModeOfPayment
+public partial class AddressType
 {
     public int Id { get; set; }
 
-    public string Description { get; set; }
+    public string Code { get; set; }
 
-    public DateTime DateCreated { get; set; }
+    public string Name { get; set; }
 
     public int CreatedById { get; set; }
+
+    public DateTime DateCreated { get; set; }
 
     public int? ModifiedById { get; set; }
 

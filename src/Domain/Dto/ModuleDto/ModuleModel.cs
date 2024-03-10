@@ -59,5 +59,7 @@ namespace DMS.Domain.Dto.ModuleDto
         public string? StatusName { get; set; }
         public string? StatusColor { get; set; }
 
+        public string? ParentModule { get; set;}
+
     }
 }
