@@ -8,9 +8,9 @@ namespace DMS.Web.Models
 {
     public class ApplicantViewModel
     {
-        public ApplicantsPersonalInformationModel ApplicantsPersonalInformation { get; set; } = new();
-        public LoanParticularsInformationModel LoanParticularsInformation { get; set; } = new();
-        public CollateralInformationModel CollateralInformation { get; set; } = new();
+        public ApplicantsPersonalInformationModel ApplicantsPersonalInformationModel { get; set; } = new();
+        public LoanParticularsInformationModel LoanParticularsInformationModel { get; set; } = new();
+        public CollateralInformationModel CollateralInformationModel { get; set; } = new();
         public BarrowersInformationModel BarrowersInformationModel { get; set; } = new();
         public SpouseModel SpouseModel { get; set; } = new();
         public List<ApplicationSubmittedDocumentModel> ApplicationSubmittedDocumentModels { get; set; } = new();

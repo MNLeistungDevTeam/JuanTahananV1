@@ -21,6 +21,7 @@ using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Entities;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
+using RoleAccessModel = DMS.Domain.Dto.RoleDto.RoleAccessModel;
 
 namespace DMS.Web.Controllers.Setup
 {
@@ -187,7 +188,7 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetRoleById(int id) =>
             Ok(await _roleRepo.GetByIdAsync(id));
         public async Task<IActionResult> GetAllRoles() =>
-            Ok(await _roleRepo.SpGetAllRoles());
+            Ok(await _roleRepo.GetAllRolesAsync());
 
         public async Task<IActionResult> GetUsers(int roleId)
         {

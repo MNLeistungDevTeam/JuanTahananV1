@@ -28,4 +28,6 @@ public partial class ApplicantsPersonalInformation
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public int? CompanyId { get; set; }
 }

@@ -33,6 +33,17 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             await _context.BarrowersInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         public async Task<BarrowersInformation?> GetByApplicationInfoIdAsync(int id) =>
             await _context.BarrowersInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
+
+        public async Task<BarrowersInformationModel?> GetByApplicantIdAsync(int applicantId) =>
+        await _db.LoadSingleAsync<BarrowersInformationModel, dynamic>("spBarrowersInformationModel_GetByApplicantId", new { applicantId });
+
+
+
+
+
+
+
         public async Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model)
         {
             if (model.Id == 0)

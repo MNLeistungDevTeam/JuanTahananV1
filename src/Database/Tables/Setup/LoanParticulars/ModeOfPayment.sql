@@ -2,6 +2,8 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	[Description] NVARCHAR(MAX) NOT NULL,
-	[DateCreated] DATETIME2 NOT NULL DEFAULT (GETDATE()), 
+	[DateCreated] DATETIME2(7) NOT NULL DEFAULT (GETDATE()), 
     [CreatedById] INT NOT NULL,
+	ModifiedById INT NULL,
+	DateModified DATETIME2(7) NULL 
 )

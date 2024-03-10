@@ -25,12 +25,12 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h6 class="m-0 font-16 fw-semibold">
-                                        Application @(item.ApplicantsPersonalInformation?.Code ?? "")
+                                        Application @(item.ApplicantsPersonalInformationModel?.Code ?? "")
                                     </h6>
                                 </div>
                                 <div class="col-auto">
                                     @{
-                                        var validationIds = new[] { item.LoanParticularsInformation?.Id ?? 0, item.CollateralInformation?.Id ?? 0, item.BarrowersInformationModel?.Id ?? 0, item.SpouseModel?.Id ?? 0 };
+                                        var validationIds = new[] { item.LoanParticularsInformationModel?.Id ?? 0, item.CollateralInformationModel?.Id ?? 0, item.BarrowersInformationModel?.Id ?? 0, item.SpouseModel?.Id ?? 0 };
                                         if (validationIds.Any(x => x == 0))
                                         {
                                             <span class="badge text-bg-danger rounded-4 px-3 py-1 font-16">Incomplete Details!</span>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-6">
                                     <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
-                                        @(item.CollateralInformation?.DeveloperName ?? "")
+                                        @(item.CollateralInformationModel?.DeveloperName ?? "")
                                     </h6>
                                 </div>
                                 <div class="col-6">
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-6">
                                     <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
-                                        @(item?.CollateralInformation?.LotUnitNumber ?? 0)
+                                        @(item?.CollateralInformationModel?.LotUnitNumber ?? 0)
                                     </h6>
                                 </div>
                                 <div class="col-6">
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-6">
                                     <h6 class="m-0 font-16 fw-semibold text-dark text-truncate">
-                                        @(item.ApplicantsPersonalInformation?.DateCreated.ToString("yyyy-MM-dd") ?? "")
+                                        @(item.ApplicantsPersonalInformationModel?.DateCreated.ToString("yyyy-MM-dd") ?? "")
                                     </h6>
                                 </div>
                                 <div class="col-12"></div>

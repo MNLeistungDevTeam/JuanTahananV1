@@ -16,10 +16,15 @@ public interface IDocumentRepository
     Task DeleteAsync(int id);
 
     Task<List<Document>> GetAll();
+
     Task<List<ApplicationSubmittedDocumentModel>> SpGetAllApplicationSubmittedDocuments(int ApplicationId);
+
     Task<Document?> GetById(int id);
-    Task<Document?> GetCode(int refId,string refNo,int documentType);
+
+    Task<Document?> GetCode(int refId, string refNo, int documentType);
+
     Task<Document> SaveAsync(Document document);
 
     Task<Document> UpdateAsync(Document document);
+    Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByCode(string applicantCode);
 }

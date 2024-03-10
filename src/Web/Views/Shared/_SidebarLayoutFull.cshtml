@@ -43,6 +43,8 @@
 
 <body>
     <input type="hidden" id="txtBaseUrl" value="@(@Url.Content("~"))/" />
+    <div id="Layout-defaultLogo" hidden>@Url.Content("~/images/JuanTahananAssets/Logo/JuanTahananLogo.png")</div>
+
 
     <!-- Begin page -->
     <div id="wrapper">
@@ -63,11 +65,19 @@
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
+
+
+                           
+
                             <div class="page-title-box">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        @*                                         @Html.Raw(ViewData["Breads"])
-                                        <li class="breadcrumb-item active">@ViewData["Title"]</li> *@
+                                       @*  @html.raw(viewdata["breads"])
+                                        <li class="breadcrumb-item active">@ViewData[""]</li> *@
+
+
+                                        <li class="breadcrumb-item active"><a href="/">Dashboard</a></li>
+                                        <li class="breadcrumb-item active">@ViewData["Title"]</li>
                                     </ol>
                                 </div>
                                 <h4 class="page-title">@ViewData["Title"]</h4>

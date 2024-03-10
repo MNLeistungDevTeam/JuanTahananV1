@@ -20,3 +20,6 @@ Post-Deployment Script Template
 :r .\PostDeploymentScript\Script.PostDeployment_PropertyType.sql
 :r .\PostDeploymentScript\Script.PostDeployment_PurposeOfLoan.sql
 :r .\PostDeploymentScript\Script.PostDeployment_FormatBytes.sql
+:r .\PostDeploymentScript\Script.PostDeployment_Country.sql
+:r .\PostDeploymentScript\Script.PostDeployment_AddressType.sql
+:r .\PostDeploymentScript\Script.PostDeployment_ModeOfPayment.sql

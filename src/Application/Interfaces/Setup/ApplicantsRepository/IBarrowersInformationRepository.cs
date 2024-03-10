@@ -17,5 +17,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<BarrowersInformation> UpdateAsync(BarrowersInformationModel model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<BarrowersInformationModel?> GetByApplicantIdAsync(int applicantId);
     }
 }

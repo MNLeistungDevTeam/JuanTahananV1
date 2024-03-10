@@ -1,0 +1,278 @@
+﻿@model CompanyViewModel
+@{
+    ViewData["Title"] = "Company";
+}
+
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <h3 class="text-dark float-start fw-semibold">Company List</h3>
+        @*         <h3 class="text-muted float-end font-15">Maximum File size 100MB</h3> *@
+    </div>
+    <div class="card-body">
+        <div class="row gy-2">
+            <div class="col-12">
+
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <a class="btn btn-light btn-sm waves-effect" href="~/CompanyProfile"><span class="fe-briefcase"></span> Company Profile</a>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_add"><span class="mdi mdi-plus"></span> Add</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_copy" disabled><span class="fe-copy"></span> Copy</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_delete"><span class="mdi mdi-delete-outline"></span> Delete</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_refresh"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input id="txt_search" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_company">
+                    <thead class="table-light">
+                        <tr class="border">
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Business Style</th>
+                            <th>TIN</th>
+                            <th>Tel. No.</th>
+                            <th>Email</th>
+                            <th>Website</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div id="company_modal" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="company_modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4">
+            <div class="overlay" id="company-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <h3 class="text-dark float-start fw-semibold" id="company-modalLabel"><span class="fe-plus"></span> Add Company</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveCompany" asp-antiforgery="true" method="post" role="form" id="frm_company" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row">
+                            <ul class="nav nav-tabs nav-bordered mb-3" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a href="#company-info" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active" aria-selected="true" tabindex="-1" role="tab">
+                                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                                        <span class="d-none d-md-block">Info</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#company-address" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0" aria-selected="false" role="tab">
+                                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                                        <span class="d-none d-md-block">Address</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a href="#company-logo" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0" aria-selected="false" tabindex="-1" role="tab">
+                                        <i class="mdi mdi-settings-outline d-md-none d-block"></i>
+                                        <span class="d-none d-md-block">Logo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content p-2">
+                                <div class="tab-pane fade show active" id="company-info">
+                                    <div class="row">
+                                        <input type="hidden" asp-for="Company.Id" />
+                                        <div class="col-8 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.Name" class="form-label"></label>
+                                                <input asp-for="Company.Name" class="form-control" placeholder="Name" />
+                                                <span asp-validation-for="Company.Name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.Code" class="form-label"></label>
+                                                <input asp-for="Company.Code" class="form-control" placeholder="Code" />
+                                                <span asp-validation-for="Company.Code"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.BusinessStyle" class="form-label"></label>
+                                                <input asp-for="Company.BusinessStyle" class="form-control" placeholder="Business Style" />
+                                                <span asp-validation-for="Company.BusinessStyle"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.Tin" class="form-label"></label>
+                                                <input asp-for="Company.Tin" class="form-control" placeholder="TIN" />
+                                                <span asp-validation-for="Company.Tin"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.TelNo" class="form-label"></label>
+                                                <input asp-for="Company.TelNo" class="form-control" placeholder="Tel. No." />
+                                                <span asp-validation-for="Company.TelNo"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.MobileNo" class="form-label"></label>
+                                                <input asp-for="Company.MobileNo" class="form-control" placeholder="Mobile No." />
+                                                <span asp-validation-for="Company.MobileNo"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.FaxNo" class="form-label"></label>
+                                                <input asp-for="Company.FaxNo" class="form-control" placeholder="Fax No." />
+                                                <span asp-validation-for="Company.FaxNo"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.Email" class="form-label"></label>
+                                                <input asp-for="Company.Email" class="form-control" placeholder="sample@email.com" />
+                                                <span asp-validation-for="Company.Email"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.Website" class="form-label"></label>
+                                                <input asp-for="Company.Website" class="form-control" placeholder="Website" />
+                                                <span asp-validation-for="Company.Website"></span>
+                                            </div>
+                                        </div>
+                                        <hr my-1 />
+                                        <div class="col-12 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.RepresentativeName" class="form-label"></label>
+                                                <input asp-for="Company.RepresentativeName" class="form-control" placeholder="Representative Name" />
+                                                <span asp-validation-for="Company.RepresentativeName"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="form-group">
+                                                <label asp-for="Company.RepresentativeTin" class="form-label"></label>
+                                                <input asp-for="Company.RepresentativeTin" class="form-control" placeholder="Representative TIN" />
+                                                <span asp-validation-for="Company.RepresentativeTin"></span>
+                                            </div>
+                                        </div>
+                                        <hr my-1 />
+                                        <div class="col-12 mb-2">
+                                            <div class="form-check">
+                                                <input asp-for="Company.IsDisabled" class="form-check-input" />
+                                                <label asp-for="Company.IsDisabled" class="form-check-label"></label>
+                                                <span asp-validation-for="Company.IsDisabled"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="company-address">
+                                    <div class="row address_div"></div>
+                                    <button class="btn btn-sm btn-secondary float-end" type="button" id="btn_add_address">
+                                        <span class="fe-plus"></span> Add Address
+                                    </button>
+                                </div>
+                                <div class="tab-pane fade" id="company-logo">
+                                    <div class="row logo_div">
+                                        @* @if (Model.CompanyLogo != null && Model.CompanyLogo.Any())
+                                        {
+                                        for (int i = 0; i < Model.CompanyLogo.Count; i++)
+                                        {
+                                        <div class="col-6 logo_row">
+                                        <div class="p-2">
+                                        <div class="row">
+                                        <div class="col-12 border p-2">
+                                        <input type="hidden" asp-for="CompanyLogo[i].Id" id="CompanyLogo_Id_[@i]" />
+                                        <input type="hidden" asp-for="CompanyLogo[i].CompanyId" id="CompanyLogo_CompanyId_[@i]" />
+                                        <button type="button" class="btn-close btn-sm float-end remove_logo_file" aria-label="Close"></button>
+                                        </div>
+                                        <div class="col-12 border border-top-0 border-bottom-0 p-2">
+                                        <div class="avatar-upload-rectangle" data-toggle="tooltip" title="Company Logo [@i]">
+                                        <div class="avatar-edit-rectangle input_div">
+                                        <input asp-for="CompanyLogo[i].CompanyLogoFile" id="CompanyLogo_CompanyLogoFile_[@i]" accept=".png, .jpg, .jpeg" />
+                                        <label for="CompanyLogo_CompanyLogoFile_[@i]"></label>
+                                        <span asp-validation-for="CompanyLogo[i].CompanyLogoFile" class="text-danger"></span>
+                                        </div>
+                                        <div class="avatar-preview-rectangle">
+                                        <div id="imagePreview_[@i]"></div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-12 border border-top-0 p-2 pt-0">
+                                        <div class="form-group">
+                                        <input asp-for="CompanyLogo[i].Description" id="CompanyLogo_Description_[@i]" class="form-control" placeholder="Description" />
+                                        <span asp-validation-for="CompanyLogo[i].Description" class="text-danger"></span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        }
+                                        }*@
+
+                                    </div>
+                                    <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="ReportLogo" type="button">
+                                        <span class="fe-plus"></span> Add Report Logo
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogo" type="button">
+                                        <span class="fe-plus"></span> Add Nav Logo
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoSmall" type="button">
+                                        <span class="fe-plus"></span> Add Nav Logo Small
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoDark" type="button">
+                                        <span class="fe-plus"></span> Add Nav Logo Dark
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoSmallDark" type="button">
+                                        <span class="fe-plus"></span> Add Nav Logo Small Dark
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-soft-light border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="btn_save_company" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+ 
+
+
+
+
+
+ 
+
+@section Links {
+}
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js"></script>
+    <script src="~/js/Setup/Company/CompanyScript.js" asp-append-version="true"></script>
+}

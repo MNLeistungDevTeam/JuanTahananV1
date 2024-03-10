@@ -23,12 +23,19 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             _mapper = mapper;
             _db = db;
         }
+
         public async Task<DocumentType?> GetByIdAsync(int id) =>
             await _context.DocumentTypes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<List<DocumentTypeModel>> SpGetAllUserDocumentTypes() =>
-        (await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetAllUserDocumentTypes", new {})).ToList();
-        public async Task<List<DocumentInfo>> SpGetAllDocumentsByIds(int ApplicationId,int DocumentTypeId) =>
-        (await _db.LoadDataAsync<DocumentInfo, dynamic>("spDocument_GetAllDocumentsByIds", new { ApplicationId , DocumentTypeId })).ToList();
+        (await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetAllUserDocumentTypes", new { })).ToList();
+
+        public async Task<List<DocumentInfo>> SpGetAllDocumentsByIds(int ApplicationId, int DocumentTypeId) =>
+        (await _db.LoadDataAsync<DocumentInfo, dynamic>("spDocument_GetAllDocumentsByIds", new { ApplicationId, DocumentTypeId })).ToList();
+
+        public async Task<IEnumerable<DocumentTypeModel?>> GetByApplicantCodeAsync(string applicantCode) =>
+   await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetDocumentsByApplicantInformationCode", new { applicantCode });
+
         public async Task<DocumentType> SaveAsync(DocumentTypeModel model)
         {
             if (model.Id == 0)
@@ -37,6 +44,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
                 model = _mapper.Map<DocumentTypeModel>(await UpdateAsync(model));
             return _mapper.Map<DocumentType>(model);
         }
+
         public async Task<DocumentType> CreateAsync(DocumentTypeModel model)
         {
             model.DateCreated = DateTime.UtcNow;
@@ -45,6 +53,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
             return mapped;
         }
+
         public async Task<DocumentType> UpdateAsync(DocumentTypeModel model)
         {
             model.DateModified = DateTime.UtcNow;
@@ -53,6 +62,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
             return mapped;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -64,6 +74,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.DocumentTypes.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -71,7 +82,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

@@ -2,9 +2,24 @@
     let frmLogin = $("#frmLogin");
     let submitButton = $('button[type="submit"]');
 
+    $("select[name='CompanyId']").find('option:eq(1)').prop('selected', true);
 
+    $("#CompanyId").find('option[value="1"]').prop('selected', true);
 
-    frmLogin.on('submit',function (e) {
+    const $passwordField = $("#Password");
+    const $togglePassword = $(".password-toggle-icon");
+
+    $togglePassword.on("click", function () {
+        if ($passwordField.attr("type") === "password") {
+            $passwordField.attr("type", "text");
+            $togglePassword.find("i").removeClass("fe-eye").addClass("fe-eye-off");
+        } else {
+            $passwordField.attr("type", "password");
+            $togglePassword.find("i").removeClass("fe-eye-off").addClass("fe-eye");
+        }
+    });
+
+    frmLogin.on('submit', function (e) {
         e.preventDefault();
 
         if (!$(this).valid())
@@ -43,7 +58,6 @@
                 submitButton.html('Log In');
             }
         });
-
     });
 
     function alertMessage(message, type, container = "#message") {

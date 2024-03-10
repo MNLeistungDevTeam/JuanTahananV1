@@ -29,5 +29,7 @@ namespace DMS.Domain.Dto.DocumentDto
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public int? TotalDocumentCount { get; set; }
+ 
+        
     }
 }

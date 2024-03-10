@@ -80,6 +80,22 @@
     <Folder Include="Tables\Setup\Collateral" />
     <Folder Include="Tables\Setup\Borrowers" />
     <Folder Include="Tables\Setup\Spouse" />
+    <Folder Include="Tables\Setup\Company" />
+    <Folder Include="Tables\Setup\Address" />
+    <Folder Include="Stored Procedures\Setup\Company" />
+    <Folder Include="Tables\Setup\Address\Country" />
+    <Folder Include="Stored Procedures\Setup\Entity" />
+    <Folder Include="Stored Procedures\Setup\Country" />
+    <Folder Include="Tables\Others" />
+    <Folder Include="Stored Procedures\Setup\ApplicantsPersonalInformation" />
+    <Folder Include="Stored Procedures\Setup\PurposeOfLoan" />
+    <Folder Include="Stored Procedures\Setup\ModeOfPayment" />
+    <Folder Include="Stored Procedures\Setup\PropertyType" />
+    <Folder Include="Stored Procedures\Setup\LoanParticularInformation" />
+    <Folder Include="Stored Procedures\Setup\BarrowerInformation" />
+    <Folder Include="Stored Procedures\Setup\CollateralInformation" />
+    <Folder Include="Stored Procedures\Setup\Form2Page" />
+    <Folder Include="Stored Procedures\Setup\Spouse" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -116,6 +132,37 @@
     <Build Include="Stored Procedures\Setup\Document\spDocument_GetAllApplicationSubmittedDocuments.sql" />
     <Build Include="Tables\Setup\Document\UserDocuments.sql" />
     <Build Include="Tables\Setup\Applicants\Form2Page.sql" />
+    <Build Include="Tables\Setup\Company\Company.sql" />
+    <Build Include="Tables\Setup\Company\CompanyLogo.sql" />
+    <Build Include="Tables\Setup\Company\CompanySetting.sql" />
+    <Build Include="Tables\Setup\Address\Address.sql" />
+    <Build Include="Tables\Setup\Address\AddressType.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompany_Get.sql" />
+    <Build Include="Tables\Setup\Address\Country\Country.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompany_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetAllByCompanyId.sql" />
+    <Build Include="Stored Procedures\Setup\Company\spCompanyLogo_GetByDesc.sql" />
+    <Build Include="Stored Procedures\Setup\Entity\spAddress_GetByReferenceId.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_Get.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\Country\spCountry_GetByName.sql" />
+    <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByModuleCode.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetByCode.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetByUserId.sql" />
+    <Build Include="Stored Procedures\Setup\PurposeOfLoan\spPurposeOfLoan_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PurposeOfLoan\spPurposeOfLoan_Get.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyType\spPropertyType_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyType\spPropertyType_Get.sql" />
+    <Build Include="Stored Procedures\Setup\ModeOfPayment\spModeOfPayment_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\ModeOfPayment\spModeOfPayment_Get.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_Get.sql" />
+    <Build Include="Stored Procedures\Setup\LoanParticularInformation\spLoanParticularsInformation_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\BarrowerInformation\spBarrowersInformationModel_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\CollateralInformation\spCollateralInformationModel_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Form2Page\spForm2Page_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Spouse\spSpouse_GetByApplicantId.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetDocumentsByApplicantInformationCode.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
@@ -137,6 +184,9 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_PurposeOfLoan.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_PropertyType.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_FormatBytes.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_Country.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_AddressType.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_ModeOfPayment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Template.Database.refactorlog" />

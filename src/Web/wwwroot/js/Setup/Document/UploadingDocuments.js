@@ -1,9 +1,12 @@
-$(() => {
+$(function () {
     "strict";
     const $tbl_document = document.querySelector('#tbl_document');
     const $tbl_files = document.querySelector('#tbl_files');
     const $modal = $('#modal-file');
     const $form = $("#document_form");
+
+    var applicationinfoCode = $("#txt_applicationCode").val() ? $("#txt_applicationCode").val() : null;
+
     var documentypeid = 0;
     var DocumentId = 0;
 
@@ -12,12 +15,9 @@ $(() => {
     if ($tbl_document) {
         var tbl_document = $("#tbl_document").DataTable({
             ajax: {
-                url: '/document/GetAllUploadedDocuments',
+                url: '/Document/GetDocumentsByApplicant/' + applicationinfoCode,
                 method: 'GET',
                 dataSrc: "",
-                data: {
-                    applicationId: $('#applicationId').val()
-                }
             },
             columns: [
                 {
@@ -26,7 +26,7 @@ $(() => {
                     className: 'w-100',
                 },
                 {
-                    data: 'TotalUploadedDocuments',
+                    data: 'TotalDocumentCount',
                     orderable: true,
                     className: 'text-center',
                 }
@@ -56,7 +56,7 @@ $(() => {
 
         $('#tbl_document tbody').on('click', 'tr', function () {
             var rowData = tbl_document.row(this).data();
-            documentypeid = rowData.DocumentTypeId;
+            documentypeid = rowData.Id;
             tbl_files.ajax.reload();
             $modal.modal('show');
         });
@@ -65,15 +65,9 @@ $(() => {
     if ($tbl_files) {
         tbl_files = $("#tbl_files").DataTable({
             ajax: {
-                url: '/document/GetFileList',
+                url: '/Document/GetApplicantUploadedDocuments/' + applicationinfoCode,
                 method: 'GET',
                 dataSrc: "",
-                data: function () {
-                    return {
-                        applicationId: $('#applicationId').val(),
-                        DocumentTypeId: documentypeid
-                    }
-                }
             },
             columns: [
                 {
@@ -82,7 +76,7 @@ $(() => {
                     className: 'align-middle text-center'
                 },
                 {
-                    data: 'FormattedSize',
+                    data: 'Size',
                     orderable: true,
                     className: 'align-middle text-center',
                 },
@@ -132,6 +126,7 @@ $(() => {
     $('.upload').on('click', function (e) {
         e.preventDefault();
         DocumentId = 0;
+
         $('#file-input').trigger('click');
     });
 
@@ -146,7 +141,7 @@ $(() => {
         e.preventDefault();
         var rowData = tbl_document.row(this).data();
         DocumentId = rowData?.Id || 0;
-        DeleteFile(DocumentId)
+        DeleteFile(DocumentId);
     });
     $('#tbl_files tbody').on('click', '.delete', function (e) {
         e.preventDefault();
@@ -201,6 +196,7 @@ $(() => {
         formData.append('ApplicationId', $('#applicationId').val());
         formData.append('DocumentTypeId', DocumentTypeId);
         formData.append('DocumentId', DocumentId);
+
         $.ajax({
             url: '/Document/DocumentUploadFile',
             type: 'POST',
@@ -212,6 +208,7 @@ $(() => {
             },
             success: function (response) {
                 messageBox('Uploaded Successfully', "success", true);
+
                 loader.close();
                 tbl_document.ajax.reload();
                 tbl_files.ajax.reload();

@@ -33,6 +33,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         public async Task<CollateralInformation?> GetByApplicationInfoIdAsync(int id) =>
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
+
+
+
+        public async Task<CollateralInformationModel?> GetByApplicantIdAsync(int applicantId) =>
+        await _db.LoadSingleAsync<CollateralInformationModel, dynamic>("spCollateralInformationModel_GetByApplicantId", new { applicantId });
+
+
+
+
         public async Task<CollateralInformation> SaveAsync(CollateralInformationModel model)
         {
             if (model.Id == 0)
