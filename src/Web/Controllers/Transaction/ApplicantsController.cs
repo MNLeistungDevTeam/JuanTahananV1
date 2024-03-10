@@ -20,6 +20,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Template.Web.Controllers.Transaction
@@ -421,7 +423,7 @@ namespace Template.Web.Controllers.Transaction
                         UserModel userModel = new()
                         {
                             Email = vwModel.BarrowersInformationModel.Email,
-                            Password = "Pass123$", //default password
+                            Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
@@ -547,6 +549,37 @@ namespace Template.Web.Controllers.Transaction
             } while (await UsernameExistsAsync(temporaryUsername));
 
             return temporaryUsername;
+        }
+
+        private static string GeneratePassword(string name)
+        {
+            string guid = Guid.NewGuid().ToString("N").Substring(0, 10); // Generate a GUID with 10 characters
+            string combinedString = guid + name; // Concatenate GUID with name
+
+            // Use a random seed based on the current time
+            Random rand = new Random(DateTime.Now.Millisecond);
+
+            // Hash the combined string using SHA-256
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
+                byte[] hash = sha256.ComputeHash(bytes);
+
+                // Introduce additional randomness
+                for (int i = 0; i < 10; i++)
+                {
+                    bytes[rand.Next(bytes.Length)] ^= (byte)rand.Next(256);
+                }
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hash)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return name + sb.ToString();
+            }
         }
 
         private async Task<bool> UsernameExistsAsync(string username)
