@@ -29,7 +29,7 @@ namespace DMS.Application.Interfaces.Setup.NotificationRepo
         Task<UserModel?> GetRoleByUserIdAsync(int userId);
         Task<IEnumerable<NotificationReceiverModel>> GetUnreadNotificationAsync(int userId, int pageNumber, int pageSize, int type, int companyId);
         Task<Notification> SaveAsync(Notification notification, int userId);
-        Task<Notification> SaveNotificationAsync(NotificationModel nModel, List<int?> roles, NotificationType type, int userId);
+        Task<Notification> SaveNotificationAsync(NotificationModel nModel, List<int> roles, NotificationType type, int userId);
         Task<Notification> SaveTransactionNotificationAsync(string moduleCode, string actionlink, int userId, string actiontype, string uniquecode, int companyId);
         Task UpdateAllNotificationToTrashAsync(int userid);
         Task<Notification> UpdateAsync(Notification notification, int userId);

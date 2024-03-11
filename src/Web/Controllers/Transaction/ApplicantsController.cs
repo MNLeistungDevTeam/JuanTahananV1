@@ -2,7 +2,6 @@
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
@@ -10,7 +9,6 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
@@ -84,7 +82,7 @@ namespace Template.Web.Controllers.Transaction
             _propertyTypeRepo = propertyTypeRepo;
         }
 
-        [ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
         public IActionResult Index()
         {
             return View();
@@ -222,7 +220,7 @@ namespace Template.Web.Controllers.Transaction
             return View(vwModel);
         }
 
-        [ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
         {
             var items = new List<ApplicantViewModel>();
@@ -587,7 +585,7 @@ namespace Template.Web.Controllers.Transaction
             return (await _userRepo.GetAllAsync()).Any(x => x.UserName == username);
         }
 
-        [ModelStateValidations(typeof(UserModel))]
+        //[ModelStateValidations(typeof(UserModel))]
         public async Task<User> RegisterBenefeciary(UserModel user)
         {
             user.Position = "Beneficiary";

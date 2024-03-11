@@ -171,6 +171,7 @@
     <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetRoleByModuleCode.sql" />
     <Build Include="Stored Procedures\Setup\Module\spModule_GetByCode.sql" />
     <Build Include="Tables\Setup\Module\ModuleType.sql" />
+    <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByUserId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

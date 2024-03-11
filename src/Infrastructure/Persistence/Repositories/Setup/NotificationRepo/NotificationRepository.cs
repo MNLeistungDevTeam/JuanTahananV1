@@ -82,7 +82,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo
 
         #endregion Get Methods
 
-        public async Task<Notification> SaveNotificationAsync(NotificationModel nModel, List<int?> roles, NotificationType type, int userId)
+        public async Task<Notification> SaveNotificationAsync(NotificationModel nModel, List<int> roles, NotificationType type, int userId)
         {
             var notification = _mapper.Map<Notification>(nModel);
 

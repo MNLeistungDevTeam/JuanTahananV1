@@ -35,7 +35,7 @@ public class HomeController : Controller
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
     }
 
-    [ModuleServices(ModuleCodes.Home, typeof(IModuleRepository))]
+    //[ModuleServices(ModuleCodes.Home, typeof(IModuleRepository))]
     public IActionResult Index()
     {
         return View();

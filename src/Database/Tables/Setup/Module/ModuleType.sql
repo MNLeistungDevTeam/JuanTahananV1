@@ -1,31 +1,24 @@
-﻿CREATE TABLE [dbo].[Module] (
-    [Id]                  INT NOT NULL IDENTITY,
-    [Code]                NVARCHAR (50)  NOT NULL,
-    [Description]         NVARCHAR (50)  NOT NULL,
-    [ModuleTypeId]        INT            NOT NULL,
-    [Ordinal]             INT            NOT NULL,
-    [Icon]                NVARCHAR (100) NULL,
-    [Controller]          NVARCHAR (50)  NULL,
-    [Action]              NVARCHAR (50)  NULL,
-    [ParentModuleId]      INT            NULL,
-    [ApprovalRouteTypeId] INT            NULL,
-    [IsDisabled]          BIT            DEFAULT 0 NOT NULL,
-    [InMaintenance]       BIT            DEFAULT 0 NOT NULL,
-    [IsVisible]           BIT            DEFAULT 1 NOT NULL,
-    [WithApprover]        BIT            NOT NULL DEFAULT 0,
-    [CompanyId]           INT            NOT NULL,
-    [CreatedById]         INT            NOT NULL,
-    [DateCreated]         DATETIME2 (7)  DEFAULT GETDATE() NOT NULL,
-    [ModifiedById]        INT            NULL,
-    [DateModified]        DATETIME2 (7)  DEFAULT GETDATE() NULL,
-    [DateDeleted] DATETIME2(7) NULL, 
-    [DeletedById] INT NULL, 
-    PRIMARY KEY CLUSTERED ([Id] ASC)
+﻿CREATE TABLE [dbo].[ModuleType]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Description] NVARCHAR(50) NOT NULL,
+    [Icon] NVARCHAR(50) NULL,
+    [Ordinal] INT NOT NULL,
+    [Controller] NVARCHAR (50)  NULL,
+    [Action] NVARCHAR (50)  NULL,
+    [IsDisabled] BIT NOT NULL DEFAULT 1,
+    [IsVisible] BIT NOT NULL DEFAULT 1, 
+    [InMaintenance] BIT NOT NULL DEFAULT 0, 
+    [CompanyId] INT NOT NULL,
+    [CreatedById] INT NOT NULL, 
+    [DateCreated] DATETIME2 NOT NULL DEFAULT GETDATE(), 
+    [ModifiedById] INT NULL, 
+    [DateModified] DATETIME2 NULL DEFAULT GETDATE()
 );
 
 GO
 
-CREATE TRIGGER [dbo].[Trigger_Module_ColumnUpdates] ON [dbo].[Module] --Change to match your table name
+CREATE TRIGGER [dbo].[Trigger_ModuleType_ColumnUpdates] ON [dbo].[ModuleType] --Change to match your table name
    FOR INSERT, UPDATE, DELETE
 AS
 SET NOCOUNT ON;
@@ -64,7 +57,7 @@ SET @Action = (CASE WHEN EXISTS(SELECT * FROM INSERTED)
                     ELSE NULL -- Skip. It may have been a "failed delete".   
                 END)
 
-SET @TABLE_NAME = 'Module'; ---Change to your table name
+SET @TABLE_NAME = 'ModuleType'; ---Change to your table name
 IF(@Action = 'Create')
 BEGIN
     SELECT  @UpdatedBy = CreatedById --Change to your column name for the user update field
@@ -161,5 +154,3 @@ WHILE LEN(@modifiedColumnsList) > 0
     END;
 DROP TABLE #Inserted;
 DROP TABLE #deleted;
-
-

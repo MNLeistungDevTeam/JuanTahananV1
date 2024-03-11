@@ -43,12 +43,12 @@ namespace DMS.Web.Controllers.Setup
             _userRoleRepo = userRoleRepo;
             this.userRepo = userRepo;
         }
-        [ModuleServices(ModuleCodes.Role, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.Role, typeof(IModuleRepository))]
         public IActionResult Index()
         {
             return View();
         }
-        [ModuleServices(ModuleCodes.UserRole, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.UserRole, typeof(IModuleRepository))]
         public async Task<IActionResult> UserRole(int id)
         {
             return View(new RoleViewModel()
@@ -88,11 +88,17 @@ namespace DMS.Web.Controllers.Setup
             return Ok(lists);
         }
         [HttpPost]
-        [ModelStateValidations(typeof(RoleViewModel))]
+        //[ModelStateValidations(typeof(RoleViewModel))]
         public async Task<IActionResult> SaveUserRole(RoleViewModel model)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+                }
+
+
                 foreach (var item in model.UserRole.UsersId)
                 {
                     var existingUserRole = await _userRoleRepo.GetUserRoleAsync(item);
@@ -122,66 +128,66 @@ namespace DMS.Web.Controllers.Setup
             }
         }
         [HttpPost]
-        [ModelStateValidations(typeof(RoleViewModel))]
-        public async Task<IActionResult> SaveRole(RoleViewModel model)
-        {
-            try
-            {
-                if (model.Role.Id == 0)
-                {
-                    // Add new role logic
-                    var role = await _roleRepo.SaveAsync(model.Role);
-                    if (role != null)
-                    {
-                        foreach (var item in model.RoleAccess)
-                        {
-                            item.RoleId = role.Id;
-                            await _roleAccessRepo.SaveAsync(item);
-                        }
-                        return Ok("added");
-                    }
-                    return BadRequest(new { Errors = "Adding role failed." });
-                }
-                else
-                {
-                    // Update existing role logic
-                    var role = await _roleRepo.GetByIdAsync(model.Role.Id);
-                    if (role == null)
-                    {
-                        return NotFound(new { Message = "Role not found." });
-                    }
-                    model.Role.IsLocked = role.IsLocked; // Ensure IsLocked is properly handled
-                   await _roleRepo.SaveAsync(model.Role);
+        //[ModelStateValidations(typeof(RoleViewModel))]
+        //public async Task<IActionResult> SaveRole(RoleViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (model.Role.Id == 0)
+        //        {
+        //            // Add new role logic
+        //            var role = await _roleRepo.SaveAsync(model.Role);
+        //            if (role != null)
+        //            {
+        //                foreach (var item in model.RoleAccess)
+        //                {
+        //                    item.RoleId = role.Id;
+        //                    await _roleAccessRepo.SaveAsync(item);
+        //                }
+        //                return Ok("added");
+        //            }
+        //            return BadRequest(new { Errors = "Adding role failed." });
+        //        }
+        //        else
+        //        {
+        //            // Update existing role logic
+        //            var role = await _roleRepo.GetByIdAsync(model.Role.Id);
+        //            if (role == null)
+        //            {
+        //                return NotFound(new { Message = "Role not found." });
+        //            }
+        //            model.Role.IsLocked = role.IsLocked; // Ensure IsLocked is properly handled
+        //           await _roleRepo.SaveAsync(model.Role);
 
-                    // Update RoleAccess items
-                    foreach (var item in model.RoleAccess)
-                    {
-                        var existingRoleAccess = await _roleAccessRepo.GetRoleAccessAsync(role.Id, item.ModuleId);
-                        if (existingRoleAccess == null)
-                        {
-                            // Create new RoleAccess item if not found
-                            existingRoleAccess = new RoleAccess
-                            {
-                                RoleId = role.Id,
-                                ModuleId = item.ModuleId
-                            };
-                        }
-                        // Update properties
-                        existingRoleAccess.CanCreate = item.CanCreate;
-                        existingRoleAccess.CanDelete = item.CanDelete;
-                        existingRoleAccess.CanRead = item.CanRead;
-                        existingRoleAccess.CanModify = item.CanModify;
-                        existingRoleAccess.ModuleId = item.ModuleId;
-                        await _roleAccessRepo.SaveAsync(_mapper.Map<RoleAccessModel>(existingRoleAccess));
-                    }
-                    return Ok("updated");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Errors = ex.ToString()});
-            }
-        }
+        //            // Update RoleAccess items
+        //            foreach (var item in model.RoleAccess)
+        //            {
+        //                var existingRoleAccess = await _roleAccessRepo.GetRoleAccessAsync(role.Id, item.ModuleId);
+        //                if (existingRoleAccess == null)
+        //                {
+        //                    // Create new RoleAccess item if not found
+        //                    existingRoleAccess = new RoleAccess
+        //                    {
+        //                        RoleId = role.Id,
+        //                        ModuleId = item.ModuleId
+        //                    };
+        //                }
+        //                // Update properties
+        //                existingRoleAccess.CanCreate = item.CanCreate;
+        //                existingRoleAccess.CanDelete = item.CanDelete;
+        //                existingRoleAccess.CanRead = item.CanRead;
+        //                existingRoleAccess.CanModify = item.CanModify;
+        //                existingRoleAccess.ModuleId = item.ModuleId;
+        //                await _roleAccessRepo.SaveAsync(_mapper.Map<RoleAccessModel>(existingRoleAccess));
+        //            }
+        //            return Ok("updated");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { Errors = ex.ToString()});
+        //    }
+        //}
 
         public async Task DeleteRoles(int[] ids) =>
             await _roleRepo.BatchDeleteAsync(ids);

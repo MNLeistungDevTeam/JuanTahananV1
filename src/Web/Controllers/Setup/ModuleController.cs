@@ -30,7 +30,7 @@ public class ModuleController : Controller
         _moduleRepo = moduleRepo;
         _context = context;
     }
-    [ModuleServices(ModuleCodes.Module, typeof(IModuleRepository))]
+    //[ModuleServices(ModuleCodes.Module, typeof(IModuleRepository))]
     public IActionResult Index()
     {
         return View();
