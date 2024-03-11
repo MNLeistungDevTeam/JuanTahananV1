@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.ApplicantsDto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -38,31 +33,32 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<LoanParticularsInformationModel?> GetByApplicantIdAsync(int applicantId) =>
             await _db.LoadSingleAsync<LoanParticularsInformationModel, dynamic>("spLoanParticularsInformation_GetByApplicantId", new { applicantId });
 
-        public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model)
+        public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model, int userId)
         {
+            var _loanParticulars = _mapper.Map<LoanParticularsInformation>(model);
             if (model.Id == 0)
-                model = _mapper.Map<LoanParticularsInformationModel>(await CreateAsync(model));
+                _loanParticulars = await CreateAsync(_loanParticulars, userId);
             else
-                model = _mapper.Map<LoanParticularsInformationModel>(await UpdateAsync(model));
-            return _mapper.Map<LoanParticularsInformation>(model);
+                _loanParticulars = await UpdateAsync(_loanParticulars, userId);
+            return _loanParticulars;
         }
 
-        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformationModel model)
+        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation loanParticulars, int userId)
         {
-            model.DateCreated = DateTime.UtcNow;
-            model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<LoanParticularsInformation>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+            loanParticulars.DateCreated = DateTime.Now;
+            loanParticulars.CreatedById = userId;
+
+            loanParticulars = await _contextHelper.CreateAsync(loanParticulars, "DateModified", "ModifiedById");
+            return loanParticulars;
         }
 
-        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformationModel model)
+        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation loanParticulars, int userId)
         {
-            model.DateModified = DateTime.UtcNow;
-            model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<LoanParticularsInformation>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+            loanParticulars.DateModified = DateTime.Now;
+            loanParticulars.ModifiedById = userId;
+
+            loanParticulars = await _contextHelper.UpdateAsync(loanParticulars, "DateCreated", "CreatedById");
+            return loanParticulars;
         }
 
         public async Task DeleteAsync(int id)

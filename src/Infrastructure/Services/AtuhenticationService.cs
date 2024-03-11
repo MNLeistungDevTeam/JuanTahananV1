@@ -9,6 +9,7 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence.Configuration;
+using System.Security.Cryptography;
 
 namespace DMS.Infrastructure.Services;
 
@@ -234,4 +235,57 @@ public class AuthenticationService : IAuthenticationService
 
         await _userActivityRepository.CreateAsync(userActivity);
     }
+
+    private async Task<bool> UsernameExistsAsync(string username)
+    {
+        return (await _userRepository.GetAllAsync()).Any(x => x.UserName == username);
+    }
+
+    public string GenerateTemporaryPasswordAsync(string name)
+    {
+        string guid = Guid.NewGuid().ToString("N").Substring(0, 10); // Generate a GUID with 10 characters
+        string combinedString = guid + name; // Concatenate GUID with name
+
+        // Use a random seed based on the current time
+        Random rand = new Random(DateTime.Now.Millisecond);
+
+        // Hash the combined string using SHA-256
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
+            byte[] hash = sha256.ComputeHash(bytes);
+
+            // Introduce additional randomness
+            for (int i = 0; i < 10; i++)
+            {
+                bytes[rand.Next(bytes.Length)] ^= (byte)rand.Next(256);
+            }
+
+            // Convert the byte array to a hexadecimal string
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            return name + sb.ToString();
+        }
+    }
+
+
+
+
+    public async Task<string> GenerateTemporaryUsernameAsync()
+    {
+        string temporaryUsername;
+        int index = 1;
+
+        do
+        {
+            temporaryUsername = $"Beneficiary-{index++}";
+        } while (await UsernameExistsAsync(temporaryUsername));
+
+        return temporaryUsername;
+    }
+
 }

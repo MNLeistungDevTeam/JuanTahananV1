@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.NotificationReceiverRepo;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.NotificationDto;
+using DMS.Domain.Dto.NotificationReceiverDto;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
@@ -37,5 +40,8 @@ public class MappingProfile : Profile
         CreateMap<Address, AddressModel>().ReverseMap();
         CreateMap<AddressType, AddressTypeModel>().ReverseMap();
         CreateMap<Country, CountryModel>().ReverseMap();
+
+        CreateMap<NotificationReceiver, NotificationReceiverModel>().ReverseMap();
+        CreateMap<Notification, NotificationModel>().ReverseMap();
     }
 }

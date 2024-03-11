@@ -22,7 +22,7 @@ public class CurrentUserService : ICurrentUserService
 
     public int GetCurrentUserId()
     {
-        int userId = int.Parse(_httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "");
+        int userId = int.Parse(_httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "0");
         return userId;
     }
 

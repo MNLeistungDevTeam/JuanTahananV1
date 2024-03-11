@@ -40,6 +40,10 @@ using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.PropertyTypeRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.ModeOfPaymentRepo;
+using DMS.Application.Interfaces.Setup.NotificationReceiverRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.NotificationReceiverRepo;
+using DMS.Application.Interfaces.Setup.NotificationRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo;
 
 namespace Template.Infrastructure;
 
@@ -123,6 +127,13 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPurposeOfLoanRepository, PurposeOfLoanRepository>();
         services.AddScoped<IModeOfPaymentRepository, ModeOfPaymentRepository>();
         services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
+
+        services.AddScoped<INotificationReceiverRepository, NotificationReceiverRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
+
+        services.AddScoped<IZetaHousingLoanIntegrationService, ZetaHousingLoanIntegrationService>();
 
         return services;
     }

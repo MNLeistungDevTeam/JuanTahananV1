@@ -48,6 +48,14 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<ModuleStatus> ModuleStatuses { get; set; }
 
+    public virtual DbSet<ModuleType> ModuleTypes { get; set; }
+
+    public virtual DbSet<Notification> Notifications { get; set; }
+
+    public virtual DbSet<NotificationPriorityLevel> NotificationPriorityLevels { get; set; }
+
+    public virtual DbSet<NotificationReceiver> NotificationReceivers { get; set; }
+
     public virtual DbSet<PropertyType> PropertyTypes { get; set; }
 
     public virtual DbSet<PurposeOfLoan> PurposeOfLoans { get; set; }
@@ -198,6 +206,9 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.PresentSubdivisionName).HasMaxLength(255);
             entity.Property(e => e.PresentUnitName).HasMaxLength(255);
             entity.Property(e => e.PresentZipCode).HasMaxLength(255);
+            entity.Property(e => e.PropertyDeveloperName).HasMaxLength(255);
+            entity.Property(e => e.PropertyLocation).HasMaxLength(255);
+            entity.Property(e => e.PropertyUnitLevelName).HasMaxLength(255);
             entity.Property(e => e.Sex).HasMaxLength(20);
             entity.Property(e => e.Suffix).HasMaxLength(50);
         });
@@ -477,26 +488,24 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Module>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC07DB542784");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07C42186B2");
 
-            entity.ToTable("Module");
+            entity.ToTable("Module", tb => tb.HasTrigger("Trigger_Module_ColumnUpdates"));
 
-            entity.Property(e => e.Action).HasMaxLength(255);
-            entity.Property(e => e.BreadName)
-                .IsRequired()
-                .HasMaxLength(255);
+            entity.Property(e => e.Action).HasMaxLength(50);
             entity.Property(e => e.Code)
                 .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Controller).HasMaxLength(255);
+                .HasMaxLength(50);
+            entity.Property(e => e.Controller).HasMaxLength(50);
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description)
                 .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Icon)
+                .HasMaxLength(50);
+            entity.Property(e => e.Icon).HasMaxLength(100);
+            entity.Property(e => e.IsVisible)
                 .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.ModuleStatusId).HasDefaultValueSql("((1))");
+                .HasDefaultValueSql("((1))");
         });
 
         modelBuilder.Entity<ModuleStatus>(entity =>
@@ -512,6 +521,72 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<ModuleType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ModuleTy__3214EC0748017AA1");
+
+            entity.ToTable("ModuleType", tb => tb.HasTrigger("Trigger_ModuleType_ColumnUpdates"));
+
+            entity.Property(e => e.Action).HasMaxLength(50);
+            entity.Property(e => e.Controller).HasMaxLength(50);
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.Icon).HasMaxLength(50);
+            entity.Property(e => e.IsDisabled)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.IsVisible)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC07E0EDEE63");
+
+            entity.ToTable("Notification");
+
+            entity.Property(e => e.ActionLink)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Content).IsRequired();
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Preview)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<NotificationPriorityLevel>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC07615AFF0D");
+
+            entity.ToTable("NotificationPriorityLevel");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.LevelName)
+                .IsRequired()
+                .HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<NotificationReceiver>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC07B0792B89");
+
+            entity.ToTable("NotificationReceiver");
+
+            entity.Property(e => e.DateRead).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Notif).WithMany(p => p.NotificationReceivers)
+                .HasForeignKey(d => d.NotifId)
+                .HasConstraintName("FK__Notificat__Notif__7A3223E8");
         });
 
         modelBuilder.Entity<PropertyType>(entity =>

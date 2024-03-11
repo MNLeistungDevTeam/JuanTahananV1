@@ -144,4 +144,10 @@ public partial class BarrowersInformation
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public string PropertyDeveloperName { get; set; }
+
+    public string PropertyLocation { get; set; }
+
+    public string PropertyUnitLevelName { get; set; }
 }

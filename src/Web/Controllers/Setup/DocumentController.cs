@@ -45,7 +45,7 @@ namespace DMS.Web.Controllers.Setup
             _documentRepo = documentRepo;
         }
 
-        [ModuleServices(ModuleCodes.Document, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.Document, typeof(IModuleRepository))]
         public IActionResult Index()
         {
             return View();
