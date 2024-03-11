@@ -68,5 +68,8 @@
     [DateModified] DATETIME2 NULL, 
     [ModifiedById] INT NULL,
     [DateDeleted] DATETIME2 NULL, 
-    [DeletedById] INT NULL
+    [DeletedById] INT NULL,
+    PropertyDeveloperName NVARCHAR(255) NULL,
+    PropertyLocation NVARCHAR(255) NULL,
+    PropertyUnitLevelName NVARCHAR(255) NULL
 )

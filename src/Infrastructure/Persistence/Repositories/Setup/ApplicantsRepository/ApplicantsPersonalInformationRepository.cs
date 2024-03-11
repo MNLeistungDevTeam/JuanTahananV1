@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.ApplicantsDto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
-using DevExpress.CodeParser;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -48,31 +42,32 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
 
-        public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model)
+        public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
+            var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<ApplicantsPersonalInformationModel>(await CreateAsync(model));
+                _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
             else
-                model = _mapper.Map<ApplicantsPersonalInformationModel>(await UpdateAsync(model));
-            return _mapper.Map<ApplicantsPersonalInformation>(model);
+                _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+            return _applicantPersonalInfo;
         }
 
-        public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformationModel model)
+        public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
         {
-            model.DateCreated = DateTime.UtcNow;
-            model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<ApplicantsPersonalInformation>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
-        }
+            applicantPersonalInfo.DateCreated = DateTime.Now;
+            applicantPersonalInfo.CreatedById = userId;
 
-        public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformationModel model)
+            applicantPersonalInfo = await _contextHelper.CreateAsync(applicantPersonalInfo, "DateModified", "ModifiedById");
+            return applicantPersonalInfo;
+        }
+        
+        public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
         {
-            model.DateModified = DateTime.UtcNow;
-            model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<ApplicantsPersonalInformation>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+            applicantPersonalInfo.DateModified = DateTime.Now;
+            applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById");
+            return applicantPersonalInfo;
         }
 
         public async Task DeleteAsync(int id)

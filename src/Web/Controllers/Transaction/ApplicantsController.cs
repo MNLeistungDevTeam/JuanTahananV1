@@ -13,6 +13,7 @@ using DMS.Infrastructure.Persistence;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -253,6 +254,7 @@ namespace Template.Web.Controllers.Transaction
 
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
+                int userId = int.Parse(User.Identity.Name);
 
                 //create  new beneficiary
 
@@ -291,7 +293,7 @@ namespace Template.Web.Controllers.Transaction
 
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
-                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData));
+                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId));
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -311,7 +313,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = applicationData.Id;
 
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
@@ -333,7 +335,7 @@ namespace Template.Web.Controllers.Transaction
                 else
                 {
                     applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.Id));
-                    await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(vwModel.ApplicantsPersonalInformationModel));
+                    await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(vwModel.ApplicantsPersonalInformationModel), userId);
 
                     if (user.Id == 0)
                     {
@@ -408,6 +410,7 @@ namespace Template.Web.Controllers.Transaction
 
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
+                int userId = int.Parse(User.Identity.Name);
 
                 //create  new beneficiary
 
@@ -447,7 +450,7 @@ namespace Template.Web.Controllers.Transaction
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData);
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId);
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -467,7 +470,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
@@ -491,7 +494,7 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
-                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel);
+                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
@@ -507,7 +510,7 @@ namespace Template.Web.Controllers.Transaction
 
                     if (vwModel.LoanParticularsInformationModel != null)
                     {
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
