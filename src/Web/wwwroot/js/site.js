@@ -47,11 +47,9 @@ $(function () {
     var config = { attributes: true, attributeFilter: ['data-sidenav-size'] };
     observer.observe(targetElement[0], config);
 
-
     $(document).on("input change keypress", "select, input, textarea", function () {
         try { $(this).valid(); } catch (e) { }
     });
-
 
     $(document).on("change", ".decimalInputMask", debounce(function () {
         let amount = $(this).val();
@@ -61,7 +59,7 @@ $(function () {
             $(this).val(numeral(amount).format("0,0.00"));
     }, 800));
     function validateSelectizeInputs(form) {
-        if (form.hasClass('was-validated')){
+        if (form.hasClass('was-validated')) {
             form.find('.selectized[data-val-required]').each(function () {
                 var sibling_gate = $(this).siblings('.selectize-control');
                 var children_gate = sibling_gate.find('.selectize-input');
@@ -70,7 +68,6 @@ $(function () {
                 error_gate.css('display', children_gate.hasClass('has-items') ? 'none' : 'block');
             });
         }
-
     }
     $(document).on('change', '[type="checkbox"]', function (e) {
         var isChecked = $(this).prop('checked');
@@ -79,7 +76,6 @@ $(function () {
         } else {
             $(this).val(false);
         }
-
     });
     $(document).on('change', '[type="radio"]', function (e) {
         var isChecked = $(this).prop('checked');
@@ -201,7 +197,7 @@ function getApplicationCount(callback) {
     $.ajax({
         url: `/Home/GetApplicationsCount`,
         method: 'get',
-        success : callback
+        success: callback
     })
 }
 function messageBox(message, type = "success", isToastr = false, isTimed = true) {
@@ -292,12 +288,11 @@ function CheckRows(element) {
         }
         currentElement = currentElement.parent();
     }
-
 }
 function debounce(func, wait, immediate) {
     var timeout;
     return function () {
-        var context = this, args = arguments;    
+        var context = this, args = arguments;
         var later = function () {
             timeout = null;
             if (!immediate) func.apply(context, args);
@@ -350,19 +345,17 @@ function loading(message) {
 
 function updateProgress(progress) {
     if (loader != null)
-    loader.update({
-        title: 'Please wait...',
-        html: `${progress.toFixed(0)}%`,
-        allowEscapeKey: false,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
+        loader.update({
+            title: 'Please wait...',
+            html: `${progress.toFixed(0)}%`,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 }
-
-
 
 function fileToByteArray(file) {
     return new Promise((resolve, reject) => {
@@ -374,5 +367,549 @@ function fileToByteArray(file) {
         };
         reader.onerror = () => reject(reader.error);
         reader.readAsArrayBuffer(file);
+    });
+}
+
+
+function addRequiredClass() {
+    $("input, select, textarea").each(function () {
+        let attr = $(this).attr("data-val-required");
+
+        if (typeof attr !== typeof undefined && attr !== false) {
+            if (!$(this).is(":checkbox") && !$(this).is(":radio")) {
+                let elementId = $(this).attr("id");
+                let label = $(`label[for="${elementId}"]`);
+
+                if (label.length === 0) {
+                    if ($(this).is("select")) {
+                        let option = $(this).find('option:first-child');
+                        let optionText = "* " + option.html();
+
+                        option.html(optionText);
+                    }
+                } else {
+                    label.addClass("required");
+                }
+            }
+        }
+    });
+}
+
+function fixElementSequence(element) {
+    var count = 0;
+    $(element).each(function (i) {
+        $('input, select, textarea', $(this)).each(function () {
+            var input_id = $(this).attr("id") ?? "";
+            var input_name = $(this).attr("name") ?? "";
+            var aria_describedby = $(this).attr("aria-describedby") ?? "";
+            var start1 = input_id.indexOf("[") + 1;
+            var end1 = input_id.indexOf("]");
+            var start2 = input_name.indexOf("[") + 1;
+            var end2 = input_name.indexOf("]");
+            var start3 = aria_describedby.indexOf("[") + 1;
+            var end3 = aria_describedby.indexOf("]");
+
+            input_id = input_id.length > 0 ? input_id.replace(input_id.substring(start1, end1), count) : "";
+            input_name = input_name.length > 0 ? input_name.replace(input_name.substring(start2, end2), count) : "";
+            aria_describedby = aria_describedby.length > 0 ? aria_describedby.replace(aria_describedby.substring(start3, end3), count) : "";
+
+            $(this).attr({ id: input_id, name: input_name, "aria-describedby": aria_describedby, "data-index": count });
+            $(this).trigger("change");
+        });
+
+        $('label', $(this)).each(function () {
+            var label_id = $(this).attr("for") ?? "";
+            var start1 = label_id.indexOf("[") + 1;
+            var end1 = label_id.indexOf("]");
+
+            label_id = label_id.length > 0 ? label_id.replace(label_id.substring(start1, end1), count) : "";
+            label_id.length > 0 ? $(this).attr({ 'for': label_id }) : "";
+        });
+
+        $('span', $(this)).each(function () {
+            var span_id = $(this).attr("data-valmsg-for") ?? "";
+            var span_id2 = $(this).attr("id") ?? "";
+            var start1 = span_id.indexOf("[") + 1;
+            var end1 = span_id.indexOf("]");
+            var start2 = span_id2.indexOf("[") + 1;
+            var end2 = span_id2.indexOf("]");
+
+            span_id = span_id.length > 0 ? span_id.replace(span_id.substring(start1, end1), count) : "";
+            span_id2 = span_id2.length > 0 ? span_id2.replace(span_id2.substring(start2, end2), count) : "";
+
+            span_id.length > 0 ? $(this).attr({ 'data-valmsg-for': span_id }) : "";
+            span_id2.length > 0 ? $(this).attr({ 'id': span_id2 }) : "";
+        });
+        count++;
+    });
+}
+
+function addAddress(addressObj = {}) {
+    let count = $(".address_row").length;
+    let rowToAdd = `<div class="col-12 address_row mb-2 d-none d-lg-block">
+    <div class="border">
+        <div class="p-2">
+            <div class="row border-bottom address_name_div">
+                <div class="col-md-6 align-middle">
+                    <input class="address_id_input" type="hidden" data-val="true" data-val-required="The Id field is required." id="Address[${count}]_Id" name="Address[${count}].Id" value="${addressObj.Id || 0}" aria-describedby="">
+                    <input type="hidden" data-val="true" data-val-required="The ReferenceId field is required." id="Address[${count}]_ReferenceId" name="Address[${count}].ReferenceId" value="${addressObj.ReferenceId || 0}" aria-describedby="">
+                    <select id="Address[${count}]_AddressName" class="form-control selectized mb-2" data-value=""data-val="true" data-val-required="Address Name is required." name="Address[${count}].AddressName" tabindex="-1" style="display: none;">
+                        <option value="">Select Address Type...</option>
+                    </select>
+                    <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].AddressName" data-valmsg-replace="true"></span>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-sm btn-danger remove_address float-end">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row gx-2 pt-2">
+                <div class="col-md-12 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_StreetAddress1">Address Line 1</label>
+                        <textarea class="form-control" placeholder="Street Address 1" type="text" data-val="true" data-val-required="Street Address 1 is required!" id="Address[${count}]_StreetAddress1" name="Address[${count}].StreetAddress1" aria-describedby="">${addressObj.StreetAddress1 || ""}</textarea>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].StreetAddress1" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_StreetAddress2">Address Line 2 (optional)</label>
+                        <textarea class="form-control" placeholder="Street Address 2" type="text" id="Address[${count}]_StreetAddress2" name="Address[${count}].StreetAddress2" aria-describedby="">${addressObj.StreetAddress2 || ""}</textarea>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].StreetAddress2" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_Baranggay">Baranggay</label>
+                        <input class="form-control" placeholder="Baranggay" type="text" id="Address[${count}]_Baranggay" name="Address[${count}].Baranggay" value="${addressObj.Baranggay || " "}" aria-describedby="">
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].Baranggay" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_CityMunicipality">City/Municipality</label>
+                        <input class="form-control" placeholder="City/Municipality" type="text" data-val="true" data-val-required="City/Municipality is required!" id="Address[${count}]_CityMunicipality" name="Address[${count}].CityMunicipality" value="${addressObj.CityMunicipality || ""}" aria-describedby="">
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].CityMunicipality" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_StateProvince">State/Province</label>
+                        <input class="form-control" placeholder="State/Province" type="text" id="Address[${count}]_StateProvince" name="Address[${count}].StateProvince" value="${addressObj.StateProvince || " "}" aria-describedby="">
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].StateProvince" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_Region">Region</label>
+                        <input class="form-control" placeholder="Region" type="text" id="Address[${count}]_Region" name="Address[${count}].Region" value="${addressObj.Region || " "}" aria-describedby="">
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].Region" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address[${count}]_PostalCode">Postal Code</label>
+                        <input class="form-control MaxLength" maxlength="9" placeholder="Postal Code" data-val="true" data-val-required="Postal Code is required!" id="Address[${count}]_PostalCode" name="Address[${count}].PostalCode" value="${addressObj.PostalCode || ""}" aria-describedby="">
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].PostalCode" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-2">
+                        <label class="form-label" for="Address[${count}]_CountryId">Country</label>
+                        <select class="form-control" data-val="true" data-val-required="Country is required." id="Address[${count}]_CountryId" name="Address[${count}].CountryId" aria-describedby="">
+                            <option value="">Select Country...</option>
+                        </select>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].CountryId" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="form-group">
+                        <label class="form-label" for="Address_[${count}]__Remarks">Remarks</label>
+                        <textarea class="form-control" placeholder="Remarks" id="Address_[${count}]__Remarks" name="Address[${count}].Remarks" aria-describedby="">${addressObj.Remarks || ""}</textarea>
+                        <span class="field-validation-valid" data-valmsg-for="Address[${count}].Remarks" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input address_checkbox" type="checkbox" data-val="true" data-val-required="The Set as Default field is required." id="Address[${count}]_IsDefault" name="Address[${count}].IsDefault" value="true" aria-describedby="">
+                        <label class="form-check-label" for="Address[${count}]_IsDefault">Set as Default</label>
+                    </div>
+                    <span class="text-danger field-validation-valid" data-valmsg-for="Address[${count}].IsDefault" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+    $(".address_div").append(rowToAdd);
+   /* addressCount++;*/
+
+    let countryDropdown, $countryDropdown;
+    let addressTypeDropdown, $addressTypeDropdown;
+
+    $countryDropdown = $(`[id="Address[${count}]_CountryId"]`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "Country/GetCountries/",
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    $addressTypeDropdown = $(`[id="Address[${count}]_AddressName"]`).selectize({
+        valueField: 'Name',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "Address/GetAddressTypes/",
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    countryDropdown = $countryDropdown[0].selectize;
+    countryDropdown.on('load', function (options) {
+        countryDropdown.setValue(addressObj.CountryId || "");
+        countryDropdown.off('load');
+    });
+
+    addressTypeDropdown = $addressTypeDropdown[0].selectize;
+    addressTypeDropdown.on('load', function (options) {
+        addressTypeDropdown.setValue(addressObj.AddressName || "");
+        addressTypeDropdown.off('load');
+    });
+
+    $(`[name="Address[${count}].IsDefault"]`).prop("checked", addressObj.IsDefault).trigger("change");
+    $(`[id='Address[${count}]_PostalCode']`).inputmask({ regex: '^[0-9]+$', placeholder: "" });
+    addRequiredClass();
+}
+
+function addRepresentative(itemObj = {}) {
+    let count = $(".rep_row").length;
+
+    let row_to_add = `<div class="col-12 mb-2 rep_row">
+							<div class="border">
+								<div class="p-2">
+									<div class="row border-bottom align-middle pb-2">
+										<div class="col-md-6">
+											<input id="EntityRepresentative_Id_[${count}]" type="hidden" data-val="true" data-val-required="The Id field is required." name="EntityRepresentative[${count}].Id" value="${itemObj.Id || 0}">
+											<input id="EntityRepresentative_EntityId_[${count}]" type="hidden" name="EntityRepresentative[${count}].EntityId" value="${itemObj.EntityId || 0}">
+										</div>
+										<div class="col-md-6">
+											<button type="button" class="btn btn-sm btn-danger float-end remove_rep">
+												<i class="mdi mdi-close"></i>
+											</button>
+										</div>
+									</div>
+									<div class="row gx-2 pt-2">
+										<div class="col-sm-2 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_Prefix_[${count}]">Prefix</label>
+												<select id="EntityRepresentative_Prefix_[${count}]" class="form-control selectized" data-value=""  data-val="true" data-val-required="Prefix is required." name="EntityRepresentative[${count}].Prefix" tabindex="-1" style="display: none;">
+													<option value="">Select Prefix...</option>
+												</select>
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].Prefix" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-6 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_FirstName_[${count}]">First Name</label>
+												<input id="EntityRepresentative_FirstName_[${count}]" class="form-control" placeholder="First Name" type="text" data-val="true" data-val-required="First Name is required." name="EntityRepresentative[${count}].FirstName" value="${itemObj.FirstName || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].FirstName" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-4 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_MiddleName_[${count}]">Middle Name</label>
+												<input id="EntityRepresentative_MiddleName_[${count}]" class="form-control" placeholder="Middle Name" type="text" name="EntityRepresentative[${count}].MiddleName" value="${itemObj.MiddleName || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].MiddleName" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-7 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_LastName_[${count}]">Last Name</label>
+												<input id="EntityRepresentative_LastName_[${count}]" class="form-control" placeholder="Last Name" type="text" data-val="true" data-val-required="Last Name is required." name="EntityRepresentative[${count}].LastName" value="${itemObj.LastName || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].LastName" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-2 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_Suffix_[${count}]">Suffix</label>
+												<input id="EntityRepresentative_Suffix_[${count}]" class="form-control" placeholder="Jr./II" type="text" name="EntityRepresentative[${count}].Suffix" value="${itemObj.Suffix || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].Suffix" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-3 mb-2">
+											<div class="form-group">
+												<label class="form-label" for="EntityRepresentative_Gender_[${count}]">Gender</label>
+												<select id="EntityRepresentative_Gender_[${count}]" class="form-control selectized" data-value=""  data-val="true" data-val-required="Gender is required." name="EntityRepresentative[${count}].Gender" tabindex="-1" style="display: none;">
+													<option value="">Select Gender...</option>
+												</select>
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].Gender" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="w-100"></div>
+										<div class="border-bottom mb-2">
+											<h5 class="text-muted">Contact Info.</h5>
+										</div>
+										<div class="col-md-4 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_TelNo_[${count}]">Telephone No.</label>
+												<input id="EntityRepresentative_TelNo_[${count}]" class="form-control" placeholder="Telephone No." type="text" name="EntityRepresentative[${count}].TelNo" value="${itemObj.TelNo || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].TelNo" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-4 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_MobileNo_[${count}]">Mobile No.</label>
+												<input id="EntityRepresentative_MobileNo_[${count}]" class="form-control" placeholder="Mobile No." type="text" name="EntityRepresentative[${count}].MobileNo" value="${itemObj.MobileNo || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].MobileNo" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-4 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_FaxNo_[${count}]">Fax No.</label>
+												<input id="EntityRepresentative_FaxNo_[${count}]" class="form-control" placeholder="Fax No." type="text" name="EntityRepresentative[${count}].FaxNo" value="${itemObj.FaxNo || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].FaxNo" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-4 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_OfficeNo_[${count}]">Office No.</label>
+												<input id="EntityRepresentative_OfficeNo_[${count}]" class="form-control" placeholder="Office No." type="text" name="EntityRepresentative[${count}].OfficeNo" value="${itemObj.OfficeNo || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].OfficeNo" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-8 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_Email_[${count}]">Email</label>
+												<input id="EntityRepresentative_Email_[${count}]" class="form-control" placeholder="sample@email.com" type="email" data-val="true" data-val-email="Please input a valid email address." name="EntityRepresentative[${count}].Email" value="${itemObj.Email || ""}">
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].Email" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-12 mb-2">
+											 <div class="form-group">
+												<label class="form-label" for="EntityRepresentative_Address_[${count}]">Address</label>
+												<textarea id="EntityRepresentative_Address_[${count}]" class="form-control" placeholder="Address" name="EntityRepresentative[${count}].Address">${itemObj.Address || ""}</textarea>
+												<span class="text-danger field-validation-valid" data-valmsg-for="EntityRepresentative[${count}].Address" data-valmsg-replace="true"></span>
+											</div>
+										</div>
+										<div class="col-md-12 mb-2">
+											<div class="form-group">
+												<div class="form-check form-switch">
+													<input id="EntityRepresentative_IsDefault_[${count}]" class="form-check-input rep_checkbox" type="checkbox" data-val="true" data-val-required="The Set as Default field is required." name="EntityRepresentative[${count}].IsDefault" value="true"><input name="EntityRepresentative[${count}].IsDefault" type="hidden" value="false">
+													<label class="form-check-label" for="EntityRepresentative_[${count}]_IsDefault">Set as Default</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>`;
+
+    $(".rep_div").append(row_to_add);
+    $(`[name="EntityRepresentative[${count}].IsDefault"]`).prop("checked", itemObj.IsDefault || false).trigger("change");
+
+    let genderDropdown, $genderDropdown;
+    let prefixDropdown, $prefixDropdown;
+
+    $genderDropdown = $(`[id="EntityRepresentative_Gender_[${count}]"]`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "API/Gender/GetGenderList/" + true,
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Description) +
+                    "</div>");
+            },
+            option: function (item, escape) {
+                return (
+                    "<div class='py-1 px-2'>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    $prefixDropdown = $(`[id="EntityRepresentative_Prefix_[${count}]"]`).selectize({
+        valueField: 'Description',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "API/GetPrefixList/",
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Description) +
+                    "</div>");
+            },
+            option: function (item, escape) {
+                return (
+                    "<div class='py-1 px-2'>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    genderDropdown = $genderDropdown[0].selectize;
+    prefixDropdown = $prefixDropdown[0].selectize;
+
+    genderDropdown.on('load', function (options) {
+        genderDropdown.setValue(itemObj.Gender || "");
+        genderDropdown.off('load');
+    });
+
+    prefixDropdown.on('load', function (options) {
+        prefixDropdown.setValue(itemObj.Prefix || "");
+        prefixDropdown.off('load');
+    });
+    addRequiredClass();
+}
+
+function loadImageOnPreview(location, defaultImage, divId) {
+    $.ajax({
+        type: "get",
+        url: location,
+        success: function (data) {
+            $(divId).css('background-image', 'url("' + location + '")');
+            $(divId).hide();
+            $(divId).fadeIn(650);
+        },
+        error: function (data) {
+            $(divId).css('background-image', 'url("' + defaultImage + '")');
+            $(divId).hide();
+            $(divId).fadeIn(650);
+        }
+    });
+}
+
+function readUrl(input, container) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            container.css('background-image', 'url(' + e.target.result + ')');
+            container.hide();
+            container.fadeIn(650);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function isNullOrWhitespace(input) {
+    return !input || !input.trim();
+}
+function checkFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', urlToFile, false);
+    xhr.send();
+
+    if (xhr.status == "404") {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+    let placeholder = "";
+
+    if (digits == 2) { placeholder = "0.00"; }
+    else if (digits == 5) { placeholder = "0.00000"; }
+
+    $(classname).inputmask({
+        alias: 'decimal',
+        rightAlign: true,
+        groupSeparator: '.',
+        digits: digits,
+        allowMinus: isallownegative,
+        autoGroup: true,
+        placeholder: placeholder,
+        max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
     });
 }
