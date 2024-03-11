@@ -11,12 +11,16 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
     public interface IBarrowersInformationRepository
     {
         Task<BarrowersInformation?> GetByIdAsync(int id);
+
         Task<BarrowersInformation?> GetByApplicationInfoIdAsync(int id);
-        Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model);
-        Task<BarrowersInformation> CreateAsync(BarrowersInformationModel model);
-        Task<BarrowersInformation> UpdateAsync(BarrowersInformationModel model);
+
         Task DeleteAsync(int id);
+
         Task BatchDeleteAsync(int[] ids);
+
         Task<BarrowersInformationModel?> GetByApplicantIdAsync(int applicantId);
+        Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model);
+        Task<BarrowersInformation> CreateAsync(BarrowersInformation barrower);
+        Task<BarrowersInformation> UpdateAsync(BarrowersInformation barrower);
     }
 }

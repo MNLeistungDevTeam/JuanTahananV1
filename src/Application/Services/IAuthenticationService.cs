@@ -23,4 +23,6 @@ public interface IAuthenticationService
     Task UpdateUserRefreshToken(int userId, string refreshToken, DateTime refreshTokenExpiry);
 
     Task UserLockedStatus(string userName);
+    string GenerateTemporaryPasswordAsync(string name);
+    Task<string> GenerateTemporaryUsernameAsync();
 }

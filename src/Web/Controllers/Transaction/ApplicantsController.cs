@@ -2,7 +2,6 @@
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
@@ -10,16 +9,18 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Template.Web.Controllers.Transaction
@@ -82,7 +83,7 @@ namespace Template.Web.Controllers.Transaction
             _propertyTypeRepo = propertyTypeRepo;
         }
 
-        [ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
         public IActionResult Index()
         {
             return View();
@@ -220,7 +221,7 @@ namespace Template.Web.Controllers.Transaction
             return View(vwModel);
         }
 
-        [ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
+        //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
         {
             var items = new List<ApplicantViewModel>();
@@ -253,6 +254,7 @@ namespace Template.Web.Controllers.Transaction
 
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
+                int userId = int.Parse(User.Identity.Name);
 
                 //create  new beneficiary
 
@@ -291,7 +293,7 @@ namespace Template.Web.Controllers.Transaction
 
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
-                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData));
+                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId));
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -311,7 +313,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = applicationData.Id;
 
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
@@ -333,7 +335,7 @@ namespace Template.Web.Controllers.Transaction
                 else
                 {
                     applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.Id));
-                    await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(vwModel.ApplicantsPersonalInformationModel));
+                    await _applicantsPersonalInformationRepo.SaveAsync(applicationData.MergeNonNullData(vwModel.ApplicantsPersonalInformationModel), userId);
 
                     if (user.Id == 0)
                     {
@@ -408,6 +410,7 @@ namespace Template.Web.Controllers.Transaction
 
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
+                int userId = int.Parse(User.Identity.Name);
 
                 //create  new beneficiary
 
@@ -421,7 +424,7 @@ namespace Template.Web.Controllers.Transaction
                         UserModel userModel = new()
                         {
                             Email = vwModel.BarrowersInformationModel.Email,
-                            Password = "Pass123$", //default password
+                            Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
@@ -447,7 +450,7 @@ namespace Template.Web.Controllers.Transaction
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData);
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId);
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -467,7 +470,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
@@ -491,7 +494,7 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
-                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel);
+                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
@@ -507,7 +510,7 @@ namespace Template.Web.Controllers.Transaction
 
                     if (vwModel.LoanParticularsInformationModel != null)
                     {
-                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel);
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
                     if (vwModel.SpouseModel != null)
@@ -549,12 +552,43 @@ namespace Template.Web.Controllers.Transaction
             return temporaryUsername;
         }
 
+        private static string GeneratePassword(string name)
+        {
+            string guid = Guid.NewGuid().ToString("N").Substring(0, 10); // Generate a GUID with 10 characters
+            string combinedString = guid + name; // Concatenate GUID with name
+
+            // Use a random seed based on the current time
+            Random rand = new Random(DateTime.Now.Millisecond);
+
+            // Hash the combined string using SHA-256
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
+                byte[] hash = sha256.ComputeHash(bytes);
+
+                // Introduce additional randomness
+                for (int i = 0; i < 10; i++)
+                {
+                    bytes[rand.Next(bytes.Length)] ^= (byte)rand.Next(256);
+                }
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hash)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return name + sb.ToString();
+            }
+        }
+
         private async Task<bool> UsernameExistsAsync(string username)
         {
             return (await _userRepo.GetAllAsync()).Any(x => x.UserName == username);
         }
 
-        [ModelStateValidations(typeof(UserModel))]
+        //[ModelStateValidations(typeof(UserModel))]
         public async Task<User> RegisterBenefeciary(UserModel user)
         {
             user.Position = "Beneficiary";

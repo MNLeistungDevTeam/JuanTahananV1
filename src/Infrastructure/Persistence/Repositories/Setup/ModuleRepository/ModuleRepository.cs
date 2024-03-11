@@ -30,6 +30,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetAllModules", new { })).ToList();
         public async Task<List<ModuleModel>> SpGetAllUserModules() =>
         (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetAllUserModules", new { userId = _currentUserService.GetCurrentUserId()})).ToList();
+
+
+
+        public async Task<ModuleModel?> GetByCodeAsync(string code) =>
+            await _db.LoadSingleAsync<ModuleModel, dynamic>("spModule_GetByCode", new { code });
+
+
+
         public async Task<Module> SaveAsync(ModuleModel model)
         {
             if (model.Id == 0)

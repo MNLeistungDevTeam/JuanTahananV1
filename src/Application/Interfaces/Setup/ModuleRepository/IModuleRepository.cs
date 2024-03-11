@@ -18,5 +18,6 @@ namespace DMS.Application.Interfaces.Setup.ModuleRepository
         Task<Module> UpdateAsync(ModuleModel model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<ModuleModel?> GetByCodeAsync(string code);
     }
 }
