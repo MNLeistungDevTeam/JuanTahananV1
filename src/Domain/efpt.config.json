@@ -88,6 +88,22 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[ModuleType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Notification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NotificationPriorityLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NotificationReceiver]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PropertyType]",
          "ObjectType": 0
       },
