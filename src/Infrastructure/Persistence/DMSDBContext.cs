@@ -49,6 +49,10 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<Module> Modules { get; set; }
 
+    public virtual DbSet<ModuleStage> ModuleStages { get; set; }
+
+    public virtual DbSet<ModuleStageApprover> ModuleStageApprovers { get; set; }
+
     public virtual DbSet<ModuleStatus> ModuleStatuses { get; set; }
 
     public virtual DbSet<ModuleType> ModuleTypes { get; set; }
@@ -509,6 +513,40 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.IsVisible)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<ModuleStage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC077DA8112F");
+
+            entity.ToTable("ModuleStage", tb => tb.HasTrigger("Trigger_ModuleStage_ColumnUpdates"));
+
+            entity.Property(e => e.ApproveDesc)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.RejectDesc)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.RequiredAmount).HasColumnType("decimal(18, 5)");
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<ModuleStageApprover>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC074397F437");
+
+            entity.ToTable("ModuleStageApprover");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<ModuleStatus>(entity =>

@@ -5,6 +5,9 @@ using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.ModuleStageApproverDto;
+using DMS.Domain.Dto.ModuleStageDto;
+using DMS.Domain.Dto.ModuleTypeDto;
 using DMS.Domain.Dto.NotificationDto;
 using DMS.Domain.Dto.NotificationReceiverDto;
 using DMS.Domain.Dto.RoleDto;
@@ -43,5 +46,10 @@ public class MappingProfile : Profile
 
         CreateMap<NotificationReceiver, NotificationReceiverModel>().ReverseMap();
         CreateMap<Notification, NotificationModel>().ReverseMap();
+
+        CreateMap<Module, ModuleModel>().ReverseMap();
+        CreateMap<ModuleType, ModuleTypeModel>().ReverseMap();
+        CreateMap<ModuleStage, ModuleStageModel>().ReverseMap();
+        CreateMap<ModuleStageApprover, ModuleStageApproverModel>().ReverseMap();
     }
 }

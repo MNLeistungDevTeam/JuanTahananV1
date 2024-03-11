@@ -44,6 +44,12 @@ using DMS.Application.Interfaces.Setup.NotificationReceiverRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.NotificationReceiverRepo;
 using DMS.Application.Interfaces.Setup.NotificationRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo;
+using DMS.Application.Interfaces.Setup.ModuleTypeRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleTypeRepo;
+using DMS.Application.Interfaces.Setup.ModuleStageRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverRepo;
+using DMS.Application.Interfaces.Setup.ModuleStageApproverRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageRepo;
 
 namespace Template.Infrastructure;
 
@@ -100,6 +106,10 @@ public static class DependencyInjectionConfig
         services.AddScoped<ILocalizationService, LocalizationService>();
         services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
         services.AddScoped<IModuleRepository, ModuleRepository>();
+        services.AddScoped<IModuleTypeRepository, ModuleTypeRepository>();
+        services.AddScoped<IModuleStageRepository, ModuleStageRepository>();
+        services.AddScoped<IModuleStageApproverRepository, ModuleStageApproverRepository>();
+
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleAccessRepository, RoleAccessRepository>();
         services.AddScoped<IUserRoleRepository, UserRoleRepository>();
@@ -130,8 +140,6 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<INotificationReceiverRepository, NotificationReceiverRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
-
-
 
         services.AddScoped<IZetaHousingLoanIntegrationService, ZetaHousingLoanIntegrationService>();
 

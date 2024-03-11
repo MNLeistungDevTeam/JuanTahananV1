@@ -16,6 +16,14 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[Address]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AddressType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ApplicantsPersonalInformation]",
          "ObjectType": 0
       },
@@ -29,6 +37,22 @@
       },
       {
          "Name": "[dbo].[CollateralInformation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Company]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CompanyLogo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CompanySetting]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Country]",
          "ObjectType": 0
       },
       {
@@ -60,7 +84,31 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[ModuleStage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ModuleStageApprover]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ModuleStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ModuleType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Notification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NotificationPriorityLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NotificationReceiver]",
          "ObjectType": 0
       },
       {

@@ -172,6 +172,13 @@
     <Build Include="Stored Procedures\Setup\Module\spModule_GetByCode.sql" />
     <Build Include="Tables\Setup\Module\ModuleType.sql" />
     <Build Include="Stored Procedures\Setup\Role\spRoleAccess_GetByUserId.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModule_GetAll.sql" />
+    <Build Include="Tables\Setup\Module\ModuleStage.sql" />
+    <Build Include="Tables\Setup\Module\ModuleStageApprover.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModule_GetWithApprovers.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetIfApprover.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetByModuleId.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetByModuleCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
