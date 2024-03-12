@@ -2,13 +2,9 @@
 using DMS.Application.Services;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo
 {
-
-
     public class CompanySettingRepository : ICompanySettingRepository
     {
         private readonly ISQLDatabaseService _db;
@@ -22,7 +18,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo
             _contextHelper = new(context);
         }
 
-        #region Read
+        #region Getters
 
         public async Task<CompanySetting?> GetByCompanyIdAsync(int loanPurposeId) =>
             await _context.CompanySettings.FirstOrDefaultAsync(m => m.CompanyId == loanPurposeId);
@@ -39,7 +35,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanySettingRepo
             return result;
         }
 
-        #endregion Read
+        #endregion Getters
 
         #region Operation
 

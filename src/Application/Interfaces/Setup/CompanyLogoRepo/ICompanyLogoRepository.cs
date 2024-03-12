@@ -22,7 +22,7 @@ namespace DMS.Application.Interfaces.Setup.CompanyLogoRepo
 
         Task BatchDeleteAsync(int[] ids);
 
-        Task<CompanyLogo> CreateAsync(CompanyLogo companySetting, int createdById);
+        Task<CompanyLogo> CreateAsync(CompanyLogo model, int userId);
 
         Task DeleteAsync(int id);
 
@@ -30,6 +30,6 @@ namespace DMS.Application.Interfaces.Setup.CompanyLogoRepo
 
         Task<CompanyLogo?> GetByIdAsync(int id);
 
-        Task<CompanyLogo> UpdateAsync(CompanyLogo companySetting, int modifiedById);
+        Task<CompanyLogo> UpdateAsync(CompanyLogo model, int userId);
     }
 }

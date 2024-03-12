@@ -76,15 +76,15 @@ public class RoleRepository : IRoleRepository
     public async Task<Role> CreateAsync(Role model)
     {
         model.DateCreated = DateTime.UtcNow;
-        model = await _contextHelper.CreateAsync(model, "DateModified");
-        return model;
+        var result = await _contextHelper.CreateAsync(model, "DateModified");
+        return result;
     }
 
     public async Task<Role> UpdateAsync(Role model)
     {
         model.DateModified = DateTime.UtcNow;
-        model = await _contextHelper.UpdateAsync(model, "DateCreated");
-        return model;
+        var result = await _contextHelper.UpdateAsync(model, "DateCreated");
+        return result;
     }
 
     public async Task DeleteAsync(int id)

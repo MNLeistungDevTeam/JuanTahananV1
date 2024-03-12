@@ -70,8 +70,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             roleAccess.DateCreated = DateTime.Now;
             roleAccess.CreatedById = _currentUserService.GetCurrentUserId();
 
-            roleAccess = await _contextHelper.CreateAsync(roleAccess, "DateModified", "ModifiedById");
-            return roleAccess;
+            var result = await _contextHelper.CreateAsync(roleAccess, "DateModified", "ModifiedById");
+            return result;
         }
 
         public async Task<RoleAccess> UpdateAsync(RoleAccess roleAccess)
@@ -79,8 +79,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             roleAccess.DateModified = DateTime.Now;
             roleAccess.ModifiedById = _currentUserService.GetCurrentUserId();
 
-            roleAccess = await _contextHelper.UpdateAsync(roleAccess, "DateCreated", "CreatedById");
-            return roleAccess;
+            var result = await _contextHelper.UpdateAsync(roleAccess, "DateCreated", "CreatedById");
+            return result;
         }
 
         public async Task DeleteAsync(int id)
