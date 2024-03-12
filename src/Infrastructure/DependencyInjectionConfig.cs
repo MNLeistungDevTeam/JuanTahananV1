@@ -141,8 +141,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<INotificationReceiverRepository, NotificationReceiverRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
 
-        services.AddScoped<IZetaHousingLoanIntegrationService, ZetaHousingLoanIntegrationService>();
 
+        services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
         return services;
     }
 }

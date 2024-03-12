@@ -1,6 +1,5 @@
 ﻿using DMS.Application.Services;
-using DMS.Domain.Dto.ZetaHousingLoanModelDto;
-using Microsoft.AspNetCore.Http;
+using DMS.Domain.Dto.BasicBeneficiaryDto;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -10,9 +9,9 @@ namespace DMS.Web.Controllers.Api
     [ApiController]
     public class HousingLoanApplicantApiController : ControllerBase
     {
-        private readonly IZetaHousingLoanIntegrationService _zetaHousingLoanIntegrationService;
+        private readonly IHousingLoanIntegrationService _zetaHousingLoanIntegrationService;
 
-        public HousingLoanApplicantApiController(IZetaHousingLoanIntegrationService zetaHousingLoanIntegrationService)
+        public HousingLoanApplicantApiController(IHousingLoanIntegrationService zetaHousingLoanIntegrationService)
         {
             _zetaHousingLoanIntegrationService = zetaHousingLoanIntegrationService;
         }
@@ -27,7 +26,7 @@ namespace DMS.Web.Controllers.Api
 
             await _zetaHousingLoanIntegrationService.SaveBeneficiaryAsync(model);
 
-            return Ok(); // or return any other appropriate response
+            return Ok(""); // or return any other appropriate response
         }
     }
 }
