@@ -123,39 +123,84 @@ public class ReportController : Controller
     public async Task<IActionResult> BCFFORM([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator)
     {
         var model = new ViewerModel
-        { 
+        {
             ViewerModelToBind = await clientSideModelGenerator.GetModelAsync("BuyerConfirmationForm", WebDocumentViewerController.DefaultUri)
         };
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[0].Value = _hostingEnvironment.WebRootPath;
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = "dawda";
         return View("Viewer", model);
     }
-    public async Task<IActionResult> LatestHousingForm([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator,int userId)
+
+    public async Task<IActionResult> LatestHousingForm([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator, int userId)
     {
         var model = new ViewerModel
         {
             ViewerModelToBind = await clientSideModelGenerator.GetModelAsync("HousingForm", WebDocumentViewerController.DefaultUri)
         };
         var modelData = new ApplicantViewModel();
+
+        modelData.ApplicantsPersonalInformationModel = new ApplicantsPersonalInformationModel();
+        modelData.LoanParticularsInformationModel = new LoanParticularsInformationModel();
+        modelData.CollateralInformationModel = new CollateralInformationModel();
+        modelData.BarrowersInformationModel = new BarrowersInformationModel();
+        modelData.SpouseModel = new SpouseModel();
+        modelData.Form2PageModel = new Form2PageModel();
+
         if (userId != 0)
         {
-            var latestApplicationForm = (await _applicantsPersonalInformationRepo
-                .GetAllAsync())
-                .Where(x => x.UserId == userId)
-                .OrderByDescending(x => x.DateCreated)
-                .FirstOrDefault() ?? new ApplicantsPersonalInformation()
-                {
-                    UserId = userId
-                };
-            modelData.ApplicantsPersonalInformationModel = _mapper.Map<ApplicantsPersonalInformationModel>(latestApplicationForm);
-            modelData.LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(await _loanParticularsInformationRepo.GetByApplicationIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.CollateralInformationModel = _mapper.Map<CollateralInformationModel>(await _collateralInformationRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(await _barrowersInformationRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.SpouseModel = _mapper.Map<SpouseModel>(await _spouseRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.Form2PageModel = _mapper.Map<Form2PageModel>(await _form2PageRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
+            //var latestApplicationForm = (await _applicantsPersonalInformationRepo
+            //    .GetAllAsync())
+            //    .Where(x => x.UserId == userId)
+            //    .OrderByDescending(x => x.DateCreated)
+            //    .FirstOrDefault() ?? new ApplicantsPersonalInformation()
+            //    {
+            //        UserId = userId
+            //    };
+
+            var applicantData = await _applicantsPersonalInformationRepo.GetByUserAsync(userId);
+
+            if (applicantData != null)
+            {
+                modelData.ApplicantsPersonalInformationModel = applicantData;
+            }
+
+            var loanParticularsData = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantData.Id);
+
+            if (loanParticularsData != null)
+            {
+                modelData.LoanParticularsInformationModel = loanParticularsData;
+            }
+
+            var collateralData = await _collateralInformationRepo.GetByApplicantIdAsync(applicantData.Id);
+
+            if (collateralData != null)
+            {
+                modelData.CollateralInformationModel = collateralData;
+            }
+
+            var barrowerData = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantData.Id);
+
+            if (barrowerData != null)
+            {
+                modelData.BarrowersInformationModel = barrowerData;
+            }
+
+            var spouseData = await _spouseRepo.GetByApplicantIdAsync(applicantData.Id);
+
+            if (spouseData != null)
+            {
+                modelData.SpouseModel = spouseData;
+            }
+
+            var form2Data = await _form2PageRepo.GetByApplicantIdAsync(applicantData.Id);
+
+            if (form2Data != null)
+            {
+                modelData.Form2PageModel = form2Data;
+            }
         }
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[0].Value = _hostingEnvironment.WebRootPath;
-        model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = JsonConvert.SerializeObject(modelData,Newtonsoft.Json.Formatting.Indented);
+        model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = JsonConvert.SerializeObject(modelData, Newtonsoft.Json.Formatting.Indented);
         return View("Viewer", model);
     }
     public async Task<IActionResult> HousingForm([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator, int id)
