@@ -104,9 +104,14 @@
         tbl_role.on('select', () => {
             customCheckRows(tbl_role);
         })
+
         tbl_role.on('deselect', () => {
             customCheckRows(tbl_role);
         })
+
+        tbl_role.on('draw', () => {
+            customCheckRows(tbl_role);
+        });
     }
     function customCheckRows(element) {
         var row2minimum = element.rows({ selected: true }).count();
@@ -345,17 +350,26 @@
         })
     }
 
+    $('#Role_IsDisabled').on('change', function () {
+        var isChecked = $(this).is(':checked');
+        $('#role_form').find('input[name="Role.IsDisabled"]').val(isChecked);
+    });
+
     $form.on('submit', function (e) {
         e.preventDefault();
         var button = $(this).find('button[type="submit"]');
+        var formData = $(this).serialize();
 
         if (!$(this).valid())
             return;
 
+        // Log serialized form data
+        console.log("Form Data:", formData);
+
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
-            data: $(this).serialize(),
+            data: formData,
             beforeSend: function () {
                 button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
             },

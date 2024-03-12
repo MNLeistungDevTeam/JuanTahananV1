@@ -18,7 +18,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         private readonly ISQLDatabaseService _db;
         private readonly IModuleStageRepository _moduleStageRepo;
 
-        public ModuleRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db, IModuleStageRepository moduleStageRepo)
+        public ModuleRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db,
+            IModuleStageRepository moduleStageRepo)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<Module>(context);
