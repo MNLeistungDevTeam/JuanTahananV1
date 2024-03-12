@@ -201,7 +201,10 @@ $(async function () {
             },
             {
                 data: "Icon",
-                class: "text-center"
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data ? `<i class="${data}"></i>` : null;
+                }
             },
             {
                 data: "Ordinal",
@@ -476,7 +479,7 @@ $(async function () {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#d33',  
             confirmButtonText: 'Confirm',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {

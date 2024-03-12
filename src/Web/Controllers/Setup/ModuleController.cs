@@ -347,13 +347,15 @@ public class ModuleController : Controller
         {
             int[] Ids = Array.ConvertAll(moduleIds.Split(','), int.Parse);
 
-            if (Ids.Length > 0)
-            {
-                foreach (var moduleId in Ids)
-                {
-                    await _moduleRepo.DeleteAsync(moduleId);
-                }
-            }
+            //if (Ids.Length > 0)
+            //{
+            //    foreach (var moduleid in Ids)
+            //    {
+            //        await _moduleRepo.DeleteAsync(moduleid);
+            //    }
+            //}
+
+            await _moduleRepo.BatchDeleteAsync(Ids);
 
             return Ok();
         }

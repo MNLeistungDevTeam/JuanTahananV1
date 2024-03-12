@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using DevExpress.XtraReports.Design;
-using DMS.Domain.Dto.ModuleDto;
-using Microsoft.EntityFrameworkCore;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Services;
-using DMS.Domain.Entities;
-using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Application.Interfaces.Setup.ModuleStageRepo;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.ModuleStageDto;
+using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
 {
@@ -147,9 +143,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.Modules.Where(m => ids.Contains(m.Id)).ToListAsync();
-            foreach (var entity in entities)
+
+            if(entities is not null)
             {
-                await DeleteAsync(entity.Id);
+                await _contextHelper.BatchDeleteAsync(entities);
             }
         }
     }
