@@ -66,9 +66,9 @@
 
                 @foreach (var moduleGroup in moduleGroups)
                 {
-                   var _parentModules = parentModules.Where(x => x.ModuleType == moduleGroup.ModuleType);
+                    var _parentModules = parentModules.Where(x => x.ModuleType == moduleGroup.ModuleType);
 
-                   if (_parentModules.Any())
+                    if (_parentModules.Any())
                     {
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebar@(moduleGroup.ModuleType.Replace(" ","_"))" aria-expanded="false"
@@ -94,7 +94,7 @@
                         </li>
                     }
 
-                    @if (_parentModules.Any())
+                    if (_parentModules.Any())
                     {
                         <div class="collapse" id="sidebar@(moduleGroup.ModuleType.Replace(" ","_"))">
                             <ul class="side-nav-second-level">
@@ -105,33 +105,38 @@
                                         if (parentModule.HasSubModule)
                                         {
                                             <li class="side-nav-item">
-                                                <a data-bs-toggle="collapse" href="#sidebar@(parentModule.ModuleName)" aria-expanded="false" aria-controls="sidebar@(parentModule.ModuleName)">
-                                                    @Html.Raw(parentModule.ModuleIcon)
-                                                    <span>@parentModule.ModuleName</span>
+                                                <a data-bs-toggle="collapse" href="#sidebar@(parentModule.ModuleName)" aria-expanded="false" aria-controls="sidebarSecondLevel">
+                                                    <i class="@parentModule.ModuleIcon"></i>
+                                                    <span> @parentModule.ModuleName </span>
                                                     <span class="menu-arrow"></span>
                                                 </a>
 
-                                                <div id="sidebar@(parentModule.ModuleName)" class="collapse">
+                                                <div id="sidebar@(parentModule.ModuleName)">
                                                     <ul class="side-nav-second-level">
+
+
                                                         @foreach (var subModule in subModules)
                                                         {
                                                             if (subModule.ParentModuleId == parentModule.ModuleId)
                                                             {
                                                                 <li class="side-nav-item">
+
                                                                     <a asp-controller="@subModule.ModuleController" asp-action="@subModule.ModuleAction">@subModule.ModuleName</a>
                                                                 </li>
                                                             }
                                                         }
+
                                                     </ul>
                                                 </div>
                                             </li>
+
                                         }
                                         else
                                         {
                                             <li class="side-nav-item">
                                                 <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
-                                                    @Html.Raw(parentModule.ModuleIcon)
-                                                    <span>@localizer[parentModule.ModuleName]</span>
+                                                    <i class="@parentModule.ModuleIcon"></i>
+                                                    <span> @localizer[parentModule.ModuleName] </span>
                                                 </a>
                                             </li>
                                         }
@@ -140,7 +145,6 @@
                             </ul>
                         </div>
                     }
-
                 }
 
                 <li class="side-nav-item">
@@ -157,4 +161,9 @@
         <!-- End Sidebar -->
     </div>
 
+
+
 }
+
+
+

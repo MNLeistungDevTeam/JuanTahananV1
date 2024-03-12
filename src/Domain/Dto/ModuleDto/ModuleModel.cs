@@ -35,6 +35,7 @@ namespace DMS.Domain.Dto.ModuleDto
         public string? Description { get; set; }
 
         [DisplayName("Icon")]
+        [Required(ErrorMessage = "this field is required!")]
         public string? Icon { get; set; }
 
         [DisplayName("Visibility")]
