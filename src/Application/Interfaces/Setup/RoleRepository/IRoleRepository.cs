@@ -13,9 +13,9 @@ namespace DMS.Application.Interfaces.Setup.RoleRepository
         Task<List<RoleModel>> GetAllRolesAsync();
         Task<Role?> GetByIdAsync(int id);
         Task<List<Role>?> GetAllAsync();
-        Task<Role> SaveAsync(RoleModel model);
-        Task<Role> CreateAsync(RoleModel model);
-        Task<Role> UpdateAsync(RoleModel model);
+        Task<Role> SaveAsync(RoleModel rModel, List<RoleAccessModel> raModel);
+        Task<Role> CreateAsync(Role model);
+        Task<Role> UpdateAsync(Role model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

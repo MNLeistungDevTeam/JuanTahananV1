@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.StaticFiles;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using static System.Net.Mime.MediaTypeNames;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

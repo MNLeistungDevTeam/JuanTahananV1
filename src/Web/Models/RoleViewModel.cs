@@ -11,4 +11,9 @@ public class RoleViewModel
     public List<RoleAccessModel> RoleAccess { get; set; }
     public UserRoleModel UserRole { get; set; }
 
+    public RoleViewModel()
+    {
+        Role = new();
+        RoleAccess = new();
+    }
 }

@@ -1,223 +1,195 @@
 ﻿using AutoMapper;
-using DevExpress.DirectX.Common.DirectWrite;
-using DevExpress.Drawing.Internal.Fonts.Interop;
-using DMS.Domain.Dto.RoleDto;
-using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Enums;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DevExpress.CodeParser;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
-using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
-using RoleAccessModel = DMS.Domain.Dto.RoleDto.RoleAccessModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DMS.Web.Controllers.Setup
+namespace DMS.Web.Controllers.Setup;
+
+[Authorize]
+public class RoleController : Controller
 {
-    [Authorize]
-    public class RoleController : Controller
+    private readonly IRoleRepository _roleRepo;
+    private readonly IRoleAccessRepository _roleAccessRepo;
+    private readonly IModuleRepository _moduleRepo;
+    private readonly IMapper _mapper;
+    private readonly IUserRoleRepository _userRoleRepo;
+    private readonly IUserRepository userRepo;
+
+    public RoleController(
+        IRoleRepository roleRepo,
+        IRoleAccessRepository roleAccessRepo,
+        IModuleRepository moduleRepo,
+        IMapper mapper,
+        IUserRoleRepository userRoleRepo,
+        IUserRepository userRepo)
     {
-        private readonly IRoleRepository _roleRepo;
-        private readonly IRoleAccessRepository _roleAccessRepo;
-        private readonly IModuleRepository _moduleRepo;
-        private readonly IMapper _mapper;
-        private readonly IUserRoleRepository _userRoleRepo;
-        private readonly IUserRepository userRepo;
-        public RoleController(IRoleRepository roleRepo, IRoleAccessRepository roleAccessRepo, IModuleRepository moduleRepo, IMapper mapper, IUserRoleRepository userRoleRepo, IUserRepository userRepo)
+        _roleRepo = roleRepo;
+        _roleAccessRepo = roleAccessRepo;
+        _moduleRepo = moduleRepo;
+        _mapper = mapper;
+        _userRoleRepo = userRoleRepo;
+        this.userRepo = userRepo;
+    }
+
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public async Task<IActionResult> UserRole(int id)
+    {
+        return View(new RoleViewModel()
         {
-            _roleRepo = roleRepo;
-            _roleAccessRepo = roleAccessRepo;
-            _moduleRepo = moduleRepo;
-            _mapper = mapper;
-            _userRoleRepo = userRoleRepo;
-            this.userRepo = userRepo;
-        }
-        //[ModuleServices(ModuleCodes.Role, typeof(IModuleRepository))]
-        public IActionResult Index()
+            Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
+        });
+    }
+
+    public async Task<IActionResult> GetRoleSetupAccess(int id)
+    {
+        var lists = new List<HybridRoles>();
+        var role = await _roleRepo.GetByIdAsync(id) ?? new Role();
+        var items = (await _moduleRepo.Module_GetAllModuleList()).ToList();
+        for (int i = 0; i < items.Count; ++i)
         {
-            return View();
-        }
-        //[ModuleServices(ModuleCodes.UserRole, typeof(IModuleRepository))]
-        public async Task<IActionResult> UserRole(int id)
-        {
-            return View(new RoleViewModel()
+            var item = items[i];
+            var roleaccess = (await _roleAccessRepo.GetAllAsync()).FirstOrDefault(x => x.RoleId == role.Id && x.ModuleId == item.Id) ?? new RoleAccess()
             {
-                Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
-            });
+                Id = 0,
+                RoleId = 0,
+                CanCreate = false,
+                CanDelete = false,
+                CanRead = false,
+                CanModify = false,
+            };
+            lists.Add(new HybridRoles(
+                canModify: roleaccess.CanModify,
+                index: i,
+                id: roleaccess.Id,
+                roleId: role.Id,
+                moduleId: item.Id,
+                canCreate: roleaccess.CanCreate,
+                canDelete: roleaccess.CanDelete,
+                canRead: roleaccess.CanRead,
+                moduleName: item.Description
+                ));
         }
-        public async Task<IActionResult> GetRoleSetupAccess(int id)
+        return Ok(lists);
+    }
+
+    public async Task<IActionResult> GetRoleById(int id) =>
+        Ok(await _roleRepo.GetByIdAsync(id));
+
+    public async Task<IActionResult> GetAllRoles() =>
+        Ok(await _roleRepo.GetAllRolesAsync());
+
+    public async Task<IActionResult> GetUsers(int roleId)
+    {
+        var userRoles = (await _userRoleRepo.GetAllAsync()).Where(x => x.RoleId == roleId).Select(s => s.UserId).ToList();
+
+        List<UserModel> usersWithoutRole = (await userRepo.GetUsersAsync()).ToList();
+
+        if (userRoles.Any())
         {
-            var lists = new List<HybridRoles>();
-            var role = await _roleRepo.GetByIdAsync(id) ?? new Role();
-            var items = (await _moduleRepo.Module_GetAllModuleList()).ToList();
-            for (int i = 0; i < items.Count; ++i)
+            usersWithoutRole = usersWithoutRole.Where(x => !userRoles.Contains(x.Id)).ToList();
+        }
+
+        return Ok(usersWithoutRole.Select(x => new
+        {
+            text = x.Name,
+            value = x.Id,
+            position = x.Position
+        }));
+    }
+
+    public async Task<IActionResult> GetUserRoles(int RoleId) =>
+        Ok(((await _userRoleRepo.SpGetAllRoles())).Where(x => x.RoleId == RoleId));
+
+    public async Task RemoveFromRole(int[] ids) =>
+        await _userRoleRepo.BatchDeleteAsync(ids);
+
+    /*[HttpPost]
+    public async Task<IActionResult> SaveUserRole(RoleViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
             {
-                var item = items[i];
-                var roleaccess = (await _roleAccessRepo.GetAllAsync()).FirstOrDefault(x => x.RoleId == role.Id && x.ModuleId == item.Id) ?? new RoleAccess()
-                {
-                    Id = 0,
-                    RoleId = 0,
-                    CanCreate = false,
-                    CanDelete = false,
-                    CanRead = false,
-                    CanModify = false,
-                };
-                lists.Add(new HybridRoles(
-                    canModify: roleaccess.CanModify,
-                    index: i,
-                    id: roleaccess.Id,
-                    roleId: role.Id,
-                    moduleId: item.Id,
-                    canCreate: roleaccess.CanCreate,
-                    canDelete: roleaccess.CanDelete,
-                    canRead: roleaccess.CanRead,
-                    moduleName: item.Description
-                    ));
+                return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
             }
-            return Ok(lists);
-        }
-        [HttpPost]
-        //[ModelStateValidations(typeof(RoleViewModel))]
-        public async Task<IActionResult> SaveUserRole(RoleViewModel model)
-        {
-            try
+
+            foreach (var item in model.UserRole.UsersId)
             {
-                if (!ModelState.IsValid)
+                var existingUserRole = await _userRoleRepo.GetUserRoleAsync(item);
+
+                if (existingUserRole != null)
                 {
-                    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+                    // Update existing user role if it already exists
+                    existingUserRole.RoleId = model.UserRole.RoleId;
+                    await _userRoleRepo.SaveAsync(_mapper.Map<UserRoleModel>(existingUserRole));
                 }
-
-
-                foreach (var item in model.UserRole.UsersId)
+                else
                 {
-                    var existingUserRole = await _userRoleRepo.GetUserRoleAsync(item);
-
-                    if (existingUserRole != null)
+                    // Create new user role if it doesn't exist
+                    await _userRoleRepo.SaveAsync(new UserRoleModel()
                     {
-                        // Update existing user role if it already exists
-                        existingUserRole.RoleId = model.UserRole.RoleId;
-                        await _userRoleRepo.SaveAsync(_mapper.Map<UserRoleModel>(existingUserRole));
-                    }
-                    else
-                    {
-                        // Create new user role if it doesn't exist
-                        await _userRoleRepo.SaveAsync(new UserRoleModel()
-                        {
-                            RoleId = model.UserRole.RoleId,
-                            UserId = item
-                        });
-                    }
+                        RoleId = model.UserRole.RoleId,
+                        UserId = item
+                    });
                 }
+            }
 
-                return Ok("added");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Errors = ex.ToString() });
-            }
+            return Ok();
         }
-        [HttpPost]
-        //[ModelStateValidations(typeof(RoleViewModel))]
-        //public async Task<IActionResult> SaveRole(RoleViewModel model)
-        //{
-        //    try
-        //    {
-        //        if (model.Role.Id == 0)
-        //        {
-        //            // Add new role logic
-        //            var role = await _roleRepo.SaveAsync(model.Role);
-        //            if (role != null)
-        //            {
-        //                foreach (var item in model.RoleAccess)
-        //                {
-        //                    item.RoleId = role.Id;
-        //                    await _roleAccessRepo.SaveAsync(item);
-        //                }
-        //                return Ok("added");
-        //            }
-        //            return BadRequest(new { Errors = "Adding role failed." });
-        //        }
-        //        else
-        //        {
-        //            // Update existing role logic
-        //            var role = await _roleRepo.GetByIdAsync(model.Role.Id);
-        //            if (role == null)
-        //            {
-        //                return NotFound(new { Message = "Role not found." });
-        //            }
-        //            model.Role.IsLocked = role.IsLocked; // Ensure IsLocked is properly handled
-        //           await _roleRepo.SaveAsync(model.Role);
-
-        //            // Update RoleAccess items
-        //            foreach (var item in model.RoleAccess)
-        //            {
-        //                var existingRoleAccess = await _roleAccessRepo.GetRoleAccessAsync(role.Id, item.ModuleId);
-        //                if (existingRoleAccess == null)
-        //                {
-        //                    // Create new RoleAccess item if not found
-        //                    existingRoleAccess = new RoleAccess
-        //                    {
-        //                        RoleId = role.Id,
-        //                        ModuleId = item.ModuleId
-        //                    };
-        //                }
-        //                // Update properties
-        //                existingRoleAccess.CanCreate = item.CanCreate;
-        //                existingRoleAccess.CanDelete = item.CanDelete;
-        //                existingRoleAccess.CanRead = item.CanRead;
-        //                existingRoleAccess.CanModify = item.CanModify;
-        //                existingRoleAccess.ModuleId = item.ModuleId;
-        //                await _roleAccessRepo.SaveAsync(_mapper.Map<RoleAccessModel>(existingRoleAccess));
-        //            }
-        //            return Ok("updated");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { Errors = ex.ToString()});
-        //    }
-        //}
-
-        public async Task DeleteRoles(int[] ids) =>
-            await _roleRepo.BatchDeleteAsync(ids);
-        public async Task<IActionResult> GetRoleById(int id) =>
-            Ok(await _roleRepo.GetByIdAsync(id));
-        public async Task<IActionResult> GetAllRoles() =>
-            Ok(await _roleRepo.GetAllRolesAsync());
-
-        public async Task<IActionResult> GetUsers(int roleId)
+        catch (Exception ex)
         {
-            var userRoles = (await _userRoleRepo.GetAllAsync()).Where(x => x.RoleId == roleId).Select(s => s.UserId).ToList();
+            return BadRequest(new { Errors = ex.ToString() });
+        }
+    }*/
 
-            List<UserModel> usersWithoutRole = (await userRepo.GetUsersAsync()).ToList();
-
-            if (userRoles.Any())
+    [HttpPost]
+    public async Task<IActionResult> SaveRole(RoleViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
             {
-                usersWithoutRole = usersWithoutRole.Where(x => !userRoles.Contains(x.Id)).ToList();
+                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
+                return Conflict(errors);
             }
 
-            return Ok(usersWithoutRole.Select(x => new {
-                text = x.Name,
-                value = x.Id,
-                position = x.Position
-            }));
+            await _roleRepo.SaveAsync(model.Role, model.RoleAccess);
+            return Ok();
         }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 
+    [HttpDelete]
+    public async Task<IActionResult> DeleteRoles(string ids)
+    {
+        try
+        {
+            int[] _ids = Array.ConvertAll(ids.Split(','), int.Parse);
+            await _roleRepo.BatchDeleteAsync(_ids);
 
-        public async Task<IActionResult> GetUserRoles(int RoleId) =>
-            Ok(((await _userRoleRepo.SpGetAllRoles())).Where(x => x.RoleId == RoleId));
-        public async Task RemoveFromRole(int[] ids) =>
-            await _userRoleRepo.BatchDeleteAsync(ids);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

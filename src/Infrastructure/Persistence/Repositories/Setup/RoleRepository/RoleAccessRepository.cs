@@ -15,7 +15,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public RoleAccessRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public RoleAccessRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<RoleAccess>(context);
@@ -48,25 +52,17 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         public async Task<List<RoleAccess>?> GetAllAsync() =>
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
 
-
-
-
         public async Task<IEnumerable<RoleAccessModel>> GetRoleByModuleCodeAsync(int userId, string? moduleCode) =>
           await _db.LoadDataAsync<RoleAccessModel, dynamic>("spRoleAccess_GetRoleByModuleCode", new { userId, moduleCode });
 
-
-
-
-        public async Task<RoleAccess> SaveAsync(RoleAccessModel model)
+        public async Task<RoleAccess> SaveAsync(RoleAccess model)
         {
-            var _roleAccess = _mapper.Map<RoleAccess>(model);
-
             if (model.Id == 0)
-                _roleAccess = await CreateAsync(_roleAccess);
+                model = await CreateAsync(model);
             else
-                _roleAccess = await UpdateAsync(_roleAccess);
+                model = await UpdateAsync(model);
 
-            return _roleAccess;
+            return model;
         }
 
         public async Task<RoleAccess> CreateAsync(RoleAccess roleAccess)
@@ -101,6 +97,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             {
                 await DeleteAsync(entity.Id);
             }
+        }
+
+        public async Task BatchDeleteAsync(List<RoleAccess> roleAccessList)
+        {
+            await _contextHelper.BatchDeleteAsync(roleAccessList);
         }
     }
 }
