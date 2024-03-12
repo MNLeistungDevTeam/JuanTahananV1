@@ -13,7 +13,6 @@ Post-Deployment Script Template
 :r .\PostDeploymentScript\Script.PostDeployment_User.sql
 :r .\PostDeploymentScript\Script.PostDeployment_ModuleStatus.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Module.sql
-:r .\PostDeploymentScript\Script.PostDeployment_ModuleType.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Role.sql
 :r .\PostDeploymentScript\Script.PostDeployment_RoleAccess.sql
 :r .\PostDeploymentScript\Script.PostDeployment_UserRole.sql
