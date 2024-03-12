@@ -9,6 +9,6 @@ namespace DMS.Application.Services
 {
     public interface IZetaHousingLoanIntegrationService
     {
-        Task SaveBeneficiaryAsync(ZetaHousingLoanModel model);
+        Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model);
     }
 }

@@ -18,7 +18,7 @@ namespace DMS.Web.Controllers.Api
         }
 
         [HttpPost("SaveBenificiary")]
-        public async Task<IActionResult> SaveBeneficiaryAsync([FromBody] ZetaHousingLoanModel model)
+        public async Task<IActionResult> SaveBeneficiaryAsync([FromBody] BasicBeneficiaryInformationModel model)
         {
             if (!ModelState.IsValid)
             {

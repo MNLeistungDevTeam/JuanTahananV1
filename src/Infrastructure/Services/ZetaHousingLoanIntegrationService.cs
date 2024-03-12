@@ -29,7 +29,7 @@ namespace DMS.Infrastructure.Services
             _emailService = emailService;
         }
 
-        public async Task SaveBeneficiaryAsync(ZetaHousingLoanModel model)
+        public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model)
         {
             BarrowersInformationModel barrowerModel = new();
             ApplicantsPersonalInformationModel applicantInfoModel = new();

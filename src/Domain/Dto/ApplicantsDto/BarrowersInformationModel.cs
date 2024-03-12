@@ -42,10 +42,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? MaritalStatus { get; set; }
 
         [DisplayName("Home Number")]
-        public int? HomeNumber { get; set; }
+        public string? HomeNumber { get; set; }
 
         [DisplayName("Mobile Number")]
-        public int? MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
         [DisplayName("Email")]
         public string? Email { get; set; }
@@ -111,10 +111,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? YearsofStay { get; set; }
 
         [DisplayName("SSS Number")]
-        public int? SSSNumber { get; set; }
+        public string? SSSNumber { get; set; }
 
         [DisplayName("TIN Number")]
-        public int? TinNumber { get; set; }
+        public string? TinNumber { get; set; }
 
         [DisplayName("Occupation Status")]
         public string? OcupationStatus { get; set; }

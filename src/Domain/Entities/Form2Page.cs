@@ -243,11 +243,11 @@ public partial class Form2Page
 
     public string LastName { get; set; }
 
-    public long? PagibigNumber { get; set; }
+    public string PagibigNumber { get; set; }
 
-    public long? TinNumber { get; set; }
+    public string TinNumber { get; set; }
 
-    public long? ContactNumber { get; set; }
+    public string ContactNumber { get; set; }
 
     public string Email { get; set; }
 

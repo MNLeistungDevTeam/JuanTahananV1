@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DMS.Domain.Dto.ZetaHousingLoanModelDto
 {
-    public class ZetaHousingLoanModel
+    public class BasicBeneficiaryInformationModel
     {
         public int Id { get; set; }
 
         [DisplayName("Pagibig Mid Number")]
-        public long PagibigMidNumber { get; set; }
+        public string? PagibigMidNumber { get; set; }
 
         #region Barrowers
 
@@ -36,7 +36,7 @@ namespace DMS.Domain.Dto.ZetaHousingLoanModelDto
         public string? Email { get; set; }
 
         [DisplayName("Mobile Number")]
-        public int? MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
         [DisplayName("Unit")]
         public string? PresentUnitName { get; set; }
