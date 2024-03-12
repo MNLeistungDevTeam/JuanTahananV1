@@ -34,8 +34,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<Form2Page?> GetByApplicationInfoIdAsync(int id) =>
             await _context.Form2Pages.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
 
-
-
         public async Task<Form2PageModel?> GetByApplicantIdAsync(int applicantId) =>
       await _db.LoadSingleAsync<Form2PageModel, dynamic>("spForm2Page_GetByApplicantId", new { applicantId });
         public async Task<Form2Page> SaveAsync(Form2PageModel model)
@@ -82,5 +80,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             }
 
         }
+
     }
 }

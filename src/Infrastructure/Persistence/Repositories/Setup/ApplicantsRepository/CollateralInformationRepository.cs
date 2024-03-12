@@ -31,16 +31,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<CollateralInformation?> GetByIdAsync(int id) =>
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<CollateralInformation?> GetByApplicationInfoIdAsync(int id) =>
              await _context.CollateralInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
 
-
-
         public async Task<CollateralInformationModel?> GetByApplicantIdAsync(int applicantId) =>
         await _db.LoadSingleAsync<CollateralInformationModel, dynamic>("spCollateralInformationModel_GetByApplicantId", new { applicantId });
-
-
-
 
         public async Task<CollateralInformation> SaveAsync(CollateralInformationModel model)
         {
@@ -50,6 +46,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 model = _mapper.Map<CollateralInformationModel>(await UpdateAsync(model));
             return _mapper.Map<CollateralInformation>(model);
         }
+
         public async Task<CollateralInformation> CreateAsync(CollateralInformationModel model)
         {
             model.DateCreated = DateTime.UtcNow;
@@ -58,6 +55,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
             return mapped;
         }
+
         public async Task<CollateralInformation> UpdateAsync(CollateralInformationModel model)
         {
             model.DateModified = DateTime.UtcNow;
@@ -66,6 +64,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
             return mapped;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -77,6 +76,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.CollateralInformations.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -84,7 +84,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
     }
 }

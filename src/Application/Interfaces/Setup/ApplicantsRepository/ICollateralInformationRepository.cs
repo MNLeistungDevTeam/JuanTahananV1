@@ -13,8 +13,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<CollateralInformation?> GetByIdAsync(int id);
         Task<CollateralInformation?> GetByApplicationInfoIdAsync(int id);
         Task<CollateralInformation> SaveAsync(CollateralInformationModel model);
-        Task<CollateralInformation> CreateAsync(CollateralInformation model);
-        Task<CollateralInformation> UpdateAsync(CollateralInformation model);
+        Task<CollateralInformation> CreateAsync(CollateralInformationModel model);
+        Task<CollateralInformation> UpdateAsync(CollateralInformationModel model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
         Task<CollateralInformationModel?> GetByApplicantIdAsync(int applicantId);
