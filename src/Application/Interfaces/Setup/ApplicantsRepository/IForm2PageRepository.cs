@@ -17,5 +17,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<Form2Page> UpdateAsync(Form2Page model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<Form2PageModel?> GetByApplicantIdAsync(int applicantId);
     }
 }

@@ -11,12 +11,22 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
     public interface IApplicantsPersonalInformationRepository
     {
         Task<ApplicantsPersonalInformation?> GetByIdAsync(int id);
+
         Task<ApplicantsPersonalInformation?> GetbyUserId(int id);
+
         Task<List<ApplicantsPersonalInformation>?> GetAllAsync();
-        Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model);
-        Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation model);
-        Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation model);
+
         Task DeleteAsync(int id);
+
         Task BatchDeleteAsync(int[] ids);
+
+        Task<ApplicantsPersonalInformationModel?> GetByCodeAsync(string code);
+
+        Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId);
+
+        Task<ApplicantsPersonalInformationModel?> GetAsync(int id);
+        Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId);
+        Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
+        Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
     }
 }

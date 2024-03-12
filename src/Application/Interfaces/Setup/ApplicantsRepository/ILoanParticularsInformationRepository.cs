@@ -11,11 +11,16 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
     public interface ILoanParticularsInformationRepository
     {
         Task<LoanParticularsInformation?> GetByIdAsync(int id);
+
         Task<LoanParticularsInformation?> GetByApplicationIdAsync(int id);
-        Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model);
-        Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation model);
-        Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation model);
+
         Task DeleteAsync(int id);
+
         Task BatchDeleteAsync(int[] ids);
+
+        Task<LoanParticularsInformationModel?> GetByApplicantIdAsync(int applicantId);
+        Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model, int userId);
+        Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation loanParticulars, int userId);
+        Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation loanParticulars, int userId);
     }
 }

@@ -1,7 +1,7 @@
 ﻿@inject IStringLocalizer<SharedResources> localizer
 
 @{
-    ViewData["MainTitle"] = localizer["MNL Template"];
+    ViewData["MainTitle"] = localizer["eiDOC"];
 }
 
 <!DOCTYPE html>
@@ -25,6 +25,8 @@
 
 <body>
     <input type="hidden" id="txtBaseUrl" value="@(@Url.Content("~"))/" />
+ 
+    <div id="Layout-defaultLogo" hidden>@Url.Content("~/images/JuanTahananAssets/Logo/JuanTahananLogo.png")</div>
 
     <!-- Begin page -->
     <div id="wrapper">

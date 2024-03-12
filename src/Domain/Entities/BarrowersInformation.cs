@@ -27,21 +27,21 @@ public partial class BarrowersInformation
 
     public string MaritalStatus { get; set; }
 
-    public int? HomeNumber { get; set; }
+    public string HomeNumber { get; set; }
 
-    public int? MobileNumber { get; set; }
+    public string MobileNumber { get; set; }
 
-    public int? PagibigMidNumber { get; set; }
+    public string PagibigMidNumber { get; set; }
 
-    public int? HanNumber { get; set; }
+    public string HanNumber { get; set; }
 
     public string Email { get; set; }
 
-    public bool IsPermanentAddressAbroad { get; set; }
+    public bool? IsPermanentAddressAbroad { get; set; }
 
-    public bool IsPresentAddressAbroad { get; set; }
+    public bool? IsPresentAddressAbroad { get; set; }
 
-    public bool IsBusinessAddressAbroad { get; set; }
+    public bool? IsBusinessAddressAbroad { get; set; }
 
     public string PresentUnitName { get; set; }
 
@@ -83,9 +83,9 @@ public partial class BarrowersInformation
 
     public int? YearsofStay { get; set; }
 
-    public int? SSSNumber { get; set; }
+    public string SSSNumber { get; set; }
 
-    public int? TinNumber { get; set; }
+    public string TinNumber { get; set; }
 
     public string OcupationStatus { get; set; }
 
@@ -144,4 +144,10 @@ public partial class BarrowersInformation
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public string PropertyDeveloperName { get; set; }
+
+    public string PropertyLocation { get; set; }
+
+    public string PropertyUnitLevelName { get; set; }
 }

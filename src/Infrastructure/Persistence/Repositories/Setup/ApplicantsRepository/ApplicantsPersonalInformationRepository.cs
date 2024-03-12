@@ -4,6 +4,9 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -15,11 +18,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public ApplicantsPersonalInformationRepository(
-            DMSDBContext context,
-            ICurrentUserService currentUserService,
-            IMapper mapper,
-            ISQLDatabaseService db)
+        public ApplicantsPersonalInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<ApplicantsPersonalInformation>(context);
@@ -37,34 +36,41 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<List<ApplicantsPersonalInformation>?> GetAllAsync() =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().ToListAsync();
 
-        public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model)
-        {
-            var _model = _mapper.Map<ApplicantsPersonalInformation>(model);
+        public async Task<ApplicantsPersonalInformationModel?> GetAsync(int id) =>
+         await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_Get", new { id });
 
-            if (_model.Id == 0)
-                _model = await CreateAsync(_model);
+        public async Task<ApplicantsPersonalInformationModel?> GetByCodeAsync(string code) =>
+          await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByCode", new { code });
+
+        public async Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId) =>
+          await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
+
+        public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
+        {
+            var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
+
+            if (model.Id == 0)
+                _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
             else
-                _model = await UpdateAsync(_model);
-
-            return _model;
+                _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+            return _applicantPersonalInfo;
         }
 
-        public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation model)
+        public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
         {
-            model.DateCreated = DateTime.UtcNow;
-            model.CreatedById = _currentUserService.GetCurrentUserId(); 
+            applicantPersonalInfo.DateCreated = DateTime.Now;
+            applicantPersonalInfo.CreatedById = userId;
 
-            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
-            return model;
+            applicantPersonalInfo = await _contextHelper.CreateAsync(applicantPersonalInfo, "DateModified", "ModifiedById");
+            return applicantPersonalInfo;
         }
 
-        public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation model)
+        public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
         {
-            model.DateModified = DateTime.UtcNow;
-            model.ModifiedById = _currentUserService.GetCurrentUserId();
-
-            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
-            return model;
+            applicantPersonalInfo.DateModified = DateTime.Now;
+            applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById");
+            return applicantPersonalInfo;
         }
 
         public async Task DeleteAsync(int id)

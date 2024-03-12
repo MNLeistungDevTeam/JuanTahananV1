@@ -49,6 +49,7 @@ $(() => {
                 loader.close();
             },
             error: async function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
                 messageBox(jqXHR.responseText, "danger", true);
                 loader.close();
             }

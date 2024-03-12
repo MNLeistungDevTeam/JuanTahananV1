@@ -19,8 +19,10 @@
                         </div>
                     </div>
                 </div>
-                <input hidden type="text" class="form-control" value="@ViewBag.Appplications.Id" id="applicationId" />
-                <input type="file" id="file-input" style="display: none;" />
+                <input hidden type="text" class="form-control" value="@ViewBag.AppplicationId" id="applicationId" />
+                <input type="hidden" class="form-control" value="@ViewBag.ApplicationCode" id="txt_applicationCode" />
+
+                <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg" />
             </div>
             <div class="col-12">
                 <table class="table table-sm table-bordered table-hover nowrap w-100" id="tbl_document">
@@ -63,5 +65,5 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @section Scripts {
-    <script asp-append-version="true" src="~/js/setup/document/uploadingdocuments.js"></script>
+    <script src="~/js/setup/document/uploadingdocuments.js" asp-append-version="true"></script>
 }

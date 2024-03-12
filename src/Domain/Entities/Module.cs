@@ -9,17 +9,13 @@ public partial class Module
 {
     public int Id { get; set; }
 
-    public int ModuleStatusId { get; set; }
-
-    public int? Ordinal { get; set; }
-
-    public int? ParentModuleId { get; set; }
-
     public string Code { get; set; }
 
-    public string BreadName { get; set; }
-
     public string Description { get; set; }
+
+    public int ModuleTypeId { get; set; }
+
+    public int Ordinal { get; set; }
 
     public string Icon { get; set; }
 
@@ -27,17 +23,27 @@ public partial class Module
 
     public string Action { get; set; }
 
-    public bool IsVisible { get; set; }
+    public int? ParentModuleId { get; set; }
 
-    public bool IsBreaded { get; set; }
+    public int? ApprovalRouteTypeId { get; set; }
 
-    public DateTime DateCreated { get; set; }
+    public bool IsDisabled { get; set; }
+
+    public bool InMaintenance { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public bool WithApprover { get; set; }
+
+    public int CompanyId { get; set; }
 
     public int CreatedById { get; set; }
 
-    public DateTime? DateModified { get; set; }
+    public DateTime DateCreated { get; set; }
 
     public int? ModifiedById { get; set; }
+
+    public DateTime? DateModified { get; set; }
 
     public DateTime? DateDeleted { get; set; }
 

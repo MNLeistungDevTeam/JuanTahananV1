@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.RoleDto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
 {
@@ -28,42 +23,77 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             _mapper = mapper;
             _db = db;
         }
+
         public async Task<RoleAccess?> GetByIdAsync(int id) =>
         await _context.RoleAccesses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-        public async Task<RoleAccess?> GetRoleAccessAsync(int roleId, int ModuleId) =>
-            await _context.RoleAccesses.AsNoTracking().FirstOrDefaultAsync(x => x.RoleId == roleId && x.ModuleId == ModuleId);
+
+        public async Task<List<RoleAccessModel>> GetByUserId(int userId)
+        {
+            var data = await _db.LoadDataAsync<RoleAccessModel, dynamic>("spRoleAccess_GetByUserId", new { userId });
+            return data.ToList();
+        }
+
+        public async Task<RoleAccessModel> GetByModuleCode(int userId, string moduleCode)
+        {
+            var data = await _db.LoadSingleAsync<RoleAccessModel, dynamic>("spRoleAccess_GetByModuleCode", new { userId, moduleCode });
+            return data ?? new();
+        }
+
+        public async Task<RoleAccessModel> GetCurrentUserRoleAccessByModuleAsync(string moduleCode)
+        {
+            var userId = _currentUserService.GetCurrentUserId();
+            return await GetByModuleCode(userId, moduleCode);
+        }
+
         public async Task<List<RoleAccess>?> GetAllAsync() =>
         await _context.RoleAccesses.AsNoTracking().ToListAsync();
+
+
+
+
+        public async Task<IEnumerable<RoleAccessModel>> GetRoleByModuleCodeAsync(int userId, string? moduleCode) =>
+          await _db.LoadDataAsync<RoleAccessModel, dynamic>("spRoleAccess_GetRoleByModuleCode", new { userId, moduleCode });
+
+
+
+
         public async Task<RoleAccess> SaveAsync(RoleAccessModel model)
         {
+            var _roleAccess = _mapper.Map<RoleAccess>(model);
+
             if (model.Id == 0)
-                model = _mapper.Map<RoleAccessModel>(await CreateAsync(model));
+                _roleAccess = await CreateAsync(_roleAccess);
             else
-                model = _mapper.Map<RoleAccessModel>(await UpdateAsync(model));
-            return _mapper.Map<RoleAccess>(model);
+                _roleAccess = await UpdateAsync(_roleAccess);
+
+            return _roleAccess;
         }
-        public async Task<RoleAccess> CreateAsync(RoleAccessModel model)
+
+        public async Task<RoleAccess> CreateAsync(RoleAccess roleAccess)
         {
-            model.DateCreated = DateTime.UtcNow;
-            model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<RoleAccess>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified","ModifiedById");
-            return mapped;
+            roleAccess.DateCreated = DateTime.Now;
+            roleAccess.CreatedById = _currentUserService.GetCurrentUserId();
+
+            roleAccess = await _contextHelper.CreateAsync(roleAccess, "DateModified", "ModifiedById");
+            return roleAccess;
         }
-        public async Task<RoleAccess> UpdateAsync(RoleAccessModel model)
+
+        public async Task<RoleAccess> UpdateAsync(RoleAccess roleAccess)
         {
-            model.DateModified = DateTime.UtcNow;
-            model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<RoleAccess>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated","CreatedById");
-            return mapped;
+            roleAccess.DateModified = DateTime.Now;
+            roleAccess.ModifiedById = _currentUserService.GetCurrentUserId();
+
+            roleAccess = await _contextHelper.UpdateAsync(roleAccess, "DateCreated", "CreatedById");
+            return roleAccess;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
             if (entity != null)
                 await _contextHelper.DeleteAsync(entity);
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.RoleAccesses.Where(m => ids.Contains(m.Id)).ToListAsync();
@@ -71,8 +101,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             {
                 await DeleteAsync(entity.Id);
             }
-
         }
-
     }
 }

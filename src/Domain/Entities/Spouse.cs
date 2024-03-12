@@ -11,7 +11,7 @@ public partial class Spouse
 
     public int ApplicantsPersonalInformationId { get; set; }
 
-    public bool IsSpouseAddressAbroad { get; set; }
+    public bool? IsSpouseAddressAbroad { get; set; }
 
     public string SpouseEmploymentUnitName { get; set; }
 
@@ -43,9 +43,9 @@ public partial class Spouse
 
     public string Suffix { get; set; }
 
-    public int? PagibigMidNumber { get; set; }
+    public string PagibigMidNumber { get; set; }
 
-    public int? TinNumber { get; set; }
+    public string TinNumber { get; set; }
 
     public int? IndustryId { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spDocumentType_GetAllUserDocumentTypes]
 AS
-  BEGIN
     SELECT
         dct.Id,
         dct.[Description],
@@ -26,4 +25,4 @@ AS
         dct.DateCreated,
         usrm.UserName,
         dct.DateModified;
-END
+RETURN 0

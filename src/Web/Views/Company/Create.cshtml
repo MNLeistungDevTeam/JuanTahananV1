@@ -1,0 +1,318 @@
+﻿ @model CompanyViewModel
+
+@{
+    ViewData["Title"] = Model.Company.Id == 0 ? "Add Company" : "Edit Company";
+
+    var companyLogo = Model.CompanyLogo.SingleOrDefault(m => m.Description == "ReportLogo");
+    var companyProfilePic = Url.Content("~/Images/eiBUY_Logo_2022/1_eiBUY_with border_white text.png");
+
+    if (companyLogo is not null)
+        if (System.IO.File.Exists(Url.Content("~" + companyLogo.Location)))
+            companyProfilePic = Url.Content("~" + companyLogo.Location);
+}
+
+ 
+
+<form asp-action="SaveCompany" asp-antiforgery="true" method="post" role="form" id="frm_company" enctype="multipart/form-data">
+    <div class="row">
+
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs nav-bordered">
+                        <li class="nav-item">
+                            <a href="#info-tab" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                                Info
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#address-tab" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
+                                Address
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#logo-tab" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                                Logo
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane show active" id="info-tab">
+                            <div class="row">
+                                <input type="hidden" asp-for="Company.Id" />
+                                <div class="col-md-8 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.Name" class="form-label"></label>
+                                        <input asp-for="Company.Name" class="form-control" placeholder="Name" />
+                                        <span asp-validation-for="Company.Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.Code" class="form-label"></label>
+                                        <input asp-for="Company.Code" class="form-control" placeholder="Code" />
+                                        <span asp-validation-for="Company.Code" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.BusinessStyle" class="form-label"></label>
+                                        <input asp-for="Company.BusinessStyle" class="form-control" placeholder="Business Style" list="natureOfBusinesses" />
+                                        <span asp-validation-for="Company.BusinessStyle" class="text-danger"></span>
+
+                                        <datalist id="natureOfBusinesses"></datalist>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.Tin" class="form-label"></label>
+                                        <input asp-for="Company.Tin" class="form-control " placeholder="TIN" />
+                                        <span asp-validation-for="Company.Tin" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.TelNo" class="form-label"></label>
+                                        <input asp-for="Company.TelNo" class="form-control" placeholder="Tel. No." />
+                                        <span asp-validation-for="Company.TelNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.MobileNo" class="form-label"></label>
+                                        <input asp-for="Company.MobileNo" class="form-control" placeholder="Mobile No." />
+                                        <span asp-validation-for="Company.MobileNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.FaxNo" class="form-label"></label>
+                                        <input asp-for="Company.FaxNo" class="form-control" placeholder="Fax No." />
+                                        <span asp-validation-for="Company.FaxNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.Email" class="form-label"></label>
+                                        <input asp-for="Company.Email" class="form-control" placeholder="sample@email.com" />
+                                        <span asp-validation-for="Company.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.Website" class="form-label"></label>
+                                        <input asp-for="Company.Website" class="form-control" placeholder="Website" />
+                                        <span asp-validation-for="Company.Website" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr my-1 />
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.RepresentativeName" class="form-label"></label>
+                                        <input asp-for="Company.RepresentativeName" class="form-control" placeholder="Representative Name" />
+                                        <span asp-validation-for="Company.RepresentativeName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.RepresentativeTin" class="form-label"></label>
+                                        <input asp-for="Company.RepresentativeTin" class="form-control" placeholder="Representative TIN" />
+                                        <span asp-validation-for="Company.RepresentativeTin" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-group">
+                                        <label asp-for="Company.RepresentativeDesignation" class="form-label"></label>
+                                        <input asp-for="Company.RepresentativeDesignation" class="form-control" placeholder="Representative Title/Designation" />
+                                        <span asp-validation-for="Company.RepresentativeDesignation" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="address-tab">
+                            <div class="row address_div">
+                                @*@if (Model.Address is not null && Model.Address.Any())
+                                {
+                                for (int i = 0; i < Model.Address.Count; i++)
+                                {
+                                <div class="col-12 address_row mb-2">
+                                <div class="border">
+                                <div class="p-2">
+                                <div class="row border-bottom address_name_div">
+                                <div class="col-md-6 align-middle">
+                                <input asp-for="Address[i].Id" type="hidden" />
+                                <input asp-for="Address[i].ReferenceId" type="hidden" />
+                                <input class="form-control form-control-lg form-control-plaintext address_name mb-2 fw-bold" type="text" data-val="true" id="editable-text-[@i]" value="@Model.Address[@i].AddressName" aria-describedby="">
+                                </div>
+                                <div class="col-md-6">
+                                <button type="button" class="btn btn-xs btn-soft-danger remove_address float-end">
+                                <i class="mdi mdi-close"></i>
+                                </button>
+                                </div>
+                                </div>
+                                <div class="row gx-2 pt-2">
+                                <div class="col-4 mb-2" hidden>
+                                <div class="form-group">
+                                <label asp-for="Address[i].AddressName" class="form-label"></label>
+                                <input asp-for="Address[i].AddressName" class="form-control address_name_input" />
+                                <span asp-validation-for="Address[i].AddressName" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].StreetAddress1" class="form-label"></label>
+                                <textarea asp-for="Address[i].StreetAddress1" placeholder="Street Address 1" class="form-control"></textarea>
+                                <span asp-validation-for="Address[i].StreetAddress1" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].StreetAddress2" class="form-label"></label>
+                                <textarea asp-for="Address[i].StreetAddress2" placeholder="Street Address 2" class="form-control"></textarea>
+                                <span asp-validation-for="Address[i].StreetAddress2" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].Baranggay" class="form-label"></label>
+                                <input asp-for="Address[i].Baranggay" class="form-control" placeholder="Baranggay" />
+                                <span asp-validation-for="Address[i].Baranggay" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].CityMunicipality" class="form-label"></label>
+                                <input asp-for="Address[i].CityMunicipality" class="form-control" placeholder="City/Municipality" />
+                                <span asp-validation-for="Address[i].CityMunicipality" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].StateProvince" class="form-label"></label>
+                                <input asp-for="Address[i].StateProvince" class="form-control" placeholder="State/Province" />
+                                <span asp-validation-for="Address[i].StateProvince" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].Region" class="form-label"></label>
+                                <input asp-for="Address[i].Region" class="form-control" placeholder="Region" />
+                                <span asp-validation-for="Address[i].Region" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].PostalCode" class="form-label"></label>
+                                <input asp-for="Address[i].PostalCode" class="form-control" placeholder="Postal Code" />
+                                <span asp-validation-for="Address[i].PostalCode " class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-4">
+                                <div class="mb-2 form-group form-group-sm">
+                                <label asp-for="Address[i].CountryId" class="form-label">Country</label>
+                                <select asp-for="Address[i].CountryId" class="form-control"></select>
+                                <span asp-validation-for="Address[i].Remarks" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                <div class="form-group">
+                                <label asp-for="Address[i].Remarks" class="form-label"></label>
+                                <textarea asp-for="Address[i].Remarks" class="form-control" placeholder="Remarks"></textarea>
+                                <span asp-validation-for="Address[i].Remarks" class="text-danger"></span>
+                                </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                <div class="form-check form-switch">
+                                <input asp-for="Address[i].IsDefault" class="form-check-input" type="checkbox" />
+                                <label class="form-check-label" asp-for="Address[i].IsDefault">Is Default</label>
+                                </div>
+                                <span asp-validation-for="Address[i].IsDefault" class="text-danger"></span>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                }
+                                }*@
+                            </div>
+                            <hr />
+                            <button class="btn btn-sm btn-secondary float-end" type="button" id="btn_add_address">
+                                <span class="fe-plus"></span> Add Address
+                            </button>
+                        </div>
+                        <div class="tab-pane" id="logo-tab">
+                            <div class="row logo_div">
+                                @* @if (Model.CompanyLogo != null && Model.CompanyLogo.Any())
+                                {
+                                for (int i = 0; i < Model.CompanyLogo.Count; i++)
+                                {
+                                <div class="col-6 logo_row">
+                                <div class="p-2">
+                                <div class="row">
+                                <div class="col-12 border p-2">
+                                <input type="hidden" asp-for="CompanyLogo[i].Id" id="CompanyLogo_Id_[@i]" />
+                                <input type="hidden" asp-for="CompanyLogo[i].CompanyId" id="CompanyLogo_CompanyId_[@i]" />
+                                <button type="button" class="btn-close btn-sm float-end remove_logo_file" aria-label="Close"></button>
+                                </div>
+                                <div class="col-12 border border-top-0 border-bottom-0 p-2">
+                                <div class="avatar-upload-rectangle" data-toggle="tooltip" title="Company Logo [@i]">
+                                <div class="avatar-edit-rectangle input_div">
+                                <input asp-for="CompanyLogo[i].CompanyLogoFile" id="CompanyLogo_CompanyLogoFile_[@i]" accept=".png, .jpg, .jpeg" />
+                                <label for="CompanyLogo_CompanyLogoFile_[@i]"></label>
+                                <span asp-validation-for="CompanyLogo[i].CompanyLogoFile" class="text-danger"></span>
+                                </div>
+                                <div class="avatar-preview-rectangle">
+                                <div id="imagePreview_[@i]"></div>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="col-12 border border-top-0 p-2 pt-0">
+                                <div class="form-group">
+                                <input asp-for="CompanyLogo[i].Description" id="CompanyLogo_Description_[@i]" class="form-control" placeholder="Description" />
+                                <span asp-validation-for="CompanyLogo[i].Description" class="text-danger"></span>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                }
+                                }*@
+                            </div>
+                            <hr />
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="ReportLogo" type="button">
+                                <span class="fe-plus"></span> Add Report Logo
+                            </button>
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogo" type="button">
+                                <span class="fe-plus"></span> Add Nav Logo
+                            </button>
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoSmall" type="button">
+                                <span class="fe-plus"></span> Add Nav Logo Small
+                            </button>
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoDark" type="button">
+                                <span class="fe-plus"></span> Add Nav Logo Dark
+                            </button>
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="NavLogoSmallDark" type="button">
+                                <span class="fe-plus"></span> Add Nav Logo Small Dark
+                            </button>
+                            <button class="btn btn-secondary btn-sm waves-effect btn_add_logo mb-2" data-desc="LoginLogo" type="button">
+                                <span class="fe-plus"></span> Add Login Logo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button class="btn btn-primary" type="submit" id="btn_save"><span class="mdi mdi-content-save-outline me-1"></span>Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+@section Links {
+}
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js"></script>
+    <script src="/js/Setup/Company/CompanyCreateScript.js" asp-append-version="true"></script>
+}

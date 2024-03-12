@@ -10,7 +10,7 @@ namespace DMS.Application.Interfaces.Setup.RoleRepository
 {
     public interface IRoleRepository
     {
-        Task<List<RoleModel>> SpGetAllRoles();
+        Task<List<RoleModel>> GetAllRolesAsync();
         Task<Role?> GetByIdAsync(int id);
         Task<List<Role>?> GetAllAsync();
         Task<Role> SaveAsync(RoleModel model);

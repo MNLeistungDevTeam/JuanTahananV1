@@ -17,6 +17,7 @@ public class UserModel
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; } = string.Empty;
+
     public int TotalLoanCounts { get; set; }
     public string PasswordSalt { get; set; } = string.Empty;
 
@@ -42,7 +43,6 @@ public class UserModel
             return FirstName + " " + MiddleName + " " + LastName;
         }
     }
-
 
     public string Gender { get; set; } = string.Empty;
 
@@ -83,7 +83,6 @@ public class UserModel
     [Required(ErrorMessage = "Role is required.")]
     public int? UserRoleId { get; set; }
 
-
     public string StatusOnline
     {
         get
@@ -110,4 +109,5 @@ public class UserModel
             }
         }
     }
+    public string? ApplicantCode { get; set; }
 }

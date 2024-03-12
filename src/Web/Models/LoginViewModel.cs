@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using DMS.Domain.Dto.CompanyDto;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Web.Models;
@@ -18,4 +20,11 @@ public class LoginViewModel
     public bool RememberMe { get; set; }
 
     public string ReturnUrl { get; set; } = string.Empty;
+
+
+    //[Required]
+    [DisplayName("Company")]
+    public int? CompanyId { get; set; }
+
+    public List<CompanyModel>? Company { get; set; }
 }

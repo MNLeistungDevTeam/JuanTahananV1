@@ -17,5 +17,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<CollateralInformation> UpdateAsync(CollateralInformation model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
+        Task<CollateralInformationModel?> GetByApplicantIdAsync(int applicantId);
     }
 }

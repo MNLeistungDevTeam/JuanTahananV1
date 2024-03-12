@@ -50,10 +50,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? PreferredTimeToContact { get; set; }
 
         [DisplayName("Last Name")]
-        public string? LastName { get; set; }
+        public string? LastName { get; set; } = string.Empty;
 
         [DisplayName("First Name")]
-        public string? FirstName { get; set; }
+        public string? FirstName { get; set; } = string.Empty;  
 
         [DisplayName("Middle Name")]
         public string? MiddleName { get; set; }
@@ -62,10 +62,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Suffix { get; set; }
 
         [DisplayName("Pagibig Mid Number")]
-        public int? PagibigMidNumber { get; set; }
+        public string? PagibigMidNumber { get; set; }
 
         [DisplayName("Tin Number")]
-        public int? TinNumber { get; set; }
+        public string? TinNumber { get; set; }
 
         [DisplayName("Citizenship")]
         public string? Citizenship { get; set; }

@@ -4,6 +4,8 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -15,11 +17,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
 
-        public LoanParticularsInformationRepository(
-            DMSDBContext context,
-            ICurrentUserService currentUserService,
-            IMapper mapper,
-            ISQLDatabaseService db)
+        public LoanParticularsInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<LoanParticularsInformation>(context);
@@ -34,34 +32,35 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<LoanParticularsInformation?> GetByApplicationIdAsync(int id) =>
             await _context.LoanParticularsInformations.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
 
-        public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model)
-        {
-            var _model = _mapper.Map<LoanParticularsInformation>(model);
+        public async Task<LoanParticularsInformationModel?> GetByApplicantIdAsync(int applicantId) =>
+            await _db.LoadSingleAsync<LoanParticularsInformationModel, dynamic>("spLoanParticularsInformation_GetByApplicantId", new { applicantId });
 
-            if (_model.Id == 0)
-                _model = await CreateAsync(_model);
+        public async Task<LoanParticularsInformation> SaveAsync(LoanParticularsInformationModel model, int userId)
+        {
+            var _loanParticulars = _mapper.Map<LoanParticularsInformation>(model);
+            if (model.Id == 0)
+                _loanParticulars = await CreateAsync(_loanParticulars, userId);
             else
-                _model = await UpdateAsync(_model);
-
-            return _model;
+                _loanParticulars = await UpdateAsync(_loanParticulars, userId);
+            return _loanParticulars;
         }
 
-        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation model)
+        public async Task<LoanParticularsInformation> CreateAsync(LoanParticularsInformation loanParticulars, int userId)
         {
-            model.DateCreated = DateTime.UtcNow;
-            model.CreatedById = _currentUserService.GetCurrentUserId();
+            loanParticulars.DateCreated = DateTime.Now;
+            loanParticulars.CreatedById = userId;
 
-            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
-            return model;
+            loanParticulars = await _contextHelper.CreateAsync(loanParticulars, "DateModified", "ModifiedById");
+            return loanParticulars;
         }
 
-        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation model)
+        public async Task<LoanParticularsInformation> UpdateAsync(LoanParticularsInformation loanParticulars, int userId)
         {
-            model.DateModified = DateTime.UtcNow;
-            model.ModifiedById = _currentUserService.GetCurrentUserId();
+            loanParticulars.DateModified = DateTime.Now;
+            loanParticulars.ModifiedById = userId;
 
-            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
-            return model;
+            loanParticulars = await _contextHelper.UpdateAsync(loanParticulars, "DateCreated", "CreatedById");
+            return loanParticulars;
         }
 
         public async Task DeleteAsync(int id)
