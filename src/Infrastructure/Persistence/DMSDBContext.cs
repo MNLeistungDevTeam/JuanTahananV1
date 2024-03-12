@@ -526,7 +526,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC077DA8112F");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC07095D92C2");
 
             entity.ToTable("ModuleStage", tb => tb.HasTrigger("Trigger_ModuleStage_ColumnUpdates"));
 
@@ -550,7 +550,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStageApprover>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC074397F437");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC0720EA4BB0");
 
             entity.ToTable("ModuleStageApprover");
 
