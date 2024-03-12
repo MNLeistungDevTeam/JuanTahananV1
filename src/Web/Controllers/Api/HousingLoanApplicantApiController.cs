@@ -26,7 +26,7 @@ namespace DMS.Web.Controllers.Api
 
             await _zetaHousingLoanIntegrationService.SaveBeneficiaryAsync(model);
 
-            return Ok(""); // or return any other appropriate response
+            return Ok("Save Beneficiary Successfuly!"); // or return any other appropriate response
         }
     }
 }
