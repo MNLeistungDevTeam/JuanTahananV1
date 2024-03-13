@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.UserDto;
-using Microsoft.EntityFrameworkCore;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
@@ -30,55 +30,65 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetByIdAsync(int id) =>
         await _contextHelper.GetByIdAsync(id);
+
     public async Task<User?> GetByIdNoTrackingAsync(int id) =>
         await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
     public async Task<User?> GetByUserNameAsync(string userName) =>
         await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
     public async Task<List<User>> GetAllAsync() =>
         await _contextHelper.GetAllAsync();
 
-    public async Task<UserModel?> GetUserByIdAsync(int id) =>
+    public async Task<UserModel?> GetUserAsync(int id) =>
         await _db.LoadSingleAsync<UserModel, dynamic>("spUser_Get", new { id });
+
     public async Task<List<UserModel>> GetUsersAsync() =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetAll", new { })).ToList();
+
     public async Task<List<UserModel>> spGetByRoleName(string roleName) =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByRoleName", new { roleName })).ToList();
 
     public async Task<List<UserModel>> GetUserByUserRoleIdAsync(int userRoleId) =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByUserRoleId", new { userRoleId })).ToList();
 
-    public async Task SaveUserAsync(UserModel user, List<UserApproverModel> userApprovers, int userId)
+    public async Task<User?> SaveUserAsync(UserModel user, List<UserApproverModel?> userApprovers, int userId)
     {
-        if (user == null) return;
+        await ValidateAsync(user);
 
         var _user = _mapper.Map<User>(user);
 
-        await ValidateUserAsync(_user);
-
-        if (_user.Id == 0) _user = await CreateAsync(_user, userId);
+        if (_user.Id == 0)
+        {
+            _user = await CreateAsync(_user, userId);
+        }
         else _user = await UpdateAsync(_user, userId);
 
-        var count = 1;
-        foreach (var userApprover in userApprovers)
+        if (userApprovers != null)
         {
-            userApprover.Level = count;
-            userApprover.UserId = _user.Id;
-            var _userApprover = _mapper.Map<UserApprover>(userApprover);
+            var count = 1;
+            foreach (var userApprover in userApprovers)
+            {
+                userApprover.Level = count;
+                userApprover.UserId = _user.Id;
+                var _userApprover = _mapper.Map<UserApprover>(userApprover);
 
-            if (userApprover.Id == 0) await _userApproverRepo.CreateAsync(_userApprover, userId);
-            else await _userApproverRepo.UpdateAsync(_userApprover, userId);
+                if (userApprover.Id == 0) await _userApproverRepo.CreateAsync(_userApprover, userId);
+                else await _userApproverRepo.UpdateAsync(_userApprover, userId);
 
-            count++;
+                count++;
+            }
+
+            var userApproverIds = userApprovers.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            var toDelete = await _context.UserApprovers
+                .Where(m => m.UserId == user.Id && !userApproverIds.Contains(m.Id))
+                .Select(m => m.Id)
+                .ToArrayAsync();
+
+            await _userApproverRepo.BatchDeleteAsync(toDelete);
         }
 
-        var userApproverIds = userApprovers.Where(m => m.Id != 0).Select(m => m.Id).ToList();
-        var toDelete = await _context.UserApprovers
-            .Where(m => m.UserId == user.Id && !userApproverIds.Contains(m.Id))
-            .Select(m => m.Id)
-            .ToArrayAsync();
-
-        await _userApproverRepo.BatchDeleteAsync(toDelete);
+        return _user;
     }
 
     public async Task<User> CreateAsync(User user, int userId)
@@ -93,21 +103,27 @@ public class UserRepository : IUserRepository
 
     public async Task<User> UpdateAsync(User user, int userId)
     {
-        string[] excludedProperties = new string[]
+        List<string> excludedPropertiesList = new List<string>
+            {
+                "LastFailedAttempt", "LockedTime", "FailedAttempts",
+                "LastOnlineTime", "IsOnline", "CreatedById",
+                "DateCreated", "Password", "PasswordSalt"
+            };
+
+        if (string.IsNullOrWhiteSpace(user.ProfilePicture))
         {
-            "LastFailedAttempt", "LockedTime" , "FailedAttempts" ,
-            "LastOnlineTime", "IsOnline" , "CreatedById" ,
-            "DateCreated"
-        };
+            excludedPropertiesList.Add("ProfilePicture");
+        }
 
-        if (!string.IsNullOrWhiteSpace(user.ProfilePicture))
-            excludedProperties.Append("ProfilePicture");
-
-        if (!string.IsNullOrWhiteSpace(user.Signature))
-            excludedProperties.Append("Signature");
+        if (string.IsNullOrWhiteSpace(user.Signature))
+        {
+            excludedPropertiesList.Add("Signature");
+        }
+        // Convert list to array
+        string[] excludedProperties = excludedPropertiesList.ToArray();
 
         user.ModifiedById = userId;
-        user.DateModified = DateTime.UtcNow;
+        user.DateModified = DateTime.Now;
 
         user = await _contextHelper.UpdateAsync(user, excludedProperties);
 
@@ -122,20 +138,21 @@ public class UserRepository : IUserRepository
             await _contextHelper.BatchDeleteAsync(entities);
     }
 
-    private async Task ValidateUserAsync(User user)
+    private async Task ValidateAsync(UserModel model)
     {
-        if (user.Id == 0)
+        try
         {
-            var userNameExists = await _context.Users.FindAsync(user.UserName);
-            if (userNameExists is not null)
-                throw new Exception("Username already exists!");
-        }
-        else
-        {
-            var userNameExists = await _context.Users.FirstOrDefaultAsync(m => m.Id != user.Id && m.UserName == user.UserName);
+            var users = await GetUsersAsync();
 
-            if (userNameExists is not null)
-                throw new Exception("Username already exists!");
+            if (model.Id == 0)
+            {
+                if (users.FirstOrDefault(m => m.UserName == model.UserName) != null) throw new Exception("User Name already taken!");
+            }
+            else
+            {
+                if (users.FirstOrDefault(m => m.Id != model.Id && m.UserName == model.UserName) != null) throw new Exception("User Name already taken!");
+            }
         }
+        catch (Exception) { throw; }
     }
 }

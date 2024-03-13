@@ -1,4 +1,6 @@
-﻿using DMS.Domain.Common;
+﻿
+
+using DMS.Domain.Dto.OtherDto;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -46,7 +48,7 @@ public class UserModel
 
     public string Gender { get; set; } = string.Empty;
 
-    public List<DropDownModel>? Genders { get; set; }
+    public List<DropdownModel>? Genders { get; set; }
 
     [Required(ErrorMessage = "Email is required.")]
     [DataType(DataType.EmailAddress)]
@@ -109,5 +111,6 @@ public class UserModel
             }
         }
     }
+
     public string? ApplicantCode { get; set; }
 }

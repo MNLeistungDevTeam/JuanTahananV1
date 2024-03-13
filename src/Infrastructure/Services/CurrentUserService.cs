@@ -29,7 +29,7 @@ public class CurrentUserService : ICurrentUserService
     public async Task<UserModel?> GetUserInfo()
     {
         var userId = GetCurrentUserId();
-        var data = await _userRepository.GetUserByIdAsync(userId);
+        var data = await _userRepository.GetUserAsync(userId);
         return data;
     }
 

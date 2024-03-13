@@ -22,6 +22,7 @@ using DMS.Domain.Entities;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using RoleAccessModel = DMS.Domain.Dto.RoleDto.RoleAccessModel;
+using DevExpress.CodeParser.VB;
 
 namespace DMS.Web.Controllers.Setup
 {
@@ -56,6 +57,14 @@ namespace DMS.Web.Controllers.Setup
                 Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
             });
         }
+
+
+        public async Task<IActionResult> GetRoles()
+        {
+            var data = await _roleRepo.GetAllRolesAsync();
+
+            return Ok(data);
+        }
         public async Task<IActionResult> GetRoleSetupAccess(int id)
         {
             var lists = new List<HybridRoles>();
@@ -63,7 +72,7 @@ namespace DMS.Web.Controllers.Setup
             var items = (await _moduleRepo.Module_GetAllModuleList()).ToList();
             for (int i = 0; i < items.Count; ++i)
             {
-                 var item = items[i];
+                var item = items[i];
                 var roleaccess = (await _roleAccessRepo.GetAllAsync()).FirstOrDefault(x => x.RoleId == role.Id && x.ModuleId == item.Id) ?? new RoleAccess()
                 {
                     Id = 0,
@@ -74,7 +83,7 @@ namespace DMS.Web.Controllers.Setup
                     CanModify = false,
                 };
                 lists.Add(new HybridRoles(
-                    canModify : roleaccess.CanModify,
+                    canModify: roleaccess.CanModify,
                     index: i,
                     id: roleaccess.Id,
                     roleId: role.Id,
@@ -207,7 +216,8 @@ namespace DMS.Web.Controllers.Setup
                 usersWithoutRole = usersWithoutRole.Where(x => !userRoles.Contains(x.Id)).ToList();
             }
 
-            return Ok(usersWithoutRole.Select(x => new {
+            return Ok(usersWithoutRole.Select(x => new
+            {
                 text = x.Name,
                 value = x.Id,
                 position = x.Position

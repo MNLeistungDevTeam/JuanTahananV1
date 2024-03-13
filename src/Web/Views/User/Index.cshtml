@@ -1,0 +1,326 @@
+﻿@model UserViewModel
+
+
+
+@{
+    ViewData["Title"] = "User Management";
+
+
+}
+
+
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <h3 class="text-dark float-start fw-semibold">User List</h3>
+    </div>
+
+
+    <div class="row gy-2 p-3">
+
+        <div class="col-md-9 d-none d-lg-block">
+            <a class="btn btn-primary waves-effect mb-2" asp-action="Create" hidden>
+                <span class="fe-plus"></span> Add User
+            </a>
+            <button class="btn btn-primary waves-effect mb-2" id="btn_add">
+                <span class="fe-plus"></span> Add User
+            </button>
+
+            <button class="btn btn-primary waves-effect mb-2" id="btn_refresh">
+                <span class="fe-refresh-cw"></span> Refresh
+            </button>
+        </div>
+        <div class="col-md-3 text-end d-none d-lg-block">
+            <div class="input-group float-end" style="width:250px;">
+                <input type="search" class="form-control form-control-sm txtSearch" placeholder="Search..." spellcheck="false" data-ms-editor="true">
+                <span class="input-group-text"><i class="fe-search"></i></span>
+            </div>
+        </div>
+        <div class="col-5 d-md-none">
+            <a class="btn btn-primary btn-sm waves-effect mb-2" asp-action="Create" hidden>
+                <span class="fe-plus"></span>
+            </a>
+            <button class="btn btn-primary btn-sm waves-effect mb-2 btn_add">
+                <span class="fe-plus"></span>
+            </button>
+
+            <button class="btn btn-primary btn-sm waves-effect mb-2 btn_refresh">
+                <span class="fe-refresh-cw"></span>
+            </button>
+        </div>
+        <div class="col-7 d-md-none">
+            <div class="input-group mb-2">
+                <input type="search" class="form-control form-control-sm txtSearch" placeholder="Search..." spellcheck="false" data-ms-editor="true">
+                <span class="input-group-text"><i class="fe-search"></i></span>
+            </div>
+        </div>
+        <div class="col-12" id="div-user-comtainer">
+            <div class="row" id="div-user-cards"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- User modal -->
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="overlay" id="user-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="user-modalLabel"><span class="fe-plus"></span> Add User</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveUser" asp-antiforgery="true" method="post" role="form" id="frm_user" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="nav flex-column nav-pills nav-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link show mb-1 active" id="user-profile-tab" data-bs-toggle="pill" href="#user-profile" role="tab" aria-controls="user-profile" aria-selected="true">
+                                    Profile
+                                </a>
+                                <a class="nav-link mb-1" id="user-approver-tab" data-bs-toggle="pill" href="#user-approver" role="tab" aria-controls="user-approver" aria-selected="false">
+                                    User Approver
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 py-1">
+                            <div class="tab-content pt-0" id="v-pills-tabContent">
+                                <div class="tab-pane fade active show" id="user-profile" role="tabpanel" aria-labelledby="user-profile">
+                                    <input type="hidden" asp-for="User.Id" />
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="avatar-upload" data-toggle="tooltip" title="Profile Picture">
+                                                <div class="avatar-edit">
+                                                    <input asp-for="User.ProfilePictureFile" accept=".png, .jpg, .jpeg" />
+                                                    <label for="User_ProfilePictureFile"></label>
+                                                    <span asp-validation-for="User.ProfilePictureFile" class="text-danger"></span>
+                                                </div>
+                                                <div class="avatar-preview">
+                                                    <div id="imagePreview" style="background-image: url(../../Files/Images/UserPics/default.png);"></div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <label asp-for="User.UserName" class="form-label"></label>
+                                            <input asp-for="User.UserName" class="form-control" placeholder="Username" />
+                                            <span asp-validation-for="User.UserName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-12 mb-2" id="div_userpassword" hidden>
+                                            <label asp-for="User.Password" class="form-label"></label>
+                                            <div class="input-group input-group-merge">
+                                                <input asp-for="User.Password" class="form-control" placeholder="Password" />
+                                                <div class="input-group-text" data-password="false">
+                                                    <span class="password-eye"></span>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label asp-for="User.Prefix" class="form-label"></label>
+                                            <input asp-for="User.Prefix" class="form-control" placeholder="Prefix" />
+                                            <span asp-validation-for="User.Prefix" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-5 mb-2">
+                                            <label asp-for="User.LastName" class="form-label"></label>
+                                            <input asp-for="User.LastName" class="form-control" placeholder="Last name" />
+                                            <span asp-validation-for="User.LastName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-5 mb-2">
+                                            <label asp-for="User.FirstName" class="form-label"></label>
+                                            <input asp-for="User.FirstName" class="form-control" placeholder="First name" />
+                                            <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-10 mb-2">
+                                            <label asp-for="User.MiddleName" class="form-label"></label>
+                                            <input asp-for="User.MiddleName" class="form-control" placeholder="Middle name" />
+                                            <span asp-validation-for="User.MiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 mb-2">
+                                            <label asp-for="User.Suffix" class="form-label"></label>
+                                            <input asp-for="User.Suffix" class="form-control" placeholder="Suffix" />
+                                            <span asp-validation-for="User.Suffix" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label asp-for="User.Gender" class="form-label"></label>
+                                            <select class="form-control selectize" asp-for="User.Gender" asp-items="@(new SelectList(Model.User.Genders, "Description", "Description"))">
+                                                <option value="">Select Gender...</option>
+                                            </select>
+                                            <span asp-validation-for="User.Gender" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label asp-for="User.Position" class="form-label"></label>
+                                            <input asp-for="User.Position" class="form-control" placeholder="Position" />
+                                            <span asp-validation-for="User.Position" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4 mb-2" id="userrole_div">
+                                            <label asp-for="User.UserRoleId" class="form-label"></label>
+                                            <select class="form-control" asp-for="User.UserRoleId">
+                                                <option value="">Select Role...</option>
+                                            </select>
+                                            <span asp-validation-for="User.UserRoleId" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <label asp-for="User.Email" class="form-label"></label>
+                                            <input asp-for="User.Email" class="form-control" placeholder="sample@email.com" />
+                                            <span asp-validation-for="User.Email" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-12 mb-2">
+                                            <div class="form-check">
+                                                <input asp-for="User.IsDisabled" class="form-check-input" value="true" />
+                                                <label asp-for="User.IsDisabled" class="form-check-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <hr />
+                                            <div class="avatar-upload-rectangle" data-toggle="tooltip" title="Signature">
+                                                <div class="avatar-edit-rectangle">
+                                                    <input asp-for="User.SignatureFile" accept=".png, .jpg, .jpeg" />
+                                                    <label for="User_SignatureFile"></label>
+                                                    <span asp-validation-for="User.SignatureFile" class="text-danger"></span>
+                                                </div>
+                                                <div class="avatar-preview-rectangle">
+                                                    <div id="imagePreview2" style="background-image: url(../../Files/Images/UserSignatures/default.png);"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="user-approver" role="tabpanel" aria-labelledby="user-approver">
+                                    <div class="" style="max-height: 65vh;">
+                                        <table class="table table-sm text-sm nowrap table-bordered" id="tbl_user_approver">
+                                            <thead class="table-light">
+                                                <tr class="text-center">
+                                                    <th style="width:10px;"></th>
+                                                    <th style="width:10px;"></th>
+                                                    <th>Approver</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.UserApprover != null && Model.UserApprover != null)
+                                                {
+                                                    for (int i = 0; i < Model.UserApprover.Count; i++)
+                                                    {
+                                                        <tr class="approver_row">
+                                                            <th class="align-middle">
+                                                                <input type="hidden" asp-for="UserApprover[i].Id" id="UserApprover_Id_[@i]" />
+                                                                <span class="ui-widget-header ui-sortable-handle bg-transparent border-0 fs-3" style="cursor: move;display: inline-block;">
+                                                                    <i class="fas fa-grip-vertical"></i>
+                                                                </span>
+                                                            </th>
+                                                            <th class="align-middle">
+                                                                <button class="btn btn-soft-danger btn-sm btn_remove_approver" type="button">
+                                                                    <span class="fa fa-times"></span>
+                                                                </button>
+                                                            </th>
+                                                            <th>
+                                                                <div class="form-group form-group-sm">
+                                                                    <select asp-for="UserApprover[i].ApproverId" class="form-control form-control-sm" id="UserApprover_ApproverId_[@i]" data-value="@Model.UserApprover[i].ApproverId">
+                                                                        <option value="">Select Approver...</option>
+                                                                    </select>
+                                                                    <span asp-validation-for="UserApprover[i].ApproverId" class="text-danger"></span>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr class="my-2" />
+                                    <button type="button" class="btn btn-secondary btn-sm" id="btn_add_user_approver"><span class="mdi mdi-plus"></span> Add User Approver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_save_user" class="btn btn-primary"><span class="fe-save"></span> Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password modal -->
+<div id="change-pass-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="change-pass-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay" id="change-pass-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="change-pass-modalLabel"><span class="mdi mdi-key-change"></span> Change Password</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <form asp-action="ChangePassword" asp-antiforgery="true" method="post" role="form" id="frm_change_pass">
+                <div class="modal-body">
+                    <input asp-for="ChangePassword.UserId" type="hidden" />
+                    <div class="row mb-2">
+                        <label asp-for="ChangePassword.Username" class="col-form-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <input asp-for="ChangePassword.Username" class="form-control" placeholder="@Html.DisplayNameFor(m => m.ChangePassword.Username)" readonly />
+                            <span asp-validation-for="ChangePassword.Username" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label asp-for="ChangePassword.CurrentPassword" class="col-form-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <div class="input-group input-group-merge">
+                                <input class="form-control " asp-for="ChangePassword.CurrentPassword" placeholder="@Html.DisplayNameFor(m => m.ChangePassword.CurrentPassword)">
+                                <div class="input-group-text " data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="ChangePassword.CurrentPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="row mb-2">
+                        <label asp-for="ChangePassword.NewPassword" class="col-form-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <div class="input-group input-group-merge">
+                                <input class="form-control " asp-for="ChangePassword.NewPassword" placeholder="@Html.DisplayNameFor(m => m.ChangePassword.NewPassword)">
+                                <div class="input-group-text " data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
+
+                            <span asp-validation-for="ChangePassword.NewPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label asp-for="ChangePassword.ConfirmPassword" class="col-form-label col-md-4"></label>
+                        <div class="col-md-8">
+                            <div class="input-group input-group-merge">
+                                <input class="form-control " asp-for="ChangePassword.ConfirmPassword" placeholder="@Html.DisplayNameFor(m => m.ChangePassword.ConfirmPassword)">
+                                <div class="input-group-text " data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="ChangePassword.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_change_pass" class="btn btn-primary"><span class="fe-save"></span> Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js"></script>
+    <script src="~/js/Setup/User/UserManagementScript.js" asp-append-version="true"></script>
+}

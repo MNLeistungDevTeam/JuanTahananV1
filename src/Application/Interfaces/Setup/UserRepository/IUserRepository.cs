@@ -12,16 +12,20 @@ public interface IUserRepository
     Task<List<User>> GetAllAsync();
 
     Task<User?> GetByIdAsync(int id);
+
     Task<User?> GetByIdNoTrackingAsync(int id);
+
     Task<User?> GetByUserNameAsync(string userName);
 
-    Task<UserModel?> GetUserByIdAsync(int id);
+    Task<UserModel?> GetUserAsync(int id);
 
     Task<List<UserModel>> GetUserByUserRoleIdAsync(int userRoleId);
 
     Task<List<UserModel>> GetUsersAsync();
+
     Task<List<UserModel>> spGetByRoleName(string roleName);
-    Task SaveUserAsync(UserModel user, List<UserApproverModel> userApprovers, int userId);
+
+    Task<User?> SaveUserAsync(UserModel user, List<UserApproverModel?> userApprovers, int userId);
 
     Task<User> UpdateAsync(User user, int userId);
 }
