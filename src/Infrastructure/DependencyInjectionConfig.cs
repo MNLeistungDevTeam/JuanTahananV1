@@ -143,6 +143,7 @@ public static class DependencyInjectionConfig
 
 
         services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
+        services.AddScoped<IReportsService, ReportsService>();
         return services;
     }
 }
