@@ -67,94 +67,64 @@
                     </div>
                 </li>
 
+                <li class="side-nav-title">@localizer["Navigation"]</li>
+
                 @foreach (var moduleGroup in moduleGroups)
                 {
-                    var _parentModules = parentModules.Where(x => x.ModuleType == moduleGroup.ModuleType);
+                    var _parentModules = parentModules.Where(m => m.ModuleType == moduleGroup.ModuleType);
 
-                    if (_parentModules.Any())
+                    @if (_parentModules.Any())
                     {
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebar@(moduleGroup.ModuleType.Replace(" ","_"))" aria-expanded="false"
-                               aria-controls="sidebar@(moduleGroup.ModuleType.Replace(" ","_"))" class="side-nav-link">
-                                <i class="@moduleGroup.ModuleTypeIcon"></i> @moduleGroup.ModuleType <span class="menu-arrow"></span>
-                            </a>
-                        </li>
+                        <li class="side-nav-title">@moduleGroup.ModuleType</li>
                     }
                     else
                     {
                         <li class="side-nav-item">
-                            <a asp-controller="@moduleGroup.ModuleTypeController" asp-action="@moduleGroup.ModuleTypeAction"
-                               class="side-nav-link">
-                                @if (!string.IsNullOrWhiteSpace(moduleGroup.ModuleTypeIcon))
-                                {
-                                    <i class="@moduleGroup.ModuleTypeIcon"></i> @moduleGroup.ModuleType
-                                }
-                                else
-                                {
-                                    @moduleGroup.ModuleType
-                                }
+                            <a asp-controller="@moduleGroup.ModuleTypeController" asp-action="@moduleGroup.ModuleTypeAction" class="side-nav-link">
+                                @Html.Raw(moduleGroup.ModuleTypeIcon)
+                                <span> @moduleGroup.ModuleType </span>
                             </a>
                         </li>
                     }
 
-                    if (_parentModules.Any())
+                    @foreach (var parentModule in parentModules)
                     {
-                        <div class="collapse" id="sidebar@(moduleGroup.ModuleType.Replace(" ","_"))">
-                            <ul class="side-nav-second-level">
-                                @foreach (var parentModule in _parentModules)
-                                {
-                                    if (parentModule.ModuleType == moduleGroup.ModuleType)
-                                    {
-                                        if (parentModule.HasSubModule)
-                                        {
-                                            <li class="side-nav-item">
-                                                <a data-bs-toggle="collapse" href="#sidebar@(parentModule.ModuleName)" aria-expanded="false" aria-controls="sidebarSecondLevel">
-                                                    <i class="@parentModule.ModuleIcon"></i>
-                                                    <span> @parentModule.ModuleName </span>
-                                                    <span class="menu-arrow"></span>
-                                                </a>
-                                            </li>
+                        if (parentModule.ModuleType == moduleGroup.ModuleType)
+                        {
+                            if (parentModule.HasSubModule)
+                            {
 
-
-
-
-
-
-
-
-                                            <div id="sidebar@(parentModule.ModuleName)">
-                                                <ul class="side-nav-second-level">
-
-
-                                                    @foreach (var subModule in subModules)
-                                                    {
-                                                        if (subModule.ParentModuleId == parentModule.ModuleId)
-                                                        {
-                                                            <li class="side-nav-item">
-
-                                                                <a asp-controller="@subModule.ModuleController" asp-action="@subModule.ModuleAction">@subModule.ModuleName</a>
-                                                            </li>
-                                                        }
-                                                    }
-
-
-
-                                                </ul>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <li class="side-nav-item">
-                                                <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
-                                                    <i class="@parentModule.ModuleIcon"></i>
-                                                    <span> @localizer[parentModule.ModuleName] </span>
-                                                </a>
-                                            </li>
-                                        }
-                                    }
-                                }
-                            </ul>
-                        </div>
+                                <li class="side-nav-item">
+                                    <a href="#sidebar@(parentModule.ModuleId)" data-bs-toggle="collapse" aria-expanded="false" class="side-nav-link">
+                                        @Html.Raw(parentModule.ModuleIcon)
+                                        <span>@parentModule.ModuleName</span>
+                                        <span class="menu-arrow"></span>
+                                    </a>
+                                    <div class="collapse" id="sidebar@(parentModule.ModuleId)">
+                                        <ul class="side-nav-second-level">
+                                            @foreach (var subModule in subModules)
+                                            {
+                                                if (subModule.ParentModuleId == parentModule.ModuleId)
+                                                {
+                                                    <li>
+                                                        <a asp-controller="@subModule.ModuleController" asp-action="@subModule.ModuleAction">@subModule.ModuleName</a>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="side-nav-item">
+                                    <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
+                                        @Html.Raw(parentModule.ModuleIcon)
+                                        <span> @parentModule.ModuleName </span>
+                                    </a>
+                                </li>
+                            }
+                        }
                     }
                 }
 

@@ -39,9 +39,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.CompanyLogoRepo
             return data;
         }
 
-        public async Task<IEnumerable<CompanyLogoModel>> GetByCompanyId(int loanPurposeId)
+        public async Task<IEnumerable<CompanyLogoModel>> GetByCompanyId(int companyId)
         {
-            var data = await _db.LoadDataAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetAllByCompanyId", new { loanPurposeId });
+            var data = await _db.LoadDataAsync<CompanyLogoModel, dynamic>("spCompanyLogo_GetAllByCompanyId", new { companyId });
             return data;
         }
 
