@@ -83,6 +83,8 @@ namespace Template.Web.Controllers.Transaction
             _propertyTypeRepo = propertyTypeRepo;
         }
 
+        #region View
+
         //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
         public IActionResult Index()
         {
@@ -241,6 +243,68 @@ namespace Template.Web.Controllers.Transaction
             ViewBag.items = items;
             return View(items);
         }
+
+        #endregion View
+
+        #region Get Methods
+
+        public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
+            Ok(await _userRepo.spGetByRoleName(roleName));
+
+        public async Task<IActionResult> GetPurposeOfLoan() =>
+            Ok(await _purposeOfLoanRepo.GetAllAsync());
+
+        public async Task<IActionResult> GetModeOfPayment() =>
+            Ok(await _modeOfPaymentRepo.GetAllAsync());
+
+        public async Task<IActionResult> GetPropertyType() =>
+            Ok(await _propertyTypeRepo.GetAllAsync());
+
+
+        public async Task<IActionResult> GetApplicants()
+        {
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+            return Ok(data);
+        }
+
+
+        public async Task<IActionResult> GetApplicantData(int id)
+        {
+            var data = await _applicantsPersonalInformationRepo.GetAsync(id);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetSpouseByApplicantInfoData(int id)
+        {
+            var data = await _spouseRepo.GetByApplicationInfoIdAsync(id);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetCollateralByApplicantInfoData(int id)
+        {
+            var data = await _collateralInformationRepo.GetByApplicationInfoIdAsync(id);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetBarrowerByApplicantInfoData(int id)
+        {
+            var data = await _barrowersInformationRepo.GetByApplicationInfoIdAsync(id);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetForm2ByApplicantInfoData(int id)
+        {
+            var data = await _form2PageRepo.GetByApplicationInfoIdAsync(id);
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetLoanParticularsByApplicantInfoData(int id)
+        {
+            var data = await _loanParticularsInformationRepo.GetByApplicationIdAsync(id);
+            return Ok(data);
+        }
+
+        #endregion Get Methods
 
         [HttpPost]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
@@ -600,54 +664,6 @@ namespace Template.Web.Controllers.Transaction
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
             return userData;
-        }
-
-        public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
-            Ok(await _userRepo.spGetByRoleName(roleName));
-
-        public async Task<IActionResult> GetPurposeOfLoan() =>
-            Ok(await _purposeOfLoanRepo.GetAllAsync());
-
-        public async Task<IActionResult> GetModeOfPayment() =>
-            Ok(await _modeOfPaymentRepo.GetAllAsync());
-
-        public async Task<IActionResult> GetPropertyType() =>
-            Ok(await _propertyTypeRepo.GetAllAsync());
-
-        public async Task<IActionResult> GetApplicantData(int id)
-        {
-            var data = await _applicantsPersonalInformationRepo.GetAsync(id);
-            return Ok(data);
-        }
-
-        public async Task<IActionResult> GetSpouseByApplicantInfoData(int id)
-        {
-            var data = await _spouseRepo.GetByApplicationInfoIdAsync(id);
-            return Ok(data);
-        }
-
-        public async Task<IActionResult> GetCollateralByApplicantInfoData(int id)
-        {
-            var data = await _collateralInformationRepo.GetByApplicationInfoIdAsync(id);
-            return Ok(data);
-        }
-
-        public async Task<IActionResult> GetBarrowerByApplicantInfoData(int id)
-        {
-            var data = await _barrowersInformationRepo.GetByApplicationInfoIdAsync(id);
-            return Ok(data);
-        }
-
-        public async Task<IActionResult> GetForm2ByApplicantInfoData(int id)
-        {
-            var data = await _form2PageRepo.GetByApplicationInfoIdAsync(id);
-            return Ok(data);
-        }
-
-        public async Task<IActionResult> GetLoanParticularsByApplicantInfoData(int id)
-        {
-            var data = await _loanParticularsInformationRepo.GetByApplicationIdAsync(id);
-            return Ok(data);
         }
     }
 }

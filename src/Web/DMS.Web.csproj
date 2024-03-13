@@ -89,7 +89,6 @@
     <ProjectReference Include="..\Infrastructure\DMS.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\js\Setup\Applicants\" />
     <Folder Include="wwwroot\js\Transaction\" />
   </ItemGroup>
 </Project>

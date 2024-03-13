@@ -129,11 +129,11 @@
             // 
             this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ApplicantsPersonalInformationModel].[PagibigNumber]")});
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(281.6176F, 80.04411F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(274.3259F, 81.3049F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(235.4167F, 18.09802F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(252.0833F, 18.09802F);
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "xrLabel3";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;

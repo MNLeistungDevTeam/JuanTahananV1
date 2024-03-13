@@ -35,5 +35,14 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? DeletedById { get; set; }
         public int? CompanyId { get; set; }
+
+        #region Display Properties
+
+        public string? ApplicantFullName { get; set; }
+        public string? PositionName { get; set; }
+        public string? ApplicationStatus { get; set; }
+        
+
+        #endregion Display Properties
     }
 }

@@ -65,11 +65,20 @@ public class ReportController : Controller
         _reportService = reportService;
     }
 
-    //[Route("[controller]/LatestHousingForm/{userId}")]
-    public async Task<IActionResult> LatestHousingForm(int userId)
+    [Route("[controller]/LatestHousingForm/{applicantCode?}")]
+    public async Task<IActionResult> LatestHousingForm(string? applicationCode = null)
     {
         try
         {
+            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicationCode);
+
+            int userId = 0;
+
+            if (applicationInfo != null)
+            {
+                userId = applicationInfo.UserId;
+            }
+
             var report = await _reportService.GenerateHousingLoanForm(userId);
 
             return View("RptHousingLoanApplication", report);

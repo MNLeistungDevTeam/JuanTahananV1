@@ -34,7 +34,7 @@ $(function () {
         persist: false,
         load: function (query, callback) {
             $.ajax({
-                url: baseUrl + "Role/GetRoles",
+                url: baseUrl + "Role/GetAllRoles",
                 success: function (results) {
                     try {
                         callback(results);

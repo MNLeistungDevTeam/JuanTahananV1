@@ -36,7 +36,7 @@ public class UserModel
     [DisplayName("Middle Name")]
     public string? MiddleName { get; set; }
 
-    public string Suffix { get; set; } = string.Empty;
+    public string? Suffix { get; set; } = string.Empty;
 
     public string Name
     {

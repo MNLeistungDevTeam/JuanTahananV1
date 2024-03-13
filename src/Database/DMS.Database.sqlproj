@@ -179,6 +179,7 @@
     <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetIfApprover.sql" />
     <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetByModuleId.sql" />
     <Build Include="Stored Procedures\Setup\Module\spModuleStage_GetByModuleCode.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -24,7 +24,7 @@ public class RoleController : Controller
     private readonly IModuleRepository _moduleRepo;
     private readonly IMapper _mapper;
     private readonly IUserRoleRepository _userRoleRepo;
-    private readonly IUserRepository userRepo;
+    private readonly IUserRepository _userRepo;
 
     public RoleController(
         IRoleRepository roleRepo,
@@ -39,7 +39,7 @@ public class RoleController : Controller
         _moduleRepo = moduleRepo;
         _mapper = mapper;
         _userRoleRepo = userRoleRepo;
-        this.userRepo = userRepo;
+        _userRepo = userRepo;
     }
 
     public IActionResult Index()
@@ -97,7 +97,7 @@ public class RoleController : Controller
     {
         var userRoles = (await _userRoleRepo.GetAllAsync()).Where(x => x.RoleId == roleId).Select(s => s.UserId).ToList();
 
-        List<UserModel> usersWithoutRole = (await userRepo.GetUsersAsync()).ToList();
+        List<UserModel> usersWithoutRole = (await _userRepo.GetUsersAsync()).ToList();
 
         if (userRoles.Any())
         {
