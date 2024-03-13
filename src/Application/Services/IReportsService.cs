@@ -1,9 +1,10 @@
 ﻿using DMS.Application.PredefinedReports;
+using DMS.Application.PredefinedReports.HousingLoanApplication;
 
 namespace DMS.Application.Services
 {
     public interface IReportsService
     {
-        Task<HousingLoanApplicationForm> GenerateHousingLoanForm(int userId);
+        Task<LoanApplicationForm> GenerateHousingLoanForm(int userId);
     }
 }
