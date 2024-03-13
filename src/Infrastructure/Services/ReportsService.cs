@@ -1,5 +1,7 @@
-﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+﻿using DevExpress.XtraReports.UI;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.PredefinedReports;
+using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ReportDto;
@@ -31,11 +33,13 @@ namespace DMS.Infrastructure.Services
             _loanParticularsInfoRepo = loanParticularsInfoRepo;
         }
 
-        public async Task<HousingLoanApplicationForm> GenerateHousingLoanForm(int userId)
+        public async Task<LoanApplicationForm> GenerateHousingLoanForm(int userId)
         {
             try
             {
-                var housingFormDetail = new HousingLoanApplicationForm();
+                var housingFormDetail = new LoanApplicationForm();
+                XRSubreport formPage1 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage1", true) as XRSubreport;
+                XRSubreport formPage2 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage2", true) as XRSubreport;
 
                 ApplicantsPersonalInformationModel applicantInfoModel = new();
                 BarrowersInformationModel barrowerInfoModel = new();
@@ -112,6 +116,8 @@ namespace DMS.Infrastructure.Services
                     }
                 };
 
+                formPage1.ReportSource.DataSource = dataSource;
+                formPage2.ReportSource.DataSource = dataSource;
                 housingFormDetail.DataSource = dataSource;
 
                 return housingFormDetail;

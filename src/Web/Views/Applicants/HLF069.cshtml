@@ -1,22 +1,30 @@
 ﻿@inject IStringLocalizer<SharedResources> localizer
 
 @model ApplicantViewModel
-
 @{
-
+    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Beneficiary" : "Update Beneficiary - " + Model.ApplicantsPersonalInformationModel.Code;
+    ViewData["Title"] =  title;
 }
-<div class="card rounded-4">
-    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-        @if (string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code))
-        {
-            <h3 class="text-dark float-start fw-semibold">Adding Beneficiary</h3>
-        }
-        else
-        {
-            <h3 class="text-dark float-start fw-semibold">Update Beneficiary - @Model.ApplicantsPersonalInformationModel.Code</h3>
-        }
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="Index">Beneficiaries</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
     </div>
-    <div class="card-body">
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
                 <li class="nav-item" data-target-form="#loanparticulars">
