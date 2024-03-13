@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Domain.Dto.ApplicantsDto
 {
@@ -50,58 +51,58 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Email")]
         public string? Email { get; set; }
 
-        //[DisplayName("Unit")]
+        [DisplayName("Present Unit")]
         public string? PresentUnitName { get; set; }
 
-        //[DisplayName("Building")]
+        [DisplayName("Present Building")]
         public string? PresentBuildingName { get; set; }
 
-        //[DisplayName("Lot")]
+        [DisplayName("Present Lot")]
         public string? PresentLotName { get; set; }
 
-        //[DisplayName("Street")]
+        [DisplayName("Present Street")]
         public string? PresentStreetName { get; set; }
 
-        //[DisplayName("Subdivision")]
+        [DisplayName("Present Subdivision")]
         public string? PresentSubdivisionName { get; set; }
 
-        //[DisplayName("Baranggay")]
+        [DisplayName("Present Baranggay")]
         public string? PresentBaranggayName { get; set; }
 
-        //[DisplayName("Municipality")]
+        [DisplayName("Present Municipality")]
         public string? PresentMunicipalityName { get; set; }
 
-        //[DisplayName("Province")]
+        [DisplayName("Present Province")]
         public string? PresentProvinceName { get; set; }
 
-        //[DisplayName("Zip Code")]
+        [DisplayName("Present Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        //[DisplayName("Unit")]
+        [DisplayName("Permanent Unit")]
         public string? PermanentUnitName { get; set; }
 
-        //[DisplayName("Building")]
+        [DisplayName("Permanent Building")]
         public string? PermanentBuildingName { get; set; }
 
-        //[DisplayName("Lot")]
+        [DisplayName("Permanent Lot")]
         public string? PermanentLotName { get; set; }
 
-        //[DisplayName("Street")]
+        [DisplayName("Permanent Street")]
         public string? PermanentStreetName { get; set; }
 
-        //[DisplayName("Subdivision")]
+        [DisplayName("Permanent Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
 
-        //[DisplayName("Baranggay")]
+        [DisplayName("Permanent Baranggay")]
         public string? PermanentBaranggayName { get; set; }
 
-        //[DisplayName("Municipality")]
+        [DisplayName("Permanent Municipality")]
         public string? PermanentMunicipalityName { get; set; }
 
-        //[DisplayName("Province")]
+        [DisplayName("Permanent Province")]
         public string? PermanentProvinceName { get; set; }
 
-        //[DisplayName("Zip Code")]
+        [DisplayName("Permanent Zip Code")]
         public string? PermanentZipCode { get; set; }
 
         [DisplayName("Home Ownership")]

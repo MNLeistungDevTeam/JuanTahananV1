@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.ApplicantsDto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -31,35 +26,43 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<Form2Page?> GetByIdAsync(int id) =>
             await _context.Form2Pages.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
         public async Task<Form2Page?> GetByApplicationInfoIdAsync(int id) =>
             await _context.Form2Pages.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
 
         public async Task<Form2PageModel?> GetByApplicantIdAsync(int applicantId) =>
       await _db.LoadSingleAsync<Form2PageModel, dynamic>("spForm2Page_GetByApplicantId", new { applicantId });
+
         public async Task<Form2Page> SaveAsync(Form2PageModel model)
         {
-            if (model.Id == 0)
-                model = _mapper.Map<Form2PageModel>(await CreateAsync(model));
+            var _model = _mapper.Map<Form2Page>(model);
+
+            if (_model.Id == 0)
+                _model = await CreateAsync(_model);
             else
-                model = _mapper.Map<Form2PageModel>(await UpdateAsync(model));
-            return _mapper.Map<Form2Page>(model);
+                _model = await UpdateAsync(_model);
+
+            return _model;
         }
-        public async Task<Form2Page> CreateAsync(Form2PageModel model)
+
+        public async Task<Form2Page> CreateAsync(Form2Page model)
         {
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Form2Page>(model);
-            mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
-            return mapped;
+
+            var result = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return result;
         }
-        public async Task<Form2Page> UpdateAsync(Form2PageModel model)
+
+        public async Task<Form2Page> UpdateAsync(Form2Page model)
         {
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
-            var mapped = _mapper.Map<Form2Page>(model);
-            mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");
-            return mapped;
+
+            var result = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return result;
         }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _contextHelper.GetByIdAsync(id);
@@ -71,15 +74,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                     await _contextHelper.UpdateAsync(entity);
             }
         }
+
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.Form2Pages.Where(m => ids.Contains(m.Id)).ToListAsync();
-            foreach (var entity in entities)
+            
+            if (entities is not null)
             {
-                await DeleteAsync(entity.Id);
+                await _contextHelper.BatchDeleteAsync(entities); 
             }
-
         }
-
     }
 }
