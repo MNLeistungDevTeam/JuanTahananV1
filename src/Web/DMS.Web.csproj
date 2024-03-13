@@ -91,4 +91,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\js\Transaction\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controllers\HousingForm.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

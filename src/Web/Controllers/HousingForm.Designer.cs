@@ -244,7 +244,6 @@
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrLabel164 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel163 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel162 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel161 = new DevExpress.XtraReports.UI.XRLabel();
@@ -333,6 +332,7 @@
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.Data = new DevExpress.XtraReports.Parameters.Parameter();
             this.root_path = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrLabel164 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -2665,19 +2665,6 @@
             this.Detail1.HeightF = 1389.583F;
             this.Detail1.Name = "Detail1";
             // 
-            // xrLabel164
-            // 
-            this.xrLabel164.Font = new DevExpress.Drawing.DXFont("Arial", 8F);
-            this.xrLabel164.LocationFloat = new DevExpress.Utils.PointFloat(199.3036F, 514.1179F);
-            this.xrLabel164.Multiline = true;
-            this.xrLabel164.Name = "xrLabel164";
-            this.xrLabel164.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel164.SizeF = new System.Drawing.SizeF(5.536484F, 6.579163F);
-            this.xrLabel164.StylePriority.UseFont = false;
-            this.xrLabel164.StylePriority.UseTextAlignment = false;
-            this.xrLabel164.Text = "x";
-            this.xrLabel164.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
             // xrLabel163
             // 
             this.xrLabel163.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
@@ -3879,7 +3866,7 @@
             // 
             this.xrPictureBox2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "ImageSource", "[form2]")});
-            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
+            this.xrPictureBox2.ImageUrl = "C:\\Users\\Admin\\source\\repos\\eiDOC\\src\\Web\\wwwroot\\images\\Documents\\form2.jpg";
             this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrPictureBox2.Name = "xrPictureBox2";
             this.xrPictureBox2.SizeF = new System.Drawing.SizeF(850F, 1389.583F);
@@ -3903,6 +3890,19 @@
             this.root_path.Description = "root_path";
             this.root_path.Name = "root_path";
             this.root_path.Visible = false;
+            // 
+            // xrLabel164
+            // 
+            this.xrLabel164.Font = new DevExpress.Drawing.DXFont("Arial", 8F);
+            this.xrLabel164.LocationFloat = new DevExpress.Utils.PointFloat(199.3036F, 514.1179F);
+            this.xrLabel164.Multiline = true;
+            this.xrLabel164.Name = "xrLabel164";
+            this.xrLabel164.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel164.SizeF = new System.Drawing.SizeF(5.536484F, 6.579163F);
+            this.xrLabel164.StylePriority.UseFont = false;
+            this.xrLabel164.StylePriority.UseTextAlignment = false;
+            this.xrLabel164.Text = "x";
+            this.xrLabel164.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // HousingForm
             // 
