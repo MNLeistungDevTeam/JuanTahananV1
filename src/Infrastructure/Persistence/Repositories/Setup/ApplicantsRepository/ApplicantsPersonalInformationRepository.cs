@@ -4,6 +4,9 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -61,7 +64,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             applicantPersonalInfo = await _contextHelper.CreateAsync(applicantPersonalInfo, "DateModified", "ModifiedById");
             return applicantPersonalInfo;
         }
-        
+
         public async Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
         {
             applicantPersonalInfo.DateModified = DateTime.Now;

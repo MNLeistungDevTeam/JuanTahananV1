@@ -11,14 +11,17 @@ namespace DMS.Domain.Dto.RoleDto
     public class RoleModel
     {
         public int Id { get; set; }
+
         [Display(Name = "Code", Prompt = "Input Code")]
         [Required(ErrorMessage = "this field is required")]
         public string? Name { get; set; }
+
         [Display(Name = "Description", Prompt = "Input Description")]
         [Required(ErrorMessage = "this field is required")]
         public string? Description { get; set; }
-        [DisplayName("Disabled")]
+
         public bool IsDisabled { get; set; }
+
         public bool IsLocked { get; set; }
         public DateTime DateCreated { get; set; }
         public bool AdminAccess { get; set; }

@@ -4,6 +4,8 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {

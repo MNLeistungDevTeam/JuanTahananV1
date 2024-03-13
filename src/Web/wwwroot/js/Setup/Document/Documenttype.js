@@ -99,6 +99,9 @@ $(() => {
         tbl_document.on('deselect', () => {
             CheckRows(tbl_document);
         })
+        tbl_document.on('draw', () => {
+            CheckRows(tbl_document);
+        })
         function CheckRows(element) {
             var row2minimum = element.rows({ selected: true }).count();
             var currentElement = $(`#${$(element.table().node()).attr('id')}`);

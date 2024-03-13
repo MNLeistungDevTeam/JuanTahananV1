@@ -6,13 +6,8 @@
 @{
     ViewData["Title"] = Model.Company.Id == 0 ? "Add Company" : "Company Profile";
 
-
-
-
-
-
     var companyLogo = Model.CompanyLogo.SingleOrDefault(m => m.Description == "ReportLogo");
-    var companyProfilePic = Url.Content("~/Images/eiBUY_Logo_2022/1_eiBUY_with border_white text.png");
+    var companyProfilePic = Url.Content("~/Logo/JuanTahananLogo.png");
 
     if (companyLogo is not null)
         if (System.IO.File.Exists(Url.Content("~" + companyLogo.Location)))
@@ -20,7 +15,7 @@
 
     var roleAccess = (RoleAccessModel)ViewData["RoleAccess"];
 }
- 
+
 
 <form asp-action="SaveCompany" asp-antiforgery="true" method="post" role="form" id="frm_company" enctype="multipart/form-data">
     <div class="row">

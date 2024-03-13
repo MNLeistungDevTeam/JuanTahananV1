@@ -14,7 +14,7 @@ namespace DMS.Application.Interfaces.Setup.RoleRepository
 
         Task<List<RoleAccess>?> GetAllAsync();
 
-        Task<RoleAccess> SaveAsync(RoleAccessModel model);
+        Task<RoleAccess> SaveAsync(RoleAccess model);
 
         Task<RoleAccess> CreateAsync(RoleAccess roleAccess);
 
@@ -31,5 +31,6 @@ namespace DMS.Application.Interfaces.Setup.RoleRepository
         Task<IEnumerable<RoleAccessModel>> GetRoleByModuleCodeAsync(int userId, string? moduleCode);
 
         Task<List<RoleAccessModel>> GetByUserId(int userId);
+        Task BatchDeleteAsync(List<RoleAccess> roleAccessList);
     }
 }

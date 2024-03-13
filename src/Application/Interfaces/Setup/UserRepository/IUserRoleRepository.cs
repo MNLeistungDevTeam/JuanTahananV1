@@ -17,8 +17,8 @@ namespace DMS.Application.Interfaces.Setup.UserRepository
         Task<UserRole?> GetUserRoleAsync(int UserId);
         Task<List<UserRole>?> GetAllAsync();
         Task<UserRole> SaveAsync(UserRoleModel model);
-        Task<UserRole> CreateAsync(UserRoleModel model);
-        Task<UserRole> UpdateAsync(UserRoleModel model);
+        Task<UserRole> CreateAsync(UserRole model);
+        Task<UserRole> UpdateAsync(UserRole model);
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
     }

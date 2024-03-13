@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using DevExpress.XtraReports.Design;
-using DMS.Domain.Dto.ModuleDto;
-using Microsoft.EntityFrameworkCore;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Services;
-using DMS.Domain.Entities;
-using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Application.Interfaces.Setup.ModuleStageRepo;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.ModuleStageDto;
+using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
 {
@@ -19,7 +18,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         private readonly ISQLDatabaseService _db;
         private readonly IModuleStageRepository _moduleStageRepo;
 
-        public ModuleRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db,IModuleStageRepository moduleStageRepo)
+        public ModuleRepository(
+            DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db,
+            IModuleStageRepository moduleStageRepo)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<Module>(context);
@@ -144,9 +148,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         public async Task BatchDeleteAsync(int[] ids)
         {
             var entities = await _context.Modules.Where(m => ids.Contains(m.Id)).ToListAsync();
-            foreach (var entity in entities)
+
+            if(entities is not null)
             {
-                await DeleteAsync(entity.Id);
+                await _contextHelper.BatchDeleteAsync(entities);
             }
         }
     }

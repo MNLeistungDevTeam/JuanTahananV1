@@ -3,7 +3,7 @@
 @model RoleViewModel
 
 @{
-
+    ViewData["Title"] = "Role Management";
 }
 
 <div class="card card-outline rounded-4">
@@ -50,8 +50,6 @@
     </div>
 </div>
 
-
-
 <!-- Standard modal content -->
 <div id="modal-role" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -60,7 +58,7 @@
                 <h3 class="text-dark float-start fw-semibold">Roles</h3>
             </div>
             <div class="modal-body">
-                <form id="role_form" class="needs-validation" novalidate method="post" action="/Role/SaveRole">
+                <form asp-controller="Role" asp-action="SaveRole" asp-antiforgery="true" method="post" role="form" id="role_form">
                     <input hidden type="text" asp-for="Role.Id" class="form-control form-control-sm">
                     <div class="row gy-2">
                         <div class="col-md-3">
@@ -88,7 +86,7 @@
                                 <div class="col-12">
                                     <div class="form-check form-check-inline">
                                         <input asp-for="Role.IsDisabled" type="checkbox" class="form-check-input">
-                                        <label class="form-check-label fw-normal" asp-for="Role.IsDisabled"></label>
+                                        <label class="form-check-label fw-normal" asp-for="Role.IsDisabled">Disabled</label>
                                     </div>
                                 </div>
                             </div>
@@ -119,5 +117,6 @@
 </div><!-- /.modal -->
 
 @section Scripts {
+    <script src="~/js/validation.bundle.js" asp-append-version="true"> </script>
     <script src="~/js/Setup/Role/RoleSetup.js" asp-append-version="true"></script>
 }

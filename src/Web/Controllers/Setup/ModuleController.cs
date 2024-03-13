@@ -3,14 +3,12 @@ using DMS.Application.Interfaces.Setup.ModuleStageApproverRepo;
 using DMS.Application.Interfaces.Setup.ModuleStageRepo;
 using DMS.Application.Interfaces.Setup.ModuleTypeRepo;
 using DMS.Application.Interfaces.Setup.RoleRepository;
-using DMS.Application.Services;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Dto.ModuleTypeDto;
 using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
-using DMS.Infrastructure.Services;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -349,13 +347,15 @@ public class ModuleController : Controller
         {
             int[] Ids = Array.ConvertAll(moduleIds.Split(','), int.Parse);
 
-            if (Ids.Length > 0)
-            {
-                foreach (var moduleId in Ids)
-                {
-                    await _moduleRepo.DeleteAsync(moduleId);
-                }
-            }
+            //if (Ids.Length > 0)
+            //{
+            //    foreach (var moduleid in Ids)
+            //    {
+            //        await _moduleRepo.DeleteAsync(moduleid);
+            //    }
+            //}
+
+            await _moduleRepo.BatchDeleteAsync(Ids);
 
             return Ok();
         }

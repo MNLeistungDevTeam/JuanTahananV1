@@ -28,7 +28,7 @@ $(async function () {
     //var controllerDropdown, $controllerDropdown;
     //var parentmoduleDropdown, $parentmoduleDropdown;
     //var modulestatusDropdown, $modulestatusDropdown;
-   
+
     //$controllerDropdown = $('#Module_Controller').selectize({
     //    valueField: 'value',
     //    labelField: 'text',
@@ -201,7 +201,10 @@ $(async function () {
             },
             {
                 data: "Icon",
-                class: "text-center"
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data ? `<i class="${data}"></i>` : null;
+                }
             },
             {
                 data: "Ordinal",
@@ -290,7 +293,10 @@ $(async function () {
             },
             {
                 data: "Icon",
-                class: "text-center"
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data ? `<i class="${data}"></i>` : null;
+                }
             },
             {
                 data: "Ordinal",
@@ -429,11 +435,11 @@ $(async function () {
     });
 
     $("[name='Module.Icon']").on("input change blur", function () {
-        $("#txt_module_icon").html($(this).val());
+        $("#txt_module_icon").html(`<i class="${$(this).val()}" ></class>`);
     });
 
     $("[name='ModuleType.Icon']").on("input change blur", function () {
-        $("#txt_module_type_icon").html($(this).val());
+        $("#txt_module_type_icon").html(`<i class="${$(this).val()}" ></class>`);
     });
 
     $("#btn_save_module").on("click", function () {
@@ -473,7 +479,7 @@ $(async function () {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#d33',  
             confirmButtonText: 'Confirm',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {
@@ -864,7 +870,7 @@ $(async function () {
 
             $("#tbl_module_stages tbody").empty();
             for (var moduleStage of moduleStages) {
-                (moduleStage);
+                addModuleStage(moduleStage);
             }
             rebindValidators();
         }

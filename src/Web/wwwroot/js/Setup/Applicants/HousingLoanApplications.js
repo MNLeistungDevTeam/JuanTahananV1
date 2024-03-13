@@ -20,7 +20,6 @@ $(() => {
         $('#form2').trigger('submit'); // Submit the form if the user clicks OK
     })
 
-
     $('#form2').on('submit', function (e) {
         e.preventDefault();
         let $loanparticulars = $('#loanparticulars');

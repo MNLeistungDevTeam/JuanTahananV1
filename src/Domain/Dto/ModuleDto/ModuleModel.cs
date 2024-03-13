@@ -27,7 +27,6 @@ namespace DMS.Domain.Dto.ModuleDto
         public string? Code { get; set; }
 
         [DisplayName("Bread Title")]
-       
         public string? BreadName { get; set; }
 
         [DisplayName("Module Name")]
@@ -35,7 +34,6 @@ namespace DMS.Domain.Dto.ModuleDto
         public string? Description { get; set; }
 
         [DisplayName("Icon")]
-        [Required(ErrorMessage = "this field is required!")]
         public string? Icon { get; set; }
 
         [DisplayName("Visibility")]
@@ -71,8 +69,10 @@ namespace DMS.Domain.Dto.ModuleDto
         public string? StatusColor { get; set; }
 
         public string? ParentModule { get; set; }
-        [Display(Name ="Module Type")]
+
+        [Display(Name = "Module Type")]
         public int? ModuleTypeId { get; set; }
+
         public List<DropdownModel>? ApprovalRouteTypes { get; set; }
 
         [DisplayName("Disabled")]
@@ -83,12 +83,11 @@ namespace DMS.Domain.Dto.ModuleDto
 
         [DisplayName("Has Approver")]
         public bool WithApprover { get; set; }
+
         [DisplayName("Approval Type")]
-        public int ApprovalRouteTypeId { get; set; }
+        public int? ApprovalRouteTypeId { get; set; }
+
         public string? ModuleType { get; set; }
         public string? ApprovalRouteType { get; set; }
-
-
-        
     }
 }

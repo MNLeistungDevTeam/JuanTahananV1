@@ -170,7 +170,7 @@ $(function () {
     async function loadCompanyProfile(id) {
         if (id == 0) return;
 
-        await loadCompanyTransactCount(id);
+        //await loadCompanyTransactCount(id);
 
         //Company Profile
         var companyInfo = await getCompanyInfo(id);

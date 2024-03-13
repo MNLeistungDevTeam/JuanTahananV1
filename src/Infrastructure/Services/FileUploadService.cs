@@ -12,6 +12,11 @@ using Microsoft.AspNetCore.StaticFiles;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace DMS.Infrastructure.Services
 {

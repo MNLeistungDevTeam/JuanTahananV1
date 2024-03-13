@@ -293,7 +293,7 @@ namespace Template.Web.Controllers.Transaction
 
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
-                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId));
+                    applicationData = _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId));
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -450,7 +450,7 @@ namespace Template.Web.Controllers.Transaction
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData,userId);
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
 
                     if (vwModel.BarrowersInformationModel != null)
                     {

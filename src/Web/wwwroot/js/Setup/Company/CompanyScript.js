@@ -281,7 +281,7 @@ $(function () {
     async function loadCompanyProfile(id = companyId) {
         if (id == 0) return;
 
-        await loadCompanyInfoBox(id);
+        //await loadCompanyInfoBox(id);
         resetForm();
 
         //Company Profile
