@@ -13,9 +13,9 @@ public partial class ApplicantsPersonalInformation
 
     public int UserId { get; set; }
 
-    public long? PagibigNumber { get; set; }
+    public string PagibigNumber { get; set; }
 
-    public long? HousingAccountNumber { get; set; }
+    public string HousingAccountNumber { get; set; }
 
     public DateTime DateCreated { get; set; }
 

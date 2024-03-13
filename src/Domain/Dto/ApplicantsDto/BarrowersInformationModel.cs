@@ -17,6 +17,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Middle")]
         public string? MiddleName { get; set; }
+
         public string Name
         {
             get
@@ -24,7 +25,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
                 return FirstName + " " + MiddleName + " " + LastName;
             }
         }
-
 
         [DisplayName("Suffix")]
         public string? Suffix { get; set; }
@@ -42,66 +42,66 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? MaritalStatus { get; set; }
 
         [DisplayName("Home Number")]
-        public int? HomeNumber { get; set; }
+        public string? HomeNumber { get; set; }
 
         [DisplayName("Mobile Number")]
-        public int? MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
         [DisplayName("Email")]
         public string? Email { get; set; }
 
-        [DisplayName("Unit")]
+        //[DisplayName("Unit")]
         public string? PresentUnitName { get; set; }
 
-        [DisplayName("Building")]
+        //[DisplayName("Building")]
         public string? PresentBuildingName { get; set; }
 
-        [DisplayName("Lot")]
+        //[DisplayName("Lot")]
         public string? PresentLotName { get; set; }
 
-        [DisplayName("Street")]
+        //[DisplayName("Street")]
         public string? PresentStreetName { get; set; }
 
-        [DisplayName("Subdivision")]
+        //[DisplayName("Subdivision")]
         public string? PresentSubdivisionName { get; set; }
 
-        [DisplayName("Baranggay")]
+        //[DisplayName("Baranggay")]
         public string? PresentBaranggayName { get; set; }
 
-        [DisplayName("Municipality")]
+        //[DisplayName("Municipality")]
         public string? PresentMunicipalityName { get; set; }
 
-        [DisplayName("Province")]
+        //[DisplayName("Province")]
         public string? PresentProvinceName { get; set; }
 
-        [DisplayName("Zip Code")]
+        //[DisplayName("Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        [DisplayName("Unit")]
+        //[DisplayName("Unit")]
         public string? PermanentUnitName { get; set; }
 
-        [DisplayName("Building")]
+        //[DisplayName("Building")]
         public string? PermanentBuildingName { get; set; }
 
-        [DisplayName("Lot")]
+        //[DisplayName("Lot")]
         public string? PermanentLotName { get; set; }
 
-        [DisplayName("Street")]
+        //[DisplayName("Street")]
         public string? PermanentStreetName { get; set; }
 
-        [DisplayName("Subdivision")]
+        //[DisplayName("Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
 
-        [DisplayName("Baranggay")]
+        //[DisplayName("Baranggay")]
         public string? PermanentBaranggayName { get; set; }
 
-        [DisplayName("Municipality")]
+        //[DisplayName("Municipality")]
         public string? PermanentMunicipalityName { get; set; }
 
-        [DisplayName("Province")]
+        //[DisplayName("Province")]
         public string? PermanentProvinceName { get; set; }
 
-        [DisplayName("Zip Code")]
+        //[DisplayName("Zip Code")]
         public string? PermanentZipCode { get; set; }
 
         [DisplayName("Home Ownership")]
@@ -111,10 +111,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? YearsofStay { get; set; }
 
         [DisplayName("SSS Number")]
-        public int? SSSNumber { get; set; }
+        public string? SSSNumber { get; set; }
 
         [DisplayName("TIN Number")]
-        public int? TinNumber { get; set; }
+        public string? TinNumber { get; set; }
 
         [DisplayName("Occupation Status")]
         public string? OcupationStatus { get; set; }
@@ -202,6 +202,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Deleted By Id")]
         public int? DeletedById { get; set; }
+
         [DisplayName("Is Permanent Address on Abroad")]
         public bool IsPermanentAddressAbroad { get; set; }
 
@@ -210,6 +211,5 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Is Business Address on Abroad")]
         public bool IsBusinessAddressAbroad { get; set; }
-
     }
 }

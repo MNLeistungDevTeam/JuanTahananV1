@@ -5,25 +5,22 @@ using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.ReportDesigner;
 using DevExpress.XtraReports.Web.WebDocumentViewer;
-using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Infrastructure.Persistence;
+using DMS.Infrastructure.PredefinedReports;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Routing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Domain.Entities;
-using DMS.Domain.Enums;
-using DMS.Infrastructure.Persistence;
-using DMS.Infrastructure.PredefinedReports;
-using DMS.Web.Controllers.Services;
-using DMS.Web.Models;
 
 namespace DMS.Web.Controllers;
 
@@ -41,8 +38,18 @@ public class ReportController : Controller
     private readonly IMapper _mapper;
     private readonly IForm2PageRepository _form2PageRepo;
     private DMSDBContext _tmpcontext;
+    private readonly IReportsService _reportService;
 
-    public ReportController(ReportDbContext context, IWebHostEnvironment hostingEnvironment, IUserRepository userRepo, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo, ILoanParticularsInformationRepository loanParticularsInformationRepo, ICollateralInformationRepository collateralInformationRepo, IBarrowersInformationRepository barrowersInformationRepo, ISpouseRepository spouseRepo, IMapper mapper, IForm2PageRepository form2PageRepo, DMSDBContext tmpcontext)
+    public ReportController(ReportDbContext context,
+        IWebHostEnvironment hostingEnvironment,
+        IUserRepository userRepo,
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+        ILoanParticularsInformationRepository loanParticularsInformationRepo,
+        ICollateralInformationRepository collateralInformationRepo,
+        IBarrowersInformationRepository barrowersInformationRepo,
+        ISpouseRepository spouseRepo, IMapper mapper,
+        IForm2PageRepository form2PageRepo, DMSDBContext tmpcontext,
+        IReportsService reportService)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
@@ -55,6 +62,19 @@ public class ReportController : Controller
         _mapper = mapper;
         _form2PageRepo = form2PageRepo;
         _tmpcontext = tmpcontext;
+        _reportService = reportService;
+    }
+
+    //[Route("[controller]/LatestHousingForm/{userId}")]
+    public async Task<IActionResult> LatestHousingForm(int userId)
+    {
+        try
+        {
+            var report = await _reportService.GenerateHousingLoanForm(userId);
+
+            return View("RptHousingLoanApplication", report);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
     public List<ReportListViewModel> GetReportList()
@@ -123,41 +143,14 @@ public class ReportController : Controller
     public async Task<IActionResult> BCFFORM([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator)
     {
         var model = new ViewerModel
-        { 
+        {
             ViewerModelToBind = await clientSideModelGenerator.GetModelAsync("BuyerConfirmationForm", WebDocumentViewerController.DefaultUri)
         };
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[0].Value = _hostingEnvironment.WebRootPath;
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = "dawda";
         return View("Viewer", model);
     }
-    public async Task<IActionResult> LatestHousingForm([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator,int userId)
-    {
-        var model = new ViewerModel
-        {
-            ViewerModelToBind = await clientSideModelGenerator.GetModelAsync("HousingForm", WebDocumentViewerController.DefaultUri)
-        };
-        var modelData = new ApplicantViewModel();
-        if (userId != 0)
-        {
-            var latestApplicationForm = (await _applicantsPersonalInformationRepo
-                .GetAllAsync())
-                .Where(x => x.UserId == userId)
-                .OrderByDescending(x => x.DateCreated)
-                .FirstOrDefault() ?? new ApplicantsPersonalInformation()
-                {
-                    UserId = userId
-                };
-            modelData.ApplicantsPersonalInformationModel = _mapper.Map<ApplicantsPersonalInformationModel>(latestApplicationForm);
-            modelData.LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(await _loanParticularsInformationRepo.GetByApplicationIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.CollateralInformationModel = _mapper.Map<CollateralInformationModel>(await _collateralInformationRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(await _barrowersInformationRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.SpouseModel = _mapper.Map<SpouseModel>(await _spouseRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-            modelData.Form2PageModel = _mapper.Map<Form2PageModel>(await _form2PageRepo.GetByApplicationInfoIdAsync(latestApplicationForm.Id)) ?? new();
-        }
-        model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[0].Value = _hostingEnvironment.WebRootPath;
-        model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = JsonConvert.SerializeObject(modelData,Newtonsoft.Json.Formatting.Indented);
-        return View("Viewer", model);
-    }
+
     public async Task<IActionResult> HousingForm([FromServices] IWebDocumentViewerClientSideModelGenerator clientSideModelGenerator, int id)
     {
         var model = new ViewerModel

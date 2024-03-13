@@ -13,13 +13,16 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public string? Code { get; set; }
         public int UserId { get; set; }
+
         [Display(Name = "Housing Account Number HAN, if with existing HAN", Prompt = "Input Number")]
         [Range(0, 999999999999)]
         public long HousingAccountNumber { get; set; }
 
-        [Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
-        [Range(0, 999999999999)]
-        public long PagibigNumber { get; set; }
+        //[Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
+        //[Range(0, 999999999999)]
+        [Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Pagibig Number")]
+        public string? PagibigNumber { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public int CreatedById { get; set; }
