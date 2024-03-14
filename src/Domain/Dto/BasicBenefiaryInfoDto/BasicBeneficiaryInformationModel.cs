@@ -117,6 +117,20 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("Zip Code")]
         public string? PermanentZipCode { get; set; }
 
+        [Required]
+        [DisplayName("Property Developer ")]
+        public string? PropertyDeveloperName { get; set; }
+
+        [Required]
+        [DisplayName("Property Location")]
+        public string? PropertyLocation { get; set; }
+
+        [Required]
+        [DisplayName("Property Unit")]
+        public string? PropertyUnitLevelName { get; set; }
+
+
+
         #endregion Barrowers
     }
 }

@@ -211,5 +211,23 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Is Business Address on Abroad")]
         public bool IsBusinessAddressAbroad { get; set; }
+
+
+
+
+        [DisplayName("Property Developer ")]
+        public string? PropertyDeveloperName { get; set; }
+
+        [DisplayName("Property Location")]
+        public string? PropertyLocation { get; set; }
+
+
+        [DisplayName("Property Unit")]
+        public string? PropertyUnitLevelName { get; set; }
+
+
+
+
+
     }
 }

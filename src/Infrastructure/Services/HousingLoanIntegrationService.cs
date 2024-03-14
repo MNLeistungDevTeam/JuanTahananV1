@@ -98,6 +98,11 @@ namespace DMS.Infrastructure.Services
             barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
             barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
             barrowerModel.PermanentZipCode = model.PermanentZipCode;
+
+            barrowerModel.PropertyDeveloperName = model.PropertyDeveloperName;
+            barrowerModel.PropertyLocation = model.PropertyLocation;
+            barrowerModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
+
             barrowerModel.IsPermanentAddressAbroad = true; // no condition because all address is required
             barrowerModel.IsPresentAddressAbroad = true; // no condition because all address is required
 
