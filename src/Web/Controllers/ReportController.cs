@@ -66,11 +66,11 @@ public class ReportController : Controller
     }
 
     [Route("[controller]/LatestHousingForm/{applicantCode?}")]
-    public async Task<IActionResult> LatestHousingForm(string? applicationCode = null)
+    public async Task<IActionResult> LatestHousingForm(string? applicantCode = null)
     {
         try
         {
-            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicationCode);
+            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
             int userId = 0;
 
