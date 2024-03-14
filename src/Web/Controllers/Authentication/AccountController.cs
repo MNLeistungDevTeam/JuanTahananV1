@@ -51,7 +51,7 @@ public class AccountController : Controller
     {
         try
         {
-           if (User.Identity != null && User.Identity.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToLocal(returnUrl);
             }
@@ -275,7 +275,7 @@ public class AccountController : Controller
         {
             new Claim(ClaimTypes.Name, model.Id.ToString()),
             new Claim(ClaimTypes.Role, model.Id.ToString()),
-            new Claim("Company", model.CompanyId.ToString())
+             new Claim("Company", model.CompanyId != null ? model.CompanyId.ToString() : "0")
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

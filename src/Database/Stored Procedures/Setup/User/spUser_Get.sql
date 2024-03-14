@@ -9,7 +9,8 @@ BEGIN
 			ELSE 'Unlocked'
 		END LockStatus,
 		30 - datediff(minute, LockedTime, GETDATE()) LockedDuration,
-		r.[Name] UserRoleName,
+		r.[Description] UserRoleName,
+		r.[Name] UserRoleCode,
 		r.Id as UserRoleId
 	FROM [User] u
 	LEFT JOIN [UserRole] ur on ur.UserId = u.Id

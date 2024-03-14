@@ -1,6 +1,4 @@
-﻿
-
-using DMS.Domain.Dto.OtherDto;
+﻿using DMS.Domain.Dto.OtherDto;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -113,4 +111,9 @@ public class UserModel
     }
 
     public string? ApplicantCode { get; set; }
+    public string? UserRoleName { get; set; } //Description basis
+    public string? UserRoleCode { get; set; }  // Name basis
+
+
+     
 }

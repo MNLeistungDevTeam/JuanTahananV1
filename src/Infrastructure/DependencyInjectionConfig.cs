@@ -144,6 +144,7 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
         services.AddScoped<IReportsService, ReportsService>();
+        services.AddScoped<INotificationService, NotificationService>();
         return services;
     }
 }

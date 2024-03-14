@@ -9,16 +9,17 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IPurposeOfLoanRepository _purposeOfLoanRepo;
         private readonly IModeOfPaymentRepository _modeOfPaymentRepo;
         private readonly IPropertyTypeRepository _propertyTypeRepo;
+        private readonly INotificationService _notificationService;
 
         private DMSDBContext _context;
 
@@ -62,7 +64,8 @@ namespace Template.Web.Controllers.Transaction
             DMSDBContext context,
             IPurposeOfLoanRepository purposeOfLoanRepo,
             IModeOfPaymentRepository modeOfPaymentRepo,
-            IPropertyTypeRepository propertyTypeRepo)
+            IPropertyTypeRepository propertyTypeRepo,
+            INotificationService notificationService)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -81,6 +84,7 @@ namespace Template.Web.Controllers.Transaction
             _purposeOfLoanRepo = purposeOfLoanRepo;
             _modeOfPaymentRepo = modeOfPaymentRepo;
             _propertyTypeRepo = propertyTypeRepo;
+            _notificationService = notificationService;
         }
 
         #region View
@@ -260,13 +264,11 @@ namespace Template.Web.Controllers.Transaction
         public async Task<IActionResult> GetPropertyType() =>
             Ok(await _propertyTypeRepo.GetAllAsync());
 
-
         public async Task<IActionResult> GetApplicants()
         {
             var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
             return Ok(data);
         }
-
 
         public async Task<IActionResult> GetApplicantData(int id)
         {
@@ -475,6 +477,8 @@ namespace Template.Web.Controllers.Transaction
                 var user = new User();
                 var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
+                int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
+
 
                 //create  new beneficiary
 
@@ -594,6 +598,17 @@ namespace Template.Web.Controllers.Transaction
                 // last stage pass parameter code
 
                 var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
+
+                #region Notification
+
+                var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
+                var actiontype = type;
+
+                var actionlink = $"Applicants/HLF068/{applicantdata.Code}";
+
+                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantdata.Code, userId, companyId);
+
+                #endregion Notification
 
                 return Ok(applicantdata.Code);
             }

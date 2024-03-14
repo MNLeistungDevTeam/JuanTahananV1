@@ -10,7 +10,6 @@
     [RejectDesc] NVARCHAR(50) NOT NULL, 
     [ReturnStage] INT NOT NULL DEFAULT 0, 
     [RequiredCount] INT NOT NULL DEFAULT 0,
-    [RequiredAmount] DECIMAL(18, 5) NOT NULL DEFAULT 0,
     [ApproverId] INT NULL,
     [IsDisabled] BIT NOT NULL DEFAULT 0,
     [CreatedById] INT NOT NULL, 

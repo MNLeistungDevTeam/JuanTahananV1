@@ -1,0 +1,114 @@
+﻿@using DMS.Domain.Dto.NotificationDto
+@model NotificationFilterModel
+@{
+    ViewData["Title"] = "Notification";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <div class="btn-group  mb-sm-2">
+                            <a class="button btn btn-sm btn-light waves-effect" id="btn_refresh"><span class="fas fa-sync me-1"></span>Refresh</a>
+                        </div>
+                        <div class="btn-group  mb-sm-2">
+                            <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"> Other Actions </button>
+                            <div class="dropdown-menu" data-popper-placement="bottom-start">
+                                <button class="dropdown-item" id="btn_unread"><span class="fa fa-envelope me-1" aria-hidden="true"></span>Mark as Unread</button>
+                                <button class="dropdown-item" id="btn_read"><span class="fa fa-envelope me-1" aria-hidden="true"></span>Mark as Read</button>
+                                <button class="dropdown-item" id="btn_delete"><span class="fa fa-ban me-1" aria-hidden="true"></span>Mark as Delete</button>
+                            </div>
+                        </div>
+                        <div class="btn-group  mb-sm-2">
+                            <button class="btn btn-light btn-sm waves-effect" id="btn_preview">
+                                <span class="fas fa-image me-1"></span> View
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <div class="input-group float-end" style="max-width:400px;">
+                            <input asp-for="IsDelete" hidden />
+                            <input asp-for="IsRead" hidden />
+
+                            <select id="filter_isRead" class="form-select form-select-sm" style="max-width:150px;">
+                                <option selected value="">All</option>
+                                <option value="1">Read</option>
+                                <option value="0">Unread</option>
+                            </select>
+
+                            <input id="txt_search_tbl_mynotif" type="search" class="form-control form-control-sm" style="max-width:250px;" placeholder="Search..." />
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered no-wrap w-100" id="tbl_mynotif">
+                        <thead class="text-center">
+                            <tr class="table-light">
+                                <th style="min-width:15px;" class="text-center">
+                                    <input type="checkbox" class="form-check-input" id="selectall_notif" />
+                                </th>
+                                <th>Title</th>
+                                <th>Preview</th>
+                                <th>Date Received</th>
+                                <th hidden>isRead</th>
+                                <th hidden>isDelete</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="inbox">
+                    <h1 class="text-center">Notification Details</h1>
+                    <div class="mt-4">
+                        <h5 id="NotifTitle" class="font-16"></h5>
+
+                        <p id="NotifId" hidden></p>
+                        <hr>
+
+                        <div class="d-flex align-items-start mb-3 mt-1">
+                            <div class="w-100">
+                                <small id="NotifDateCreated" class="float-end"></small>
+                                <h6 id="defaulttext" class="m-0 font-14 text-center" style="font-family: 'Poppins',sans-serif;">Notification Full View Here</h6>
+
+                            </div>
+                        </div>
+                        <p id="NotifContent" class="text-red" style="white-space: pre-line;font-size:14px; font-family: 'Poppins',sans-serif; line-height: 0.9;"></p>
+                        <hr>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/AdditionalFeatures/Notification/NotificationScript.js" asp-append-version="true"></script>
+}

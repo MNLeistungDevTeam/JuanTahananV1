@@ -235,6 +235,8 @@ try
     app.MapHub<ProgressHub>("/progressHub");
     app.MapHub<AuthenticationHub>("/authenticationHub");
     app.MapHub<UploaderHub>("/uploaderHub");
+    app.MapHub<NotificationHub>("/notificationHub");
+    app.MapHub<OnlineUserHub>("/onlineUserHub");
     app.Run();
 }
 catch (Exception ex)

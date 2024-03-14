@@ -1,0 +1,123 @@
+﻿@using DMS.Domain.Dto.NotificationDto
+@model NotifReceiverViewModel
+
+@{
+    ViewData["Title"] = "Create Notification";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Add Notification</h4>
+                <div class="col-md-12 align-items-md-center">
+                    <form asp-action="AddNotif" method="post" enctype="multipart/form-data" id="frm_notif">
+                        <div class="mb-2">
+                            <label class="form-label">Title</label>
+                            <input asp-for="Notification.Id" class="form-control" value="0" hidden>
+                            <input asp-for="Notification.Title" class="form-control">
+                        </div>
+                        <span asp-validation-for="Notification.Title" class="text-danger"></span>
+
+                        <div class="mb-2">
+                            <label asp-for="Notification.Content" class="form-label"></label>
+                            <div id="Content" style="height:350px;"></div>
+                        </div>
+                        <span asp-validation-for="Notification.Content" class="text-danger"></span>
+
+                        <div class="mb-2">
+                            <label asp-for="Notification.Preview" class="form-label"></label>
+                            <textarea asp-for="Notification.Preview" class="form-control" rows="1"></textarea>
+                        </div>
+                        <span asp-validation-for="Notification.Preview" class="text-danger"></span>
+
+                        <div class="row">
+                            <div class="mb-2 col-md-6">
+                                <label class="form-label">Recipient Type</label>
+                                <select class="form-select" asp-for="Type">
+                                    <option value="2">Role</option>
+                                    <option value="1">User</option>
+                                </select>
+                            </div>
+                            <div class="mb-2 col-md-6">
+                                <label class="form-label">Priority Level</label>
+                                <select class="form-select" asp-for="Notification.PriorityLevel">
+                                    <option value="1">High</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2" id="div_selectrole">
+                            <label for="example-multiselect" class="form-label">Recipient/s</label>
+                            <select asp-for="Receiver" multiple="" class="sample-receiver">
+                                <option value="">RoleName...</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <button class="btn btn-light pull-end" type="button" id="btn_clear"><span class="fas fa-times"></span> Clear</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" id="btn_save">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#home" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                            Notification Template
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="home">
+                        <div class="row">
+                            <div class="col-md-6 mb-2 align-items-md-center">
+                                <button class="btn btn-light btn-sm waves-effect" id="btn_edit"><span class="fas fa-edit"></span> Edit</button>
+                                <button class="btn btn-light btn-sm waves-effect" id="btn_refresh"><span class="fas fa-sync"></span> Refresh</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm no-wrap w-100" id="tbl_announcement">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Notification Id</th>
+                                        <th>Title</th>
+                                        <th>Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js"></script>
+    <script src="~/js/AdditionalFeatures/Notification/CreateUpdateNotifScript.js" asp-append-version="true"></script>
+}

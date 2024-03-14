@@ -1,0 +1,62 @@
+﻿@using DMS.Domain.Dto.NotificationDto
+@model NotificationModel
+
+@{
+    ViewData["Title"] = "Inbox";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="inbox">
+                    <div class="btn-group mb-sm-2">
+                        <button id="btn_notifback" class="btn btn-light btn-sm waves-effect mb-2"><i class="fa fa-arrow-left me-1" aria-hidden="true"></i>Back</button>
+                    </div>
+                    <div class="btn-group mb-sm-2">
+                        <button id="btn_delete_notif" class="btn btn-light btn-sm waves-effect mb-2" data-url="" data-toggle="tooltip" data-placement="bottom" title="Delete Notification"><i class="fa fa-trash me-1" aria-hidden="true"></i>Delete Notif</button>
+                    </div>
+                    <div class="btn-group mb-sm-2">
+                        <button id="btn_unread_notif" class="btn btn-light btn-sm waves-effect mb-2" data-toggle="tooltip" data-placement="bottom" title="Read Notification"><i class="fa fa-envelope me-1" aria-hidden="true"></i>Mark as Unread</button>
+                    </div>
+                    <div class="mt-4">
+                        <h5 class="font-16">@Model.Title</h5>
+                        <p id="Id" hidden>@Model.Id</p>
+                        <small class="float-end">@Model.DateCreated</small>
+                        <h6 class="m-0 font-14" style="font-family: 'Poppins',sans-serif;">eiBUY</h6>
+                        <small class="text-muted">From: System Generated Message</small>
+
+                        <div>
+                            @Html.Raw(Model.Content)
+
+                        </div>
+
+                        <!-- end row-->
+                    </div>
+                    <!-- end .mt-4 -->
+                </div>
+                <!-- end inbox-rightbar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div> <!-- end Col -->
+</div>
+
+@section Scripts {
+    <script src="~/js/AdditionalFeatures/Notification/ReadScript.js" asp-append-version="true"></script>
+}

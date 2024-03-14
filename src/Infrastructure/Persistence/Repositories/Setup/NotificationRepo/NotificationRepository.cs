@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.Data.Extensions;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.NotificationReceiverRepo;
 using DMS.Application.Interfaces.Setup.NotificationRepo;
@@ -86,19 +85,23 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo
         {
             var notification = _mapper.Map<Notification>(nModel);
 
-            List<User> users = new();
+            List<UserModel> users = new();
 
-            //if (type == NotificationType.Role)
-            //{                                           //userids from modulecode access with existing userroleIds
-            //    users = await _context.Users.Where(m => roles.Contains(m.UserRoleId)).ToListAsync();
-            //}
+            var usersFromRepo = await _userRepo.GetUsersAsync();
+
+            if (type == NotificationType.Role)
+            {                                           //userids from modulecode access with existing userroleIds
+                                                        //  users = await _context.Users.Where(m => roles.Contains(m.UserRoleId)).ToListAsync();
+
+                users = usersFromRepo.Where(user => roles.Contains(user.UserRoleId.Value)).ToList();
+            }
             if (type == NotificationType.User)
             {
-                users = await _context.Users.Where(m => roles.Contains(m.Id)).ToListAsync();
+                users = usersFromRepo.Where(user => roles.Contains(user.Id)).ToList();
             }
             else if (type == NotificationType.Approval)
             {
-                users = await _context.Users.Where(m => roles.Contains(m.Id)).ToListAsync();
+                users = usersFromRepo.Where(user => roles.Contains(user.Id)).ToList();
             }
 
             notification = await SaveAsync(notification, userId);
