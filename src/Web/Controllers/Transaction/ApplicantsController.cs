@@ -407,49 +407,58 @@ namespace Template.Web.Controllers.Transaction
                     {
                         user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
                     }
+
                     vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.SpouseModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.Form2PageModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
 
-                    var loan = await _loanParticularsInformationRepo.GetByIdAsync(vwModel.LoanParticularsInformationModel.Id);
-                    var collateral = await _collateralInformationRepo.GetByIdAsync(vwModel.CollateralInformationModel.Id);
-                    var barrow = await _barrowersInformationRepo.GetByIdAsync(vwModel.BarrowersInformationModel.Id);
-                    var spouse = await _spouseRepo.GetByIdAsync(vwModel.SpouseModel.Id);
-                    var form2 = await _form2PageRepo.GetByIdAsync(vwModel.Form2PageModel.Id);
 
                     if (vwModel.LoanParticularsInformationModel.Id != 0)
                     {
+                        var loan = await _loanParticularsInformationRepo.GetByIdAsync(vwModel.LoanParticularsInformationModel.Id);
                         loan.MergeNonNullData(vwModel.LoanParticularsInformationModel);
                         vwModel.LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(loan);
+
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, user.Id);
                     }
+
                     if (vwModel.CollateralInformationModel.Id != 0)
                     {
+                        var collateral = await _collateralInformationRepo.GetByIdAsync(vwModel.CollateralInformationModel.Id);
                         collateral.MergeNonNullData(vwModel.CollateralInformationModel);
                         vwModel.CollateralInformationModel = _mapper.Map<CollateralInformationModel>(collateral);
+
+                        await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
                     }
+
                     if (vwModel.BarrowersInformationModel.Id != 0)
                     {
+                        var barrow = await _barrowersInformationRepo.GetByIdAsync(vwModel.BarrowersInformationModel.Id);
                         barrow.MergeNonNullData(vwModel.BarrowersInformationModel);
                         vwModel.BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(barrow);
+
+                        await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
+
                     if (vwModel.SpouseModel.Id != 0)
-                    {
+                    {   
+                        var spouse = await _spouseRepo.GetByIdAsync(vwModel.SpouseModel.Id);
                         spouse.MergeNonNullData(vwModel.SpouseModel);
                         vwModel.SpouseModel = _mapper.Map<SpouseModel>(spouse);
+
+                        await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
+
                     if (vwModel.Form2PageModel.Id != 0)
                     {
+                        var form2 = await _form2PageRepo.GetByIdAsync(vwModel.Form2PageModel.Id);
                         form2.MergeNonNullData(vwModel.Form2PageModel);
                         vwModel.Form2PageModel = _mapper.Map<Form2PageModel>(form2);
-                    }
-                    //await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformation);
-                    //await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
-                    //await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformation);
 
-                    //await _spouseRepo.SaveAsync(vwModel.SpouseModel);
-                    //await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
+                        await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
+                    }
                 }
 
                 // last stage pass parameter code
@@ -458,11 +467,129 @@ namespace Template.Web.Controllers.Transaction
 
                 return Ok(applicantdata.Code);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        /*[HttpPost]
+        public async Task<IActionResult> SaveHLF068(ApplicantViewModel vModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+
+                // Process user data (register new user if necessary)
+                var user = await ProcessUserDataAsync(vModel);
+
+                // Save applicant information
+                var applicantCode = await SaveApplicantInformationAsync(user, vModel);
+
+                // Return success response with applicant code
+                return Ok(applicantCode);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Process user data (register new user if necessary)
+        private async Task<User> ProcessUserDataAsync(ApplicantViewModel vwModel)
+        {
+            if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
+            {
+                return await RegisterNewUserAsync(vwModel.BarrowersInformationModel);
+            }
+            else
+            {
+                // Fetch existing user data
+                return await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
+            }
+        }
+
+        // Register a new user
+        private async Task<User> RegisterNewUserAsync(BarrowersInformationModel model)
+        {
+            // Prepare user registration data
+            var userModel = new UserModel
+            {
+                Email = model.Email,
+                Password = "Pass123$", // Default password
+                UserName = await GenerateTemporaryUsernameAsync(),
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Gender = model.Sex
+            };
+
+            // Register the new user
+            var user = await RegisterBenefeciary(userModel);
+
+            // Send email with user information
+            await _emailService.SendUserInfo(_mapper.Map<UserModel>(user));
+
+            return user;
+        }
+
+        // Save applicant information
+        private async Task<string> SaveApplicantInformationAsync(User user, ApplicantViewModel vwModel)
+        {
+            // Save applicant personal information
+            var applicationData = await SavePersonalInformationAsync(user.Id, vwModel);
+
+            // Save other related information
+            await SaveOtherInformationAsync(applicationData.Id, vwModel);
+
+            return applicationData.Code;
+        }
+
+        // Save applicant personal information
+        private async Task<ApplicantsPersonalInformationModel> SavePersonalInformationAsync(int userId, ApplicantViewModel vwModel)
+        {
+            // Prepare personal information data
+            var applicationData = new ApplicantsPersonalInformationModel
+            {
+                UserId = userId,
+                Code = $"{DateTime.Now.ToString("MMddyyyy")}-{userId}"
+            };
+
+            // Save personal information data
+            return _mapper.Map<ApplicantsPersonalInformationModel>(await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId));
+        }
+
+        // Save other related information (e.g., barrowers, collateral, spouse, etc.)
+        private async Task SaveOtherInformationAsync(int personalInformationId, ApplicantViewModel vwModel)
+        {
+            // Save barrowers information if available
+            if (vwModel.BarrowersInformationModel != null)
+            {
+                vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = personalInformationId;
+                await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
+            }
+
+            // Save collateral information if available
+            if (vwModel.CollateralInformationModel != null)
+            {
+                vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = personalInformationId;
+                await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
+            }
+
+            // Save spouse information if available
+            if (vwModel.SpouseModel != null)
+            {
+                vwModel.SpouseModel.ApplicantsPersonalInformationId = personalInformationId;
+                await _spouseRepo.SaveAsync(vwModel.SpouseModel);
+            }
+
+            // Save form2 information if available
+            if (vwModel.Form2PageModel != null)
+            {
+                vwModel.Form2PageModel.ApplicantsPersonalInformationId = personalInformationId;
+                await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
+            }
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> SaveHLF069(ApplicantViewModel vwModel)

@@ -323,7 +323,7 @@ $(async function () {
                 }
             },
             {
-                data: "InMaintainance",
+                data: "InMaintenance",
                 class: "text-center",
                 render: function (data, type, row) {
                     return data ? `<span class="fe-check"><label hidden>true</label></span>` : `<span class="fe-x"><label hidden>true</label></span>`;

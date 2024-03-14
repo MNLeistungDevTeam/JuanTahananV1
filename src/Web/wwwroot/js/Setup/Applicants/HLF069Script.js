@@ -231,7 +231,7 @@ $(function () {
         try {
             await $.ajax({
                 type: 'POST',
-                url: '/Applicants/SaveHLF069',
+                url: '/Applicants/SaveHLF068',
                 data: combinedData,
                 beforeSend: function () {
                     loading("Saving Changes...");
@@ -281,17 +281,18 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-                // $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
-                ///purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
+                $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
+                purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
 
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
+                $(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
+                $(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
+                $(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
+                $(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
+                $(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
+
+                modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
 
                 //CollateralInformationModel.Province
                 //CollateralInformationModel.Municipality
@@ -320,9 +321,10 @@ $(function () {
 
     function loadSpouseInformation(id) {
         $.ajax({
-            url: baseUrl + "Applicants/GetSpouseData/" + id,
+            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
             method: 'Get',
-            success: function () {
+            success: function (response) {
+
             },
             error: function () {
             }
@@ -331,7 +333,7 @@ $(function () {
 
     function loadBorrowerInformation(applicantId) {
         $.ajax({
-            url: baseUrl + "Applicants/GetBorrowerData/" + applicantId,
+            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
             method: 'Get',
             success: function () {
             },
@@ -342,7 +344,7 @@ $(function () {
 
     function loadForm2PageInformation(applicantId) {
         $.ajax({
-            url: baseUrl + "Applicants/GetForm2Data/" + applicantId,
+            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
             method: 'Get',
             success: function () {
             },
@@ -353,7 +355,7 @@ $(function () {
 
     function loadCollateralInformation(applicantId) {
         $.ajax({
-            url: baseUrl + "Applicants/GetCollateralData/" + applicantId,
+            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
             method: 'Get',
             success: function () {
             },

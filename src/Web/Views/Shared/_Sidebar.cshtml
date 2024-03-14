@@ -11,15 +11,10 @@
 @{
     int userId = int.Parse(User.Identity.Name);
 
-
     var modules = await _roleRepo.GetByUserId(userId);
     var moduleGroups = modules.Where(m => m.CanRead && m.ModuleTypeIsVisible && !m.ModuleTypeIsDisabled).OrderBy(m => m.ModuleTypeOrder).Select(m => new { m.ModuleType, m.ModuleTypeIcon, m.ModuleTypeController, m.ModuleTypeAction }).Distinct();
     var parentModules = modules.Where(m => m.CanRead && m.IsVisible && !m.IsDisabled && m.ParentModuleId == 0).OrderBy(m => m.ModuleOrdinal).Distinct();
     var subModules = modules.Where(m => m.CanRead && m.IsVisible && !m.IsDisabled && m.ParentModuleId != 0).OrderBy(m => m.ModuleOrdinal).Distinct();
-
-
-
-
 }
 
 @if (User.Identity.IsAuthenticated)
@@ -81,7 +76,7 @@
                     {
                         <li class="side-nav-item">
                             <a asp-controller="@moduleGroup.ModuleTypeController" asp-action="@moduleGroup.ModuleTypeAction" class="side-nav-link">
-                                @Html.Raw(moduleGroup.ModuleTypeIcon)
+                                <i class="@moduleGroup.ModuleTypeIcon"></i>
                                 <span> @moduleGroup.ModuleType </span>
                             </a>
                         </li>
@@ -96,7 +91,7 @@
 
                                 <li class="side-nav-item">
                                     <a href="#sidebar@(parentModule.ModuleId)" data-bs-toggle="collapse" aria-expanded="false" class="side-nav-link">
-                                        @Html.Raw(parentModule.ModuleIcon)
+                                        <i class="@parentModule.ModuleIcon"></i>
                                         <span>@parentModule.ModuleName</span>
                                         <span class="menu-arrow"></span>
                                     </a>
@@ -119,7 +114,7 @@
                             {
                                 <li class="side-nav-item">
                                     <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
-                                        @Html.Raw(parentModule.ModuleIcon)
+                                        <i class="@parentModule.ModuleIcon"></i>
                                         <span> @parentModule.ModuleName </span>
                                     </a>
                                 </li>
@@ -141,10 +136,4 @@
         </div>
         <!-- End Sidebar -->
     </div>
-
-
-
 }
-
-
-

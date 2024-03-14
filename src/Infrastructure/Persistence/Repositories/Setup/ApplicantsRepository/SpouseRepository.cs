@@ -3,7 +3,6 @@ using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Entities;
-using DMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
@@ -34,7 +33,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<Spouse?> GetByApplicationInfoIdAsync(int id) =>
      await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);
-        
+
         public async Task<SpouseModel?> GetByApplicantIdAsync(int applicantId) =>
             await _db.LoadSingleAsync<SpouseModel, dynamic>("spSpouse_GetByApplicantId", new { applicantId });
 
