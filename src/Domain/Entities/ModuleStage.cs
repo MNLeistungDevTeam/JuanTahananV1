@@ -27,8 +27,6 @@ public partial class ModuleStage
 
     public int RequiredCount { get; set; }
 
-    public decimal RequiredAmount { get; set; }
-
     public int? ApproverId { get; set; }
 
     public bool IsDisabled { get; set; }

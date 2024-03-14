@@ -542,7 +542,6 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.RejectDesc)
                 .IsRequired()
                 .HasMaxLength(50);
-            entity.Property(e => e.RequiredAmount).HasColumnType("decimal(18, 5)");
             entity.Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -550,7 +549,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStageApprover>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC071FA1D85F");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07C1F9F105");
 
             entity.ToTable("ModuleStageApprover");
 

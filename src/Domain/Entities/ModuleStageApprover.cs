@@ -11,9 +11,9 @@ public partial class ModuleStageApprover
 
     public int ModuleStageId { get; set; }
 
-    public int ApproverId { get; set; }
+    public int? ApproverId { get; set; }
 
-    public int Level { get; set; }
+    public int? RoleId { get; set; }
 
     public bool IsDisabled { get; set; }
 
