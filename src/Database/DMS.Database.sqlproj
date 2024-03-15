@@ -99,6 +99,7 @@
     <Folder Include="Tables\Additional Features" />
     <Folder Include="Tables\Additional Features\Notification" />
     <Folder Include="Stored Procedures\Setup\Notification" />
+    <Folder Include="Tables\Setup\Approval" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -187,6 +188,10 @@
     <Build Include="Stored Procedures\Setup\Notification\spNotification_GetById.sql" />
     <Build Include="Stored Procedures\Setup\Notification\spNotification_GetByUserId.sql" />
     <Build Include="Stored Procedures\Setup\Notification\spNotification_CountUnread.sql" />
+    <Build Include="Tables\Setup\Approval\ApprovalStatus.sql" />
+    <Build Include="Tables\Setup\Approval\ApprovalLevel.sql" />
+    <Build Include="Tables\Setup\Approval\ApprovalLog.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
