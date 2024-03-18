@@ -3,10 +3,6 @@
     var items = (List<ApplicantViewModel>)ViewBag.items;
 }
 
-
-
-
-
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -22,73 +18,68 @@
     </div>
 </div>
 <!-- end page title -->
-
- 
-
-    <!-- Info Cards -->
-    <div class="row">
-        <div class="col-md-6 col-xl-3">
-            <div class="widget-rounded-circle card bg-primary shadow">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <h2 class="text-white mt-2" id="info_for_approval"><span data-plugin="counterup">0</span></h2>
-                            <p class="text-white mb-0 text-truncate">Pending Review</p>
+<!-- Info Cards -->
+<div class="row">
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-primary shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_for_approval"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Pending Review</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-layers font-24 avatar-title text-white"></i>
                         </div>
-                        <div class="col-6">
-                            <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
-                                <i class="fe-layers font-24 avatar-title text-white"></i>
-                            </div>
+                    </div>
+                </div> <!-- end row-->
+
+                <a href="#" id="dash_link_for_approval" data-val="" class="stretched-link"></a>
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-success shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_approved"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Approved</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-up font-24 avatar-title text-white"></i>
                         </div>
-                    </div> <!-- end row-->
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_approved" data-val="2" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
 
-                    <a href="#" id="dash_link_for_approval" data-val="" class="stretched-link"></a>
-                </div>
-            </div> <!-- end widget-rounded-circle-->
-        </div> <!-- end col-->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="widget-rounded-circle card bg-success shadow zoom">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <h2 class="text-white mt-2" id="info_total_approved"><span data-plugin="counterup">0</span></h2>
-                            <p class="text-white mb-0 text-truncate">Approved</p>
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-danger shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_disapproved"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Disapproved</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-down font-24 avatar-title text-white"></i>
                         </div>
-                        <div class="col-6">
-                            <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
-                                <i class="fe-thumbs-up font-24 avatar-title text-white"></i>
-                            </div>
-                        </div>
-                    </div> <!-- end row-->
-                </div>
-                <a href="#" id="dash_link_approved" data-val="2" class="stretched-link"></a>
-            </div> <!-- end widget-rounded-circle-->
-        </div> <!-- end col-->
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_disapproved" data-val="3" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
 
 
-
-        <div class="col-md-6 col-xl-3">
-            <div class="widget-rounded-circle card bg-danger shadow zoom">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <h2 class="text-white mt-2" id="info_total_disapproved"><span data-plugin="counterup">0</span></h2>
-                            <p class="text-white mb-0 text-truncate">Disapproved</p>
-                        </div>
-                        <div class="col-6">
-                            <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
-                                <i class="fe-thumbs-down font-24 avatar-title text-white"></i>
-                            </div>
-                        </div>
-                    </div> <!-- end row-->
-                </div>
-                <a href="#" id="dash_link_disapproved" data-val="3" class="stretched-link"></a>
-            </div> <!-- end widget-rounded-circle-->
-        </div> <!-- end col-->
-    </div>
-
- 
 <div class="card card-outline rounded-4">
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
 
