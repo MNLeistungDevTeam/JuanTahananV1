@@ -1,5 +1,7 @@
 ﻿"use strict"
 $(function () {
+    loadApplicantTotalInfo
+
     var tbl_applicants = $("#tbl_applicants").DataTable({
         ajax: {
             url: '/Applicants/GetApplicants',
@@ -60,6 +62,8 @@ $(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
+
+            loadApplicantTotalInfo();
         },
         language: {
             "zeroRecords": "No Records Found....",
@@ -113,9 +117,32 @@ $(function () {
 
     $("#btn_view").on('click', function () {
         location.href = $(this).attr("data-url");
-
     });
     $("#btn_refresh").on('click', function () {
         tbl_applicants.ajax.reload();
     });
+
+    function loadApplicantTotalInfo() {
+        let info_total_approved = $("#info_total_approved");
+        let info_total_disapproved = $("#info_total_disapproved");
+        let info_for_approval = $("#info_for_approval");
+        let info_total_returned = $("#info_total_returned");
+        let loading_text = "<span class='spinner-border spinner-border-sm'></span>";
+
+        $.ajax({
+            url: "/Applicants/GetApprovalTotalInfo",
+            beforeSend: function () {
+                info_total_approved.html(loading_text);
+                info_total_disapproved.html(loading_text);
+                info_for_approval.html(loading_text);
+            },
+            success: function (response) {
+                info_for_approval.html(`<span data-plugin="counterup">${response[0].TotalPendingReview}</span>`);
+                info_total_approved.html(`<span data-plugin="counterup">${response[0].TotalApprove}</span>`);
+                info_total_disapproved.html(`<span data-plugin="counterup">${response[0].TotalDisApprove}</span>`);
+
+                $("[data-plugin='counterup']").counterUp();
+            }
+        });
+    }
 });

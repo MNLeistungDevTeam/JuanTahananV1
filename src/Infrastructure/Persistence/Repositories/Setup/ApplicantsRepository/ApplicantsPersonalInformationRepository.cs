@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using DMS.Domain.Dto.ApprovalStatusDto;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -47,6 +48,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync() =>
           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAll", new { });
+
+        public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo() =>
+           await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { });
+
 
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {

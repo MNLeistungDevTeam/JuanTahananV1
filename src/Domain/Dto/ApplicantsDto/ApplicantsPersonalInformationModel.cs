@@ -35,6 +35,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? DeletedById { get; set; }
         public int? CompanyId { get; set; }
+        public int? ApprovalStatus { get; set; }
+   
 
         #region Display Properties
 
