@@ -1,5 +1,6 @@
 ﻿using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,9 @@ namespace DMS.Application.Interfaces.Setup.ApprovalStatusRepo
         Task<ApprovalStatus> CreateAsync(ApprovalStatus approvalStatus);
         Task<ApprovalStatus> SaveAsync(ApprovalStatusModel model);
         Task<ApprovalStatus> UpdateAsync(ApprovalStatus approvalStatus);
+        Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, ApprovalStatusType? status = ApprovalStatusType.PendingReview);
+        Task<IEnumerable<ApprovalStatusModel?>> GetByReferenceAsync(int referenceId, string referenceType, int companyId);
+        Task<ApprovalStatusModel?> GetAsync(int id);
+        Task<ApprovalStatusModel?> GetByReferenceModuleCodeAsync(int referenceId, string moduleCode, int companyId);
     }
 }

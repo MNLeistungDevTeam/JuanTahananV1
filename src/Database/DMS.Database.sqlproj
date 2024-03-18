@@ -100,6 +100,8 @@
     <Folder Include="Tables\Additional Features\Notification" />
     <Folder Include="Stored Procedures\Setup\Notification" />
     <Folder Include="Tables\Setup\Approval" />
+    <Folder Include="Stored Procedures\Setup\Approval" />
+    <Folder Include="Stored Procedures\View" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -192,6 +194,11 @@
     <Build Include="Tables\Setup\Approval\ApprovalLevel.sql" />
     <Build Include="Tables\Setup\Approval\ApprovalLog.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalInfo.sql" />
+    <Build Include="Stored Procedures\Setup\Module\spModuleStageApprover_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetByReference.sql" />
+    <Build Include="Stored Procedures\View\vwTransactions.sql" />
+    <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetById.sql" />
+    <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetByReferenceModuleCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

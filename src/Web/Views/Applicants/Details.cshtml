@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Applicant Details";
 
-    int approverId = 1;
+
 }
 
 <!-- start page title -->
@@ -30,17 +30,19 @@
                     <div class="col-md-6">
                         <h3 class="fw-bold font-28">
                             @Model.ApplicantsPersonalInformationModel.Code <span class="badge bg-warning ms-auto fs-7">Pending Review</span>
+                            <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
+                            <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                         </h3>
                     </div>
                     <div class="col-md-6 text-md-end">
-                        @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1 && approverId == 1)
+                        @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1)
                         {
 
-                            <button type="button" class="btn btn-primary rounded-end" id="btn_approve">
+                            <button type="button" class="btn btn-primary rounded-end" id="btnApprove">
                                 Approve <i class="fe-check-circle"></i>
                             </button>
 
-                            <button type="button" class="btn btn-primary rounded-end" id="btn_defer">
+                            <button type="button" class="btn btn-primary rounded-end" id="btnDefer">
                                 Defer <i class="fe-x-circle"></i>
                             </button>
 
@@ -51,7 +53,7 @@
                             <button type="button" class="btn btn-link text-decoration-none">
                                 Review application <i class="mdi mdi-arrow-right"></i>
                             </button>
-                        
+
                         }
                     </div>
                 </div>
@@ -255,6 +257,48 @@
 
 
 
+<div id="approver-modal" class="modal fade" ttabindex="-1" role="dialog" aria-labelledby="approver-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay" id="approver-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="approver-modalLabel"><span class="mdi mdi-plus"></span> Add Vendor</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveApprovalLevel" asp-controller="Approval" asp-antiforgery="true" method="post" role="form" id="frm_approver_level">
+                <div class="modal-body">
+                    <input asp-for="ApprovalLevel.Id" type="hidden" />
+                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="" />
+                    <input asp-for="ApprovalLevel.Status" type="hidden" />
+
+
+                    <div class="mb-2">
+                        <label asp-for="ApprovalLevel.TransactionNo"></label>
+                        <input asp-for="ApprovalLevel.TransactionNo" class="form-control" placeholder="Transaction No." readonly />
+                        <span asp-validation-for="ApprovalLevel.TransactionNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2" id="action-container">
+                        <label asp-for="ApprovalLevel.Remarks"></label>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                        <span asp-validation-for="ApprovalLevel.Remarks" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="btn_close">Close</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary"><span class="fas fa-thumbs-up"></span> Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 @section Scripts {
+    @*     @await Html.PartialAsync("_ApproverModal", Model.ApprovalLevel) *@
+    <script src="~/js/Setup/Applicants/ApplicantDetailScripts.js" asp-append-version="true"></script>
 
 }

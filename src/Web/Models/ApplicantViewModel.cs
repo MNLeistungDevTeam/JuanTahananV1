@@ -3,6 +3,7 @@ using DMS.Domain.Dto.DocumentDto;
 using System.Collections.Generic;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Domain.Entities;
+using DMS.Domain.Dto.ApprovalLevelDto;
 
 namespace DMS.Web.Models
 {
@@ -15,5 +16,6 @@ namespace DMS.Web.Models
         public SpouseModel? SpouseModel { get; set; } = new();
         public List<ApplicationSubmittedDocumentModel> ApplicationSubmittedDocumentModels { get; set; } = new();
         public Form2PageModel  Form2PageModel { get; set; } = new();
+        public ApprovalLevelModel? ApprovalLevel { get; set; }
     }
 }

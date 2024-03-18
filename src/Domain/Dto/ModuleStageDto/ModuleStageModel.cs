@@ -40,5 +40,6 @@ namespace DMS.Domain.Dto.ModuleStageDto
 
         public int RoleId { get; set; }
         public int ApproverType { get; set; }
+        public int ModuleStageApproverId { get; set; }
     }
 }

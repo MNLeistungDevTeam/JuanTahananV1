@@ -40,45 +40,47 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
         public async Task<List<ModuleStageApprover>> GetAll() =>
             await _contextHelper.GetAllAsync();
 
+        public async Task<IEnumerable<ModuleStageApproverModel>> GetAllAsync() =>
+
+             await _db.LoadDataAsync<ModuleStageApproverModel, dynamic>("spModuleStageApprover_GetAll", new { });
+
         public async Task<List<ModuleStageApprover>> GetByModuleStageId(int moduleStageId) =>
             await _context.ModuleStageApprovers.Where(m => m.ModuleStageId == moduleStageId).ToListAsync();
 
-        public async Task<ModuleStageApprover> SaveAsync(ModuleStageApproverModel moduleStageApprover, int userId)
+        public async Task<ModuleStageApprover> SaveAsync(ModuleStageApproverModel model, int userId)
         {
-            var _moduleStageApprover = new ModuleStageApprover();
+            var _moduleStageApprover = _mapper.Map<ModuleStageApprover>(model);
 
-            if (moduleStageApprover.Id == 0)
+            if (_moduleStageApprover.Id == 0)
             {
-                _moduleStageApprover = await CreateAsync(moduleStageApprover, userId);
+                _moduleStageApprover = await CreateAsync(_moduleStageApprover, userId);
             }
             else
             {
-                _moduleStageApprover = await UpdateAsync(moduleStageApprover, userId);
+                _moduleStageApprover = await UpdateAsync(_moduleStageApprover, userId);
             }
 
             return _moduleStageApprover;
         }
 
-        public async Task<ModuleStageApprover> CreateAsync(ModuleStageApproverModel moduleStageApprover, int userId)
+        public async Task<ModuleStageApprover> CreateAsync(ModuleStageApprover moduleStageApprover, int userId)
         {
             moduleStageApprover.CreatedById = userId;
-            moduleStageApprover.DateCreated = DateTime.UtcNow;
+            moduleStageApprover.DateCreated = DateTime.Now;
 
-            var _moduleStageApprover = _mapper.Map<ModuleStageApprover>(moduleStageApprover);
-            _moduleStageApprover = await _contextHelper.CreateAsync(_moduleStageApprover);
+            moduleStageApprover = await _contextHelper.CreateAsync(moduleStageApprover,"ModifiedById","DateModified");
 
-            return _moduleStageApprover;
+            return moduleStageApprover;
         }
 
-        public async Task<ModuleStageApprover> UpdateAsync(ModuleStageApproverModel moduleStageApprover, int userId)
+        public async Task<ModuleStageApprover> UpdateAsync(ModuleStageApprover moduleStageApprover, int userId)
         {
             moduleStageApprover.ModifiedById = userId;
-            moduleStageApprover.DateModified = DateTime.UtcNow;
+            moduleStageApprover.DateModified = DateTime.Now;
 
-            var _moduleStageApprover = _mapper.Map<ModuleStageApprover>(moduleStageApprover);
-            _moduleStageApprover = await _contextHelper.CreateAsync(_moduleStageApprover);
+            moduleStageApprover = await _contextHelper.UpdateAsync(moduleStageApprover,"CreatedById","DateCreated");
 
-            return _moduleStageApprover;
+            return moduleStageApprover;
         }
 
         public async Task BatchDeleteAsync(int[] ids)
@@ -95,19 +97,18 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
         public async Task SaveModuleStageApprover(int moduleId, List<ModuleStageModel> model, int userId)
         {
             var module = await _moduleRepo.GetByIdAsync(moduleId);
-            int count = 0; // Initialize counter variable
-
+            int count = 1; // Initialize counter variable
+            var stagesToCompare = new List<ModuleStage>();
             if (model is not null && model.Any())
             {
                 foreach (var item in model)
                 {
-                    count++;
-
                     //Role
                     if (item.ApproverType == 1)
                     {
                         var modulestageModel = new ModuleStageModel()
                         {
+                            Id = item.Id,
                             ModuleId = moduleId,
                             Name = module.Description,
                             Title = item.Title,
@@ -122,17 +123,22 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
 
                         ModuleStageApproverModel stageApprover = new()
                         {
+                            Id = item.ModuleStageApproverId,
                             ModuleStageId = modulestage.Id,
                             RoleId = item.ApproverId
                         };
 
                         await SaveAsync(stageApprover, userId);
+
+                        stagesToCompare.Add(modulestage);
                     }
                     //User
                     else
                     {
                         var modulestageModel = new ModuleStageModel()
                         {
+                            Id = item.Id,
+                            ModuleId = moduleId,
                             Name = module.Description,
                             Title = item.Title,
                             Level = count,
@@ -146,12 +152,41 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
 
                         ModuleStageApproverModel stageApprover = new()
                         {
+                            Id = item.ModuleStageApproverId,
                             ModuleStageId = modulestage.Id,
                             ApproverId = item.ApproverId
                         };
 
+                        stagesToCompare.Add(modulestage);
+
                         await SaveAsync(stageApprover, userId);
                     }
+
+                    count++;
+                }
+
+                // clean up for unused stages
+                var moduleStagesIds = stagesToCompare.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+
+                if (moduleStagesIds.Any())
+                {
+                    var toDelete = await _context.ModuleStages
+                        .Where(m => m.ModuleId == module.Id && !moduleStagesIds.Contains(m.Id))
+                        .Select(m => m.Id)
+                        .ToArrayAsync();
+
+                    await _moduleStageRepo.BatchDeleteAsync(toDelete);
+                    // Assuming GetAll() returns IEnumerable or IQueryable
+                    var approverData = await GetAllAsync();
+
+                    // Extract ModuleStageIds into an array of integers
+                    var approverToDeleteIds = approverData
+                        .Where(approver => toDelete.Contains(approver.ModuleStageId))
+                        .Select(approver => approver.ModuleStageId)
+                        .ToArray();
+
+                    // Perform batch deletion
+                    await BatchDeleteAsync(approverToDeleteIds);
                 }
             }
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLogRepo
 {
-    public class ApprovalLogRepository :IApprovalLogRepository
+    public class ApprovalLogRepository : IApprovalLogRepository
     {
         private readonly DMSDBContext _context;
         private readonly EfCoreHelper<ApprovalLog> _contextHelper;
@@ -27,29 +27,34 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLogRepo
 
         #region Operation
 
-        public async Task<ApprovalLog> SaveAsync(ApprovalLogModel model)
+        public async Task<ApprovalLog> SaveAsync(ApprovalLogModel model, int userId)
         {
             var approverLog = _mapper.Map<ApprovalLog>(model);
             if (approverLog.Id == 0)
             {
-                approverLog = await CreateAsync(approverLog);
+                approverLog = await CreateAsync(approverLog,userId);
             }
             else
             {
-                approverLog = await UpdateAsync(approverLog);
+                approverLog = await UpdateAsync(approverLog,userId);
             }
             return approverLog;
         }
 
-        public async Task<ApprovalLog> CreateAsync(ApprovalLog approverLog)
+        public async Task<ApprovalLog> CreateAsync(ApprovalLog approverLog, int userId)
         {
-            var result = await _contextHelper.CreateAsync(approverLog);
+            approverLog.DateCreated = DateTime.Now;
+            approverLog.CreatedById = userId;
+            var result = await _contextHelper.CreateAsync(approverLog,"DateModified","ModifiedById");
             return result;
         }
 
-        public async Task<ApprovalLog> UpdateAsync(ApprovalLog approverLog)
+        public async Task<ApprovalLog> UpdateAsync(ApprovalLog approverLog, int userId)
         {
-            var result = await _contextHelper.UpdateAsync(approverLog);
+            approverLog.DateModified = DateTime.Now;
+            approverLog.ModifiedById = userId;
+
+            var result = await _contextHelper.UpdateAsync(approverLog,"DateCreated","CreatedById");
             return result;
         }
 
@@ -78,5 +83,4 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLogRepo
 
         #endregion Operation
     }
-
 }

@@ -228,6 +228,8 @@
 
         let rowToAdd = `<tr class="stage_row">
                             <td hidden="">
+
+                                <input id="ModuleStages_ModuleStageApproverId_[${count}]" type="number" data-val="true" data-val-required="The ModuleStageApproverId field is required." name="ModuleStages[${count}].ModuleStageApproverId" value="${stagesObj.ModuleStageApproverId || "0"}">
                                 <input id="ModuleStages_Id_[${count}]" type="number" data-val="true" data-val-required="The Id field is required." name="ModuleStages[${count}].Id" value="${stagesObj.Id || "0"}">
                                 <input id="ModuleStages_Level_[${count}]" type="number" data-val="true" data-val-required="The Level field is required." name="ModuleStages[${count}].Level" value="${stagesObj.Level || "0"}">
                                 <input id="ModuleStages_ModuleId_[${count}]" type="number" data-val="true" data-val-required="The ModuleId field is required." name="ModuleStages[${count}].ModuleId" value="${stagesObj.ModuleId || "0"}">
@@ -316,9 +318,6 @@
         var approverTypeValue = stagesObj.RoleId !== null || stagesObj.ApproverId === 0 ? 1 : 2;
         approverTypeDropdown.setValue(approverTypeValue);
 
-
-
-
         $(`[id="ModuleStages_ApproverType_[${count}]"]`).on('change', function () {
             var selectedApproverType = $(this).val();
             console.log("Selected Approver Type:", selectedApproverType);
@@ -335,7 +334,7 @@
                 load: function (query, callback) {
                     var url = selectedApproverType == 1 ? baseUrl + "Role/GetAllRoles" : baseUrl + "User/GetUsers";
                     $.ajax({
-                        url: url,   
+                        url: url,
                         success: function (results) {
                             try {
                                 callback(results);
@@ -372,8 +371,6 @@
 
             approverIdDropdown = $approverIdDropdown[0].selectize;
         });
-
-
 
         var $approverIdDropdown = $(`[id="ModuleStages_ApproverId_[${count}]"]`).selectize({
             valueField: 'Id',
@@ -419,17 +416,5 @@
         });
 
         var approverIdDropdown = $approverIdDropdown[0].selectize;
-
-
-
-
-
-
-
-
-
-
-
-
     }
 });

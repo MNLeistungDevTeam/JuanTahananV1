@@ -26,5 +26,7 @@ namespace DMS.Domain.Dto.ApprovalLevelDto
         public DateTime DateUpdated { get; set; }
 
         public int? ModuleStageId { get; set; }
+
+        public string? TransactionNo { get; set; }
     }
 }

@@ -8,6 +8,7 @@ BEGIN
     m.[Code] AS ModuleCode,
     msa.RoleId,
     msa.ApproverId,
+    msa.Id AS ModuleStageApproverId,
     CASE 
         WHEN msa.RoleId = 0 OR msa.RoleId IS NULL THEN CONCAT(u.FirstName, ' ', ISNULL(u.MiddleName, ''), ' ', u.LastName)
         ELSE r.[Name]

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
-using DMS.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 using DMS.Domain.Dto.ApprovalStatusDto;
+using DMS.Domain.Entities;
+using DMS.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 {
@@ -18,14 +18,26 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
+        private readonly IApprovalService _approvalService;
+        private readonly IModuleRepository _moduleRepo;
+        private readonly IApprovalStatusRepository _approvalStatusRepo;
 
-        public ApplicantsPersonalInformationRepository(DMSDBContext context, ICurrentUserService currentUserService, IMapper mapper, ISQLDatabaseService db)
+        public ApplicantsPersonalInformationRepository(DMSDBContext context,
+            ICurrentUserService currentUserService,
+            IMapper mapper,
+            ISQLDatabaseService db,
+            IApprovalService approvalService,
+            IModuleRepository moduleRepo,
+            IApprovalStatusRepository approvalStatusRepo)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<ApplicantsPersonalInformation>(context);
             _currentUserService = currentUserService;
             _mapper = mapper;
             _db = db;
+            _approvalService = approvalService;
+            _moduleRepo = moduleRepo;
+            _approvalStatusRepo = approvalStatusRepo;
         }
 
         public async Task<ApplicantsPersonalInformation?> GetByIdAsync(int id) =>
@@ -52,15 +64,33 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo() =>
            await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { });
 
-
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
+            var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
+            _applicantPersonalInfo.ApprovalStatus = 1;
+
             if (model.Id == 0)
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
+
+            // Create Initial Approval Status
+            if (moduleStage is not null && moduleStage.WithApprover)
+            {
+                // Create Initial Approval Status
+                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+            }
             else
                 _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+            var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
+            if (approvalStatus == null)
+            {
+                if (moduleStage is not null && moduleStage.WithApprover)
+                {
+                    // Create Initial Approval Status
+                    await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+                }
+            }
             return _applicantPersonalInfo;
         }
 
@@ -86,7 +116,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             var entity = await _contextHelper.GetByIdAsync(id);
             if (entity != null)
             {
-                entity.DateDeleted = DateTime.UtcNow;
+                entity.DateDeleted = DateTime.Now;
                 entity.DeletedById = _currentUserService.GetCurrentUserId();
                 if (entity is not null)
                     await _contextHelper.UpdateAsync(entity);

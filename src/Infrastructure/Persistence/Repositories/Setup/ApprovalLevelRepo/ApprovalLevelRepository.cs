@@ -2,6 +2,7 @@
 using DMS.Application.Interfaces.Setup.ApprovalLevelRepo;
 using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,24 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo
             _contextHelper = new EfCoreHelper<ApprovalLevel>(context);
             _mapper = mapper;
         }
+
+
+
+        public async Task<List<ApprovalLevel>> GetByApprovalStatusIdAsync(int approvalStatusId)
+        {
+            try
+            {
+                var result = await _context.ApprovalLevels.Where(x => x.ApprovalStatusId == approvalStatusId)
+                    .ToListAsync();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         #region Operation
 

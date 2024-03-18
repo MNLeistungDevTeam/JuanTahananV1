@@ -45,6 +45,8 @@ namespace Template.Web.Controllers.Transaction
         private readonly IModeOfPaymentRepository _modeOfPaymentRepo;
         private readonly IPropertyTypeRepository _propertyTypeRepo;
         private readonly INotificationService _notificationService;
+        private readonly IApprovalService _approvalService;
+
 
         private DMSDBContext _context;
 
@@ -65,7 +67,8 @@ namespace Template.Web.Controllers.Transaction
             IPurposeOfLoanRepository purposeOfLoanRepo,
             IModeOfPaymentRepository modeOfPaymentRepo,
             IPropertyTypeRepository propertyTypeRepo,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IApprovalService approvalService)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -85,6 +88,7 @@ namespace Template.Web.Controllers.Transaction
             _modeOfPaymentRepo = modeOfPaymentRepo;
             _propertyTypeRepo = propertyTypeRepo;
             _notificationService = notificationService;
+            _approvalService = approvalService;
         }
 
         #region View
@@ -673,8 +677,15 @@ namespace Template.Web.Controllers.Transaction
 
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
+                    applicationData.ApprovalStatus = 1;
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+                      var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+
+
+              
+
+
+
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -718,6 +729,7 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
+                    applicationData.ApprovalStatus = 1;
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;

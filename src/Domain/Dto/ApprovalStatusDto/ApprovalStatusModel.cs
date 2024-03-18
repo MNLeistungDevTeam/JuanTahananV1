@@ -31,5 +31,10 @@ namespace DMS.Domain.Dto.ApprovalStatusDto
         public int Status { get; set; }
 
         public DateTime LastUpdate { get; set; }
+        public string? StatusDescription { get; set; }
+
+
+        public int ApprovalStatusId { get; set; }   
+
     }
 }
