@@ -69,13 +69,13 @@ $(function () {
 
     //#region Events
 
-    $('.txtSearch').on('input keyup', function () {
+    $('#txtSearch').on('input keyup', function () {
         var value = $(this).val().toLowerCase();
-        $("#div-user-comtainer #div-user-cards .col-xl-3").filter(function () {
+        $("#div-user-container #div-user-cards .col-xl-3").filter(function () {
             var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1)
 
             $(this).toggle(data)
-            const containsSubstring = arr.some((arr) => arr.includes(value));
+            const containsSubstring = data.some((arr) => arr.includes(value));
             // arr variable is declared and the data from ajax get user list is passed in this variable
 
             if (!containsSubstring) {
@@ -85,38 +85,12 @@ $(function () {
                 $("#noSearch").hide();
             }
         });
-        //$("#noSearch").hide();
-        //// Hide all users
-        //$('.users .col-xl-3').hide();
-
-        //$('.users .col-xl-3').each(function () {
-        //    var userName = $(this).find('.card-body h5').text().toLowerCase();
-        //    console.log(userName.includes(searchText))
-        //    if (userName.includes(searchText)) {
-        //        $(this).show();
-
-        //    }
-        //    else {
-        //        $("#noSearch").show();
-        //    }
-        //});
     });
 
-    $("#btn_refresh").on("click", async function () {
+    $("#btnRefresh").on("click", async function () {
         await loadUsers();
     });
-    $(".btn_refresh").on("click", async function () {
-        await loadUsers();
-    });
-
-    //$("#btn_save_user").on("click", function () {
-    //    $("#frm_user").submit();
-    //});
-    $("#btn_add").on("click", async function () {
-        await openUserModal();
-    });
-
-    $(".btn_add").on("click", async function () {
+    $("#btnAdd").on("click", async function () {
         await openUserModal();
     });
 
@@ -200,15 +174,6 @@ $(function () {
         fixElementSequence(".approver_row");
         rebindValidators();
     });
-    //onlineUserCount.on("UpdateOnlineUser", function (count) {
-    //    loadUsers();
-    //    //console.log(count);
-    //});
-    //// Start the connection.
-    //onlineUserCount.start().then(function () {
-    //}).catch(function (err) {
-    //    return console.error(err.toString());
-    //});
 
     $(document).on("change", "[Id^='UserApprover_ApproverId_']", function () {
         //getApproverInputs();
@@ -566,10 +531,10 @@ $(function () {
                                     </ul>
                                     <div class="row mt-3 g-3">
                                         <div class="col-6">
-                                            <a href="javascript:void(0);" class="btn btn-light w-100 js-change-pass" data-id="${item.Id}" data-name="${item.UserName}">Change Password</a>
+                                            <a href="javascript:void(0);" class="btn btn-sm btn-light w-100 js-change-pass" data-id="${item.Id}" data-name="${item.UserName}">Change Password</a>
                                         </div>
                                         <div class="col-6">
-                                            <a href="javascript:void(0);" class="btn btn-light w-100 btn-activity" data-id="${item.Id}" data-name="${item.Name}">View Activity</a>
+                                            <a href="javascript:void(0);" class="btn btn-sm btn-light w-100 btn-activity" data-id="${item.Id}" data-name="${item.Name}">View Activity</a>
                                         </div>
                                     </div>
                                 </div>

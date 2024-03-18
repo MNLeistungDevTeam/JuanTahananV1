@@ -1,18 +1,29 @@
 ﻿@inject IStringLocalizer<SharedResources> localizer
-
 @model RoleViewModel
 
 @{
     ViewData["Title"] = "User Role";
 }
 
-<div class="card card-outline rounded-4">
-    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-        <h3 class="text-dark float-start fw-semibold me-2">User Role
-            <strong class="text-primary">@Model.Role.Description</strong>
-        </h3>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Role" asp-action="Index">Role Management</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"] - <strong class="text-primary">@Model.Role.Description</strong></h4>
+        </div>
     </div>
-    <div class="card-body">
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
         <div class="row gy-2">
             <div class="col-12">
                 <div class="row">
@@ -20,7 +31,7 @@
                         <button id="btn_add_user_role" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
                         <button id="btn_delete_user_role" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Remove from role</button>
                         <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_user_role"><span class="mdi mdi-refresh"></span> Refresh</button>
-                        <a class="btn btn-light btn-sm waves-effect" asp-controller="Role" asp-action="Index">Back to Role Management</a>
+                        @* <a class="btn btn-light btn-sm waves-effect" asp-controller="Role" asp-action="Index">Back to Role Management</a> *@
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="input-group float-end" style="width:250px;">

@@ -1,13 +1,9 @@
 ﻿@model ApplicantViewModel
-
 @{
     ViewData["Title"] = "Applicant Details";
 
-
     int approverId = 1;
 }
-
-
 
 <!-- start page title -->
 <div class="row">
@@ -34,18 +30,9 @@
                     <div class="col-md-6">
                         <h3 class="fw-bold font-28">
                             @Model.ApplicantsPersonalInformationModel.Code <span class="badge bg-warning ms-auto fs-7">Pending Review</span>
-
-
-
                         </h3>
                     </div>
                     <div class="col-md-6 text-md-end">
-
-
-
-
-
-
                         @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1 && approverId == 1)
                         {
 
@@ -62,11 +49,10 @@
                         {
 
                             <button type="button" class="btn btn-link text-decoration-none">
-                                Review this application <i class="mdi mdi-arrow-right"></i>
+                                Review application <i class="mdi mdi-arrow-right"></i>
                             </button>
                         
                         }
-
                     </div>
                 </div>
                 <div class="row">
