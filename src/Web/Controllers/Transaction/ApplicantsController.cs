@@ -95,6 +95,29 @@ namespace Template.Web.Controllers.Transaction
             return View();
         }
 
+        [Route("[controller]/Details/{applicantCode}")]
+        public async Task<IActionResult> Details(string applicantCode)
+        {
+            //check if applicant code not null go to edit form
+
+            var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+
+            var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+            if (applicantinfo == null)
+            {
+                return BadRequest($"{applicantCode}: no record Found!");
+            }
+
+            var viewModel = new ApplicantViewModel()
+            {
+                ApplicantsPersonalInformationModel = applicantinfo,
+                BarrowersInformationModel = barrowerInfo,
+            };
+
+            return View(viewModel);
+        }
+
         //[ModuleServices(ModuleCodes.HLF068, typeof(IModuleRepository))]
 
         //OLD
@@ -306,6 +329,14 @@ namespace Template.Web.Controllers.Transaction
             return Ok(data);
         }
 
+        public async Task<IActionResult> GetApprovalTotalInfo()
+        {
+            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            //int userId = int.Parse(User.Identity.Name);
+
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
+        }
+
         #endregion Get Methods
 
         [HttpPost]
@@ -414,7 +445,6 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.SpouseModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.Form2PageModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
 
-
                     if (vwModel.LoanParticularsInformationModel.Id != 0)
                     {
                         var loan = await _loanParticularsInformationRepo.GetByIdAsync(vwModel.LoanParticularsInformationModel.Id);
@@ -443,7 +473,7 @@ namespace Template.Web.Controllers.Transaction
                     }
 
                     if (vwModel.SpouseModel.Id != 0)
-                    {   
+                    {
                         var spouse = await _spouseRepo.GetByIdAsync(vwModel.SpouseModel.Id);
                         spouse.MergeNonNullData(vwModel.SpouseModel);
                         vwModel.SpouseModel = _mapper.Map<SpouseModel>(spouse);
@@ -605,7 +635,6 @@ namespace Template.Web.Controllers.Transaction
                 var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
                 int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
-
 
                 //create  new beneficiary
 

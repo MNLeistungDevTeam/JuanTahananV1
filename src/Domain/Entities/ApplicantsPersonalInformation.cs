@@ -30,4 +30,6 @@ public partial class ApplicantsPersonalInformation
     public int? DeletedById { get; set; }
 
     public int? CompanyId { get; set; }
+
+    public int? ApprovalStatus { get; set; }
 }

@@ -1,0 +1,274 @@
+﻿@model ApplicantViewModel
+
+@{
+    ViewData["Title"] = "Applicant Details";
+
+
+    int approverId = 1;
+}
+
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="fw-bold font-28">
+                            @Model.ApplicantsPersonalInformationModel.Code <span class="badge bg-warning ms-auto fs-7">Pending Review</span>
+
+
+
+                        </h3>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+
+
+
+
+
+
+                        @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1 && approverId == 1)
+                        {
+
+                            <button type="button" class="btn btn-primary rounded-end" id="btn_approve">
+                                Approve <i class="fe-check-circle"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-primary rounded-end" id="btn_defer">
+                                Defer <i class="fe-x-circle"></i>
+                            </button>
+
+                        }
+                        else
+                        {
+
+                            <button type="button" class="btn btn-link text-decoration-none">
+                                Review this application <i class="mdi mdi-arrow-right"></i>
+                            </button>
+                        
+                        }
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4>Buyer</h4>
+                                            <div class="product">
+                                                <h3 class="fw-bold"> @Model.BarrowersInformationModel.Name</h3>
+                                                <p>@Model.BarrowersInformationModel.MobileNumber</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4>Unit</h4>
+                                            <div class="product">
+                                                <h3 class="fw-bold">
+                                                    @(Model.BarrowersInformationModel.PropertyUnitLevelName ?? "N/A")
+                                                </h3>
+                                                <p>@(Model.BarrowersInformationModel.PropertyLocation ?? "N/A")</p>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4>Developer</h4>
+                                            <div class="product">
+                                                <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-xl-12">
+                                    <h4 class="header-title"></h4>
+                                    <p class="text-muted font-14 mb-3">
+
+                                    </p>
+
+                                    <ul class="nav nav-tabs nav-bordered mb-3" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link active" aria-selected="true" role="tab">
+                                                <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                                                <span class="d-none d-md-block">General Info</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                                <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                                                <span class="d-none d-md-block">Buyer</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                                <i class="mdi mdi-settings-outline d-md-none d-block"></i>
+                                                <span class="d-none d-md-block">Attachments</span>
+                                            </a>
+                                        </li>
+                                        <!-- New tabs -->
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                                <span class="d-none d-md-block">Unit</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#tab5" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                                <span class="d-none d-md-block">BCF</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#tab6" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                                <span class="d-none d-md-block">Status History</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane active show" id="home-b1" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-md-6">
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Last Name:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.LastName</p>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Middle Name:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.MiddleName</p>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">First Name:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.FirstName</p>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Email:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.Email</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Residence:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.PresentBaranggayName @Model.BarrowersInformationModel.PresentMunicipalityName @Model.BarrowersInformationModel.PresentProvinceName</p>
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Birth Date:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.BirthDate</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Marital Status:</label>
+                                                        <div class="col-md-10">
+                                                            <p>@Model.BarrowersInformationModel.MaritalStatus</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Employment Status:</label>
+                                                        <div class="col-md-10">
+                                                            <p></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <label class="col-md-2 text-md-end">Monthly Salary:</label>
+                                                        <div class="col-md-10">
+                                                            <p></p>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="profile-b1" role="tabpanel">
+                                            <p>Content for Profile tab.</p>
+                                        </div>
+                                        <div class="tab-pane" id="settings-b1" role="tabpanel">
+                                            <p>Content for Settings tab.</p>
+                                        </div>
+                                        <!-- New tab content -->
+                                        <div class="tab-pane" id="tab4" role="tabpanel">
+                                            <p>Content for Tab 4.</p>
+                                        </div>
+                                        <div class="tab-pane" id="tab5" role="tabpanel">
+                                            <p>Content for Tab 5.</p>
+                                        </div>
+                                        <div class="tab-pane" id="tab6" role="tabpanel">
+                                            <p>Content for Tab 6.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+}
