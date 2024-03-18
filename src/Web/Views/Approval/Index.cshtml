@@ -148,7 +148,7 @@
                 <h4 class="modal-title" id="module-modalLabel"><span class="mdi mdi-plus"></span> Add Module</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="SaveModuleStage" asp-antiforgery="true" method="post" role="form" id="frm_module" enctype="multipart/form-data">
+            <form asp-action="SaveModuleStageApprover" asp-antiforgery="true" method="post" role="form" id="frm_module" enctype="multipart/form-data">
                 <input type="hidden" asp-for="Module.Id" />
                 <div class="modal-body">
                     <div class="row">
@@ -194,7 +194,7 @@
                 </div>
                 <div class="modal-footer border-top">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_save_modulesta" class="btn btn-primary"><span class="mdi mdi-content-save-outline"></span> Save</button>
+                    <button type="submit" id="btn_save_modulestage" class="btn btn-primary"><span class="mdi mdi-content-save-outline"></span> Save</button>
                 </div>
             </form>
         </div>

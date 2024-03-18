@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.ModuleStageApproverDto;
+using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace DMS.Application.Interfaces.Setup.ModuleStageApproverRepo
         Task<List<ModuleStageApprover>> GetByModuleStageId(int moduleStageId);
 
         Task<ModuleStageApprover> SaveAsync(ModuleStageApproverModel moduleStageApprover, int userId);
-
+        Task SaveModuleStageApprover(int moduleId, List<ModuleStageModel> model, int userId);
         Task<ModuleStageApprover> UpdateAsync(ModuleStageApproverModel moduleStageApprover, int userId);
     }
 }
