@@ -89,5 +89,9 @@ namespace DMS.Domain.Dto.ModuleDto
 
         public string? ModuleType { get; set; }
         public string? ApprovalRouteType { get; set; }
+        public int? ModuleStageCount { get; set; }
+
+
+         
     }
 }
