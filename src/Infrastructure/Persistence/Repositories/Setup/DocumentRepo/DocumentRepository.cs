@@ -51,6 +51,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
         public async Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByCode(string applicantCode) =>
              (await _db.LoadDataAsync<DocumentModel, dynamic>("spDocument_GetApplicantDocumentsByCode", new { applicantCode }));
 
+        public async Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByDocumentType(int documentTypeId, string applicantCode) =>
+             (await _db.LoadDataAsync<DocumentModel, dynamic>("spDocument_GetApplicantDocumentsByDocumentType", new { documentTypeId, applicantCode }));
+
         public async Task<Document> SaveAsync(Document document)
         {
             if (document.Id == 0)

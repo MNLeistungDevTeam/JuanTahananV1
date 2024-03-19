@@ -59,15 +59,20 @@ $(function () {
             documentypeid = rowData.Id;
             tbl_files.ajax.reload();
             $modal.modal('show');
+
         });
     }
 
     if ($tbl_files) {
         tbl_files = $("#tbl_files").DataTable({
             ajax: {
-                url: '/Document/GetApplicantUploadedDocuments/' + applicationinfoCode,
+                url: `/Document/GetApplicantUploadedDocumentByDocumentType/`,
                 method: 'GET',
                 dataSrc: "",
+                data: function (d) {
+                    d.documentTypeId = documentypeid,
+                        d.applicantCode = applicationinfoCode
+                }
             },
             columns: [
                 {
