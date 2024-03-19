@@ -43,6 +43,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ApplicantFullName { get; set; }
         public string? PositionName { get; set; }
         public string? ApplicationStatus { get; set; }
+
+
+        public decimal? IncomeAmount { get; set; }
+        public string? Developer { get; set; }
+        public string? ProjectLocation { get; set; }
+        public string? Unit { get; set; }
+        public decimal? LoanAmount { get; set; }
         
 
         #endregion Display Properties

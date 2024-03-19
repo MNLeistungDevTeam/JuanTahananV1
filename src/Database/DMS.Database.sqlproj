@@ -200,6 +200,7 @@
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetById.sql" />
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetByReferenceModuleCode.sql" />
     <Build Include="Stored Procedures\View\vwModuleStageApprovalStatus.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByDocumentType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -275,5 +275,11 @@ namespace DMS.Web.Controllers.Setup
         [Route("[controller]/GetApplicantUploadedDocuments/{applicantCode?}")]
         public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
          Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
+
+
+
+        //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
+        public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
+        Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId,applicantCode));
     }
 }

@@ -27,4 +27,5 @@ public interface IDocumentRepository
 
     Task<Document> UpdateAsync(Document document);
     Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByCode(string applicantCode);
+    Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByDocumentType(int documentTypeId, string applicantCode);
 }
