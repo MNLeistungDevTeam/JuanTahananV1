@@ -24,7 +24,6 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("First Name")]
         public string? FirstName { get; set; }
 
-        [Required]
         [DisplayName("Middle")]
         public string? MiddleName { get; set; }
 
@@ -33,8 +32,16 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         public string? Gender { get; set; }
 
         [Required]
+        [DisplayName("Age")]
+        public int? Age { get; set; }
+
+        [Required]
         [DisplayName("Birth Date")]
         public DateTime? BirthDate { get; set; }
+
+        [Required]
+        [DisplayName("Birth Place")]
+        public string? BirthPlace { get; set; }
 
         [Required]
         [DisplayName("Email")]
@@ -45,23 +52,19 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         public string? MobileNumber { get; set; }
 
         // Addresses
-        [Required]
+
         [DisplayName("Unit")]
         public string? PresentUnitName { get; set; }
 
-        [Required]
         [DisplayName("Building")]
         public string? PresentBuildingName { get; set; }
 
-        [Required]
         [DisplayName("Lot")]
         public string? PresentLotName { get; set; }
 
-        [Required]
         [DisplayName("Street")]
         public string? PresentStreetName { get; set; }
 
-        [Required]
         [DisplayName("Subdivision")]
         public string? PresentSubdivisionName { get; set; }
 
@@ -73,7 +76,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("Municipality")]
         public string? PresentMunicipalityName { get; set; }
 
-        [Required]
+      
         [DisplayName("Province")]
         public string? PresentProvinceName { get; set; }
 
@@ -81,35 +84,29 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        [Required]
         [DisplayName("Unit")]
         public string? PermanentUnitName { get; set; }
 
-        [Required]
         [DisplayName("Building")]
         public string? PermanentBuildingName { get; set; }
 
-        [Required]
         [DisplayName("Lot")]
         public string? PermanentLotName { get; set; }
 
-        [Required]
         [DisplayName("Street")]
         public string? PermanentStreetName { get; set; }
 
-        [Required]
         [DisplayName("Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
 
         [Required]
-        [DisplayName("Baranggay")]
+        [DisplayName("Barangay")]
         public string? PermanentBaranggayName { get; set; }
 
         [Required]
         [DisplayName("Municipality")]
         public string? PermanentMunicipalityName { get; set; }
-
-        [Required]
+ 
         [DisplayName("Province")]
         public string? PermanentProvinceName { get; set; }
 
@@ -117,19 +114,14 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("Zip Code")]
         public string? PermanentZipCode { get; set; }
 
-        [Required]
         [DisplayName("Property Developer ")]
         public string? PropertyDeveloperName { get; set; }
 
-        [Required]
         [DisplayName("Property Location")]
         public string? PropertyLocation { get; set; }
 
-        [Required]
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; }
-
-
 
         #endregion Barrowers
     }

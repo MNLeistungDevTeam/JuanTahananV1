@@ -78,7 +78,7 @@ namespace DMS.Infrastructure.Services
             barrowerModel.MobileNumber = model.MobileNumber;
             barrowerModel.BirthDate = model.BirthDate;
             barrowerModel.MobileNumber = model.MobileNumber;
-            barrowerModel.Sex = model.Gender;
+            barrowerModel.Sex = model.Gender; 
             barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
 
             barrowerModel.PresentUnitName = model.PresentUnitName;

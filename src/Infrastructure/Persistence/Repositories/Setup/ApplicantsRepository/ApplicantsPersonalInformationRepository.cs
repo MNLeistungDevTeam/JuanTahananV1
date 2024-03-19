@@ -65,20 +65,20 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
-            var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
             _applicantPersonalInfo.ApprovalStatus = 1;
 
             if (model.Id == 0)
+            {
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
 
-            // Create Initial Approval Status
-            if (moduleStage is not null && moduleStage.WithApprover)
-            {
                 // Create Initial Approval Status
                 await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
             else
                 _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+
+            var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
+
             var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
             if (approvalStatus == null)
             {
