@@ -24,8 +24,10 @@ namespace DMS.Web.Controllers.Api
             {
                 return BadRequest(ModelState);
             }
+            //default the first company use 
+            //int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 1;
 
-            int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
+            int companyId = 1;
 
             model.CompanyId = companyId;
             await _zetaHousingLoanIntegrationService.SaveBeneficiaryAsync(model);
