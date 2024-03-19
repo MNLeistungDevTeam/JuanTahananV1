@@ -2,7 +2,7 @@ $(() => {
     "use strict";
 
     $('#rootwizard').bootstrapWizard({
-        'onNext': function (tab, navigation, index) {
+        'onNext': function (tab, navigation, index, event) {
             var form = $($(tab).data("targetForm"));
             if (form) {
                 form.addClass('was-validated');

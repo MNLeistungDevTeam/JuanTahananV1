@@ -177,7 +177,7 @@ $(function () {
     var form2 = $("#collateraldata");
 
     $('#rootwizard').bootstrapWizard({
-        'onNext': function (tab, navigation, index, e) {
+        'onNext': function (tab, navigation, index) {
             var currentForm = $($(tab).data("targetForm"));
             var currentFormName = currentForm.attr("id");
 
@@ -187,8 +187,10 @@ $(function () {
                     currentForm.addClass('was-validated');
 
                     if (!form1.valid()) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        if (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
                         return false;
                     }
                 } else if (currentFormName == "collateraldata") {
@@ -196,8 +198,10 @@ $(function () {
                     currentForm.addClass('was-validated');
 
                     if (!form2.valid()) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        if (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
                         return false;
                     }
                 }
@@ -215,9 +219,11 @@ $(function () {
         let $loanparticulars = $('#loanparticulars');
         let $collateraldata = $('#collateraldata');
         let $spousedata = $('#spousedata');
+
         if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
             return;
         }
+
         let loanparticulars = $loanparticulars.serializeArray();
         let collateraldata = $collateraldata.serializeArray();
         let spousedata = $spousedata.serializeArray();
@@ -281,7 +287,6 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-
                 $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
                 purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
@@ -324,7 +329,6 @@ $(function () {
             url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-
             },
             error: function () {
             }

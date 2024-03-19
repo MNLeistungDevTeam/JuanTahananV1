@@ -4,520 +4,520 @@
         <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
             <input hidden type="text" class="form-control" asp-for="BarrowersInformationModel.Id">
             <input hidden type="text" class="form-control" asp-for="BarrowersInformationModel.ApplicantsPersonalInformationId">
-            <div class="row gy-2">
-                <div class="col-md-12">
-                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower's Data</span>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
-                        <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required>
-                        <span asp-validation-for="BarrowersInformationModel.FirstName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MiddleName"></label>
-                        <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.MiddleName">
-                        <span asp-validation-for="BarrowersInformationModel.MiddleName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
-                        <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required>
-                        <span asp-validation-for="BarrowersInformationModel.LastName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
-                        <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix">
-                        <span asp-validation-for="BarrowersInformationModel.Suffix" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
-                        <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Citizenship" required>
-                        <span asp-validation-for="BarrowersInformationModel.Citizenship" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
-                        <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" required>
-                        <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
-                        <select asp-for="BarrowersInformationModel.Sex" class="rounded-4" required>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.Sex" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
-                        <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4" required>
-                            <option value="Single/Unmarried">Single/Unmarried</option>
-                            <option value="Married">Married</option>
-                            <option value="Annulled">Annulled</option>
-                            <option value="Legally Separated">Legally Separated</option>
-                            <option value="Married">Widow/er</option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                        Address & Contact Information
-                    </h3>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.HomeNumber">
-                        <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.MobileNumber">
-                        <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email" required></label>
-                        <input type="email" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.Email" required>
-                        <span asp-validation-for="BarrowersInformationModel.Email" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-check form-check-inline">
-                        <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
-                        <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPermanentAddressAbroad"></label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentUnitName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBuildingName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentLotName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentStreetName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentSubdivisionName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBaranggayName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentMunicipalityName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentProvinceName">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3" col="9">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentZipCode">
-                        <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-check form-check-inline">
-                        <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
-                        <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentUnitName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBuildingName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentLotName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentStreetName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentSubdivisionName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBaranggayName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentMunicipalityName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentProvinceName">
-                        <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3" col="9">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentZipCode">
-                        <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3" col="9">
-                    <div class="position-relative">
-                        <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
-                        <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4" required>
-                            <option value="Owned">Owned</option>
-                            <option value="Company">Company</option>
-                            <option value="Annulled">Annulled</option>
-                            <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
-                            <option value="Mortgaged">Mortgaged</option>
-                            <option value="Rented">Rented</option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsofStay">
-                        <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
-                        <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                        Employment Information
-                    </h3>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.SSSNumber">
-                        <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.TinNumber">
-                        <span asp-validation-for="BarrowersInformationModel.TinNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label asp-for="BarrowersInformationModel.OcupationStatus" class="form-label fw-normal" required></label>
-                        <select asp-for="BarrowersInformationModel.OcupationStatus" class="rounded-4" required>
-                            <option value="Employed">Employed</option>
-                            <option value="Self-Employed">Self-Employed</option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.OcupationStatus" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.PagibigNumber">
-                        <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.EmployerName">
-                        <span asp-validation-for="BarrowersInformationModel.EmployerName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
-                        <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4" required>
-                            <option value="1">Accounting</option>
-                            <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
-                            <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
-                            <option value="4">Basic Materials</option>
-                            <option value="5">
-                                Business Process Outsourcing
-                                (BPO)
-                            </option>
-                            <option value="6">
-                                Construction
-                            </option>
-                            <option value="7">Education & Training </option>
-                            <option value="8">
-                                Electricity, Gas and Water
-                                Supply
-                            </option>
-                            <option value="9">
-                                Extra-Territorial Organization &
-                                Bodies
-                            </option>
-                            <option value="10">
-                                Financial Services/Intermediation
-                            </option>
-                            <option value="11">
-                                HR/Recruitment
-                            </option>
-                            <option value="12">
-                                Health and Social Work;
-                                Health and Medical Services
-                            </option>
-                            <option value="13">
-                                Life Sciences
-                            </option>
-                            <option value="14">
-                                Management
-                            </option>
-                            <option value="15">
-                                Manufacturing
-                            </option>
-                            <option value="16">
-                                Media
-                            </option>
-                            <option value="17">
-                                Mining and Quanrying
-                            </option>
-                            <option value="18">
-                                Other Community, Social & Personal Service Activities
-                            </option>
-                            <option value="19">
-                                Public Administration & Defense;
-                                Compulsory Social Security
-                            </option>
-                            <option value="20">
-                                Technology
-                            </option>
-                            <option value="21">
-                                Transport, Storage
-                            </option>
-                            <option value="22">
-                                Transport, Storage and Communications
-                            </option>
-                            <option value="23">
-                                Travel and Leisure
-                            </option>
-                            <option value="24">
-                                Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
-                            </option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.IndustryName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PositionName">
-                        <span asp-validation-for="BarrowersInformationModel.PositionName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsEmployment">
-                        <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.NumberOfDependent">
-                        <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                        Employer Address & Contact Information
-                    </h3>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                        <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessEmail">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-check form-check-inline">
-                        <input asp-for="BarrowersInformationModel.IsBusinessAddressAbroad" type="checkbox" class="form-check-input">
-                        <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessUnitName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBuildingName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessLotName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessStreetName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessSubdivisionName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBaranggayName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessMunicipalityName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessProvinceName">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3" col="9">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                        <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessZipCode">
-                        <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
-                        <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4" required>
-                            <option value="Present Home Address">Present Home Address</option>
-                            <option value="Employer/Business Address">Employer/Business Address</option>
-                            <option value="Permanent Home Address">Permanent Home Address</option>
-                        </select>
-                        <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="invalid-tooltip"></span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
-                        <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" required>
-                        <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
-                    </div>
+        </h3>
+        <div class="row gy-2">
+            <div class="col-md-12">
+                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower's Data</span>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
+                    <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required>
+                    <span asp-validation-for="BarrowersInformationModel.FirstName" class="invalid-tooltip"> </span>
                 </div>
             </div>
-        </h3>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MiddleName"></label>
+                    <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.MiddleName">
+                    <span asp-validation-for="BarrowersInformationModel.MiddleName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
+                    <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required>
+                    <span asp-validation-for="BarrowersInformationModel.LastName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
+                    <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix">
+                    <span asp-validation-for="BarrowersInformationModel.Suffix" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
+                    <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Citizenship" required>
+                    <span asp-validation-for="BarrowersInformationModel.Citizenship" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
+                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" required>
+                    <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
+                    <select asp-for="BarrowersInformationModel.Sex" class="rounded-4" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.Sex" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
+                    <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4" required>
+                        <option value="Single/Unmarried">Single/Unmarried</option>
+                        <option value="Married">Married</option>
+                        <option value="Annulled">Annulled</option>
+                        <option value="Legally Separated">Legally Separated</option>
+                        <option value="Married">Widow/er</option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                    Address & Contact Information
+                </h3>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.HomeNumber">
+                    <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.MobileNumber">
+                    <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email"></label>
+                    <input type="email" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.Email">
+                    <span asp-validation-for="BarrowersInformationModel.Email" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-check-inline">
+                    <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
+                    <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPermanentAddressAbroad"></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentUnitName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBuildingName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentLotName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentStreetName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentSubdivisionName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBaranggayName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentMunicipalityName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentProvinceName">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3" col="9">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentZipCode">
+                    <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-check-inline">
+                    <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
+                    <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentUnitName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBuildingName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentLotName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentStreetName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentSubdivisionName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBaranggayName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentMunicipalityName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentProvinceName">
+                    <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3" col="9">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentZipCode">
+                    <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3" col="9">
+                <div class="position-relative">
+                    <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
+                    <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4" required>
+                        <option value="Owned">Owned</option>
+                        <option value="Company">Company</option>
+                        <option value="Annulled">Annulled</option>
+                        <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
+                        <option value="Mortgaged">Mortgaged</option>
+                        <option value="Rented">Rented</option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsofStay">
+                    <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
+                    <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                    Employment Information
+                </h3>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.SSSNumber">
+                    <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.TinNumber">
+                    <span asp-validation-for="BarrowersInformationModel.TinNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label asp-for="BarrowersInformationModel.OcupationStatus" class="form-label fw-normal" required></label>
+                    <select asp-for="BarrowersInformationModel.OcupationStatus" class="rounded-4" required>
+                        <option value="Employed">Employed</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.OcupationStatus" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.PagibigNumber">
+                    <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.EmployerName">
+                    <span asp-validation-for="BarrowersInformationModel.EmployerName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
+                    <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4" required>
+                        <option value="1">Accounting</option>
+                        <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
+                        <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
+                        <option value="4">Basic Materials</option>
+                        <option value="5">
+                            Business Process Outsourcing
+                            (BPO)
+                        </option>
+                        <option value="6">
+                            Construction
+                        </option>
+                        <option value="7">Education & Training </option>
+                        <option value="8">
+                            Electricity, Gas and Water
+                            Supply
+                        </option>
+                        <option value="9">
+                            Extra-Territorial Organization &
+                            Bodies
+                        </option>
+                        <option value="10">
+                            Financial Services/Intermediation
+                        </option>
+                        <option value="11">
+                            HR/Recruitment
+                        </option>
+                        <option value="12">
+                            Health and Social Work;
+                            Health and Medical Services
+                        </option>
+                        <option value="13">
+                            Life Sciences
+                        </option>
+                        <option value="14">
+                            Management
+                        </option>
+                        <option value="15">
+                            Manufacturing
+                        </option>
+                        <option value="16">
+                            Media
+                        </option>
+                        <option value="17">
+                            Mining and Quanrying
+                        </option>
+                        <option value="18">
+                            Other Community, Social & Personal Service Activities
+                        </option>
+                        <option value="19">
+                            Public Administration & Defense;
+                            Compulsory Social Security
+                        </option>
+                        <option value="20">
+                            Technology
+                        </option>
+                        <option value="21">
+                            Transport, Storage
+                        </option>
+                        <option value="22">
+                            Transport, Storage and Communications
+                        </option>
+                        <option value="23">
+                            Travel and Leisure
+                        </option>
+                        <option value="24">
+                            Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
+                        </option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.IndustryName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PositionName">
+                    <span asp-validation-for="BarrowersInformationModel.PositionName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsEmployment">
+                    <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.NumberOfDependent">
+                    <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                    Employer Address & Contact Information
+                </h3>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
+                    <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessEmail">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-check form-check-inline">
+                    <input asp-for="BarrowersInformationModel.IsBusinessAddressAbroad" type="checkbox" class="form-check-input">
+                    <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessUnitName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBuildingName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessLotName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessStreetName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessSubdivisionName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBaranggayName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessMunicipalityName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessProvinceName">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3" col="9">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
+                    <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessZipCode">
+                    <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
+                    <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4" required>
+                        <option value="Present Home Address">Present Home Address</option>
+                        <option value="Employer/Business Address">Employer/Business Address</option>
+                        <option value="Permanent Home Address">Permanent Home Address</option>
+                    </select>
+                    <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="invalid-tooltip"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="position-relative">
+                    <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
+                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" required>
+                    <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

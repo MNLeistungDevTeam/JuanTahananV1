@@ -21,7 +21,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly IModuleRepository _moduleRepo;
         private readonly IApprovalStatusRepository _approvalStatusRepo;
 
-        public ApplicantsPersonalInformationRepository(DMSDBContext context,
+        public ApplicantsPersonalInformationRepository(
+            DMSDBContext context,
             ICurrentUserService currentUserService,
             IMapper mapper,
             ISQLDatabaseService db,
@@ -63,32 +64,40 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
-            var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
-
-            _applicantPersonalInfo.ApprovalStatus = 1;
-
-            if (model.Id == 0)
+            try
             {
-                _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
+                var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
+                _applicantPersonalInfo.CompanyId = 
+                _applicantPersonalInfo.ApprovalStatus = 1;
 
-                // Create Initial Approval Status
-                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
-            }
-            else
-                _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
-
-            var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
-
-            var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
-            if (approvalStatus == null)
-            {
-                if (moduleStage is not null && moduleStage.WithApprover)
+                if (model.Id == 0)
                 {
+                    _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
+
                     // Create Initial Approval Status
+
                     await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
                 }
+                else
+                    _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+
+                var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
+
+                var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
+                if (approvalStatus == null)
+                {
+                    if (moduleStage is not null && moduleStage.WithApprover)
+                    {
+                        // Create Initial Approval Status
+                        await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+                    }
+                }
+                return _applicantPersonalInfo;
             }
-            return _applicantPersonalInfo;
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId)
