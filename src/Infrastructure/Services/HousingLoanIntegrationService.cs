@@ -66,6 +66,7 @@ namespace DMS.Infrastructure.Services
             applicantInfoModel.UserId = userModel.Id;
             applicantInfoModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{userModel.Id}";
             applicantInfoModel.PagibigNumber = model.PagibigMidNumber;
+            applicantInfoModel.CompanyId = model.CompanyId;
 
             var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, 0);
 

@@ -15,7 +15,7 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data, type, row) {
-                    return `<a href="${baseUrl}Applicant/Details/${data}" target="_blank">${data}</a>`;
+                    return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
             },
 

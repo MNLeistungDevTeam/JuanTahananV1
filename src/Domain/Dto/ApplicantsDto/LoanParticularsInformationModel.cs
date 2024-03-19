@@ -40,6 +40,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         }
 
         [Display(Name = "Desired Loan Amount", Prompt = "Input desired loan amount")]
+
+        [Range(0.01, 100, ErrorMessage = "DesiredLoanAmount must be between 0.01 and 100")]
+
+
         public decimal DesiredLoanAmount { get; set; }
 
         [StringLength(14)]

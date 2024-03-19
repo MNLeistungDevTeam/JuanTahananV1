@@ -1,6 +1,7 @@
 ﻿using DMS.Application.Services;
 using DMS.Domain.Dto.BasicBeneficiaryDto;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Api
@@ -24,6 +25,9 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ModelState);
             }
 
+            int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
+
+            model.CompanyId = companyId;
             await _zetaHousingLoanIntegrationService.SaveBeneficiaryAsync(model);
 
             return Ok("Save Beneficiary Successfuly!"); // or return any other appropriate response
