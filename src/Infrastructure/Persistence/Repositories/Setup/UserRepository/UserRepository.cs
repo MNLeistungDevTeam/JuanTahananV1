@@ -3,7 +3,11 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence.Configuration;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Text;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserRepository;
 
@@ -14,18 +18,21 @@ public class UserRepository : IUserRepository
     private readonly IUserApproverRepository _userApproverRepo;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
+    private readonly IOptions<AuthenticationConfig> _authenticationConfig;
 
     public UserRepository(
         DMSDBContext context,
         ISQLDatabaseService db,
         IMapper mapper,
-        IUserApproverRepository userApproverRepo)
+        IUserApproverRepository userApproverRepo,
+         IOptions<AuthenticationConfig> authenticationConfig)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<User>(context);
         _db = db;
         _mapper = mapper;
         _userApproverRepo = userApproverRepo;
+        _authenticationConfig = authenticationConfig;
     }
 
     public async Task<User?> GetByIdAsync(int id) =>
@@ -60,6 +67,10 @@ public class UserRepository : IUserRepository
 
         if (_user.Id == 0)
         {
+            // Create a new user entity
+            _user.PasswordSalt = _authenticationConfig.Value.PasswordSalt;
+            _user.Password = GenerateHash(_user.Password, _user.PasswordSalt);
+
             _user = await CreateAsync(_user, userId);
         }
         else _user = await UpdateAsync(_user, userId);
@@ -154,5 +165,24 @@ public class UserRepository : IUserRepository
             }
         }
         catch (Exception) { throw; }
+    }
+
+    public string GenerateHash(string password, string salt)
+    {
+        byte[] saltByte = Encoding.ASCII.GetBytes(salt);
+        string hashedPassword = GenerateHashedPassword(password, saltByte);
+        return hashedPassword;
+    }
+
+    private static string GenerateHashedPassword(string password, byte[] salt)
+    {
+        string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA512,
+            iterationCount: 10000,
+            numBytesRequested: 256 / 8));
+
+        return hashedPassword;
     }
 }

@@ -10,7 +10,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
 
         [Required]
         [DisplayName("Pagibig Mid Number")]
-        public string? PagibigMidNumber { get; set; }
+        public string? PagibigMidNumber { get; set; } = string.Empty;
 
         #endregion ApplicantPersonalInformation
 
@@ -18,118 +18,110 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
 
         [Required]
         [DisplayName("Last Name")]
-        public string? LastName { get; set; }
+        public string? LastName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("First Name")]
-        public string? FirstName { get; set; }
+        public string? FirstName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Middle")]
-        public string? MiddleName { get; set; }
+        public string? MiddleName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Gender")]
-        public string? Gender { get; set; }
+        public string? Gender { get; set; } = string.Empty;
+
+        [Required]
+        [DisplayName("Age")]
+        public int Age { get; set; }
 
         [Required]
         [DisplayName("Birth Date")]
         public DateTime? BirthDate { get; set; }
 
+   
+        [DisplayName("Birth Place")]
+        public string? BirthPlace { get; set; } = string.Empty;
+
         [Required]
         [DisplayName("Email")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Mobile Number")]
-        public string? MobileNumber { get; set; }
+        public string? MobileNumber { get; set; } = string.Empty;
 
         // Addresses
-        [Required]
+
         [DisplayName("Unit")]
-        public string? PresentUnitName { get; set; }
+        public string? PresentUnitName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Building")]
-        public string? PresentBuildingName { get; set; }
+        public string? PresentBuildingName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Lot")]
-        public string? PresentLotName { get; set; }
+        public string? PresentLotName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Street")]
-        public string? PresentStreetName { get; set; }
+        public string? PresentStreetName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Subdivision")]
-        public string? PresentSubdivisionName { get; set; }
+        public string? PresentSubdivisionName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Baranggay")]
-        public string? PresentBaranggayName { get; set; }
+        public string? PresentBaranggayName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Municipality")]
-        public string? PresentMunicipalityName { get; set; }
+        public string? PresentMunicipalityName { get; set; } = string.Empty;
 
-        [Required]
+
         [DisplayName("Province")]
-        public string? PresentProvinceName { get; set; }
+        public string? PresentProvinceName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Zip Code")]
-        public string? PresentZipCode { get; set; }
+        public string? PresentZipCode { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Unit")]
-        public string? PermanentUnitName { get; set; }
+        public string? PermanentUnitName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Building")]
-        public string? PermanentBuildingName { get; set; }
+        public string? PermanentBuildingName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Lot")]
-        public string? PermanentLotName { get; set; }
+        public string? PermanentLotName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Street")]
-        public string? PermanentStreetName { get; set; }
+        public string? PermanentStreetName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Subdivision")]
-        public string? PermanentSubdivisionName { get; set; }
+        public string? PermanentSubdivisionName { get; set; } = string.Empty;
 
         [Required]
-        [DisplayName("Baranggay")]
-        public string? PermanentBaranggayName { get; set; }
+        [DisplayName("Barangay")]
+        public string? PermanentBaranggayName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Municipality")]
-        public string? PermanentMunicipalityName { get; set; }
+        public string? PermanentMunicipalityName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Province")]
-        public string? PermanentProvinceName { get; set; }
+        public string? PermanentProvinceName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Zip Code")]
-        public string? PermanentZipCode { get; set; }
+        public string? PermanentZipCode { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Property Developer ")]
-        public string? PropertyDeveloperName { get; set; }
+        public string? PropertyDeveloperName { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Property Location")]
-        public string? PropertyLocation { get; set; }
+        public string? PropertyLocation { get; set; } = string.Empty;
 
-        [Required]
         [DisplayName("Property Unit")]
-        public string? PropertyUnitLevelName { get; set; }
-
-
+        public string? PropertyUnitLevelName { get; set; } = string.Empty;
 
         #endregion Barrowers
     }

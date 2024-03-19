@@ -2,6 +2,7 @@
 using DMS.Application.Services;
 using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Infrastructure.Persistence.Configuration;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -134,9 +135,6 @@ namespace DMS.Web.Controllers.Setup
                 model.User.Signature = signature;
 
                 int userId = int.Parse(User.Identity.Name);
-
-                model.User.Password = _authenticationService.HashPassword(model.User.Password);
-                model.User.PasswordSalt = "your-password-salt";
 
                 var returnUserData = await _userRepo.SaveUserAsync(model.User, model.UserApprover, userId);
 

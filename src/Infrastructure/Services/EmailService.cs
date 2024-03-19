@@ -94,12 +94,15 @@ namespace DMS.Infrastructure.Services
                                                             the password immediately after login</strong>.</p>
                                                     <span
                                                         style=""display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;""></span>
-                                                    <p
-                                                        style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
+                                                    <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
                                                         <strong
-                                                            style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">Username</strong>{1}
+                                                            style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">Username:</strong> {1}
                                                         <strong
-                                                            style=""display: block; font-size: 13px; margin: 24px 0 4px 0; font-weight:normal; color:rgba(0,0,0,.64);"">Password</strong>{2}
+                                                    </p>
+                                                    <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
+                                                        <strong
+                                                            style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">Password:</strong> {2}
+                                                        <strong
                                                     </p>
 
                                                     <a href=""https://juantahanan-dms.mnleistung.ph""
@@ -133,7 +136,7 @@ namespace DMS.Infrastructure.Services
 
             </html>
     ";
-            body = body.Replace("{0}", model.Name).Replace("{1}", model.UserName).Replace("{2}", "Pass123$");
+            body = body.Replace("{0}", model.Name).Replace("{1}", model.UserName).Replace("{2}",model.Password);
 
             var emailBody = new TextPart("html")
             {

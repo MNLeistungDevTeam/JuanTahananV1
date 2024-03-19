@@ -44,7 +44,8 @@ namespace DMS.Infrastructure.Services
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender,
-                Position = "Beneficiary"
+                Position = "Beneficiary",
+               
             };
 
             // validate and  register user

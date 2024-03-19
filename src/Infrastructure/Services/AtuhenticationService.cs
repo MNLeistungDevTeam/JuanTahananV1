@@ -243,11 +243,14 @@ public class AuthenticationService : IAuthenticationService
 
     public string GenerateTemporaryPasswordAsync(string name)
     {
-        string guid = Guid.NewGuid().ToString("N").Substring(0, 10); // Generate a GUID with 10 characters
-        string combinedString = guid + name; // Concatenate GUID with name
+        // Generate a GUID with 16 characters
+        string guid = Guid.NewGuid().ToString("N").Substring(0, 16);
+
+        // Concatenate GUID with name
+        string combinedString = guid + name;
 
         // Use a random seed based on the current time
-        Random rand = new Random(DateTime.Now.Millisecond);
+        Random rand = new Random();
 
         // Hash the combined string using SHA-256
         using (SHA256 sha256 = SHA256.Create())
@@ -256,9 +259,9 @@ public class AuthenticationService : IAuthenticationService
             byte[] hash = sha256.ComputeHash(bytes);
 
             // Introduce additional randomness
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                bytes[rand.Next(bytes.Length)] ^= (byte)rand.Next(256);
+                bytes[i] ^= (byte)rand.Next(256);
             }
 
             // Convert the byte array to a hexadecimal string
@@ -268,11 +271,13 @@ public class AuthenticationService : IAuthenticationService
                 sb.Append(b.ToString("x2"));
             }
 
-            return name + sb.ToString();
+            // Ensure a fixed length of 14 characters for the output password
+            string hashedString = sb.ToString();
+            string outputPassword = name + hashedString.Substring(0, 14 - name.Length);
+
+            return outputPassword;
         }
     }
-
-
 
 
     public async Task<string> GenerateTemporaryUsernameAsync()
@@ -287,5 +292,4 @@ public class AuthenticationService : IAuthenticationService
 
         return temporaryUsername;
     }
-
 }
