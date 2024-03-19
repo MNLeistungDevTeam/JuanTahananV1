@@ -68,7 +68,7 @@ namespace DMS.Infrastructure.Services
             applicantInfoModel.PagibigNumber = model.PagibigMidNumber;
             applicantInfoModel.CompanyId = model.CompanyId;
 
-            var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, 0);
+            var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, userModel.Id);
 
             #endregion Create Applicant
 
