@@ -23,5 +23,6 @@ namespace DMS.Application.Interfaces.Setup.ModuleStageRepo
 
         Task<ModuleStage> UpdateAsync(ModuleStage moduleStage, int userId);
         Task<IEnumerable<ModuleStageModel>> GetByModuleCodeAsync(string moduleCode);
+        Task<ModuleStage> SaveAsync(ModuleStageModel model, int userId);
     }
 }

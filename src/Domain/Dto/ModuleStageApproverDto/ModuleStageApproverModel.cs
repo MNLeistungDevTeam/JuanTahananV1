@@ -28,5 +28,7 @@ namespace DMS.Domain.Dto.ModuleStageApproverDto
         public DateTime DateCreated { get; set; }
         public int ModifiedById { get; set; }
         public DateTime DateModified { get; set; }
+        public int ApproverType { get; set; }
+        public int RoleId { get; set; }
     }
 }

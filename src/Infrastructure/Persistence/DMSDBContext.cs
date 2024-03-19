@@ -21,6 +21,12 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<ApplicantsPersonalInformation> ApplicantsPersonalInformations { get; set; }
 
+    public virtual DbSet<ApprovalLevel> ApprovalLevels { get; set; }
+
+    public virtual DbSet<ApprovalLog> ApprovalLogs { get; set; }
+
+    public virtual DbSet<ApprovalStatus> ApprovalStatuses { get; set; }
+
     public virtual DbSet<AuditTrail> AuditTrails { get; set; }
 
     public virtual DbSet<BarrowersInformation> BarrowersInformations { get; set; }
@@ -91,6 +97,10 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<UserToken> UserTokens { get; set; }
 
+    public virtual DbSet<vwModuleStageApprovalStatus> vwModuleStageApprovalStatuses { get; set; }
+
+    public virtual DbSet<vwTransaction> vwTransactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Address>(entity =>
@@ -126,8 +136,44 @@ public partial class DMSDBContext : DbContext
 
             entity.ToTable("ApplicantsPersonalInformation");
 
+            entity.Property(e => e.ApprovalStatus).HasDefaultValueSql("((1))");
             entity.Property(e => e.Code).IsRequired();
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<ApprovalLevel>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC07F04351C6");
+
+            entity.ToTable("ApprovalLevel");
+
+            entity.Property(e => e.DateUpdated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Level).HasComment("ApprovalLevel");
+        });
+
+        modelBuilder.Entity<ApprovalLog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC07FEC2BF26");
+
+            entity.ToTable("ApprovalLog");
+
+            entity.Property(e => e.Action).HasComment("1 = Approved, 2 = Rejected, 3 = Cancelled");
+            entity.Property(e => e.Comment).HasMaxLength(255);
+            entity.Property(e => e.ReferenceId).HasComment("Transaction Record Id");
+            entity.Property(e => e.StageId).HasComment("Module Stage Id");
+        });
+
+        modelBuilder.Entity<ApprovalStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC0712B4DE21");
+
+            entity.ToTable("ApprovalStatus");
+
+            entity.Property(e => e.LastUpdate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ReferenceId).HasComment("Record Id");
+            entity.Property(e => e.ReferenceType).HasComment("Module Id");
+            entity.Property(e => e.Status).HasComment("0 = For Approval, 1 = Approved, 2 = Canceled");
+            entity.Property(e => e.UserId).HasComment("Prepared By");
         });
 
         modelBuilder.Entity<AuditTrail>(entity =>
@@ -831,6 +877,31 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.Token)
                 .IsRequired()
                 .HasMaxLength(4000);
+        });
+
+        modelBuilder.Entity<vwModuleStageApprovalStatus>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vwModuleStageApprovalStatus");
+
+            entity.Property(e => e.ApproveDesc).HasMaxLength(50);
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.RejectDesc).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<vwTransaction>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vwTransactions");
+
+            entity.Property(e => e.ModuleAction).HasMaxLength(50);
+            entity.Property(e => e.ModuleCode).HasMaxLength(50);
+            entity.Property(e => e.ModuleController).HasMaxLength(50);
+            entity.Property(e => e.ReferenceNo).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,0 +1,212 @@
+﻿@model ModuleViewModel
+
+
+@{
+    ViewData["Title"] = "Approver Management";
+
+}
+
+
+
+
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+
+
+
+
+
+
+<div class="row" hidden>
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-primary shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_for_approval"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Pending Review</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-layers font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+
+                <a href="#" id="dash_link_for_approval" data-val="" class="stretched-link"></a>
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-success shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_approved"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Approved</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-up font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_approved" data-val="2" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-danger shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_disapproved"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Disapproved</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-down font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_disapproved" data-val="3" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
+
+
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row gy-2">
+            <div class="col-md-12 mb-2 mb-md-0 align-items-md-center">
+
+                <button class="btn btn-light btn-sm waves-effect" type="button" id="btn_edit" disabled>
+                    <div class="d-flex flex-row align-items-center gap-1">
+                        <span class="fe-thumbs-down"></span>
+                        <span class="d-none d-lg-block">Edit</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-light btn-sm waves-effect" type="button" id="btnRefresh">
+                    <div class="d-flex flex-row align-items-center gap-1">
+                        <span class="mdi mdi-refresh"></span>
+                        <span class="d-none d-lg-block">Refresh</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm w-100 nowrap" id="tbl_moduleHasApproval">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>Module Description</th>
+                            <th>Module Type</th>
+                            <th>Parent Module</th>
+                            <th>Approval Stages Count</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- Module modal content -->
+<div id="module-modal" class="modal fade" tabindex="-1" role="form"
+     aria-labelledby="module-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="module-modalLabel"><span class="mdi mdi-plus"></span> Add Module</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveModuleStageApprover" asp-antiforgery="true" method="post" role="form" id="frm_module" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Module.Id" />
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label asp-for="Module.Code" class="form-label"></label>
+                            <input asp-for="Module.Code" class="form-control" placeholder="Module Code" />
+                            <span asp-validation-for="Module.Code" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label asp-for="Module.Description" class="form-label"></label>
+                            <input asp-for="Module.Description" class="form-control" placeholder="Module Description" />
+                            <span asp-validation-for="Module.Description" class="text-danger"></span>
+                        </div>
+
+
+
+                        <div class="col-md-12">
+                            <hr class="my-2" />
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered w-100" id="tbl_module_stages">
+                                    <thead>
+                                        <tr class="text-center bg-soft-light">
+                                            <th hidden>Stage Code</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Stage Name</th>
+                                            <th>Stage Title</th>
+                                            <th>Return Stage</th>
+                                            <th>Approve Message</th>
+                                            <th>Reject Message</th>
+                                            <th>Required Count</th>
+                                            <th>Approver Type</th>
+                                            <th style="min-width:158px;">Approver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <hr class="my-2" />
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn_add_module_stage"><span class="mdi mdi-plus"></span> Add Module Stage</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_save_modulestage" class="btn btn-primary"><span class="mdi mdi-content-save-outline"></span> Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <script src="~/js/Setup/Approval/ApprovalManagementScript.js" asp-append-version="true"></script>
+
+}

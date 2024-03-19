@@ -28,6 +28,18 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[ApprovalLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApprovalLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ApprovalStatus]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[AuditTrail]",
          "ObjectType": 0
       },
@@ -166,6 +178,14 @@
       {
          "Name": "[dbo].[UserToken]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vwModuleStageApprovalStatus]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vwTransactions]",
+         "ObjectType": 3
       }
    ],
    "UiHint": "win-0nl07aifc04.dbDOCRSDEV.dbo",

@@ -1,4 +1,5 @@
-﻿using DMS.Application.Interfaces.Setup.ModuleStageRepo;
+﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.ModuleStageRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Entities;
@@ -15,12 +16,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageRepo
         private readonly DMSDBContext _context;
         private readonly EfCoreHelper<ModuleStage> _contextHelper;
         private readonly ISQLDatabaseService _db;
+        private readonly IMapper _mapper;
 
-        public ModuleStageRepository(DMSDBContext context, ISQLDatabaseService db)
+        public ModuleStageRepository(DMSDBContext context, ISQLDatabaseService db,IMapper mapper)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<ModuleStage>(context);
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task<ModuleStage?> GetById(int id)
@@ -60,8 +63,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageRepo
 
 
 
-        public async Task<ModuleStage> SaveAsync(ModuleStage moduleStage, int userId)
+        public async Task<ModuleStage> SaveAsync(ModuleStageModel model, int userId)
         {
+
+            var moduleStage = _mapper.Map<ModuleStage>(model);  
+
             if (moduleStage.Id == 0)
             {
                 moduleStage = await CreateAsync(moduleStage, userId);

@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.ModuleStageApproverDto;
+using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace DMS.Application.Interfaces.Setup.ModuleStageApproverRepo
 {
-
     public interface IModuleStageApproverRepository
     {
         Task BatchDeleteAsync(int[] ids);
 
-        Task<ModuleStageApprover> CreateAsync(ModuleStageApproverModel moduleStageApprover, int userId);
-
         Task<List<ModuleStageApprover>> GetAll();
+
+        Task<IEnumerable<ModuleStageApproverModel>> GetAllAsync();
 
         Task<ModuleStageApprover?> GetById(int id);
 
@@ -23,6 +23,6 @@ namespace DMS.Application.Interfaces.Setup.ModuleStageApproverRepo
 
         Task<ModuleStageApprover> SaveAsync(ModuleStageApproverModel moduleStageApprover, int userId);
 
-        Task<ModuleStageApprover> UpdateAsync(ModuleStageApproverModel moduleStageApprover, int userId);
+        Task SaveModuleStageApprover(int moduleId, List<ModuleStageModel> model, int userId);
     }
 }

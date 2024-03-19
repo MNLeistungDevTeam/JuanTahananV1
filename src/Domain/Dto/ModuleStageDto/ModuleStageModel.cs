@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DMS.Domain.Dto.ModuleStageDto
 {
-
     public class ModuleStageModel
     {
         public int Id { get; set; }
@@ -30,6 +29,7 @@ namespace DMS.Domain.Dto.ModuleStageDto
         public string? LastName { get; set; }
         public string? MiddleName { get; set; }
         public string? UserName { get; set; }
+
         public string? ApproverFullName
         {
             get
@@ -37,5 +37,9 @@ namespace DMS.Domain.Dto.ModuleStageDto
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public int RoleId { get; set; }
+        public int ApproverType { get; set; }
+        public int ModuleStageApproverId { get; set; }
     }
 }

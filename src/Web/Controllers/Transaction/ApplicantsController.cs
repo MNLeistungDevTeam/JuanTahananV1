@@ -45,6 +45,8 @@ namespace Template.Web.Controllers.Transaction
         private readonly IModeOfPaymentRepository _modeOfPaymentRepo;
         private readonly IPropertyTypeRepository _propertyTypeRepo;
         private readonly INotificationService _notificationService;
+        private readonly IApprovalService _approvalService;
+
 
         private DMSDBContext _context;
 
@@ -65,7 +67,8 @@ namespace Template.Web.Controllers.Transaction
             IPurposeOfLoanRepository purposeOfLoanRepo,
             IModeOfPaymentRepository modeOfPaymentRepo,
             IPropertyTypeRepository propertyTypeRepo,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IApprovalService approvalService)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -85,6 +88,7 @@ namespace Template.Web.Controllers.Transaction
             _modeOfPaymentRepo = modeOfPaymentRepo;
             _propertyTypeRepo = propertyTypeRepo;
             _notificationService = notificationService;
+            _approvalService = approvalService;
         }
 
         #region View
@@ -93,6 +97,29 @@ namespace Template.Web.Controllers.Transaction
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Route("[controller]/Details/{applicantCode}")]
+        public async Task<IActionResult> Details(string applicantCode)
+        {
+            //check if applicant code not null go to edit form
+
+            var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+
+            var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+            if (applicantinfo == null)
+            {
+                return BadRequest($"{applicantCode}: no record Found!");
+            }
+
+            var viewModel = new ApplicantViewModel()
+            {
+                ApplicantsPersonalInformationModel = applicantinfo,
+                BarrowersInformationModel = barrowerInfo,
+            };
+
+            return View(viewModel);
         }
 
         //[ModuleServices(ModuleCodes.HLF068, typeof(IModuleRepository))]
@@ -306,6 +333,14 @@ namespace Template.Web.Controllers.Transaction
             return Ok(data);
         }
 
+        public async Task<IActionResult> GetApprovalTotalInfo()
+        {
+            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            //int userId = int.Parse(User.Identity.Name);
+
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
+        }
+
         #endregion Get Methods
 
         [HttpPost]
@@ -414,7 +449,6 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.SpouseModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
                     vwModel.Form2PageModel.ApplicantsPersonalInformationId = vwModel.ApplicantsPersonalInformationModel.Id;
 
-
                     if (vwModel.LoanParticularsInformationModel.Id != 0)
                     {
                         var loan = await _loanParticularsInformationRepo.GetByIdAsync(vwModel.LoanParticularsInformationModel.Id);
@@ -443,7 +477,7 @@ namespace Template.Web.Controllers.Transaction
                     }
 
                     if (vwModel.SpouseModel.Id != 0)
-                    {   
+                    {
                         var spouse = await _spouseRepo.GetByIdAsync(vwModel.SpouseModel.Id);
                         spouse.MergeNonNullData(vwModel.SpouseModel);
                         vwModel.SpouseModel = _mapper.Map<SpouseModel>(spouse);
@@ -606,7 +640,6 @@ namespace Template.Web.Controllers.Transaction
                 int userId = int.Parse(User.Identity.Name);
                 int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
 
-
                 //create  new beneficiary
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
@@ -644,8 +677,15 @@ namespace Template.Web.Controllers.Transaction
 
                     applicationData.UserId = user.Id;
                     applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
+                    applicationData.ApprovalStatus = 1;
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+                      var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+
+
+              
+
+
+
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -689,6 +729,7 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
+                    applicationData.ApprovalStatus = 1;
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.NotificationReceiverRepo;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ApprovalLevelDto;
+using DMS.Domain.Dto.ApprovalLogDto;
+using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.EntityDto;
@@ -51,5 +54,11 @@ public class MappingProfile : Profile
         CreateMap<ModuleType, ModuleTypeModel>().ReverseMap();
         CreateMap<ModuleStage, ModuleStageModel>().ReverseMap();
         CreateMap<ModuleStageApprover, ModuleStageApproverModel>().ReverseMap();
+
+
+
+        CreateMap<ApprovalStatus, ApprovalStatusModel>().ReverseMap();
+        CreateMap<ApprovalLevel, ApprovalLevelModel>().ReverseMap();
+        CreateMap<ApprovalLog, ApprovalLogModel>().ReverseMap();
     }
 }

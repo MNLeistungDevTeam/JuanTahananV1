@@ -50,6 +50,12 @@ using DMS.Application.Interfaces.Setup.ModuleStageRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverRepo;
 using DMS.Application.Interfaces.Setup.ModuleStageApproverRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageRepo;
+using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo;
+using DMS.Application.Interfaces.Setup.ApprovalLevelRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo;
+using DMS.Application.Interfaces.Setup.ApprovalLogRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLogRepo;
 
 namespace Template.Infrastructure;
 
@@ -142,9 +148,15 @@ public static class DependencyInjectionConfig
         services.AddScoped<INotificationRepository, NotificationRepository>();
 
 
+        services.AddScoped<IApprovalStatusRepository, ApprovalStatusRepository>();
+        services.AddScoped<IApprovalLevelRepository, ApprovalLevelRepository>();
+        services.AddScoped<IApprovalLogRepository, ApprovalLogRepository>();
+
+
         services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
         services.AddScoped<IReportsService, ReportsService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IApprovalService, ApprovalService>();
         return services;
     }
 }

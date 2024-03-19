@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ApprovalStatusDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
     public interface IApplicantsPersonalInformationRepository
     {
+        Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo();
         Task<ApplicantsPersonalInformation?> GetByIdAsync(int id);
 
         Task<ApplicantsPersonalInformation?> GetbyUserId(int id);

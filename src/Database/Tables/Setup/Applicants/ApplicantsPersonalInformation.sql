@@ -11,5 +11,6 @@
     [ModifiedById] INT NULL,
     [DateDeleted] DATETIME2 NULL, 
     [DeletedById] INT NULL,
-    CompanyId INT NULL
+    CompanyId INT NULL,
+    [ApprovalStatus] INT NULL DEFAULT(1)
 )
