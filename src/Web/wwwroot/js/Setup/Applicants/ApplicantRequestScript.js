@@ -11,12 +11,6 @@ $(function () {
         columns: [
 
             {
-                data: 'ApplicantFullName',
-                orderable: !0,
-                className: 'align-middle text-center'
-            },
-
-            {
                 data: 'Code',
                 orderable: !0,
                 className: 'align-middle text-center',
@@ -24,16 +18,53 @@ $(function () {
                     return `<a href="${baseUrl}Applicant/Details/${data}" target="_blank">${data}</a>`;
                 }
             },
+
+
             {
-                data: 'HousingAccountNumber',
+                data: 'ApplicantFullName',
                 orderable: !0,
                 className: 'align-middle text-center'
             },
+           
             {
                 data: 'PagibigNumber',
                 orderable: !0,
                 className: 'align-middle text-center'
             },
+            {
+                data: 'HousingAccountNumber',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+
+
+            {
+                data: 'IncomeAmount',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+            {
+                data: 'Developer',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+            {
+                data: 'ProjectLocation',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+
+            {
+                data: 'Unit',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+            {
+                data: 'LoanAmount',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+          
 
             {
                 data: 'DateCreated',
