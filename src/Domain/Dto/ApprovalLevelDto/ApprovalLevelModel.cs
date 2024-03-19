@@ -28,5 +28,9 @@ namespace DMS.Domain.Dto.ApprovalLevelDto
         public int? ModuleStageId { get; set; }
 
         public string? TransactionNo { get; set; }
+        public int? ApprovalLevelStatus { get; set; }
+        public int? TransactionId { get; set; }
+        public string? ModuleCode { get; set; }
+        
     }
 }

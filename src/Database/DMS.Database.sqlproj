@@ -199,6 +199,7 @@
     <Build Include="Stored Procedures\View\vwTransactions.sql" />
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetById.sql" />
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetByReferenceModuleCode.sql" />
+    <Build Include="Stored Procedures\View\vwModuleStageApprovalStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -26,8 +26,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo
             _mapper = mapper;
         }
 
-
-
         public async Task<List<ApprovalLevel>> GetByApprovalStatusIdAsync(int approvalStatusId)
         {
             try
@@ -42,7 +40,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo
                 throw;
             }
         }
-
 
         #region Operation
 
@@ -73,18 +70,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo
             return result;
         }
 
-        public async Task DeleteAsync(ApprovalLevel approvalLevel)
-        {
-            await _contextHelper.DeleteAsync(approvalLevel);
-        }
-
         public async Task DeleteAsync(int id)
         {
-            var entity = _context.ApprovalLevels.FirstOrDefault(d => d.Id == id);
-            if (entity != null)
-            {
-                await DeleteAsync(entity);
-            }
+            var entities = _context.ApprovalLevels.FirstOrDefault(v => id == v.Id);
+
+            await _contextHelper.DeleteAsync(entities);
         }
 
         public async Task BatchDeleteAsync(int[] ids)
@@ -98,5 +88,4 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLevelRepo
 
         #endregion Operation
     }
-
 }

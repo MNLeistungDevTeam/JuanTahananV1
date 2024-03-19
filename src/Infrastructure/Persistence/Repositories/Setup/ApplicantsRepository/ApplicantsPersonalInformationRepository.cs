@@ -18,7 +18,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
-        private readonly IApprovalService _approvalService;
         private readonly IModuleRepository _moduleRepo;
         private readonly IApprovalStatusRepository _approvalStatusRepo;
 
@@ -26,7 +25,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             ICurrentUserService currentUserService,
             IMapper mapper,
             ISQLDatabaseService db,
-            IApprovalService approvalService,
             IModuleRepository moduleRepo,
             IApprovalStatusRepository approvalStatusRepo)
         {
@@ -35,7 +33,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             _currentUserService = currentUserService;
             _mapper = mapper;
             _db = db;
-            _approvalService = approvalService;
             _moduleRepo = moduleRepo;
             _approvalStatusRepo = approvalStatusRepo;
         }

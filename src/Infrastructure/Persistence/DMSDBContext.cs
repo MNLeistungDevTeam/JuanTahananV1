@@ -95,6 +95,10 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<UserToken> UserTokens { get; set; }
 
+    public virtual DbSet<vwModuleStageApprovalStatus> vwModuleStageApprovalStatuses { get; set; }
+
+    public virtual DbSet<vwTransaction> vwTransactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Address>(entity =>
@@ -862,6 +866,31 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.Token)
                 .IsRequired()
                 .HasMaxLength(4000);
+        });
+
+        modelBuilder.Entity<vwModuleStageApprovalStatus>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vwModuleStageApprovalStatus");
+
+            entity.Property(e => e.ApproveDesc).HasMaxLength(50);
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.RejectDesc).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<vwTransaction>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vwTransactions");
+
+            entity.Property(e => e.ModuleAction).HasMaxLength(50);
+            entity.Property(e => e.ModuleCode).HasMaxLength(50);
+            entity.Property(e => e.ModuleController).HasMaxLength(50);
+            entity.Property(e => e.ReferenceNo).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

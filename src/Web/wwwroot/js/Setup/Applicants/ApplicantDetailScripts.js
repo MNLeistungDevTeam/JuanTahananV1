@@ -2,6 +2,7 @@
 
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
+const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -209,6 +210,12 @@ $(function () {
 
         $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
+        $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
+        $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
+
+
+
+
 
         //let statusArray = [1, 4]
         //let isVisibleApprovalButton = (currentUserId == approvalData.CurrentApproverUserId && statusArray.includes(approvalData.Status));

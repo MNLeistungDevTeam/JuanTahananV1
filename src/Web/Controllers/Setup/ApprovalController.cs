@@ -1,16 +1,14 @@
-﻿using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System;
-using System.Threading.Tasks;
+﻿using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
+using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.ModuleStageApproverRepo;
-using DMS.Domain.Entities;
-using System.Security.Claims;
-using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApprovalLevelDto;
-using DevExpress.XtraRichEdit.Model;
+using DMS.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup
 {
@@ -88,11 +86,9 @@ namespace DMS.Web.Controllers.Setup
                     ApprovalStatusId = model.ApprovalLevel.ApprovalStatusId,
                     Status = model.ApprovalLevel.Status,
                     Remarks = model.ApprovalLevel.Remarks,
-                    Level = model.ApprovalLevel.Level,
                     ApproverId = userId,
                     DateUpdated = DateTime.Now
                 };
-
                 await _approvalService.SaveApprovalLevel(approvalLevel, userId, companyId);
 
                 //await _notificationService.NotifyUsersByApproval(model.ApprovalLevel.ApprovalStatusId, userId, companyId);
