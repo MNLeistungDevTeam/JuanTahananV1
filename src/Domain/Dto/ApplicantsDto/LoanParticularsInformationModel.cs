@@ -43,7 +43,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public decimal DesiredLoanAmount { get; set; }
 
         [StringLength(14)]
-        [Display(Name = "Indicate Housing Application No.", Prompt = "Input existing application no.")]
+        [Display(Name = "If yes,Indicate Housing Application No.", Prompt = "Input existing application no.")]
         public string? ExistingHousingApplicationNumber { get; set; } = string.Empty;
 
         public DateTime DateCreated { get; set; }

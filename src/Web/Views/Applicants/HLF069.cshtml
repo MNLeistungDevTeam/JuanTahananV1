@@ -71,7 +71,7 @@
 
 
                         <input hidden type="text" class="form-control" asp-for="CollateralInformationModel.Id" value="@Model.CollateralInformationModel.Id">
-                        <input hidden type="text" class="form-control" asp-for="CollateralInformationModel.ApplicantsPersonalInformationId" value="@Model.ApplicantsPersonalInformationModel.Id" >
+                        <input hidden type="text" class="form-control" asp-for="CollateralInformationModel.ApplicantsPersonalInformationId" value="@Model.ApplicantsPersonalInformationModel.Id">
 
 
 
@@ -106,7 +106,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" required></label>
+                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" required></label>                                 
                                     @if (string.IsNullOrWhiteSpace(Model.LoanParticularsInformationModel.ExistingHousingApplicationNumber))
                                     {
                                         <input disabled type="text" class="form-control rounded-3" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber">
@@ -374,7 +374,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.Sex" class="rounded-4 selectize" data-value="BarrowersInformationModel.Sex" required>
+                                                <select asp-for="BarrowersInformationModel.Sex" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.Sex" required>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                 </select>
@@ -384,7 +384,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="BarrowersInformationModel.MaritalStatus" required>
+                                                <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.MaritalStatus" required>
                                                     <option value="Single/Unmarried">Single/Unmarried</option>
                                                     <option value="Married">Married</option>
                                                     <option value="Annulled">Annulled</option>
@@ -561,7 +561,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="BarrowersInformationModel.HomeOwnerShip" required>
+                                                <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" required>
                                                     <option value="Owned">Owned</option>
                                                     <option value="Company">Company</option>
                                                     <option value="Annulled">Annulled</option>
@@ -608,7 +608,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.OcupationStatus" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.OcupationStatus" class="rounded-4 selectize" data-value="BarrowersInformationModel.OcupationStatus" required>
+                                                <select asp-for="BarrowersInformationModel.OcupationStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.OcupationStatus" required>
                                                     <option value="Employed">Employed</option>
                                                     <option value="Self-Employed">Self-Employed</option>
                                                 </select>
@@ -823,7 +823,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="BarrowersInformationModel.PreparedMailingAddress" required>
+                                                <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.PreparedMailingAddress" required>
                                                     <option value="Present Home Address">Present Home Address</option>
                                                     <option value="Employer/Business Address">Employer/Business Address</option>
                                                     <option value="Permanent Home Address">Permanent Home Address</option>
@@ -1004,7 +1004,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="SpouseModel.PreparedMailingAddress" class="form-label fw-normal"></label>
-                                    <select asp-for="SpouseModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="SpouseModel.PreparedMailingAddress">
+                                    <select asp-for="SpouseModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.SpouseModel.PreparedMailingAddress">
 
                                         <option value="">Select Prepared Mailing Address......</option>
                                         <option value="Present Home Address">Present Home Address</option>
@@ -1017,7 +1017,7 @@
                             <div class="col-md-6">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.IndustryId"></label>
-                                    <select asp-for="SpouseModel.IndustryId" class="rounded-4 selectize" data-value="SpouseModel.IndustryId">
+                                    <select asp-for="SpouseModel.IndustryId" class="rounded-4 selectize" data-value="@Model.SpouseModel.IndustryId">
                                         <option value="">Select Industry.....</option>
                                         <option value="1">Accounting</option>
                                         <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
@@ -1802,7 +1802,7 @@
                                             <tr class="text-center fw-bold text-dark">
                                                 <th colspan="6">CREDITOR & ADDRESS</th>
                                                 <td>SECURITY</td>
-                                                <td>TYPE</td>
+                                                <td>TEL NO.</td>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
@@ -2066,9 +2066,9 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="Form2PageModel.SourcePagibigFundId" class="form-label fw-normal"></label>
-                                    <select asp-for="Form2PageModel.SourcePagibigFundId" class="rounded-4 selectize" data-value="Form2PageModel.SourcePagibigFundId">
-                                        <option value=""></option>
-                                        <option value="1">Tb Ad</option>
+                                    <select asp-for="Form2PageModel.SourcePagibigFundId" class="rounded-4" data-value="@Model.Form2PageModel.SourcePagibigFundId">
+                                        <option value="">Select Source PagIBIG Fund</option>
+                                      @*   <option value="1">Tb Ad</option>
                                         <option value="2">Website</option>
                                         <option value="3">Radio Ad</option>
                                         <option value="4">Agency</option>
@@ -2078,7 +2078,7 @@
                                         <option value="8">Real Estate Developer</option>
                                         <option value="9">Employer</option>
                                         <option value="10">Seller of the Property</option>
-                                        <option value="11">Newspaper/Magazine Ad</option>
+                                        <option value="11">Newspaper/Magazine Ad</option> *@
                                     </select>
                                     <span asp-validation-for="Form2PageModel.SourcePagibigFundId" class="invalid-tooltip"></span>
                                 </div>

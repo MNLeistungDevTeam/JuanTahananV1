@@ -4,6 +4,7 @@ using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
+using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
@@ -44,6 +45,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IPropertyTypeRepository _propertyTypeRepo;
         private readonly INotificationService _notificationService;
         private readonly IApprovalService _approvalService;
+        private readonly ISourcePagibigFundRepository _sourcePagibigFundRepo;
 
         private DMSDBContext _context;
 
@@ -65,7 +67,8 @@ namespace Template.Web.Controllers.Transaction
             IModeOfPaymentRepository modeOfPaymentRepo,
             IPropertyTypeRepository propertyTypeRepo,
             INotificationService notificationService,
-            IApprovalService approvalService)
+            IApprovalService approvalService,
+            ISourcePagibigFundRepository sourcePagibigFundRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -86,6 +89,7 @@ namespace Template.Web.Controllers.Transaction
             _propertyTypeRepo = propertyTypeRepo;
             _notificationService = notificationService;
             _approvalService = approvalService;
+            _sourcePagibigFundRepo = sourcePagibigFundRepo;
         }
 
         #region View
@@ -252,7 +256,7 @@ namespace Template.Web.Controllers.Transaction
         }
 
         //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
-        public async Task<IActionResult> ApplicantRequests()
+        public  IActionResult ApplicantRequests()
         {
             //var items = new List<ApplicantViewModel>();
 
@@ -343,6 +347,24 @@ namespace Template.Web.Controllers.Transaction
             var data = await _applicantsPersonalInformationRepo.GetEligibilityVerificationDocuments(applicantCode);
             return Ok(data);
         }
+
+
+
+
+        public async Task<IActionResult> GetAllSourcePagibigFund()
+        {
+            var data = await _sourcePagibigFundRepo.GetAllAsync();
+            return Ok(data);
+        }
+
+
+
+
+
+
+        
+
+
 
         #endregion Get Methods
 

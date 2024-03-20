@@ -238,7 +238,60 @@ $(function () {
     //#endregion
 
 
+    //#region Form2Page
+    var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
+    var sourePagibigFundDropdown, $sourePagibigFundDropdown;
+
+
+    $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Applicants/GetAllSourcePagibigFund',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
+
+    sourePagibigFundDropdown.on('load', function (options) {
+        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
+        //resourceCounter("purposeofloan");
+        sourePagibigFundDropdown.off('load');
+    });
+
+
+    //#endregion
 
 
 
