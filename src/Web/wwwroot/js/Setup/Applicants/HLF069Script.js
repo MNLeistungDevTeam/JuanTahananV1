@@ -3,6 +3,68 @@ $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
 
+    rebindValidators();
+
+    $('#rootwizard').bootstrapWizard({
+        onNext: function (tab, navigation, index, e) {
+            console.log("Next button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the previous form (loanparticulars) and remove 'fade' class
+            var prevForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            // Add the "was-validated" class to the current form
+            currentForm.addClass('was-validated');
+
+            // Validate the current form
+            var isValid = validateForm(currentForm);
+
+            // If current form is "form2", return without proceeding to next step
+            if (currentFormName == "form2") {
+                return;
+            }
+
+            if (!isValid) {
+                // If validation fails, prevent navigation to the next step
+                return false;
+            } else {
+                // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false);
+            }
+        },
+        onPrevious: function (tab, navigation, index) {
+            console.log("Previous button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the current form (collateral) and remove 'fade' class
+            var nextForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            // Hide the current form
+            currentForm.addClass('fade').prop('hidden', true);
+
+            // Show the next form
+            nextForm.removeClass('fade').prop('hidden', false);
+
+            // Always return true to allow navigation to the previous step
+            return true;
+        }
+    });
+
     //#region Loan Particulars
 
     var purposeOfLoanDropdown, $purposeOfLoanDropdown;
@@ -16,6 +78,7 @@ $(function () {
         labelField: 'Description',
         searchField: 'Description',
         preload: true,
+        search: false,
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + 'Applicants/GetPurposeOfLoan',
@@ -131,6 +194,7 @@ $(function () {
         labelField: 'Description',
         searchField: 'Description',
         preload: true,
+        search: false,
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + 'Applicants/GetPropertyType',
@@ -173,100 +237,198 @@ $(function () {
 
     //#endregion
 
-    var form1 = $("#loanparticulars");
-    var form2 = $("#collateraldata");
 
-    $('#rootwizard').bootstrapWizard({
-        'onNext': function (tab, navigation, index, e) {
-            var currentForm = $($(tab).data("targetForm"));
-            var currentFormName = currentForm.attr("id");
 
-            if (currentForm) {
-                if (currentFormName == "loanparticulars") {
-                    form1.validate();
-                    currentForm.addClass('was-validated');
 
-                    if (!form1.valid()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return false;
-                    }
-                } else if (currentFormName == "collateraldata") {
-                    form2.validate();
-                    currentForm.addClass('was-validated');
 
-                    if (!form2.valid()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return false;
-                    }
-                }
-            }
+
+
+
+
+
+    $("#LoanParticularsInformationModel_ExistingChecker").on("change", function (event) {
+        // Check if checkbox is checked
+        if ($(this).is(":checked")) {
+
+            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").prop('disabled', false);
+
+        } else {
+            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").prop('disabled', true);
+            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").val('');
+
         }
     });
 
-    $('.submit-form').on('click', (e) => {
-        e.preventDefault();
-        $('#form2').trigger('submit'); // Submit the form if the user clicks OK
-    })
 
-    $('#form2').on('submit', async function (e) {
-        e.preventDefault();
-        let $loanparticulars = $('#loanparticulars');
-        let $collateraldata = $('#collateraldata');
-        let $spousedata = $('#spousedata');
-        if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-            return;
+
+    $("#CollateralInformationModel_ExistingReasonChecker").on("change", function (event) {
+        // Check if checkbox is checked
+        if ($(this).is(":checked")) {
+
+            $("#CollateralInformationModel_CollateralReason").prop('disabled', false);
+
+        } else {
+            $("#CollateralInformationModel_CollateralReason").prop('disabled', true);
+            $("#CollateralInformationModel_CollateralReason").val('');
+
         }
-        let loanparticulars = $loanparticulars.serializeArray();
-        let collateraldata = $collateraldata.serializeArray();
-        let spousedata = $spousedata.serializeArray();
-        let form2 = $(this).serializeArray();
-        let combinedData = {};
-        $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-            combinedData[obj.name] = obj.value;
+    });
+
+
+
+
+
+
+
+
+
+
+    function validateForm(form) {
+        var isValid = true;
+
+        // Your validation logic here
+        // For example, check if required fields are filled
+        form.find(':input[required]').each(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
         });
 
-        // Use await before the AJAX call
-        try {
-            await $.ajax({
-                type: 'POST',
-                url: '/Applicants/SaveHLF068',
-                data: combinedData,
+        return isValid;
+    }
+
+    function rebindValidators() {
+        let $form = $("#frm_hlf068");
+        let button = $("#btn_savehlf068");
+
+        $form.unbind();
+        $form.data("validator", null);
+        $.validator.unobtrusive.parse($form);
+        $form.validate($form.data("unobtrusiveValidation").options);
+        $form.data("validator").settings.ignore = "";
+
+        $form.on("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData(e.target);
+
+            if ($(this).valid() == false) {
+                messageBox("Please fill out all required fields!", "danger", true);
+
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr("action"),
+                method: $(this).attr("method"),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
                 beforeSend: function () {
-                    loading("Saving Changes...");
+                    button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
+                    button.attr({ disabled: true });
+
+                    $("#beneficiary-overlay").removeClass('d-none');
+
                 },
-                success: async function (response) {
-                    messageBox("Successfully", "success", true);
+                success: function (response) {
+                    let recordId = $("input[name='User.Id']").val();
+                    console.log(recordId);
+                    let type = (recordId == 0 ? "Added!" : "Updated!");
+                    let successMessage = `Beneficiary Successfully ${type}`;
+
+                    messageBox(successMessage, "success", true);
 
                     if (applicantInfoIdVal == 0) {
-                        loader.close();
                         setTimeout(function () {
+
+                            $("#beneficiary-overlay").addClass('d-none');
+
                             window.location.href = "/Applicants/HLF068/" + response;
                         }, 2000);
                     }
                     else {
-                        loader.close();
-
                         setTimeout(function () {
+                            $("#beneficiary-overlay").addClass('d-none');
                             // Redirect to the specified location
                             window.location.href = "/Applicants/ApplicantRequests";
                         }, 2000); // 2000 milliseconds = 2 seconds
                     }
+
+                    button.attr({ disabled: false });
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+
+                    userModal.modal('hide');
                 },
-                error: async function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR.responseText);
-                    messageBox(jqXHR.responseText, "danger", true);
-                    loader.close();
+                error: function (response) {
+                    messageBox(response.responseText, "danger");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.attr({ disabled: false });
                 }
             });
-        } catch (error) {
-            // Handle any errors from the AJAX request
-            console.log(error);
-            // Optionally display an error message
-            messageBox("An error occurred during the submission.", "danger", true);
-        }
-    });
+        });
+    }
+
+    //$('#form2').on('submit', async function (e) {
+    //    e.preventDefault();
+    //    let $loanparticulars = $('#loanparticulars');
+    //    let $collateraldata = $('#collateraldata');
+    //    let $spousedata = $('#spousedata');
+    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
+    //        return;
+    //    }
+    //    let loanparticulars = $loanparticulars.serializeArray();
+    //    let collateraldata = $collateraldata.serializeArray();
+    //    let spousedata = $spousedata.serializeArray();
+    //    let form2 = $(this).serializeArray();
+    //    let combinedData = {};
+    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
+    //        combinedData[obj.name] = obj.value;
+    //    });
+
+    //    // Use await before the AJAX call
+    //    try {
+    //        await $.ajax({
+    //            type: 'POST',
+    //            url: '/Applicants/SaveHLF068',
+    //            data: combinedData,
+    //            beforeSend: function () {
+    //                loading("Saving Changes...");
+    //            },
+    //            success: async function (response) {
+    //                messageBox("Successfully", "success", true);
+
+    //                if (applicantInfoIdVal == 0) {
+    //                    loader.close();
+    //                    setTimeout(function () {
+    //                        window.location.href = "/Applicants/HLF068/" + response;
+    //                    }, 2000);
+    //                }
+    //                else {
+    //                    loader.close();
+
+    //                    setTimeout(function () {
+    //                        // Redirect to the specified location
+    //                        window.location.href = "/Applicants/ApplicantRequests";
+    //                    }, 2000); // 2000 milliseconds = 2 seconds
+    //                }
+    //            },
+    //            error: async function (jqXHR, textStatus, errorThrown) {
+    //                console.log(jqXHR.responseText);
+    //                messageBox(jqXHR.responseText, "danger", true);
+    //                loader.close();
+    //            }
+    //        });
+    //    } catch (error) {
+    //        // Handle any errors from the AJAX request
+    //        console.log(error);
+    //        // Optionally display an error message
+    //        messageBox("An error occurred during the submission.", "danger", true);
+    //    }
+    //});
 
     $(document).ready(function () {
         loadloanParticularInformation(applicantInfoIdVal);
@@ -281,7 +443,6 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-
                 $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
                 purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
@@ -324,7 +485,6 @@ $(function () {
             url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-
             },
             error: function () {
             }
