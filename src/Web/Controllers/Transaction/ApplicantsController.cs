@@ -596,7 +596,7 @@ namespace Template.Web.Controllers.Transaction
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
 
-                    if (vwModel.Form2PageModel != null && vwModel.Form2PageModel.FirstName != null)
+                    if (vwModel.Form2PageModel != null)
                     {
                         vwModel.Form2PageModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
@@ -636,7 +636,7 @@ namespace Template.Web.Controllers.Transaction
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
 
-                    if (vwModel.Form2PageModel != null && vwModel.Form2PageModel.FirstName != null)
+                    if (vwModel.Form2PageModel != null)
                     {
                         await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
                     }
