@@ -338,6 +338,12 @@ namespace Template.Web.Controllers.Transaction
             return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
         }
 
+        public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
+        {
+            var data = await _applicantsPersonalInformationRepo.GetEligibilityVerificationDocuments(applicantCode);
+            return Ok(data);
+        }
+
         #endregion Get Methods
 
         //old

@@ -1,7 +1,8 @@
 ﻿"use strict"
 $(function () {
-    loadApplicantTotalInfo
+    loadApplicantTotalInfo();
 
+    //#region Initialization
     var tbl_applicants = $("#tbl_applicants").DataTable({
         ajax: {
             url: '/Applicants/GetApplicants',
@@ -19,7 +20,6 @@ $(function () {
                 }
             },
 
-
             {
                 data: 'ApplicantFullName',
                 orderable: !0,
@@ -36,7 +36,6 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-
 
             {
                 data: 'IncomeAmount',
@@ -137,6 +136,9 @@ $(function () {
         });
     });
 
+    //#endregion
+
+    //#region Events
     $("#btn_add").on('click', function () {
         location.href = $(this).attr("data-url");
     });
@@ -151,6 +153,8 @@ $(function () {
     $("#btn_refresh").on('click', function () {
         tbl_applicants.ajax.reload();
     });
+
+    //#endregion
 
     function loadApplicantTotalInfo() {
         let info_total_approved = $("#info_total_approved");

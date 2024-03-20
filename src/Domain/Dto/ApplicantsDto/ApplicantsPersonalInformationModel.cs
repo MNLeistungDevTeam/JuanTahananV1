@@ -15,7 +15,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int UserId { get; set; }
 
         [Display(Name = "(HAN) Housing Account Number", Prompt = "Input Number")]
-     
         public int HousingAccountNumber { get; set; }
 
         //[Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
@@ -36,7 +35,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? DeletedById { get; set; }
         public int? CompanyId { get; set; }
         public int? ApprovalStatus { get; set; }
-   
 
         #region Display Properties
 
@@ -44,13 +42,21 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? PositionName { get; set; }
         public string? ApplicationStatus { get; set; }
 
-
         public decimal? IncomeAmount { get; set; }
         public string? Developer { get; set; }
         public string? ProjectLocation { get; set; }
         public string? Unit { get; set; }
         public decimal? LoanAmount { get; set; }
-        
+
+        //Documents
+
+        public int DocumentId { get; set; }
+        public int DocumentTypeId { get; set; }
+        public string? DocumentTypeName { get; set; }
+        public string? DocumentLocation { get; set; }
+        public string? DocumentName { get; set; }
+        public int DocumentSize { get; set; }
+        public string? DocumentFileType { get; set; }
 
         #endregion Display Properties
     }
