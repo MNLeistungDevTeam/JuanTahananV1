@@ -169,11 +169,16 @@ $(function () {
                 info_for_approval.html(loading_text);
             },
             success: function (response) {
+
                 info_for_approval.html(`<span data-plugin="counterup">${response[0].TotalPendingReview}</span>`);
                 info_total_approved.html(`<span data-plugin="counterup">${response[0].TotalApprove}</span>`);
                 info_total_disapproved.html(`<span data-plugin="counterup">${response[0].TotalDisApprove}</span>`);
 
                 $("[data-plugin='counterup']").counterUp();
+            }, error: function (jqXHR) {
+                info_for_approval.html(`<span data-plugin="counterup">0</span>`);
+                info_total_approved.html(`<span data-plugin="counterup">0</span>`);
+                info_total_disapproved.html(`<span data-plugin="counterup">0</span>`);
             }
         });
     }

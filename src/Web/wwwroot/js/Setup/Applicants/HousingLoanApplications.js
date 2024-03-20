@@ -4,6 +4,7 @@ $(() => {
     $('#rootwizard').bootstrapWizard({
         'onNext': function (tab, navigation, index, event) {
             var form = $($(tab).data("targetForm"));
+
             if (form) {
                 form.addClass('was-validated');
                 if (form[0].checkValidity() === false) {
@@ -28,6 +29,7 @@ $(() => {
         if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
             return;
         }
+
         let loanparticulars = $loanparticulars.serializeArray();
         let collateraldata = $collateraldata.serializeArray();
         let spousedata = $spousedata.serializeArray();

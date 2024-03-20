@@ -177,7 +177,7 @@ $(function () {
     var form2 = $("#collateraldata");
 
     $('#rootwizard').bootstrapWizard({
-        'onNext': function (tab, navigation, index) {
+        'onNext': function (tab, navigation, index, e) {
             var currentForm = $($(tab).data("targetForm"));
             var currentFormName = currentForm.attr("id");
 
@@ -196,6 +196,11 @@ $(function () {
                 } else if (currentFormName == "collateraldata") {
                     form2.validate();
                     currentForm.addClass('was-validated');
+
+                    if (!$('[name="BarrowersInformationModel.Email"]').val()) {
+                        messageBox("Email is required!", "danger", true);
+                        return false;
+                    }
 
                     if (!form2.valid()) {
                         if (e) {
@@ -287,6 +292,9 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
+                if (!response)
+                    return;
+
                 $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
                 purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);

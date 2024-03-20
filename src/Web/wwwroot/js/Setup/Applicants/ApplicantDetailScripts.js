@@ -3,6 +3,7 @@
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
+const applicantCode = $('[name="ApplicantsPersonalInformationModel.Code"]').val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -11,12 +12,13 @@ const $btnCancel = $('#btnCancel');
 const $approverModal = $('#approver-modal');
 const $approverDiv = $('#div_approval');
 
-$(function () {
+$(async function () {
     let $btnSave = $('#btn_save');
 
     //loadApprovalData();
     //loadApproversData();
     loadApprovalData();
+    await displayDocuForms(applicantCode);
     $('#btnApprove, #btnDefer, #btnReturn, #btnCancel').click(async function () {
         let id = $(this).attr("id");
         let statusType = id.replace("btn", "");
@@ -204,18 +206,12 @@ $(function () {
 
         if (!approvalData) { return; }
 
-
         console.log(approvalData)
-
 
         $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
         $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
         $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
-
-
-
-
 
         //let statusArray = [1, 4]
         //let isVisibleApprovalButton = (currentUserId == approvalData.CurrentApproverUserId && statusArray.includes(approvalData.Status));
@@ -230,6 +226,49 @@ $(function () {
             url: baseUrl + `Approval/GetByReferenceModuleCodeAsync/${referenceId}/${CONST_MODULE_CODE}`,
 
             method: "get",
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function displayDocuForms(applicantCode) {
+
+        var formSection = $('#formSection');
+        formSection.empty();
+
+        var applicantDocu = await getApplicantDocument(applicantCode);
+
+        if (!applicantDocu)
+            return;
+
+        applicantDocu.forEach(doc => {
+
+            var docu = `
+                <div class="col-md-4">
+                    <div class="card border-info border border-1">
+                        <div class="d-flex align-items-center m-2">
+                            <img src="#" class="img-fluid rounded" width="50" alt="">
+                            <div class="w-100 ms-3">
+                                <h5 class="mb-0"><strong>${doc.DocuTypeDesc}</strong></h5>
+                                <p class="mb-0 font-13 text-info">${doc.Name}</p>
+                                <p class="mb-0 font-12 text-muted">${doc.Size} MB</p>
+                            </div>
+                            <a href="#" class="font-25"> <i class="fe-printer"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            formSection.append(docu);
+        });
+        
+    }
+
+    async function getApplicantDocument(applicantCode) {
+        const response = await $.ajax({
+            url: baseUrl + `Document/GetApplicantUploadedDocuments/${applicantCode}`,
+            method: "GET",
             dataType: 'json'
         });
 

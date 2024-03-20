@@ -76,7 +76,8 @@
                     {
                         <li class="side-nav-item">
                             <a asp-controller="@moduleGroup.ModuleTypeController" asp-action="@moduleGroup.ModuleTypeAction" class="side-nav-link">
-                                <i class="@moduleGroup.ModuleTypeIcon"></i>
+                                @* <i class="@moduleGroup.ModuleTypeIcon"></i> *@
+                                @Html.Raw(@moduleGroup.ModuleTypeIcon)
                                 <span> @moduleGroup.ModuleType </span>
                             </a>
                         </li>
@@ -114,7 +115,8 @@
                             {
                                 <li class="side-nav-item">
                                     <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
-                                        <i class="@parentModule.ModuleIcon"></i>
+                                        @* <i class="@parentModule.ModuleIcon"></i> *@
+                                        @Html.Raw(@parentModule.ModuleIcon)
                                         <span> @parentModule.ModuleName </span>
                                     </a>
                                 </li>
