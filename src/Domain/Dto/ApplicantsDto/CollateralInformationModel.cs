@@ -11,7 +11,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
     {
         public int Id { get; set; }
 
-        public int? ApplicantsPersonalInformationId { get; set; } = 0;
+        public int? ApplicantsPersonalInformationId { get; set; }
 
         public string? Province { get; set; }
 
@@ -20,14 +20,16 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Street { get; set; }
         [Display(Name = "Name of Developer / Registered Title Holder", Prompt = "input developer name")]
         public string? DeveloperName { get; set; }
+
         [Display(Name = "Property Type", Prompt = "Select property type")]
-        public int PropertyTypeId { get; set; }
+        public int? PropertyTypeId { get; set; }
+
         [Display(Name = "TCT/OCT/CCT Number", Prompt = "Input number")]
         public int? TctOctCctNumber { get; set; }
         [Display(Name = "Tax Declaration Number", Prompt = "Input number")]
         public int? TaxDeclrationNumber { get; set; }
         [Display(Name = "Lot Unit Number", Prompt = "Input number")]
-        public int? LotUnitNumber { get; set; } = 0;
+        public int? LotUnitNumber { get; set; }
         [Display(Name = "Block Building Number", Prompt = "Input number")]
         public int? BlockBuildingNumber { get; set; }
         [Display(Name = "Is the property presently mortgaged?")]
@@ -41,7 +43,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
             }
         }
         [Display(Name = "Reason for use of offsite collateral", Prompt = "Input reason")]
-        public string? CollateralReason { get; set; } = string.Empty;
+        public string? CollateralReason { get; set; }
         [Display(Name = "Land Area / Floor Area", Prompt = "Input sqm")]
         public decimal? LandArea { get; set; }
         [Display(Name = "Age of House (for purchase of residential unit)", Prompt = "Input sqm")]
@@ -55,9 +57,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Proposed Total Floor Area", Prompt = "Input sqm")]
         public decimal? ProposedTotalFloorArea { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
         public DateTime? DateModified { get; set; }
 

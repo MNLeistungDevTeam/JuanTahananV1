@@ -50,10 +50,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? PreferredTimeToContact { get; set; }
 
         [DisplayName("Last Name")]
-        public string? LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }  
 
         [DisplayName("First Name")]
-        public string? FirstName { get; set; } = string.Empty;  
+        public string? FirstName { get; set; } 
 
         [DisplayName("Middle Name")]
         public string? MiddleName { get; set; }
@@ -74,10 +74,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Date Created")]
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         [DisplayName("Created By Id")]
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
         [DisplayName("Date Modified")]
         public DateTime? DateModified { get; set; }

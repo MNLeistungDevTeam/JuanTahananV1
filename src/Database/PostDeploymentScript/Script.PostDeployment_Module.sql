@@ -23,7 +23,7 @@ BEGIN
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (3, N'USER', N'User', 5, 2, N'', N'User', N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 1, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (4, N'USER-ACC', N'User Account', 5, 0, N'', N'User', N'Index', 3, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 1, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (5, N'ROLE', N'Role Management', 5, 1, N'', N'Role', N'Index', 3, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 1, 1, GETDATE(), NULL, NULL)
-	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (6, N'APPROVER-MGMT', N'Approver Management', 5, 2, NULL, N'ApproverManagement', N'Index', 3, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
+	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (6, N'APPROVER-MGMT', N'Approver Management', 5, 2, NULL, N'Approval', N'Index', 3, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (7, N'BNF-MGMT', N'Benefiary Management', 3, 0,N'<i class="mdi mdi-format-list-text"></i>', N'Applicants', N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'True'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (8, N'APLCNTREQ', N'Applicants Requests', 3, 1,NULL, N'Applicants', N'ApplicantRequests', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'True'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (9, N'COMP', N'Company', 6, 1,  N'<i class="fe-airplay me-1"></i>', N'CompanyProfile',  N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
@@ -36,4 +36,30 @@ BEGIN
 END
 GO
 
+  
+IF NOT EXISTS (SELECT 1 FROM [dbo].[ModuleStage])
+BEGIN
+SET IDENTITY_INSERT [dbo].[ModuleStage] ON;
+INSERT INTO [dbo].[ModuleStage] ([Id], [ModuleId], [Code], [Name], [Title], [Level], [ApproveDesc], [RejectDesc], [ReturnStage], [RequiredCount], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
+VALUES
+    (1, 8, 'APLCNTREQ', 'Applicants Requests', 'Initial Stage', 1, 'Approved', 'Rejected', 0, 1 , 0, 1, '2024-03-19 09:00:00', NULL, NULL),
+    (2, 8, 'APLCNTREQ', 'Applicants Requests', 'Final Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
+ SET IDENTITY_INSERT [dbo].[ModuleStage] OFF
+END
+GO
 
+
+ IF NOT EXISTS (SELECT 1 FROM [dbo].[ModuleStageApprover])
+BEGIN
+SET IDENTITY_INSERT [dbo].[ModuleStageApprover] ON;
+
+INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
+VALUES (1, 1, NULL, 5, 0, 1, GETDATE(), NULL, NULL);
+
+
+INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
+VALUES (2, 2, NULL, 3, 0, 1, GETDATE(), NULL, NULL);
+
+SET IDENTITY_INSERT [dbo].[ModuleStageApprover] OFF;
+END
+GO

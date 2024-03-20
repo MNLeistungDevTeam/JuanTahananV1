@@ -9,9 +9,7 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
-using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -256,22 +254,22 @@ namespace Template.Web.Controllers.Transaction
         //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
         public async Task<IActionResult> ApplicantRequests()
         {
-            var items = new List<ApplicantViewModel>();
+            //var items = new List<ApplicantViewModel>();
 
-            foreach (var item in await _applicantsPersonalInformationRepo.GetAllAsync())
-            {
-                items.Add(new ApplicantViewModel()
-                {
-                    ApplicantsPersonalInformationModel = _mapper.Map<ApplicantsPersonalInformationModel>(item),
-                    LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(await _loanParticularsInformationRepo.GetByApplicationIdAsync(item.Id)),
-                    BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(await _barrowersInformationRepo.GetByApplicationInfoIdAsync(item.Id)),
-                    CollateralInformationModel = _mapper.Map<CollateralInformationModel>(await _collateralInformationRepo.GetByApplicationInfoIdAsync(item.Id)),
-                    SpouseModel = _mapper.Map<SpouseModel>(await _spouseRepo.GetByApplicationInfoIdAsync(item.Id)),
-                    ApplicationSubmittedDocumentModels = await _documentRepo.SpGetAllApplicationSubmittedDocuments(item.Id)
-                });
-            }
-            ViewBag.items = items;
-            return View(items);
+            //foreach (var item in await _applicantsPersonalInformationRepo.GetAllAsync())
+            //{
+            //    items.Add(new ApplicantViewModel()
+            //    {
+            //        ApplicantsPersonalInformationModel = _mapper.Map<ApplicantsPersonalInformationModel>(item),
+            //        LoanParticularsInformationModel = _mapper.Map<LoanParticularsInformationModel>(await _loanParticularsInformationRepo.GetByApplicationIdAsync(item.Id)),
+            //        BarrowersInformationModel = _mapper.Map<BarrowersInformationModel>(await _barrowersInformationRepo.GetByApplicationInfoIdAsync(item.Id)),
+            //        CollateralInformationModel = _mapper.Map<CollateralInformationModel>(await _collateralInformationRepo.GetByApplicationInfoIdAsync(item.Id)),
+            //        SpouseModel = _mapper.Map<SpouseModel>(await _spouseRepo.GetByApplicationInfoIdAsync(item.Id)),
+            //        ApplicationSubmittedDocumentModels = await _documentRepo.SpGetAllApplicationSubmittedDocuments(item.Id)
+            //    });
+            //}
+            //ViewBag.items = items;
+            return View();
         }
 
         #endregion View
@@ -519,17 +517,17 @@ namespace Template.Web.Controllers.Transaction
                 }
 
                 var user = new User();
-                var applicationData = new ApplicantsPersonalInformationModel();
+                // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
-                int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
+                int companyId = int.Parse(User.FindFirstValue("Company"));
 
                 //create  new beneficiary
-
-                vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
 
                 {
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
                     #region Register User and Send Email
 
                     if (vwModel.ApplicantsPersonalInformationModel.UserId == 0)
@@ -560,11 +558,12 @@ namespace Template.Web.Controllers.Transaction
 
                     #endregion Register User and Send Email
 
-                    applicationData.UserId = user.Id;
-                    applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
-                    applicationData.ApprovalStatus = 1;
+                    vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
+                    vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
-                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -573,7 +572,7 @@ namespace Template.Web.Controllers.Transaction
                         await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
 
-                    if (vwModel.CollateralInformationModel != null)
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
                     {
                         vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
@@ -587,17 +586,17 @@ namespace Template.Web.Controllers.Transaction
                         await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
-                    if (vwModel.SpouseModel != null)
+                    if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
                     {
                         vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
 
-                    if (vwModel.Form2PageModel != null)
+                    if (vwModel.Form2PageModel != null && vwModel.Form2PageModel.FirstName != null)
                     {
                         vwModel.Form2PageModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
@@ -608,7 +607,8 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
-                    applicationData.ApprovalStatus = 1;
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
@@ -618,7 +618,7 @@ namespace Template.Web.Controllers.Transaction
                         await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
 
-                    if (vwModel.CollateralInformationModel != null)
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
                     {
                         await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
                     }
@@ -628,15 +628,15 @@ namespace Template.Web.Controllers.Transaction
                         await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                     }
 
-                    if (vwModel.SpouseModel != null)
+                    if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
                     {
-                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
 
-                    if (vwModel.Form2PageModel != null)
+                    if (vwModel.Form2PageModel != null && vwModel.Form2PageModel.FirstName != null)
                     {
                         await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
                     }
@@ -645,17 +645,6 @@ namespace Template.Web.Controllers.Transaction
                 // last stage pass parameter code
 
                 var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
-
-                #region Notification
-
-                var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
-                var actiontype = type;
-
-                var actionlink = $"Applicants/HLF068/{applicantdata.Code}";
-
-                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantdata.Code, userId, companyId);
-
-                #endregion Notification
 
                 return Ok(applicantdata.Code);
             }

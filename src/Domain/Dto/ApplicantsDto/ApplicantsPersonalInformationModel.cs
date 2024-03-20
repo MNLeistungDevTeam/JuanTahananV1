@@ -15,8 +15,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int UserId { get; set; }
 
         [Display(Name = "(HAN) Housing Account Number", Prompt = "Input Number")]
-        [Range(0, 999999999999)]
-        public long HousingAccountNumber { get; set; }
+     
+        public int HousingAccountNumber { get; set; }
 
         //[Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
         //[Range(0, 999999999999)]

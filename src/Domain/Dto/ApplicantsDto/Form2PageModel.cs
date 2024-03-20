@@ -262,7 +262,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? SourcePagibigFundId { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         public int CreatedById { get; set; }
 

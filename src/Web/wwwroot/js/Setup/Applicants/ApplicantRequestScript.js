@@ -25,7 +25,7 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-           
+
             {
                 data: 'PagibigNumber',
                 orderable: !0,
@@ -64,7 +64,6 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-          
 
             {
                 data: 'DateCreated',
@@ -168,9 +167,11 @@ $(function () {
                 info_for_approval.html(loading_text);
             },
             success: function (response) {
-                info_for_approval.html(`<span data-plugin="counterup">${response[0].TotalPendingReview}</span>`);
-                info_total_approved.html(`<span data-plugin="counterup">${response[0].TotalApprove}</span>`);
-                info_total_disapproved.html(`<span data-plugin="counterup">${response[0].TotalDisApprove}</span>`);
+                if (response) {
+                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalPendingReview : 0}</span>`);
+                    info_total_approved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalApprove : 0}</span>`);
+                    info_total_disapproved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalDisApprove : 0}</span>`);
+                }
 
                 $("[data-plugin='counterup']").counterUp();
             }
