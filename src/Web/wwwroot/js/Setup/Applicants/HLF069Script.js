@@ -19,7 +19,7 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            //currentForm.addClass('was-validated');
+            currentForm.addClass('was-validated');
 
             // Validate the current form
             var isValid = validateForm(currentForm);
@@ -202,13 +202,13 @@ $(function () {
         }
     });
 
-    $('#LoanParticularsInformation_ExistingChecker').on('change', function (e) {
+    $('#LoanParticularsInformationModel_ExistingChecker').on('change', function (e) {
         e.preventDefault();
         if ($(this).prop('checked')) {
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').prop('disabled', false);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', false);
         } else {
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').val('');
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').prop('disabled', true);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').val('');
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
         }
     })
 

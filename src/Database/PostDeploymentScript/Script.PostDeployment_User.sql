@@ -16,12 +16,13 @@ BEGIN
 		[CreatedById],
 		[DateCreated], 
 		[DateModified],
-		[IsDark]) 
-	VALUES (1, N'Admin', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Super', 'Admin', '', N'admin@email.com', 'Admin', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0),
-	       (2, N'LGU', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Oliver', 'Jay pee', 'L', N'lgu@email.com', 'LGU', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0),
-		   (3, N'Pagibig', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Rosales', 'Mike', 'C', N'Pagibig@email.com', 'Pag-ibig', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0),
-		   (4, N'Beneficiary', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Cortel', 'Albert', 'La Viña', N'beneficiary@email.com', 'Beneficiary', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0),
-		   (5, N'Developer', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Concepcion', 'David', 'C', N'developer@email.com', 'Developer', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0)
+		[IsDark],
+		PagibigNumber) 
+	VALUES (1, N'Admin', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Super', 'Admin', '', N'admin@email.com', 'Admin', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0,NULL),
+	       (2, N'LGU', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Oliver', 'Jay pee', 'L', N'lgu@email.com', 'LGU', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0,NULL),
+		   (3, N'Pagibig', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Rosales', 'Mike', 'C', N'Pagibig@email.com', 'Pag-ibig', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0,NULL),
+		   (4, N'Beneficiary', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Cortel', 'Albert', 'La Viña', N'beneficiary@email.com', 'Beneficiary', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0,'324135645768'),
+		   (5, N'Developer', N'b5lj1xrAEY90IM7voc61Dg8HDyREnU2mwQTl8sozfA8=', N'your-password-salt', 'Concepcion', 'David', 'C', N'developer@email.com', 'Developer', 0, 1, CAST(N'2023-05-31T10:35:44.1310781' AS DateTime2), NULL,0,NULL)
 	
 	SET IDENTITY_INSERT [dbo].[User] OFF
 END
