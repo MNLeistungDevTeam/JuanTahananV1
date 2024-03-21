@@ -45,6 +45,16 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("User with the same username already exists");
         }
 
+        if (!string.IsNullOrEmpty(user.PagibigNumber))
+        {
+            var existingPagibigNumber = await _userRepository.GetByPagibigNumberAsync(user.PagibigNumber);
+
+            if (existingPagibigNumber != null)
+            {
+                throw new Exception("User with the same Pag-Ibig Number already exists");
+            }
+        }
+
         var userRepo = _mapper.Map<User>(user);
 
         // Create a new user entity

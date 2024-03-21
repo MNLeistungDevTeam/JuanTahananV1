@@ -45,6 +45,7 @@ namespace DMS.Infrastructure.Services
                 LastName = model.LastName,
                 Gender = model.Gender,
                 Position = "Beneficiary",
+                PagibigNumber = model.PagibigMidNumber
                
             };
 

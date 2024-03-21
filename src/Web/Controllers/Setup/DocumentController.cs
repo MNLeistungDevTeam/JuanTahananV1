@@ -162,7 +162,7 @@ namespace DMS.Web.Controllers.Setup
             );
         }
 
-        public async Task DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
+        public async Task<IActionResult> DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
         {
             try
             {
@@ -213,11 +213,18 @@ namespace DMS.Web.Controllers.Setup
 
                 List<IFormFile> fileList = new List<IFormFile> { file };
 
+
+
                 await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
+
+                return Ok();
+                
+
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return BadRequest(ex.Message);
             }
         }
 
