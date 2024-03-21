@@ -1,8 +1,13 @@
-﻿@model ApplicantViewModel
+﻿@using DMS.Domain.Enums
+@inject DMS.Application.Services.ICurrentUserService _currentUserService
+@inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo
+@model ApplicantViewModel
 @{
     ViewData["Title"] = "Applicant Details";
+    ViewData["Breadcrumbs"] = "Details";
 
-
+    var currentUserId = _currentUserService.GetCurrentUserId();
+    var currentUserRole = _roleRepo.GetByCurrentUser();
 }
 
 <!-- start page title -->
@@ -12,7 +17,8 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="ApplicantRequests">Applicant Requests</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Breadcrumbs"]</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewData["Title"]</h4>
@@ -27,34 +33,82 @@
         <div class="row gy-2">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="fw-bold font-28">
-                            @Model.ApplicantsPersonalInformationModel.Code <span class="badge bg-warning ms-auto fs-7">Pending Review</span>
+                    <div class="col-md-6 mb-2">
+                        <h3 class="align-items-center">
+                            <span class="fw-bold font-28 me-2">@Model.ApplicantsPersonalInformationModel.Code</span>
+                            @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
+                            {
+                                <span class="badge bg-secondary ms-auto fs-7">Draft</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
+                            {
+                                <span class="badge bg-success ms-auto fs-7">PAG-IBIG Verified</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Withdrawn)
+                            {
+                                <span class="badge bg-warning ms-auto fs-7">Withdrawn</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
+                            {
+                                <span class="badge bg-info ms-auto fs-7">Submitted</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                            {
+                                <span class="badge bg-success ms-auto fs-7">Developer Verified</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
+                            {
+                                <span class="badge bg-danger ms-auto fs-7">Deferred</span>
+                            }
+
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                         </h3>
                     </div>
-                    <div class="col-md-6 text-md-end">
-                        @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1)
+                    <div class="col-md-6 mb-2">
+                        <div class="d-flex justify-content-end align-items-center gap-1">
+                            @{
+                                if (currentUserId == Model.ApplicantsPersonalInformationModel.UserId)
+                                {
+                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
+                                    {
+                                        <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)">
+                                            <i class="fe-send me-1"></i> <span>Submit Application</span>
+                                        </button>
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperVerified)">
+                                        <i class="fe-check-square me-1"></i> <span>Approve</span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
+                                        <i class="fe-x-circle me-1"></i> <span>Defer</span>
+                                    </button>
+                                }
+                            }
+                        </div>
+                        @* @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1)
                         {
 
-                            <button type="button" class="btn btn-primary rounded-end" id="btnApprove">
-                                Approve <i class="fe-check-circle"></i>
-                            </button>
+                        <button type="button" class="btn btn-primary rounded-end" id="btnApprove">
+                        Approve <i class="fe-check-circle"></i>
+                        </button>
 
-                            <button type="button" class="btn btn-primary rounded-end" id="btnDefer">
-                                Defer <i class="fe-x-circle"></i>
-                            </button>
-
+                        <button type="button" class="btn btn-primary rounded-end" id="btnDefer">
+                        Defer <i class="fe-x-circle"></i>
+                        </button>
                         }
                         else
                         {
+                        <button type="button" class="btn btn-link text-decoration-none">
+                        Review application <i class="mdi mdi-arrow-right"></i>
+                        </button>
 
-                            <button type="button" class="btn btn-link text-decoration-none">
-                                Review application <i class="mdi mdi-arrow-right"></i>
-                            </button>
-
-                        }
+                        } *@
                     </div>
                 </div>
                 <div class="row">
@@ -84,13 +138,10 @@
                                             <h4>Developer</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -100,7 +151,6 @@
                                 <div class="col-xl-12">
                                     <h4 class="header-title"></h4>
                                     <p class="text-muted font-14 mb-3">
-
                                     </p>
 
                                     <ul class="nav nav-tabs nav-bordered mb-3" role="tablist">
@@ -110,7 +160,7 @@
                                                 <span class="d-none d-md-block">General Info</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation" hidden>
                                             <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
                                                 <i class="mdi mdi-account-circle d-md-none d-block"></i>
                                                 <span class="d-none d-md-block">Buyer</span>
@@ -123,17 +173,17 @@
                                             </a>
                                         </li>
                                         <!-- New tabs -->
-                                        <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation" hidden>
                                             <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
                                                 <span class="d-none d-md-block">Application Attachments</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation" hidden>
                                             <a href="#tab5" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
                                                 <span class="d-none d-md-block">Unit</span>
                                             </a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
+                                        <li class="nav-item" role="presentation" hidden>
                                             <a href="#tab6" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
                                                 <span class="d-none d-md-block">Timeline</span>
                                             </a>
@@ -182,12 +232,8 @@
                                                         <label class="col-md-2 text-md-end">Residence:</label>
                                                         <div class="col-md-10">
                                                             <p>@Model.BarrowersInformationModel.PresentBaranggayName @Model.BarrowersInformationModel.PresentMunicipalityName @Model.BarrowersInformationModel.PresentProvinceName</p>
-
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
                                                 <div class="col-md-6">
 
@@ -284,8 +330,10 @@
             </div>
             <form asp-action="SaveApprovalLevel" asp-controller="Approval" asp-antiforgery="true" method="post" role="form" id="frm_approver_level">
                 <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
                     <input asp-for="ApprovalLevel.Id" type="hidden" />
-                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="" />
+                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="hidden" />
                     <input asp-for="ApprovalLevel.Status" type="hidden" />
                     <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />
                     <input asp-for="ApprovalLevel.TransactionId" type="hidden" />
@@ -314,6 +362,7 @@
 
 @section Scripts {
     @*     @await Html.PartialAsync("_ApproverModal", Model.ApprovalLevel) *@
+    <script src="~/js/validation.bundle.js"></script>
     <script src="~/js/Setup/Applicants/ApplicantDetailScripts.js" asp-append-version="true"></script>
 
 }

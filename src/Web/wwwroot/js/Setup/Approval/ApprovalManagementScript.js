@@ -31,7 +31,10 @@
 
             {
                 data: "ModuleStageCount",
-                class: "text-center"
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data != undefined ? data : 0;
+                }
             },
 
         ],
@@ -417,4 +420,8 @@
 
         var approverIdDropdown = $approverIdDropdown[0].selectize;
     }
+
+    $("#btnRefresh").on('click', function () {
+        tbl_moduleHasApproval.ajax.reload();
+    });
 });

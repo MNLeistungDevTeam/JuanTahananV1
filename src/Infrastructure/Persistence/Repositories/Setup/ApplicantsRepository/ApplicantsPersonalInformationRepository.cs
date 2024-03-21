@@ -79,7 +79,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
-            _applicantPersonalInfo.ApprovalStatus = 1;
+            _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
 
             if (model.Id == 0)
             {

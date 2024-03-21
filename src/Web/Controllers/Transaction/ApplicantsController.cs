@@ -256,7 +256,7 @@ namespace Template.Web.Controllers.Transaction
         }
 
         //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
-        public  IActionResult ApplicantRequests()
+        public IActionResult ApplicantRequests()
         {
             //var items = new List<ApplicantViewModel>();
 
@@ -348,23 +348,11 @@ namespace Template.Web.Controllers.Transaction
             return Ok(data);
         }
 
-
-
-
         public async Task<IActionResult> GetAllSourcePagibigFund()
         {
             var data = await _sourcePagibigFundRepo.GetAllAsync();
             return Ok(data);
         }
-
-
-
-
-
-
-        
-
-
 
         #endregion Get Methods
 

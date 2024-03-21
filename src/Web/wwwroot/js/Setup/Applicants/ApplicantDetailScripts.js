@@ -20,68 +20,6 @@ $(function () {
     loadApprovalData();
 
     loadVerificationAttachments(CONST_TRANSACTIONCODE);
-    $('#btnApprove, #btnDefer, #btnReturn, #btnCancel').click(async function () {
-        let id = $(this).attr("id");
-        let statusType = id.replace("btn", "");
-
-        await openModal(statusType);
-    })
-
-    $("#btn_save").on("click", function () {
-        let action = $(this).attr('data-action');
-
-        rebindValidator();
-    });
-
-    async function openModal(statusType) {
-        let modalLabel = $("#approver-modalLabel");
-        /*        let recordId = $(`[name="${CONST_MODULE}.Id"]`).val();*/
-        //applicationCode
-        let transactionNo = $(`[name="ApplicantsPersonalInformationModel.Code"]`).val();
-
-        let status;
-        let remarksInput = $('[name="ApprovalLevel.Remarks"]');
-        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
-
-        resetForm();
-
-        if (statusType == "Approve") {
-            modalLabel.html('<span class="fe-thumbs-up"></span> Approve Transaction');
-            $btnSave.addClass("btn btn-primary").html('<span class="fe-thumbs-up"></span> Approve')
-            $btnSave.attr('data-action', 'Approve');
-
-            status = 2;
-        } else if (statusType == "Defer") {
-            modalLabel.html('<span class="fe-thumbs-down"></span> Defer Transaction');
-            $btnSave.addClass("btn btn-danger").html('<span class="fe-thumbs-down"></span> Defer')
-            $btnSave.attr('data-action', 'Defer');
-
-            status = 3;
-            remarksInput.attr({ "data-val-required": "Remarks is required.", "data-val": true });
-        } else if (statusType == "Return") {
-            modalLabel.html('<span class="fe-corner-down-left"></span> Return Transaction');
-            $btnSave.addClass("btn btn-warning").html('<span class="fe-corner-down-left"></span> Return')
-            $btnSave.attr('data-action', 'Return');
-
-            status = 4;
-            remarksInput.attr({ "data-val-required": "Remarks is required.", "data-val": true });
-        } else if (statusType == "Cancel") {
-            modalLabel.html('<span class="fe-slash"></span> Cancel Transaction');
-            $btnSave.addClass("btn btn-danger").html('<span class="fe-slash"></span> Cancel')
-            $btnSave.attr('data-action', 'Cancel');
-
-            status = 6;
-            remarksInput.attr({ "data-val-required": "Remarks is required.", "data-val": true });
-        }
-
-        //$("[name='ApprovalLevel.Id']").val(id)
-        //$("[name='ApprovalLevel.ApprovalStatusId]'").val(approvalStatusID);
-        $("[name='ApprovalLevel.Status']").val(status);
-        $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
-
-        // rebindValidator();
-        $approverModal.modal("show");
-    }
 
     function loadVerificationAttachments(applicantCode) {
         $.ajax({
@@ -97,23 +35,19 @@ $(function () {
 
     function appendVerificationAttachments(item) {
         let itemLink = item.DocumentLocation + item.DocumentName;
-        let rowstoAppend = `
+        let rowstoAppend = `<div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
 
-                                                <div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
-                                                    <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
-
-                                                    <div class="list-group">
-                                                        <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <div>
-                                                                    <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-
-        `;
+                                <div class="list-group">
+                                    <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>`;
 
         $("#div_verification").append(rowstoAppend);
     }
@@ -132,120 +66,63 @@ $(function () {
 
     function appendApplicationAttachments(item) {
         let itemLink = item.DocumentLocation + item.DocumentName;
-        let rowstoAppend = `
+        let rowstoAppend = `<div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
 
-                                                <div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
-                                                    <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
-
-                                                    <div class="list-group">
-                                                        <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <div>
-                                                                    <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-
-        `;
+                                <div class="list-group">
+                                    <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>`;
 
         $("#div_verification").append(rowstoAppend);
     }
 
-    function rebindValidator() {
-        let $form = $("#frm_approver_level");
+    //#region Approval
+    
 
-        let action = $("#btn_save").attr('data-action');
+    //$("#btn_save").on("click", function () {
+    //    rebindValidator();
+    //});
 
-        var actionHead = "";
+    $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async  function () {
+        let action = $(this).attr("data-value");
 
-        var titleText = "";
+        await openApprovalModal(action)
+    });
 
-        var confirmbuttonText = "";
+    async function openApprovalModal(action) {
+        let modalLabel = $("#approver-modalLabel");
+        let transactionNo = $(`[name="ApplicantsPersonalInformationModel.Code"]`).val();
+        let remarksInput = $('[name="ApprovalLevel.Remarks"]');
 
-        if (action == "Approve") {
-            actionHead = 'Approve';
-            titleText = 'Are you sure you wish to proceed with approving this application? This will move the application to the next step';
-            confirmbuttonText = '   Yes, approve it';
+        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+
+        if (action == 1) {
+            modalLabel.html('<span class="fe-send"></span> Submit Application');
+            $btnSave.addClass("btn btn-primary").html('<span class="fe-send"></span> Submit')
+        } else if (action == 5) {
+            modalLabel.html('<span class="mdi mdi-book-cancel-outline"></span> Withdraw Application');
+            $btnSave.addClass("btn btn-warning").html('<span class="mdi mdi-book-cancel-outline"></span> Confirm')
         }
-        else {
-            actionHead = 'Defer';
-            titleText = 'Are you sure you wish to defer this application? This will postpone this application, requiring a new submission from the beneficiary';
-            confirmbuttonText = 'Yes, defer it';
-        }
 
-        $form.unbind();
-        $form.data("validator", null);
-        $.validator.unobtrusive.parse($form);
-        $form.validate($form.data("unobtrusiveValidation").options);
-        $form.data("validator").settings.ignore = "";
+        $("[name='ApprovalLevel.Status']").val(action);
+        $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
 
-        $form.submit(function (e) {
-            e.preventDefault();
-            console.log('form submitted');
-            if (!$form.valid()) { return; }
-
-            Swal.fire({
-                title: `${actionHead} Application?`,
-                text: `${titleText}`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: `${confirmbuttonText}`,
-                cancelButtonText: "No, I'll recheck it",
-                showLoaderOnConfirm: true,
-                preConfirm: () => {
-                    // Using fetch to submit form data
-                    return fetch($form.attr("action"), {
-                        method: $form.attr("method"),
-                        body: new FormData($form[0]),
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(response.statusText);
-                            }
-                            return response.ok;
-                        })
-                        .then(data => {
-                            // Handle the response data here if needed
-                            messageBox("Successfully saved.", "success");
-                            $approverModal.modal("hide");
-                            location.reload();
-                            return data; // Return data to be used by Swal
-                        })
-                        .catch(error => {
-                            messageBox(error.message, "danger", false, false);
-                            throw error; // Throw error to show Swal validation message
-                        });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Handle success if needed
-                }
-            });
-        });
+        rebindValidator();
+        $approverModal.modal("show");
     }
-
-    function resetForm() {
-        $("[name='ApprovalLevel.Remarks']").val("");
-
-        $btnSave.removeClass();
-    }
-
     async function loadApprovalData() {
         const requestorId = $(`[name="${CONST_MODULE}.CreatedById"]`).val();
         const currentUserId = $("#current_userId").val();
 
         let recordId = $("#ApplicantsPersonalInformationModel_Id").val();
         const approvalData = await getApprovalData(recordId);
-
-        //$btnApprove.attr({ hidden: true });
-        //$btnDisapprove.attr({ hidden: true });
-        //$btnReturn.attr({ hidden: true });
-        //$btnCancel.attr({ hidden: true });
 
         if (!approvalData) { return; }
 
@@ -255,14 +132,6 @@ $(function () {
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
         $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
         $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
-
-        //let statusArray = [1, 4]
-        //let isVisibleApprovalButton = (currentUserId == approvalData.CurrentApproverUserId && statusArray.includes(approvalData.Status));
-
-        //$btnApprove.attr({ hidden: !isVisibleApprovalButton });
-        //$btnDisapprove.attr({ hidden: !isVisibleApprovalButton });
-        //$btnReturn.attr({ hidden: !(isVisibleApprovalButton && approvalData.Status != 4 && approvalData.ModuleDescription != "Canvass Sheet") });
-        //$btnCancel.attr({ hidden: !(currentUserId == requestorId && statusArray.includes(approvalData.Status)) });
     }
     async function getApprovalData(referenceId) {
         const response = await $.ajax({
@@ -274,4 +143,55 @@ $(function () {
 
         return response;
     }
+    function rebindValidator() {
+        let $form = $("#frm_approver_level");
+
+        $form.unbind();
+        $form.data("validator", null);
+        $.validator.unobtrusive.parse($form);
+        $form.validate($form.data("unobtrusiveValidation").options);
+        $form.data("validator").settings.ignore = "";
+
+        $form.submit(function (e) {
+            e.preventDefault();
+
+            if (!$form.valid()) { return; }
+
+            let formData = $form.serialize();
+            formData = formData.replace(/ApprovalLevel\./g, "");
+
+            $.ajax({
+                url: $form.attr("action"),
+                method: $form.attr("method"),
+                data: formData,
+                beforeSend: function () {
+                    $btnSave.attr({ disabled: true });
+                    //$overlay.attr({ hidden: false });
+                },
+                success: function (response) {
+                    messageBox("Successfully saved.", "success");
+
+                    $btnSave.attr({ disabled: false });
+                    //$overlay.attr({ hidden: true });
+
+                    $approverModal.modal("hide");
+
+                    location.reload();
+                },
+                error: function (error) {
+                    //$overlay.attr({ hidden: true });
+                    $btnSave.attr({ disabled: false });
+
+                    messageBox(error.responseText, "danger", false, false);
+                }
+            })
+        })
+    }
+    function resetForm() {
+        $("[name='ApprovalLevel.Remarks']").val("");
+
+        $btnSave.removeClass();
+    }
+
+    //#endregion
 });

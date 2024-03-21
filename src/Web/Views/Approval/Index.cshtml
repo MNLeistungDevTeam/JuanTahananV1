@@ -104,14 +104,14 @@
 
                 <button class="btn btn-light btn-sm waves-effect" type="button" id="btn_edit" disabled>
                     <div class="d-flex flex-row align-items-center gap-1">
-                        <span class="fe-thumbs-down"></span>
+                        <span class="fe-edit"></span>
                         <span class="d-none d-lg-block">Edit</span>
                     </div>
                 </button>
 
                 <button class="btn btn-light btn-sm waves-effect" type="button" id="btnRefresh">
                     <div class="d-flex flex-row align-items-center gap-1">
-                        <span class="mdi mdi-refresh"></span>
+                        <span class="fe-refresh-cw"></span>
                         <span class="d-none d-lg-block">Refresh</span>
                     </div>
                 </button>
@@ -154,12 +154,12 @@
                     <div class="row">
                         <div class="col-md-4 mb-2">
                             <label asp-for="Module.Code" class="form-label"></label>
-                            <input asp-for="Module.Code" class="form-control" placeholder="Module Code" />
+                            <input asp-for="Module.Code" class="form-control" placeholder="Module Code" readonly/>
                             <span asp-validation-for="Module.Code" class="text-danger"></span>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label asp-for="Module.Description" class="form-label"></label>
-                            <input asp-for="Module.Description" class="form-control" placeholder="Module Description" />
+                            <input asp-for="Module.Description" class="form-control" placeholder="Module Description" readonly/>
                             <span asp-validation-for="Module.Description" class="text-danger"></span>
                         </div>
 

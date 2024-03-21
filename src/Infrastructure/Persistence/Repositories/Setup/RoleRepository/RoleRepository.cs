@@ -39,6 +39,32 @@ public class RoleRepository : IRoleRepository
     public async Task<List<Role>?> GetAllAsync() =>
         await _context.Roles.AsNoTracking().ToListAsync();
 
+    public async Task<RoleModel?> GetByCurrentUser()
+    {
+        try
+        {
+            var roles = await GetAllRolesAsync();
+            if (roles == null) { return null; }
+            if (!roles.Any()) { return null; }
+
+            int currentUserId = _currentUserService.GetCurrentUserId();
+            var userRole = await _context.UserRoles.AsNoTracking()
+                .Where(x => x.UserId == currentUserId)
+                .FirstOrDefaultAsync();
+            if (userRole == null) { return null; }
+
+            _context.Entry(userRole).State = EntityState.Detached;
+
+            var role = roles.FirstOrDefault(m => m.Id == userRole.RoleId);
+
+            return role;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<Role> SaveAsync(RoleModel rModel, List<RoleAccessModel> raModel)
     {
         var _rModel = _mapper.Map<Role>(rModel);
