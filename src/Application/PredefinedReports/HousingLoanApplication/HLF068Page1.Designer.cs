@@ -33,6 +33,7 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel129 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel128 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel127 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel126 = new DevExpress.XtraReports.UI.XRLabel();
@@ -316,7 +317,7 @@
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.HLF068Page1BindingSource = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
-            this.xrLabel129 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel131 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable36)).BeginInit();
@@ -368,6 +369,7 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel131,
             this.xrLabel129,
             this.xrLabel128,
             this.xrLabel127,
@@ -535,6 +537,18 @@
             this.xrPictureBox1});
             this.Detail.HeightF = 1300.67F;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel129
+            // 
+            this.xrLabel129.CanGrow = false;
+            this.xrLabel129.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId]== 1,true , false)\n\n\n\n\n")});
+            this.xrLabel129.LocationFloat = new DevExpress.Utils.PointFloat(40.61295F, 151.8606F);
+            this.xrLabel129.Multiline = true;
+            this.xrLabel129.Name = "xrLabel129";
+            this.xrLabel129.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel129.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
+            this.xrLabel129.Text = "✔";
             // 
             // xrLabel128
             // 
@@ -3648,17 +3662,18 @@
             this.HLF068Page1BindingSource.DataSource = typeof(global::DMS.Domain.Dto.ReportDto.ApplicantInformationReportModel);
             this.HLF068Page1BindingSource.Name = "HLF068Page1BindingSource";
             // 
-            // xrLabel129
+            // xrLabel131
             // 
-            this.xrLabel129.CanGrow = false;
-            this.xrLabel129.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId]== 1,true , false)\n\n\n\n\n")});
-            this.xrLabel129.LocationFloat = new DevExpress.Utils.PointFloat(40.61295F, 151.8606F);
-            this.xrLabel129.Multiline = true;
-            this.xrLabel129.Name = "xrLabel129";
-            this.xrLabel129.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel129.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
-            this.xrLabel129.Text = "✔";
+            this.xrLabel131.CanGrow = false;
+            this.xrLabel131.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[HomeOwnerShip]== \'Living w/relatives/parents\', t" +
+                    "rue,false )\n"),
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[MonthlyRent]")});
+            this.xrLabel131.LocationFloat = new DevExpress.Utils.PointFloat(172.5716F, 730.9326F);
+            this.xrLabel131.Multiline = true;
+            this.xrLabel131.Name = "xrLabel131";
+            this.xrLabel131.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel131.SizeF = new System.Drawing.SizeF(49.48752F, 11.20746F);
             // 
             // HLF068Page1
             // 
@@ -4003,5 +4018,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRLabel xrLabel17;
         private DevExpress.XtraReports.UI.XRLabel xrLabel129;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel131;
     }
 }

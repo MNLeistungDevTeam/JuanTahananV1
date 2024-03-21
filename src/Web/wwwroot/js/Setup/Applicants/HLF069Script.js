@@ -167,6 +167,16 @@ $(function () {
 
     //#endregion
 
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').show();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
+        } else {
+            $('#rentalForm').hide();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+        }
+    });
+
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
         var inputValue = $(this).val().toString();
         var numericValue = parseInt(inputValue, 10);
@@ -462,12 +472,7 @@ $(function () {
 
     //#endregion
 
-
-
-
     //#region Barrower
-
-
 
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -481,8 +486,6 @@ $(function () {
             $('#BarrowersInformationModel_HomeNumber').trigger('invalid');
         }
     });
-
-
 
     $('#BarrowersInformationModel_MobileNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -498,8 +501,6 @@ $(function () {
         }
     });
 
-
-
     $('#BarrowersInformationModel_YearsofStay').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -513,8 +514,6 @@ $(function () {
             $('#BarrowersInformationModel_YearsofStay').trigger('invalid');
         }
     });
-
-
 
     $('#ApplicantsPersonalInformationModel_HousingAccountNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -530,9 +529,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#BarrowersInformationModel_SSSNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -546,9 +542,6 @@ $(function () {
             $('#BarrowersInformationModel_SSSNumber').trigger('invalid');
         }
     });
-
-
-
 
     $('#BarrowersInformationModel_TinNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -564,9 +557,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -580,7 +570,6 @@ $(function () {
             $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
         }
     });
-
 
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -596,9 +585,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#BarrowersInformationModel_BusinessTruckLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -613,22 +599,7 @@ $(function () {
         }
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //#endregion
-
 
     function validateForm(form) {
         var isValid = true;

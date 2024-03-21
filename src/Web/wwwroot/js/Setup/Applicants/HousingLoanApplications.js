@@ -21,6 +21,14 @@ $(() => {
         $('#form2').trigger('submit'); // Submit the form if the user clicks OK
     })
 
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').show();
+        } else {
+            $('#rentalForm').hide();
+        }
+    });
+
     $('#form2').on('submit', function (e) {
         e.preventDefault();
         let $loanparticulars = $('#loanparticulars');
