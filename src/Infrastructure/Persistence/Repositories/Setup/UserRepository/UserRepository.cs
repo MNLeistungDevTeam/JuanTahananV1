@@ -44,6 +44,12 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByUserNameAsync(string userName) =>
         await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
+    //public async Task<User?> GetByPagibigNumberAsync(string pagibigNumber) =>
+    //await _context.Users.FirstOrDefaultAsync(u => u.PagibigNumber == pagibigNumber);
+
+    public async Task<UserModel?> GetByPagibigNumberAsync(string? pagibigNumber) =>
+    await _db.LoadSingleAsync<UserModel, dynamic>("spUser_GetByPagibigNumber", new { pagibigNumber });
+
     public async Task<List<User>> GetAllAsync() =>
         await _contextHelper.GetAllAsync();
 
@@ -186,8 +192,6 @@ public class UserRepository : IUserRepository
         return hashedPassword;
     }
 
-
-
     public async Task<User> UpdateNoExclusionAsync(User user, int updatedById)
     {
         try
@@ -203,5 +207,4 @@ public class UserRepository : IUserRepository
             throw;
         }
     }
-
 }

@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -100,10 +99,31 @@ namespace Template.Web.Controllers.Transaction
         return View();
     }
 
-    [Route("[controller]/Details/{applicantCode}")]
-    public async Task<IActionResult> Details(string applicantCode)
-    {
-        //check if applicant code not null go to edit form
+        [Route("[controller]/Beneficiary")]
+        public async Task<IActionResult> Beneficiary()
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userData = await _userRepo.GetUserAsync(userId);
+
+            //if (data.UserRoleId != 4 || data.UserRoleCode != "Beneficiary")
+            //{
+            //}
+
+            ApplicantViewModel viewModel = new();
+
+            ApplicantsPersonalInformationModel applicantInfoModel = new();
+            applicantInfoModel.PagibigNumber = userData.PagibigNumber;
+            applicantInfoModel.UserId = userData.Id;
+
+            viewModel.ApplicantsPersonalInformationModel = applicantInfoModel;
+            return View(viewModel);
+        }
+
+        [Route("[controller]/Details/{applicantCode}")]
+        public async Task<IActionResult> Details(string applicantCode)
+        {
+            //check if applicant code not null go to edit form
 
         var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
@@ -255,10 +275,10 @@ namespace Template.Web.Controllers.Transaction
         return View(vwModel);
     }
 
-    //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
-    public async Task<IActionResult> ApplicantRequests()
-    {
-        var items = new List<ApplicantViewModel>();
+        //[ModuleServices(ModuleCodes.ApplicantRequests, typeof(IModuleRepository))]
+        public IActionResult ApplicantRequests()
+        {
+            //var items = new List<ApplicantViewModel>();
 
         foreach (var item in await _applicantsPersonalInformationRepo.GetAllAsync())
         {
@@ -276,7 +296,30 @@ namespace Template.Web.Controllers.Transaction
         return View(items);
     }
 
-    #endregion View
+        [Route("[controller]/NewHLF068/{pagibigNumber?}")]
+        public async Task<IActionResult> NewHLF068(string? pagibigNumber = null)
+        {
+            var vwModel = new ApplicantViewModel();
+
+            var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            
+            vwModel.ApplicantsPersonalInformationModel.UserId = userData.Id;
+
+            vwModel.BarrowersInformationModel.FirstName = userData.FirstName ?? string.Empty;
+            vwModel.BarrowersInformationModel.MiddleName = userData.MiddleName ?? string.Empty;
+            vwModel.BarrowersInformationModel.LastName = userData.LastName ?? string.Empty;
+
+            vwModel.BarrowersInformationModel.Email = userData.Email;
+
+            vwModel.ApplicantsPersonalInformationModel.PagibigNumber = userData.PagibigNumber;
+            vwModel.BarrowersInformationModel.Sex = userData.Gender;
+            vwModel.BarrowersInformationModel.Suffix = userData.Suffix;
+
+            return View(vwModel);
+        }
+
+        #endregion View
 
     #region Get Methods
 
@@ -298,11 +341,22 @@ namespace Template.Web.Controllers.Transaction
         return Ok(data);
     }
 
-    public async Task<IActionResult> GetApplicantData(int id)
-    {
-        var data = await _applicantsPersonalInformationRepo.GetAsync(id);
-        return Ok(data);
-    }
+        public async Task<IActionResult> GetMyApplications()
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+
+            var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId);
+
+            return Ok(beneficiaryApplicationData);
+        }
+
+        public async Task<IActionResult> GetApplicantData(int id)
+        {
+            var data = await _applicantsPersonalInformationRepo.GetAsync(id);
+            return Ok(data);
+        }
 
     public async Task<IActionResult> GetSpouseByApplicantInfoData(int id)
     {
@@ -339,7 +393,15 @@ namespace Template.Web.Controllers.Transaction
         //int companyId = int.Parse(User.FindFirstValue("Company"));
         //int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null));
+        }
+
+        public async Task<IActionResult> GetBeneficiaryApprovalTotalInfo()
+        {
+            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            int userId = int.Parse(User.Identity.Name);
+
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId));
         }
 
         public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
@@ -348,23 +410,11 @@ namespace Template.Web.Controllers.Transaction
             return Ok(data);
         }
 
-
-
-
         public async Task<IActionResult> GetAllSourcePagibigFund()
         {
             var data = await _sourcePagibigFundRepo.GetAllAsync();
             return Ok(data);
         }
-
-
-
-
-
-
-        
-
-
 
         #endregion Get Methods
 
@@ -576,13 +626,23 @@ namespace Template.Web.Controllers.Transaction
                     // reverse map parameter need for email sending
                     //var userdata = _mapper.Map<UserModel>(user);
 
-                    // make the usage of hangfire
-                    await _emailService.SendUserInfo(userModel);
-                }
-                else
-                {
-                    user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
-                }
+                        // make the usage of hangfire
+                        await _emailService.SendUserInfo(userModel);
+                    }
+                    else
+                    {
+                        user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
+
+                        vwModel.BarrowersInformationModel.FirstName = user.FirstName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.MiddleName = user.MiddleName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.LastName = user.LastName ?? string.Empty;
+
+                        vwModel.BarrowersInformationModel.Email = user.Email;
+
+                        vwModel.ApplicantsPersonalInformationModel.PagibigNumber = user.PagibigNumber;
+                        vwModel.BarrowersInformationModel.Sex = user.Gender;
+                        vwModel.BarrowersInformationModel.Suffix = user.Suffix;
+                    }
 
                 #endregion Register User and Send Email
 

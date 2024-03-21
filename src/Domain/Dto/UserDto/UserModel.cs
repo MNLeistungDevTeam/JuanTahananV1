@@ -80,6 +80,8 @@ public class UserModel
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime? RefreshTokenExpiryTime { get; set; }
 
+    public string? PagibigNumber { get; set; }
+
     [DisplayName("User Role")]
     [Required(ErrorMessage = "Role is required.")]
     public int? UserRoleId { get; set; }
@@ -114,7 +116,4 @@ public class UserModel
     public string? ApplicantCode { get; set; }
     public string? UserRoleName { get; set; } //Description basis
     public string? UserRoleCode { get; set; }  // Name basis
-
-
-     
 }

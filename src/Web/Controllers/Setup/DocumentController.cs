@@ -170,14 +170,14 @@ public class DocumentController : Controller
         );
     }
 
-    public async Task DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
-    {
-        try
+        public async Task<IActionResult> DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
         {
-            if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
+            try
             {
-                throw new ArgumentNullException("One or more parameters is null.");
-            }
+                if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
+                {
+                    throw new ArgumentNullException("One or more parameters is null.");
+                }
 
                 //#region Checker for FileSize maximum 3MB
                 long fileSizeInBytes = file.Length;
@@ -221,13 +221,20 @@ public class DocumentController : Controller
 
             List<IFormFile> fileList = new List<IFormFile> { file };
 
-            await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
+
+
+                await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
+
+                return Ok();
+                
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
 
         [HttpDelete]
         public async Task DocumentDelete(int DocumentId)
