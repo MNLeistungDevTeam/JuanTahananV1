@@ -133,6 +133,11 @@ $(function () {
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
         });
+
+        $("#btn_generate_pdf").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
+        });
     });
 
     //#endregion
@@ -151,6 +156,11 @@ $(function () {
     $("#btn_view").on('click', function () {
         location.href = $(this).attr("data-url");
     });
+
+    $("#btn_generate_pdf").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
     $("#btn_refresh").on('click', function () {
         tbl_applications.ajax.reload();
     });

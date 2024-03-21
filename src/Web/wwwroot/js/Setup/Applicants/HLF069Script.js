@@ -1,4 +1,5 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const roleName = $("#txt_role_name").val();
 $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
@@ -462,12 +463,7 @@ $(function () {
 
     //#endregion
 
-
-
-
     //#region Barrower
-
-
 
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -481,8 +477,6 @@ $(function () {
             $('#BarrowersInformationModel_HomeNumber').trigger('invalid');
         }
     });
-
-
 
     $('#BarrowersInformationModel_MobileNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -498,8 +492,6 @@ $(function () {
         }
     });
 
-
-
     $('#BarrowersInformationModel_YearsofStay').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -513,8 +505,6 @@ $(function () {
             $('#BarrowersInformationModel_YearsofStay').trigger('invalid');
         }
     });
-
-
 
     $('#ApplicantsPersonalInformationModel_HousingAccountNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -530,9 +520,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#BarrowersInformationModel_SSSNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -546,9 +533,6 @@ $(function () {
             $('#BarrowersInformationModel_SSSNumber').trigger('invalid');
         }
     });
-
-
-
 
     $('#BarrowersInformationModel_TinNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -564,9 +548,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -580,7 +561,6 @@ $(function () {
             $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
         }
     });
-
 
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -596,9 +576,6 @@ $(function () {
         }
     });
 
-
-
-
     $('#BarrowersInformationModel_BusinessTruckLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -613,22 +590,7 @@ $(function () {
         }
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //#endregion
-
 
     function validateForm(form) {
         var isValid = true;
@@ -698,17 +660,23 @@ $(function () {
                         }, 2000);
                     }
                     else {
+                        var link = "Applicants/Beneficiary";
+
+                        if (roleName != 'Beneficiary') {
+                            link = "Applicants/ApplicantRequests";
+                        }
+
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
                             // Redirect to the specified location
-                            window.location.href = "/Applicants/ApplicantRequests";
+                            window.location.href = baseUrl + link;
                         }, 2000); // 2000 milliseconds = 2 seconds
                     }
 
                     button.attr({ disabled: false });
                     button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
 
-                    userModal.modal('hide');
+                    //userModal.modal('hide');
                 },
                 error: function (response) {
                     messageBox(response.responseText, "danger");
