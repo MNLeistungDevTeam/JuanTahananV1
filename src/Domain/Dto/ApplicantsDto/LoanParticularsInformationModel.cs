@@ -21,11 +21,11 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [Required(ErrorMessage = "this field is required")]
         [Display(Name = "Desired Re-Pricing Pediod (Years)", Prompt = "Select Re-pracing Period")]
-        public int RepricingPeriod { get; set; }
+        public int? RepricingPeriod { get; set; }
 
         [Display(Name = "Loan Term Years", Prompt = "Input Year")]
         [Range(0, 30, ErrorMessage = "Loan Term Years must between 1 - 30")]
-        public int DesiredLoanTermYears { get; set; }
+        public int? DesiredLoanTermYears { get; set; }
 
         [Display(Name = "Mode of Payment (MOP)", Prompt = "Select mode of payment")]
         public int ModeOfPaymentId { get; set; }
@@ -40,7 +40,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         }
 
         [Display(Name = "Desired Loan Amount", Prompt = "Input desired loan amount")]
-        public decimal DesiredLoanAmount { get; set; }
+        public decimal? DesiredLoanAmount { get; set; }
 
         [StringLength(14)]
         [Display(Name = "If yes,Indicate Housing Application No.", Prompt = "Input existing application no.")]
