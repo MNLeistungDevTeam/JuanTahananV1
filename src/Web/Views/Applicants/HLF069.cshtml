@@ -102,11 +102,12 @@
                                     <select asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.PurposeOfLoanId" required>
                                     </select>
                                     <span asp-validation-for="LoanParticularsInformationModel.PurposeOfLoanId" class="invalid-tooltip"></span>
+
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" required></label>                                 
+                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" required></label>
                                     @if (string.IsNullOrWhiteSpace(Model.LoanParticularsInformationModel.ExistingHousingApplicationNumber))
                                     {
                                         <input disabled type="text" class="form-control rounded-3" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber">
@@ -485,7 +486,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentZipCode">
+                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -554,7 +555,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentZipCode">
+                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -816,7 +817,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessZipCode">
+                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -997,7 +998,7 @@
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentZipCode">
+                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentZipCode">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -2059,7 +2060,7 @@
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersZipCode"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersZipCode">
+                                    <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersZipCode">
                                     <span asp-validation-for="Form2PageModel.SellersZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -2068,7 +2069,7 @@
                                     <label asp-for="Form2PageModel.SourcePagibigFundId" class="form-label fw-normal"></label>
                                     <select asp-for="Form2PageModel.SourcePagibigFundId" class="rounded-4" data-value="@Model.Form2PageModel.SourcePagibigFundId">
                                         <option value="">Select Source PagIBIG Fund</option>
-                                      @*   <option value="1">Tb Ad</option>
+                                        @*   <option value="1">Tb Ad</option>
                                         <option value="2">Website</option>
                                         <option value="3">Radio Ad</option>
                                         <option value="4">Agency</option>

@@ -171,6 +171,16 @@ namespace DMS.Web.Controllers.Setup
                     throw new ArgumentNullException("One or more parameters is null.");
                 }
 
+                //#region Checker for FileSize maximum 3MB
+                long fileSizeInBytes = file.Length;
+                double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
+
+                // Check if the file size exceeds 3MB
+                if (fileSizeInMegabytes > 3)
+                {
+                    throw new Exception("File size exceeds 3MB");
+                }
+
                 var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
 
                 var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
@@ -215,7 +225,7 @@ namespace DMS.Web.Controllers.Setup
         public async Task DocumentDelete(int DocumentId)
         {
             //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
-            await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local 
+            await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local
         }
 
         public async Task<IActionResult> GetAllDocumentTypes() =>
@@ -276,10 +286,8 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
          Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
 
-
-
         //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
         public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
-        Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId,applicantCode));
+        Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
     }
 }
