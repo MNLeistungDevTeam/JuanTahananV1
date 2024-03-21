@@ -170,26 +170,26 @@ public class DocumentController : Controller
         );
     }
 
-        public async Task<IActionResult> DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
+    public async Task<IActionResult> DocumentUploadFile(IFormFile file, int? ApplicationId, int? DocumentTypeId, int? DocumentId)
+    {
+        try
         {
-            try
+            if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
             {
-                if (file == null || ApplicationId == null || DocumentTypeId == null || DocumentId == null)
-                {
-                    throw new ArgumentNullException("One or more parameters is null.");
-                }
+                throw new ArgumentNullException("One or more parameters is null.");
+            }
 
-                //#region Checker for FileSize maximum 3MB
-                long fileSizeInBytes = file.Length;
-                double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
+            //#region Checker for FileSize maximum 3MB
+            long fileSizeInBytes = file.Length;
+            double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
 
-                // Check if the file size exceeds 3MB
-                if (fileSizeInMegabytes > 3)
-                {
-                    throw new Exception("File size exceeds 3MB");
-                }
+            // Check if the file size exceeds 3MB
+            if (fileSizeInMegabytes > 3)
+            {
+                throw new Exception("File size exceeds 3MB");
+            }
 
-                var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
+            var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
 
             var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
 
@@ -221,27 +221,22 @@ public class DocumentController : Controller
 
             List<IFormFile> fileList = new List<IFormFile> { file };
 
+            await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
 
-
-                await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
-
-                return Ok();
-                
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok();
         }
-
-        [HttpDelete]
-        public async Task DocumentDelete(int DocumentId)
+        catch (Exception ex)
         {
-            //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
-            await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local
+            return BadRequest(ex.Message);
         }
+    }
+
+    [HttpDelete]
+    public async Task DocumentDelete(int DocumentId)
+    {
+        //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
+        await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local
+    }
 
     public async Task<IActionResult> GetAllDocumentTypes() =>
         Ok(await _documentTypeRepo.SpGetAllUserDocumentTypes());
@@ -301,8 +296,7 @@ public class DocumentController : Controller
     public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
      Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
 
-        //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
-        public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
-        Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
-    }
+    //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
+    public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
+    Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
 }
