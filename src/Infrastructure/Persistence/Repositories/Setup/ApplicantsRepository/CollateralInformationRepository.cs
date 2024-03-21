@@ -49,7 +49,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<CollateralInformation> CreateAsync(CollateralInformationModel model)
         {
-            model.DateCreated = DateTime.UtcNow;
+            model.DateCreated = DateTime.Now;
             model.CreatedById = _currentUserService.GetCurrentUserId();
             var mapped = _mapper.Map<CollateralInformation>(model);
             mapped = await _contextHelper.CreateAsync(mapped, "DateModified", "ModifiedById");
@@ -58,7 +58,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<CollateralInformation> UpdateAsync(CollateralInformationModel model)
         {
-            model.DateModified = DateTime.UtcNow;
+            model.DateModified = DateTime.Now;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
             var mapped = _mapper.Map<CollateralInformation>(model);
             mapped = await _contextHelper.UpdateAsync(mapped, "DateCreated", "CreatedById");

@@ -8,7 +8,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
     {
         public int Id { get; set; }
 
-        public int? ApplicantsPersonalInformationId { get; set; } = 0;
+        public int ApplicantsPersonalInformationId { get; set; }
 
         [DisplayName("Last Name")]
         public string? LastName { get; set; }
@@ -48,6 +48,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Mobile Number")]
         public string? MobileNumber { get; set; }
 
+        [Required]
         [DisplayName("Email")]
         public string? Email { get; set; }
 

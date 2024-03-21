@@ -1,8 +1,9 @@
 ﻿
 "use strict"
 $(function () {
-    loadApplicantTotalInfo
+    loadApplicantTotalInfo();
 
+    //#region Initialization
     var tbl_applicants = $("#tbl_applicants").DataTable({
         ajax: {
             url: '/Applicants/GetApplicants',
@@ -16,17 +17,16 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data, type, row) {
-                    return `<a href="${baseUrl}Applicant/Details/${data}" target="_blank">${data}</a>`;
+                    return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
             },
-
 
             {
                 data: 'ApplicantFullName',
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-           
+
             {
                 data: 'PagibigNumber',
                 orderable: !0,
@@ -37,7 +37,6 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-
 
             {
                 data: 'IncomeAmount',
@@ -65,7 +64,6 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-          
 
             {
                 data: 'DateCreated',
@@ -139,6 +137,9 @@ $(function () {
         });
     });
 
+    //#endregion
+
+    //#region Events
     $("#btn_add").on('click', function () {
         location.href = $(this).attr("data-url");
     });
@@ -153,6 +154,8 @@ $(function () {
     $("#btn_refresh").on('click', function () {
         tbl_applicants.ajax.reload();
     });
+
+    //#endregion
 
     function loadApplicantTotalInfo() {
         let info_total_approved = $("#info_total_approved");
@@ -169,10 +172,11 @@ $(function () {
                 info_for_approval.html(loading_text);
             },
             success: function (response) {
-
-                info_for_approval.html(`<span data-plugin="counterup">${response[0].TotalPendingReview}</span>`);
-                info_total_approved.html(`<span data-plugin="counterup">${response[0].TotalApprove}</span>`);
-                info_total_disapproved.html(`<span data-plugin="counterup">${response[0].TotalDisApprove}</span>`);
+                if (response) {
+                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalPendingReview : 0}</span>`);
+                    info_total_approved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalApprove : 0}</span>`);
+                    info_total_disapproved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalDisApprove : 0}</span>`);
+                }
 
                 $("[data-plugin='counterup']").counterUp();
             }, error: function (jqXHR) {

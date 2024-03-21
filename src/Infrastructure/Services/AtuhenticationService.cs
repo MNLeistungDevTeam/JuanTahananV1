@@ -10,6 +10,7 @@ using DMS.Application.Services;
 using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence.Configuration;
 using System.Security.Cryptography;
+using DMS.Domain.Dto.OtherDto;
 
 namespace DMS.Infrastructure.Services;
 
@@ -48,7 +49,7 @@ public class AuthenticationService : IAuthenticationService
 
         // Create a new user entity
         userRepo.PasswordSalt = _authenticationConfig.Value.PasswordSalt;
-        userRepo.Password = HashPassword(userRepo.Password);// Hash the password before storing it
+        userRepo.Password = HashPassword(userRepo.Password, userRepo.PasswordSalt);// Hash the password before storing it
 
         // Save the user in the repository
         await _userRepository.CreateAsync(userRepo, 0);
@@ -76,10 +77,10 @@ public class AuthenticationService : IAuthenticationService
         return user;
     }
 
-    public string HashPassword(string password)
+    public string HashPassword(string password, string salt)
     {
-        byte[] salt = Encoding.ASCII.GetBytes(_authenticationConfig.Value.PasswordSalt);
-        string hashedPassword = GenerateHashedPassword(password, salt);
+        byte[] saltByte = Encoding.ASCII.GetBytes(salt);
+        string hashedPassword = GenerateHashedPassword(password, saltByte);
         return hashedPassword;
     }
 
@@ -279,7 +280,6 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-
     public async Task<string> GenerateTemporaryUsernameAsync()
     {
         string temporaryUsername;
@@ -291,5 +291,48 @@ public class AuthenticationService : IAuthenticationService
         } while (await UsernameExistsAsync(temporaryUsername));
 
         return temporaryUsername;
+    }
+
+    public async Task<bool> ChangePassword(ChangePasswordModel changePassword)
+    {
+        string username = changePassword.Username;
+        string currentPassword = changePassword.CurrentPassword;
+        string newPassword = changePassword.NewPassword;
+        int userId = changePassword.UserId;
+
+        // Find the user by username
+        var existingUser = await _userRepository.GetByUserNameAsync(username)
+            ?? throw new Exception("User not found");
+
+        // Authenticate the user's current password
+        if (!IsPasswordValid(currentPassword, existingUser.Password, existingUser.PasswordSalt))
+        {
+            throw new Exception("Current password is incorrect");
+        }
+
+        // Hash the new password before storing it
+        string newPasswordHash = HashPassword(newPassword, existingUser.PasswordSalt);
+
+        // Update the user's password
+        existingUser.Password = newPasswordHash;
+
+        // Save the user with the new password in the repository
+        await _userRepository.UpdateNoExclusionAsync(existingUser, userId);
+
+        return true; // Password successfully changed
+    }
+
+    private bool IsPasswordValid(string currentPassword, string storedPasswordHash, string salt)
+    {
+        try
+        {
+            // Hash the current password with the same salt and compare it to the stored password hash
+            string currentPasswordHash = HashPassword(currentPassword, salt);
+            return currentPasswordHash == storedPasswordHash;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

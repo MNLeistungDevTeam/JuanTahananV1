@@ -259,10 +259,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string ContactNumber { get; set; }
 
         public string Email { get; set; }
-
+        [Display(Name ="Source Pagibig Fund")]
         public int? SourcePagibigFundId { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         public int CreatedById { get; set; }
 

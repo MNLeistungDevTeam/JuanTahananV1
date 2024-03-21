@@ -316,6 +316,7 @@
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.HLF068Page1BindingSource = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
+            this.xrLabel129 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable36)).BeginInit();
@@ -367,6 +368,7 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel129,
             this.xrLabel128,
             this.xrLabel127,
             this.xrLabel126,
@@ -1753,7 +1755,7 @@
             // 
             this.xrLabel54.CanGrow = false;
             this.xrLabel54.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 8,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 8,true , false)\n\n\n\n\n")});
             this.xrLabel54.LocationFloat = new DevExpress.Utils.PointFloat(40.61287F, 269.7013F);
             this.xrLabel54.Multiline = true;
             this.xrLabel54.Name = "xrLabel54";
@@ -1765,7 +1767,7 @@
             // 
             this.xrLabel53.CanGrow = false;
             this.xrLabel53.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 7,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 7,true , false)\n\n\n\n\n")});
             this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 247.2862F);
             this.xrLabel53.Multiline = true;
             this.xrLabel53.Name = "xrLabel53";
@@ -1777,7 +1779,7 @@
             // 
             this.xrLabel52.CanGrow = false;
             this.xrLabel52.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 6,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 6,true , false)\n\n\n\n\n")});
             this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 236.0787F);
             this.xrLabel52.Multiline = true;
             this.xrLabel52.Name = "xrLabel52";
@@ -1789,7 +1791,7 @@
             // 
             this.xrLabel51.CanGrow = false;
             this.xrLabel51.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 5,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 5,true , false)\n\n\n\n\n")});
             this.xrLabel51.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 221.8561F);
             this.xrLabel51.Multiline = true;
             this.xrLabel51.Name = "xrLabel51";
@@ -1801,7 +1803,7 @@
             // 
             this.xrLabel50.CanGrow = false;
             this.xrLabel50.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 4,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 4,true , false)\n\n\n\n\n")});
             this.xrLabel50.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 210.6486F);
             this.xrLabel50.Multiline = true;
             this.xrLabel50.Name = "xrLabel50";
@@ -1813,7 +1815,8 @@
             // 
             this.xrLabel49.CanGrow = false;
             this.xrLabel49.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 3,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 3,true , false)\n\n\n\n\n\n\n" +
+                    "\n\n\n")});
             this.xrLabel49.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 192.7083F);
             this.xrLabel49.Multiline = true;
             this.xrLabel49.Name = "xrLabel49";
@@ -1825,7 +1828,7 @@
             // 
             this.xrLabel48.CanGrow = false;
             this.xrLabel48.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 2,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 2,true , false)\n\n\n\n\n\n")});
             this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(40.61287F, 166.6438F);
             this.xrLabel48.Multiline = true;
             this.xrLabel48.Name = "xrLabel48";
@@ -3645,6 +3648,18 @@
             this.HLF068Page1BindingSource.DataSource = typeof(global::DMS.Domain.Dto.ReportDto.ApplicantInformationReportModel);
             this.HLF068Page1BindingSource.Name = "HLF068Page1BindingSource";
             // 
+            // xrLabel129
+            // 
+            this.xrLabel129.CanGrow = false;
+            this.xrLabel129.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId]== 1,true , false)\n\n\n\n\n")});
+            this.xrLabel129.LocationFloat = new DevExpress.Utils.PointFloat(40.61295F, 151.8606F);
+            this.xrLabel129.Multiline = true;
+            this.xrLabel129.Name = "xrLabel129";
+            this.xrLabel129.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel129.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
+            this.xrLabel129.Text = "✔";
+            // 
             // HLF068Page1
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -3987,5 +4002,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel19;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRLabel xrLabel17;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel129;
     }
 }

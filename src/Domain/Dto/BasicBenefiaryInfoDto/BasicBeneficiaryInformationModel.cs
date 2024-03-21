@@ -122,6 +122,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
 
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; } = string.Empty;
+        public int CompanyId { get; set; } 
 
         #endregion Barrowers
     }

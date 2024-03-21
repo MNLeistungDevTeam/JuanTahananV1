@@ -19,7 +19,7 @@ public partial class CollateralInformation
 
     public string DeveloperName { get; set; }
 
-    public int PropertyTypeId { get; set; }
+    public int? PropertyTypeId { get; set; }
 
     public int? TctOctCctNumber { get; set; }
 

@@ -1,7 +1,9 @@
-﻿using DMS.Application.Interfaces.Setup.UserRepository;
+﻿using DevExpress.XtraRichEdit.Model;
+using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence.Configuration;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -38,10 +40,10 @@ namespace DMS.Web.Controllers.Setup
                 int userid = int.Parse(User.Identity.Name);
 
                 var genders = new List<DropdownModel>
-            {
-                new DropdownModel {Id = 1, Description = "Male"},
-                new DropdownModel {Id = 2, Description = "Female"}
-            };
+                    {
+                        new DropdownModel {Id = 1, Description = "Male"},
+                        new DropdownModel {Id = 2, Description = "Female"}
+                    };
 
                 var user = new UserModel
                 {
@@ -66,6 +68,29 @@ namespace DMS.Web.Controllers.Setup
             {
                 throw;
             }
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userdata = await _userRepo.GetUserAsync(userId)
+                ?? throw new Exception("User not found!");
+
+            var genders = new List<DropdownModel>
+        {
+            new() {Id = 1, Description = "Male"},
+            new() {Id = 2, Description = "Female"}
+        };
+
+            userdata.Genders = genders;
+
+            var userModel = new UserViewModel
+            {
+                User = userdata,
+            };
+
+            return View(userModel);
         }
 
         public async Task<IActionResult> GetUsers()
@@ -138,7 +163,7 @@ namespace DMS.Web.Controllers.Setup
 
                 var returnUserData = await _userRepo.SaveUserAsync(model.User, model.UserApprover, userId);
 
-                if (model.User.UserRoleId != 0)
+                if (model.User.Id == 0)
                 {
                     UserRoleModel userRole = new()
                     {
@@ -148,6 +173,27 @@ namespace DMS.Web.Controllers.Setup
 
                     await _userRoleRepo.SaveAsync(userRole);
                 }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
+                    return Conflict(errors);
+                }
+
+                await _authenticationService.ChangePassword(model);
 
                 return Ok();
             }

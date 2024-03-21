@@ -185,4 +185,23 @@ public class UserRepository : IUserRepository
 
         return hashedPassword;
     }
+
+
+
+    public async Task<User> UpdateNoExclusionAsync(User user, int updatedById)
+    {
+        try
+        {
+            user.ModifiedById = updatedById;
+            user.DateModified = DateTime.Now;
+            user = await _contextHelper.UpdateAsync(user);
+
+            return user;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
 }

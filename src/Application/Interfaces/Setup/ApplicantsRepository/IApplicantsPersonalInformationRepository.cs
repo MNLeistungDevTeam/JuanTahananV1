@@ -1,11 +1,11 @@
 ﻿using DMS.Domain.Dto.ApplicantsDto;
-using DMS.Domain.Dto.ApprovalStatusDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DMS.Domain.Entities;
+using DMS.Domain.Dto.ApprovalStatusDto;
 
 namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
@@ -31,5 +31,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
         Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
         Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync();
+        Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
     }
 }

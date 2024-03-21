@@ -4,14 +4,13 @@ using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
+using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
-using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,71 +23,74 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Template.Web.Controllers.Transaction;
-
-[Authorize]
-public class ApplicantsController : Controller
+namespace Template.Web.Controllers.Transaction
 {
-    private readonly IUserRepository _userRepo;
-    private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
-    private readonly ILoanParticularsInformationRepository _loanParticularsInformationRepo;
-    private readonly ICollateralInformationRepository _collateralInformationRepo;
-    private readonly IBarrowersInformationRepository _barrowersInformationRepo;
-    private readonly ISpouseRepository _spouseRepo;
-    private readonly IMapper _mapper;
-    private readonly IAuthenticationService _authService;
-    private readonly IUserRoleRepository _userRoleRepo;
-    private readonly IEmailService _emailService;
-    private readonly IDocumentRepository _documentRepo;
-    private readonly IForm2PageRepository _form2PageRepo;
-    private readonly IPurposeOfLoanRepository _purposeOfLoanRepo;
-    private readonly IModeOfPaymentRepository _modeOfPaymentRepo;
-    private readonly IPropertyTypeRepository _propertyTypeRepo;
-    private readonly INotificationService _notificationService;
-    private readonly IApprovalService _approvalService;
+    [Authorize]
+    public class ApplicantsController : Controller
+    {
+        private readonly IUserRepository _userRepo;
+        private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+        private readonly ILoanParticularsInformationRepository _loanParticularsInformationRepo;
+        private readonly ICollateralInformationRepository _collateralInformationRepo;
+        private readonly IBarrowersInformationRepository _barrowersInformationRepo;
+        private readonly ISpouseRepository _spouseRepo;
+        private readonly IMapper _mapper;
+        private readonly IAuthenticationService _authService;
+        private readonly IUserRoleRepository _userRoleRepo;
+        private readonly IEmailService _emailService;
+        private readonly IDocumentRepository _documentRepo;
+        private readonly IForm2PageRepository _form2PageRepo;
+        private readonly IPurposeOfLoanRepository _purposeOfLoanRepo;
+        private readonly IModeOfPaymentRepository _modeOfPaymentRepo;
+        private readonly IPropertyTypeRepository _propertyTypeRepo;
+        private readonly INotificationService _notificationService;
+        private readonly IApprovalService _approvalService;
+        private readonly ISourcePagibigFundRepository _sourcePagibigFundRepo;
 
     private DMSDBContext _context;
 
-    public ApplicantsController(
-        IUserRepository userRepo,
-        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
-        ILoanParticularsInformationRepository loanParticularsInformationRepo,
-        ICollateralInformationRepository collateralInformationRepo,
-        IBarrowersInformationRepository barrowersInformationRepo,
-        ISpouseRepository spouseRepo,
-        IMapper mapper,
-        IAuthenticationService authService,
-        IUserRoleRepository userRoleRepo,
-        IEmailService emailService,
-        IDocumentRepository documentRepo,
-        IForm2PageRepository form2PageRepo,
-        DMSDBContext context,
-        IPurposeOfLoanRepository purposeOfLoanRepo,
-        IModeOfPaymentRepository modeOfPaymentRepo,
-        IPropertyTypeRepository propertyTypeRepo,
-        INotificationService notificationService,
-        IApprovalService approvalService)
-    {
-        _userRepo = userRepo;
-        _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
-        _loanParticularsInformationRepo = loanParticularsInformationRepo;
-        _collateralInformationRepo = collateralInformationRepo;
-        _barrowersInformationRepo = barrowersInformationRepo;
-        _spouseRepo = spouseRepo;
-        _mapper = mapper;
-        _authService = authService;
-        _userRoleRepo = userRoleRepo;
-        _emailService = emailService;
-        _documentRepo = documentRepo;
-        _form2PageRepo = form2PageRepo;
-        _context = context;
+        public ApplicantsController(
+            IUserRepository userRepo,
+            IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+            ILoanParticularsInformationRepository loanParticularsInformationRepo,
+            ICollateralInformationRepository collateralInformationRepo,
+            IBarrowersInformationRepository barrowersInformationRepo,
+            ISpouseRepository spouseRepo,
+            IMapper mapper,
+            IAuthenticationService authService,
+            IUserRoleRepository userRoleRepo,
+            IEmailService emailService,
+            IDocumentRepository documentRepo,
+            IForm2PageRepository form2PageRepo,
+            DMSDBContext context,
+            IPurposeOfLoanRepository purposeOfLoanRepo,
+            IModeOfPaymentRepository modeOfPaymentRepo,
+            IPropertyTypeRepository propertyTypeRepo,
+            INotificationService notificationService,
+            IApprovalService approvalService,
+            ISourcePagibigFundRepository sourcePagibigFundRepo)
+        {
+            _userRepo = userRepo;
+            _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
+            _loanParticularsInformationRepo = loanParticularsInformationRepo;
+            _collateralInformationRepo = collateralInformationRepo;
+            _barrowersInformationRepo = barrowersInformationRepo;
+            _spouseRepo = spouseRepo;
+            _mapper = mapper;
+            _authService = authService;
+            _userRoleRepo = userRoleRepo;
+            _emailService = emailService;
+            _documentRepo = documentRepo;
+            _form2PageRepo = form2PageRepo;
+            _context = context;
 
-        _purposeOfLoanRepo = purposeOfLoanRepo;
-        _modeOfPaymentRepo = modeOfPaymentRepo;
-        _propertyTypeRepo = propertyTypeRepo;
-        _notificationService = notificationService;
-        _approvalService = approvalService;
-    }
+            _purposeOfLoanRepo = purposeOfLoanRepo;
+            _modeOfPaymentRepo = modeOfPaymentRepo;
+            _propertyTypeRepo = propertyTypeRepo;
+            _notificationService = notificationService;
+            _approvalService = approvalService;
+            _sourcePagibigFundRepo = sourcePagibigFundRepo;
+        }
 
     #region View
 
@@ -337,10 +339,34 @@ public class ApplicantsController : Controller
         //int companyId = int.Parse(User.FindFirstValue("Company"));
         //int userId = int.Parse(User.Identity.Name);
 
-        return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
-    }
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo());
+        }
 
-    #endregion Get Methods
+        public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
+        {
+            var data = await _applicantsPersonalInformationRepo.GetEligibilityVerificationDocuments(applicantCode);
+            return Ok(data);
+        }
+
+
+
+
+        public async Task<IActionResult> GetAllSourcePagibigFund()
+        {
+            var data = await _sourcePagibigFundRepo.GetAllAsync();
+            return Ok(data);
+        }
+
+
+
+
+
+
+        
+
+
+
+        #endregion Get Methods
 
     //old
     //[HttpPost]
@@ -518,19 +544,19 @@ public class ApplicantsController : Controller
                 return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
             }
 
-            var user = new User();
-            var applicationData = new ApplicantsPersonalInformationModel();
-            int userId = int.Parse(User.Identity.Name);
-            int companyId = int.TryParse(User.FindFirstValue("Company"), out int result) ? result : 0;
+                var user = new User();
+                // var applicationData = new ApplicantsPersonalInformationModel();
+                int userId = int.Parse(User.Identity.Name);
+                int companyId = int.Parse(User.FindFirstValue("Company"));
 
             //create  new beneficiary
 
-            vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+                if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
 
-            if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
+                {
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
-            {
-                #region Register User and Send Email
+                    #region Register User and Send Email
 
                 if (vwModel.ApplicantsPersonalInformationModel.UserId == 0)
                 {
@@ -560,23 +586,23 @@ public class ApplicantsController : Controller
 
                 #endregion Register User and Send Email
 
-                applicationData.UserId = user.Id;
-                applicationData.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
-                applicationData.ApprovalStatus = 1;
-                applicationData.CompanyId = int.Parse(User.FindFirstValue("Company"));
+                    vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
+                    vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
-                var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(applicationData, userId);
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
-                if (vwModel.BarrowersInformationModel != null)
-                {
-                    vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+                    if (vwModel.BarrowersInformationModel != null)
+                    {
+                        vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
                     await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                 }
 
-                if (vwModel.CollateralInformationModel != null)
-                {
-                    vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
+                    {
+                        vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
                     await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
                 }
@@ -588,9 +614,9 @@ public class ApplicantsController : Controller
                     await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
                 }
 
-                if (vwModel.SpouseModel != null)
-                {
-                    vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+                    if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
+                    {
+                        vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
                     vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
                     vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
@@ -606,11 +632,12 @@ public class ApplicantsController : Controller
                 }
             }
 
-            //edit saving all data
-            else
-            {
-                applicationData.ApprovalStatus = 1;
-                await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+                //edit saving all data
+                else
+                {
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                 user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
@@ -619,10 +646,10 @@ public class ApplicantsController : Controller
                     await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                 }
 
-                if (vwModel.CollateralInformationModel != null)
-                {
-                    await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
-                }
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
+                    {
+                        await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
+                    }
 
                 if (vwModel.LoanParticularsInformationModel != null)
                 {
