@@ -145,7 +145,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             try
             {
-                string newref = $"APL-{DateTime.Now:yyyyMM}-{"1".ToString().PadLeft(4, '0')}";
+                string newref = $"APL{DateTime.Now:yyyyMM}-{"1".ToString().PadLeft(4, '0')}";
                 var result = await _db.LoadSingleAsync<string, dynamic>("spApplicantsPersonalInformation_GenerateCode", new { });
 
                 if (result != null)
