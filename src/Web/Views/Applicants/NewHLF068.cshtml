@@ -21,8 +21,7 @@
         </div>
     </div>
 </div>
-<!-- end page title -->
-<!-- end page title -->
+<!-- end page title --> 
 
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
@@ -370,7 +369,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" required>
+                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
                                                 <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -392,7 +391,7 @@
                                                     <option value="Married">Married</option>
                                                     <option value="Annulled">Annulled</option>
                                                     <option value="Legally Separated">Legally Separated</option>
-                                                    <option value="Married">Widow/er</option>
+                                                    <option value="Widow/er">Widow/er</option>
                                                 </select>
                                                 <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
                                             </div>
@@ -837,7 +836,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" required>
+                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -905,7 +904,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
-                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="SpouseModel.BirthDate">
+                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
                                     <span asp-validation-for="SpouseModel.BirthDate" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -1165,7 +1164,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened1">
+                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened1" data-value="@Model.Form2PageModel.DateOpened1">
                                                         <span asp-validation-for="Form2PageModel.DateOpened1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1203,7 +1202,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened2">
+                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened2" data-value="@Model.Form2PageModel.DateOpened2">
                                                         <span asp-validation-for="Form2PageModel.DateOpened2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1241,7 +1240,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened3">
+                                                        <input type="text" class="form-control rounded-3 calendarpicker text-center" asp-for="Form2PageModel.DateOpened3" data-value="@Model.Form2PageModel.DateOpened3">
                                                         <span asp-validation-for="Form2PageModel.DateOpened3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1274,7 +1273,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardType1" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration1">
+                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration1" data-value="@Model.Form2PageModel.CardExpiration1">
                                                     <span asp-validation-for="Form2PageModel.CardExpiration1" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
@@ -1293,7 +1292,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardType2" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration2">
+                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration2" data-value="@Model.Form2PageModel.CardExpiration2">
                                                     <span asp-validation-for="Form2PageModel.CardExpiration2" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
@@ -1312,7 +1311,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardType3" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration3">
+                                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration3" data-value="@Model.Form2PageModel.CardExpiration3">
                                                     <span asp-validation-for="Form2PageModel.CardExpiration3" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
@@ -1686,13 +1685,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained1">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained1" data-value="@Model.Form2PageModel.DateObtained1">
                                                         <span asp-validation-for="Form2PageModel.DateObtained1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid1">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid1" data-value="@Model.Form2PageModel.DateFullyPaid1">
                                                         <span asp-validation-for="Form2PageModel.DateFullyPaid1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1736,13 +1735,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained2">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
                                                         <span asp-validation-for="Form2PageModel.DateObtained2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid2">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid2" data-value="@Model.Form2PageModel.DateFullyPaid2">
                                                         <span asp-validation-for="Form2PageModel.DateFullyPaid2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1786,13 +1785,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained3">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateObtained3" data-value="@Model.Form2PageModel.DateObtained3">
                                                         <span asp-validation-for="Form2PageModel.DateObtained3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid3">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid3" data-value="@Model.Form2PageModel.DateFullyPaid3">
                                                         <span asp-validation-for="Form2PageModel.DateFullyPaid3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -2104,6 +2103,7 @@
         </div> <!-- end #rootwizard-->
     </div>
 </div>
+
 
 @section Scripts {
     <script src="~/js/Setup/Applicants/HLF069Script.js" asp-append-version="true"></script>

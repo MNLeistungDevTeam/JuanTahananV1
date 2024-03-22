@@ -168,6 +168,42 @@ $(function () {
 
     //#endregion
 
+   
+
+    // Set value for BarrowersInformationModel_BirthDate
+    setDateValue('#BarrowersInformationModel_BirthDate');
+
+    // Set value for SpouseModel_BirthDate
+    setDateValue('#SpouseModel_BirthDate');
+
+    // Set values for Form2PageModel_DateOpened fields
+    setDateValue('#Form2PageModel_DateOpened1');
+    setDateValue('#Form2PageModel_DateOpened2');
+    setDateValue('#Form2PageModel_DateOpened3');
+
+    // Set values for Form2PageModel_CardExpiration fields
+    setDateValue('#Form2PageModel_CardExpiration1');
+    setDateValue('#Form2PageModel_CardExpiration2');
+    setDateValue('#Form2PageModel_CardExpiration3');
+
+    // Set values for Form2PageModel_DateFullyPaid fields
+    setDateValue('#Form2PageModel_DateFullyPaid1');
+    setDateValue('#Form2PageModel_DateFullyPaid2');
+    setDateValue('#Form2PageModel_DateFullyPaid3');
+
+    // Set values for Form2PageModel_DateObtained fields
+    setDateValue('#Form2PageModel_DateObtained1');
+    setDateValue('#Form2PageModel_DateObtained2');
+    setDateValue('#Form2PageModel_DateObtained3');
+
+    function setDateValue(selector) {
+        let dataValue = $(selector).attr('data-value');
+        if (dataValue && dataValue.trim() !== '') {
+            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+        }
+    }
+
+  
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
         var inputValue = $(this).val().toString();
         var numericValue = parseInt(inputValue, 10);
