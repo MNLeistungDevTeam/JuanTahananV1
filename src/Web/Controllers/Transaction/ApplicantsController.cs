@@ -626,7 +626,7 @@ namespace Template.Web.Controllers.Transaction
                         //save beneficiary user
                         user = await RegisterBenefeciary(userModel);
 
-                        // reverse map parameter need for email sending
+                        //// reverse map parameter need for email sending
                         //var userdata = _mapper.Map<UserModel>(user);
 
                         // make the usage of hangfire
@@ -772,6 +772,8 @@ namespace Template.Web.Controllers.Transaction
 
         private static string GeneratePassword(string name)
         {
+            name = name.Replace(" ", "");
+
             // Generate a GUID with 16 characters
             string guid = Guid.NewGuid().ToString("N").Substring(0, 16);
 
@@ -802,7 +804,7 @@ namespace Template.Web.Controllers.Transaction
 
                 // Ensure a fixed length of 14 characters for the output password
                 string hashedString = sb.ToString();
-                string outputPassword = name + hashedString.Substring(0, 14 - name.Length);
+                string outputPassword = name + hashedString.Substring(0,10);
 
                 return outputPassword;
             }
