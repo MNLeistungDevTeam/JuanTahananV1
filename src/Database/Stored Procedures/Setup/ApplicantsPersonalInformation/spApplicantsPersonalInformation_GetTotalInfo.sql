@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalInfo]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalInfo]
 
 @userId INT
 AS

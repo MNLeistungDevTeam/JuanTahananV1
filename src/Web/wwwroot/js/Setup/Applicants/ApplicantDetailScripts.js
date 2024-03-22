@@ -102,6 +102,7 @@ $(function () {
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
 
         remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        $btnSave.removeClass()
 
         if (action == 1) {
             modalLabel.html('<span class="fe-send"></span> Submit Application');
@@ -109,6 +110,12 @@ $(function () {
         } else if (action == 5) {
             modalLabel.html('<span class="mdi mdi-book-cancel-outline"></span> Withdraw Application');
             $btnSave.addClass("btn btn-warning").html('<span class="mdi mdi-book-cancel-outline"></span> Confirm')
+        } else if (action == 2) {
+            modalLabel.html('<span class="fe-x-circle"></span> Defer Application');
+            $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
+        } else {
+            modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
+            $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
         }
 
         $("[name='ApprovalLevel.Status']").val(action);

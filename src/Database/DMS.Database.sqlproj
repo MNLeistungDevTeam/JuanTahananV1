@@ -207,6 +207,7 @@
     <Build Include="Tables\Setup\SourcePagibigFund\SourcePagibigFund.sql" />
     <Build Include="Stored Procedures\Setup\User\spUser_GetByPagibigNumber.sql" />
     <Build Include="Tables\Setup\Industry\Industry.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GenerateCode.sql" />
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_Inquiry.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +236,7 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_ModeOfPayment.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Company.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_SourcePagibigFund.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_Industry.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Template.Database.refactorlog" />

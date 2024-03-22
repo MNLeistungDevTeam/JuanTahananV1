@@ -78,6 +78,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
             if (model.Id == 0)
             {
+                _applicantPersonalInfo.Code = await GenerateApplicationCode();
+
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
 
                 // Create Initial Approval Status
@@ -139,6 +141,23 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 await DeleteAsync(entity.Id);
             }
+        }
+
+        public async Task<string> GenerateApplicationCode()
+        {
+            try
+            {
+                string newref = $"APL{DateTime.Now:yyyyMM}-{"1".ToString().PadLeft(4, '0')}";
+                var result = await _db.LoadSingleAsync<string, dynamic>("spApplicantsPersonalInformation_GenerateCode", new { });
+
+                if (result != null)
+                {
+                    newref = $"APL{DateTime.Now:yyyyMM}-{(Convert.ToInt32(result.Remove(0, result.Length - 4)) + 1).ToString().PadLeft(4, '0')}";
+                }
+
+                return newref;
+            }
+            catch (Exception) { throw; }
         }
     }
 
