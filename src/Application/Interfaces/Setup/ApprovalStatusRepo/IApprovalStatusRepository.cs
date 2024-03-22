@@ -20,5 +20,6 @@ namespace DMS.Application.Interfaces.Setup.ApprovalStatusRepo
         Task<IEnumerable<ApprovalStatusModel?>> GetByReferenceAsync(int referenceId, string referenceType, int companyId);
         Task<ApprovalStatusModel?> GetAsync(int id);
         Task<ApprovalStatusModel?> GetByReferenceModuleCodeAsync(int referenceId, string moduleCode, int companyId);
+        Task<ApprovalStatusModel?> GetByReferenceIdAsync(int? referenceId = null, int? companyId = null, int? approvalStatusId = null);
     }
 }
