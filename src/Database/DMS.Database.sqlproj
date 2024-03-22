@@ -103,6 +103,7 @@
     <Folder Include="Stored Procedures\Setup\Approval" />
     <Folder Include="Stored Procedures\View" />
     <Folder Include="Tables\Setup\SourcePagibigFund" />
+    <Folder Include="Tables\Setup\Industry" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -204,6 +205,8 @@
     <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByDocumentType.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetEligibilityVerficationDocuments.sql" />
     <Build Include="Tables\Setup\SourcePagibigFund\SourcePagibigFund.sql" />
+    <Build Include="Stored Procedures\Setup\User\spUser_GetByPagibigNumber.sql" />
+    <Build Include="Tables\Setup\Industry\Industry.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

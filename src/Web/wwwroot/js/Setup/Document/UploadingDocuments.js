@@ -59,7 +59,6 @@ $(function () {
             documentypeid = rowData.Id;
             tbl_files.ajax.reload();
             $modal.modal('show');
-
         });
     }
 
@@ -219,6 +218,8 @@ $(function () {
                 tbl_files.ajax.reload();
             },
             error: function (xhr, status, error) {
+                console.log(xhr);
+
                 messageBox(xhr.responseText, "danger", true);
                 loader.close();
                 tbl_document.ajax.reload();

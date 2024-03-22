@@ -60,4 +60,6 @@ public partial class User
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public string PagibigNumber { get; set; }
 }

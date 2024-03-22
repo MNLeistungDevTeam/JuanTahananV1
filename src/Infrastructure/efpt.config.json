@@ -80,6 +80,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Industry]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[JsonDataConnections]",
          "ObjectType": 0
       },

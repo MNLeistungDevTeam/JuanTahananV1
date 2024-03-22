@@ -1,8 +1,8 @@
-﻿@inject IStringLocalizer<SharedResources> localizer
+﻿ @inject IStringLocalizer<SharedResources> localizer
 
 @model ApplicantViewModel
 @{
-    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Application" : "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
+    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Beneficiary" : "Update Beneficiary - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 }
 
@@ -13,7 +13,7 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="ApplicantRequests">Applicant Requests</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="Index">Beneficiaries</a></li>
                     <li class="breadcrumb-item active">@ViewData["Title"]</li>
                 </ol>
             </div>
@@ -21,6 +21,7 @@
         </div>
     </div>
 </div>
+<!-- end page title -->
 <!-- end page title -->
 
 <div class="card card-outline rounded-4">
@@ -391,7 +392,7 @@
                                                     <option value="Married">Married</option>
                                                     <option value="Annulled">Annulled</option>
                                                     <option value="Legally Separated">Legally Separated</option>
-                                                    <option value="Widow/er">Widow/er</option>
+                                                    <option value="Married">Widow/er</option>
                                                 </select>
                                                 <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
                                             </div>
