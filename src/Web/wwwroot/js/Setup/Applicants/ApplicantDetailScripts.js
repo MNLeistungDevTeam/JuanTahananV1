@@ -126,8 +126,6 @@ $(function () {
 
         if (!approvalData) { return; }
 
-        console.log(approvalData)
-
         $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
         $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
@@ -136,7 +134,6 @@ $(function () {
     async function getApprovalData(referenceId) {
         const response = await $.ajax({
             url: baseUrl + `Approval/GetByReferenceModuleCodeAsync/${referenceId}/${CONST_MODULE_CODE}`,
-
             method: "get",
             dataType: 'json'
         });

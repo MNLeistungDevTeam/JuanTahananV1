@@ -80,14 +80,14 @@ namespace DMS.Infrastructure.Services
             try
             {
                 //checker if exist in records
-                var approvalStatus = await _approvalStatusRepo.GetAsync(model.ApprovalStatusId);
+                var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(null, null, model.ApprovalStatusId);
                 if (approvalStatus is null) { throw new Exception("Approval status not found!"); }
 
-                if (approvalStatus.Status == (int)ApprovalStatusType.Cancelled)
-                    throw new Exception($"Transaction already Cancelled!");
+                if (approvalStatus.Status == (int)AppStatusType.Withdrawn)
+                    throw new Exception($"Application already Withdrawn!");
 
-                if (approvalStatus.Status != (int)ApprovalStatusType.PendingReview && approvalStatus.Status != (int)ApprovalStatusType.Returned)
-                    throw new Exception($"Transaction already {approvalStatus.StatusDescription}!");
+                //if (approvalStatus.Status == (int)AppStatusType.Submitted && approvalStatus.Status == (int)AppStatusType.Deferred)
+                //    throw new Exception($"Application already {approvalStatus.StatusDescription}!");
 
                 var moduleStages = await _moduleStageRepo.GetByModuleId(approvalStatus.ReferenceType);
 

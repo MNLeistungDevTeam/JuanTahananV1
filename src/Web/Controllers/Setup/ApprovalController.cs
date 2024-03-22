@@ -37,7 +37,8 @@ namespace DMS.Web.Controllers.Setup
         {
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var data = await _approvalStatusRepo.GetByReferenceModuleCodeAsync(referenceId, moduleCode, companyId);
+            //var module = await _moduleRepo.GetByCodeAsync(moduleCode);
+            var data = await _approvalStatusRepo.GetByReferenceIdAsync(referenceId, companyId);
 
             return Ok(data);
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.RoleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Entities;
@@ -15,12 +16,14 @@ public class RoleRepository : IRoleRepository
     private readonly IMapper _mapper;
     private readonly ISQLDatabaseService _db;
     private readonly IRoleAccessRepository _roleAccessRepo;
+    private readonly IUserRoleRepository _userRoleRepo;
 
     public RoleRepository(DMSDBContext context,
         ICurrentUserService currentUserService,
         IMapper mapper,
         ISQLDatabaseService db,
-        IRoleAccessRepository roleAccessRepo)
+        IRoleAccessRepository roleAccessRepo,
+        IUserRoleRepository userRoleRepo)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<Role>(context);
@@ -28,6 +31,7 @@ public class RoleRepository : IRoleRepository
         _mapper = mapper;
         _db = db;
         _roleAccessRepo = roleAccessRepo;
+        _userRoleRepo = userRoleRepo;
     }
 
     public async Task<List<RoleModel>> GetAllRolesAsync() =>
@@ -48,12 +52,8 @@ public class RoleRepository : IRoleRepository
             if (!roles.Any()) { return null; }
 
             int currentUserId = _currentUserService.GetCurrentUserId();
-            var userRole = await _context.UserRoles.AsNoTracking()
-                .Where(x => x.UserId == currentUserId)
-                .FirstOrDefaultAsync();
+            var userRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
             if (userRole == null) { return null; }
-
-            _context.Entry(userRole).State = EntityState.Detached;
 
             var role = roles.FirstOrDefault(m => m.Id == userRole.RoleId);
 

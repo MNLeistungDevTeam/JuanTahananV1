@@ -84,20 +84,22 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
             else
+            {
                 _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
 
-            var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
+                var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
+                var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(_applicantPersonalInfo.Id, _applicantPersonalInfo.CompanyId);
 
-            if (moduleStage is not null && moduleStage.WithApprover)
-            {
-                // Create Initial Approval Status
-                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+                if (approvalStatus == null)
+                {
+                    if (moduleStage is not null && moduleStage.WithApprover)
+                    {
+                        // Create Initial Approval Status
+                        await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+                    }
+                }
             }
 
-            //var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
-            //if (approvalStatus == null)
-            //{
-            //}
             return _applicantPersonalInfo;
         }
 

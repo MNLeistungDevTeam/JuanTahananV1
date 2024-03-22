@@ -1,13 +1,13 @@
 ﻿@using DMS.Domain.Enums
 @inject DMS.Application.Services.ICurrentUserService _currentUserService
-@inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo
+@inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @model ApplicantViewModel
 @{
     ViewData["Title"] = "Applicant Details";
     ViewData["Breadcrumbs"] = "Details";
 
     var currentUserId = _currentUserService.GetCurrentUserId();
-    var currentUserRole = _roleRepo.GetByCurrentUser();
+    var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
 }
 
 <!-- start page title -->
@@ -38,7 +38,7 @@
                             <span class="fw-bold font-28 me-2">@Model.ApplicantsPersonalInformationModel.Code</span>
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
-                                <span class="badge bg-secondary ms-auto fs-7">Draft</span>
+                                <span class="badge bg-secondary ms-auto fs-7">Application in Draft</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                             {
@@ -58,7 +58,7 @@
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                             {
-                                <span class="badge bg-danger ms-auto fs-7">Deferred</span>
+                                <span class="badge bg-danger ms-auto fs-7">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
@@ -80,9 +80,18 @@
                                         </button>
                                     }
                                 }
-                                else
+                                else if (currentUserRole.RoleId == 5 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperVerified)">
+                                        <i class="fe-check-square me-1"></i> <span>Approve</span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
+                                        <i class="fe-x-circle me-1"></i> <span>Defer</span>
+                                    </button>
+                                }
+                                else if (currentUserRole.RoleId == 3 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                {
+                                    <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigVerified)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
                                     </button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
