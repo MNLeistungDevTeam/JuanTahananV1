@@ -84,6 +84,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Industry]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[JsonDataConnections]",
          "ObjectType": 0
       },
@@ -145,6 +149,10 @@
       },
       {
          "Name": "[dbo].[RoleAccess]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SourcePagibigFund]",
          "ObjectType": 0
       },
       {

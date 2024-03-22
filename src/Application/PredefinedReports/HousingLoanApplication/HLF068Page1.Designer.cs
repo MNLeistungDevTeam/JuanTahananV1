@@ -33,6 +33,11 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel130 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
+            this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
+            this.xrTableCell57 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrLabel129 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel128 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel127 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel126 = new DevExpress.XtraReports.UI.XRLabel();
@@ -315,7 +320,9 @@
             this.xrTableRow4 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.HLF068Page1BindingSource = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable36)).BeginInit();
@@ -367,6 +374,9 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel130,
+            this.xrTable2,
+            this.xrLabel129,
             this.xrLabel128,
             this.xrLabel127,
             this.xrLabel126,
@@ -530,9 +540,62 @@
             this.xrTable6,
             this.xrTable5,
             this.xrTable4,
-            this.xrPictureBox1});
+            this.xrPictureBox1,
+            this.xrPictureBox2});
             this.Detail.HeightF = 1300.67F;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel130
+            // 
+            this.xrLabel130.CanGrow = false;
+            this.xrLabel130.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 1, true ,false )")});
+            this.xrLabel130.LocationFloat = new DevExpress.Utils.PointFloat(35.55864F, 863.3818F);
+            this.xrLabel130.Multiline = true;
+            this.xrLabel130.Name = "xrLabel130";
+            this.xrLabel130.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel130.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
+            this.xrLabel130.Text = "✔";
+            // 
+            // xrTable2
+            // 
+            this.xrTable2.LocationFloat = new DevExpress.Utils.PointFloat(570.2337F, 934.0824F);
+            this.xrTable2.Name = "xrTable2";
+            this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
+            this.xrTableRow2});
+            this.xrTable2.SizeF = new System.Drawing.SizeF(129.5747F, 11.20752F);
+            // 
+            // xrTableRow2
+            // 
+            this.xrTableRow2.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
+            this.xrTableCell57});
+            this.xrTableRow2.Name = "xrTableRow2";
+            this.xrTableRow2.Weight = 1D;
+            // 
+            // xrTableCell57
+            // 
+            this.xrTableCell57.CanGrow = false;
+            this.xrTableCell57.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[PositionName]")});
+            this.xrTableCell57.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
+            this.xrTableCell57.Multiline = true;
+            this.xrTableCell57.Name = "xrTableCell57";
+            this.xrTableCell57.StylePriority.UseFont = false;
+            this.xrTableCell57.Text = "xrTableCell81";
+            this.xrTableCell57.Weight = 1D;
+            // 
+            // xrLabel129
+            // 
+            this.xrLabel129.CanGrow = false;
+            this.xrLabel129.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId]== 1,true , false)\n\n\n\n\n")});
+            this.xrLabel129.LocationFloat = new DevExpress.Utils.PointFloat(40.61295F, 151.8606F);
+            this.xrLabel129.Multiline = true;
+            this.xrLabel129.Name = "xrLabel129";
+            this.xrLabel129.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel129.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
+            this.xrLabel129.Text = "✔";
             // 
             // xrLabel128
             // 
@@ -900,46 +963,50 @@
             // xrLabel4
             // 
             this.xrLabel4.CanGrow = false;
+            this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 23,true ,false )\n\n")});
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(685.418F, 1227.828F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel4.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel4.Text = "✔";
-            this.xrLabel4.Visible = false;
             // 
             // xrLabel3
             // 
             this.xrLabel3.CanGrow = false;
+            this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 22,true ,false )\n\n")});
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(685.418F, 1217.797F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel3.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel3.Text = "✔";
-            this.xrLabel3.Visible = false;
             // 
             // xrLabel2
             // 
             this.xrLabel2.CanGrow = false;
+            this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 21,true ,false )\n\n")});
             this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(685.418F, 1194.174F);
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel2.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel2.Text = "✔";
-            this.xrLabel2.Visible = false;
             // 
             // xrLabel1
             // 
             this.xrLabel1.CanGrow = false;
+            this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 20,true ,false )\n")});
             this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(685.418F, 1184.174F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel1.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel1.Text = "✔";
-            this.xrLabel1.Visible = false;
             // 
             // xrLabel125
             // 
@@ -955,211 +1022,230 @@
             // xrLabel124
             // 
             this.xrLabel124.CanGrow = false;
+            this.xrLabel124.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 19,true ,false )\n")});
             this.xrLabel124.LocationFloat = new DevExpress.Utils.PointFloat(418.4924F, 1250.243F);
             this.xrLabel124.Multiline = true;
             this.xrLabel124.Name = "xrLabel124";
             this.xrLabel124.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel124.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel124.Text = "✔";
-            this.xrLabel124.Visible = false;
             // 
             // xrLabel123
             // 
             this.xrLabel123.CanGrow = false;
+            this.xrLabel123.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 18,true ,false )\n")});
             this.xrLabel123.LocationFloat = new DevExpress.Utils.PointFloat(418.2128F, 1239.036F);
             this.xrLabel123.Multiline = true;
             this.xrLabel123.Name = "xrLabel123";
             this.xrLabel123.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel123.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel123.Text = "✔";
-            this.xrLabel123.Visible = false;
             // 
             // xrLabel122
             // 
             this.xrLabel122.CanGrow = false;
+            this.xrLabel122.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 17,true ,false )\n")});
             this.xrLabel122.LocationFloat = new DevExpress.Utils.PointFloat(418.2128F, 1227.828F);
             this.xrLabel122.Multiline = true;
             this.xrLabel122.Name = "xrLabel122";
             this.xrLabel122.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel122.SizeF = new System.Drawing.SizeF(24.39038F, 21.20752F);
             this.xrLabel122.Text = "✔";
-            this.xrLabel122.Visible = false;
             // 
             // xrLabel121
             // 
             this.xrLabel121.CanGrow = false;
+            this.xrLabel121.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 16,true ,false )\n")});
             this.xrLabel121.LocationFloat = new DevExpress.Utils.PointFloat(418.2128F, 1217.797F);
             this.xrLabel121.Multiline = true;
             this.xrLabel121.Name = "xrLabel121";
             this.xrLabel121.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel121.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel121.Text = "✔";
-            this.xrLabel121.Visible = false;
             // 
             // xrLabel120
             // 
             this.xrLabel120.CanGrow = false;
+            this.xrLabel120.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 15,true ,false )\n")});
             this.xrLabel120.LocationFloat = new DevExpress.Utils.PointFloat(418.2128F, 1206.589F);
             this.xrLabel120.Multiline = true;
             this.xrLabel120.Name = "xrLabel120";
             this.xrLabel120.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel120.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel120.Text = "✔";
-            this.xrLabel120.Visible = false;
             // 
             // xrLabel119
             // 
             this.xrLabel119.CanGrow = false;
+            this.xrLabel119.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 14,true ,false )\n")});
             this.xrLabel119.LocationFloat = new DevExpress.Utils.PointFloat(418.4924F, 1195.382F);
             this.xrLabel119.Multiline = true;
             this.xrLabel119.Name = "xrLabel119";
             this.xrLabel119.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel119.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel119.Text = "✔";
-            this.xrLabel119.Visible = false;
             // 
             // xrLabel118
             // 
             this.xrLabel118.CanGrow = false;
+            this.xrLabel118.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 13,true ,false )\n")});
             this.xrLabel118.LocationFloat = new DevExpress.Utils.PointFloat(418.4924F, 1184.174F);
             this.xrLabel118.Multiline = true;
             this.xrLabel118.Name = "xrLabel118";
             this.xrLabel118.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel118.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel118.Text = "✔";
-            this.xrLabel118.Visible = false;
             // 
             // xrLabel117
             // 
             this.xrLabel117.CanGrow = false;
+            this.xrLabel117.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 12,true ,false )\n")});
             this.xrLabel117.LocationFloat = new DevExpress.Utils.PointFloat(235.029F, 1250.243F);
             this.xrLabel117.Multiline = true;
             this.xrLabel117.Name = "xrLabel117";
             this.xrLabel117.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel117.SizeF = new System.Drawing.SizeF(24.39037F, 21.2074F);
             this.xrLabel117.Text = "✔";
-            this.xrLabel117.Visible = false;
             // 
             // xrLabel116
             // 
             this.xrLabel116.CanGrow = false;
+            this.xrLabel116.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 11,true ,false )\n")});
             this.xrLabel116.LocationFloat = new DevExpress.Utils.PointFloat(235.0291F, 1239.036F);
             this.xrLabel116.Multiline = true;
             this.xrLabel116.Name = "xrLabel116";
             this.xrLabel116.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel116.SizeF = new System.Drawing.SizeF(24.3904F, 21.2074F);
             this.xrLabel116.Text = "✔";
-            this.xrLabel116.Visible = false;
             // 
             // xrLabel115
             // 
             this.xrLabel115.CanGrow = false;
+            this.xrLabel115.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 10,true ,false )\n")});
             this.xrLabel115.LocationFloat = new DevExpress.Utils.PointFloat(235.029F, 1227.828F);
             this.xrLabel115.Multiline = true;
             this.xrLabel115.Name = "xrLabel115";
             this.xrLabel115.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel115.SizeF = new System.Drawing.SizeF(24.39037F, 21.20752F);
             this.xrLabel115.Text = "✔";
-            this.xrLabel115.Visible = false;
             // 
             // xrLabel114
             // 
             this.xrLabel114.CanGrow = false;
+            this.xrLabel114.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 9,true ,false )\n")});
             this.xrLabel114.LocationFloat = new DevExpress.Utils.PointFloat(235.029F, 1217.797F);
             this.xrLabel114.Multiline = true;
             this.xrLabel114.Name = "xrLabel114";
             this.xrLabel114.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel114.SizeF = new System.Drawing.SizeF(24.39037F, 21.2074F);
             this.xrLabel114.Text = "✔";
-            this.xrLabel114.Visible = false;
             // 
             // xrLabel113
             // 
             this.xrLabel113.CanGrow = false;
+            this.xrLabel113.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 8,true ,false )\n")});
             this.xrLabel113.LocationFloat = new DevExpress.Utils.PointFloat(235.029F, 1206.589F);
             this.xrLabel113.Multiline = true;
             this.xrLabel113.Name = "xrLabel113";
             this.xrLabel113.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel113.SizeF = new System.Drawing.SizeF(24.39037F, 21.2074F);
             this.xrLabel113.Text = "✔";
-            this.xrLabel113.Visible = false;
             // 
             // xrLabel112
             // 
             this.xrLabel112.CanGrow = false;
+            this.xrLabel112.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 7,true ,false )\n")});
             this.xrLabel112.LocationFloat = new DevExpress.Utils.PointFloat(235.029F, 1195.382F);
             this.xrLabel112.Multiline = true;
             this.xrLabel112.Name = "xrLabel112";
             this.xrLabel112.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel112.SizeF = new System.Drawing.SizeF(24.39037F, 21.2074F);
             this.xrLabel112.Text = "✔";
-            this.xrLabel112.Visible = false;
             // 
             // xrLabel111
             // 
             this.xrLabel111.CanGrow = false;
+            this.xrLabel111.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 6,true ,false )\n")});
             this.xrLabel111.LocationFloat = new DevExpress.Utils.PointFloat(235.0291F, 1184.174F);
             this.xrLabel111.Multiline = true;
             this.xrLabel111.Name = "xrLabel111";
             this.xrLabel111.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel111.SizeF = new System.Drawing.SizeF(24.3904F, 21.2074F);
             this.xrLabel111.Text = "✔";
-            this.xrLabel111.Visible = false;
             // 
             // xrLabel110
             // 
             this.xrLabel110.CanGrow = false;
+            this.xrLabel110.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 5,true ,false )\n")});
             this.xrLabel110.LocationFloat = new DevExpress.Utils.PointFloat(37.14108F, 1250.243F);
             this.xrLabel110.Multiline = true;
             this.xrLabel110.Name = "xrLabel110";
             this.xrLabel110.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel110.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel110.Text = "✔";
-            this.xrLabel110.Visible = false;
             // 
             // xrLabel109
             // 
             this.xrLabel109.CanGrow = false;
+            this.xrLabel109.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 4,true ,false )\n")});
             this.xrLabel109.LocationFloat = new DevExpress.Utils.PointFloat(35.55864F, 1239.036F);
             this.xrLabel109.Multiline = true;
             this.xrLabel109.Name = "xrLabel109";
             this.xrLabel109.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel109.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel109.Text = "✔";
-            this.xrLabel109.Visible = false;
             // 
             // xrLabel108
             // 
             this.xrLabel108.CanGrow = false;
+            this.xrLabel108.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 3,true ,false )\n")});
             this.xrLabel108.LocationFloat = new DevExpress.Utils.PointFloat(37.14109F, 1227.828F);
             this.xrLabel108.Multiline = true;
             this.xrLabel108.Name = "xrLabel108";
             this.xrLabel108.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel108.SizeF = new System.Drawing.SizeF(24.39038F, 21.20752F);
             this.xrLabel108.Text = "✔";
-            this.xrLabel108.Visible = false;
             // 
             // xrLabel107
             // 
             this.xrLabel107.CanGrow = false;
+            this.xrLabel107.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 2,true ,false )\n")});
             this.xrLabel107.LocationFloat = new DevExpress.Utils.PointFloat(35.55865F, 1195.382F);
             this.xrLabel107.Multiline = true;
             this.xrLabel107.Name = "xrLabel107";
             this.xrLabel107.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel107.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel107.Text = "✔";
-            this.xrLabel107.Visible = false;
             // 
             // xrLabel106
             // 
             this.xrLabel106.CanGrow = false;
+            this.xrLabel106.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId] == 1,true ,false )")});
             this.xrLabel106.LocationFloat = new DevExpress.Utils.PointFloat(39.14083F, 1184.174F);
             this.xrLabel106.Multiline = true;
             this.xrLabel106.Name = "xrLabel106";
             this.xrLabel106.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel106.SizeF = new System.Drawing.SizeF(24.39038F, 21.2074F);
             this.xrLabel106.Text = "✔";
-            this.xrLabel106.Visible = false;
             // 
             // xrLabel105
             // 
@@ -1203,250 +1289,272 @@
             // xrLabel101
             // 
             this.xrLabel101.CanGrow = false;
+            this.xrLabel101.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 23, true ,false )\n\n\n")});
             this.xrLabel101.LocationFloat = new DevExpress.Utils.PointFloat(461.5209F, 905.1641F);
             this.xrLabel101.Multiline = true;
             this.xrLabel101.Name = "xrLabel101";
             this.xrLabel101.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel101.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel101.Text = "✔";
-            this.xrLabel101.Visible = false;
             // 
             // xrLabel100
             // 
             this.xrLabel100.CanGrow = false;
+            this.xrLabel100.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 22, true ,false )\n\n\n")});
             this.xrLabel100.LocationFloat = new DevExpress.Utils.PointFloat(461.5207F, 893.9565F);
             this.xrLabel100.Multiline = true;
             this.xrLabel100.Name = "xrLabel100";
             this.xrLabel100.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel100.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel100.Text = "✔";
-            this.xrLabel100.Visible = false;
             // 
             // xrLabel99
             // 
             this.xrLabel99.CanGrow = false;
+            this.xrLabel99.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 18, true ,false )\n")});
             this.xrLabel99.LocationFloat = new DevExpress.Utils.PointFloat(293.5412F, 934.0824F);
             this.xrLabel99.Multiline = true;
             this.xrLabel99.Name = "xrLabel99";
             this.xrLabel99.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel99.SizeF = new System.Drawing.SizeF(20.23099F, 11.20758F);
             this.xrLabel99.Text = "✔";
-            this.xrLabel99.Visible = false;
             // 
             // xrLabel98
             // 
             this.xrLabel98.CanGrow = false;
+            this.xrLabel98.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 17, true ,false )\n")});
             this.xrLabel98.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 922.8749F);
             this.xrLabel98.Multiline = true;
             this.xrLabel98.Name = "xrLabel98";
             this.xrLabel98.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel98.SizeF = new System.Drawing.SizeF(20.23099F, 11.20758F);
             this.xrLabel98.Text = "✔";
-            this.xrLabel98.Visible = false;
             // 
             // xrLabel97
             // 
             this.xrLabel97.CanGrow = false;
+            this.xrLabel97.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 16, true ,false )\n")});
             this.xrLabel97.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 911.6673F);
             this.xrLabel97.Multiline = true;
             this.xrLabel97.Name = "xrLabel97";
             this.xrLabel97.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel97.SizeF = new System.Drawing.SizeF(20.23099F, 11.20758F);
             this.xrLabel97.Text = "✔";
-            this.xrLabel97.Visible = false;
             // 
             // xrLabel96
             // 
             this.xrLabel96.CanGrow = false;
+            this.xrLabel96.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 15, true ,false )\n")});
             this.xrLabel96.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 900.4597F);
             this.xrLabel96.Multiline = true;
             this.xrLabel96.Name = "xrLabel96";
             this.xrLabel96.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel96.SizeF = new System.Drawing.SizeF(20.23099F, 11.20758F);
             this.xrLabel96.Text = "✔";
-            this.xrLabel96.Visible = false;
             // 
             // xrLabel95
             // 
             this.xrLabel95.CanGrow = false;
+            this.xrLabel95.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 14, true ,false )\n")});
             this.xrLabel95.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 893.9564F);
             this.xrLabel95.Multiline = true;
             this.xrLabel95.Name = "xrLabel95";
             this.xrLabel95.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel95.SizeF = new System.Drawing.SizeF(20.23099F, 11.20758F);
             this.xrLabel95.Text = "✔";
-            this.xrLabel95.Visible = false;
             // 
             // xrLabel94
             // 
             this.xrLabel94.CanGrow = false;
+            this.xrLabel94.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 13, true ,false )\n")});
             this.xrLabel94.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 882.7488F);
             this.xrLabel94.Multiline = true;
             this.xrLabel94.Name = "xrLabel94";
             this.xrLabel94.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel94.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel94.Text = "✔";
-            this.xrLabel94.Visible = false;
             // 
             // xrLabel93
             // 
             this.xrLabel93.CanGrow = false;
+            this.xrLabel93.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 9, true ,false )\n")});
             this.xrLabel93.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 925.4983F);
             this.xrLabel93.Multiline = true;
             this.xrLabel93.Name = "xrLabel93";
             this.xrLabel93.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel93.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel93.Text = "✔";
-            this.xrLabel93.Visible = false;
             // 
             // xrLabel92
             // 
             this.xrLabel92.CanGrow = false;
+            this.xrLabel92.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 8, true ,false )\n")});
             this.xrLabel92.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 905.1638F);
             this.xrLabel92.Multiline = true;
             this.xrLabel92.Name = "xrLabel92";
             this.xrLabel92.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel92.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel92.Text = "✔";
-            this.xrLabel92.Visible = false;
             // 
             // xrLabel91
             // 
             this.xrLabel91.CanGrow = false;
+            this.xrLabel91.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 7, true ,false )\n")});
             this.xrLabel91.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 893.9563F);
             this.xrLabel91.Multiline = true;
             this.xrLabel91.Name = "xrLabel91";
             this.xrLabel91.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel91.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel91.Text = "✔";
-            this.xrLabel91.Visible = false;
             // 
             // xrLabel90
             // 
             this.xrLabel90.CanGrow = false;
+            this.xrLabel90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 6, true ,false )\n")});
             this.xrLabel90.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 882.7487F);
             this.xrLabel90.Multiline = true;
             this.xrLabel90.Name = "xrLabel90";
             this.xrLabel90.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel90.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel90.Text = "✔";
-            this.xrLabel90.Visible = false;
             // 
             // xrLabel89
             // 
             this.xrLabel89.CanGrow = false;
+            this.xrLabel89.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 11, true ,false )\n")});
             this.xrLabel89.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 959.7925F);
             this.xrLabel89.Multiline = true;
             this.xrLabel89.Name = "xrLabel89";
             this.xrLabel89.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel89.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel89.Text = "✔";
-            this.xrLabel89.Visible = false;
             // 
             // xrLabel88
             // 
             this.xrLabel88.CanGrow = false;
+            this.xrLabel88.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 21, true ,false )\n\n\n")});
             this.xrLabel88.LocationFloat = new DevExpress.Utils.PointFloat(461.5206F, 874.5893F);
             this.xrLabel88.Multiline = true;
             this.xrLabel88.Name = "xrLabel88";
             this.xrLabel88.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel88.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel88.Text = "✔";
-            this.xrLabel88.Visible = false;
             // 
             // xrLabel87
             // 
             this.xrLabel87.CanGrow = false;
+            this.xrLabel87.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 19, true ,false )\n")});
             this.xrLabel87.LocationFloat = new DevExpress.Utils.PointFloat(296.2138F, 957.6224F);
             this.xrLabel87.Multiline = true;
             this.xrLabel87.Name = "xrLabel87";
             this.xrLabel87.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel87.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel87.Text = "✔";
-            this.xrLabel87.Visible = false;
             // 
             // xrLabel86
             // 
             this.xrLabel86.CanGrow = false;
+            this.xrLabel86.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 10, true ,false )\n")});
             this.xrLabel86.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 947.1033F);
             this.xrLabel86.Multiline = true;
             this.xrLabel86.Name = "xrLabel86";
             this.xrLabel86.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel86.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel86.Text = "✔";
-            this.xrLabel86.Visible = false;
             // 
             // xrLabel85
             // 
             this.xrLabel85.CanGrow = false;
+            this.xrLabel85.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 20, true ,false )\n\n")});
             this.xrLabel85.LocationFloat = new DevExpress.Utils.PointFloat(461.5209F, 863.3818F);
             this.xrLabel85.Multiline = true;
             this.xrLabel85.Name = "xrLabel85";
             this.xrLabel85.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel85.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel85.Text = "✔";
-            this.xrLabel85.Visible = false;
             // 
             // xrLabel84
             // 
             this.xrLabel84.CanGrow = false;
+            this.xrLabel84.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 12, true ,false )\n")});
             this.xrLabel84.LocationFloat = new DevExpress.Utils.PointFloat(292.6315F, 863.3818F);
             this.xrLabel84.Multiline = true;
             this.xrLabel84.Name = "xrLabel84";
             this.xrLabel84.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel84.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel84.Text = "✔";
-            this.xrLabel84.Visible = false;
             // 
             // xrLabel83
             // 
             this.xrLabel83.CanGrow = false;
+            this.xrLabel83.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 5, true ,false )\n")});
             this.xrLabel83.LocationFloat = new DevExpress.Utils.PointFloat(146.048F, 863.3817F);
             this.xrLabel83.Multiline = true;
             this.xrLabel83.Name = "xrLabel83";
             this.xrLabel83.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel83.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel83.Text = "✔";
-            this.xrLabel83.Visible = false;
             // 
             // xrLabel82
             // 
             this.xrLabel82.CanGrow = false;
+            this.xrLabel82.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 4, true ,false )\n")});
             this.xrLabel82.LocationFloat = new DevExpress.Utils.PointFloat(36.08698F, 961.9627F);
             this.xrLabel82.Multiline = true;
             this.xrLabel82.Name = "xrLabel82";
             this.xrLabel82.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel82.SizeF = new System.Drawing.SizeF(27.44451F, 9.037292F);
             this.xrLabel82.Text = "✔";
-            this.xrLabel82.Visible = false;
             // 
             // xrLabel81
             // 
             this.xrLabel81.CanGrow = false;
+            this.xrLabel81.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 3, true ,false )\n")});
             this.xrLabel81.LocationFloat = new DevExpress.Utils.PointFloat(36.08698F, 947.1033F);
             this.xrLabel81.Multiline = true;
             this.xrLabel81.Name = "xrLabel81";
             this.xrLabel81.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel81.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel81.Text = "✔";
-            this.xrLabel81.Visible = false;
             // 
             // xrLabel80
             // 
             this.xrLabel80.CanGrow = false;
+            this.xrLabel80.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 2, true ,false )\n\n")});
             this.xrLabel80.LocationFloat = new DevExpress.Utils.PointFloat(37.55876F, 874.5893F);
             this.xrLabel80.Multiline = true;
             this.xrLabel80.Name = "xrLabel80";
             this.xrLabel80.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel80.SizeF = new System.Drawing.SizeF(24.39038F, 11.20753F);
             this.xrLabel80.Text = "✔";
-            this.xrLabel80.Visible = false;
             // 
             // xrLabel79
             // 
             this.xrLabel79.CanGrow = false;
             this.xrLabel79.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == \'Accounting\', true ,false )")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[IndustryName] == 1, true ,false )")});
             this.xrLabel79.LocationFloat = new DevExpress.Utils.PointFloat(37.14108F, 863.3817F);
             this.xrLabel79.Multiline = true;
             this.xrLabel79.Name = "xrLabel79";
@@ -1753,7 +1861,7 @@
             // 
             this.xrLabel54.CanGrow = false;
             this.xrLabel54.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 8,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 8,true , false)\n\n\n\n\n")});
             this.xrLabel54.LocationFloat = new DevExpress.Utils.PointFloat(40.61287F, 269.7013F);
             this.xrLabel54.Multiline = true;
             this.xrLabel54.Name = "xrLabel54";
@@ -1765,7 +1873,7 @@
             // 
             this.xrLabel53.CanGrow = false;
             this.xrLabel53.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 7,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 7,true , false)\n\n\n\n\n")});
             this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 247.2862F);
             this.xrLabel53.Multiline = true;
             this.xrLabel53.Name = "xrLabel53";
@@ -1777,7 +1885,7 @@
             // 
             this.xrLabel52.CanGrow = false;
             this.xrLabel52.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 6,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 6,true , false)\n\n\n\n\n")});
             this.xrLabel52.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 236.0787F);
             this.xrLabel52.Multiline = true;
             this.xrLabel52.Name = "xrLabel52";
@@ -1789,7 +1897,7 @@
             // 
             this.xrLabel51.CanGrow = false;
             this.xrLabel51.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 5,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 5,true , false)\n\n\n\n\n")});
             this.xrLabel51.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 221.8561F);
             this.xrLabel51.Multiline = true;
             this.xrLabel51.Name = "xrLabel51";
@@ -1801,7 +1909,7 @@
             // 
             this.xrLabel50.CanGrow = false;
             this.xrLabel50.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 4,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 4,true , false)\n\n\n\n\n")});
             this.xrLabel50.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 210.6486F);
             this.xrLabel50.Multiline = true;
             this.xrLabel50.Name = "xrLabel50";
@@ -1813,7 +1921,8 @@
             // 
             this.xrLabel49.CanGrow = false;
             this.xrLabel49.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 3,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 3,true , false)\n\n\n\n\n\n\n" +
+                    "\n\n\n")});
             this.xrLabel49.LocationFloat = new DevExpress.Utils.PointFloat(40.61291F, 192.7083F);
             this.xrLabel49.Multiline = true;
             this.xrLabel49.Name = "xrLabel49";
@@ -1825,7 +1934,7 @@
             // 
             this.xrLabel48.CanGrow = false;
             this.xrLabel48.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] = 2,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 2,true , false)\n\n\n\n\n\n")});
             this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(40.61287F, 166.6438F);
             this.xrLabel48.Multiline = true;
             this.xrLabel48.Name = "xrLabel48";
@@ -2169,6 +2278,7 @@
             // 
             // xrTableCell84
             // 
+            this.xrTableCell84.CanGrow = false;
             this.xrTableCell84.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[YearsEmployment]")});
             this.xrTableCell84.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2225,6 +2335,7 @@
             // 
             // xrTableCell82
             // 
+            this.xrTableCell82.CanGrow = false;
             this.xrTableCell82.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[BusinessEmail]")});
             this.xrTableCell82.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2252,6 +2363,7 @@
             // 
             // xrTableCell81
             // 
+            this.xrTableCell81.CanGrow = false;
             this.xrTableCell81.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[BusinessTruckLineNumber]")});
             this.xrTableCell81.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2279,6 +2391,7 @@
             // 
             // xrTableCell75
             // 
+            this.xrTableCell75.CanGrow = false;
             this.xrTableCell75.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[BusinessDirectLineNumber]")});
             this.xrTableCell75.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2345,6 +2458,7 @@
             // 
             // xrTableCell72
             // 
+            this.xrTableCell72.CanGrow = false;
             this.xrTableCell72.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[Email]")});
             this.xrTableCell72.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2372,6 +2486,7 @@
             // 
             // xrTableCell71
             // 
+            this.xrTableCell71.CanGrow = false;
             this.xrTableCell71.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[MobileNumber]")});
             this.xrTableCell71.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -2399,6 +2514,7 @@
             // 
             // xrTableCell62
             // 
+            this.xrTableCell62.CanGrow = false;
             this.xrTableCell62.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[HomeNumber]")});
             this.xrTableCell62.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
@@ -3636,9 +3752,20 @@
             this.xrPictureBox1.EditOptions.ReadOnly = true;
             this.xrPictureBox1.ImageAlignment = DevExpress.XtraPrinting.ImageAlignment.MiddleCenter;
             this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 3.973642E-05F);
+            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(850F, 1300.67F);
+            // 
+            // xrPictureBox2
+            // 
+            this.xrPictureBox2.AnchorHorizontal = ((DevExpress.XtraReports.UI.HorizontalAnchorStyles)((DevExpress.XtraReports.UI.HorizontalAnchorStyles.Left | DevExpress.XtraReports.UI.HorizontalAnchorStyles.Right)));
+            this.xrPictureBox2.AnchorVertical = ((DevExpress.XtraReports.UI.VerticalAnchorStyles)((DevExpress.XtraReports.UI.VerticalAnchorStyles.Top | DevExpress.XtraReports.UI.VerticalAnchorStyles.Bottom)));
+            this.xrPictureBox2.EditOptions.ReadOnly = true;
+            this.xrPictureBox2.ImageAlignment = DevExpress.XtraPrinting.ImageAlignment.MiddleCenter;
+            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
+            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPictureBox2.Name = "xrPictureBox2";
+            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(850F, 1300.67F);
             // 
             // HLF068Page1BindingSource
             // 
@@ -3659,6 +3786,7 @@
             this.PageHeight = 1400;
             this.PaperKind = System.Drawing.Printing.PaperKind.Legal;
             this.Version = "22.2";
+            ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable37)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable36)).EndInit();
@@ -3987,5 +4115,11 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel19;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRLabel xrLabel17;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel129;
+        private DevExpress.XtraReports.UI.XRTable xrTable2;
+        private DevExpress.XtraReports.UI.XRTableRow xrTableRow2;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell57;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel130;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
     }
 }

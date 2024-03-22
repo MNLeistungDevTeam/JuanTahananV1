@@ -1,0 +1,9 @@
+﻿CREATE TABLE Industry
+ (
+	Id INT PRIMARY KEY IDENTITY NOT NULL,
+	[Name] NVARCHAR(255) NULL,
+	CreatedById INT NOT NULL,
+	DateCreated DATETIME2(7) NULL ,
+	ModifiedById INT NULL,
+	DateModified DATETIME2(7) NULL
+ )

@@ -28,4 +28,7 @@ public interface IUserRepository
     Task<User?> SaveUserAsync(UserModel user, List<UserApproverModel?> userApprovers, int userId);
 
     Task<User> UpdateAsync(User user, int userId);
+
+    Task<User> UpdateNoExclusionAsync(User user, int updatedById);
+    Task<UserModel?> GetByPagibigNumberAsync(string? pagibigNumber);
 }

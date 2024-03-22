@@ -13,7 +13,8 @@ public class UserModel
     [DisplayName("Username")]
     public string UserName { get; set; } = string.Empty;
 
-    [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Use at least 8 characters in combination of uppercase, letters, numbers & symbols.")]
+    //[RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Use at least 8 characters in combination of uppercase, letters, numbers & symbols.")]
+
     [DataType(DataType.Password)]
     [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; } = string.Empty;
@@ -21,7 +22,7 @@ public class UserModel
     public int TotalLoanCounts { get; set; }
     public string PasswordSalt { get; set; } = string.Empty;
 
-    public string Prefix { get; set; } = string.Empty;
+    public string? Prefix { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Last Name is required.")]
     [DisplayName("Last Name")]
@@ -79,6 +80,8 @@ public class UserModel
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime? RefreshTokenExpiryTime { get; set; }
 
+    public string? PagibigNumber { get; set; }
+
     [DisplayName("User Role")]
     [Required(ErrorMessage = "Role is required.")]
     public int? UserRoleId { get; set; }
@@ -113,7 +116,4 @@ public class UserModel
     public string? ApplicantCode { get; set; }
     public string? UserRoleName { get; set; } //Description basis
     public string? UserRoleCode { get; set; }  // Name basis
-
-
-     
 }

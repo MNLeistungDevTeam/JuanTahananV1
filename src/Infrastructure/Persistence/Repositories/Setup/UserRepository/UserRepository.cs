@@ -44,6 +44,12 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByUserNameAsync(string userName) =>
         await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
+    //public async Task<User?> GetByPagibigNumberAsync(string pagibigNumber) =>
+    //await _context.Users.FirstOrDefaultAsync(u => u.PagibigNumber == pagibigNumber);
+
+    public async Task<UserModel?> GetByPagibigNumberAsync(string? pagibigNumber) =>
+    await _db.LoadSingleAsync<UserModel, dynamic>("spUser_GetByPagibigNumber", new { pagibigNumber });
+
     public async Task<List<User>> GetAllAsync() =>
         await _contextHelper.GetAllAsync();
 
@@ -118,7 +124,7 @@ public class UserRepository : IUserRepository
             {
                 "LastFailedAttempt", "LockedTime", "FailedAttempts",
                 "LastOnlineTime", "IsOnline", "CreatedById",
-                "DateCreated", "Password", "PasswordSalt"
+                "DateCreated", "Password", "PasswordSalt","PagibigNumber"
             };
 
         if (string.IsNullOrWhiteSpace(user.ProfilePicture))
@@ -184,5 +190,21 @@ public class UserRepository : IUserRepository
             numBytesRequested: 256 / 8));
 
         return hashedPassword;
+    }
+
+    public async Task<User> UpdateNoExclusionAsync(User user, int updatedById)
+    {
+        try
+        {
+            user.ModifiedById = updatedById;
+            user.DateModified = DateTime.Now;
+            user = await _contextHelper.UpdateAsync(user,"PagibigNumber");
+
+            return user;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

@@ -3,6 +3,7 @@
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
+const CONST_TRANSACTIONCODE = $("#ApplicantsPersonalInformationModel_Code").val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -17,12 +18,20 @@ $(function () {
     //loadApprovalData();
     //loadApproversData();
     loadApprovalData();
+
+    loadVerificationAttachments(CONST_TRANSACTIONCODE);
     $('#btnApprove, #btnDefer, #btnReturn, #btnCancel').click(async function () {
         let id = $(this).attr("id");
         let statusType = id.replace("btn", "");
 
         await openModal(statusType);
     })
+
+    $("#btn_save").on("click", function () {
+        let action = $(this).attr('data-action');
+
+        rebindValidator();
+    });
 
     async function openModal(statusType) {
         let modalLabel = $("#approver-modalLabel");
@@ -74,59 +83,97 @@ $(function () {
         $approverModal.modal("show");
     }
 
-    $("#btn_save").on("click", function () {
-        let action = $(this).attr('data-action');
+    function loadVerificationAttachments(applicantCode) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetEligibilityVerificationDocuments/" + applicantCode,
+            method: "Get",
+            success: function (data) {
+                for (let item of data) {
+                    appendVerificationAttachments(item);
+                }
+            }
+        });
+    }
 
-        rebindValidator();
+    function appendVerificationAttachments(item) {
+        let itemLink = item.DocumentLocation + item.DocumentName;
+        let rowstoAppend = `
 
-        //if (action == 'Approve') {
-        //    Swal.fire({
-        //        title: `Approve Application?`,
-        //        text: `Are you sure you wish to proceed with approving this application? This will move the application to the next step`,
-        //        icon: 'question',
-        //        showCancelButton: true,
-        //        confirmButtonColor: '#3085d6',
-        //        cancelButtonColor: '#d33',
-        //        confirmButtonText: 'Yes, approve it',
-        //        cancelButtonText: "No, I'll recheck it",
-        //        showLoaderOnConfirm: true,
-        //        preConfirm: () => {
-        //            $("#btn_save").submit();
-        //            rebindValidator();
-        //        },
-        //        allowOutsideClick: () => !Swal.isLoading()
-        //    }).then((result) => {
-        //        if (result.isConfirmed) {
-        //            messageBox("Approve Successfully.", "success");
-        //        }
-        //    })
-        //}
-        //else {
-        //    Swal.fire({
-        //        title: 'Defer Application?',
-        //        text: `Are you sure you wish to defer this application? This will postpone this application, requiring a new submission from the beneficiary`,
-        //        icon: 'question',
-        //        showCancelButton: true,
-        //        confirmButtonColor: '#3085d6',
-        //        cancelButtonColor: '#d33',
-        //        confirmButtonText: 'Yes, defer it',
-        //        cancelButtonText: "No, I'll recheck it",
-        //        showLoaderOnConfirm: true,
-        //        preConfirm: () => {
-        //            $("#btn_save").submit();
-        //            rebindValidator();
-        //        },
-        //        allowOutsideClick: () => !Swal.isLoading()
-        //    }).then((result) => {
-        //        if (result.isConfirmed) {
-        //            messageBox("Approve Successfully.", "success");
-        //        }
-        //    })
-        //}
-    });
+                                                <div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
+                                                    <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
+
+                                                    <div class="list-group">
+                                                        <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+        `;
+
+        $("#div_verification").append(rowstoAppend);
+    }
+
+    function loadApplicationAttachments(applicantCode) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetEligibilityVerificationDocuments/" + applicantCode,
+            method: "Get",
+            success: function (data) {
+                for (let item of data) {
+                    appendVerificationAttachments(item);
+                }
+            }
+        });
+    }
+
+    function appendApplicationAttachments(item) {
+        let itemLink = item.DocumentLocation + item.DocumentName;
+        let rowstoAppend = `
+
+                                                <div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
+                                                    <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
+
+                                                    <div class="list-group">
+                                                        <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+        `;
+
+        $("#div_verification").append(rowstoAppend);
+    }
 
     function rebindValidator() {
         let $form = $("#frm_approver_level");
+
+        let action = $("#btn_save").attr('data-action');
+
+        var actionHead = "";
+
+        var titleText = "";
+
+        var confirmbuttonText = "";
+
+        if (action == "Approve") {
+            actionHead = 'Approve';
+            titleText = 'Are you sure you wish to proceed with approving this application? This will move the application to the next step';
+            confirmbuttonText = '   Yes, approve it';
+        }
+        else {
+            actionHead = 'Defer';
+            titleText = 'Are you sure you wish to defer this application? This will postpone this application, requiring a new submission from the beneficiary';
+            confirmbuttonText = 'Yes, defer it';
+        }
 
         $form.unbind();
         $form.data("validator", null);
@@ -140,13 +187,13 @@ $(function () {
             if (!$form.valid()) { return; }
 
             Swal.fire({
-                title: `Approve Application?`,
-                text: `Are you sure you wish to proceed with approving this application? This will move the application to the next step`,
+                title: `${actionHead} Application?`,
+                text: `${titleText}`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, approve it',
+                confirmButtonText: `${confirmbuttonText}`,
                 cancelButtonText: "No, I'll recheck it",
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
@@ -159,7 +206,7 @@ $(function () {
                             if (!response.ok) {
                                 throw new Error(response.statusText);
                             }
-                            return response.json();
+                            return response.ok;
                         })
                         .then(data => {
                             // Handle the response data here if needed
@@ -183,8 +230,6 @@ $(function () {
     }
 
     function resetForm() {
-        //$("[name='ApprovalLevel.Status']").val(0);
-        //$("[name='ApprovalLevel.TransactionNo']").val("");
         $("[name='ApprovalLevel.Remarks']").val("");
 
         $btnSave.removeClass();
@@ -204,18 +249,12 @@ $(function () {
 
         if (!approvalData) { return; }
 
-
         console.log(approvalData)
-
 
         $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
         $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
         $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
-
-
-
-
 
         //let statusArray = [1, 4]
         //let isVisibleApprovalButton = (currentUserId == approvalData.CurrentApproverUserId && statusArray.includes(approvalData.Status));

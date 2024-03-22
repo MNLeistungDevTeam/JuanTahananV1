@@ -119,23 +119,23 @@
                                         <li class="nav-item" role="presentation">
                                             <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
                                                 <i class="mdi mdi-settings-outline d-md-none d-block"></i>
-                                                <span class="d-none d-md-block">Attachments</span>
+                                                <span class="d-none d-md-block">Verification Attachments</span>
                                             </a>
                                         </li>
                                         <!-- New tabs -->
                                         <li class="nav-item" role="presentation">
                                             <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
-                                                <span class="d-none d-md-block">Unit</span>
+                                                <span class="d-none d-md-block">Application Attachments</span>
                                             </a>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a href="#tab5" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
-                                                <span class="d-none d-md-block">BCF</span>
+                                                <span class="d-none d-md-block">Unit</span>
                                             </a>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a href="#tab6" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
-                                                <span class="d-none d-md-block">Status History</span>
+                                                <span class="d-none d-md-block">Timeline</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -230,7 +230,22 @@
                                             <p>Content for Profile tab.</p>
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
-                                            <p>Content for Settings tab.</p>
+
+
+                                            <div id="div_verification" class="row">
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
                                         </div>
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
@@ -271,9 +286,9 @@
                 <div class="modal-body">
                     <input asp-for="ApprovalLevel.Id" type="hidden" />
                     <input asp-for="ApprovalLevel.ApprovalStatusId" type="" />
-                    <input asp-for="ApprovalLevel.Status" type="hidden" />                
-                    <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />                
-                    <input asp-for="ApprovalLevel.TransactionId" type="hidden" />                
+                    <input asp-for="ApprovalLevel.Status" type="hidden" />
+                    <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />
+                    <input asp-for="ApprovalLevel.TransactionId" type="hidden" />
                     <div class="mb-2">
                         <label asp-for="ApprovalLevel.TransactionNo"></label>
                         <input asp-for="ApprovalLevel.TransactionNo" class="form-control" placeholder="Transaction No." readonly />

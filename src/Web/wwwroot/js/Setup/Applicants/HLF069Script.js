@@ -1,4 +1,5 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const roleName = $("#txt_role_name").val();
 $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
@@ -19,7 +20,6 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            // Add the "was-validated" class to the current form
             currentForm.addClass('was-validated');
 
             // Validate the current form
@@ -66,6 +66,8 @@ $(function () {
     });
 
     //#region Loan Particulars
+
+    //#region Selectize
 
     var purposeOfLoanDropdown, $purposeOfLoanDropdown;
     var modeofPaymentDropdown, $modeofPaymentDropdown;
@@ -164,28 +166,233 @@ $(function () {
         modeofPaymentDropdown.off('load');
     });
 
-    $('#LoanParticularsInformation_ExistingChecker').on('change', function (e) {
-        e.preventDefault();
-        if ($(this).prop('checked')) {
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').prop('disabled', false);
-        } else {
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').val('');
-            $('[name="LoanParticularsInformation.ExistingHousingApplicationNumber"]').prop('disabled', true);
+    //#endregion
+
+   
+
+    // Set value for BarrowersInformationModel_BirthDate
+    setDateValue('#BarrowersInformationModel_BirthDate');
+
+    // Set value for SpouseModel_BirthDate
+    setDateValue('#SpouseModel_BirthDate');
+
+    // Set values for Form2PageModel_DateOpened fields
+    setDateValue('#Form2PageModel_DateOpened1');
+    setDateValue('#Form2PageModel_DateOpened2');
+    setDateValue('#Form2PageModel_DateOpened3');
+
+    // Set values for Form2PageModel_CardExpiration fields
+    setDateValue('#Form2PageModel_CardExpiration1');
+    setDateValue('#Form2PageModel_CardExpiration2');
+    setDateValue('#Form2PageModel_CardExpiration3');
+
+    // Set values for Form2PageModel_DateFullyPaid fields
+    setDateValue('#Form2PageModel_DateFullyPaid1');
+    setDateValue('#Form2PageModel_DateFullyPaid2');
+    setDateValue('#Form2PageModel_DateFullyPaid3');
+
+    // Set values for Form2PageModel_DateObtained fields
+    setDateValue('#Form2PageModel_DateObtained1');
+    setDateValue('#Form2PageModel_DateObtained2');
+    setDateValue('#Form2PageModel_DateObtained3');
+
+    function setDateValue(selector) {
+        let dataValue = $(selector).attr('data-value');
+        if (dataValue && dataValue.trim() !== '') {
+            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
         }
-    })
-    $('[name="CollateralInformation.ExistingReasonChecker"]').on('change', function (e) {
+    }
+
+  
+    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
+        var inputValue = $(this).val().toString();
+        var numericValue = parseInt(inputValue, 10);
+
+        // Check if both the length exceeds 7 characters and the numeric value exceeds 7 million
+        if (inputValue.length > 7 || numericValue > 7000000) {
+            //alert("Input value exceeds both 7 characters and 7 million!");
+
+            messageBox("Desired Loan Amount exceeds up to 7000000!", "danger", true);
+
+            $('#LoanParticularsInformationModel_DesiredLoanAmount').trigger('invalid');
+
+            $(this).val(0);
+
+            // Adjust the input value accordingly
+            inputValue = inputValue.substring(0, 7); // Truncate input to 7 characters
+            $(this).val(0); // Set the input value
+        }
+    });
+
+    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function () {
+        var inputValue = $(this).val().toString();
+        var numericValue = parseInt(inputValue, 10);
+
+        if (numericValue > 30 || inputValue.length > 2) {
+            //alert("Input value exceeds 30!");
+
+            messageBox("Desired Loan Term Years exceeds 30!", "danger", true);
+
+            $('#LoanParticularsInformationModel_DesiredLoanTermYears').trigger('invalid');
+
+            $(this).val(0);
+        }
+    });
+
+    $('#LoanParticularsInformationModel_ExistingChecker').on('change', function (e) {
         e.preventDefault();
         if ($(this).prop('checked')) {
-            $('[name="CollateralInformation.CollateralReason"]').prop('disabled', false);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', false);
         } else {
-            $('[name="CollateralInformation.CollateralReason"]').val('');
-            $('[name="CollateralInformation.CollateralReason"]').prop('disabled', true);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').val('');
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
         }
     })
 
     //#endregion
 
     //#region Collateral
+    $("#CollateralInformationModel_ExistingReasonChecker").on("change", function (event) {
+        // Check if checkbox is checked
+        if ($(this).is(":checked")) {
+            $("#CollateralInformationModel_CollateralReason").prop('disabled', false);
+        } else {
+            $("#CollateralInformationModel_CollateralReason").prop('disabled', true);
+            $("#CollateralInformationModel_CollateralReason").val('');
+        }
+    });
+
+    $('#CollateralInformationModel_TctOctCctNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("TctOctCctNumber must not exceed to 25 characters", "danger", true);
+
+            $('#CollateralInformationModel_TctOctCctNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_TaxDeclrationNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+            messageBox("Tax Declaration Number must not exceed to 25 characters", "danger", true);
+
+            $('#CollateralInformationModel_TaxDeclrationNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_LotUnitNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("Lot Unit Number must not exceed to 25 characters", "danger", true);
+
+            $('#CollateralInformationModel_LotUnitNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_BlockBuildingNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+            messageBox("Block Building Number must not exceed to 25 characters", "danger", true);
+
+            $('#CollateralInformationModel_BlockBuildingNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_LandArea').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 10 characters
+        if (inputValue.length > 10) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 10));
+
+            messageBox("Land/Floor Area must not exceed to 9999999999 sqm", "danger", true);
+
+            $('#CollateralInformationModel_LandArea').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_HouseAge').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 3 characters
+        if (inputValue.length > 3) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 3));
+
+            messageBox("House age must not exceed to 1000 years", "danger", true);
+
+            $('#CollateralInformationModel_LandArea').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_NumberOfStoreys').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 3 characters
+        if (inputValue.length > 3) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 3));
+
+            messageBox("Existing Number of storey must not exceed to 999", "danger", true);
+
+            $('#CollateralInformationModel_NumberOfStoreys').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_ProposedNoOfStoreys').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 3 characters
+        if (inputValue.length > 3) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 3));
+
+            messageBox("Propose Number of storey must not exceed to 999", "danger", true);
+
+            $('#CollateralInformationModel_ProposedNoOfStoreys').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_ExistingTotalFloorArea').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 10 characters
+        if (inputValue.length > 10) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 10));
+
+            messageBox("Existing TotalFloorArea must not exceed to 9999999999 sqm", "danger", true);
+
+            $('#CollateralInformationModel_ExistingTotalFloorArea').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_ProposedTotalFloorArea').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 10 characters
+        if (inputValue.length > 10) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 10));
+
+            messageBox("Propose TotalFloorArea must not exceed to 9999999999 sqm", "danger", true);
+
+            $('#CollateralInformationModel_ProposedTotalFloorArea').trigger('invalid');
+        }
+    });
+
+    //#region Selectize
+
     var propertyTypeVal = $(`[name='CollateralInformationModel.PropertyTypeId']`).attr('data-value');
     var propertyTypeDropdown, $propertyTypeDropdown;
 
@@ -237,51 +444,189 @@ $(function () {
 
     //#endregion
 
+    //#endregion
 
+    //#region Form2Page
+    var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
+    var sourePagibigFundDropdown, $sourePagibigFundDropdown;
 
+    $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Applicants/GetAllSourcePagibigFund',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
 
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
 
+    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
 
+    sourePagibigFundDropdown.on('load', function (options) {
+        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
+        //resourceCounter("purposeofloan");
+        sourePagibigFundDropdown.off('load');
+    });
 
+    //#endregion
 
+    //#region Barrower
 
-    $("#LoanParticularsInformationModel_ExistingChecker").on("change", function (event) {
-        // Check if checkbox is checked
-        if ($(this).is(":checked")) {
+    $('#BarrowersInformationModel_HomeNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
 
-            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").prop('disabled', false);
+            messageBox("HomeNumber must not exceed to 25 characters", "danger", true);
 
-        } else {
-            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").prop('disabled', true);
-            $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").val('');
-
+            $('#BarrowersInformationModel_HomeNumber').trigger('invalid');
         }
     });
 
+    $('#BarrowersInformationModel_MobileNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
 
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
 
-    $("#CollateralInformationModel_ExistingReasonChecker").on("change", function (event) {
-        // Check if checkbox is checked
-        if ($(this).is(":checked")) {
+            messageBox("Mobile Number must not exceed to 25 characters", "danger", true);
 
-            $("#CollateralInformationModel_CollateralReason").prop('disabled', false);
-
-        } else {
-            $("#CollateralInformationModel_CollateralReason").prop('disabled', true);
-            $("#CollateralInformationModel_CollateralReason").val('');
-
+            $('#BarrowersInformationModel_MobileNumber').trigger('invalid');
         }
     });
 
+    $('#BarrowersInformationModel_YearsofStay').on('input', function () {
+        var inputValue = $(this).val().toString();
 
+        //maximum 25 characters
+        if (inputValue.length > 3) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 3));
 
+            messageBox("Years of Stay must not exceed to 3 characters", "danger", true);
 
+            $('#BarrowersInformationModel_YearsofStay').trigger('invalid');
+        }
+    });
 
+    $('#ApplicantsPersonalInformationModel_HousingAccountNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
 
+        //maximum 25 characters
+        if (inputValue.length > 12) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 12));
 
+            messageBox("Housing Account Number must not exceed to 12 characters", "danger", true);
 
+            $('#ApplicantsPersonalInformationModel_HousingAccountNumber').trigger('invalid');
+        }
+    });
 
+    $('#BarrowersInformationModel_SSSNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("SSS Number must not exceed to 25 characters", "danger", true);
+
+            $('#BarrowersInformationModel_SSSNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_TinNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("TIN Number must not exceed to 25 characters", "danger", true);
+
+            $('#BarrowersInformationModel_TinNumber').trigger('invalid');
+        }
+    });
+
+    $('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 12) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 12));
+
+            messageBox("PagIBIG Number must not exceed to 12 characters", "danger", true);
+
+            $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("Business Direct Line must not exceed to 25 characters", "danger", true);
+
+            $('#BarrowersInformationModel_BusinessDirectLineNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_BusinessTruckLineNumber').on('input', function () {
+        var inputValue = $(this).val().toString();
+
+        //maximum 25 characters
+        if (inputValue.length > 25) {
+            //alert("Input value exceeds 7 characters!");
+            $(this).val(inputValue.substring(0, 25));
+
+            messageBox("Business TruckLine Number must not exceed to 25 characters", "danger", true);
+
+            $('#BarrowersInformationModel_BusinessTruckLineNumber').trigger('invalid');
+        }
+    });
+
+    //#endregion
 
     function validateForm(form) {
         var isValid = true;
@@ -291,9 +636,11 @@ $(function () {
         form.find(':input[required]').each(function () {
             if (!$(this).val()) {
                 $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
                 isValid = false;
             } else {
                 $(this).removeClass('is-invalid');
+                $(this).addClass('was-validated');
             }
         });
 
@@ -332,7 +679,6 @@ $(function () {
                     button.attr({ disabled: true });
 
                     $("#beneficiary-overlay").removeClass('d-none');
-
                 },
                 success: function (response) {
                     let recordId = $("input[name='User.Id']").val();
@@ -344,27 +690,33 @@ $(function () {
 
                     if (applicantInfoIdVal == 0) {
                         setTimeout(function () {
-
                             $("#beneficiary-overlay").addClass('d-none');
 
                             window.location.href = "/Applicants/HLF068/" + response;
                         }, 2000);
                     }
                     else {
+                        var link = "Applicants/Beneficiary";
+
+                        if (roleName != 'Beneficiary') {
+                            link = "Applicants/ApplicantRequests";
+                        }
+
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
                             // Redirect to the specified location
-                            window.location.href = "/Applicants/ApplicantRequests";
+                            window.location.href = baseUrl + link;
                         }, 2000); // 2000 milliseconds = 2 seconds
                     }
 
                     button.attr({ disabled: false });
                     button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
 
-                    userModal.modal('hide');
+                    //userModal.modal('hide');
                 },
                 error: function (response) {
                     messageBox(response.responseText, "danger");
+                    $("#beneficiary-overlay").addClass('d-none');
                     button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
                     button.attr({ disabled: false });
                 }

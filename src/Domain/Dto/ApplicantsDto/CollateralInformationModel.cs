@@ -46,7 +46,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? CollateralReason { get; set; }
         [Display(Name = "Land Area / Floor Area", Prompt = "Input sqm")]
         public decimal? LandArea { get; set; }
-        [Display(Name = "Age of House (for purchase of residential unit)", Prompt = "Input sqm")]
+        [Display(Name = "Age of House (for purchase of residential unit)", Prompt = "Input Number")]
         public int? HouseAge { get; set; }
         [Display(Name = "Existing Number of Storey", Prompt = "Input Number")]
         public int? NumberOfStoreys { get; set; }

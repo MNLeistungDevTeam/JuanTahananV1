@@ -37,6 +37,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             _approvalStatusRepo = approvalStatusRepo;
         }
 
+        #region Get
+
         public async Task<ApplicantsPersonalInformation?> GetByIdAsync(int id) =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -58,8 +60,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync() =>
           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAll", new { });
 
-        public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo() =>
-           await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { });
+        public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId) =>
+           await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { userId });
+
+        public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode) =>
+             await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetEligibilityVerficationDocuments", new { applicantCode });
+
+        #endregion Get
+
+        #region Api
 
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
@@ -69,6 +78,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
             if (model.Id == 0)
             {
+                _applicantPersonalInfo.Code = await GenerateApplicationCode();
+
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
 
                 // Create Initial Approval Status
@@ -79,15 +90,16 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
             var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
 
-            var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
-            if (approvalStatus == null)
+            if (moduleStage is not null && moduleStage.WithApprover)
             {
-                if (moduleStage is not null && moduleStage.WithApprover)
-                {
-                    // Create Initial Approval Status
-                    await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
-                }
+                // Create Initial Approval Status
+                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
+
+            //var approvalStatus = await _approvalStatusRepo.GetByReferenceAsync(_applicantPersonalInfo.Id, moduleStage.Id.ToString(), _applicantPersonalInfo.CompanyId.Value);
+            //if (approvalStatus == null)
+            //{
+            //}
             return _applicantPersonalInfo;
         }
 
@@ -128,5 +140,24 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await DeleteAsync(entity.Id);
             }
         }
+
+        public async Task<string> GenerateApplicationCode()
+        {
+            try
+            {
+                string newref = $"APL{DateTime.Now:yyyyMM}-{"1".ToString().PadLeft(4, '0')}";
+                var result = await _db.LoadSingleAsync<string, dynamic>("spApplicantsPersonalInformation_GenerateCode", new { });
+
+                if (result != null)
+                {
+                    newref = $"APL{DateTime.Now:yyyyMM}-{(Convert.ToInt32(result.Remove(0, result.Length - 4)) + 1).ToString().PadLeft(4, '0')}";
+                }
+
+                return newref;
+            }
+            catch (Exception) { throw; }
+        }
     }
+
+    #endregion Api
 }

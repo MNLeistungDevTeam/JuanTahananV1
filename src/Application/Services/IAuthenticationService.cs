@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 
@@ -6,8 +7,6 @@ namespace DMS.Application.Services;
 
 public interface IAuthenticationService
 {
-    string HashPassword(string password);
-
     Task<User> Authenticate(AuthRequest authRequest);
 
     Task InsertUserActivity(int userId, string action);
@@ -23,6 +22,11 @@ public interface IAuthenticationService
     Task UpdateUserRefreshToken(int userId, string refreshToken, DateTime refreshTokenExpiry);
 
     Task UserLockedStatus(string userName);
+
     string GenerateTemporaryPasswordAsync(string name);
+
     Task<string> GenerateTemporaryUsernameAsync();
+
+    Task<bool> ChangePassword(ChangePasswordModel changePassword);
+    string HashPassword(string password, string salt);
 }

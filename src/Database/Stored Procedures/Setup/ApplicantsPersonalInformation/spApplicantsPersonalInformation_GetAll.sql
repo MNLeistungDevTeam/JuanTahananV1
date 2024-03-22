@@ -11,7 +11,7 @@ AS
 	'' Project,
 	bi.PropertyUnitLevelName Unit,
 	lpi.DesiredLoanAmount As LoanAmount,
-	CASE WHEN apl.ApprovalStatus = 1 Then 'Pending Review'
+	CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
 		 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		 ELSE 'Defered'	
 	END ApplicationStatus
