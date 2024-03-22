@@ -574,6 +574,15 @@
                                                 <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="invalid-tooltip"></span>
                                             </div>
                                         </div>
+                                      <div class="col-md-3 d-none" id="rentalForm">
+                                            <div class="position-relative">
+                                                <label asp-for="BarrowersInformationModel.MonthlyRent" class="form-label fw-normal"></label>
+                                                <input asp-for="BarrowersInformationModel.MonthlyRent" type="number" class="form-control rounded-3 text-center">
+                                            </div>
+                                        </div>
+
+
+
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
@@ -927,13 +936,60 @@
                                     Employment Information
                                 </h3>
                             </div>
-                            <div class="col-md-3">
+
+
+
+                            <div class="col-md-9">
                                 <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="SpouseModel.BusinessNumber"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessNumber">
-                                    <span asp-validation-for="SpouseModel.BusinessNumber" class="invalid-tooltip"> </span>
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.BusinessName"></label>
+                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessName">
+                                    <span asp-validation-for="SpouseModel.BusinessName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.YearsInEmployment"></label>
+                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.YearsInEmployment">
+                                    <span asp-validation-for="SpouseModel.YearsInEmployment" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.OccupationStatus"></label>
+                                    <select asp-for="SpouseModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.SpouseModel.OccupationStatus">
+                                        <option value="">Select Occupation Status......</option>
+                                        <option value="Employed">Employed</option>
+                                        <option value="Self-Employed">Self-Employed</option>
+                                       
+                                    </select>
+                                    <span asp-validation-for="SpouseModel.OccupationStatus" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+
+
+                            
+                            <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.EmploymentPosition"></label>
+                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.EmploymentPosition">
+                                    <span asp-validation-for="SpouseModel.EmploymentPosition" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+
+
+                                  <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
+                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessTelNo">
+                                    <span asp-validation-for="SpouseModel.BusinessTelNo" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+
+
+
                             <div class="col-md-12">
                                 <div class="form-check form-check-inline">
                                     <input asp-for="SpouseModel.IsSpouseAddressAbroad" type="checkbox" class="form-check-input">

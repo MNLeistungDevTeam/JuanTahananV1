@@ -168,42 +168,6 @@ $(function () {
 
     //#endregion
 
-   
-
-    // Set value for BarrowersInformationModel_BirthDate
-    setDateValue('#BarrowersInformationModel_BirthDate');
-
-    // Set value for SpouseModel_BirthDate
-    setDateValue('#SpouseModel_BirthDate');
-
-    // Set values for Form2PageModel_DateOpened fields
-    setDateValue('#Form2PageModel_DateOpened1');
-    setDateValue('#Form2PageModel_DateOpened2');
-    setDateValue('#Form2PageModel_DateOpened3');
-
-    // Set values for Form2PageModel_CardExpiration fields
-    setDateValue('#Form2PageModel_CardExpiration1');
-    setDateValue('#Form2PageModel_CardExpiration2');
-    setDateValue('#Form2PageModel_CardExpiration3');
-
-    // Set values for Form2PageModel_DateFullyPaid fields
-    setDateValue('#Form2PageModel_DateFullyPaid1');
-    setDateValue('#Form2PageModel_DateFullyPaid2');
-    setDateValue('#Form2PageModel_DateFullyPaid3');
-
-    // Set values for Form2PageModel_DateObtained fields
-    setDateValue('#Form2PageModel_DateObtained1');
-    setDateValue('#Form2PageModel_DateObtained2');
-    setDateValue('#Form2PageModel_DateObtained3');
-
-    function setDateValue(selector) {
-        let dataValue = $(selector).attr('data-value');
-        if (dataValue && dataValue.trim() !== '') {
-            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
-        }
-    }
-
-  
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
         var inputValue = $(this).val().toString();
         var numericValue = parseInt(inputValue, 10);
@@ -447,6 +411,7 @@ $(function () {
     //#endregion
 
     //#region Form2Page
+
     var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
     var sourePagibigFundDropdown, $sourePagibigFundDropdown;
@@ -497,9 +462,48 @@ $(function () {
         sourePagibigFundDropdown.off('load');
     });
 
+    // Set values for Form2PageModel_DateOpened fields
+    setDateValue('#Form2PageModel_DateOpened1');
+    setDateValue('#Form2PageModel_DateOpened2');
+    setDateValue('#Form2PageModel_DateOpened3');
+
+    // Set values for Form2PageModel_CardExpiration fields
+    setDateValue('#Form2PageModel_CardExpiration1');
+    setDateValue('#Form2PageModel_CardExpiration2');
+    setDateValue('#Form2PageModel_CardExpiration3');
+
+    // Set values for Form2PageModel_DateFullyPaid fields
+    setDateValue('#Form2PageModel_DateFullyPaid1');
+    setDateValue('#Form2PageModel_DateFullyPaid2');
+    setDateValue('#Form2PageModel_DateFullyPaid3');
+
+    // Set values for Form2PageModel_DateObtained fields
+    setDateValue('#Form2PageModel_DateObtained1');
+    setDateValue('#Form2PageModel_DateObtained2');
+    setDateValue('#Form2PageModel_DateObtained3');
+
     //#endregion
 
     //#region Barrower
+
+    // Set value for BarrowersInformationModel_BirthDate
+    setDateValue('#BarrowersInformationModel_BirthDate');
+
+    var homeOwnershipVal = $("#BarrowersInformationModel_HomeOwnerShip").attr('data-value');
+    if (homeOwnershipVal == 'Rented') {
+        // Adding d-none class if condition is true
+        $('#rentalForm').removeClass('d-none');
+    }
+
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').removeClass('d-none');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
+        } else {
+            $('#rentalForm').addClass('d-none');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+        }
+    });
 
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -626,7 +630,170 @@ $(function () {
         }
     });
 
+    //BarrowersInformationModel_HomeOwnerShip
+
     //#endregion
+
+    //#region Spouse
+
+    // Set value for SpouseModel_BirthDate
+    setDateValue('#SpouseModel_BirthDate');
+
+    //#endregion
+
+    //$('#form2').on('submit', async function (e) {
+    //    e.preventDefault();
+    //    let $loanparticulars = $('#loanparticulars');
+    //    let $collateraldata = $('#collateraldata');
+    //    let $spousedata = $('#spousedata');
+    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
+    //        return;
+    //    }
+    //    let loanparticulars = $loanparticulars.serializeArray();
+    //    let collateraldata = $collateraldata.serializeArray();
+    //    let spousedata = $spousedata.serializeArray();
+    //    let form2 = $(this).serializeArray();
+    //    let combinedData = {};
+    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
+    //        combinedData[obj.name] = obj.value;
+    //    });
+
+    //    // Use await before the AJAX call
+    //    try {
+    //        await $.ajax({
+    //            type: 'POST',
+    //            url: '/Applicants/SaveHLF068',
+    //            data: combinedData,
+    //            beforeSend: function () {
+    //                loading("Saving Changes...");
+    //            },
+    //            success: async function (response) {
+    //                messageBox("Successfully", "success", true);
+
+    //                if (applicantInfoIdVal == 0) {
+    //                    loader.close();
+    //                    setTimeout(function () {
+    //                        window.location.href = "/Applicants/HLF068/" + response;
+    //                    }, 2000);
+    //                }
+    //                else {
+    //                    loader.close();
+
+    //                    setTimeout(function () {
+    //                        // Redirect to the specified location
+    //                        window.location.href = "/Applicants/ApplicantRequests";
+    //                    }, 2000); // 2000 milliseconds = 2 seconds
+    //                }
+    //            },
+    //            error: async function (jqXHR, textStatus, errorThrown) {
+    //                console.log(jqXHR.responseText);
+    //                messageBox(jqXHR.responseText, "danger", true);
+    //                loader.close();
+    //            }
+    //        });
+    //    } catch (error) {
+    //        // Handle any errors from the AJAX request
+    //        console.log(error);
+    //        // Optionally display an error message
+    //        messageBox("An error occurred during the submission.", "danger", true);
+    //    }
+    //});
+
+    //#region Methods
+
+    $(document).ready(function () {
+        loadloanParticularInformation(applicantInfoIdVal);
+        loadSpouseInformation(applicantInfoIdVal);
+        loadBorrowerInformation(applicantInfoIdVal);
+        loadCollateralInformation(applicantInfoIdVal);
+        loadForm2PageInformation(applicantInfoIdVal);
+    });
+
+    function loadloanParticularInformation(id) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
+            method: 'Get',
+            success: function (response) {
+                $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
+
+                purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
+
+                $(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
+                $(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
+                $(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
+                $(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
+                $(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
+
+                modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
+
+                //CollateralInformationModel.Province
+                //CollateralInformationModel.Municipality
+                //CollateralInformationModel.Street
+                //CollateralInformationModel.DeveloperName
+                //CollateralInformationModel.PropertyTypeId
+                //CollateralInformationModel.TctOctCctNumber
+                //CollateralInformationModel.TaxDeclrationNumber
+                //CollateralInformationModel.LotUnitNumber
+                //CollateralInformationModel.BlockBuildingNumber
+                //CollateralInformationModel.IsMortgage
+                //CollateralInformationModel.LandArea
+                //CollateralInformationModel.HouseAge
+                //CollateralInformationModel.ExistingReasonChecker
+                //CollateralInformationModel.CollateralReason
+                //CollateralInformationModel.CollateralReason
+                //CollateralInformationModel.NumberOfStoreys
+                //CollateralInformationModel.ProposedNoOfStoreys
+                //CollateralInformationModel.ExistingTotalFloorArea
+                //CollateralInformationModel.ProposedTotalFloorArea
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function loadSpouseInformation(id) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
+            method: 'Get',
+            success: function (response) {
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function loadBorrowerInformation(applicantId) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function loadForm2PageInformation(applicantId) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function loadCollateralInformation(applicantId) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    }
 
     function validateForm(form) {
         var isValid = true;
@@ -724,155 +891,12 @@ $(function () {
         });
     }
 
-    //$('#form2').on('submit', async function (e) {
-    //    e.preventDefault();
-    //    let $loanparticulars = $('#loanparticulars');
-    //    let $collateraldata = $('#collateraldata');
-    //    let $spousedata = $('#spousedata');
-    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-    //        return;
-    //    }
-    //    let loanparticulars = $loanparticulars.serializeArray();
-    //    let collateraldata = $collateraldata.serializeArray();
-    //    let spousedata = $spousedata.serializeArray();
-    //    let form2 = $(this).serializeArray();
-    //    let combinedData = {};
-    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-    //        combinedData[obj.name] = obj.value;
-    //    });
-
-    //    // Use await before the AJAX call
-    //    try {
-    //        await $.ajax({
-    //            type: 'POST',
-    //            url: '/Applicants/SaveHLF068',
-    //            data: combinedData,
-    //            beforeSend: function () {
-    //                loading("Saving Changes...");
-    //            },
-    //            success: async function (response) {
-    //                messageBox("Successfully", "success", true);
-
-    //                if (applicantInfoIdVal == 0) {
-    //                    loader.close();
-    //                    setTimeout(function () {
-    //                        window.location.href = "/Applicants/HLF068/" + response;
-    //                    }, 2000);
-    //                }
-    //                else {
-    //                    loader.close();
-
-    //                    setTimeout(function () {
-    //                        // Redirect to the specified location
-    //                        window.location.href = "/Applicants/ApplicantRequests";
-    //                    }, 2000); // 2000 milliseconds = 2 seconds
-    //                }
-    //            },
-    //            error: async function (jqXHR, textStatus, errorThrown) {
-    //                console.log(jqXHR.responseText);
-    //                messageBox(jqXHR.responseText, "danger", true);
-    //                loader.close();
-    //            }
-    //        });
-    //    } catch (error) {
-    //        // Handle any errors from the AJAX request
-    //        console.log(error);
-    //        // Optionally display an error message
-    //        messageBox("An error occurred during the submission.", "danger", true);
-    //    }
-    //});
-
-    $(document).ready(function () {
-        loadloanParticularInformation(applicantInfoIdVal);
-        loadSpouseInformation(applicantInfoIdVal);
-        loadBorrowerInformation(applicantInfoIdVal);
-        loadCollateralInformation(applicantInfoIdVal);
-        loadForm2PageInformation(applicantInfoIdVal);
-    });
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                $(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                $(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                $(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
+    function setDateValue(selector) {
+        let dataValue = $(selector).attr('data-value');
+        if (dataValue && dataValue.trim() !== '') {
+            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+        }
     }
 
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
+    //#endregion
 });

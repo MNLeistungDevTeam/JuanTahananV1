@@ -150,4 +150,6 @@ public partial class BarrowersInformation
     public string PropertyLocation { get; set; }
 
     public string PropertyUnitLevelName { get; set; }
+
+    public decimal? MonthlyRent { get; set; }
 }
