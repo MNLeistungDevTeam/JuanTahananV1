@@ -21,7 +21,7 @@
         </div>
     </div>
 </div>
-<!-- end page title --> 
+<!-- end page title -->
 
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
@@ -1003,7 +1003,7 @@
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label asp-for="SpouseModel.PreparedMailingAddress" class="form-label fw-normal"></label>
                                     <select asp-for="SpouseModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.SpouseModel.PreparedMailingAddress">
@@ -2103,6 +2103,7 @@
         </div> <!-- end #rootwizard-->
     </div>
 </div>
+
 
 
 @section Scripts {

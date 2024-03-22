@@ -10,6 +10,7 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -735,6 +736,18 @@ namespace Template.Web.Controllers.Transaction
                 // last stage pass parameter code
 
                 var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
+
+
+                #region Notification
+
+                var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
+                var actiontype = type;
+
+                var actionlink = $"Applicants/HLF068/{applicantdata.Code}";
+
+                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantdata.Code, userId, companyId);
+
+                #endregion Notification
 
                 return Ok(applicantdata.Code);
             }
