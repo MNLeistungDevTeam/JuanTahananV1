@@ -80,22 +80,23 @@ namespace DMS.Infrastructure.Services
             try
             {
                 //checker if exist in records
-                var approvalStatus = await _approvalStatusRepo.GetAsync(model.ApprovalStatusId);
+                var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(null, null, model.ApprovalStatusId);
                 if (approvalStatus is null) { throw new Exception("Approval status not found!"); }
 
-                if (approvalStatus.Status == (int)ApprovalStatusType.Cancelled)
-                    throw new Exception($"Transaction already Cancelled!");
+                if (approvalStatus.Status == (int)AppStatusType.Withdrawn)
+                    throw new Exception($"Application already Withdrawn!");
 
-                if (approvalStatus.Status != (int)ApprovalStatusType.PendingReview && approvalStatus.Status != (int)ApprovalStatusType.Returned)
-                    throw new Exception($"Transaction already {approvalStatus.StatusDescription}!");
+                //if (approvalStatus.Status == (int)AppStatusType.Submitted && approvalStatus.Status == (int)AppStatusType.Deferred)
+                //    throw new Exception($"Application already {approvalStatus.StatusDescription}!");
 
                 var moduleStages = await _moduleStageRepo.GetByModuleId(approvalStatus.ReferenceType);
 
                 var userInfo = await _userRepo.GetUserAsync(approverId);
-
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
 
-                if (moduleStage == null)
+                int[] statusExclusions = { (int)AppStatusType.Submitted, (int)AppStatusType.Withdrawn };
+
+                if (!statusExclusions.Contains(model.Status) && moduleStage == null)
                 {
                     throw new Exception($"The Current User is not Approver!");
                 }
@@ -105,7 +106,8 @@ namespace DMS.Infrastructure.Services
 
                 //ApprovalLevel approvalLevel = new();
                 int approvalLevelId = 0;
-                if (model.Status == (int)ApprovalStatusType.Approved || model.Status == (int)ApprovalStatusType.Disapproved)
+                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified 
+                    || model.Status == (int)AppStatusType.Deferred)
                 {
                     var approvalLevelData = await _approvalLevelRepo.SaveAsync(model);
                     approvalLevelId = approvalLevelData.Id;
@@ -169,19 +171,19 @@ namespace DMS.Infrastructure.Services
                     .ToListAsync();
 
                 //if (result.Any(x => x.ApprovalLevelId == null)) { return; }
-                if (approvalLevel.Status == (int)ApprovalStatusType.Approved)
-                {
-                    var lastStage = result.OrderByDescending(x => x.Level).FirstOrDefault();
-                    if (lastStage == null) { return; }
-                    if (lastStage.Id != approvalLevel.ModuleStageId)
-                    {
-                        approvalStatus.Status = (int)ApprovalStatusType.PendingReview;
-                        await UpdateTransactionApprovalStatus(approvalStatus, approvalLevel.ApproverId);
-                        var updated = await _approvalStatusRepo.SaveAsync(approvalStatus);
+                //if (approvalLevel.Status == (int)ApprovalStatusType.Approved)
+                //{
+                //    var lastStage = result.OrderByDescending(x => x.Level).FirstOrDefault();
+                //    if (lastStage == null) { return; }
+                //    if (lastStage.Id != approvalLevel.ModuleStageId)
+                //    {
+                //        approvalStatus.Status = (int)ApprovalStatusType.PendingReview;
+                //        await UpdateTransactionApprovalStatus(approvalStatus, approvalLevel.ApproverId);
+                //        var updated = await _approvalStatusRepo.SaveAsync(approvalStatus);
 
-                        return;
-                    }
-                }
+                //        return;
+                //    }
+                //}
 
                 approvalStatus.Status = approvalLevel.Status;
                 await UpdateTransactionApprovalStatus(approvalStatus, approvalLevel.ApproverId);
@@ -205,7 +207,7 @@ namespace DMS.Infrastructure.Services
 
                 var user = await _userRepo.GetByIdAsync(approverId);
 
-                int[] statusInclusions = { (int)ApprovalStatusType.Cancelled, (int)ApprovalStatusType.Approved, (int)ApprovalStatusType.Disapproved };
+                int[] statusInclusions = { (int)AppStatusType.Withdrawn, (int)AppStatusType.Deferred, (int)AppStatusType.DeveloperVerified, (int)AppStatusType.PagibigVerified };
 
                 if (module.Code == ModuleCodes2.CONST_APPLICANTSREQUESTS)
                 {

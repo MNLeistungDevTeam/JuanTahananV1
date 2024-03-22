@@ -138,6 +138,11 @@ $(function () {
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
         });
+
+        $("#btn_upload_document").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+        });
     });
 
     //#endregion
@@ -147,6 +152,10 @@ $(function () {
         let pagibigNumber = $(this).attr("data-pagibignumber");
 
         location.href = baseUrl + "Applicants/NewHLF068/" + pagibigNumber;
+    });
+
+    $("#btn_upload_document").on('click', function () {
+        location.href = $(this).attr("data-url");
     });
 
     $("#btn_edit").on('click', function () {

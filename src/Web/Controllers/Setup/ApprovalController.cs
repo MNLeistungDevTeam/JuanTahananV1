@@ -37,7 +37,8 @@ namespace DMS.Web.Controllers.Setup
         {
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var data = await _approvalStatusRepo.GetByReferenceModuleCodeAsync(referenceId, moduleCode, companyId);
+            //var module = await _moduleRepo.GetByCodeAsync(moduleCode);
+            var data = await _approvalStatusRepo.GetByReferenceIdAsync(referenceId, companyId);
 
             return Ok(data);
         }
@@ -68,7 +69,7 @@ namespace DMS.Web.Controllers.Setup
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveApprovalLevel(ApprovalLevelViewModel model)
+        public async Task<IActionResult> SaveApprovalLevel(ApprovalLevelModel model)
         {
             try
             {
@@ -82,17 +83,16 @@ namespace DMS.Web.Controllers.Setup
 
                 var approvalLevel = new ApprovalLevelModel
                 {
-                    Id = model.ApprovalLevel.Id,
-                    ApprovalStatusId = model.ApprovalLevel.ApprovalStatusId,
-                    Status = model.ApprovalLevel.Status,
-                    Remarks = model.ApprovalLevel.Remarks,
+                    Id = model.Id,
+                    ApprovalStatusId = model.ApprovalStatusId,
+                    Status = model.Status,
+                    Remarks = model.Remarks,
                     ApproverId = userId,
                     DateUpdated = DateTime.Now
                 };
                 await _approvalService.SaveApprovalLevel(approvalLevel, userId, companyId);
 
                 //await _notificationService.NotifyUsersByApproval(model.ApprovalLevel.ApprovalStatusId, userId, companyId);
-
                 return Ok();
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
