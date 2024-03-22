@@ -88,7 +88,7 @@ namespace DMS.Infrastructure.Services
             barrowerModel.PresentBuildingName = model.PresentBuildingName;
             barrowerModel.PresentLotName = model.PresentLotName;
             barrowerModel.PresentSubdivisionName = model.PresentSubdivisionName;
-            barrowerModel.PresentBaranggayName = model.PresentBaranggayName;
+            barrowerModel.PresentBaranggayName = model.PresentBarangayName;
             barrowerModel.PresentMunicipalityName = model.PresentMunicipalityName;
             barrowerModel.PresentProvinceName = model.PresentProvinceName;
             barrowerModel.PresentZipCode = model.PresentZipCode;
@@ -97,7 +97,7 @@ namespace DMS.Infrastructure.Services
             barrowerModel.PermanentBuildingName = model.PermanentBuildingName;
             barrowerModel.PermanentLotName = model.PermanentLotName;
             barrowerModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
-            barrowerModel.PermanentBaranggayName = model.PermanentBaranggayName;
+            barrowerModel.PermanentBaranggayName = model.PermanentBarangayName;
             barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
             barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
             barrowerModel.PermanentZipCode = model.PermanentZipCode;

@@ -69,8 +69,8 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         public string? PresentSubdivisionName { get; set; } = string.Empty;
 
         [Required]
-        [DisplayName("Baranggay")]
-        public string? PresentBaranggayName { get; set; } = string.Empty;
+        [DisplayName("Barangay")]
+        public string? PresentBarangayName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Municipality")]
@@ -101,7 +101,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
 
         [Required]
         [DisplayName("Barangay")]
-        public string? PermanentBaranggayName { get; set; } = string.Empty;
+        public string? PermanentBarangayName { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Municipality")]
