@@ -207,6 +207,7 @@
     <Build Include="Tables\Setup\SourcePagibigFund\SourcePagibigFund.sql" />
     <Build Include="Stored Procedures\Setup\User\spUser_GetByPagibigNumber.sql" />
     <Build Include="Tables\Setup\Industry\Industry.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GenerateCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

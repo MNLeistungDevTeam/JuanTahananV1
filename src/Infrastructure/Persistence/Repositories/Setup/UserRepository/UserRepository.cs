@@ -124,7 +124,7 @@ public class UserRepository : IUserRepository
             {
                 "LastFailedAttempt", "LockedTime", "FailedAttempts",
                 "LastOnlineTime", "IsOnline", "CreatedById",
-                "DateCreated", "Password", "PasswordSalt"
+                "DateCreated", "Password", "PasswordSalt","PagibigNumber"
             };
 
         if (string.IsNullOrWhiteSpace(user.ProfilePicture))
@@ -198,7 +198,7 @@ public class UserRepository : IUserRepository
         {
             user.ModifiedById = updatedById;
             user.DateModified = DateTime.Now;
-            user = await _contextHelper.UpdateAsync(user);
+            user = await _contextHelper.UpdateAsync(user,"PagibigNumber");
 
             return user;
         }

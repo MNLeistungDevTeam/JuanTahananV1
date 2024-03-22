@@ -11,6 +11,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
     public interface IApplicantsPersonalInformationRepository
     {
+        Task<string> GenerateApplicationCode();
         Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId);
         Task<ApplicantsPersonalInformation?> GetByIdAsync(int id);
 
