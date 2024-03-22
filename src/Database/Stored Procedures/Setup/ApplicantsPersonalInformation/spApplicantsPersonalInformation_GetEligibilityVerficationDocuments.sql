@@ -8,9 +8,9 @@ AS
  SELECT 
  dt.Id DocumentTypeId,
  d.Id DocumentId,
- dt.Description DocumentTypeName,
- d.Location DocumentLocation,
- d.Name DocumentName,
+ dt.[Description] DocumentTypeName,
+ d.[Location] DocumentLocation,
+ d.[Name] DocumentName,
  d.Size DocumentSize,
  d.FileType DocumentFileType
 

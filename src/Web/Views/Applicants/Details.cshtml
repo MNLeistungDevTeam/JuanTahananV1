@@ -36,6 +36,7 @@
                     <div class="col-md-6 mb-2">
                         <h3 class="align-items-center">
                             <span class="fw-bold font-28 me-2">@Model.ApplicantsPersonalInformationModel.Code</span>
+                            <input hidden id="txt_applicantCode" value="@Model.ApplicantsPersonalInformationModel.Code" />
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
                                 <span class="badge bg-secondary ms-auto fs-7">Application in Draft</span>
