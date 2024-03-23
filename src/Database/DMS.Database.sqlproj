@@ -104,6 +104,7 @@
     <Folder Include="Stored Procedures\View" />
     <Folder Include="Tables\Setup\SourcePagibigFund" />
     <Folder Include="Tables\Setup\Industry" />
+    <Folder Include="Tables\Setup\DocumentVerification" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -209,6 +210,9 @@
     <Build Include="Tables\Setup\Industry\Industry.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GenerateCode.sql" />
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_Inquiry.sql" />
+    <Build Include="Tables\Setup\DocumentVerification\DocumentVerification.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetByType.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetInquiry.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
@@ -237,6 +241,7 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_Company.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_SourcePagibigFund.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Industry.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_DocumentVerification.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Template.Database.refactorlog" />

@@ -26,3 +26,4 @@ Post-Deployment Script Template
 :r .\PostDeploymentScript\Script.PostDeployment_Company.sql
 :r .\PostDeploymentScript\Script.PostDeployment_SourcePagibigFund.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Industry.sql
+:r .\PostDeploymentScript\Script.PostDeployment_DocumentVerification.sql

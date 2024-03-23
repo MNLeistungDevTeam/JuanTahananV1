@@ -76,6 +76,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[DocumentVerification]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Form2Page]",
          "ObjectType": 0
       },

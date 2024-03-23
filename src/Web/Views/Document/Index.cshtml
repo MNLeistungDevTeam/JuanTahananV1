@@ -1,6 +1,9 @@
-﻿@model DocumentViewModel
+﻿@using DMS.Domain.Dto.RoleDto
+@using DMS.Web.Models
+@model DocumentViewModel
 @{
     ViewData["Title"] = "Document Types";
+    var roleAccess = (RoleAccessModel)ViewData["RoleAccess"];
 }
 
 <!-- start page title -->
@@ -21,42 +24,220 @@
 
 <div class="card card-outline rounded-4">
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-        <div class="row gy-2">
-            <div class="col-12">
+
+
+
+
+        <ul class="nav nav-tabs nav-bordered mb-3">
+            <li class="nav-item">
+                <a href="#document-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                    <i data-feather="list" class="icon-dual"></i> Attachments
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a href="#module-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                    <i data-feather="list" class="icon-dual"></i> Eligibility Verification Attachments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#module-type-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                    <i data-feather="list" class="icon-dual"></i> Application Attachments
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="tab-content p-3">
+
+            <div class="tab-pane show active" id="document-list">
                 <div class="row">
-                    <div class="col-md-6 mb-2 align-items-md-center">
-                        <button id="btn_add_document" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
-                        <button id="btn_edit_document" class="btn btn-light btn-sm waves-effect btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
-                        <button id="btn_delete_document" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
-                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_document"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    <div class="col-md-6 mb-2 align-items-center">
+                        @if (roleAccess is not null && roleAccess.CanCreate)
+                        {
+                            <button class="btn btn-light btn-sm waves-effect" id="btn_add">
+                                <div class="d-flex flex-row align-items-center gap-1">
+                                    <span class="mdi mdi-plus"></span>
+                                    <span class="d-none d-lg-block">Add</span>
+                                </div>
+                            </button>
+
+                        }
+
+                        @if (roleAccess is not null && roleAccess.CanModify)
+                        {
+                            <button class="btn btn-light btn-sm waves-effect" id="btn_edit" disabled>
+                                <div class="d-flex flex-row align-items-center gap-1">
+                                    <span class="mdi mdi-square-edit-outline"></span>
+                                    <span class="d-none d-lg-block">Edit</span>
+                                </div>
+                            </button>
+                        }
+
+                        @if (roleAccess is not null && roleAccess.CanDelete)
+                        {
+                            <button class="btn btn-light btn-sm waves-effect" id="btn_delete" disabled>
+                                <div class="d-flex flex-row align-items-center gap-1">
+                                    <span class="mdi mdi-delete-outline"></span>
+                                    <span class="d-none d-lg-block">Delete</span>
+                                </div>
+                            </button>
+                        }
+
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_document_refresh">
+                            <div class="d-flex flex-row align-items-center gap-1">
+                                <span class="mdi mdi-refresh"></span>
+                                <span class="d-none d-lg-block">Refresh</span>
+                            </div>
+                        </button>
                     </div>
+
                     <div class="col-md-6 mb-2">
                         <div class="input-group float-end" style="width:250px;">
-                            <input bound="tbl_document" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <input type="search" class="form-control form-control-sm txt_search" placeholder="Search..." id="txt_document_search" />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                @*  <div class="table-responsive"> *@
+
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered nowrap w-100" id="tbl_document">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="min-width:15px;" class="text-center align-middle">
+                                    <input class="form-check-input" type="checkbox" id="select-all-document" />
+                                </th>
+                                <th>Document Name</th>
+                                <th>Verification Type</th>
+                                <th>Created By</th>
+                                <th>Date Created</th>
+                                <th>Modified By</th>
+                                <th>Date Modified</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="tab-pane fade" id="module-list">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-center">
+
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_verification_refresh">
+                            <div class="d-flex flex-row align-items-center gap-1">
+                                <span class="mdi mdi-refresh"></span>
+                                <span class="d-none d-lg-block">Refresh</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input type="search" class="form-control form-control-sm txt_search" placeholder="Search..." id="txt_verification_search" />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                @* <div class="table-responsive"> *@
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered nowrap w-100" id="tbl_verification_document">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="min-width:15px;" class="text-center align-middle" hidden>
+                                    <input class="form-check-input" type="checkbox" id="select-all-verification" />
+                                </th>
+                                <th>Document Name</th>
+                                <th>Created By</th>
+                                <th>Date Created</th>
+                                <th>Modified By</th>
+                                <th>Date Modified</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="module-type-list">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+
+
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_application_refresh">
+                            <div class="d-flex flex-row align-items-center gap-1">
+                                <span class="mdi mdi-refresh"></span>
+                                <span class="d-none d-lg-block">Refresh</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-md-6 mb-2 d-none d-lg-block">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input type="search" class="form-control form-control-sm txt_search_module_type" placeholder="Search..." id="txt_application_search" />
                             <span class="input-group-text"><i class="fe-search"></i></span>
                         </div>
                     </div>
                 </div>
+                @* <div class="table-responsive"> *@
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered nowrap w-100" id="tbl_application_document">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="min-width:15px;" class="text-center align-middle" hidden>
+                                    <input class="form-check-input" type="checkbox" id="select-all-application" />
+                                </th>
+                                <th>Document Name</th>
+                                <th>Created By</th>
+                                <th>Date Created</th>
+                                <th>Modified By</th>
+                                <th>Date Modified</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
             </div>
-            <div class="col-12">
-                <table class="table table-sm table-bordered nowrap w-100" id="tbl_document">
-                    <thead class="table-light">
-                        <tr>
-                            <th></th>
-                            <th>Document Name</th>
-                            <th>Related Documents</th>
-                            <th>Created By</th>
-                            <th>Date Created</th>
-                            <th>Modified By</th>
-                            <th>Date Modified</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+
         </div>
+
+
+
+
+
+
+
+
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Standard modal content -->
 <div id="modal-document" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
@@ -64,14 +245,29 @@
             <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
             </div>
             <div class="modal-body">
-                <form id="document_form" enctype="multipart/form-data" class="needs-validation" novalidate method="post" action="/document/Savedocument" role="form">
-                    <input hidden type="text" asp-for="Document.Id" class="form-control form-control-sm">
+                <form id="document_form" asp-action="SaveDocumentType" method="post" role="form">
+
+                    <input hidden class="form-control rounded-3" asp-for="DocumentType.Id" value="0" />
+                    <input hidden class="form-control rounded-3" asp-for="DocumentVerification.Id" value="0" />
                     <div class="position-relative mb-3">
-                        <label class="form-label fw-normal" asp-for="Document.Description" required></label>
-                        <input type="text" class="form-control rounded-3" asp-for="Document.Description" required>
-                        <span asp-validation-for="Document.Description" class="invalid-tooltip"> </span>
+                        <label class="form-label fw-normal" asp-for="DocumentType.Description" required></label>
+                        <input type="text" class="form-control rounded-3" asp-for="DocumentType.Description" required>
+                        <span asp-validation-for="DocumentType.Description" class="invalid-tooltip"> </span>
                     </div>
-                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+
+                    <div class="position-relative mb-3">
+                        <label class="form-label fw-normal" asp-for="DocumentVerification.Type"></label>
+                        <select asp-for="DocumentVerification.Type" class="rounded-3 selectize">
+                            <option value="">Select Verification Type</option>
+                            <option value="1">Eligibility Attachment</option>
+                            <option value="2">Application Attachment</option>
+
+                        </select>
+                        <span asp-validation-for="DocumentVerification.Type" class="invalid-tooltip"> </span>
+                    </div>
+
+
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_save">Save</button>
                     <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect" data-bs-dismiss="modal">Close</button>
                 </form>
             </div>
