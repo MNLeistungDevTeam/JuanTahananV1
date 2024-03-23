@@ -113,10 +113,26 @@ namespace DMS.Web.Controllers.Setup
             return Ok(data);
         }
 
+        public async Task<IActionResult> GetEligibilityApplicationDocument(string? applicantCode)
+        {
+            int type = 1; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, applicantCode);
+
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetApplicantApplicationDocument(string? applicantCode)
+        {
+            int type = 2; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, applicantCode);
+
+            return Ok(data);
+        }
+
         public async Task<IActionResult> GetAllEligibilityDocumentSetup()
         {
             int type = 1; // eligibility documents
-            var data = await _documentVerificationRepo.GetByTypeAsync(type);
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, null);
 
             return Ok(data);
         }
@@ -124,7 +140,7 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetAllApplicationDocumentSetup()
         {
             int type = 2; // eligibility documents
-            var data = await _documentVerificationRepo.GetByTypeAsync(type);
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, null);
 
             return Ok(data);
         }
@@ -332,7 +348,6 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
          Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
 
-        //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
         public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
         Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
     }

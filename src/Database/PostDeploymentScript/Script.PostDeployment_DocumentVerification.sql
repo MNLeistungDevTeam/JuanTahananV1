@@ -15,14 +15,21 @@ BEGIN
  -- Insert dummy data with document type ids 5, 3, 4, 6, 7, 8, and 9
 INSERT INTO [dbo].[DocumentVerification] ([Id], DocumentTypeId, [Type], CreatedById, DateCreated, ModifiedById, DateModified)
 VALUES 
-    (1, 5, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 1
-    (2, 3, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 2
-    (3, 4, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 3
-    (4, 6, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 4
-    (5, 7, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 5
-    (6, 8, 1, 1, GETDATE(), NULL, NULL), -- Example dummy data 6
-    (7, 9, 1, 1, GETDATE(), NULL, NULL); -- Example dummy data 7
+    (1, 5, 1, 1, GETDATE(), NULL, NULL), 
+    (2, 3, 1, 1, GETDATE(), NULL, NULL), 
+    (3, 4, 1, 1, GETDATE(), NULL, NULL), 
+    (4, 6, 1, 1, GETDATE(), NULL, NULL), 
+    (5, 7, 1, 1, GETDATE(), NULL, NULL), 
+    (6, 8, 1, 1, GETDATE(), NULL, NULL), 
+    (7, 9, 1, 1, GETDATE(), NULL, NULL),
+    (8, 24, 2, 1, GETDATE(), NULL, NULL), 
+    (9, 25, 2, 1, GETDATE(), NULL, NULL), 
+    (10, 26, 2, 1, GETDATE(), NULL, NULL),
+    (11, 27, 2, 1, GETDATE(), NULL, NULL), 
+    (12, 28, 2, 1, GETDATE(), NULL, NULL), 
+    (13, 29, 2, 1, GETDATE(), NULL, NULL);
 
+ 
 SET IDENTITY_INSERT [dbo].DocumentVerification OFF
 
 END

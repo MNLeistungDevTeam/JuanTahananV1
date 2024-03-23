@@ -13,7 +13,7 @@ namespace DMS.Application.Interfaces.Setup.DocumentVerification
 
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type);
+        Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode);
 
         Task<Domain.Entities.DocumentVerification> SaveAsync(DocumentVerificationModel model, int userId);
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
@@ -46,6 +47,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly INotificationService _notificationService;
         private readonly IApprovalService _approvalService;
         private readonly ISourcePagibigFundRepository _sourcePagibigFundRepo;
+        private readonly IDocumentVerificationRepository _documentVerificationRepo;
 
         private DMSDBContext _context;
 
@@ -68,7 +70,8 @@ namespace Template.Web.Controllers.Transaction
             IPropertyTypeRepository propertyTypeRepo,
             INotificationService notificationService,
             IApprovalService approvalService,
-            ISourcePagibigFundRepository sourcePagibigFundRepo)
+            ISourcePagibigFundRepository sourcePagibigFundRepo,
+            IDocumentVerificationRepository documentVerificationRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -90,6 +93,7 @@ namespace Template.Web.Controllers.Transaction
             _notificationService = notificationService;
             _approvalService = approvalService;
             _sourcePagibigFundRepo = sourcePagibigFundRepo;
+            _documentVerificationRepo = documentVerificationRepo;
         }
 
         #region View
@@ -133,6 +137,15 @@ namespace Template.Web.Controllers.Transaction
             if (applicantinfo == null)
             {
                 return BadRequest($"{applicantCode}: no record Found!");
+            }
+
+            var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
+
+            var incompleteDocumentData = eligibilityPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
+
+            if (incompleteDocumentData != null)
+            {
+                applicantinfo.isRequiredDocumentsUploaded = true;
             }
 
             var viewModel = new ApplicantViewModel()
@@ -297,8 +310,6 @@ namespace Template.Web.Controllers.Transaction
             return View();
         }
 
-
-
         [Route("[controller]/NewHLF068/{pagibigNumber?}")]
         public async Task<IActionResult> NewHLF068(string? pagibigNumber = null)
         {
@@ -306,7 +317,6 @@ namespace Template.Web.Controllers.Transaction
 
             var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
 
-            
             vwModel.ApplicantsPersonalInformationModel.UserId = userData.Id;
 
             vwModel.BarrowersInformationModel.FirstName = userData.FirstName ?? string.Empty;
@@ -339,8 +349,14 @@ namespace Template.Web.Controllers.Transaction
             Ok(await _propertyTypeRepo.GetAllAsync());
 
         public async Task<IActionResult> GetApplicants()
+
         {
-            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+            int userId = int.Parse(User.Identity.Name);
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
             return Ok(data);
         }
 
@@ -348,7 +364,10 @@ namespace Template.Web.Controllers.Transaction
         {
             int userId = int.Parse(User.Identity.Name);
 
-            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
 
             var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId);
 
@@ -630,7 +649,7 @@ namespace Template.Web.Controllers.Transaction
                         //var userdata = _mapper.Map<UserModel>(user);
 
                         // make the usage of hangfire
-                        await _emailService.SendUserInfo(userModel);
+                        // await _emailService.SendUserInfo(userModel);
                     }
                     else
                     {
@@ -737,7 +756,6 @@ namespace Template.Web.Controllers.Transaction
 
                 var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
 
-
                 #region Notification
 
                 var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
@@ -804,7 +822,7 @@ namespace Template.Web.Controllers.Transaction
 
                 // Ensure a fixed length of 14 characters for the output password
                 string hashedString = sb.ToString();
-                string outputPassword = name + hashedString.Substring(0,10);
+                string outputPassword = name + hashedString.Substring(0, 10);
 
                 return outputPassword;
             }

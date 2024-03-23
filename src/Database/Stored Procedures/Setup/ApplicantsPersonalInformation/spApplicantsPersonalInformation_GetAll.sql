@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
- 
+ @roleId INT 
 AS
 	 SELECT 
 		apl.*,
@@ -46,4 +46,17 @@ AS
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
+	 WHERE 
+    1 = (
+        CASE  
+            WHEN @roleId = 1 THEN 1 --Admin
+			WHEN @roleId = 2 THEN 1 --Lgu
+            WHEN @roleId = 4 THEN --Beneficiary
+                CASE WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1 ELSE 0 END
+		      WHEN @roleId = 5 THEN --Developer 
+                CASE WHEN apl.ApprovalStatus IN (1,3,4,5) THEN 1 ELSE 0 END
+				WHEN @roleId = 3 THEN --Pagibig 
+                CASE WHEN apl.ApprovalStatus IN (3,4,5) THEN 1 ELSE 0 END
+        END
+    );
 RETURN 0

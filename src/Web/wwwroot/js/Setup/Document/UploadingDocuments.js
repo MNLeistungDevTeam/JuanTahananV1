@@ -1,7 +1,6 @@
 $(function () {
     "strict";
-    const $tbl_document = document.querySelector('#tbl_document');
-    const $tbl_files = document.querySelector('#tbl_files');
+
     const $modal = $('#modal-file');
     const $form = $("#document_form");
 
@@ -10,122 +9,68 @@ $(function () {
     var documentypeid = 0;
     var DocumentId = 0;
 
-    var tbl_files; // Declare tbl_files outside the scope
-
-    if ($tbl_document) {
-        var tbl_document = $("#tbl_document").DataTable({
-            ajax: {
-                url: '/Document/GetDocumentsByApplicant/' + applicationinfoCode,
-                method: 'GET',
-                dataSrc: "",
+    var tbl_files = $("#tbl_files").DataTable({
+        ajax: {
+            url: `/Document/GetApplicantUploadedDocumentByDocumentType/`,
+            method: 'GET',
+            dataSrc: "",
+            data: function (d) {
+                d.documentTypeId = documentypeid,
+                    d.applicantCode = applicationinfoCode
+            }
+        },
+        columns: [
+            {
+                data: 'Name',
+                orderable: true,
+                className: 'align-middle text-center'
             },
-            columns: [
-                {
-                    data: 'Description',
-                    orderable: true,
-                    className: 'w-100',
-                },
-                {
-                    data: 'TotalDocumentCount',
-                    orderable: true,
-                    className: 'text-center',
-                }
-            ],
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
-                    $('li.paginate_button.page-item.active > a').addClass('waves-effect')
+            {
+                data: 'Size',
+                orderable: true,
+                className: 'align-middle text-center',
             },
-            language: {
-                "zeroRecords": "No Records Found....",
-                loadingRecords: "Records loading...",
-                emptyTable: `No Records Found....`,
-                infoEmpty: "No entries to show",
-                paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" },
-                info: `Showing Records _START_ to _END_ of _TOTAL_`
-            },
-            scrollY: '24rem',
-            scrollX: true,
-            order: [[1, "desc"]],
-            pageLength: 10,
-            searchHighlight: true,
-            stateSave: false,
-            bLengthChange: false,
-            dom: 'lrtip',
-            processing: true
-        });
-
-        $('#tbl_document tbody').on('click', 'tr', function () {
-            var rowData = tbl_document.row(this).data();
-            documentypeid = rowData.Id;
-            tbl_files.ajax.reload();
-            $modal.modal('show');
-        });
-    }
-
-    if ($tbl_files) {
-        tbl_files = $("#tbl_files").DataTable({
-            ajax: {
-                url: `/Document/GetApplicantUploadedDocumentByDocumentType/`,
-                method: 'GET',
-                dataSrc: "",
-                data: function (d) {
-                    d.documentTypeId = documentypeid,
-                        d.applicantCode = applicationinfoCode
-                }
-            },
-            columns: [
-                {
-                    data: 'Name',
-                    orderable: true,
-                    className: 'align-middle text-center'
-                },
-                {
-                    data: 'Size',
-                    orderable: true,
-                    className: 'align-middle text-center',
-                },
-                {
-                    data: 'DateCreated',
-                    orderable: !0,
-                    className: 'align-middle text-center',
-                    render: function (data) {
-                        if (data && data.trim() !== "") {
-                            return moment(data).format('YYYY-MM-DD');
-                        } else {
-                            return "";
-                        }
-                    }
-                },
-                {
-                    data: null,
-                    orderable: true,
-                    className: 'text-center',
-                    render: function () {
-                        return `<button class="btn btn-primary btn-sm waves-effect ms-1 replace">Replace</button> <button class="btn btn-danger btn-sm waves-effect ms-1 delete">Delete</button>`;
+            {
+                data: 'DateCreated',
+                orderable: !0,
+                className: 'align-middle text-center',
+                render: function (data) {
+                    if (data && data.trim() !== "") {
+                        return moment(data).format('YYYY-MM-DD');
+                    } else {
+                        return "";
                     }
                 }
-            ],
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
-                    $('li.paginate_button.page-item.active > a').addClass('waves-effect')
             },
-            language: {
-                "zeroRecords": "No Records Found....",
-                loadingRecords: "Records loading...",
-                emptyTable: `No Records Found....`,
-                infoEmpty: "No entries to show",
-                paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" },
-                info: `Showing Records _START_ to _END_ of _TOTAL_`
-            },
-            scrollY: '24rem',
-            scrollX: true,
-            order: [[1, "asc"]],
-            pageLength: 10,
-            searchHighlight: true,
-            stateSave: false,
-            processing: true
-        });
-    }
+            {
+                data: null,
+                orderable: true,
+                className: 'text-center',
+                render: function () {
+                    return `<button class="btn btn-primary btn-sm waves-effect ms-1 replace">Replace</button> <button class="btn btn-danger btn-sm waves-effect ms-1 delete">Delete</button>`;
+                }
+            }
+        ],
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
+                $('li.paginate_button.page-item.active > a').addClass('waves-effect')
+        },
+        language: {
+            "zeroRecords": "No Records Found....",
+            loadingRecords: "Records loading...",
+            emptyTable: `No Records Found....`,
+            infoEmpty: "No entries to show",
+            paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" },
+            info: `Showing Records _START_ to _END_ of _TOTAL_`
+        },
+        scrollY: '24rem',
+        scrollX: true,
+        order: [[1, "asc"]],
+        pageLength: 10,
+        searchHighlight: true,
+        stateSave: false,
+        processing: true
+    });
 
     $('.upload').on('click', function (e) {
         e.preventDefault();
@@ -141,12 +86,12 @@ $(function () {
         $('#file-input').trigger('click');
     });
 
-    $(document).on('click', '.delete', function (e) {
-        e.preventDefault();
-        var rowData = tbl_document.row(this).data();
-        DocumentId = rowData?.Id || 0;
-        DeleteFile(DocumentId);
-    });
+    //$(document).on('click', '.delete', function (e) {
+    //    e.preventDefault();
+    //    var rowData = tbl_files.row(this).data();
+    //    DocumentId = rowData?.Id || 0;
+    //    DeleteFile(DocumentId);
+    //});
     $('#tbl_files tbody').on('click', '.delete', function (e) {
         e.preventDefault();
         var rowData = tbl_files.row($(this).closest('tr')).data();
@@ -182,7 +127,8 @@ $(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 messageBox("Document successfully deleted.", "success");
-                tbl_document.ajax.reload();
+                tbl_applicationDocument.ajax.reload();
+                tbl_verificationDocument.ajax.reload();
                 tbl_files.ajax.reload();
             }
         })
@@ -214,8 +160,9 @@ $(function () {
                 messageBox('Uploaded Successfully', "success", true);
 
                 loader.close();
-                tbl_document.ajax.reload();
                 tbl_files.ajax.reload();
+                tbl_verificationDocument.ajax.reload();
+                tbl_applicationDocument.ajax.reload();
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -227,4 +174,190 @@ $(function () {
             }
         });
     }
+
+    var tbl_applicationDocument = $("#tbl_application_document").DataTable({
+        ajax: {
+            url: baseUrl + "Document/GetApplicantApplicationDocument",
+            data: function (d) {
+                d.applicantCode = applicationinfoCode
+            },
+
+            dataSrc: ''
+        },
+        language: {
+            processing: "<div class='text-center'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
+            previous: "<i class='mdi mdi-chevron-left'>",
+            next: "<i class='mdi mdi-chevron-right'>"
+        },
+        columns: [
+            {
+                data: "Id"
+            },
+
+            {
+                data: "DocumentTypeDescription",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                data: "DocumentTypeId",
+                visible: false
+            },
+
+            {
+                data: "TotalDocumentCount",
+                class: "text-center align-middle"
+            },
+
+        ],
+        drawCallback: function () {
+            //let api = this.api();
+            //var info = api.page.info();
+            //if (info.pages != 0 && (api.page() > 0 && api.rows({ page: 'current' }).count() === 0)) {
+            //    api.page('first').state.save();
+            //    //window.location.reload();
+            //    $("#btnRefresh").attr({ disabled: true });
+            //    tbl_transaction.ajax.reload();
+            //}
+
+            //var rowCount = api.rows().data().toArray().length
+
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            $("#btnRefresh").attr({ disabled: false });
+        },
+        initComplete: function () {
+            //resourceCounter();
+        },
+        columnDefs: [
+            {
+                targets: 0,
+                orderable: false,
+                className: "select-checkbox",
+                visible: false,
+                data: null,
+                render: function () {
+                    return "";
+                }
+            }
+        ],
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        select: true,
+        order: [[2, 'desc']],
+        pageLength: 20,
+        rowId: "Id",
+        processing: true,
+        scrollX: true,
+        scrollY: "25vh",
+        scrollCollapse: true
+    });
+
+    $('#tbl_application_document tbody').on('click', 'tr', function () {
+        var rowData = tbl_verificationDocument.row(this).data();
+        documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
+        tbl_files.ajax.reload();
+        $modal.modal('show');
+    });
+
+    $("#tbl_application_document_filter, #tbl_application_document_length").hide();
+
+    $('#txt_application_search').on('input', function () {
+        tbl_applicationDocument.search(this.value).draw();
+    });
+    $("#btn_application_refresh").on("click", function () {
+        // $("#btn_application_refresh").attr({ disabled: true });
+        tbl_applicationDocument.ajax.reload(null, false);
+    });
+
+    var tbl_verificationDocument = $("#tbl_verification_document").DataTable({
+        ajax: {
+            url: baseUrl + "Document/GetEligibilityApplicationDocument",
+            data: function (d) {
+                d.applicantCode = applicationinfoCode
+            },
+
+            dataSrc: ''
+        },
+        language: {
+            processing: "<div class='text-center'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
+            previous: "<i class='mdi mdi-chevron-left'>",
+            next: "<i class='mdi mdi-chevron-right'>"
+        },
+        columns: [
+            {
+                data: "Id"
+            },
+
+            {
+                data: "DocumentTypeDescription",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+
+            {
+                data: "DocumentTypeId",
+                visible: false
+            },
+
+            {
+                data: "TotalDocumentCount",
+                class: "text-center align-middle"
+            },
+
+        ],
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            $("#btnRefresh").attr({ disabled: false });
+        },
+        initComplete: function () {
+            //resourceCounter();
+        },
+        columnDefs: [
+            {
+                targets: 0,
+                orderable: false,
+                className: "select-checkbox",
+                visible: false,
+                data: null,
+                render: function () {
+                    return "";
+                }
+            }
+        ],
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        select: true,
+        order: [[2, 'desc']],
+        pageLength: 20,
+        rowId: "Id",
+        processing: true,
+        scrollX: true,
+        scrollY: "25vh",
+        scrollCollapse: true
+    });
+
+    $('#tbl_verification_document tbody').on('click', 'tr', function () {
+        var rowData = tbl_verificationDocument.row(this).data();
+        documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
+        tbl_files.ajax.reload();
+        $modal.modal('show');
+    });
+
+    $("#tbl_verification_document_filter, #tbl_verification_document_length").hide();
+
+    $('#txt_verification_search').on('input', function () {
+        tbl_verificationDocument.search(this.value).draw();
+    });
+    $("#btn_verification_refresh").on("click", function () {
+        // $("#btn_verification_refresh").attr({ disabled: true });
+        tbl_verificationDocument.ajax.reload(null, false);
+    });
 });

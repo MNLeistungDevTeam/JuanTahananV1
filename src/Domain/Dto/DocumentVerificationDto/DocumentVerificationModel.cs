@@ -8,7 +8,7 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
 {
     public class DocumentVerificationModel
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         public int? DocumentTypeId { get; set; }
 
@@ -26,6 +26,6 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
 
-
+        public int? TotalDocumentCount { get; set; }
     }
 }

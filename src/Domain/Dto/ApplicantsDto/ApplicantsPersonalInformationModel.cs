@@ -58,6 +58,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int DocumentSize { get; set; }
         public string? DocumentFileType { get; set; }
 
+
+
+
+        public bool? isRequiredDocumentsUploaded { get; set; }
         #endregion Display Properties
     }
 }

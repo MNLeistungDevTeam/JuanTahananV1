@@ -23,8 +23,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
             _db = db;
         }
 
-        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type) =>
-         await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type });
+        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type,string? applicantCode) =>
+         await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type, applicantCode });
 
         public async Task<DocumentVerification?> GetByIdAsync(int id)
         {

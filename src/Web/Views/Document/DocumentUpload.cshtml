@@ -1,6 +1,7 @@
 ﻿<div class="card card-outline rounded-4">
     <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-        <h3 class="text-dark float-start fw-semibold">Document Upload
+        <h3 class="text-dark float-start fw-semibold">
+            Document Upload
             <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">@ViewBag.ApplicationCode</span>
         </h3>
         <h3 class="text-muted float-end font-15">Maximum File size 3MB</h3>
@@ -8,33 +9,108 @@
     <div class="card-body">
         <div class="row gy-2">
             <div class="col-12">
-                <div class="row">
-                    <div class="col-md-6 mb-2 align-items-md-center">
-                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_document"><span class="mdi mdi-refresh"></span> Refresh</button>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <div class="input-group float-end" style="width:250px;">
-                            <input bound="tbl_document" type="search" class="form-control form-control-sm" placeholder="Search..." />
-                            <span class="input-group-text"><i class="fe-search"></i></span>
-                        </div>
-                    </div>
-                </div>
+                <ul class="nav nav-tabs nav-bordered mb-3">
+
+
+                    <li class="nav-item">
+                        <a href="#module-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <i data-feather="list" class="icon-dual"></i> Eligibility Verification Attachments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#module-type-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <i data-feather="list" class="icon-dual"></i> Application Attachments
+                        </a>
+                    </li>
+
+                </ul>
                 <input hidden type="text" class="form-control" value="@ViewBag.AppplicationId" id="applicationId" />
                 <input type="hidden" class="form-control" value="@ViewBag.ApplicationCode" id="txt_applicationCode" />
 
                 <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg" />
+                <div class="tab-content">
+                    <div class="tab-pane active show" id="module-list">
+                        <div class="row">
+                            <div class="col-md-6 mb-2 align-items-center">
+
+                                <button class="btn btn-light btn-sm waves-effect" id="btn_verification_refresh">
+                                    <div class="d-flex flex-row align-items-center gap-1">
+                                        <span class="mdi mdi-refresh"></span>
+                                        <span class="d-none d-lg-block">Refresh</span>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="input-group float-end" style="width:250px;">
+                                    <input type="search" class="form-control form-control-sm txt_search" placeholder="Search..." id="txt_verification_search" />
+                                    <span class="input-group-text"><i class="fe-search"></i></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        @* <div class="table-responsive"> *@
+                        <div class="col-md-12">
+                            <table class="table table-sm table-bordered nowrap w-100" id="tbl_verification_document">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="min-width:15px;" class="text-center align-middle" hidden>
+                                            <input class="form-check-input" type="checkbox" id="select-all-verification" />
+                                        </th>
+                                        <th>Document Name</th>
+                                        <th hidden>Document Type Id</th>
+                                        <th>Uploaded Documents</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="module-type-list">
+                        <div class="row">
+                            <div class="col-md-6 mb-2 align-items-md-center">
+
+
+                                <button class="btn btn-light btn-sm waves-effect" id="btn_application_refresh">
+                                    <div class="d-flex flex-row align-items-center gap-1">
+                                        <span class="mdi mdi-refresh"></span>
+                                        <span class="d-none d-lg-block">Refresh</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-2 d-none d-lg-block">
+                                <div class="input-group float-end" style="width:250px;">
+                                    <input type="search" class="form-control form-control-sm txt_search_module_type" placeholder="Search..." id="txt_application_search" />
+                                    <span class="input-group-text"><i class="fe-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        @* <div class="table-responsive"> *@
+                        <div class="col-md-12">
+                            <table class="table table-sm table-bordered nowrap w-100" id="tbl_application_document">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="min-width:15px;" class="text-center align-middle" hidden>
+                                            <input class="form-check-input" type="checkbox" id="select-all-application" />
+                                        </th>
+                                        <th>Document Name</th>
+                                        <th hidden>Document Type Id</th>
+                                        <th>Uploaded Documents</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-            <div class="col-12">
-                <table class="table table-sm table-bordered table-hover nowrap w-100" id="tbl_document">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Document Name</th>
-                            <th>Uploaded Documents</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+
         </div>
     </div>
 </div>

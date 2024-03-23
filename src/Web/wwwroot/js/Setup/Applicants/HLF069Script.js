@@ -207,9 +207,11 @@ $(function () {
         e.preventDefault();
         if ($(this).prop('checked')) {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', false);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').attr('required', true);
         } else {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').val('');
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     })
 
@@ -220,9 +222,11 @@ $(function () {
         // Check if checkbox is checked
         if ($(this).is(":checked")) {
             $("#CollateralInformationModel_CollateralReason").prop('disabled', false);
+            $('[name="LCollateralInformationModel.CollateralReason"]').attr('required', true);
         } else {
             $("#CollateralInformationModel_CollateralReason").prop('disabled', true);
             $("#CollateralInformationModel_CollateralReason").val('');
+            $('[name="CollateralInformationModel.CollateralReason"]').removeAttr('required');
         }
     });
 
@@ -481,6 +485,10 @@ $(function () {
     setDateValue('#Form2PageModel_DateObtained1');
     setDateValue('#Form2PageModel_DateObtained2');
     setDateValue('#Form2PageModel_DateObtained3');
+
+    setDateValue('#Form2PageModel_MaturityDateTime1');
+    setDateValue('#Form2PageModel_MaturityDateTime2');
+    setDateValue('#Form2PageModel_MaturityDateTime3');
 
     //#endregion
 

@@ -475,7 +475,7 @@ $(function () {
         let verificationType = $(this).attr('data-verification-type');
         let verificationdocumentId = $(this).attr('data-verificationdocument-id');
 
-        alert(verificationdocumentId);
+       
         if (verificationdocumentId == "") {
             verificationdocumentId = 0;
         }
