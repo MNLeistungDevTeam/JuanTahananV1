@@ -331,7 +331,6 @@
             this.xrTable4 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow4 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.HLF068Page1BindingSource = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable40)).BeginInit();
@@ -560,7 +559,6 @@
             this.xrTable6,
             this.xrTable5,
             this.xrTable4,
-            this.xrPictureBox2,
             this.xrPictureBox1});
             this.Detail.HeightF = 1300.67F;
             this.Detail.Name = "Detail";
@@ -3993,17 +3991,6 @@
             this.xrTableCell6.Text = "xrTableCell6";
             this.xrTableCell6.Weight = 1D;
             // 
-            // xrPictureBox2
-            // 
-            this.xrPictureBox2.AnchorHorizontal = ((DevExpress.XtraReports.UI.HorizontalAnchorStyles)((DevExpress.XtraReports.UI.HorizontalAnchorStyles.Left | DevExpress.XtraReports.UI.HorizontalAnchorStyles.Right)));
-            this.xrPictureBox2.AnchorVertical = ((DevExpress.XtraReports.UI.VerticalAnchorStyles)((DevExpress.XtraReports.UI.VerticalAnchorStyles.Top | DevExpress.XtraReports.UI.VerticalAnchorStyles.Bottom)));
-            this.xrPictureBox2.EditOptions.ReadOnly = true;
-            this.xrPictureBox2.ImageAlignment = DevExpress.XtraPrinting.ImageAlignment.MiddleCenter;
-            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
-            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrPictureBox2.Name = "xrPictureBox2";
-            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(850F, 1300.67F);
-            // 
             // xrPictureBox1
             // 
             this.xrPictureBox1.AnchorHorizontal = ((DevExpress.XtraReports.UI.HorizontalAnchorStyles)((DevExpress.XtraReports.UI.HorizontalAnchorStyles.Left | DevExpress.XtraReports.UI.HorizontalAnchorStyles.Right)));
@@ -4310,7 +4297,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel84;
         private DevExpress.XtraReports.UI.XRLabel xrLabel83;
         private DevExpress.XtraReports.UI.XRLabel xrLabel101;
-        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel103;
         private DevExpress.XtraReports.UI.XRLabel xrLabel105;
         private DevExpress.XtraReports.UI.XRLabel xrLabel104;
@@ -4372,7 +4358,6 @@
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow2;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell57;
         private DevExpress.XtraReports.UI.XRLabel xrLabel130;
-        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox2;
         private DevExpress.XtraReports.UI.XRTable xrTable3;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow3;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell58;
@@ -4385,5 +4370,6 @@
         private DevExpress.XtraReports.UI.XRTable xrTable40;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow40;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell88;
+        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox1;
     }
 }
