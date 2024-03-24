@@ -173,6 +173,24 @@ public class UserRepository : IUserRepository
         catch (Exception) { throw; }
     }
 
+    public async Task ValidateEmailAsync(UserModel model)
+    {
+        try
+        {
+            var users = await GetUsersAsync();
+
+            if (model.Id == 0)
+            {
+                if (users.FirstOrDefault(m => m.Email == model.Email) != null) throw new Exception("Email already taken!");
+            }
+            else
+            {
+                if (users.FirstOrDefault(m => m.Id != model.Id && m.Email == model.Email) != null) throw new Exception("Email already taken!");
+            }
+        }
+        catch (Exception) { throw; }
+    }
+
     public string GenerateHash(string password, string salt)
     {
         byte[] saltByte = Encoding.ASCII.GetBytes(salt);
@@ -198,7 +216,7 @@ public class UserRepository : IUserRepository
         {
             user.ModifiedById = updatedById;
             user.DateModified = DateTime.Now;
-            user = await _contextHelper.UpdateAsync(user,"PagibigNumber");
+            user = await _contextHelper.UpdateAsync(user, "PagibigNumber");
 
             return user;
         }

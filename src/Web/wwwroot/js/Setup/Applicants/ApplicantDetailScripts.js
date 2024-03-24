@@ -3,7 +3,7 @@
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
-const CONST_TRANSACTIONCODE = $("#ApplicantsPersonalInformationModel_Code").val();
+const CONST_APPLICANTCODE = $("#txt_applicantCode").val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -19,78 +19,72 @@ $(function () {
     //loadApproversData();
     loadApprovalData();
 
-    loadVerificationAttachments(CONST_TRANSACTIONCODE);
+    loadVerificationAttachments(CONST_APPLICANTCODE);
 
     function loadVerificationAttachments(applicantCode) {
         $.ajax({
-            url: baseUrl + "Applicants/GetEligibilityVerificationDocuments/" + applicantCode,
-            method: "Get",
+            url: baseUrl + "Applicants/GetEligibilityVerificationDocuments",
+            data: {
+                applicantCode: applicantCode
+            },
+            method: "GET",
             success: function (data) {
-                for (let item of data) {
-                    appendVerificationAttachments(item);
-                }
+                appendVerificationAttachments(data);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr, status, error);
             }
         });
     }
 
-    function appendVerificationAttachments(item) {
-        let itemLink = item.DocumentLocation + item.DocumentName;
-        let rowstoAppend = `<div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
-                                <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
+    function appendVerificationAttachments(items) {
+        const groupedItems = {};
 
-                                <div class="list-group">
-                                    <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>`;
+        // Group items by DocumentTypeName
+        items.forEach(item => {
+            const groupId = item.DocumentTypeId;
+            const groupName = item.DocumentTypeName;
 
-        $("#div_verification").append(rowstoAppend);
-    }
-
-    function loadApplicationAttachments(applicantCode) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetEligibilityVerificationDocuments/" + applicantCode,
-            method: "Get",
-            success: function (data) {
-                for (let item of data) {
-                    appendVerificationAttachments(item);
-                }
+            if (!groupedItems[groupName]) {
+                groupedItems[groupName] = [];
             }
+            groupedItems[groupName].push(item);
         });
-    }
 
-    function appendApplicationAttachments(item) {
-        let itemLink = item.DocumentLocation + item.DocumentName;
-        let rowstoAppend = `<div class="col-md-4 col-6 mb-2"  id="${item.DocumentTypeId}">
-                                <h4 class="header-title text-muted">${item.DocumentTypeName}</h4>
+        // Append grouped items
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupItems = groupedItems[groupName];
+                const firstItem = groupItems[0];
+                let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${groupName}</h4>
+                                <div class="list-group">`;
 
-                                <div class="list-group">
-                                    <a href="${item.DocumentName == null ? 'javascript:void(0)' : itemLink}" class="list-group-item list-group-item-action" target="${item.DocumentName == null ? '' : '_blank'}" download="">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <i class="fe-file-text me-1"></i>  ${item.DocumentName == null ? 'Not Upload Yet' : item.DocumentName}
-                                            </div>
+                groupItems.forEach(item => {
+                    const itemLink = item.DocumentLocation + item.DocumentName;
+                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action" target="${item.DocumentName ? '_blank' : ''}" download="">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
                                         </div>
-                                    </a>
-                                </div>
-                            </div>`;
+                                    </div>
+                                </a>`;
+                });
 
-        $("#div_verification").append(rowstoAppend);
+                groupHtml += `</div></div>`;
+                $("#div_verification").append(groupHtml);
+            }
+        }
     }
+
 
     //#region Approval
-    
 
     //$("#btn_save").on("click", function () {
     //    rebindValidator();
     //});
 
-    $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async  function () {
+    $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function () {
         let action = $(this).attr("data-value");
 
         await openApprovalModal(action)

@@ -6,6 +6,7 @@ using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
+using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageApproverDto;
@@ -55,10 +56,10 @@ public class MappingProfile : Profile
         CreateMap<ModuleStage, ModuleStageModel>().ReverseMap();
         CreateMap<ModuleStageApprover, ModuleStageApproverModel>().ReverseMap();
 
-
-
         CreateMap<ApprovalStatus, ApprovalStatusModel>().ReverseMap();
         CreateMap<ApprovalLevel, ApprovalLevelModel>().ReverseMap();
         CreateMap<ApprovalLog, ApprovalLogModel>().ReverseMap();
+
+        CreateMap<DocumentVerification, DocumentVerificationModel>().ReverseMap();
     }
 }

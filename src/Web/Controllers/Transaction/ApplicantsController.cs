@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using DevExpress.ClipboardSource.SpreadsheetML;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
@@ -10,6 +12,7 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +24,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Template.Web.Controllers.Transaction
 {
@@ -45,6 +49,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly INotificationService _notificationService;
         private readonly IApprovalService _approvalService;
         private readonly ISourcePagibigFundRepository _sourcePagibigFundRepo;
+        private readonly IDocumentVerificationRepository _documentVerificationRepo;
 
         private DMSDBContext _context;
 
@@ -67,7 +72,8 @@ namespace Template.Web.Controllers.Transaction
             IPropertyTypeRepository propertyTypeRepo,
             INotificationService notificationService,
             IApprovalService approvalService,
-            ISourcePagibigFundRepository sourcePagibigFundRepo)
+            ISourcePagibigFundRepository sourcePagibigFundRepo,
+            IDocumentVerificationRepository documentVerificationRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -89,6 +95,7 @@ namespace Template.Web.Controllers.Transaction
             _notificationService = notificationService;
             _approvalService = approvalService;
             _sourcePagibigFundRepo = sourcePagibigFundRepo;
+            _documentVerificationRepo = documentVerificationRepo;
         }
 
         #region View
@@ -106,15 +113,26 @@ namespace Template.Web.Controllers.Transaction
 
             var userData = await _userRepo.GetUserAsync(userId);
 
-            //if (data.UserRoleId != 4 || data.UserRoleCode != "Beneficiary")
-            //{
-            //}
+            var applicationRecord = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(userData.PagibigNumber.ToString());
+            var latestRecord = applicationRecord
+       .OrderByDescending(m => m.Code)
+       .ThenBy(m => m.DateModified).FirstOrDefault();
+
 
             ApplicantViewModel viewModel = new();
 
             ApplicantsPersonalInformationModel applicantInfoModel = new();
             applicantInfoModel.PagibigNumber = userData.PagibigNumber;
             applicantInfoModel.UserId = userData.Id;
+
+            if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
+            {
+                applicantInfoModel.isCanAppliedNewApplication = true;
+            }
+            else
+            {
+                applicantInfoModel.isCanAppliedNewApplication = false;
+            }
 
             viewModel.ApplicantsPersonalInformationModel = applicantInfoModel;
             return View(viewModel);
@@ -132,6 +150,17 @@ namespace Template.Web.Controllers.Transaction
             if (applicantinfo == null)
             {
                 return BadRequest($"{applicantCode}: no record Found!");
+            }
+
+            var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
+
+            var incompleteDocumentData = eligibilityPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
+
+            applicantinfo.isRequiredDocumentsUploaded = false;
+
+            if (incompleteDocumentData.Count > 0)
+            {
+                applicantinfo.isRequiredDocumentsUploaded = true;
             }
 
             var viewModel = new ApplicantViewModel()
@@ -296,8 +325,6 @@ namespace Template.Web.Controllers.Transaction
             return View();
         }
 
-
-
         [Route("[controller]/NewHLF068/{pagibigNumber?}")]
         public async Task<IActionResult> NewHLF068(string? pagibigNumber = null)
         {
@@ -305,7 +332,6 @@ namespace Template.Web.Controllers.Transaction
 
             var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
 
-            
             vwModel.ApplicantsPersonalInformationModel.UserId = userData.Id;
 
             vwModel.BarrowersInformationModel.FirstName = userData.FirstName ?? string.Empty;
@@ -338,8 +364,14 @@ namespace Template.Web.Controllers.Transaction
             Ok(await _propertyTypeRepo.GetAllAsync());
 
         public async Task<IActionResult> GetApplicants()
+
         {
-            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+            int userId = int.Parse(User.Identity.Name);
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
             return Ok(data);
         }
 
@@ -347,7 +379,10 @@ namespace Template.Web.Controllers.Transaction
         {
             int userId = int.Parse(User.Identity.Name);
 
-            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync();
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
 
             var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId);
 
@@ -625,11 +660,11 @@ namespace Template.Web.Controllers.Transaction
                         //save beneficiary user
                         user = await RegisterBenefeciary(userModel);
 
-                        // reverse map parameter need for email sending
+                        //// reverse map parameter need for email sending
                         //var userdata = _mapper.Map<UserModel>(user);
 
                         // make the usage of hangfire
-                        await _emailService.SendUserInfo(userModel);
+                         await _emailService.SendUserInfo(userModel);
                     }
                     else
                     {
@@ -736,6 +771,17 @@ namespace Template.Web.Controllers.Transaction
 
                 var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
 
+                #region Notification
+
+                var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
+                var actiontype = type;
+
+                var actionlink = $"Applicants/HLF068/{applicantdata.Code}";
+
+                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantdata.Code, userId, companyId);
+
+                #endregion Notification
+
                 return Ok(applicantdata.Code);
             }
             catch (System.Exception ex)
@@ -759,6 +805,8 @@ namespace Template.Web.Controllers.Transaction
 
         private static string GeneratePassword(string name)
         {
+            name = name.Replace(" ", "");
+
             // Generate a GUID with 16 characters
             string guid = Guid.NewGuid().ToString("N").Substring(0, 16);
 
@@ -789,7 +837,7 @@ namespace Template.Web.Controllers.Transaction
 
                 // Ensure a fixed length of 14 characters for the output password
                 string hashedString = sb.ToString();
-                string outputPassword = name + hashedString.Substring(0, 14 - name.Length);
+                string outputPassword = name + hashedString.Substring(0, 10);
 
                 return outputPassword;
             }

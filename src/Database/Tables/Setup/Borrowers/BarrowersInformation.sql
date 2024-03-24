@@ -71,5 +71,6 @@
     [DeletedById] INT NULL,
     PropertyDeveloperName NVARCHAR(255) NULL,
     PropertyLocation NVARCHAR(255) NULL,
-    PropertyUnitLevelName NVARCHAR(255) NULL
+    PropertyUnitLevelName NVARCHAR(255) NULL,
+    MonthlyRent DECIMAL(18,2) NULL
 )

@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
 using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
+using DMS.Infrastructure.Persistence.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using Shyjus.BrowserDetection;
-using System.Text;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Application.Services;
-using DMS.Domain.Entities;
-using DMS.Infrastructure.Persistence.Configuration;
 using System.Security.Cryptography;
-using DMS.Domain.Dto.OtherDto;
+using System.Text;
 
 namespace DMS.Infrastructure.Services;
 
@@ -54,6 +54,18 @@ public class AuthenticationService : IAuthenticationService
                 throw new Exception("User with the same Pag-Ibig Number already exists");
             }
         }
+
+        if (!string.IsNullOrEmpty(user.Email))
+        {
+            var existingPagibigNumber = await _userRepository.GetByPagibigNumberAsync(user.PagibigNumber);
+
+            if (existingPagibigNumber != null)
+            {
+                throw new Exception("User with the same Email already exists");
+            }
+        }
+
+        await _userRepository.ValidateEmailAsync(user);
 
         var userRepo = _mapper.Map<User>(user);
 
