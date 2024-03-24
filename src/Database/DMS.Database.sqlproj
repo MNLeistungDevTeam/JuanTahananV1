@@ -242,7 +242,6 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_Company.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_SourcePagibigFund.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Industry.sql" />
-    <None Include="PostDeploymentScript\Script.PostDeployment_DocumentVerification.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Applicant.sql" />
   </ItemGroup>
   <ItemGroup>
