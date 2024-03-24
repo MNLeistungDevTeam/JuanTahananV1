@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,10 +51,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? PreferredTimeToContact { get; set; }
 
         [DisplayName("Last Name")]
-        public string? LastName { get; set; }  
+        public string? LastName { get; set; }
 
         [DisplayName("First Name")]
-        public string? FirstName { get; set; } 
+        public string? FirstName { get; set; }
 
         [DisplayName("Middle Name")]
         public string? MiddleName { get; set; }
@@ -96,5 +97,25 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Industry")]
         public int? IndustryId { get; set; } = 0;
+
+
+        [Display(Name = "Employer/Business Name(if self Employed)")]
+
+        public string? BusinessName { get; set; }
+
+        [Display(Name ="Occupation")]
+        public string? OccupationStatus { get; set; }
+
+        [Display(Name = "Years in Employment/Business")]
+        public int? YearsInEmployment { get; set; }
+
+        [Display(Name = "Position & Department")]
+        public string? EmploymentPosition { get; set; }
+
+        [Display(Name = "Business Tel No")]
+        public string? BusinessTelNo { get; set; }
+
+
+
     }
 }

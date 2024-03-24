@@ -1,11 +1,10 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
+using DMS.Application.Interfaces.Setup.DocumentVerification;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
-using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Enums;
-using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -13,10 +12,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup
@@ -32,8 +29,19 @@ namespace DMS.Web.Controllers.Setup
         private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
         private readonly IBarrowersInformationRepository _barrowersInformationRepo;
         private readonly IDocumentRepository _documentRepo;
+        private readonly IDocumentVerificationRepository _documentVerificationRepo;
+        private readonly IRoleAccessRepository _currentUserRoleAccessService;
 
-        public DocumentController(IDocumentTypeRepository documentTypeRepo, IFileUploadService uploadService, IWebHostEnvironment hostingEnvironment, IUserRepository userRepository, ICurrentUserService currentUserService, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo, IBarrowersInformationRepository barrowersInformationRepo, IDocumentRepository documentRepo)
+        public DocumentController(IDocumentTypeRepository documentTypeRepo,
+            IFileUploadService uploadService,
+            IWebHostEnvironment hostingEnvironment,
+            IUserRepository userRepository,
+            ICurrentUserService currentUserService,
+            IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+            IBarrowersInformationRepository barrowersInformationRepo,
+            IDocumentRepository documentRepo,
+            IDocumentVerificationRepository documentVerificationRepo,
+            IRoleAccessRepository currentUserRoleAccessService)
         {
             _documentTypeRepo = documentTypeRepo;
             _uploadService = uploadService;
@@ -43,13 +51,24 @@ namespace DMS.Web.Controllers.Setup
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
             _barrowersInformationRepo = barrowersInformationRepo;
             _documentRepo = documentRepo;
+            _documentVerificationRepo = documentVerificationRepo;
+            _currentUserRoleAccessService = currentUserRoleAccessService;
         }
 
         //[ModuleServices(ModuleCodes.Document, typeof(IModuleRepository))]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var roleAccess = await _currentUserRoleAccessService.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_DOCUMENT);
+
+            if (roleAccess == null) { return View("AccessDenied"); }
+            if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
+            ViewData["RoleAccess"] = roleAccess;
+
             return View();
         }
+
+        #region Get Methods
 
         //[ModuleServices(ModuleCodes.DocumentUpload, typeof(IModuleRepository))]
 
@@ -86,6 +105,47 @@ namespace DMS.Web.Controllers.Setup
         [HttpGet("Document/GetDocumentsByApplicant/{applicantCode}")]
         public async Task<IActionResult> GetDocumentsByApplicant(string applicantCode) =>
            Ok(await _documentTypeRepo.GetByApplicantCodeAsync(applicantCode));
+
+        public async Task<IActionResult> GetAllDocumentType()
+        {
+            var data = await _documentTypeRepo.GetInquiryAsync();
+
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetEligibilityApplicationDocument(string? applicantCode)
+        {
+            int type = 1; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, applicantCode);
+
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetApplicantApplicationDocument(string? applicantCode)
+        {
+            int type = 2; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, applicantCode);
+
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetAllEligibilityDocumentSetup()
+        {
+            int type = 1; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, null);
+
+            return Ok(data);
+        }
+
+        public async Task<IActionResult> GetAllApplicationDocumentSetup()
+        {
+            int type = 2; // eligibility documents
+            var data = await _documentVerificationRepo.GetByTypeAsync(type, null);
+
+            return Ok(data);
+        }
+
+        #endregion Get Methods
 
         public async Task<IActionResult> UploadProfile(IFormFile file)
         {
@@ -213,14 +273,9 @@ namespace DMS.Web.Controllers.Setup
 
                 List<IFormFile> fileList = new List<IFormFile> { file };
 
-
-
                 await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
 
                 return Ok();
-                
-
-
             }
             catch (Exception ex)
             {
@@ -239,44 +294,40 @@ namespace DMS.Web.Controllers.Setup
             Ok(await _documentTypeRepo.SpGetAllUserDocumentTypes());
 
         [HttpPost]
-        public async Task<IActionResult> Savedocument(DocumentViewModel model)
+        public async Task<IActionResult> SaveDocumentType(DocumentViewModel vwModel)
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Where(x => x.Value.Errors.Any())
-                                       .Select(x => new
-                                       {
-                                           Field = x.Key,
-                                           DisplayName = ((DisplayNameAttribute)typeof(DocumentTypeModel).GetProperty(x.Key.Split('.').Last())?.GetCustomAttributes(typeof(DisplayNameAttribute), false).FirstOrDefault())?.DisplayName,
-                                           Messages = x.Value.Errors.Select(e => e.ErrorMessage).ToList()
-                                       })
-                                       .ToList();
+                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
+                return Conflict(errors);
+            }
+            int userId = int.Parse(User.Identity.Name);
 
-                var errorMessage = new StringBuilder();
-                foreach (var error in errors)
-                {
-                    errorMessage.AppendLine($"Field: {error.DisplayName ?? error.Field.Split(".")[1]} <br>");
-                    foreach (var message in error.Messages)
-                    {
-                        errorMessage.AppendLine($"Error: {message} <br>");
-                    }
-                }
+            var documentType = await _documentTypeRepo.SaveAsync(vwModel.DocumentType);
 
-                return BadRequest(errorMessage.ToString());
-            }
-            if (model.Document.Id != 0)
+            if (vwModel.DocumentVerification.Type != null)
             {
-                var Documents = await _documentTypeRepo.SpGetAllUserDocumentTypes();
-                var Document = Documents.FirstOrDefault(x => x.Id == model.Document.Id);
-                Document.Description = model.Document.Description;
-                await _documentTypeRepo.SaveAsync(Document);
-                return Ok("updated");
+                vwModel.DocumentVerification.DocumentTypeId = documentType.Id;
+                vwModel.DocumentVerification.Type = vwModel.DocumentVerification.Type;
+
+                await _documentVerificationRepo.SaveAsync(vwModel.DocumentVerification, userId);
             }
-            else
-            {
-                await _documentTypeRepo.SaveAsync(model.Document);
-                return Ok("added");
-            }
+
+            //if (model.DocumentType.Id != 0)
+            //{
+            //    var Documents = await _documentTypeRepo.SpGetAllUserDocumentTypes();
+            //    var Document = Documents.FirstOrDefault(x => x.Id == model.DocumentType.Id);
+            //    Document.Description = model.DocumentType.Description;
+            //    await _documentTypeRepo.SaveAsync(Document);
+            //    return Ok("updated");
+            //}
+            //else
+            //{
+            //    await _documentTypeRepo.SaveAsync(model.DocumentType);
+            //    return Ok("added");
+            //}
+
+            return Ok("added");
         }
 
         public async Task<IActionResult> GetDocumentById(int id) =>
@@ -286,6 +337,10 @@ namespace DMS.Web.Controllers.Setup
         public async Task DeleteDocuments(int[] ids) =>
             await _documentTypeRepo.BatchDeleteAsync(ids);
 
+        [HttpDelete]
+        public async Task DeleteDocumentType(int[] ids) =>
+         await _documentTypeRepo.BatchDeleteAsync2(ids);
+
         public async Task<IActionResult> GetFileList(int ApplicationId, int DocumentTypeId) =>
             Ok(await _documentTypeRepo.SpGetAllDocumentsByIds(ApplicationId, DocumentTypeId));
 
@@ -293,7 +348,6 @@ namespace DMS.Web.Controllers.Setup
         public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
          Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
 
-        //[Route("[controller]/GetApplicantUploadedDocumentByDocumentType/{documentTypeId}/{applicantCode?}")]
         public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
         Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
     }

@@ -46,7 +46,6 @@ namespace DMS.Infrastructure.Services
                 Gender = model.Gender,
                 Position = "Beneficiary",
                 PagibigNumber = model.PagibigMidNumber
-               
             };
 
             // validate and  register user
@@ -83,7 +82,7 @@ namespace DMS.Infrastructure.Services
             barrowerModel.MobileNumber = model.MobileNumber;
             barrowerModel.Sex = model.Gender;
             barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
-
+            barrowerModel.Email = model.Email;
             barrowerModel.PresentUnitName = model.PresentUnitName;
             barrowerModel.PresentBuildingName = model.PresentBuildingName;
             barrowerModel.PresentLotName = model.PresentLotName;

@@ -31,7 +31,8 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId);
         Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
         Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
-        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync();
+        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId);
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
+        Task<IEnumerable<ApplicantsPersonalInformationModel>> GetAllApplicationsByPagibigNumber(string? pagibigNumber);
     }
 }

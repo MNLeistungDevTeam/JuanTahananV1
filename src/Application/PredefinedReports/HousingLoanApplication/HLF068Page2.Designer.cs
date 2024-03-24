@@ -3253,7 +3253,7 @@
             this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
             this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrPictureBox1.Name = "xrPictureBox1";
-            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(850.0001F, 1300.667F);
+            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(850F, 1300.67F);
             // 
             // HLF068Page2BindingSource
             // 
