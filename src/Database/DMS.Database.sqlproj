@@ -213,6 +213,7 @@
     <Build Include="Tables\Setup\DocumentVerification\DocumentVerification.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetByType.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetInquiry.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetAllByPagibigNumber.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

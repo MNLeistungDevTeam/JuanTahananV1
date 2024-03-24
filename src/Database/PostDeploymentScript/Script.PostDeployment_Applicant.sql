@@ -8,7 +8,7 @@ SET IDENTITY_INSERT ApplicantsPersonalInformation ON;
 INSERT INTO ApplicantsPersonalInformation
     (Id, Code, UserId, PagibigNumber, CompanyId, ApprovalStatus, DateCreated,CreatedById)
 VALUES
-    (1, 'APL202401-0001', 4, '123456789', 1, 0, GETDATE(),1);
+    (1, 'APL202401-0001', 4, '324135645768', 1, 0, GETDATE(),1);
 
  
 SET IDENTITY_INSERT ApplicantsPersonalInformation OFF;
@@ -30,3 +30,20 @@ VALUES
 SET IDENTITY_INSERT BarrowersInformation OFF;
 END 
 GO
+
+
+
+ IF NOT EXISTS (SELECT 1 FROM [dbo].ApprovalStatus)
+BEGIN
+SET IDENTITY_INSERT ApprovalStatus ON;
+ 
+ 
+INSERT INTO ApprovalStatus
+(Id,UserId,ReferenceId,ReferenceType,[Status],LastUpdate)
+VALUES(1,4,1,8,1,GETDATE())
+ 
+SET IDENTITY_INSERT ApprovalStatus OFF;
+END 
+GO
+
+

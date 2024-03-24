@@ -120,9 +120,9 @@ $(function () {
         var id = tbl_applications.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
 
-        $("#btn_add").attr({
-            "disabled": !(selectedRows === 0),
-        });
+        //$("#btn_add").attr({
+        //    "disabled": !(selectedRows === 0),
+        //});
 
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),

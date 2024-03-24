@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.ClipboardSource.SpreadsheetML;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
@@ -23,6 +24,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Template.Web.Controllers.Transaction
 {
@@ -111,15 +113,26 @@ namespace Template.Web.Controllers.Transaction
 
             var userData = await _userRepo.GetUserAsync(userId);
 
-            //if (data.UserRoleId != 4 || data.UserRoleCode != "Beneficiary")
-            //{
-            //}
+            var applicationRecord = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(userData.PagibigNumber.ToString());
+            var latestRecord = applicationRecord
+       .OrderByDescending(m => m.Code)
+       .ThenBy(m => m.DateModified).FirstOrDefault();
+
 
             ApplicantViewModel viewModel = new();
 
             ApplicantsPersonalInformationModel applicantInfoModel = new();
             applicantInfoModel.PagibigNumber = userData.PagibigNumber;
             applicantInfoModel.UserId = userData.Id;
+
+            if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
+            {
+                applicantInfoModel.isCanAppliedNewApplication = true;
+            }
+            else
+            {
+                applicantInfoModel.isCanAppliedNewApplication = false;
+            }
 
             viewModel.ApplicantsPersonalInformationModel = applicantInfoModel;
             return View(viewModel);
@@ -143,7 +156,9 @@ namespace Template.Web.Controllers.Transaction
 
             var incompleteDocumentData = eligibilityPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
 
-            if (incompleteDocumentData != null)
+            applicantinfo.isRequiredDocumentsUploaded = false;
+
+            if (incompleteDocumentData.Count > 0)
             {
                 applicantinfo.isRequiredDocumentsUploaded = true;
             }
