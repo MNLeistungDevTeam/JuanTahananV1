@@ -163,6 +163,16 @@ $(function () {
                 tbl_files.ajax.reload();
                 tbl_verificationDocument.ajax.reload();
                 tbl_applicationDocument.ajax.reload();
+
+                //method removing iformfile
+                var myfile = $('#file-input')[0];
+
+                myfile.files[0];
+
+                // remove filename
+                $('#file-input').val('');
+
+
             },
             error: function (xhr, status, error) {
                 console.log(xhr);

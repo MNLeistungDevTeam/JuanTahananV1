@@ -664,7 +664,7 @@ namespace Template.Web.Controllers.Transaction
                         //var userdata = _mapper.Map<UserModel>(user);
 
                         // make the usage of hangfire
-                        // await _emailService.SendUserInfo(userModel);
+                         await _emailService.SendUserInfo(userModel);
                     }
                     else
                     {
