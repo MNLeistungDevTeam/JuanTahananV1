@@ -78,7 +78,6 @@ public class CompanyController : Controller
             return View(companyVm);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
-
     }
 
     public async Task<IActionResult> Create()
@@ -98,15 +97,6 @@ public class CompanyController : Controller
             };
 
             return View("Create", companyVm);
-        }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
-    }
-
-    public IActionResult InfiniteScroll()
-    {
-        try
-        {
-            return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }

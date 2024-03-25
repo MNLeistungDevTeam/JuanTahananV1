@@ -81,6 +81,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo
 
         #endregion Get Methods
 
+        #region Action Methods
+
         public async Task<Notification> SaveNotificationAsync(NotificationModel nModel, List<int> roles, NotificationType type, int userId)
         {
             var notification = _mapper.Map<Notification>(nModel);
@@ -261,5 +263,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.NotificationRepo
 
             await _contextHelper.DeleteAsync(entities);
         }
+
+        #endregion Action Methods
     }
 }
