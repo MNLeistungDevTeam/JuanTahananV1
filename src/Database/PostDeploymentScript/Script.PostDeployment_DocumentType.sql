@@ -35,7 +35,6 @@ END
 GO
 
 
-
 IF NOT EXISTS (SELECT 1 FROM [dbo].DocumentVerification)
 BEGIN
 	SET IDENTITY_INSERT [dbo].DocumentVerification ON
