@@ -23,6 +23,9 @@ using DMS.Application.Services;
 using Template.Infrastructure;
 using DMS.Infrastructure.Hubs;
 using DMS.Infrastructure.Persistence.Configuration;
+using Hangfire;
+using Microsoft.EntityFrameworkCore;
+using DMS.Infrastructure.Persistence;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder()
@@ -79,6 +82,25 @@ try
     });
 
     #endregion Localization
+
+    #region Hangfire
+
+    builder.Services.AddHangfire(configuration => configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+
+    builder.Services.AddHangfireServer();
+
+    var hangFireConnectionString = builder.Configuration.GetConnectionString("HangfireConnection");
+    builder.Services.AddDbContext<HangFireDBContext>(options =>
+    {
+        options.EnableSensitiveDataLogging();
+        options.UseSqlServer(hangFireConnectionString);
+    });
+
+    #endregion Hangfire
 
     #region DevExpress
 
@@ -196,6 +218,20 @@ try
     }
     #endregion DevExpress
 
+
+    //Hangfire Authentication
+    app.UseHangfireDashboard("/hangfire", new DashboardOptions
+    {
+        //Authorization = new[]
+        //    {
+        //    new HangfireCustomBasicAuthenticationFilter
+        //    {
+        //        User = app.Configuration.GetSection("HangfireOptions:User").Value,
+        //        Pass = app.Configuration.GetSection("HangfireOptions:Pass").Value
+        //    }
+        //}
+    });
+
     if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     {
         app.UseDeveloperExceptionPage();
@@ -237,6 +273,14 @@ try
     app.MapHub<UploaderHub>("/uploaderHub");
     app.MapHub<NotificationHub>("/notificationHub");
     app.MapHub<OnlineUserHub>("/onlineUserHub");
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var db = services.GetRequiredService<HangFireDBContext>();
+        db.InitializeDatabase();
+    }
+
     app.Run();
 }
 catch (Exception ex)

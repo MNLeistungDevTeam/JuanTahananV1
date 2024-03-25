@@ -6,19 +6,23 @@ using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
 using DMS.Application.Interfaces.Setup.PropertyTypeRepo;
 using DMS.Application.Interfaces.Setup.PurposeOfLoanRepo;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -50,6 +54,8 @@ namespace Template.Web.Controllers.Transaction
         private readonly IApprovalService _approvalService;
         private readonly ISourcePagibigFundRepository _sourcePagibigFundRepo;
         private readonly IDocumentVerificationRepository _documentVerificationRepo;
+        private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IRoleAccessRepository _roleAccessRepo;
 
         private DMSDBContext _context;
 
@@ -73,7 +79,9 @@ namespace Template.Web.Controllers.Transaction
             INotificationService notificationService,
             IApprovalService approvalService,
             ISourcePagibigFundRepository sourcePagibigFundRepo,
-            IDocumentVerificationRepository documentVerificationRepo)
+            IDocumentVerificationRepository documentVerificationRepo,
+            IBackgroundJobClient backgroundJobClient,
+            IRoleAccessRepository roleAccessRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -96,14 +104,41 @@ namespace Template.Web.Controllers.Transaction
             _approvalService = approvalService;
             _sourcePagibigFundRepo = sourcePagibigFundRepo;
             _documentVerificationRepo = documentVerificationRepo;
+            _backgroundJobClient = backgroundJobClient;
+            _roleAccessRepo = roleAccessRepo;
         }
 
         #region View
 
         //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            try
+            {
+                var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_APPLICANTS);
+
+                if (roleAccess is null) { return View("AccessDenied"); }
+                if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
+                ViewData["RoleAccess"] = roleAccess;
+
+                var companyVm = new CompanyViewModel();
+                var companyLogos = new List<CompanyLogoModel>
+        {
+            new CompanyLogoModel { Description = string.Empty },
+            new CompanyLogoModel { Description = string.Empty }
+        };
+
+                companyVm.CompanyLogo = companyLogos;
+
+                return View(companyVm);
+            }
+            catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
         }
 
         [Route("[controller]/Beneficiary")]
@@ -117,7 +152,6 @@ namespace Template.Web.Controllers.Transaction
             var latestRecord = applicationRecord
        .OrderByDescending(m => m.Code)
        .ThenBy(m => m.DateModified).FirstOrDefault();
-
 
             ApplicantViewModel viewModel = new();
 
@@ -664,7 +698,8 @@ namespace Template.Web.Controllers.Transaction
                         //var userdata = _mapper.Map<UserModel>(user);
 
                         // make the usage of hangfire
-                         await _emailService.SendUserInfo(userModel);
+
+                        _backgroundJobClient.Enqueue(() => _emailService.SendUserInfo(userModel));
                     }
                     else
                     {

@@ -255,6 +255,54 @@ function messageBox(message, type = "success", isToastr = false, isTimed = true)
     }
 }
 
+function iziToasterBox(message, type = 'success') {
+    let head = "";
+    let icons = "";
+    let barColor = "";
+    let bg = "";
+
+    switch (type) {
+        case "success":
+            head = "Success";
+            icons = `ico-success`;
+            barColor = "#5ba035"
+            bg = "#8fce00";
+            break;
+        case 'info':
+            head = "Information"
+            icons = "ico-info";
+            barColor = "#3b98b5";
+            bg = "#3d85c6";
+            break;
+        case 'warning':
+            head = "Warning";
+            icons = "ico-warning";
+            barColor = "#da8609";
+            bg = "#fc750a";
+            break;
+        case 'danger':
+            head = "Error";
+            icons = "ico-error";
+            barColor = "#b83206";
+            bg = "#FF0000";
+        default:
+    }
+
+    iziToast.show({
+        title: head,
+        icon: icons,
+        backgroundColor: bg,
+        progressBarColor: barColor,
+        position: 'topCenter',
+        message: `<div style="max-width: 512px;" class="fw-bold">${message}</div>`,
+        theme: 'light',
+        close: true,
+        timeout: 4000,
+        transitionIn: 'fadeInDown',
+        transitionOut: 'fadeOutUp',
+    });
+}
+
 function convertDate(data, format = "YYYY-MM-DD") {
     let toReturn = "";
 
@@ -369,7 +417,6 @@ function fileToByteArray(file) {
         reader.readAsArrayBuffer(file);
     });
 }
-
 
 function addRequiredClass() {
     $("input, select, textarea").each(function () {
@@ -542,7 +589,7 @@ function addAddress(addressObj = {}) {
     </div>
 </div>`;
     $(".address_div").append(rowToAdd);
-   /* addressCount++;*/
+    /* addressCount++;*/
 
     let countryDropdown, $countryDropdown;
     let addressTypeDropdown, $addressTypeDropdown;
