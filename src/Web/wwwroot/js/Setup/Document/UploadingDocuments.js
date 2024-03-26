@@ -1,4 +1,4 @@
-$(function () {
+$(async function () {
     "strict";
 
     const $modal = $('#modal-file');
@@ -72,10 +72,11 @@ $(function () {
         processing: true
     });
 
-    $('.upload').on('click', function (e) {
+    $('.upload').on('click', async function (e) {
         e.preventDefault();
         DocumentId = 0;
-
+        var documentType = await GetDocumentType(documentypeid);
+        $('#file-input').attr('accept', documentType.FileFormat);
         $('#file-input').trigger('click');
     });
 
@@ -171,8 +172,6 @@ $(function () {
 
                 // remove filename
                 $('#file-input').val('');
-
-
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -269,6 +268,8 @@ $(function () {
     $('#tbl_application_document tbody').on('click', 'tr', function () {
         var rowData = tbl_verificationDocument.row(this).data();
         documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
+        console.log(rowData);
+        console.log(documentypeid);
         tbl_files.ajax.reload();
         $modal.modal('show');
     });
@@ -357,6 +358,8 @@ $(function () {
     $('#tbl_verification_document tbody').on('click', 'tr', function () {
         var rowData = tbl_verificationDocument.row(this).data();
         documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
+        console.log(rowData);
+        console.log(documentypeid);
         tbl_files.ajax.reload();
         $modal.modal('show');
     });
@@ -370,4 +373,14 @@ $(function () {
         // $("#btn_verification_refresh").attr({ disabled: true });
         tbl_verificationDocument.ajax.reload(null, false);
     });
+
+    async function GetDocumentType(documentTypeId) {
+        const response = $.ajax({
+            url: baseUrl + "Document/GetDocumentTypeById/" + documentTypeId,
+            method: "get",
+            data: 'json'
+        });
+
+        return response;
+    }
 });

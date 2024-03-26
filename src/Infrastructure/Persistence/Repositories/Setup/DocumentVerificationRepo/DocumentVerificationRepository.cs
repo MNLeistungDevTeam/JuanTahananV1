@@ -3,7 +3,6 @@ using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Services;
 using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Entities;
-using DMS.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo
@@ -81,8 +80,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
 
         public async Task BatchDeleteAsync(int[] ids)
         {
-            var documents = await _context.DocumentVerifications.Where(d => ids.Contains(d.Id)).ToListAsync();
-            await _contextHelper.BatchDeleteAsync(documents);
+            var documents = await _context.DocumentVerifications.
+                Where(d => ids.Contains(d.Id))
+                .ToListAsync();
+
+            if (documents is not null)
+                await _contextHelper.BatchDeleteAsync(documents);
         }
     }
 }

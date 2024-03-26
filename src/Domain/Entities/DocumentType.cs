@@ -23,5 +23,5 @@ public partial class DocumentType
 
     public int? DeletedById { get; set; }
 
-    public virtual ICollection<DocumentVerification> DocumentVerifications { get; set; } = new List<DocumentVerification>();
+    public int? FileType { get; set; }
 }

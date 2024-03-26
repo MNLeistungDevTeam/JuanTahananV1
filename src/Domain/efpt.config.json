@@ -80,6 +80,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[FileType]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Form2Page]",
          "ObjectType": 0
       },

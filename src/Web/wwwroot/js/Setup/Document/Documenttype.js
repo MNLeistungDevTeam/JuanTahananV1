@@ -40,6 +40,15 @@ $(function () {
             },
 
             {
+                data: "FileFormat",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data
+                }
+
+            },
+
+            {
                 data: "CreatedBy",
                 class: "text-center align-middle"
             },

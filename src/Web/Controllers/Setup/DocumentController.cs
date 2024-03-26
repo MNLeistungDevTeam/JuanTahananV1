@@ -1,4 +1,5 @@
-﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+﻿using DevExpress.XtraRichEdit.Model;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.RoleRepository;
@@ -310,8 +311,8 @@ public class DocumentController : Controller
             if (vwModel.DocumentVerification.Type != null)
             {
                 var docuVerif = await _documentVerificationRepo.GetByDocumentTypeId(vwModel.DocumentType.Id);
-                
-                vwModel.DocumentVerification.Id = docuVerif != null ? docuVerif.Id : 0 ;
+
+                vwModel.DocumentVerification.Id = docuVerif != null ? docuVerif.Id : 0;
                 vwModel.DocumentVerification.DocumentTypeId = documentType.Id;
                 vwModel.DocumentVerification.Type = vwModel.DocumentVerification.Type;
                 vwModel.DocumentVerification.DocumentTypeDescription = documentType.Description;
@@ -344,13 +345,30 @@ public class DocumentController : Controller
     public async Task<IActionResult> GetDocumentById(int id) =>
         Ok((await _documentTypeRepo.SpGetAllUserDocumentTypes()).FirstOrDefault(x => x.Id == id));
 
-    [HttpDelete]
-    public async Task DeleteDocuments(int[] ids) =>
-        await _documentTypeRepo.BatchDeleteAsync(ids);
+    public async Task<IActionResult> GetDocumentTypeById(int id) =>
+        Ok(await _documentTypeRepo.GetDocumentTypeById(id));
 
     [HttpDelete]
-    public async Task DeleteDocumentType(int[] ids) =>
-     await _documentTypeRepo.BatchDeleteAsync2(ids);
+    public async Task DeleteDocuments(string ids)
+    {
+        int[] _ids = Array.ConvertAll(ids.Split(','), int.Parse);
+        int[] verifIds = _ids.Select(id =>
+        {
+            var docuVerif = _documentVerificationRepo.GetByDocumentTypeId(id);
+            return docuVerif != null ? docuVerif.Id : -1;
+        }).ToArray();
+
+        await _documentVerificationRepo.BatchDeleteAsync(verifIds);
+        await _documentTypeRepo.BatchDeleteAsync(_ids);
+    }
+
+    [HttpDelete]
+    public async Task DeleteDocumentType(string ids)
+    {
+        int[] _ids = Array.ConvertAll(ids.Split(','), int.Parse);
+
+        await _documentTypeRepo.BatchDeleteAsync2(_ids);
+    }
 
     public async Task<IActionResult> GetFileList(int ApplicationId, int DocumentTypeId) =>
         Ok(await _documentTypeRepo.SpGetAllDocumentsByIds(ApplicationId, DocumentTypeId));
@@ -361,4 +379,5 @@ public class DocumentController : Controller
 
     public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
     Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
+
 }
