@@ -65,8 +65,10 @@ namespace DMS.Infrastructure.Services
             //save as benificiary
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
+
+            userModel.Action = "created";
             //// make the usage of hangfire
-            _backgroundJobClient.Enqueue(() => _emailService.SendUserInfo(userModel));
+            _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
 
             #endregion Create Beneficiary User
 
