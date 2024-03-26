@@ -46,6 +46,12 @@
     <Content Remove="wwwroot\%2a%2a" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="PredefinedReports\TestReport.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PredefinedReports\TestReport.repx" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="runtimeconfig.template.json" />
     <None Include="Views\Account\Login.cshtml" />
     <None Include="Views\Home\Error.cshtml" />
@@ -95,6 +101,12 @@
   <ItemGroup>
     <Compile Update="Controllers\HousingForm.cs">
       <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="PredefinedReports\TestReport.cs">
+      <DependentUpon>TestReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="PredefinedReports\TestReport.Designer.cs">
+      <DependentUpon>TestReport.repx</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

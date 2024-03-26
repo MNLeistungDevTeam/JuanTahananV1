@@ -8,4 +8,5 @@
     [ModifiedById] INT NULL,
     [DateDeleted] DATETIME2 NULL, 
     [DeletedById] INT NULL, 
+    [FileType] INT NULL
 )

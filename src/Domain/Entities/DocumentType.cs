@@ -22,4 +22,6 @@ public partial class DocumentType
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public int? FileType { get; set; }
 }

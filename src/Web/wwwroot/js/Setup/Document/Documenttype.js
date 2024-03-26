@@ -1,4 +1,4 @@
-"strict";
+"use strict";
 
 const $modal = $('#modal-document');
 const $form = $("#document_form");
@@ -37,6 +37,15 @@ $(function () {
                 render: function (data, type, row) {
                     return data;
                 }
+            },
+
+            {
+                data: "FileFormat",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data
+                }
+
             },
 
             {
@@ -104,6 +113,7 @@ $(function () {
         scrollY: "25vh",
         scrollCollapse: true
     });
+
     $("#tbl_document_filter, #tbl_document_length").hide();
     tbl_Document.on('select deselect draw', function () {
         var all = tbl_Document.rows({ search: 'applied' }).count();
@@ -112,7 +122,7 @@ $(function () {
 
         var documentTypeName = tbl_Document.rows({ selected: true }).data().pluck("Description").toArray().toString();
         var verificationType = tbl_Document.rows({ selected: true }).data().pluck("VerificationType").toArray().toString();
-        var verificationDocumentId = tbl_Document.rows({ selected: true }).data().pluck("VerificationDocumentId").toArray().toString();
+        var verificationDocumentId = tbl_Document.rows({ selected: true }).data().pluck("DocumentVerificationId").toArray().toString();
 
         // Tick select-all based on row count;
         $("#select-all-document").prop("checked", (all == selectedRows && all > 0));
@@ -463,6 +473,7 @@ $(function () {
 
     $("#btn_add").on('click', function () {
         $("#modal-document").modal('show');
+        clearFrm();
     });
 
     $("#btn_edit").on('click', function () {
@@ -475,7 +486,6 @@ $(function () {
         let verificationType = $(this).attr('data-verification-type');
         let verificationdocumentId = $(this).attr('data-verificationdocument-id');
 
-       
         if (verificationdocumentId == "") {
             verificationdocumentId = 0;
         }
@@ -491,7 +501,7 @@ $(function () {
         $("#DocumentType_Id").attr('value', id);
         $("#DocumentVerification_Id").attr('value', verificationdocumentId);
         $("#DocumentType_Description").attr('value', documentType);
-        $("#DocumentVerification_Type").attr('value', verificationType);
+        $("#DocumentVerification_Type").data('selectize').setValue(verificationType);
     });
 
     $("#btn_delete").on("click", function (e) {
@@ -535,4 +545,11 @@ $(function () {
             }
         })
     });
+
+    function clearFrm() {
+        $('[name="DocumentType.Id"]').val(0);
+        $('[name="DocumentVerification.Id"]').val(0);
+        $('[name="DocumentType.Description"]').val("");
+        $('[name="DocumentVerification.Type"]').data('selectize').setValue("");
+    }
 });

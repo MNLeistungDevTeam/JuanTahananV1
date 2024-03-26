@@ -116,6 +116,7 @@
                                 </th>
                                 <th>Document Name</th>
                                 <th>Verification Type</th>
+                                <th>File Type</th>
                                 <th>Created By</th>
                                 <th>Date Created</th>
                                 <th>Modified By</th>
@@ -247,8 +248,8 @@
             <div class="modal-body">
                 <form id="document_form" asp-action="SaveDocumentType" method="post" role="form">
 
-                    <input hidden class="form-control rounded-3" asp-for="DocumentType.Id" value="0" />
-                    <input hidden class="form-control rounded-3" asp-for="DocumentVerification.Id" value="0" />
+                    <input hidden class="form-control rounded-3" asp-for="DocumentType.Id"/>
+                    <input hidden class="form-control rounded-3" asp-for="DocumentVerification.Id"/>
                     <div class="position-relative mb-3">
                         <label class="form-label fw-normal" asp-for="DocumentType.Description" required></label>
                         <input type="text" class="form-control rounded-3" asp-for="DocumentType.Description" required>
@@ -266,6 +267,18 @@
                         <span asp-validation-for="DocumentVerification.Type" class="invalid-tooltip"> </span>
                     </div>
 
+                    <div class="position-relative mb-3">
+                        <label class="from-label fw-normal" asp-for="DocumentType.FileType"></label>
+                        <select asp-for="DocumentType.FileType" class="rounded-3 selectize">
+                            <option value="">Select File Type</option>
+                            <option value="1">.pdf</option>
+                            <option value="2">.docx</option>
+                            <option value="3">.txt</option>
+                            <option value="4">.xlsx</option>
+                            <option value="5">.jpg</option>
+                            <option value="6">.png</option>
+                        </select>
+                    </div>
 
                     <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_save">Save</button>
                     <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect" data-bs-dismiss="modal">Close</button>

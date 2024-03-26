@@ -12,9 +12,9 @@ namespace DMS.Application.Interfaces.Setup.DocumentVerification
         Task BatchDeleteAsync(int[] ids);
 
         Task DeleteAsync(int id);
-
+        Task<DocumentVerificationModel?> GetByDocumentTypeId(int id);
         Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode);
 
-        Task<Domain.Entities.DocumentVerification> SaveAsync(DocumentVerificationModel model, int userId);
+        Task<DMS.Domain.Entities.DocumentVerification> SaveAsync(DocumentVerificationModel model, int userId);
     }
 }

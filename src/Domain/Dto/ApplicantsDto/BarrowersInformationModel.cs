@@ -232,9 +232,5 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; }
 
-
-
-
-
     }
 }

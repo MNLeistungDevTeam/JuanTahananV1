@@ -2,8 +2,9 @@ $(() => {
     "use strict";
 
     $('#rootwizard').bootstrapWizard({
-        'onNext': function (tab, navigation, index) {
+        'onNext': function (tab, navigation, index, event) {
             var form = $($(tab).data("targetForm"));
+
             if (form) {
                 form.addClass('was-validated');
                 if (form[0].checkValidity() === false) {
@@ -20,6 +21,14 @@ $(() => {
         $('#form2').trigger('submit'); // Submit the form if the user clicks OK
     })
 
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').show();
+        } else {
+            $('#rentalForm').hide();
+        }
+    });
+
     $('#form2').on('submit', function (e) {
         e.preventDefault();
         let $loanparticulars = $('#loanparticulars');
@@ -28,6 +37,7 @@ $(() => {
         if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
             return;
         }
+
         let loanparticulars = $loanparticulars.serializeArray();
         let collateraldata = $collateraldata.serializeArray();
         let spousedata = $spousedata.serializeArray();

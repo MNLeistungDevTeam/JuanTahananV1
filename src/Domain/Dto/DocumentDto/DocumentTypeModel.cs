@@ -24,10 +24,14 @@ namespace DMS.Domain.Dto.DocumentDto
         public int? DeletedById { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
-        public int? TotalDocumentCount { get; set; }
+        
+        [Display(Name = "File Type", Prompt = "Select File Type")]
+        public int FileType { get; set; }
 
+        public int? TotalDocumentCount { get; set; }
         public string? VerificationTypeDescription { get; set; }
         public int? VerificationType { get; set; }
         public int? DocumentVerificationId { get; set; }
+        public string? FileFormat { get; set; }
     }
 }

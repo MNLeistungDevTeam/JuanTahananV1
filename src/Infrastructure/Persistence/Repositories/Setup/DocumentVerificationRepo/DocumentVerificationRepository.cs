@@ -3,7 +3,6 @@ using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Services;
 using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Entities;
-using DMS.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo
@@ -23,8 +22,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
             _db = db;
         }
 
-        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type,string? applicantCode) =>
+        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode) =>
          await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type, applicantCode });
+
+        public async Task<DocumentVerificationModel?> GetByDocumentTypeId(int id) =>
+            await _db.LoadSingleAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetDocumentTypeId", new { id });
 
         public async Task<DocumentVerification?> GetByIdAsync(int id)
         {
@@ -41,9 +43,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
             var documentVerification = _mapper.Map<DocumentVerification>(model);
 
             if (model.Id == 0)
-            {
                 documentVerification = await CreateAsync(documentVerification, userId);
-            }
             else
                 documentVerification = await UpdateAsync(documentVerification, userId);
 
@@ -54,11 +54,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
         {
             documentVerification.CreatedById = userId;
             documentVerification.DateCreated = DateTime.Now;
+
             var result = await _contextHelper.CreateAsync(documentVerification, "ModifiedById", "DateModified");
             return result;
         }
-
- 
 
         public async Task<DocumentVerification> UpdateAsync(DocumentVerification documentVerification, int userId)
         {
@@ -81,8 +80,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
 
         public async Task BatchDeleteAsync(int[] ids)
         {
-            var documents = await _context.DocumentVerifications.Where(d => ids.Contains(d.Id)).ToListAsync();
-            await _contextHelper.BatchDeleteAsync(documents);
+            var documents = await _context.DocumentVerifications.
+                Where(d => ids.Contains(d.Id))
+                .ToListAsync();
+
+            if (documents is not null)
+                await _contextHelper.BatchDeleteAsync(documents);
         }
     }
 }

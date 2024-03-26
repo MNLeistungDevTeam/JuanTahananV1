@@ -168,6 +168,16 @@ $(function () {
 
     //#endregion
 
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').show();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
+        } else {
+            $('#rentalForm').hide();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+        }
+    });
+
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
         var inputValue = $(this).val().toString();
         var numericValue = parseInt(inputValue, 10);
