@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DMS.Infrastructure.Hubs
 {
-
     public class NotificationHub : Hub
     {
         public async Task SendMessage(string groupName, string user, string message) =>
@@ -18,7 +12,7 @@ namespace DMS.Infrastructure.Hubs
 
         public async Task UpdateNotifGroup(string groupName, string companyCode, string message) =>
             await Clients.Group(groupName).SendAsync("AddNotifGroup", companyCode, message);
-
+        
         public async Task GetServerTime() =>
             await Clients.All.SendAsync("RetServerTime", DateTime.Now);
 

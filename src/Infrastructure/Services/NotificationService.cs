@@ -33,7 +33,7 @@ namespace DMS.Infrastructure.Services
             //var module = await _moduleRepo.GetByControllerAsync(moduleController);
             var company = await _companyRepo.GetByIdAsync(companyId);
 
-            string companyCode = "JuanTahanan";
+            string companyCode = "JTH-PH";
 
             if (company != null)
             {
@@ -57,7 +57,7 @@ namespace DMS.Infrastructure.Services
             // Send notifications to users
             foreach (var receiver in uniqueReceivers)
             {
-                await _hubContext.Clients.Group(receiver).SendAsync("AddNotifGroup", companyCode, "You have new notification");
+                await _hubContext.Clients.Group(receiver).SendAsync("AddNotifGroup", companyCode, $"{actionType} Applicant: {transactionNo}");
             }
         }
     }

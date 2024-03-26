@@ -37,7 +37,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             _approvalStatusRepo = approvalStatusRepo;
         }
 
-        #region Get
+        #region Get Methods
 
         public async Task<ApplicantsPersonalInformation?> GetByIdAsync(int id) =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);

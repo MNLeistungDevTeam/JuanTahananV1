@@ -23,5 +23,8 @@ namespace DMS.Domain.Enums
         public const string CONST_BENEFICIARY = "BENEFICIARY";
         public const string CONST_APPLICANTSREQUESTS = "APLCNTREQ";
         public const string CONST_DocumentUpload = "DOCUPLOAD";
+        public const string  CONST_APPROVERMNGMNT =  "APPROVER-MGMT";
+ 
+       
     }
 }

@@ -7,6 +7,7 @@ using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Shyjus.BrowserDetection;
 using System.Security.Cryptography;
@@ -75,6 +76,20 @@ public class AuthenticationService : IAuthenticationService
 
         // Save the user in the repository
         await _userRepository.CreateAsync(userRepo, 0);
+
+        return userRepo;
+    }
+
+    public async Task<User> ResetCredential(UserModel user)
+    {
+        var userRepo = _mapper.Map<User>(user);
+
+        // Create a new user entity
+        userRepo.PasswordSalt = _authenticationConfig.Value.PasswordSalt;
+        userRepo.Password = HashPassword(userRepo.Password, userRepo.PasswordSalt);// Hash the password before storing it
+
+        // Save the user in the repository
+        await _userRepository.UpdateNoExclusionAsync(userRepo, 0);
 
         return userRepo;
     }
@@ -264,8 +279,14 @@ public class AuthenticationService : IAuthenticationService
         return (await _userRepository.GetAllAsync()).Any(x => x.UserName == username);
     }
 
+
+
+
+
     public string GenerateTemporaryPasswordAsync(string name)
     {
+        name = name.Replace(" ", "");
+
         // Generate a GUID with 16 characters
         string guid = Guid.NewGuid().ToString("N").Substring(0, 16);
 
@@ -296,11 +317,12 @@ public class AuthenticationService : IAuthenticationService
 
             // Ensure a fixed length of 14 characters for the output password
             string hashedString = sb.ToString();
-            string outputPassword = name + hashedString.Substring(0, 14 - name.Length);
+            string outputPassword = name + hashedString.Substring(0, 10);
 
             return outputPassword;
         }
     }
+
 
     public async Task<string> GenerateTemporaryUsernameAsync()
     {

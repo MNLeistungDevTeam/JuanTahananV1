@@ -116,4 +116,8 @@ public class UserModel
     public string? ApplicantCode { get; set; }
     public string? UserRoleName { get; set; } //Description basis
     public string? UserRoleCode { get; set; }  // Name basis
+
+    public string? Action { get; set; }  // Action Reset,Updated,Created
+
+
 }

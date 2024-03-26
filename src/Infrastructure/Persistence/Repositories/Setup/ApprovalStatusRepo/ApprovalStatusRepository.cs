@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.XtraRichEdit.Internal;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Services;
@@ -32,6 +31,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
             _moduleRepo = moduleRepo;
         }
 
+        #region Get Methods
+
         //transactionid    //moduleid
 
         public async Task<IEnumerable<ApprovalStatusModel?>> GetByReferenceAsync(int referenceId, string referenceType, int companyId) =>
@@ -57,6 +58,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
 
         public async Task<ApprovalStatusModel?> GetAsync(int id) =>
          await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetById", new { id });
+
+        #endregion Get Methods
 
         #region Operation
 
