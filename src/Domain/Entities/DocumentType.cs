@@ -22,4 +22,6 @@ public partial class DocumentType
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public virtual ICollection<DocumentVerification> DocumentVerifications { get; set; } = new List<DocumentVerification>();
 }

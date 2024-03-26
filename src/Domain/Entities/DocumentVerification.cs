@@ -20,4 +20,6 @@ public partial class DocumentVerification
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    //public virtual DocumentType DocumentType { get; set; }
 }

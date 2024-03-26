@@ -203,7 +203,7 @@ $(async function () {
                 data: "Icon",
                 class: "text-center",
                 render: function (data, type, row) {
-                    return data ? `<i class="${data}"></i>` : null;
+                    return data;
                 }
             },
             {
@@ -295,7 +295,7 @@ $(async function () {
                 data: "Icon",
                 class: "text-center",
                 render: function (data, type, row) {
-                    return data ? `<i class="${data}"></i>` : null;
+                    return data;
                 }
             },
             {

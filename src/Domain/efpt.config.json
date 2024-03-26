@@ -164,6 +164,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[TemporaryLink]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[User]",
          "ObjectType": 0
       },

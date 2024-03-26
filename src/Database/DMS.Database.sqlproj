@@ -215,6 +215,7 @@
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetInquiry.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetAllByPagibigNumber.sql" />
     <Build Include="Tables\Setup\TemporaryLink.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetDocumentTypeId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

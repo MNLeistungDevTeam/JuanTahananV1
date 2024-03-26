@@ -23,8 +23,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
             _db = db;
         }
 
-        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type,string? applicantCode) =>
+        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode) =>
          await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type, applicantCode });
+
+        public async Task<DocumentVerificationModel?> GetByDocumentTypeId(int id) =>
+            await _db.LoadSingleAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetDocumentTypeId", new { id });
 
         public async Task<DocumentVerification?> GetByIdAsync(int id)
         {
@@ -41,9 +44,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
             var documentVerification = _mapper.Map<DocumentVerification>(model);
 
             if (model.Id == 0)
-            {
                 documentVerification = await CreateAsync(documentVerification, userId);
-            }
             else
                 documentVerification = await UpdateAsync(documentVerification, userId);
 
@@ -54,11 +55,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerification
         {
             documentVerification.CreatedById = userId;
             documentVerification.DateCreated = DateTime.Now;
+
             var result = await _contextHelper.CreateAsync(documentVerification, "ModifiedById", "DateModified");
             return result;
         }
-
- 
 
         public async Task<DocumentVerification> UpdateAsync(DocumentVerification documentVerification, int userId)
         {
