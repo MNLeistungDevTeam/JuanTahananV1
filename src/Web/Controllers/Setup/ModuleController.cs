@@ -327,7 +327,8 @@ public class ModuleController : Controller
         {
             int[] Ids = Array.ConvertAll(moduleTypeIds.Split(','), int.Parse);
 
-            await _moduleStageRepo.BatchDeleteAsync(Ids);
+            //await _moduleStageRepo.BatchDeleteAsync(Ids);
+            await _moduleTypeRepo.BachDeleteAsync(Ids);
 
             return Ok();
         }

@@ -435,11 +435,11 @@ $(async function () {
     });
 
     $("[name='Module.Icon']").on("input change blur", function () {
-        $("#txt_module_icon").html(`<i class="${$(this).val()}" ></class>`);
+        $("#txt_module_icon").html($(this).val());
     });
 
     $("[name='ModuleType.Icon']").on("input change blur", function () {
-        $("#txt_module_type_icon").html(`<i class="${$(this).val()}" ></class>`);
+        $("#txt_module_type_icon").html($(this).val());
     });
 
     $("#btn_save_module").on("click", function () {
@@ -589,6 +589,8 @@ $(async function () {
     $("#btn_delete_module_type").on("click", function () {
         var ModuleTypeIds = $(this).attr("data-id");
         var ModuleTypeDesc = $(this).attr("data-desc");
+
+        console.log(ModuleTypeIds);
 
         Swal.fire({
             title: 'Are you sure?',
@@ -863,7 +865,7 @@ $(async function () {
             });
 
             $("[name='Module.Ordinal']").val(moduleInfo.Ordinal);
-            $("[name='Module.IsDisabled']").prop("checked", moduleInfo.IsEnabled);
+            $("[name='Module.IsDisabled']").prop("checked", moduleInfo.IsDisabled);
             $("[name='Module.IsVisible']").prop("checked", moduleInfo.IsVisible);
             $("[name='Module.InMaintenance']").prop("checked", moduleInfo.InMaintenance);
             $("[name='Module.WithApprover']").prop("checked", moduleInfo.WithApprover);
