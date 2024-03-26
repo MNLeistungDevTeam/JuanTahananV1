@@ -28,6 +28,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
             _db = db;
         }
 
+
+        #region Get Methods
         public async Task<RoleAccess?> GetByIdAsync(int id) =>
         await _context.RoleAccesses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -55,6 +57,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         public async Task<IEnumerable<RoleAccessModel>> GetRoleByModuleCodeAsync(int userId, string? moduleCode) =>
           await _db.LoadDataAsync<RoleAccessModel, dynamic>("spRoleAccess_GetRoleByModuleCode", new { userId, moduleCode });
 
+
+        #endregion
+
+        #region Action Methods
         public async Task<RoleAccess> SaveAsync(RoleAccess model)
         {
             if (model.Id == 0)
@@ -103,5 +109,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.RoleRepository
         {
             await _contextHelper.BatchDeleteAsync(roleAccessList);
         }
+
+        #endregion
     }
 }

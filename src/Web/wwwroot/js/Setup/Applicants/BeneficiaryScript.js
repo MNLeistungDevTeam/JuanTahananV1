@@ -120,9 +120,9 @@ $(function () {
         var id = tbl_applications.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
 
-        $("#btn_add").attr({
-            "disabled": !(selectedRows === 0),
-        });
+        //$("#btn_add").attr({
+        //    "disabled": !(selectedRows === 0),
+        //});
 
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),
@@ -132,6 +132,16 @@ $(function () {
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
+        });
+
+        $("#btn_generate_pdf").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
+        });
+
+        $("#btn_upload_document").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
         });
     });
 
@@ -144,6 +154,10 @@ $(function () {
         location.href = baseUrl + "Applicants/NewHLF068/" + pagibigNumber;
     });
 
+    $("#btn_upload_document").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
     $("#btn_edit").on('click', function () {
         location.href = $(this).attr("data-url");
     });
@@ -151,6 +165,11 @@ $(function () {
     $("#btn_view").on('click', function () {
         location.href = $(this).attr("data-url");
     });
+
+    $("#btn_generate_pdf").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
     $("#btn_refresh").on('click', function () {
         tbl_applications.ajax.reload();
     });

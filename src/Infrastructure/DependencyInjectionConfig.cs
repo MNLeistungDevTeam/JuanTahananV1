@@ -58,6 +58,8 @@ using DMS.Application.Interfaces.Setup.ApprovalLogRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalLogRepo;
 using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.SourcePagibigFundRepo;
+using DMS.Application.Interfaces.Setup.DocumentVerification;
+using DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo;
 
 namespace Template.Infrastructure;
 
@@ -149,12 +151,11 @@ public static class DependencyInjectionConfig
         services.AddScoped<INotificationReceiverRepository, NotificationReceiverRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
 
-
         services.AddScoped<IApprovalStatusRepository, ApprovalStatusRepository>();
         services.AddScoped<IApprovalLevelRepository, ApprovalLevelRepository>();
         services.AddScoped<IApprovalLogRepository, ApprovalLogRepository>();
         services.AddScoped<ISourcePagibigFundRepository, SourcePagibigFundRepository>();
-
+        services.AddScoped<IDocumentVerificationRepository, DocumentVerificationRepository>();
 
         services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
         services.AddScoped<IReportsService, ReportsService>();

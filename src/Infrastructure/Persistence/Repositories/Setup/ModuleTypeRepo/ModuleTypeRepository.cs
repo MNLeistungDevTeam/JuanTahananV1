@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleTypeRepo
 {
-
-
     public class ModuleTypeRepository : IModuleTypeRepository
     {
         private readonly DMSDBContext _context;
@@ -26,11 +24,17 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleTypeRepo
             _mapper = mapper;
         }
 
+        #region Get Methods
+
         public async Task<ModuleType?> GetByIdAsync(int id) =>
             await _contextHelper.GetByIdAsync(id);
 
         public async Task<List<ModuleType>> GetAllAsync() =>
             await _contextHelper.GetAllAsync();
+
+        #endregion Get Methods
+
+        #region Action Methods
 
         public async Task<ModuleType> SaveAsync(ModuleTypeModel moduleType, int userId)
         {
@@ -79,5 +83,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleTypeRepo
                 await _contextHelper.BatchDeleteAsync(moduleTypes);
             }
         }
+
+        #endregion Action Methods
     }
 }

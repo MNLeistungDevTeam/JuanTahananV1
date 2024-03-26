@@ -29,6 +29,10 @@
     [DateModified] DATETIME2 NULL, 
     [ModifiedById] INT NULL,
     [DateDeleted] DATETIME2 NULL, 
-    [DeletedById] INT NULL
-
+    [DeletedById] INT NULL,
+    BusinessName NVARCHAR(255) NULL,
+    OccupationStatus NVARCHAR(100) NULL,
+    YearsInEmployment INT NULL,
+    EmploymentPosition NVARCHAR(255) NULL,
+    BusinessTelNo NVARCHAR(50) NULL
 )

@@ -109,6 +109,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Home Ownership")]
         public string? HomeOwnerShip { get; set; }
 
+        [DisplayName("Monthly Rent")]
+        public Decimal? MonthlyRent { get; set; }
+
         [DisplayName("Years of Stay")]
         public int? YearsofStay { get; set; }
 
@@ -123,6 +126,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Employer")]
         public string? EmployerName { get; set; }
+
+
 
         [DisplayName("Industry")]
         public string? IndustryName { get; set; }

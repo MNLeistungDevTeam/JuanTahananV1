@@ -66,4 +66,14 @@ public partial class Spouse
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public string BusinessName { get; set; }
+
+    public string OccupationStatus { get; set; }
+
+    public int? YearsInEmployment { get; set; }
+
+    public string EmploymentPosition { get; set; }
+
+    public string BusinessTelNo { get; set; }
 }

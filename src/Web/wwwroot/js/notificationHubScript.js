@@ -3,7 +3,7 @@
 const notifConnection = new signalR.HubConnectionBuilder().withUrl(baseUrl + "notificationHub").build();
 const onlineUserCount = new signalR.HubConnectionBuilder().withUrl(baseUrl + "onlineUserHub").build();
 const companyCode = $("#txt_company_code").val();
-const notifRoleName = $("#txt_role_name").val();
+const notifRoleName = $("#txt_role_code").val();
 const notifUserId = $("#txt_userId").val();
 var currentNotifPage = 1;
 var notifPageLimit;
@@ -11,12 +11,17 @@ var notiftype = 3;
 
 $(function () {
     //#region Signal R
+
     notifConnection.on("AddNotifToPage", function (user, message) {
         toastr.info(message, user);
         loadSideDashInfo();
     });
-    notifConnection.on("AddNotifGroup", function (message) {
+
+    notifConnection.on("AddNotifGroup", function (companycode, message) {
         //reset to 1
+
+        iziToasterBox(message);
+
         currentNotifPage = 1;
         loadNotif(currentNotifPage, notiftype);
     });

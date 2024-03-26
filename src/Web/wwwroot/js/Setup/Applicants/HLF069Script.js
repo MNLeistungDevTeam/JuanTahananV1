@@ -1,4 +1,5 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const roleName = $("#txt_role_name").val();
 $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
@@ -216,9 +217,11 @@ $(function () {
         e.preventDefault();
         if ($(this).prop('checked')) {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', false);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').attr('required', true);
         } else {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').val('');
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
+            $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     })
 
@@ -229,9 +232,11 @@ $(function () {
         // Check if checkbox is checked
         if ($(this).is(":checked")) {
             $("#CollateralInformationModel_CollateralReason").prop('disabled', false);
+            $('[name="LCollateralInformationModel.CollateralReason"]').attr('required', true);
         } else {
             $("#CollateralInformationModel_CollateralReason").prop('disabled', true);
             $("#CollateralInformationModel_CollateralReason").val('');
+            $('[name="CollateralInformationModel.CollateralReason"]').removeAttr('required');
         }
     });
 
@@ -420,6 +425,7 @@ $(function () {
     //#endregion
 
     //#region Form2Page
+
     var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
     var sourePagibigFundDropdown, $sourePagibigFundDropdown;
@@ -470,9 +476,52 @@ $(function () {
         sourePagibigFundDropdown.off('load');
     });
 
+    // Set values for Form2PageModel_DateOpened fields
+    setDateValue('#Form2PageModel_DateOpened1');
+    setDateValue('#Form2PageModel_DateOpened2');
+    setDateValue('#Form2PageModel_DateOpened3');
+
+    // Set values for Form2PageModel_CardExpiration fields
+    setDateValue('#Form2PageModel_CardExpiration1');
+    setDateValue('#Form2PageModel_CardExpiration2');
+    setDateValue('#Form2PageModel_CardExpiration3');
+
+    // Set values for Form2PageModel_DateFullyPaid fields
+    setDateValue('#Form2PageModel_DateFullyPaid1');
+    setDateValue('#Form2PageModel_DateFullyPaid2');
+    setDateValue('#Form2PageModel_DateFullyPaid3');
+
+    // Set values for Form2PageModel_DateObtained fields
+    setDateValue('#Form2PageModel_DateObtained1');
+    setDateValue('#Form2PageModel_DateObtained2');
+    setDateValue('#Form2PageModel_DateObtained3');
+
+    setDateValue('#Form2PageModel_MaturityDateTime1');
+    setDateValue('#Form2PageModel_MaturityDateTime2');
+    setDateValue('#Form2PageModel_MaturityDateTime3');
+
     //#endregion
 
     //#region Barrower
+
+    // Set value for BarrowersInformationModel_BirthDate
+    setDateValue('#BarrowersInformationModel_BirthDate');
+
+    var homeOwnershipVal = $("#BarrowersInformationModel_HomeOwnerShip").attr('data-value');
+    if (homeOwnershipVal == 'Rented') {
+        // Adding d-none class if condition is true
+        $('#rentalForm').removeClass('d-none');
+    }
+
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').removeClass('d-none');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
+        } else {
+            $('#rentalForm').addClass('d-none');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+        }
+    });
 
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
@@ -599,97 +648,16 @@ $(function () {
         }
     });
 
+    //BarrowersInformationModel_HomeOwnerShip
+
     //#endregion
 
-    function validateForm(form) {
-        var isValid = true;
+    //#region Spouse
 
-        // Your validation logic here
-        // For example, check if required fields are filled
-        form.find(':input[required]').each(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
-                isValid = false;
-            } else {
-                $(this).removeClass('is-invalid');
-                $(this).addClass('was-validated');
-            }
-        });
+    // Set value for SpouseModel_BirthDate
+    setDateValue('#SpouseModel_BirthDate');
 
-        return isValid;
-    }
-
-    function rebindValidators() {
-        let $form = $("#frm_hlf068");
-        let button = $("#btn_savehlf068");
-
-        $form.unbind();
-        $form.data("validator", null);
-        $.validator.unobtrusive.parse($form);
-        $form.validate($form.data("unobtrusiveValidation").options);
-        $form.data("validator").settings.ignore = "";
-
-        $form.on("submit", function (e) {
-            e.preventDefault();
-            let formData = new FormData(e.target);
-
-            if ($(this).valid() == false) {
-                messageBox("Please fill out all required fields!", "danger", true);
-
-                return;
-            }
-
-            $.ajax({
-                url: $(this).attr("action"),
-                method: $(this).attr("method"),
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
-                    button.attr({ disabled: true });
-
-                    $("#beneficiary-overlay").removeClass('d-none');
-                },
-                success: function (response) {
-                    let recordId = $("input[name='User.Id']").val();
-                    console.log(recordId);
-                    let type = (recordId == 0 ? "Added!" : "Updated!");
-                    let successMessage = `Beneficiary Successfully ${type}`;
-
-                    messageBox(successMessage, "success", true);
-
-                    if (applicantInfoIdVal == 0) {
-                        setTimeout(function () {
-                            $("#beneficiary-overlay").addClass('d-none');
-
-                            window.location.href = "/Applicants/HLF068/" + response;
-                        }, 2000);
-                    }
-                    else {
-                        setTimeout(function () {
-                            $("#beneficiary-overlay").addClass('d-none');
-                            // Redirect to the specified location
-                            window.location.href = "/Applicants/ApplicantRequests";
-                        }, 2000); // 2000 milliseconds = 2 seconds
-                    }
-
-                    button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-
-                    userModal.modal('hide');
-                },
-                error: function (response) {
-                    messageBox(response.responseText, "danger");
-                    $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-                    button.attr({ disabled: false });
-                }
-            });
-        });
-    }
+    //#endregion
 
     //$('#form2').on('submit', async function (e) {
     //    e.preventDefault();
@@ -748,6 +716,8 @@ $(function () {
     //        messageBox("An error occurred during the submission.", "danger", true);
     //    }
     //});
+
+    //#region Methods
 
     $(document).ready(function () {
         loadloanParticularInformation(applicantInfoIdVal);
@@ -842,4 +812,109 @@ $(function () {
             }
         });
     }
+
+    function validateForm(form) {
+        var isValid = true;
+
+        // Your validation logic here
+        // For example, check if required fields are filled
+        form.find(':input[required]').each(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+                $(this).addClass('was-validated');
+            }
+        });
+
+        return isValid;
+    }
+
+    function rebindValidators() {
+        let $form = $("#frm_hlf068");
+        let button = $("#btn_savehlf068");
+
+        $form.unbind();
+        $form.data("validator", null);
+        $.validator.unobtrusive.parse($form);
+        $form.validate($form.data("unobtrusiveValidation").options);
+        $form.data("validator").settings.ignore = "";
+
+        $form.on("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData(e.target);
+
+            if ($(this).valid() == false) {
+                messageBox("Please fill out all required fields!", "danger", true);
+
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr("action"),
+                method: $(this).attr("method"),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
+                    button.attr({ disabled: true });
+
+                    $("#beneficiary-overlay").removeClass('d-none');
+                },
+                success: function (response) {
+                    let recordId = $("input[name='User.Id']").val();
+                    console.log(recordId);
+                    let type = (recordId == 0 ? "Added!" : "Updated!");
+                    let successMessage = `Beneficiary Successfully ${type}`;
+
+                    messageBox(successMessage, "success", true);
+
+                    if (applicantInfoIdVal == 0) {
+                        setTimeout(function () {
+                            $("#beneficiary-overlay").addClass('d-none');
+
+                            window.location.href = "/Applicants/HLF068/" + response;
+                        }, 2000);
+                    }
+                    else {
+                        var link = "Applicants/Beneficiary";
+
+                        if (roleName != 'Beneficiary') {
+                            link = "Applicants/ApplicantRequests";
+                        }
+
+                        setTimeout(function () {
+                            $("#beneficiary-overlay").addClass('d-none');
+                            // Redirect to the specified location
+                            window.location.href = baseUrl + link;
+                        }, 2000); // 2000 milliseconds = 2 seconds
+                    }
+
+                    button.attr({ disabled: false });
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+
+                    //userModal.modal('hide');
+                },
+                error: function (response) {
+                    messageBox(response.responseText, "danger");
+                    $("#beneficiary-overlay").addClass('d-none');
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.attr({ disabled: false });
+                }
+            });
+        });
+    }
+
+    function setDateValue(selector) {
+        let dataValue = $(selector).attr('data-value');
+        if (dataValue && dataValue.trim() !== '') {
+            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+        }
+    }
+
+    //#endregion
 });

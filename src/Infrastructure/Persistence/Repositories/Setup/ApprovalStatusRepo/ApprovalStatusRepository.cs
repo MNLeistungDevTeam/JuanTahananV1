@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.XtraRichEdit.Internal;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Services;
@@ -32,18 +31,35 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
             _moduleRepo = moduleRepo;
         }
 
+        #region Get Methods
+
         //transactionid    //moduleid
 
         public async Task<IEnumerable<ApprovalStatusModel?>> GetByReferenceAsync(int referenceId, string referenceType, int companyId) =>
          await _db.LoadDataAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetByReference", new { referenceId, referenceType, companyId });
 
         public async Task<ApprovalStatusModel?> GetByReferenceModuleCodeAsync(int referenceId, string moduleCode, int companyId) =>
-         await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetByReferenceModuleCode", new {referenceId,moduleCode,companyId });
+         await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetByReferenceModuleCode", new { referenceId, moduleCode, companyId });
+
+        public async Task<ApprovalStatusModel?> GetByReferenceIdAsync(int? referenceId = null, int? companyId = null, int? approvalStatusId = null)
+        {
+            try
+            {
+                var data = await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_Inquiry", new { referenceId, approvalStatusId, companyId });
+                return data;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         //transactionid    //moduleid
 
         public async Task<ApprovalStatusModel?> GetAsync(int id) =>
          await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetById", new { id });
+
+        #endregion Get Methods
 
         #region Operation
 

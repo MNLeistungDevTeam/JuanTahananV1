@@ -22,6 +22,41 @@ INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], 
 INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (21, N'HLF235 DCS AFFORDABLE HOUSING', CAST(N'2024-02-24T08:35:28.3170334' AS DateTime2), 1, NULL, NULL, NULL, NULL)
 INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (22, N'HLF236 DOAS REGULAR HOUSING', CAST(N'2024-02-24T08:35:38.3197435' AS DateTime2), 1, NULL, NULL, NULL, NULL)
 INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (23, N'WLF182 CHECKLIST REQUIREMENTS PRELIMINARY CONDOMINIUM APPRAISAL', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+
+
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (24, N'HLF1035 Housing Loan Application (V01)', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (25, N'HLF1036 Housing Loan Application Co-borrower ', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (26, N'HLF1042 Borrower-Beneficiary Conformity', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (27, N'HLF 1046 Authority to Deduct 4PH', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (28, N'HLF1069 Conformity Non-relatives 4PH', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
+INSERT [dbo].[DocumentType] ([Id], [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES (29, N'WLF252 Buyer Confirmation Form', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL);
 SET IDENTITY_INSERT [dbo].[DocumentType] OFF
+END
+GO
+
+
+IF NOT EXISTS (SELECT 1 FROM [dbo].DocumentVerification)
+BEGIN
+	SET IDENTITY_INSERT [dbo].DocumentVerification ON
+ -- Insert dummy data with document type ids 5, 3, 4, 6, 7, 8, and 9
+INSERT INTO [dbo].[DocumentVerification] ([Id], DocumentTypeId, [Type], CreatedById, DateCreated, ModifiedById, DateModified)
+VALUES 
+    (1, 5, 1, 1, GETDATE(), NULL, NULL), 
+    (2, 3, 1, 1, GETDATE(), NULL, NULL), 
+    (3, 4, 1, 1, GETDATE(), NULL, NULL), 
+    (4, 6, 1, 1, GETDATE(), NULL, NULL), 
+    (5, 7, 1, 1, GETDATE(), NULL, NULL), 
+    (6, 8, 1, 1, GETDATE(), NULL, NULL), 
+    (7, 9, 1, 1, GETDATE(), NULL, NULL),
+    (8, 24, 2, 1, GETDATE(), NULL, NULL), 
+    (9, 25, 2, 1, GETDATE(), NULL, NULL), 
+    (10, 26, 2, 1, GETDATE(), NULL, NULL),
+    (11, 27, 2, 1, GETDATE(), NULL, NULL), 
+    (12, 28, 2, 1, GETDATE(), NULL, NULL), 
+    (13, 29, 2, 1, GETDATE(), NULL, NULL);
+
+ 
+SET IDENTITY_INSERT [dbo].DocumentVerification OFF
+
 END
 GO

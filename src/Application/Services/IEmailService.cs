@@ -10,7 +10,8 @@ namespace DMS.Application.Services
 {
     public interface IEmailService
     {
-        Task SendUserInfo(UserModel model);
+        Task SendUserCredential(UserModel model);
         Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body);
+        Task SendUserConfirmationMessage(UserModel model);
     }
 }

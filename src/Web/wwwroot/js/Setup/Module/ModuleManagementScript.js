@@ -165,7 +165,7 @@ $(async function () {
 
     tbl_modules = $("#tbl_modules").DataTable({
         ajax: {
-            url: baseUrl + "Module/GetModules",
+            url: baseUrl + "Module/GetAll",
             dataSrc: ""
         },
         language: {

@@ -16,4 +16,14 @@ namespace DMS.Domain.Enums
         Closed = 5,
         Cancelled = 6,
     }
+
+    public enum AppStatusType
+    {
+        Draft = 0,
+        Submitted = 1,
+        Deferred = 2,
+        DeveloperVerified = 3,
+        PagibigVerified = 4,
+        Withdrawn = 5
+    }
 }

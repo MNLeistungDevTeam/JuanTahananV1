@@ -21,10 +21,11 @@ public class LoginViewModel
 
     public string ReturnUrl { get; set; } = string.Empty;
 
-
     //[Required]
     [DisplayName("Company")]
     public int? CompanyId { get; set; }
 
     public List<CompanyModel>? Company { get; set; }
+
+    public string? RecoveryEmail { get; set; }
 }
