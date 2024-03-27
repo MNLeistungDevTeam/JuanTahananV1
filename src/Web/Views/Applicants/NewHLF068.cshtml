@@ -23,7 +23,6 @@
 </div>
 <!-- end page title -->
 
-
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
@@ -97,18 +96,18 @@
                                 </h3>
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="position-relative">
-                                    <label asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="form-label fw-normal" required></label>
-                                    <select asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.PurposeOfLoanId" required>
+                                    <label asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="form-label fw-normal"></label>
+                                    <select asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.PurposeOfLoanId">
                                     </select>
                                     <span asp-validation-for="LoanParticularsInformationModel.PurposeOfLoanId" class="invalid-tooltip"></span>
 
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" required></label>
+                                    <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber"></label>
                                     @if (string.IsNullOrWhiteSpace(Model.LoanParticularsInformationModel.ExistingHousingApplicationNumber))
                                     {
                                         <input disabled type="text" class="form-control rounded-3" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber">
@@ -121,7 +120,7 @@
                                     <span asp-validation-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="form-check form-check-inline">
                                     <input asp-for="LoanParticularsInformationModel.ExistingChecker" type="checkbox" class="form-check-input">
                                     <label class="form-check-label header-title" asp-for="LoanParticularsInformationModel.ExistingChecker"></label>
@@ -141,10 +140,10 @@
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="invalid-tooltip"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
-                                    <label asp-for="LoanParticularsInformationModel.RepricingPeriod" class="form-label fw-normal" required></label>
-                                    <select asp-for="LoanParticularsInformationModel.RepricingPeriod" class="rounded-4 selectize" data-value="@Model.LoanParticularsInformationModel.RepricingPeriod" required>
+                                    <label asp-for="LoanParticularsInformationModel.RepricingPeriod" class="form-label fw-normal"></label>
+                                    <select asp-for="LoanParticularsInformationModel.RepricingPeriod" class="rounded-4 selectize" data-value="@Model.LoanParticularsInformationModel.RepricingPeriod">
                                         <option value="">Select Repricing period....</option>
                                         <option value="1">1</option>
                                         <option value="3">3</option>
@@ -162,6 +161,7 @@
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="form-label fw-normal" required></label>
                                     <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId" required>
+                                        <option value="">Select Mode of Payment ...</option>
                                     </select>
                                     <span asp-validation-for="LoanParticularsInformationModel.Id" class="invalid-tooltip"></span>
                                 </div>
@@ -203,8 +203,11 @@
                                 <div class="position-relative">
                                     <label asp-for="CollateralInformationModel.PropertyTypeId" class="form-label fw-normal"></label>
                                     <select asp-for="CollateralInformationModel.PropertyTypeId" class="rounded-4" data-value="@Model.CollateralInformationModel.PropertyTypeId">
+                                        <option value="">Select Property Type ...</option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="invalid-tooltip"></span>
+
+
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -235,7 +238,7 @@
                                     <span asp-validation-for="CollateralInformationModel.BlockBuildingNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="form-check form-check-inline">
                                     <input asp-for="CollateralInformationModel.IsMortgage" type="checkbox" class="form-check-input">
                                     <label class="form-check-label header-title" asp-for="CollateralInformationModel.IsMortgage"></label>
@@ -248,22 +251,22 @@
                                     <span asp-validation-for="CollateralInformationModel.LandArea" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.HouseAge"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.HouseAge">
                                     <span asp-validation-for="CollateralInformationModel.HouseAge" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="form-check form-check-inline">
                                     <input asp-for="CollateralInformationModel.ExistingReasonChecker" type="checkbox" class="form-check-input">
                                     <label class="form-check-label header-title" asp-for="CollateralInformationModel.ExistingReasonChecker"></label>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.CollateralReason"></label>
                                     @if (!Model.CollateralInformationModel.ExistingReasonChecker)
@@ -278,30 +281,30 @@
                             </div>
                             <div class="col-md-8">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.NumberOfStoreys"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.NumberOfStoreys">
                                     <span asp-validation-for="CollateralInformationModel.NumberOfStoreys" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ProposedNoOfStoreys"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ProposedNoOfStoreys">
                                     <span asp-validation-for="CollateralInformationModel.ProposedNoOfStoreys" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ExistingTotalFloorArea"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ExistingTotalFloorArea">
                                     <span asp-validation-for="CollateralInformationModel.ExistingTotalFloorArea" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ProposedTotalFloorArea"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ProposedTotalFloorArea">
@@ -378,6 +381,7 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.Sex" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.Sex" required>
+                                                    <option value="">Select Gender ...</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                 </select>
@@ -388,6 +392,7 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.MaritalStatus" required>
+                                                    <option value="">Select Marital Status ... </option>
                                                     <option value="Single/Unmarried">Single/Unmarried</option>
                                                     <option value="Married">Married</option>
                                                     <option value="Annulled">Annulled</option>
@@ -565,11 +570,9 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" required>
-                                                    <option value="Owned">Owned</option>
+                                                    <option value="">Select HomeOwnership ... </option>
                                                     <option value="Company">Company</option>
-                                                    <option value="Annulled">Annulled</option>
                                                     <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
-                                                    <option value="Mortgaged">Mortgaged</option>
                                                     <option value="Rented">Rented</option>
                                                 </select>
                                                 <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="invalid-tooltip"></span>
@@ -591,7 +594,7 @@
                                                 <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3" hidden>
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
                                                 <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
@@ -621,6 +624,7 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.OcupationStatus" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.OcupationStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.OcupationStatus" required>
+                                                    <option value="">Select Occupation Status ...</option>
                                                     <option value="Employed">Employed</option>
                                                     <option value="Self-Employed">Self-Employed</option>
                                                 </select>
@@ -645,6 +649,7 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName" required></label>
                                                 <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName" required>
+                                                    <option value="">Select Industry...</option>
                                                     <option value="1">Accounting</option>
                                                     <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
                                                     <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
@@ -836,6 +841,7 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.PreparedMailingAddress" required>
+                                                    <option value="">Select Preferred Mailing Address ...</option>
                                                     <option value="Present Home Address">Present Home Address</option>
                                                     <option value="Employer/Business Address">Employer/Business Address</option>
                                                     <option value="Permanent Home Address">Permanent Home Address</option>
@@ -961,7 +967,7 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.OccupationStatus"></label>
                                     <select asp-for="SpouseModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.SpouseModel.OccupationStatus">
-                                        <option value="">Select Occupation Status......</option>
+                                        <option value="">Select Occupation Status...</option>
                                         <option value="Employed">Employed</option>
                                         <option value="Self-Employed">Self-Employed</option>
 
@@ -1544,7 +1550,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime1">
+                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime1" data-value="@Model.Form2PageModel.MaturityDateTime1">
                                                         <span asp-validation-for="Form2PageModel.MaturityDateTime1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1582,7 +1588,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime2">
+                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime2" data-value="@Model.Form2PageModel.MaturityDateTime2">
                                                         <span asp-validation-for="Form2PageModel.MaturityDateTime2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1620,7 +1626,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime3">
+                                                        <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime3" data-value="@Model.Form2PageModel.MaturityDateTime3">
                                                         <span asp-validation-for="Form2PageModel.MaturityDateTime3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1999,31 +2005,31 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Seller's Data'</span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.FirstName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.FirstName">
                                     <span asp-validation-for="Form2PageModel.FirstName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.MIddleName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.MIddleName">
                                     <span asp-validation-for="Form2PageModel.MIddleName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.LastName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.LastName">
                                     <span asp-validation-for="Form2PageModel.LastName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.Suffix"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.Suffix">
@@ -2031,98 +2037,98 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.PagibigNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="Form2PageModel.PagibigNumber">
                                     <span asp-validation-for="Form2PageModel.PagibigNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.TinNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="Form2PageModel.TinNumber">
                                     <span asp-validation-for="Form2PageModel.TinNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.ContactNumber"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.ContactNumber">
                                     <span asp-validation-for="Form2PageModel.ContactNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.Email"></label>
                                     <input type="email" class="form-control rounded-3" asp-for="Form2PageModel.Email">
                                     <span asp-validation-for="Form2PageModel.Email" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersUnitName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersUnitName">
                                     <span asp-validation-for="Form2PageModel.SellersUnitName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersBuildingName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersBuildingName">
                                     <span asp-validation-for="Form2PageModel.SellersBuildingName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersLotName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersLotName">
                                     <span asp-validation-for="Form2PageModel.SellersLotName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersStreetName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersStreetName">
                                     <span asp-validation-for="Form2PageModel.SellersStreetName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersSubdivisionName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersSubdivisionName">
                                     <span asp-validation-for="Form2PageModel.SellersSubdivisionName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersBaranggayName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersBaranggayName">
                                     <span asp-validation-for="Form2PageModel.SellersBaranggayName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersMunicipalityName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersMunicipalityName">
                                     <span asp-validation-for="Form2PageModel.SellersMunicipalityName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersProvinceName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersProvinceName">
                                     <span asp-validation-for="Form2PageModel.SellersProvinceName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3" col="9">
+                            <div class="col-md-3" col="9" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersZipCode"></label>
                                     <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersZipCode">
                                     <span asp-validation-for="Form2PageModel.SellersZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label asp-for="Form2PageModel.SourcePagibigFundId" class="form-label fw-normal"></label>
                                     <select asp-for="Form2PageModel.SourcePagibigFundId" class="rounded-4" data-value="@Model.Form2PageModel.SourcePagibigFundId">

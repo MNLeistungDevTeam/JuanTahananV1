@@ -186,7 +186,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Business Email")]
         public string? BusinessEmail { get; set; }
 
-        [DisplayName("Prepared Mailing Address")]
+        [DisplayName("Preferred Mailing Address")]
         public string? PreparedMailingAddress { get; set; }
 
         [DisplayName("Preferred Time To Contact")]

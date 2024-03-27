@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetEligibilityVerficationDocuments]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetApplicationVerificationDocuments]
 	@applicantCode NVARCHAR(150)
 AS
  SELECT 
@@ -11,5 +11,5 @@ AS
  d.FileType DocumentFileType
  FROM DocumentType dt
  LEFT JOIN Document d ON d.DocumentTypeId = dt.Id And d.ReferenceNo = @applicantCode
- WHERE dt.Id IN (SELECT DocumentTypeId FROM  DocumentVerification WHERE [Type] = 1) --verification type documents
+ WHERE dt.Id IN (SELECT DocumentTypeId FROM  DocumentVerification WHERE [Type] = 2) --verification type documents
 RETURN 0

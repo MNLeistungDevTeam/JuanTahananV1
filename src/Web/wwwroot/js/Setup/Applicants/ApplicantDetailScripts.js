@@ -20,6 +20,7 @@ $(function () {
     loadApprovalData();
 
     loadVerificationAttachments(CONST_APPLICANTCODE);
+    loadApplicationAttachments(CONST_APPLICANTCODE);
 
     function loadVerificationAttachments(applicantCode) {
         $.ajax({
@@ -77,6 +78,61 @@ $(function () {
         }
     }
 
+    function loadApplicationAttachments(applicantCode) {
+        $.ajax({
+            url: baseUrl + "Applicants/GetApplicationVerificationDocuments",
+            data: {
+                applicantCode: applicantCode
+            },
+            method: "GET",
+            success: function (data) {
+                appendApplicationAttachments(data);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr, status, error);
+            }
+        });
+    }
+
+    function appendApplicationAttachments(items) {
+        const groupedItems = {};
+
+        // Group items by DocumentTypeName
+        items.forEach(item => {
+            const groupId = item.DocumentTypeId;
+            const groupName = item.DocumentTypeName;
+
+            if (!groupedItems[groupName]) {
+                groupedItems[groupName] = [];
+            }
+            groupedItems[groupName].push(item);
+        });
+
+        // Append grouped items
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupItems = groupedItems[groupName];
+                const firstItem = groupItems[0];
+                let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${groupName}</h4>
+                                <div class="list-group">`;
+
+                groupItems.forEach(item => {
+                    const itemLink = item.DocumentLocation + item.DocumentName;
+                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action" target="${item.DocumentName ? '_blank' : ''}" download="">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
+                                        </div>
+                                    </div>
+                                </a>`;
+                });
+
+                groupHtml += `</div></div>`;
+                $("#div_application").append(groupHtml);
+            }
+        }
+    }
 
     //#region Approval
 

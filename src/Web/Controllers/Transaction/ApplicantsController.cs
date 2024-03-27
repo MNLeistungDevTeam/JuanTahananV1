@@ -396,6 +396,12 @@ namespace Template.Web.Controllers.Transaction
             return Ok(data);
         }
 
+        public async Task<IActionResult> GetApplicationVerificationDocuments(string applicantCode)
+        {
+            var data = await _applicantsPersonalInformationRepo.GetApplicationVerificationDocuments(applicantCode);
+            return Ok(data);
+        }
+
         public async Task<IActionResult> GetAllSourcePagibigFund()
         {
             var data = await _sourcePagibigFundRepo.GetAllAsync();

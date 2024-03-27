@@ -15,11 +15,11 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int Id { get; set; }
 
         [Display(Name = "Purpose of Loan", Prompt = "Select Purpose of Loan")]
-        public int PurposeOfLoanId { get; set; }
+        public int? PurposeOfLoanId { get; set; }
 
         public int ApplicantsPersonalInformationId { get; set; }
 
-        [Required(ErrorMessage = "this field is required")]
+        //[Required(ErrorMessage = "this field is required")]
         [Display(Name = "Desired Re-Pricing Pediod (Years)", Prompt = "Select Re-pracing Period")]
         public int? RepricingPeriod { get; set; }
 
