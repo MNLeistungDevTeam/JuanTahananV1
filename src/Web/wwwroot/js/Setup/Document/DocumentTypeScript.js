@@ -24,13 +24,19 @@ $(function () {
                 data: "Id"
             },
             {
+                data: "Code",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
                 data: "Description",
                 class: "text-center",
                 render: function (data, type, row) {
                     return data;
                 }
             },
-
             {
                 data: "VerificationTypeDescription",
                 class: "text-center",
@@ -45,7 +51,6 @@ $(function () {
                 render: function (data, type, row) {
                     return data
                 }
-
             },
 
             {
@@ -121,16 +126,17 @@ $(function () {
         var id = tbl_Document.rows({ selected: true }).data().pluck("Id").toArray().toString();
 
         var documentTypeName = tbl_Document.rows({ selected: true }).data().pluck("Description").toArray().toString();
+        var documentTypeCode = tbl_Document.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var verificationType = tbl_Document.rows({ selected: true }).data().pluck("VerificationType").toArray().toString();
         var verificationDocumentId = tbl_Document.rows({ selected: true }).data().pluck("DocumentVerificationId").toArray().toString();
+        var fileType = tbl_Document.rows({ selected: true }).data().pluck("FileType").toArray().toString();
 
         // Tick select-all based on row count;
         $("#select-all-document").prop("checked", (all == selectedRows && all > 0));
 
-        //let id = $(this).attr('data-id');
-        //let documentType = $(this).attr('data-documenttype');
-        //let verificationType = $(this).attr('data-verification-type');
-        //let verificationTypeId = $(this).attr('data-verification-typeid');
+        $("#btn_add").attr({
+            "disabled": (selectedRows >= 1),
+        });
 
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),
@@ -138,6 +144,8 @@ $(function () {
             "data-verification-type": verificationType,
             "data-verificationdocument-id": verificationDocumentId,
             "data-id": id,
+            "data-code": documentTypeCode,
+            "data-fileType": fileType
         });
 
         $("#btn_delete").attr({
@@ -460,6 +468,9 @@ $(function () {
                     tbl_applicationDocument.ajax.reload();
 
                     $("#modal-document").modal('hide');
+
+                    tbl_Document.rows().deselect();
+                    resetForm();
                 },
                 error: function (response) {
                     messageBox(response.responseText, "danger");
@@ -473,7 +484,7 @@ $(function () {
 
     $("#btn_add").on('click', function () {
         $("#modal-document").modal('show');
-        clearFrm();
+        resetForm();
     });
 
     $("#btn_edit").on('click', function () {
@@ -482,9 +493,10 @@ $(function () {
         let id = $(this).attr('data-id');
 
         let documentType = $(this).attr('data-documenttype');
-
         let verificationType = $(this).attr('data-verification-type');
         let verificationdocumentId = $(this).attr('data-verificationdocument-id');
+        let documentTypecode = $(this).attr('data-code');
+        let documentFileType = $(this).attr('data-fileType');
 
         if (verificationdocumentId == "") {
             verificationdocumentId = 0;
@@ -498,10 +510,13 @@ $(function () {
             verificationType = 2;
         }
 
-        $("#DocumentType_Id").attr('value', id);
-        $("#DocumentVerification_Id").attr('value', verificationdocumentId);
-        $("#DocumentType_Description").attr('value', documentType);
+        $("#DocumentType_Id").val(id);
+        $("#DocumentVerification_Id").val(verificationdocumentId);
+        $("#DocumentType_Description").val(documentType);
+        $("#DocumentType_Code").val(documentTypecode);
+
         $("#DocumentVerification_Type").data('selectize').setValue(verificationType);
+        $("#DocumentType_FileType").data('selectize').setValue(documentFileType);
     });
 
     $("#btn_delete").on("click", function (e) {
@@ -546,10 +561,12 @@ $(function () {
         })
     });
 
-    function clearFrm() {
+    function resetForm() {
         $('[name="DocumentType.Id"]').val(0);
         $('[name="DocumentVerification.Id"]').val(0);
         $('[name="DocumentType.Description"]').val("");
+        $('[name="DocumentType.Code"]').val("");
         $('[name="DocumentVerification.Type"]').data('selectize').setValue("");
+        $('[name="DocumentType.FileType"]').data('selectize').setValue("");
     }
 });

@@ -1,6 +1,0 @@
-﻿CREATE TABLE [dbo].[FileType]
-(
-	[Id] INT NOT NULL PRIMARY KEY,
-	[Name] NVARCHAR(144) NOT NULL,
-	[format] NVARCHAR(45) NOT NULL
-)

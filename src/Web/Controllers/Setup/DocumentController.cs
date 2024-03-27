@@ -253,6 +253,7 @@ public class DocumentController : Controller
             //{
             //    throw new InvalidOperationException("User not found.");
             //}
+            //}
 
             //await _uploadService.UploadFiles(
             //    new List<IFormFile> { file },
@@ -268,7 +269,7 @@ public class DocumentController : Controller
             int documentTypeId = documentType.Id;
 
             var rootFolder = _hostingEnvironment.WebRootPath;
-            var saveLocation = Path.Combine("Files", "Documents", "Applicant", documentType.Description, application.Code ?? "");
+            var saveLocation = Path.Combine("Files", "Documents", "Applicant", application.Code, documentType.Code ?? "");
             var referenceType = (int)DocumentReferenceType.Applicant;
             int referenceId = application.Id;
 
