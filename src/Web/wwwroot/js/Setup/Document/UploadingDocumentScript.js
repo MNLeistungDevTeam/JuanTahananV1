@@ -1,6 +1,15 @@
 $(async function () {
     "strict";
 
+    const FileFormats = {
+        1: '.pdf',
+        2: '.docx',
+        3: '.txt',
+        4: '.xlsx',
+        5: '.jpg',
+        6: '.png'
+    };
+
     const $modal = $('#modal-file');
     const $form = $("#document_form");
 
@@ -76,7 +85,9 @@ $(async function () {
         e.preventDefault();
         DocumentId = 0;
         var documentType = await GetDocumentType(documentypeid);
-        $('#file-input').attr('accept', documentType.FileFormat);
+        const fileFormat = FileFormats[documentType.FileType];
+
+        $('#file-input').attr('accept', fileFormat);
         $('#file-input').trigger('click');
     });
 
@@ -174,8 +185,6 @@ $(async function () {
                 $('#file-input').val('');
             },
             error: function (xhr, status, error) {
-                console.log(xhr);
-
                 messageBox(xhr.responseText, "danger", true);
                 loader.close();
                 tbl_document.ajax.reload();
@@ -268,8 +277,6 @@ $(async function () {
     $('#tbl_application_document tbody').on('click', 'tr', function () {
         var rowData = tbl_verificationDocument.row(this).data();
         documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
-        console.log(rowData);
-        console.log(documentypeid);
         tbl_files.ajax.reload();
         $modal.modal('show');
     });

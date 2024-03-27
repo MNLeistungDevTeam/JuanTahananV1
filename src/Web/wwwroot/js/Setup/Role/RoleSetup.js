@@ -1,4 +1,4 @@
-﻿$(() => {
+﻿$(async function () {
     "strict";
     const $tbl_role = document.querySelector('#tbl_role');
     const $modal = $('#modal-role');
@@ -273,8 +273,8 @@
     });
     var btn_view_role = $('#btn_view_role').on('click', function (e) {
         e.preventDefault();
-        var id = tbl_role.rows('.selected').data().pluck('Id').toArray()[0];
-        location.href = "/Role/UserRole?id=" + id;
+        var code = tbl_role.rows('.selected').data().pluck('Name').toArray()[0];
+        location.href = "/Role/UserRole/" + code;
     });
     var btn_delete_role = $('#btn_delete_role').on('click', function (e) {
         e.preventDefault();
@@ -355,7 +355,7 @@
         $('#role_form').find('input[name="Role.IsDisabled"]').val(isChecked);
     });
 
-    $form.on('submit', function (e) {
+    $form.on('submit', async function (e) {
         e.preventDefault();
         var button = $(this).find('button[type="submit"]');
         var formData = $(this).serialize();
@@ -363,8 +363,14 @@
         if (!$(this).valid())
             return;
 
+        var valResult = await customValidationForm();
+        if (!valResult)
+            return;
+
         // Log serialized form data
         console.log("Form Data:", formData);
+
+        var roleId = $('[name="Role.Id"]').val();
 
         $.ajax({
             url: $(this).attr('action'),
@@ -373,11 +379,14 @@
             beforeSend: function () {
                 button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
             },
-            success: function (data) {
+            success: function (response) {
+                let successMessage = "";
+                successMessage = `Role Successfully ${roleId == 0 ? 'Added' : 'Updated'}!`;
+                messageBox(successMessage, "success", true);
                 button.html('Save').attr('disabled', false);
                 tbl_role.ajax.reload();
                 $modal.modal('hide');
-                messageBox(`Role Successfully ${data}`, "success", true);
+                clearForm($form);
             },
             error: async function (jqXHR, textStatus, errorThrown) {
                 button.html('Save').attr('disabled', false);
@@ -385,6 +394,36 @@
             }
         });
     })
+
+    function customValidationForm() {
+        var id = $('[name="Role.Id"]').val();
+        var codeName = $('[name="Role.Name"]').val().trim();
+
+        if (id !== '0') {
+            return Promise.resolve(true); // Early resolve for existing role
+        }
+
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: baseUrl + "Role/GetAllRoles",
+                method: "GET",
+                dataType: 'json',
+                success: function (response) {
+                    const roleNames = response.map(role => role.Name.toLowerCase().trim());
+                    if (!roleNames.includes(codeName.toLowerCase())) {
+                        resolve(true); // Validation successful
+                    } else {
+                        messageBox("Code must be unique!", "danger", true);
+                        reject(new Error("Duplicate code name"));
+                    }
+                },
+                error: function (jqXHR, status, error) {
+                    messageBox(jqXHR.responseText, "danger", true);
+                    reject(new Error("Error fetching roles"));
+                }
+            });
+        });
+    }
 
     $(document).on('change', `[id^='RoleAccess_CanCreate['], [id^='RoleAccess_CanModify['], [id^='RoleAccess_CanDelete['], [id^='RoleAccess_CanRead[']`, function () {
         let Id = $(this).prop("id");

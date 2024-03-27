@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.ClipboardSource.SpreadsheetML;
-using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
@@ -12,7 +10,6 @@ using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
-using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
@@ -21,15 +18,12 @@ using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Template.Web.Controllers.Transaction
 {

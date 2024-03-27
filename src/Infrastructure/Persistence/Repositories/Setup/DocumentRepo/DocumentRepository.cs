@@ -76,11 +76,18 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
 
         public async Task<Document> CreateAsync(Document document)
         {
-            document.CreatedById = _currentUserService.GetCurrentUserId();
-            document.DateCreated = DateTime.UtcNow;
-            var result = await _contextHelper.CreateAsync(document, "ModifiedById", "DateModified");
+            try
+            {
+                document.CreatedById = _currentUserService.GetCurrentUserId();
+                document.DateCreated = DateTime.UtcNow;
+                var result = await _contextHelper.CreateAsync(document, "ModifiedById", "DateModified");
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Document> UpdateAsync(Document document)

@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraRichEdit.Model;
-using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.RoleRepository;
@@ -59,14 +58,21 @@ public class DocumentController : Controller
     //[ModuleServices(ModuleCodes.Document, typeof(IModuleRepository))]
     public async Task<IActionResult> Index()
     {
-        var roleAccess = await _currentUserRoleAccessService.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_DOCUMENT);
+        try
+        {
+            var roleAccess = await _currentUserRoleAccessService.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_DOCUMENT);
 
-        if (roleAccess == null) { return View("AccessDenied"); }
-        if (!roleAccess.CanRead) { return View("AccessDenied"); }
+            if (roleAccess == null) { return View("AccessDenied"); }
+            if (!roleAccess.CanRead) { return View("AccessDenied"); }
 
-        ViewData["RoleAccess"] = roleAccess;
+            ViewData["RoleAccess"] = roleAccess;
 
-        return View();
+            return View("Index");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     #region Get Methods
@@ -380,5 +386,4 @@ public class DocumentController : Controller
 
     public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
     Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
-
 }

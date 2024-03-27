@@ -40,6 +40,9 @@ public class RoleRepository : IRoleRepository
     public async Task<Role?> GetByIdAsync(int id) =>
         await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
+    public async Task<Role?> GetByCodeAsync(string code) =>
+        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == code);
+
     public async Task<List<Role>?> GetAllAsync() =>
         await _context.Roles.AsNoTracking().ToListAsync();
 
@@ -67,36 +70,43 @@ public class RoleRepository : IRoleRepository
 
     public async Task<Role> SaveAsync(RoleModel rModel, List<RoleAccessModel> raModel)
     {
-        var _rModel = _mapper.Map<Role>(rModel);
-        var _roleAccessList = new List<RoleAccess>();
-
-        if (_rModel.Id == 0)
+        try
         {
-            _rModel = await CreateAsync(_rModel);
+            var _rModel = _mapper.Map<Role>(rModel);
+            var _roleAccessList = new List<RoleAccess>();
+
+            if (_rModel.Id == 0)
+            {
+                _rModel = await CreateAsync(_rModel);
+            }
+            else
+            {
+                _rModel = await UpdateAsync(_rModel);
+            }
+
+            foreach (var roleAccess in raModel)
+            {
+                var _roleAccess = _mapper.Map<RoleAccess>(roleAccess);
+
+                _roleAccess.RoleId = _rModel.Id;
+
+                _roleAccess = await _roleAccessRepo.SaveAsync(_roleAccess);
+                _roleAccessList.Add(_roleAccess);
+            }
+
+            var roleAccessIds = _roleAccessList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            var roleAccessToDelete = await _context.RoleAccesses
+                .Where(m => m.RoleId == _rModel.Id && !roleAccessIds.Contains(m.Id))
+                .ToListAsync();
+
+            await _roleAccessRepo.BatchDeleteAsync(roleAccessToDelete);
+
+            return _rModel;
         }
-        else
+        catch (Exception)
         {
-            _rModel = await UpdateAsync(_rModel);
+            throw;
         }
-
-        foreach (var roleAccess in raModel)
-        {
-            var _roleAccess = _mapper.Map<RoleAccess>(roleAccess);
-
-            _roleAccess.RoleId = _rModel.Id;
-
-            _roleAccess = await _roleAccessRepo.SaveAsync(_roleAccess);
-            _roleAccessList.Add(_roleAccess);
-        }
-
-        var roleAccessIds = _roleAccessList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
-        var roleAccessToDelete = await _context.RoleAccesses
-            .Where(m => m.RoleId == _rModel.Id && !roleAccessIds.Contains(m.Id))
-            .ToListAsync();
-
-        await _roleAccessRepo.BatchDeleteAsync(roleAccessToDelete);
-
-        return _rModel;
     }
 
     public async Task<Role> CreateAsync(Role model)

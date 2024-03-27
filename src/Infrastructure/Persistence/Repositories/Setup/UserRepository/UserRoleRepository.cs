@@ -71,11 +71,12 @@ public class UserRoleRepository : IUserRoleRepository
 
     public async Task BatchDeleteAsync(int[] ids)
     {
-        var entities = await _context.UserRoles.Where(m => ids.Contains(m.Id)).ToListAsync();
-        foreach (var entity in entities)
-        {
-            await DeleteAsync(entity.Id);
-        }
+        var entities = await _context.UserRoles.
+            Where(m => ids.Contains(m.Id))
+            .ToListAsync();
+
+        if (entities is not null)
+            await _contextHelper.BatchDeleteAsync(entities);
     }
 
     public async Task SaveBenificiaryAsync(int userId)

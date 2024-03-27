@@ -198,9 +198,6 @@ function loadUserInfo() {
             $("input[name='User.Position']").val(response.Position);
             $("select[name='User.Gender']").data('selectize').setValue(response.Gender);
 
- 
-
-
             $("[name='User.IsDisabled']").prop("checked", response.IsDisabled);
 
             userRoleDropdown.unlock();

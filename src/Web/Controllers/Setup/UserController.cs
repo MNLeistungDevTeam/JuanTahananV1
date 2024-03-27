@@ -1,10 +1,7 @@
-﻿using DevExpress.XtraRichEdit.Model;
-using DMS.Application.Interfaces.Setup.UserRepository;
+﻿using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
-using DMS.Infrastructure.Persistence.Configuration;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +21,12 @@ namespace DMS.Web.Controllers.Setup
         private readonly IFileUploadService _fileUploadService;
         private readonly IUserRoleRepository _userRoleRepo;
 
-        public UserController(IUserRepository userRepo, IAuthenticationService authenticationService, IWebHostEnvironment webHostEnvironment, IFileUploadService fileUploadService, IUserRoleRepository userRoleRepo)
+        public UserController(
+            IUserRepository userRepo,
+            IAuthenticationService authenticationService,
+            IWebHostEnvironment webHostEnvironment,
+            IFileUploadService fileUploadService,
+            IUserRoleRepository userRoleRepo)
         {
             _userRepo = userRepo;
             _authenticationService = authenticationService;
