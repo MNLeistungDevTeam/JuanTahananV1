@@ -12,5 +12,10 @@ namespace DMS.Application.PredefinedReports.HousingLoanApplication
         {
             InitializeComponent();
         }
+
+        private void xrPictureBox1_BeforePrint(object sender, CancelEventArgs e)
+        {
+            
+        }
     }
 }
