@@ -21,6 +21,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             _db = db;
         }
 
+
+        #region Get Methods
         public async Task<List<ApplicationSubmittedDocumentModel>> SpGetAllApplicationSubmittedDocuments(int ApplicationId) =>
             (await _db.LoadDataAsync<ApplicationSubmittedDocumentModel, dynamic>("spDocument_GetAllApplicationSubmittedDocuments", new { ApplicationId })).ToList();
 
@@ -54,6 +56,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
         public async Task<IEnumerable<DocumentModel?>> GetApplicantDocumentsByDocumentType(int documentTypeId, string applicantCode) =>
              (await _db.LoadDataAsync<DocumentModel, dynamic>("spDocument_GetApplicantDocumentsByDocumentType", new { documentTypeId, applicantCode }));
 
+
+        #endregion
+
+        #region Action Methods
         public async Task<Document> SaveAsync(Document document)
         {
             if (document.Id == 0)
@@ -107,5 +113,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
                 await _contextHelper.BatchDeleteAsync(entities);
             }
         }
+
+        #endregion
     }
 }

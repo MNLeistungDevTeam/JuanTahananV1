@@ -204,7 +204,7 @@
     <Build Include="Stored Procedures\Setup\Approval\spApprovalStatus_GetByReferenceModuleCode.sql" />
     <Build Include="Stored Procedures\View\vwModuleStageApprovalStatus.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocument_GetApplicantDocumentsByDocumentType.sql" />
-    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetEligibilityVerficationDocuments.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetEligibilityVerificationDocuments.sql" />
     <Build Include="Tables\Setup\SourcePagibigFund\SourcePagibigFund.sql" />
     <Build Include="Stored Procedures\Setup\User\spUser_GetByPagibigNumber.sql" />
     <Build Include="Tables\Setup\Industry\Industry.sql" />
@@ -214,6 +214,10 @@
     <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetByType.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetInquiry.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetAllByPagibigNumber.sql" />
+    <Build Include="Tables\Setup\TemporaryLink.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetDocumentTypeId.sql" />
+    <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetById.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationVerificationDocuments.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

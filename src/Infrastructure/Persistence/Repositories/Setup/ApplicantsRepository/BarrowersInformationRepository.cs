@@ -26,6 +26,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             _db = db;
         }
 
+        #region Methods
+
         public async Task<BarrowersInformation?> GetByIdAsync(int id) =>
             await _context.BarrowersInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -35,9 +37,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<BarrowersInformationModel?> GetByApplicantIdAsync(int applicantId) =>
         await _db.LoadSingleAsync<BarrowersInformationModel, dynamic>("spBarrowersInformationModel_GetByApplicantId", new { applicantId });
 
+        #endregion Methods
+
+        #region Action Methods
+
         public async Task<BarrowersInformation> SaveAsync(BarrowersInformationModel model)
         {
-
             var _barrowerInfo = _mapper.Map<BarrowersInformation>(model);
 
             if (model.Id == 0)
@@ -86,5 +91,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await DeleteAsync(entity.Id);
             }
         }
+
+        #endregion Action Methods
     }
 }

@@ -46,6 +46,12 @@
     <Content Remove="wwwroot\%2a%2a" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="PredefinedReports\TestReport.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PredefinedReports\TestReport.repx" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="runtimeconfig.template.json" />
     <None Include="Views\Account\Login.cshtml" />
     <None Include="Views\Home\Error.cshtml" />
@@ -60,9 +66,7 @@
     <None Include="Views\Shared\_AuthenticationLayout.cshtml" />
     <None Include="Views\Shared\_CulturePartial.cshtml" />
     <None Include="Views\Shared\_Footer.cshtml" />
-    <None Include="Views\Shared\_SidebarLayout.cshtml" />
     <None Include="Views\Shared\_Layout2.cshtml" />
-    <None Include="Views\Shared\_Sidebar.cshtml" />
     <None Include="Views\Shared\_ThemeSettings.cshtml" />
     <None Include="Views\Shared\_Topbar.cshtml" />
     <None Include="wwwroot\js\Setup\Account\LoginScript.js" />
@@ -78,6 +82,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.11" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.11" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
@@ -95,6 +101,12 @@
   <ItemGroup>
     <Compile Update="Controllers\HousingForm.cs">
       <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="PredefinedReports\TestReport.cs">
+      <DependentUpon>TestReport.repx</DependentUpon>
+    </Compile>
+    <Compile Update="PredefinedReports\TestReport.Designer.cs">
+      <DependentUpon>TestReport.repx</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

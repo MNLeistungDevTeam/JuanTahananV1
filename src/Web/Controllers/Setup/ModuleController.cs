@@ -170,7 +170,9 @@ public class ModuleController : Controller
 
     #region Modules API
 
-    public async Task<IActionResult> GetModules()
+    #region Get Methods
+
+    public async Task<IActionResult> GetAll()
     {
         var data = await _moduleRepo.GetAllAsync();
         return Ok(data);
@@ -199,17 +201,24 @@ public class ModuleController : Controller
         return Ok(data);
     }
 
+    public async Task<IActionResult> GetModuleByType(int typeId)
+    {
+        try
+        {
+            var data = await _moduleRepo.GetAllAsync();
+
+            return Ok(data.Where(m => m.ModuleTypeId == typeId));
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
+
     public async Task<IActionResult> GetModuleByCode(string code)
     {
         var data = await _moduleRepo.GetByCodeAsync(code);
         return Ok(data);
     }
 
-    public async Task<IActionResult> GetModuleStages(int id)
-    {
-        var data = await _moduleStageRepo.GetByModuleId(id);
-        return Ok(data);
-    }
+    //Module Type
 
     public async Task<IActionResult> GetModuleTypes()
     {
@@ -223,15 +232,11 @@ public class ModuleController : Controller
         return Ok(data);
     }
 
-    public async Task<IActionResult> GetModuleByType(int typeId)
+    //Module Stage
+    public async Task<IActionResult> GetModuleStages(int id)
     {
-        try
-        {
-            var data = await _moduleRepo.GetAllAsync();
-
-            return Ok(data.Where(m => m.ModuleTypeId == typeId));
-        }
-        catch (Exception ex) { return BadRequest(ex.Message); }
+        var data = await _moduleStageRepo.GetByModuleId(id);
+        return Ok(data);
     }
 
     public async Task<IActionResult> GetWithApprovers()
@@ -244,6 +249,51 @@ public class ModuleController : Controller
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
+
+    #endregion Get Methods
+
+    #region Action Methods
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SaveModule(ModuleViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
+                return Conflict(errors);
+            }
+
+            var userId = int.Parse(User.Identity.Name);
+
+            await _moduleRepo.SaveAsync(model.Module, model.ModuleStages, userId);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("Module/DeleteModules/")]
+    public async Task<IActionResult> DeleteModules(string moduleIds)
+    {
+        try
+        {
+            int[] Ids = Array.ConvertAll(moduleIds.Split(','), int.Parse);
+
+            await _moduleRepo.BatchDeleteAsync(Ids);
+
+            return Ok();
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
+
+    //Module Type
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -277,7 +327,8 @@ public class ModuleController : Controller
         {
             int[] Ids = Array.ConvertAll(moduleTypeIds.Split(','), int.Parse);
 
-            await _moduleStageRepo.BatchDeleteAsync(Ids);
+            //await _moduleStageRepo.BatchDeleteAsync(Ids);
+            await _moduleTypeRepo.BachDeleteAsync(Ids);
 
             return Ok();
         }
@@ -315,52 +366,7 @@ public class ModuleController : Controller
         }
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SaveModule(ModuleViewModel model)
-    {
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
-                return Conflict(errors);
-            }
-
-            var userId = int.Parse(User.Identity.Name);
-
-            await _moduleRepo.SaveAsync(model.Module, model.ModuleStages, userId);
-
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpDelete]
-    [Route("Module/DeleteModules/")]
-    public async Task<IActionResult> DeleteModules(string moduleIds)
-    {
-        try
-        {
-            int[] Ids = Array.ConvertAll(moduleIds.Split(','), int.Parse);
-
-            //if (Ids.Length > 0)
-            //{
-            //    foreach (var moduleid in Ids)
-            //    {
-            //        await _moduleRepo.DeleteAsync(moduleid);
-            //    }
-            //}
-
-            await _moduleRepo.BatchDeleteAsync(Ids);
-
-            return Ok();
-        }
-        catch (Exception ex) { return BadRequest(ex.Message); }
-    }
+    #endregion Action Methods
 
     #endregion Modules API
 }

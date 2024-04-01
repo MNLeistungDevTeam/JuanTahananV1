@@ -1,4 +1,5 @@
-﻿"use strict"
+﻿
+"use strict"
 $(function () {
     loadApplicantTotalInfo();
 
@@ -178,6 +179,10 @@ $(function () {
                 }
 
                 $("[data-plugin='counterup']").counterUp();
+            }, error: function (jqXHR) {
+                info_for_approval.html(`<span data-plugin="counterup">0</span>`);
+                info_total_approved.html(`<span data-plugin="counterup">0</span>`);
+                info_total_disapproved.html(`<span data-plugin="counterup">0</span>`);
             }
         });
     }

@@ -3,16 +3,19 @@ using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.Authentication;
+using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Hubs;
 using DMS.Web.Controllers.Services;
 using DMS.Web.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,19 +34,28 @@ public class AccountController : Controller
     private readonly IJwtService _jwtService;
     private readonly IUserTokenRepository _userTokenRepo;
     private readonly ICompanyRepository _companyRepo;
+    private IUserRepository _userRepo;
+    private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly IEmailService _emailService;
 
     public AccountController(
         Application.Services.IAuthenticationService authService,
         IHubContext<AuthenticationHub> hubContext,
         IJwtService jwtService,
         IUserTokenRepository userTokenRepo,
-        ICompanyRepository companyRepo)
+        ICompanyRepository companyRepo,
+        IUserRepository userRepo,
+        IBackgroundJobClient backgroundJobClient,
+        IEmailService emailService)
     {
         _authService = authService;
         _hubContext = hubContext;
         _jwtService = jwtService;
         _userTokenRepo = userTokenRepo;
         _companyRepo = companyRepo;
+        _userRepo = userRepo;
+        _backgroundJobClient = backgroundJobClient;
+        _emailService = emailService;
     }
 
     [AllowAnonymous]
@@ -76,6 +88,12 @@ public class AccountController : Controller
                 Exception = ex
             });
         }
+    }
+
+    [AllowAnonymous]
+    public IActionResult AuthRecover()
+    {
+        return View("AuthRecover");
     }
 
     // [AllowAnonymous]
@@ -223,6 +241,38 @@ public class AccountController : Controller
         var authResponse = await _jwtService.GetRefreshTokenAsync(userRefreshToken.UserId);
 
         return Ok(authResponse);
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> RecoverCredentials(LoginViewModel model)
+    {
+        try
+        {
+            //// Verification.
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest("Invalid Request!");
+            //}
+            var users = await _userRepo.GetUsersAsync();
+            var userWithEmail = users.FirstOrDefault(user => user.Email == model.RecoveryEmail);
+
+            var userdata = await _userRepo.GetUserAsync(userWithEmail.Id);
+
+            if (userWithEmail != null)
+            {
+               // userdata.Password = _authService.GenerateTemporaryPasswordAsync(userdata.FirstName); //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+
+                userdata.Action = "reset";
+              // await _authService.ResetCredential(userdata);
+
+                //// make the usage of hangfire
+                _backgroundJobClient.Enqueue(() => _emailService.SendUserConfirmationMessage(userdata));
+            }
+
+            return Ok();
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
     #endregion API

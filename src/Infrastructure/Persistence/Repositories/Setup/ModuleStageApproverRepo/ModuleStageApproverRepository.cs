@@ -34,6 +34,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
             _moduleStageRepo = moduleStageRepo;
         }
 
+        #region Get Methods
+
         public async Task<ModuleStageApprover?> GetById(int id) =>
             await _contextHelper.GetByIdAsync(id);
 
@@ -46,6 +48,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
 
         public async Task<List<ModuleStageApprover>> GetByModuleStageId(int moduleStageId) =>
             await _context.ModuleStageApprovers.Where(m => m.ModuleStageId == moduleStageId).ToListAsync();
+
+        #endregion Get Methods
+
+        #region Action Methods
 
         public async Task<ModuleStageApprover> SaveAsync(ModuleStageApproverModel model, int userId)
         {
@@ -68,7 +74,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
             moduleStageApprover.CreatedById = userId;
             moduleStageApprover.DateCreated = DateTime.Now;
 
-            moduleStageApprover = await _contextHelper.CreateAsync(moduleStageApprover,"ModifiedById","DateModified");
+            moduleStageApprover = await _contextHelper.CreateAsync(moduleStageApprover, "ModifiedById", "DateModified");
 
             return moduleStageApprover;
         }
@@ -78,7 +84,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
             moduleStageApprover.ModifiedById = userId;
             moduleStageApprover.DateModified = DateTime.Now;
 
-            moduleStageApprover = await _contextHelper.UpdateAsync(moduleStageApprover,"CreatedById","DateCreated");
+            moduleStageApprover = await _contextHelper.UpdateAsync(moduleStageApprover, "CreatedById", "DateCreated");
 
             return moduleStageApprover;
         }
@@ -190,5 +196,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleStageApproverR
                 }
             }
         }
+
+        #endregion Action Methods
     }
 }

@@ -63,6 +63,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public bool? isRequiredDocumentsUploaded { get; set; }
         public bool? isCanAppliedNewApplication { get; set; }
+        public bool? isApplicationCurrentActive { get; set; }
         #endregion Display Properties
     }
 }

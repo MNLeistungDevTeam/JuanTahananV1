@@ -1,11 +1,15 @@
 ﻿using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.ModuleStageApproverRepo;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApprovalLevelDto;
+using DMS.Domain.Dto.CompanyDto;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,19 +22,44 @@ namespace DMS.Web.Controllers.Setup
         private readonly IModuleStageApproverRepository _moduleStageApproverRepo;
         private readonly IApprovalService _approvalService;
         private readonly IApprovalStatusRepository _approvalStatusRepo;
+        private readonly IRoleAccessRepository _roleAccessRepo;
 
-        public ApprovalController(IModuleRepository moduleRepo, IModuleStageApproverRepository moduleStageApproverRepo, IApprovalService approvalService, IApprovalStatusRepository approvalStatusRepo)
+        public ApprovalController(IModuleRepository moduleRepo,
+            IModuleStageApproverRepository moduleStageApproverRepo,
+            IApprovalService approvalService,
+            IApprovalStatusRepository approvalStatusRepo,
+            IRoleAccessRepository roleAccessRepo)
         {
             _moduleRepo = moduleRepo;
             _moduleStageApproverRepo = moduleStageApproverRepo;
             _approvalService = approvalService;
             _approvalStatusRepo = approvalStatusRepo;
+            _roleAccessRepo = roleAccessRepo;
         }
 
-        public IActionResult Index()
+        #region View
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            try
+            {
+                var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_APPROVERMNGMNT);
+
+                if (roleAccess is null) { return View("AccessDenied"); }
+                if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
+                ViewData["RoleAccess"] = roleAccess;
+
+                return View();
+            }
+            catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
         }
+
+        #endregion View
+
+        #region Api
+
+        #region Get
 
         [Route("[controller]/GetByReferenceModuleCodeAsync/{referenceId}/{moduleCode?}")]
         public async Task<IActionResult> GetByReferenceModuleCodeAsync(int referenceId, string? moduleCode)
@@ -42,6 +71,10 @@ namespace DMS.Web.Controllers.Setup
 
             return Ok(data);
         }
+
+        #endregion Get
+
+        #region Action Methods
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,5 +130,9 @@ namespace DMS.Web.Controllers.Setup
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
+
+        #endregion Action Methods
+
+        #endregion Api
     }
 }

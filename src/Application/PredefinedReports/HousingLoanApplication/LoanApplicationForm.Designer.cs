@@ -58,7 +58,7 @@
             this.subReportFormPage2.GenerateOwnPages = true;
             this.subReportFormPage2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 23F);
             this.subReportFormPage2.Name = "subReportFormPage2";
-            this.subReportFormPage2.ReportSource = new DMS.Application.PredefinedReports.HousingLoanApplication.HLF068Page2();
+            this.subReportFormPage2.ReportSource = new DMS.Application.PredefinedReports.HousingLoanApplication.HLF_4PH_FORM2();
             this.subReportFormPage2.SizeF = new System.Drawing.SizeF(850F, 23F);
             // 
             // subReportFormPage1
@@ -66,7 +66,7 @@
             this.subReportFormPage1.GenerateOwnPages = true;
             this.subReportFormPage1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.subReportFormPage1.Name = "subReportFormPage1";
-            this.subReportFormPage1.ReportSource = new DMS.Application.PredefinedReports.HousingLoanApplication.HLF068Page1();
+            this.subReportFormPage1.ReportSource = new DMS.Application.PredefinedReports.HousingLoanApplication.HLF_4PH_FORM1();
             this.subReportFormPage1.SizeF = new System.Drawing.SizeF(850F, 23F);
             // 
             // LoanApplicationForm

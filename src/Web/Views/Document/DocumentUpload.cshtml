@@ -27,7 +27,7 @@
                 <input hidden type="text" class="form-control" value="@ViewBag.AppplicationId" id="applicationId" />
                 <input type="hidden" class="form-control" value="@ViewBag.ApplicationCode" id="txt_applicationCode" />
 
-                <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg" />
+                <input type="file" id="file-input" style="display: none;" />
                 <div class="tab-content">
                     <div class="tab-pane active show" id="module-list">
                         <div class="row">
@@ -141,5 +141,5 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @section Scripts {
-    <script src="~/js/setup/document/uploadingdocuments.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Document/UploadingDocumentScript.js" asp-append-version="true"></script>
 }
