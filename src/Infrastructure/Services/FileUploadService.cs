@@ -227,17 +227,21 @@ namespace DMS.Infrastructure.Services
 
                     //File Type validation
                     var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
-                    FileType fileType = (FileType)documentType.FileType;
 
-                    string convertedToString = $".{fileType.ToString().ToLower()}";
-
-                    if (extension == ".jpeg" || extension == ".jpg")
+                    if (documentType.FileType != null)
                     {
-                        extension = ".jpg";
-                    }
+                        FileType fileType = (FileType)documentType.FileType;
 
-                    if (extension != convertedToString)
-                        throw new ArgumentException("Invalid Assigned File Type.");
+                        string convertedToString = $".{fileType.ToString().ToLower()}";
+
+                        if (extension == ".jpeg" || extension == ".jpg")
+                        {
+                            extension = ".jpg";
+                        }
+
+                        if (extension != convertedToString)
+                            throw new ArgumentException("Invalid Assigned File Type.");
+                    }
 
                     await _documentRepository.CreateAsync(document);
                 }

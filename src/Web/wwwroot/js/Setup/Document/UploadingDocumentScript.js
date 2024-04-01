@@ -226,7 +226,11 @@ $(async function () {
                 data: "DocumentTypeId",
                 visible: false
             },
+            {
+                data: "DocumentFileType",
+                class: "text-center align-middle"
 
+            },
             {
                 data: "TotalDocumentCount",
                 class: "text-center align-middle"
@@ -325,6 +329,14 @@ $(async function () {
                 data: "DocumentTypeId",
                 visible: false
             },
+
+
+            {
+                data: "DocumentFileType",
+                class: "text-center align-middle"
+ 
+            },
+
 
             {
                 data: "TotalDocumentCount",
