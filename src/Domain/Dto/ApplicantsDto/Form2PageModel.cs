@@ -39,10 +39,15 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public long? AccountNumber2 { get; set; }
 
         public long? AccountNumber3 { get; set; }
+        [DataType(DataType.Date)]
 
         public DateTime? DateOpened1 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? DateOpened2 { get; set; }
+
+        [DataType(DataType.Date)]
 
         public DateTime? DateOpened3 { get; set; }
 
@@ -64,9 +69,15 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public string CardType3 { get; set; }
 
+        [DataType(DataType.Date)]
+
         public DateTime? CardExpiration1 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? CardExpiration2 { get; set; }
+
+        [DataType(DataType.Date)]
 
         public DateTime? CardExpiration3 { get; set; }
 
@@ -135,10 +146,16 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public decimal? AmountBalance2 { get; set; }
 
         public decimal? AmountBalance3 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? MaturityDateTime1 { get; set; }
 
+        [DataType(DataType.Date)]
+
         public DateTime? MaturityDateTime2 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? MaturityDateTime3 { get; set; }
 
@@ -196,15 +213,27 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public decimal? PresentBalance3 { get; set; }
 
+        [DataType(DataType.Date)]
+
         public DateTime? DateObtained1 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? DateObtained2 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? DateObtained3 { get; set; }
 
+        [DataType(DataType.Date)]
+
         public DateTime? DateFullyPaid1 { get; set; }
 
+        [DataType(DataType.Date)]
+
         public DateTime? DateFullyPaid2 { get; set; }
+        [DataType(DataType.Date)]
+
 
         public DateTime? DateFullyPaid3 { get; set; }
 

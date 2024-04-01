@@ -33,6 +33,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Citizenship")]
         public string? Citizenship { get; set; }
 
+        [DataType(DataType.Date)]
+
         [DisplayName("Birth Date")]
         public DateTime? BirthDate { get; set; }
 

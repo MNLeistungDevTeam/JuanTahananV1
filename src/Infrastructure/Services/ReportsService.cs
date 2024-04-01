@@ -1,10 +1,11 @@
 ﻿using DevExpress.XtraReports.UI;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.PredefinedReports;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ReportDto;
+using DMS.Domain.Utilities;
 
 namespace DMS.Infrastructure.Services
 {
@@ -17,12 +18,15 @@ namespace DMS.Infrastructure.Services
         private readonly IForm2PageRepository _form2PageRepo;
         private readonly ICollateralInformationRepository _collateralInfoRepo;
 
+        private readonly IDocumentRepository _documentRepo;
+
         public ReportsService(IApplicantsPersonalInformationRepository applicantpersonalInfoRepo,
             IBarrowersInformationRepository barrowersInfoRepo,
             ISpouseRepository spouseRepo,
             ILoanParticularsInformationRepository loanParticularsInfoRepo,
             IForm2PageRepository form2PageRepo,
-            ICollateralInformationRepository collateralInfoRepo)
+            ICollateralInformationRepository collateralInfoRepo,
+            IDocumentRepository documentRepo)
         {
             _applicantpersonalInfoRepo = applicantpersonalInfoRepo;
             _barrowersInfoRepo = barrowersInfoRepo;
@@ -31,9 +35,10 @@ namespace DMS.Infrastructure.Services
             _form2PageRepo = form2PageRepo;
             _collateralInfoRepo = collateralInfoRepo;
             _loanParticularsInfoRepo = loanParticularsInfoRepo;
+            _documentRepo = documentRepo;
         }
 
-        public async Task<LoanApplicationForm> GenerateHousingLoanForm(int userId)
+        public async Task<LoanApplicationForm> GenerateHousingLoanForm(int userId, string? rootFolder)
         {
             try
             {
@@ -48,10 +53,13 @@ namespace DMS.Infrastructure.Services
                 Form2PageModel form2InfoModel = new();
                 CollateralInformationModel collateralInfoModel = new();
 
+                byte[] formalPicture = new byte[0];
+
                 if (userId != 0)
                 {
                     //var latestApplicationForm = (await _applicantsPersonalInformationRepo
                     //    .GetAllAsync())
+
                     //    .Where(x => x.UserId == userId)
                     //    .OrderByDescending(x => x.DateCreated)
                     //    .FirstOrDefault() ?? new ApplicantsPersonalInformation()
@@ -64,6 +72,21 @@ namespace DMS.Infrastructure.Services
                     if (applicantData != null)
                     {
                         applicantInfoModel = applicantData;
+                    }
+
+                    var applicantDocument = await _documentRepo.GetApplicantDocumentsByCode(applicantData.Code);
+
+                    if (applicantDocument.Count() > 0)
+
+                    {
+                        var documentLocation = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Location ?? "";
+                        var documentName = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Name ?? "";
+
+
+
+                        string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
+
+                        formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
                     }
 
                     var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);
@@ -107,7 +130,9 @@ namespace DMS.Infrastructure.Services
                 {
                     new ApplicantInformationReportModel()
                     {
-                        ApplicantsPersonalInformationModel =  applicantInfoModel,
+                    FormalPicture =  formalPicture,
+
+                ApplicantsPersonalInformationModel =  applicantInfoModel,
                         SpouseModel = spouseInfoModel,
                         BarrowersInformationModel = barrowerInfoModel,
                         LoanParticularsInformationModel = loanParticularsInfoModel,

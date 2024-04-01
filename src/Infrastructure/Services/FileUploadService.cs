@@ -228,7 +228,14 @@ namespace DMS.Infrastructure.Services
                     //File Type validation
                     var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
                     FileType fileType = (FileType)documentType.FileType;
+
                     string convertedToString = $".{fileType.ToString().ToLower()}";
+
+                    if (extension == ".jpeg" || extension == ".jpg")
+                    {
+                        extension = ".jpg";
+                    }
+
                     if (extension != convertedToString)
                         throw new ArgumentException("Invalid Assigned File Type.");
 
@@ -247,7 +254,10 @@ namespace DMS.Infrastructure.Services
 
             if (document != null)
             {
-                var filePath = Path.Combine(rootFolder, document.Location);
+                //var filePath = Path.Combine(rootFolder, document.Location, document.Name);
+
+                string filePath = string.Format("{0}{1}{2}", rootFolder, document.Location.Replace("/", "\\"), document.Name);
+
                 // Delete the file from the file system
                 if (File.Exists(filePath))
                 {

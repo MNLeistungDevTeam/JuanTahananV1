@@ -1,12 +1,11 @@
 $(async function () {
     "strict";
-
     const FileFormats = {
-        1: '.pdf',
+        1: ['.pdf'],
         2: '.docx',
         3: '.txt',
         4: '.xlsx',
-        5: '.jpg',
+        5: ['.jpg', '.jpeg','.JPEG','.Jpg'], // Mapping both .jpg and .jpeg to the same value
         6: '.png'
     };
 
@@ -85,12 +84,16 @@ $(async function () {
         e.preventDefault();
         DocumentId = 0;
         var documentType = await GetDocumentType(documentypeid);
-        const fileFormat = FileFormats[documentType.FileType];
+        alert(documentType.FileType)
+        let fileFormats = FileFormats[documentType.FileType];
 
-        $('#file-input').attr('accept', fileFormat);
+        if (Array.isArray(fileFormats)) {
+            fileFormats = fileFormats.join(','); // Join array elements into a single string
+        }
+
+        $('#file-input').attr('accept', fileFormats);
         $('#file-input').trigger('click');
     });
-
     $('#tbl_files tbody').on('click', '.replace', function (e) {
         e.preventDefault();
         var rowData = tbl_files.row($(this).closest('tr')).data();

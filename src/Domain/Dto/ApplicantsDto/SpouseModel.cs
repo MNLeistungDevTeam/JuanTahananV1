@@ -72,6 +72,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Citizenship { get; set; }
 
         [DisplayName("Birth Date")]
+        [DataType(DataType.Date)]
+
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Date Created")]
