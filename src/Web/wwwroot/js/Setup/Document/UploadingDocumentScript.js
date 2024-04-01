@@ -5,7 +5,7 @@ $(async function () {
         2: '.docx',
         3: '.txt',
         4: '.xlsx',
-        5: ['.jpg', '.jpeg','.JPEG','.Jpg'], // Mapping both .jpg and .jpeg to the same value
+        5: ['.jpg', '.jpeg', '.JPEG', '.Jpg'], // Mapping both .jpg and .jpeg to the same value
         6: '.png'
     };
 
@@ -84,7 +84,7 @@ $(async function () {
         e.preventDefault();
         DocumentId = 0;
         var documentType = await GetDocumentType(documentypeid);
-        alert(documentType.FileType)
+
         let fileFormats = FileFormats[documentType.FileType];
 
         if (Array.isArray(fileFormats)) {
@@ -186,6 +186,8 @@ $(async function () {
 
                 // remove filename
                 $('#file-input').val('');
+
+                $("#modal-file").modal('hide');
             },
             error: function (xhr, status, error) {
                 messageBox(xhr.responseText, "danger", true);
@@ -229,7 +231,6 @@ $(async function () {
             {
                 data: "DocumentFileType",
                 class: "text-center align-middle"
-
             },
             {
                 data: "TotalDocumentCount",
@@ -330,13 +331,10 @@ $(async function () {
                 visible: false
             },
 
-
             {
                 data: "DocumentFileType",
                 class: "text-center align-middle"
- 
             },
-
 
             {
                 data: "TotalDocumentCount",

@@ -1,15 +1,27 @@
 ﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
 @using DMS.Application.Interfaces.Setup.RoleRepository
+@using DMS.Application.Interfaces.Setup.UserRepository
 @using DMS.Application.Services;
 @using DMS.Web.Controllers.Services
 @using System.Security.Claims
 @inject IModuleRepository _moduleRepo;
+@inject IUserRepository _userRepo;
 @inject IRoleAccessRepository _roleRepo;
 @inject IStringLocalizer<SharedResources> localizer
 @inject IFtpDownloaderService _ftpDownloaderService
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment;
 
 @{
     int userId = int.Parse(User.Identity.Name);
+    var userInfo = await _userRepo.GetUserAsync(userId);
+    string userProfile = Url.Content("~/images/user/default.png");
+
+
+
+
+    if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
+        if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, userInfo.ProfilePicture[1..].Replace("/", "\\"))))
+            userProfile = Url.Content("~" + userInfo.ProfilePicture);
 
     var modules = await _roleRepo.GetByUserId(userId);
     var moduleGroups = modules.Where(m => m.CanRead && m.ModuleTypeIsVisible && !m.ModuleTypeIsDisabled).OrderBy(m => m.ModuleTypeOrder).Select(m => new { m.ModuleType, m.ModuleTypeIcon, m.ModuleTypeController, m.ModuleTypeAction }).Distinct();
@@ -54,7 +66,7 @@
                 <li class="side-nav-item d-flex align-items-center justify-content-center">
                     <div class="side-profile mb-3">
                         <div class="auth-avatar text-center">
-                            <img src="@ViewData["Profile"]" alt="A" class="img-fluid rounded-circle mx-auto avatar-xxxl img-thumbnail user-profile">
+                            <img src="@Url.Content("~" + userProfile)" alt="A" class="img-fluid rounded-circle mx-auto avatar-xxxl img-thumbnail user-profile">
                             <div class="mx-auto d-none" style="width: 140px; height: 140px; font-size: 50px;"><span class="auth-initial-avatar avatar-title fw-bold text-white rounded-circle" style="background-color: #000;">A</span></div>
                         </div>
                         <h4 class="mt-3 mb-0 text-dark fw-bold text-center">@ViewData["Name"]</h4>

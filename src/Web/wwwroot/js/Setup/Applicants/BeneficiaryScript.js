@@ -119,15 +119,20 @@ $(function () {
         var selectedRows = tbl_applications.rows({ selected: true, search: 'applied' }).count();
         var id = tbl_applications.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
+        var applicationStatus = tbl_applications.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
         //$("#btn_add").attr({
         //    "disabled": !(selectedRows === 0),
         //});
-
         $("#btn_edit").attr({
-            "disabled": !(selectedRows === 1),
+            "disabled": (selectedRows !== 1 || applicationStatus != 2) && applicationStatus != 0,
             "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
         });
+
+        //$("#btn_edit").attr({
+        //    "disabled": !(selectedRows === 1),
+        //    "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+        //});
 
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
