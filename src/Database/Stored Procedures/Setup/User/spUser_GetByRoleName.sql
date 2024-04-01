@@ -2,7 +2,7 @@
 	@roleName NVARCHAR(50)
 AS
  BEGIN
-    SELECT
+     SELECT
         usr.Id,
         usr.UserName,
         usr.DateCreated,
@@ -27,5 +27,6 @@ AS
         GROUP BY UserId,Code
     ) ap ON ap.UserId = usr.Id
     WHERE 
-        r.[Name] = @roleName;
+        r.[Name] = @roleName
+		ORDER BY usr.DateCreated DESC;
 END
