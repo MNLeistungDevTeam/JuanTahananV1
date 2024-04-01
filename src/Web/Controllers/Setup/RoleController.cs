@@ -41,6 +41,8 @@ public class RoleController : Controller
         _userRepo = userRepo;
     }
 
+    #region Views
+
     public IActionResult Index()
     {
         return View();
@@ -73,6 +75,10 @@ public class RoleController : Controller
             return BadRequest();
         }
     }
+
+    #endregion Views
+
+    #region API Getters
 
     public async Task<IActionResult> GetRoleSetupAccess(int id)
     {
@@ -130,6 +136,10 @@ public class RoleController : Controller
 
     public async Task<IActionResult> GetUserRoles(int RoleId) =>
         Ok(((await _userRoleRepo.SpGetAllRoles())).Where(x => x.RoleId == RoleId));
+
+    #endregion API Getters
+
+    #region API Operation
 
     //[HttpPost]
     //public async Task<IActionResult> SaveUserRole(RoleViewModel model)
@@ -258,4 +268,6 @@ public class RoleController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+    #endregion API Operation
 }

@@ -192,6 +192,17 @@ $(function () {
             }
         })
     }
+
+    $(".decimalInputMask").inputmask({
+        alias: 'decimal',
+        rightAlign: false,
+        groupSeparator: '.',
+        digits: 2,
+        allowMinus: false,
+        autoGroup: true,
+        placeholder: "0.00"
+    });
+
 });
 function getApplicationCount(callback) {
     $.ajax({
