@@ -437,7 +437,8 @@ namespace Template.Web.Controllers.Transaction
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
-                            Gender = vwModel.BarrowersInformationModel.Sex
+                            Gender = vwModel.BarrowersInformationModel.Sex,
+                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber
                         };
 
                         //save beneficiary user
