@@ -34,7 +34,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DataType(DataType.Date)]
 
-        [DisplayName("Birth Date")]
         [Display(Name = "Birth Date", Prompt = "Birth Date")]
         public DateTime? BirthDate { get; set; }
 
@@ -124,7 +123,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? TinNumber { get; set; }
 
         [DisplayName("Occupation Status")]
-        public string OcupationStatus { get; set; }
+        public string? OccupationStatus { get; set; }
 
         [Display(Name = "Employer", Prompt = "Employer Name")]
         public string? EmployerName { get; set; }
@@ -190,7 +189,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string PreparedMailingAddress { get; set; }
 
         [Display(Name = "Preferred Time To Contact", Prompt = "Preferred Time to Contact")]
-        public DateTime? PreferredTimeToContact { get; set; }
+        public string? PreferredTimeToContact { get; set; }
 
         [DisplayName("Date Created")]
         public DateTime DateCreated { get; set; }

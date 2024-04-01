@@ -54,10 +54,12 @@ namespace DMS.Infrastructure.Services
 
             var uniqueReceivers = roleNames;
 
+            var notifData = $"{actionType} Applicant: {transactionNo}";
+
             // Send notifications to users
             foreach (var receiver in uniqueReceivers)
             {
-                await _hubContext.Clients.Group(receiver).SendAsync("AddNotifGroup", companyCode, $"{actionType} Applicant: {transactionNo}");
+                await _hubContext.Clients.Group(receiver).SendAsync("AddNotifGroup", companyCode, notifData);
             }
         }
     }

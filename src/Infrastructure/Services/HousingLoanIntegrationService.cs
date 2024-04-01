@@ -68,7 +68,7 @@ namespace DMS.Infrastructure.Services
 
             userModel.Action = "created";
             //// make the usage of hangfire
-            _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+            _backgroundJobClient.Enqueue(() =>   _emailService.SendUserCredential(userModel));
 
             #endregion Create Beneficiary User
 

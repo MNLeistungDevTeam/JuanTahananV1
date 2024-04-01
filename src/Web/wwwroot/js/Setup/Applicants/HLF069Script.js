@@ -4,6 +4,14 @@ $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
 
+    $(".timepicker").flatpickr({
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+    });
+
+
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
         placeholder: 'X',
@@ -22,9 +30,9 @@ $(function () {
         clearIncomplete: true
     });
 
-    $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999"});
+    $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    $('.codeInputMask').inputmask({ mask: "9999"});
+    $('.codeInputMask').inputmask({ mask: "9999" });
 
     initializeDecimalInputMask(".decimalInputMask5", 2);
 

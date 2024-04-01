@@ -51,18 +51,17 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [Display(Prompt = "Account number")]
         public long? AccountNumber3 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
         [Display(Prompt = "Date opened")]
         public DateTime? DateOpened1 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Date opened")]
         public DateTime? DateOpened2 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Date opened")]
         public DateTime? DateOpened3 { get; set; }
 
@@ -94,17 +93,14 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string CardType3 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Card expiration date")]
         public DateTime? CardExpiration1 { get; set; }
+
         [DataType(DataType.Date)]
-
-
         [Display(Prompt = "Card expiration date")]
         public DateTime? CardExpiration2 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Card expiration date")]
         public DateTime? CardExpiration3 { get; set; }
 
@@ -206,18 +202,17 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [Display(Prompt = "Amount balance")]
         public decimal? AmountBalance3 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Maturity date")]
         public DateTime? MaturityDateTime1 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Maturity date")]
         public DateTime? MaturityDateTime2 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Maturity date")]
         public DateTime? MaturityDateTime3 { get; set; }
@@ -298,31 +293,28 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public decimal? PresentBalance3 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Date Obtained")]
         public DateTime? DateObtained1 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Date Obtained")]
         public DateTime? DateObtained2 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Date Obtained")]
         public DateTime? DateObtained3 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Date Fully Paid")]
         public DateTime? DateFullyPaid1 { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Prompt = "Date Fully Paid")]
         public DateTime? DateFullyPaid2 { get; set; }
-        [DataType(DataType.Date)]
 
+        [DataType(DataType.Date)]
 
         [Display(Prompt = "Date Fully Paid")]
         public DateTime? DateFullyPaid3 { get; set; }
