@@ -129,8 +129,8 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" required></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount">
-                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="invalid-tooltip"> </span>
+                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount">
+                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="invalid-tooltip"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -163,7 +163,7 @@
                                     <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId" required>
                                         <option value="">Select Mode of Payment ...</option>
                                     </select>
-                                    <span asp-validation-for="LoanParticularsInformationModel.Id" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="invalid-tooltip"></span>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -417,7 +417,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.MobileNumber">
+                                                <input class="form-control rounded-3 text-center mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -493,7 +493,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentZipCode">
+                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -562,7 +562,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentZipCode">
+                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -609,14 +609,14 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.SSSNumber">
+                                                <input class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.SSSNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.TinNumber">
+                                                <input class="form-control rounded-3 text-center tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.TinNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -634,7 +634,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
+                                                <input class="form-control text-center rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
                                                 <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="invalid-tooltip"></span>
                                             </div>
                                         </div>
@@ -833,7 +833,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessZipCode">
+                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -927,14 +927,14 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.PagibigMidNumber"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.PagibigMidNumber">
+                                    <input class="form-control rounded-3 text-center pagibigInputMask" asp-for="SpouseModel.PagibigMidNumber">
                                     <span asp-validation-for="SpouseModel.PagibigMidNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.TinNumber"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.TinNumber">
+                                    <input class="form-control rounded-3 text-center tinInputMask" asp-for="SpouseModel.TinNumber">
                                     <span asp-validation-for="SpouseModel.TinNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -1062,7 +1062,7 @@
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentZipCode">
+                                    <input class="form-control rounded-3 text-center codeInputMask codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -1233,7 +1233,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.AverageBalance1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance1">
                                                         <span asp-validation-for="Form2PageModel.AverageBalance1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1259,7 +1259,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AccountNumber2">
+                                                        <input class="form-control rounded-3 text-center" asp-for="Form2PageModel.AccountNumber2">
                                                         <span asp-validation-for="Form2PageModel.AccountNumber2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1271,7 +1271,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.AverageBalance2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance2">
                                                         <span asp-validation-for="Form2PageModel.AverageBalance2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1309,7 +1309,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.AverageBalance3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance3">
                                                         <span asp-validation-for="Form2PageModel.AverageBalance3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1340,7 +1340,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardExpiration1" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditLimit1">
+                                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit1">
                                                     <span asp-validation-for="Form2PageModel.CreditLimit1" class="invalid-tooltip"> </span>
                                                 </td>
                                             </tr>
@@ -1359,7 +1359,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardExpiration2" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditLimit2">
+                                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit2">
                                                     <span asp-validation-for="Form2PageModel.CreditLimit2" class="invalid-tooltip"> </span>
                                                 </td>
                                             </tr>
@@ -1378,7 +1378,7 @@
                                                     <span asp-validation-for="Form2PageModel.CardExpiration3" class="invalid-tooltip"> </span>
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditLimit3">
+                                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit3">
                                                     <span asp-validation-for="Form2PageModel.CreditLimit3" class="invalid-tooltip"> </span>
                                                 </td>
                                             </tr>
@@ -1410,25 +1410,25 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AquisitionCost1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost1">
                                                         <span asp-validation-for="Form2PageModel.AquisitionCost1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MarketValue1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue1">
                                                         <span asp-validation-for="Form2PageModel.MarketValue1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.MortgageBalance1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance1">
                                                         <span asp-validation-for="Form2PageModel.MortgageBalance1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.RentalIncome1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome1">
                                                         <span asp-validation-for="Form2PageModel.RentalIncome1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1448,25 +1448,25 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AquisitionCost2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost2">
                                                         <span asp-validation-for="Form2PageModel.AquisitionCost2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MarketValue2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue2">
                                                         <span asp-validation-for="Form2PageModel.MarketValue2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.MortgageBalance2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance2">
                                                         <span asp-validation-for="Form2PageModel.MortgageBalance2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.RentalIncome2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome2">
                                                         <span asp-validation-for="Form2PageModel.RentalIncome2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1486,25 +1486,25 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AquisitionCost3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost3">
                                                         <span asp-validation-for="Form2PageModel.AquisitionCost3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MarketValue3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue3">
                                                         <span asp-validation-for="Form2PageModel.MarketValue3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.MortgageBalance3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance3">
                                                         <span asp-validation-for="Form2PageModel.MortgageBalance3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.RentalIncome3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome3">
                                                         <span asp-validation-for="Form2PageModel.RentalIncome3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1544,7 +1544,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AmountBalance1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance1">
                                                         <span asp-validation-for="Form2PageModel.AmountBalance1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1556,7 +1556,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.Amortization1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization1">
                                                         <span asp-validation-for="Form2PageModel.Amortization1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1582,7 +1582,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AmountBalance2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance2">
                                                         <span asp-validation-for="Form2PageModel.AmountBalance2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1594,7 +1594,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.Amortization2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization2">
                                                         <span asp-validation-for="Form2PageModel.Amortization2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1620,7 +1620,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AmountBalance3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance3">
                                                         <span asp-validation-for="Form2PageModel.AmountBalance3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1632,7 +1632,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.Amortization3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization3">
                                                         <span asp-validation-for="Form2PageModel.Amortization3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1736,13 +1736,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.HighestAmount1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount1">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.PresentBalance1">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance1">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance1" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1786,13 +1786,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.HighestAmount2">
+                                                        <input class="form-control rounded-3 text-center decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.PresentBalance2">
+                                                        <input class="form-control rounded-3  decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance2" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -1836,13 +1836,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.HighestAmount3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount3">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center" asp-for="Form2PageModel.PresentBalance3">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance3">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance3" class="invalid-tooltip"> </span>
                                                     </div>
                                                 </td>
@@ -2047,7 +2047,7 @@
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.TinNumber"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="Form2PageModel.TinNumber">
+                                    <input class="form-control rounded-3 tinInputMask" asp-for="Form2PageModel.TinNumber">
                                     <span asp-validation-for="Form2PageModel.TinNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -2124,7 +2124,7 @@
                             <div class="col-md-3" col="9" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersZipCode"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersZipCode">
+                                    <input class="form-control rounded-3 text-center codeInputMask" asp-for="Form2PageModel.SellersZipCode">
                                     <span asp-validation-for="Form2PageModel.SellersZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -2168,6 +2168,6 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
     <script src="~/js/Setup/Applicants/HLF069Script.js" asp-append-version="true"></script>
-
 }

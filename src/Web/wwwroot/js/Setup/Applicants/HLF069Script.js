@@ -4,6 +4,30 @@ $(function () {
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
 
+    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+        mask: "99-9999999-99",
+        placeholder: 'X',
+        clearIncomplete: true
+    });
+
+    $('.pagibigInputMask').inputmask({
+        mask: "9999-9999-9999",
+        placeholder: 'X',
+        clearIncomplete: true
+    });
+
+    $('.tinInputMask').inputmask({
+        mask: "999-999-999-99999",
+        placeholder: "X",
+        clearIncomplete: true
+    });
+
+    $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999"});
+
+    $('.codeInputMask').inputmask({ mask: "9999"});
+
+    initializeDecimalInputMask(".decimalInputMask5", 2);
+
     rebindValidators();
 
     $('#rootwizard').bootstrapWizard({
@@ -179,22 +203,47 @@ $(function () {
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
-        var inputValue = $(this).val().toString();
-        var numericValue = parseInt(inputValue, 10);
+        //var inputValue = $(this).val().toString();
+        //var numericValue = parseInt(inputValue, 10);
 
-        // Check if both the length exceeds 7 characters and the numeric value exceeds 7 million
-        if (inputValue.length > 7 || numericValue > 7000000) {
-            //alert("Input value exceeds both 7 characters and 7 million!");
+        //console.log(inputValue);
+        //console.log(numericValue);
 
-            messageBox("Desired Loan Amount exceeds up to 7000000!", "danger", true);
+        //// Check if both the length exceeds 7 characters and the numeric value exceeds 7 million
+        //if (inputValue.length > 7 || numericValue > 7000000) {
+        //    //alert("Input value exceeds both 7 characters and 7 million!");
 
-            $('#LoanParticularsInformationModel_DesiredLoanAmount').trigger('invalid');
+        //    messageBox("Desired Loan Amount exceeds up to 7,000,000!", "danger", true);
 
-            $(this).val(0);
+        //    $('#LoanParticularsInformationModel_DesiredLoanAmount').trigger('invalid');
 
-            // Adjust the input value accordingly
-            inputValue = inputValue.substring(0, 7); // Truncate input to 7 characters
-            $(this).val(0); // Set the input value
+        //    $(this).addClass("input-validation-error is-invalid");
+
+        //    $(this).val(0);
+
+        //    // Adjust the input value accordingly
+        //    inputValue = inputValue.substring(0, 7); // Truncate input to 7 characters
+        //    $(this).val(0); // Set the input value
+        //}
+
+        // Get the raw value without the input mask
+        var rawValue = $(this).inputmask('unmaskedvalue');
+
+        // Convert the raw value to a numeric format
+        var numericValue = parseFloat(rawValue);
+
+        // Check if the numeric value exceeds 7 million
+        if (numericValue > 7000000) {
+            messageBox("Desired Loan Amount cannot exceed 7,000,000!", "danger", true);
+            $(this).addClass("input-validation-error is-invalid");
+            $(this).val(0); // Reset the input value to 0
+        }
+
+        // Check if the length exceeds 7 characters
+        if (rawValue.length > 7) {
+            // Truncate input to 7 characters
+            var truncatedValue = rawValue.substring(0, 7);
+            $(this).val(truncatedValue); // Set the input value
         }
     });
 
@@ -606,19 +655,19 @@ $(function () {
         }
     });
 
-    $('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
-        var inputValue = $(this).val().toString();
+    //$('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
+    //    var inputValue = $(this).val().toString();
 
-        //maximum 25 characters
-        if (inputValue.length > 12) {
-            //alert("Input value exceeds 7 characters!");
-            $(this).val(inputValue.substring(0, 12));
+    //    //maximum 25 characters
+    //    if (inputValue.length > 12) {
+    //        //alert("Input value exceeds 7 characters!");
+    //        $(this).val(inputValue.substring(0, 12));
 
-            messageBox("PagIBIG Number must not exceed to 12 characters", "danger", true);
+    //        messageBox("PagIBIG Number must not exceed to 12 characters", "danger", true);
 
-            $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
-        }
-    });
+    //        $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
+    //    }
+    //});
 
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Domain.Dto.ApplicantsDto
@@ -10,13 +9,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int ApplicantsPersonalInformationId { get; set; }
 
-        [DisplayName("Last Name")]
+        [Display(Name = "Last Name", Prompt = "Last Name")]
         public string? LastName { get; set; }
 
-        [DisplayName("First Name")]
+        [Display(Name = "First Name", Prompt = "First Name")]
         public string? FirstName { get; set; }
 
-        [DisplayName("Middle")]
+        [Display(Name = "Middle Name", Prompt = "Middle Name")]
         public string? MiddleName { get; set; }
 
         public string Name
@@ -27,169 +26,167 @@ namespace DMS.Domain.Dto.ApplicantsDto
             }
         }
 
-        [DisplayName("Suffix")]
+        [Display(Name = "Suffix", Prompt = "Suffix")]
         public string? Suffix { get; set; }
 
-        [DisplayName("Citizenship")]
+        [Display(Name = "Citizenship", Prompt = "Citizenship")]
         public string? Citizenship { get; set; }
 
-        [DisplayName("Birth Date")]
+        [Display(Name = "Birth Date", Prompt = "Birth Date")]
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Sex")]
-        public string? Sex { get; set; }
+        public string Sex { get; set; }
 
         [DisplayName("Marital Status")]
-        public string? MaritalStatus { get; set; }
+        public string MaritalStatus { get; set; }
 
-        [DisplayName("Home Number")]
+        [Display(Name = "Home Number", Prompt = "Home Number")]
         public string? HomeNumber { get; set; }
 
-        [DisplayName("Mobile Number")]
+        [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
         public string? MobileNumber { get; set; }
 
         [Required]
-        [DisplayName("Email")]
+        [Display(Name = "Email", Prompt = "Email")]
         public string? Email { get; set; }
 
-        [DisplayName("Present Unit")]
+        [Display(Name = "Present Unit", Prompt = "Unit Name")]
         public string? PresentUnitName { get; set; }
 
-        [DisplayName("Present Building")]
+        [Display(Name = "Present Building", Prompt = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
-        [DisplayName("Present Lot")]
+        [Display(Name = "Present Lot", Prompt = "Lot Name")]
         public string? PresentLotName { get; set; }
 
-        [DisplayName("Present Street")]
+        [Display(Name = "Present Street", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
-        [DisplayName("Present Subdivision")]
+        [Display(Name = "Present Subdivision", Prompt = "Subdivision Name")]
         public string? PresentSubdivisionName { get; set; }
 
-        [DisplayName("Present Baranggay")]
+        [Display(Name = "Present Baranggay", Prompt = "Baranggay Name")]
         public string? PresentBaranggayName { get; set; }
 
-        [DisplayName("Present Municipality")]
+        [Display(Name = "Present Municipality", Prompt = "Municipality Name")]
         public string? PresentMunicipalityName { get; set; }
 
-        [DisplayName("Present Province")]
+        [Display(Name = "Present Province", Prompt = "Province Name")]
         public string? PresentProvinceName { get; set; }
 
-        [DisplayName("Present Zip Code")]
+        [Display(Name = "Present Zip Code", Prompt = "Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        [DisplayName("Permanent Unit")]
+        [Display(Name = "Permanent Unit", Prompt = "Unit Name")]
         public string? PermanentUnitName { get; set; }
 
-        [DisplayName("Permanent Building")]
+        [Display(Name = "Permanent Building", Prompt = "Building Name")]
         public string? PermanentBuildingName { get; set; }
 
-        [DisplayName("Permanent Lot")]
+        [Display(Name = "Permanent Lot", Prompt = "Lot Name")]
         public string? PermanentLotName { get; set; }
 
-        [DisplayName("Permanent Street")]
+        [Display(Name = "Permanent Street", Prompt = "Street Name")]
         public string? PermanentStreetName { get; set; }
 
-        [DisplayName("Permanent Subdivision")]
+        [Display(Name = "Permanent Subdivision", Prompt = "Subdivision Name")]
         public string? PermanentSubdivisionName { get; set; }
 
-        [DisplayName("Permanent Baranggay")]
+        [Display(Name = "Permanent Baranggay", Prompt = "Baranggay Name")]
         public string? PermanentBaranggayName { get; set; }
 
-        [DisplayName("Permanent Municipality")]
+        [Display(Name = "Permanent Municipality", Prompt = "Municipality Name")]
         public string? PermanentMunicipalityName { get; set; }
 
-        [DisplayName("Permanent Province")]
+        [Display(Name = "Permanent Province", Prompt = "Province Name")]
         public string? PermanentProvinceName { get; set; }
 
-        [DisplayName("Permanent Zip Code")]
+        [Display(Name = "Permanent Zip Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
 
-        [DisplayName("Home Ownership")]
-        public string? HomeOwnerShip { get; set; }
+        [Display(Name = "Home Ownership", Prompt = "Home Ownership")]
+        public string HomeOwnerShip { get; set; }
 
-        [DisplayName("Monthly Rent")]
+        [Display(Name = "Monthly Rent", Prompt = "Monthly Rent")]
         public Decimal? MonthlyRent { get; set; }
 
-        [DisplayName("Years of Stay")]
+        [Display(Name = "Years of Stay", Prompt = "Years")]
         public int? YearsofStay { get; set; }
 
-        [DisplayName("SSS Number")]
+        [Display(Name = "SSS Number", Prompt = "XX-XXXXXXX-XX")]
         public string? SSSNumber { get; set; }
 
-        [DisplayName("TIN Number")]
+        [Display(Name = "TIN Number", Prompt = "XXX-XXX-XXX-XXXX")]
         public string? TinNumber { get; set; }
 
         [DisplayName("Occupation Status")]
-        public string? OcupationStatus { get; set; }
+        public string OcupationStatus { get; set; }
 
-        [DisplayName("Employer")]
+        [Display(Name = "Employer", Prompt = "Employer Name")]
         public string? EmployerName { get; set; }
 
-
-
         [DisplayName("Industry")]
-        public string? IndustryName { get; set; }
+        public string IndustryName { get; set; }
 
-        [DisplayName("Position")]
+        [Display(Name = "Position", Prompt = "Position")]
         public string? PositionName { get; set; }
 
-        [DisplayName("Department")]
+        [Display(Name = "Department", Prompt = "Department")]
         public string? DepartmentName { get; set; }
 
-        [DisplayName("Years Employment")]
+        [Display(Name = "Years Employment", Prompt = "Years Employement")]
         public int? YearsEmployment { get; set; }
 
-        [DisplayName("Number of Dependents")]
+        [Display(Name = "Number of Dependents", Prompt = "No of Dependents")]
         public int? NumberOfDependent { get; set; }
 
-        [DisplayName("Business Unit")]
+        [Display(Name = "Business Unit", Prompt = "Unit Name")]
         public string? BusinessUnitName { get; set; }
 
-        [DisplayName("Business Building")]
+        [Display(Name = "Business Building", Prompt = "Building Name")]
         public string? BusinessBuildingName { get; set; }
 
-        [DisplayName("Business Lot")]
+        [Display(Name = "Business Lot", Prompt = "Lot Name")]
         public string? BusinessLotName { get; set; }
 
-        [DisplayName("Business Street")]
+        [Display(Name = "Business Street", Prompt = "Street Name")]
         public string? BusinessStreetName { get; set; }
 
-        [DisplayName("Business Subdivision")]
+        [Display(Name = "Business Subdivision", Prompt = "Subdivision Name")]
         public string? BusinessSubdivisionName { get; set; }
 
-        [DisplayName("Business Baranggay")]
+        [Display(Name = "Business Baranggay", Prompt = "Baranggay Name")]
         public string? BusinessBaranggayName { get; set; }
 
-        [DisplayName("Business Municipality")]
+        [Display(Name = "Business Municipality", Prompt = "Municipality Name")]
         public string? BusinessMunicipalityName { get; set; }
 
-        [DisplayName("Business Province")]
+        [Display(Name = "Business Province", Prompt = "Province Name")]
         public string? BusinessProvinceName { get; set; }
 
-        [DisplayName("Business Zip Code")]
+        [Display(Name = "Business Zip Code", Prompt = "Zip Code")]
         public string? BusinessZipCode { get; set; }
 
-        [DisplayName("Business Country")]
+        [Display(Name = "Business Country", Prompt = "Country")]
         public string? BusinessCountry { get; set; }
 
-        [DisplayName("Business Contact Number")]
+        [Display(Name = "Business Contact Number", Prompt = "Input number")]
         public string? BusinessContactNumber { get; set; }
 
-        [DisplayName("Business Direct Line Number")]
+        [Display(Name = "Business Direct Line Number", Prompt = "Input number")]
         public int? BusinessDirectLineNumber { get; set; }
 
-        [DisplayName("Business Truck Line Number")]
+        [Display(Name = "Business Truck Line Number", Prompt = "Input number")]
         public int? BusinessTruckLineNumber { get; set; }
 
-        [DisplayName("Business Email")]
+        [Display(Name = "Business Email", Prompt = "Email")]
         public string? BusinessEmail { get; set; }
 
-        [DisplayName("Preferred Mailing Address")]
-        public string? PreparedMailingAddress { get; set; }
+        [Display(Name = "Preferred Mailing Address", Prompt = "Mailing Address")]
+        public string PreparedMailingAddress { get; set; }
 
-        [DisplayName("Preferred Time To Contact")]
+        [Display(Name = "Preferred Time To Contact", Prompt = "Preferred Time to Contact")]
         public DateTime? PreferredTimeToContact { get; set; }
 
         [DisplayName("Date Created")]
@@ -219,18 +216,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [DisplayName("Is Business Address on Abroad")]
         public bool IsBusinessAddressAbroad { get; set; }
 
-
-
-
         [DisplayName("Property Developer ")]
         public string? PropertyDeveloperName { get; set; }
 
         [DisplayName("Property Location")]
         public string? PropertyLocation { get; set; }
 
-
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; }
-
     }
 }
