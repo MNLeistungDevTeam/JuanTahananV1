@@ -1,5 +1,13 @@
 $(async function () {
     "strict";
+    const FileFormats = {
+        1: ['.pdf'],
+        2: '.docx',
+        3: '.txt',
+        4: '.xlsx',
+        5: ['.jpg', '.jpeg', '.JPEG', '.Jpg'], // Mapping both .jpg and .jpeg to the same value
+        6: '.png'
+    };
 
     const $modal = $('#modal-file');
     const $form = $("#document_form");
@@ -76,10 +84,16 @@ $(async function () {
         e.preventDefault();
         DocumentId = 0;
         var documentType = await GetDocumentType(documentypeid);
-        $('#file-input').attr('accept', documentType.FileFormat);
+
+        let fileFormats = FileFormats[documentType.FileType];
+
+        if (Array.isArray(fileFormats)) {
+            fileFormats = fileFormats.join(','); // Join array elements into a single string
+        }
+
+        $('#file-input').attr('accept', fileFormats);
         $('#file-input').trigger('click');
     });
-
     $('#tbl_files tbody').on('click', '.replace', function (e) {
         e.preventDefault();
         var rowData = tbl_files.row($(this).closest('tr')).data();
@@ -172,10 +186,10 @@ $(async function () {
 
                 // remove filename
                 $('#file-input').val('');
+
+                $("#modal-file").modal('hide');
             },
             error: function (xhr, status, error) {
-                console.log(xhr);
-
                 messageBox(xhr.responseText, "danger", true);
                 loader.close();
                 tbl_document.ajax.reload();
@@ -214,7 +228,10 @@ $(async function () {
                 data: "DocumentTypeId",
                 visible: false
             },
-
+            {
+                data: "DocumentFileType",
+                class: "text-center align-middle"
+            },
             {
                 data: "TotalDocumentCount",
                 class: "text-center align-middle"
@@ -268,8 +285,6 @@ $(async function () {
     $('#tbl_application_document tbody').on('click', 'tr', function () {
         var rowData = tbl_verificationDocument.row(this).data();
         documentypeid = rowData.DocumentTypeId; // Assign the value of documentTypeId here
-        console.log(rowData);
-        console.log(documentypeid);
         tbl_files.ajax.reload();
         $modal.modal('show');
     });
@@ -314,6 +329,11 @@ $(async function () {
             {
                 data: "DocumentTypeId",
                 visible: false
+            },
+
+            {
+                data: "DocumentFileType",
+                class: "text-center align-middle"
             },
 
             {

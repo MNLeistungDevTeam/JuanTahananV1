@@ -73,6 +73,12 @@
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
+
+
+
+                            <h3 class="badge bg-yellowgreen ms-auto font-18 d-none" id="header_remarks">Remarks: <span id="span_remarks"></span></h3>
+
+
                             @{
                                 if (currentUserId == Model.ApplicantsPersonalInformationModel.UserId)
                                 {
@@ -288,7 +294,7 @@
                                                     <div class="row">
                                                         <label class="col-md-2 text-md-end">Birth Date:</label>
                                                         <div class="col-md-10">
-                                                            <p>@Model.BarrowersInformationModel.BirthDate</p>
+                                                            <p>@(Model.BarrowersInformationModel.BirthDate?.ToString("yyyy-MM-dd") ?? "")</p>
                                                         </div>
                                                     </div>
 
@@ -334,7 +340,6 @@
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
                                             <div id="div_application" class="row">
-                                               
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="tab5" role="tabpanel">

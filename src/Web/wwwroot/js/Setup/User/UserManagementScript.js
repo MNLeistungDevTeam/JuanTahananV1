@@ -305,7 +305,7 @@ $(function () {
 
             userRoleDropdown.unlock();
             userRoleDropdown.setValue(userInfo.UserRoleId);
-            userRoleDropdown.lock();
+            //userRoleDropdown.lock();
 
             if (UserPicture === "" || UserPicture === null) ActualPicture = DefaultProfile;
             else ActualPicture = UserPicture;

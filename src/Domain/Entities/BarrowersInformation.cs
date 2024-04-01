@@ -87,7 +87,7 @@ public partial class BarrowersInformation
 
     public string TinNumber { get; set; }
 
-    public string OcupationStatus { get; set; }
+    public string OccupationStatus { get; set; }
 
     public string EmployerName { get; set; }
 
@@ -131,7 +131,7 @@ public partial class BarrowersInformation
 
     public string PreparedMailingAddress { get; set; }
 
-    public DateTime? PreferredTimeToContact { get; set; }
+    public string PreferredTimeToContact { get; set; }
 
     public DateTime DateCreated { get; set; }
 

@@ -29,5 +29,8 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
         public string? ModifiedBy { get; set; }
 
         public int? TotalDocumentCount { get; set; }
+
+
+        public string? DocumentFileType { get; set; }
     }
 }

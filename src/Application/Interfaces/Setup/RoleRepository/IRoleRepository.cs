@@ -19,5 +19,6 @@ namespace DMS.Application.Interfaces.Setup.RoleRepository
         Task DeleteAsync(int id);
         Task BatchDeleteAsync(int[] ids);
         Task<RoleModel?> GetByCurrentUser();
+        Task<Role?> GetByCodeAsync(string code);
     }
 }

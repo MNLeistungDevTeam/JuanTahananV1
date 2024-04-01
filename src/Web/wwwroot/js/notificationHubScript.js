@@ -19,6 +19,7 @@ $(function () {
 
     notifConnection.on("AddNotifGroup", function (companycode, message) {
         //reset to 1
+        console.log(companycode);
 
         iziToasterBox(message);
 

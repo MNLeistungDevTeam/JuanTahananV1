@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         //[Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
         //[Range(0, 999999999999)]
-        [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "Input Pag-IBIG Number")]
+        [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }
 
         public DateTime DateCreated { get; set; }

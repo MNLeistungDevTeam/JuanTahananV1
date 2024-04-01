@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.CodeParser;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
@@ -42,18 +41,44 @@ public class RoleController : Controller
         _userRepo = userRepo;
     }
 
+    #region Views
+
     public IActionResult Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> UserRole(int id)
+    //public async Task<IActionResult> UserRole(int id)
+    //{
+    //    return View(new RoleViewModel()
+    //    {
+    //        Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
+    //    });
+    //}
+
+    [Route("Role/UserRole/{code}")]
+    public async Task<IActionResult> UserRole(string code)
     {
-        return View(new RoleViewModel()
+        try
         {
-            Role = _mapper.Map<RoleModel>(await _roleRepo.GetByIdAsync(id))
-        });
+            var result = await _roleRepo.GetByCodeAsync(code);
+
+            RoleViewModel vModel = new()
+            {
+                Role = _mapper.Map<RoleModel>(result)
+            };
+
+            return View(vModel);
+        }
+        catch (Exception)
+        {
+            return BadRequest();
+        }
     }
+
+    #endregion Views
+
+    #region API Getters
 
     public async Task<IActionResult> GetRoleSetupAccess(int id)
     {
@@ -104,29 +129,66 @@ public class RoleController : Controller
             usersWithoutRole = usersWithoutRole.Where(x => !userRoles.Contains(x.Id)).ToList();
         }
 
-        return Ok(usersWithoutRole.Select(x => new
-        {
-            text = x.Name,
-            value = x.Id,
-            position = x.Position
-        }));
+        var result = usersWithoutRole.Select(x => new { text = x.Name, value = x.Id, position = x.Position });
+
+        return Ok(result);
     }
 
     public async Task<IActionResult> GetUserRoles(int RoleId) =>
         Ok(((await _userRoleRepo.SpGetAllRoles())).Where(x => x.RoleId == RoleId));
 
-    public async Task RemoveFromRole(int[] ids) =>
-        await _userRoleRepo.BatchDeleteAsync(ids);
+    #endregion API Getters
 
-    /*[HttpPost]
+    #region API Operation
+
+    //[HttpPost]
+    //public async Task<IActionResult> SaveUserRole(RoleViewModel model)
+    //{
+    //    try
+    //    {
+    //        if (!ModelState.IsValid)
+    //        {
+    //            return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+    //        }
+
+    //        foreach (var item in model.UserRole.UsersId)
+    //        {
+    //            var existingUserRole = await _userRoleRepo.GetUserRoleAsync(item);
+
+    //            if (existingUserRole != null)
+    //            {
+    //                // Update existing user role if it already exists
+    //                existingUserRole.RoleId = model.UserRole.RoleId;
+    //                await _userRoleRepo.SaveAsync(_mapper.Map<UserRoleModel>(existingUserRole));
+    //            }
+    //            else
+    //            {
+    //                // Create new user role if it doesn't exist
+    //                await _userRoleRepo.SaveAsync(new UserRoleModel()
+    //                {
+    //                    RoleId = model.UserRole.RoleId,
+    //                    UserId = item
+    //                });
+    //            }
+    //        }
+
+    //        return Ok();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return BadRequest(new { Errors = ex.ToString() });
+    //    }
+    //}
+
+    [HttpPost]
     public async Task<IActionResult> SaveUserRole(RoleViewModel model)
     {
         try
         {
             if (!ModelState.IsValid)
-            {
                 return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
-            }
+
+            var result = new UserRole();
 
             foreach (var item in model.UserRole.UsersId)
             {
@@ -134,14 +196,14 @@ public class RoleController : Controller
 
                 if (existingUserRole != null)
                 {
-                    // Update existing user role if it already exists
                     existingUserRole.RoleId = model.UserRole.RoleId;
-                    await _userRoleRepo.SaveAsync(_mapper.Map<UserRoleModel>(existingUserRole));
+                    var mapped = _mapper.Map<UserRoleModel>(existingUserRole);
+                    result = await _userRoleRepo.SaveAsync(mapped);
                 }
                 else
                 {
                     // Create new user role if it doesn't exist
-                    await _userRoleRepo.SaveAsync(new UserRoleModel()
+                    result = await _userRoleRepo.SaveAsync(new UserRoleModel()
                     {
                         RoleId = model.UserRole.RoleId,
                         UserId = item
@@ -149,13 +211,29 @@ public class RoleController : Controller
                 }
             }
 
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return BadRequest();
+        }
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> RemoveFromRole(string ids)
+    {
+        try
+        {
+            int[] _ids = Array.ConvertAll(ids.Split(','), int.Parse);
+            await _userRoleRepo.BatchDeleteAsync(_ids);
+
             return Ok();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return BadRequest(new { Errors = ex.ToString() });
+            return BadRequest();
         }
-    }*/
+    }
 
     [HttpPost]
     public async Task<IActionResult> SaveRole(RoleViewModel model)
@@ -163,13 +241,11 @@ public class RoleController : Controller
         try
         {
             if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors });
-                return Conflict(errors);
-            }
+                return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
 
-            await _roleRepo.SaveAsync(model.Role, model.RoleAccess);
-            return Ok();
+            var result = await _roleRepo.SaveAsync(model.Role, model.RoleAccess);
+
+            return Ok(result);
         }
         catch (Exception e)
         {
@@ -192,4 +268,6 @@ public class RoleController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+    #endregion API Operation
 }

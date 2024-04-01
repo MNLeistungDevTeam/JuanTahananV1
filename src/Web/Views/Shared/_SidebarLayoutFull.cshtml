@@ -34,7 +34,7 @@
 
     <!-- Thirdparty css -->
     @RenderSection("Links", false)
-
+    <link href="~/lib/izitoast/dist/css/izitoast.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/datatables.bundle.css" id="app-style" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.thirdparty.bundle.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -48,7 +48,7 @@
     <div id="Layout-defaultProfile" hidden>@Url.Content("~/images/user/default.png")</div>
     <div id="Layout-defaultSignature" hidden>@Url.Content("~//images/user/signature.png")</div>
 
-
+    
 
     <!-- Begin page -->
     <div id="wrapper">
@@ -92,15 +92,18 @@
     <partial name="_ThemeSettings" />
 
     <!-- Thirdparty js -->
+     
+    <script src="~/lib/izitoast/dist/js/izitoast.min.js" asp-append-version="true"></script>
     <script src="~/js/site.thirdparty.bundle.js" asp-append-version="true"></script>
     <script src="~/js/datatables.bundle.js" asp-append-version="true"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/longRunningTask.js" asp-append-version="true"></script>
     <script src="~/js/sessionChecker.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notificationHubScript.js" asp-append-version="true"></script>
     <script src="~/js/uploader.js" asp-append-version="true"></script>
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-    <script src="~/js/notificationHubScript.js" asp-append-version="true"></script>
+ 
     @RenderSection("Scripts", false)
 
 </body>

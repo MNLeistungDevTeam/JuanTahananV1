@@ -1,4 +1,7 @@
 ﻿$(function () {
+
+    let moduleModal = $("#module-modal");
+
     //#region DataTables
 
     var tbl_moduleHasApproval = $("#tbl_moduleHasApproval").DataTable({
@@ -93,7 +96,6 @@
     });
 
     async function openModuleModal(id = 0, mode = "") {
-        let moduleModal = $("#module-modal");
         let moduleModalLabel = $("#module-modalLabel");
         let modalTitle = "";
 

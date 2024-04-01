@@ -11,9 +11,11 @@ namespace DMS.Domain.Dto.UserDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+
         [Display(Name = "Users", Prompt = "Select users")]
         [Required(ErrorMessage = "this field is required")]
         public int[]? UsersId { get; set; }
+
         public int RoleId { get; set; }
         public DateTime JoinedDate { get; set; }
         public DateTime Status { get; set; }
@@ -23,6 +25,7 @@ namespace DMS.Domain.Dto.UserDto
         public string? Position { get; set; }
         public string? Email { get; set; }
         public string? ProfilePicture { get; set; }
+
         public string Name
         {
             get
@@ -30,12 +33,13 @@ namespace DMS.Domain.Dto.UserDto
                 return FirstName + " " + MiddleName + " " + LastName;
             }
         }
+
         public string StatusOnline
         {
             get
             {
                 // Calculate the difference between the current date and the JoinedDate
-                TimeSpan timeSinceJoined = DateTime.Now - Status;
+                TimeSpan timeSinceJoined = DateTime.Now - JoinedDate;
 
                 if (timeSinceJoined.TotalDays < 1)
                 {

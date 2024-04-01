@@ -1,5 +1,4 @@
-﻿
-"use strict"
+﻿"use strict"
 $(function () {
     loadApplicantTotalInfo();
 
@@ -120,14 +119,16 @@ $(function () {
         var selectedRows = tbl_applicants.rows({ selected: true, search: 'applied' }).count();
         var id = tbl_applicants.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applicants.rows({ selected: true }).data().pluck("Code").toArray().toString();
+        var applicationStatus = tbl_applicants.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
+
+ 
         $("#btn_add").attr({
             "disabled": !(selectedRows === 0),
             "data-url": baseUrl + "Applicants/HLF068"
         });
-
         $("#btn_edit").attr({
-            "disabled": !(selectedRows === 1),
+            "disabled": (selectedRows !== 1 || applicationStatus != 2) && applicationStatus != 0,
             "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
         });
 

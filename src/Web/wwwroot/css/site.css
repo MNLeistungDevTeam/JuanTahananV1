@@ -1130,3 +1130,6 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .leftside-menu:hover {
     overflow:visible!important;
 }
+.bg-yellowgreen {
+    background-color: yellowgreen;
+}
