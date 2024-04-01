@@ -55,6 +55,8 @@ public class DocumentController : Controller
         _currentUserRoleAccessService = currentUserRoleAccessService;
     }
 
+    #region Views
+
     //[ModuleServices(ModuleCodes.Document, typeof(IModuleRepository))]
     public async Task<IActionResult> Index()
     {
@@ -62,8 +64,10 @@ public class DocumentController : Controller
         {
             var roleAccess = await _currentUserRoleAccessService.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_DOCUMENT);
 
-            if (roleAccess == null) { return View("AccessDenied"); }
-            if (!roleAccess.CanRead) { return View("AccessDenied"); }
+            if (roleAccess == null || !roleAccess.CanRead)
+                return View("AccessDenied");
+
+            //if () { return View("AccessDenied"); }
 
             ViewData["RoleAccess"] = roleAccess;
 
@@ -74,8 +78,6 @@ public class DocumentController : Controller
             throw;
         }
     }
-
-    #region Get Methods
 
     //[ModuleServices(ModuleCodes.DocumentUpload, typeof(IModuleRepository))]
 
@@ -106,19 +108,23 @@ public class DocumentController : Controller
         return View();
     }
 
+    #endregion Views
+
+    #region API Getters
+
     public async Task<IActionResult> GetAllUploadedDocuments(int applicationId) =>
         Ok(await _documentRepo.SpGetAllApplicationSubmittedDocuments(applicationId));
 
     [HttpGet("Document/GetDocumentsByApplicant/{applicantCode}")]
     public async Task<IActionResult> GetDocumentsByApplicant(string applicantCode) =>
-       Ok(await _documentTypeRepo.GetByApplicantCodeAsync(applicantCode));
+        Ok(await _documentTypeRepo.GetByApplicantCodeAsync(applicantCode));
 
-    public async Task<IActionResult> GetAllDocumentType()
-    {
-        var data = await _documentTypeRepo.GetInquiryAsync();
+    [Route("[controller]/GetApplicantUploadedDocuments/{applicantCode?}")]
+    public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
+        Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
 
-        return Ok(data);
-    }
+    public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
+        Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
 
     public async Task<IActionResult> GetEligibilityApplicationDocument(string? applicantCode)
     {
@@ -152,7 +158,24 @@ public class DocumentController : Controller
         return Ok(data);
     }
 
-    #endregion Get Methods
+    public async Task<IActionResult> GetDocumentById(int id) =>
+        Ok((await _documentTypeRepo.SpGetAllUserDocumentTypes()).FirstOrDefault(x => x.Id == id));
+
+    public async Task<IActionResult> GetDocumentTypeById(int id) =>
+        Ok(await _documentTypeRepo.GetDocumentTypeById(id));
+
+    public async Task<IActionResult> GetFileList(int ApplicationId, int DocumentTypeId) =>
+        Ok(await _documentTypeRepo.SpGetAllDocumentsByIds(ApplicationId, DocumentTypeId));
+
+    public async Task<IActionResult> GetAllDocumentTypes() =>
+        Ok(await _documentTypeRepo.SpGetAllUserDocumentTypes());
+
+    public async Task<IActionResult> GetAllDocumentType() =>
+        Ok(await _documentTypeRepo.GetInquiryAsync());
+
+    #endregion API Getters
+
+    #region API Operation
 
     public async Task<IActionResult> UploadProfile(IFormFile file)
     {
@@ -291,16 +314,6 @@ public class DocumentController : Controller
         }
     }
 
-    [HttpDelete]
-    public async Task DocumentDelete(int DocumentId)
-    {
-        //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
-        await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local
-    }
-
-    public async Task<IActionResult> GetAllDocumentTypes() =>
-        Ok(await _documentTypeRepo.SpGetAllUserDocumentTypes());
-
     [HttpPost]
     public async Task<IActionResult> SaveDocumentType(DocumentViewModel vwModel)
     {
@@ -349,11 +362,12 @@ public class DocumentController : Controller
         }
     }
 
-    public async Task<IActionResult> GetDocumentById(int id) =>
-        Ok((await _documentTypeRepo.SpGetAllUserDocumentTypes()).FirstOrDefault(x => x.Id == id));
-
-    public async Task<IActionResult> GetDocumentTypeById(int id) =>
-        Ok(await _documentTypeRepo.GetDocumentTypeById(id));
+    [HttpDelete]
+    public async Task DocumentDelete(int DocumentId)
+    {
+        //await _uploadService.DeleteFile(DocumentId, "Ftp_eiDOC2024"); for ftp but server not working
+        await _uploadService.DeleteFileAsync(DocumentId, _hostingEnvironment.WebRootPath); //use local
+    }
 
     [HttpDelete]
     public async Task DeleteDocuments(string ids)
@@ -377,13 +391,5 @@ public class DocumentController : Controller
         await _documentTypeRepo.BatchDeleteAsync2(_ids);
     }
 
-    public async Task<IActionResult> GetFileList(int ApplicationId, int DocumentTypeId) =>
-        Ok(await _documentTypeRepo.SpGetAllDocumentsByIds(ApplicationId, DocumentTypeId));
-
-    [Route("[controller]/GetApplicantUploadedDocuments/{applicantCode?}")]
-    public async Task<IActionResult> GetApplicantUploadedDocuments(string applicantCode) =>
-     Ok(await _documentRepo.GetApplicantDocumentsByCode(applicantCode));
-
-    public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
-    Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
+    #endregion API Operation
 }
