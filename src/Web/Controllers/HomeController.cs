@@ -73,6 +73,7 @@ public class HomeController : Controller
             return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
         }
     }
+
     public async Task<IActionResult> UpdateThemeUserColor(string color)
     {
         try
@@ -92,12 +93,32 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-
             return BadRequest(ex.Message);
         }
     }
-    public async Task<IActionResult> GetApplicationsCount() =>
-        Ok((await _applicantsPersonalInformationRepo.GetAllAsync()).Count);
+
+    //public async Task<IActionResult> GetApplicationsCount() =>
+    //    Ok((await _applicantsPersonalInformationRepo.GetAllAsync()).Count);
+
+    public async Task<IActionResult> GetApplicationsCount()
+    {
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var data = await _applicantsPersonalInformationRepo.GetApplicationInfo(roleId);
+
+            return Ok(data);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     //[AllowAnonymous]
     //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     //public IActionResult Error()

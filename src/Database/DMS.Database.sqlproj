@@ -218,6 +218,7 @@
     <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetDocumentTypeId.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetById.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationVerificationDocuments.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -10,13 +10,10 @@
 //                let reportItem = "";
 //                let reportTypes = ['Main Report', 'Sub Report'];
 
-
-
 //                for (let report of reportListData) {
 //                    var reportName = report.name;
 //                    var reportSubtitle = reportName.subString(reportName.indexOf("("), reportName.indexOf(")") + 1);
 //                    reportName = reportName.replace(reportSubtitle, '');
-
 
 //                    reportItem += `
 //                            <div class="col-lg-3">
@@ -33,8 +30,6 @@
 //                                </div>
 //                            </div>`;
 //                }
-
-
 
 //                reportsDiv.empty();
 //                reportsDiv.append(reportItem);
@@ -98,3 +93,31 @@
 //        return Object.values(uniqueData);
 //    }
 //});
+
+$(function () {
+
+    loadApplicationInfo();
+
+    function loadApplicationInfo() {
+        let submitted_info = $('#submitted_info');
+        let approved_info = $('#approved_info');
+        let disapprove_info = $('#disapprove_info');
+        let withdrawn_info = $('#withdrawn_info');
+        let totalApplication = $('#totalApplications');
+        let loading_text = "<span class='spinner-border spinner-border-sm'></span>";
+
+        $.ajax({
+            url: baseUrl + "Home/GetApplicationsCount",
+
+            beforeSend: function () {
+                totalApplication.html(loading_text);
+            },
+            success: function (response) {
+                totalApplication.text(response.TotalApplication);
+                withdrawn_info.val(response.Withdrawn);
+                approved_info.val((response.PagIbigVerified + response.DeveloperVerified));
+                submitted_info.val(response.ApplicationDraft);
+            }
+        });
+    }
+});

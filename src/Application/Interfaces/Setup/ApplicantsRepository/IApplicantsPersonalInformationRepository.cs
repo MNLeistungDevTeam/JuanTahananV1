@@ -35,5 +35,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetAllApplicationsByPagibigNumber(string? pagibigNumber);
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode);
+        Task<ApplicationInfoModel?> GetApplicationInfo(int roleId);
     }
 }
