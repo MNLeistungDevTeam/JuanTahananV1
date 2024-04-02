@@ -28,7 +28,7 @@ namespace DMS.Application.Interfaces.Setup.ModuleRepository
         Task<List<ModuleModel>> GetAllAsync();
 
         Task<List<ModuleModel>> GetWithApproversAsync();
-        Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel> moduleStages, int userId);
+        Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel?> moduleStages, int userId);
         Task<Module> CreateAsync(Module module);
         Task<Module> UpdateAsync(Module module);
     }

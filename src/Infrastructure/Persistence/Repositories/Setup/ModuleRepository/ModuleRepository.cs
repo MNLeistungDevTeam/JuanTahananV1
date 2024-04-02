@@ -68,7 +68,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
             return _module;
         }
 
-        public async Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel> moduleStages, int userId)
+        public async Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel?> moduleStages, int userId)
         {
             var _module = _mapper.Map<Module>(module);
 

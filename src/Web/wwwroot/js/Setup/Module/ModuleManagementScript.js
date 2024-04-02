@@ -870,10 +870,10 @@ $(async function () {
             $("[name='Module.InMaintenance']").prop("checked", moduleInfo.InMaintenance);
             $("[name='Module.WithApprover']").prop("checked", moduleInfo.WithApprover);
 
-            $("#tbl_module_stages tbody").empty();
-            for (var moduleStage of moduleStages) {
-                addModuleStage(moduleStage);
-            }
+            //$("#tbl_module_stages tbody").empty();
+            //for (var moduleStage of moduleStages) {
+            //    addModuleStage(moduleStage);
+            //}
             rebindValidators();
         }
 
