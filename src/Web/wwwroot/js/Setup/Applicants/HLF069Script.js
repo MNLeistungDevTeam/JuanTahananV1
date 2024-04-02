@@ -11,7 +11,6 @@ $(function () {
         time_24hr: true
     });
 
-
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
         placeholder: 'X',
@@ -211,47 +210,17 @@ $(function () {
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
-        //var inputValue = $(this).val().toString();
-        //var numericValue = parseInt(inputValue, 10);
-
-        //console.log(inputValue);
-        //console.log(numericValue);
-
-        //// Check if both the length exceeds 7 characters and the numeric value exceeds 7 million
-        //if (inputValue.length > 7 || numericValue > 7000000) {
-        //    //alert("Input value exceeds both 7 characters and 7 million!");
-
-        //    messageBox("Desired Loan Amount exceeds up to 7,000,000!", "danger", true);
-
-        //    $('#LoanParticularsInformationModel_DesiredLoanAmount').trigger('invalid');
-
-        //    $(this).addClass("input-validation-error is-invalid");
-
-        //    $(this).val(0);
-
-        //    // Adjust the input value accordingly
-        //    inputValue = inputValue.substring(0, 7); // Truncate input to 7 characters
-        //    $(this).val(0); // Set the input value
-        //}
-
         // Get the raw value without the input mask
         var rawValue = $(this).inputmask('unmaskedvalue');
 
         // Convert the raw value to a numeric format
         var numericValue = parseFloat(rawValue);
 
-        // Check if the numeric value exceeds 7 million
-        if (numericValue > 7000000) {
+        // Check if the length exceeds 7 characters
+        if (rawValue.length > 7 || numericValue > 7000000) {
             messageBox("Desired Loan Amount cannot exceed 7,000,000!", "danger", true);
             $(this).addClass("input-validation-error is-invalid");
             $(this).val(0); // Reset the input value to 0
-        }
-
-        // Check if the length exceeds 7 characters
-        if (rawValue.length > 7) {
-            // Truncate input to 7 characters
-            var truncatedValue = rawValue.substring(0, 7);
-            $(this).val(truncatedValue); // Set the input value
         }
     });
 
@@ -971,6 +940,31 @@ $(function () {
         if (dataValue && dataValue.trim() !== '') {
             $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
         }
+    }
+
+    function lengthValidator() {
+        var isValid = true;
+        var elements = [
+            { name: 'ApplicantsPersonalInformationModel.PagibigNumber', requiredLength: 12, message: "Mobile number" },
+            //{ name: 'Company.TelNo', requiredLength: 8, message: "Telephone number" },
+            //{ name: 'Company.FaxNo', requiredLength: 10, message: "Fax number" },
+            //{ name: 'Company.Tin', requiredLength: 13, message: "TIN number" },
+            //{ name: 'Company.RepresentativeTin', requiredLength: 13, message: "Company Representative TIN number" }
+        ];
+
+        elements.forEach(function (element) {
+            var inputValue = $("[name='" + element.name + "']").inputmask('unmaskedvalue'); // Get the unmasked value
+            var alphanumericLength = inputValue.replace(/[^a-zA-Z0-9]/g, '').length; // Count only alphanumeric characters
+            if (alphanumericLength !== element.requiredLength) {
+                $("[data-valmsg-for='" + element.name + "']").text(element.message + " length should be " + element.requiredLength + " characters.");
+                isValid = false;
+            } else {
+                $("[data-valmsg-for='" + element.name + "']").text("");
+                isValid = isValid != false ? true : false;
+            }
+        });
+
+        return isValid;
     }
 
     //#endregion
