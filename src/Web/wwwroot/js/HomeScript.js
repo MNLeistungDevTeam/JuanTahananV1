@@ -95,7 +95,6 @@
 //});
 
 $(function () {
-
     loadApplicationInfo();
 
     function loadApplicationInfo() {
@@ -117,6 +116,12 @@ $(function () {
                 withdrawn_info.val(response.Withdrawn);
                 approved_info.val((response.PagIbigVerified + response.DeveloperVerified));
                 submitted_info.val(response.ApplicationDraft);
+
+                $('[data-plugin="knob"]').trigger('change');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                totalApplication.text(0);
+                $('[data-plugin="knob"]').val(0);
             }
         });
     }
