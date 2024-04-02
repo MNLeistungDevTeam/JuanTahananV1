@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.XtraReports.Design;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
@@ -520,6 +521,10 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+
+                    
+
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 

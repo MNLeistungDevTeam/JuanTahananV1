@@ -121,17 +121,16 @@ $(function () {
         var applicationCode = tbl_applicants.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applicants.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
-
+        $("#btn_edit").attr({
+            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+        });
  
         $("#btn_add").attr({
             "disabled": !(selectedRows === 0),
             "data-url": baseUrl + "Applicants/HLF068"
         });
-        $("#btn_edit").attr({
-            "disabled": (selectedRows !== 1 || applicationStatus != 2) && applicationStatus != 0,
-            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-        });
-
+       
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode

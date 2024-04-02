@@ -76,6 +76,22 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         #region Api
 
+        public async Task<ApplicantsPersonalInformation> UpdateNoExclusionAsync(ApplicantsPersonalInformation applicant, int updatedById)
+        {
+            try
+            {
+                applicant.ModifiedById = updatedById;
+                applicant.DateModified = DateTime.Now;
+                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus");
+
+                return applicant;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
@@ -94,8 +110,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
             else
-            {
-                _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+            {                                    //approvalstatus must not update
+                _applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);  /*await UpdateAsync(_applicantPersonalInfo, userId); */
 
                 var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(_applicantPersonalInfo.Id, _applicantPersonalInfo.CompanyId);

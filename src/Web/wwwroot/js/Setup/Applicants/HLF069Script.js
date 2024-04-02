@@ -533,6 +533,22 @@ $(function () {
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
 
+    $('#BarrowersInformationModel_BirthDate').on('change', function () {
+        var birthdate = moment($(this).val());
+        var today = moment();
+        var age = today.diff(birthdate, 'years');
+
+        console.log("Age: " + age);
+
+        // Check if age is 21 or older
+        if (age < 21) {
+            console.log("User is 21 or older");
+            messageBox('You have to be at least 21 years old to proceed','error');
+
+            $(this).val('');
+        }
+    });
+
     var homeOwnershipVal = $("#BarrowersInformationModel_HomeOwnerShip").attr('data-value');
     if (homeOwnershipVal == 'Rented') {
         // Adding d-none class if condition is true
@@ -874,66 +890,76 @@ $(function () {
 
             if ($(this).valid() == false) {
                 messageBox("Please fill out all required fields!", "danger", true);
-
                 return;
             }
 
-            $.ajax({
-                url: $(this).attr("action"),
-                method: $(this).attr("method"),
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
-                    button.attr({ disabled: true });
+            // Use SweetAlert for confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to submit the form. Proceed?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with form submission
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        method: $(this).attr("method"),
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function () {
+                            button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
+                            button.attr({ disabled: true });
+                            $("#beneficiary-overlay").removeClass('d-none');
+                        },
+                        success: function (response) {
+                            // Success message handling
+                            let recordId = $("input[name='User.Id']").val();
+                            console.log(recordId);
+                            let type = (recordId == 0 ? "Added!" : "Updated!");
+                            let successMessage = `Beneficiary Successfully ${type}`;
+                            messageBox(successMessage, "success", true);
 
-                    $("#beneficiary-overlay").removeClass('d-none');
-                },
-                success: function (response) {
-                    let recordId = $("input[name='User.Id']").val();
-                    console.log(recordId);
-                    let type = (recordId == 0 ? "Added!" : "Updated!");
-                    let successMessage = `Beneficiary Successfully ${type}`;
-
-                    messageBox(successMessage, "success", true);
-
-                    if (applicantInfoIdVal == 0) {
-                        setTimeout(function () {
+                            // Redirect handling
+                            if (applicantInfoIdVal == 0) {
+                                setTimeout(function () {
+                                    $("#beneficiary-overlay").addClass('d-none');
+                                    window.location.href = "/Applicants/HLF068/" + response;
+                                }, 2000);
+                            } else {
+                                var link = "Applicants/Beneficiary";
+                                if (roleName != 'Beneficiary') {
+                                    link = "Applicants/ApplicantRequests";
+                                }
+                                setTimeout(function () {
+                                    $("#beneficiary-overlay").addClass('d-none');
+                                    // Redirect to the specified location
+                                    window.location.href = baseUrl + link;
+                                }, 2000);
+                            }
+                            // Reset button state
+                            button.attr({ disabled: false });
+                            button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                        },
+                        error: function (response) {
+                            // Error message handling
+                            messageBox(response.responseText, "danger");
                             $("#beneficiary-overlay").addClass('d-none');
-
-                            window.location.href = "/Applicants/HLF068/" + response;
-                        }, 2000);
-                    }
-                    else {
-                        var link = "Applicants/Beneficiary";
-
-                        if (roleName != 'Beneficiary') {
-                            link = "Applicants/ApplicantRequests";
+                            button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                            button.attr({ disabled: false });
                         }
-
-                        setTimeout(function () {
-                            $("#beneficiary-overlay").addClass('d-none');
-                            // Redirect to the specified location
-                            window.location.href = baseUrl + link;
-                        }, 2000); // 2000 milliseconds = 2 seconds
-                    }
-
-                    button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-
-                    //userModal.modal('hide');
-                },
-                error: function (response) {
-                    messageBox(response.responseText, "danger");
-                    $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-                    button.attr({ disabled: false });
+                    });
                 }
             });
         });
     }
+
 
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');

@@ -125,15 +125,12 @@ $(function () {
         //    "disabled": !(selectedRows === 0),
         //});
         $("#btn_edit").attr({
-            "disabled": (selectedRows !== 1 || applicationStatus != 2) && applicationStatus != 0,
+            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
             "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
         });
 
-        //$("#btn_edit").attr({
-        //    "disabled": !(selectedRows === 1),
-        //    "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-        //});
 
+       
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
@@ -145,7 +142,7 @@ $(function () {
         });
 
         $("#btn_upload_document").attr({
-            "disabled": !(selectedRows === 1),
+            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
             "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
         });
     });

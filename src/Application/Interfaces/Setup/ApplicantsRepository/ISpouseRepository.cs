@@ -10,6 +10,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
     public interface ISpouseRepository
     {
+        Task<List<Spouse>?> GetAllAsync();
         Task<Spouse?> GetByIdAsync(int id);
         Task<Spouse> SaveAsync(SpouseModel model);
         Task<Spouse?> GetByApplicationInfoIdAsync(int id);

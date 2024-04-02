@@ -214,33 +214,47 @@ $(function () {
             let formData = $form.serialize();
             formData = formData.replace(/ApprovalLevel\./g, "");
 
-            $.ajax({
-                url: $form.attr("action"),
-                method: $form.attr("method"),
-                data: formData,
-                beforeSend: function () {
-                    $btnSave.attr({ disabled: true });
-                    //$overlay.attr({ hidden: false });
-                },
-                success: function (response) {
-                    messageBox("Successfully saved.", "success");
+            // Use SweetAlert for confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to submit the form. Proceed?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with form submission
+                    $.ajax({
+                        url: $form.attr("action"),
+                        method: $form.attr("method"),
+                        data: formData,
+                        beforeSend: function () {
+                            $btnSave.attr({ disabled: true });
+                        },
+                        success: function (response) {
+                            messageBox("Successfully saved.", "success");
 
-                    $btnSave.attr({ disabled: false });
-                    //$overlay.attr({ hidden: true });
+                            $btnSave.attr({ disabled: false });
 
-                    $approverModal.modal("hide");
+                            $approverModal.modal("hide");
 
-                    location.reload();
-                },
-                error: function (error) {
-                    //$overlay.attr({ hidden: true });
-                    $btnSave.attr({ disabled: false });
+                            location.reload();
+                        },
+                        error: function (response) {
+                            // Error message handling
+                            $btnSave.attr({ disabled: false });
 
-                    messageBox(error.responseText, "danger", false, false);
+                            messageBox(error.responseText, "danger", false, false);
+                        }
+                    });
                 }
-            })
-        })
+            });
+        });
     }
+
     function resetForm() {
         $("[name='ApprovalLevel.Remarks']").val("");
 

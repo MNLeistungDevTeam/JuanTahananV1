@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAllByPagibigNumber]
+﻿ CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAllByPagibigNumber]
 	@pagibigNumber NVARCHAR(50) 
 AS
 	SELECT 
@@ -34,7 +34,7 @@ AS
 		ur.RoleId ApproverRoleId
 		FROM ApprovalStatus aps1
 		LEFT JOIN (
-			SELECT  aplvl1.* 
+			SELECT  aplvl1.*
 			FROM ApprovalLevel aplvl1
 			INNER JOIN (
 				SELECT ApprovalStatusId, MAX(Id) Id
@@ -48,6 +48,6 @@ AS
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
  
  WHERE apl.PagibigNumber = @pagibigNumber
-
+ ORDER BY apl.DateCreated,aps.LastUpdate DESC
 
 RETURN 0
