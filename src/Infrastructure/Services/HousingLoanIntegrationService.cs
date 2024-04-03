@@ -6,6 +6,7 @@ using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BasicBeneficiaryDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Enums;
 using Hangfire;
 
 namespace DMS.Infrastructure.Services
@@ -171,12 +172,12 @@ namespace DMS.Infrastructure.Services
 
             #region Notification
 
-            //var type = "Added";
-            //var actiontype = type;
+            var type = "Added";
+            var actiontype = type;
 
-            //var actionlink = $"Applicants/HLF068/{applicantInfoData.Code}";
+            var actionlink = $"Beneficiary/Details/{model.PagibigMidNumber}";
 
-            // await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantInfoData.Code, 1, 1);
+            await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_BENEFICIARY_MGMT, actionlink, actiontype, model.PagibigMidNumber, 1, 1);
 
             #endregion Notification
         }

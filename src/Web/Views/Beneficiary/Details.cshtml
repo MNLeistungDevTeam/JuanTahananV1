@@ -1,0 +1,215 @@
+﻿ @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment;
+
+@model DMS.Domain.Dto.BeneficiaryInformationDto.BeneficiaryInformationModel
+@{
+    string userProfile = Url.Content("~/images/user/default.png");
+
+    if (!string.IsNullOrWhiteSpace(Model.ProfilePicture))
+    {
+
+        if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, Model.ProfilePicture[1..].Replace("/", "\\"))))
+            userProfile = Url.Content("~" + Model.ProfilePicture);
+
+    }
+
+    ViewData["Title"] = "Beneficiary Details";
+    ViewData["Breadcrumbs"] = "Details";
+
+
+   
+   
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Beneficiary" asp-action="Index">Beneficiary Details</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Breadcrumbs"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+
+
+
+
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <h3 class="align-items-center">
+                            <span class="fw-bold font-28 me-2">Pagibig No:@Model.PagibigNumber</span>
+                            <input hidden id="txt_applicantCode" value="@Model.PagibigNumber" />
+                        </h3>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="d-flex justify-content-end align-items-center gap-1">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+
+                        <div class="col-sm-12">
+                            <!-- Profile -->
+                            <div class="card bg-primary">
+                                <div class="card-body profile-user-box">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+
+                                                    <div class="avatar-lg">
+                                                        <img src="@Url.Content("~" + userProfile)" alt="" class="rounded-circle img-thumbnail img-profile">
+                   
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div>
+                                                        <h4 class="mt-1 mb-1 text-white accountname-profile">@Model.Name</h4>
+                                                        <p class="font-13 text-white-50 role-profile">Beneficiary</p>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end col-->
+
+                                        <div class="col-sm-4">
+                                            <div class="text-center mt-sm-0 mt-3 text-sm-end">
+                                            </div>
+                                        </div> <!-- end col-->
+                                    </div> <!-- end row -->
+
+                                </div> <!-- end card-body/ profile-user-box-->
+                            </div><!--end profile/ card -->
+                        </div> <!-- end col-->
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="col-xl-6">
+                        <!-- Personal-Information -->
+                        <div class="card">
+                            <div class="card-body">
+
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <h4 class="header-title mt-0 mb-3">Personal Information</h4>
+                                        <p class="text-muted"><strong>Full Name :</strong> <span class="ms-2" id="fullname-profile">@Model.Name</span></p>
+                                        <p class="text-muted"><strong>Mobile :</strong><span class="ms-2" id="mobileno-profile">@Model.MobileNumber</span></p>
+                                        <p class="text-muted"><strong>Email :</strong> <span class="ms-2" id="email-profile">@Model.Email</span></p>
+                                        <p class="text-muted"><strong>Gender :</strong> <span class="ms-2" id="gender-profile">@Model.Sex</span></p>
+                                        <p class="text-muted"><strong>BirthDay :</strong> <span class="ms-2" id="birthday-profile">@Model.BirthDate</span></p>
+                                        <p class="text-muted"><strong>Age :</strong> <span class="ms-2" id="age-profile">@Model.Age</span></p>
+
+                                        <p class="text-muted"><strong>Property Location :</strong> <span class="ms-2" id="age-profile">@Model.PropertyLocation</span></p>
+                                        <p class="text-muted"><strong>Property Developer :</strong> <span class="ms-2" id="age-profile">@Model.PropertyDeveloperName</span></p>
+                                        <p class="text-muted"><strong>Property Unit Level :</strong> <span class="ms-2" id="age-profile">@Model.PropertyUnitLevelName</span></p>
+
+
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <h4 class="header-title mt-0 mb-3">Address Information (Present)</h4>
+
+                                        <p class="text-muted"><strong>Unit :</strong> <span class="ms-2" id="fullname-profile">@Model.PresentUnitName</span></p>
+
+                                        <p class="text-muted"><strong>Building :</strong><span class="ms-2" id="mobileno-profile">@Model.PresentBuildingName</span></p>
+
+                                        <p class="text-muted"><strong>Lot :</strong> <span class="ms-2" id="email-profile">@Model.PresentLotName</span></p>
+
+                                        <p class="text-muted"><strong>Street :</strong> <span class="ms-2">@Model.PresentStreetName</span></p>
+                                        <p class="text-muted"><strong>Subdivision :</strong> <span class="ms-2">@Model.PresentSubdivisionName</span></p>
+                                        <p class="text-muted"><strong>Barangay :</strong> <span class="ms-2">@Model.PresentBaranggayName</span></p>
+                                        <p class="text-muted"><strong>Municipality :</strong> <span class="ms-2">@Model.PresentMunicipalityName</span></p>
+                                        <p class="text-muted"><strong>Province :</strong> <span class="ms-2">@Model.PresentProvinceName</span></p>
+                                        <p class="text-muted"><strong>ZipCode :</strong> <span class="ms-2">@Model.PresentZipCode</span></p>
+
+
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- Personal-Information -->
+
+                    </div> <!-- end col-->
+
+
+                    <div class="col-xl-6">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mt-0 mb-3">Application Information</h4>
+
+                                <div class="col-12">
+                                    <table class="table table-sm table-bordered nowrap w-100" id="tbl_applicants">
+                                        <thead class="table-light text-center">
+                                            <tr>
+                                                <th>Application Code</th>
+                                                <th>Applicant Name</th>
+                                                <th>Pagibig Number</th>
+                                                <th>Housing Account Number</th>
+                                                <th>Income Amount</th>
+                                                <th>Developer</th>
+                                                <th>Project Location</th>
+                                                <th>Unit</th>
+                                                <th>Loan Amount</th>
+                                                <th>Date Applied</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Personal-Information -->
+
+                    </div> <!-- end col-->
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/Setup/Beneficiary/DetailsScript.js" asp-append-version="true"></script>
+}
+
+
+

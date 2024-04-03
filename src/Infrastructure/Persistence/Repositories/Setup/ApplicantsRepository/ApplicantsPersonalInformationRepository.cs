@@ -100,6 +100,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
             _applicantPersonalInfo.PagibigNumber = _applicantPersonalInfo.PagibigNumber.Replace("-", "");
+ 
 
             if (!string.IsNullOrEmpty(_applicantPersonalInfo.PagibigNumber))
             {

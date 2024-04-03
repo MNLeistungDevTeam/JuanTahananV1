@@ -37,10 +37,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformati
         public async Task<List<BeneficiaryInformation>> GetAllAsync() =>
             await _contextHelper.GetAllAsync();
 
-
         public async Task<BeneficiaryInformationModel?> GetByPagibigNumberAsync(string? pagibigNumber) =>
   await _db.LoadSingleAsync<BeneficiaryInformationModel, dynamic>("spBeneficiaryInformation_GetByPagibigNumber", new { pagibigNumber });
-
 
         #endregion Get Methods
 
@@ -49,6 +47,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformati
         public async Task<BeneficiaryInformation> SaveAsync(BeneficiaryInformationModel beneficiaryInformation, int userId)
         {
             var _beneficiaryInformation = _mapper.Map<BeneficiaryInformation>(beneficiaryInformation);
+
+            _beneficiaryInformation.PagibigNumber = _beneficiaryInformation.PagibigNumber.Replace("-", "");
+
 
             if (_beneficiaryInformation.Id == 0)
             {

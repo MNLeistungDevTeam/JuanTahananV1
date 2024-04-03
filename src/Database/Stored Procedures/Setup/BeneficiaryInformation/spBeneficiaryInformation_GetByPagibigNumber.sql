@@ -1,5 +1,10 @@
 ﻿CREATE PROCEDURE [dbo].[spBeneficiaryInformation_GetByPagibigNumber]
 	@pagibigNumber NVARCHAR(255) 
 AS
-	SELECT * from BeneficiaryInformation WHERE PagibigNumber = @pagibigNumber
+	SELECT bi.*,
+			u.ProfilePicture
+	from BeneficiaryInformation bi 
+	LEFT JOIN [User] u ON u.Id = bi.UserId
+	WHERE bi.PagibigNumber = @pagibigNumber
+	
 RETURN 0

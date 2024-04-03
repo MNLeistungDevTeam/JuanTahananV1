@@ -44,6 +44,27 @@ public class BeneficiaryController : Controller
         return View();
     }
 
+
+    [Route("[controller]/Details/{pagibigNumber?}")]
+    public async Task<IActionResult> Details(string? pagibigNumber = null)
+    {
+        var vwModel = new BeneficiaryInformationModel();
+
+        var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+        var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+        //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
+
+        if (beneficiaryData != null)
+        {
+            vwModel = beneficiaryData;
+        }
+
+        return View(vwModel);
+    }
+
+
+
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
     public async Task<IActionResult> Beneficiary(string? pagibigNumber = null)
     {
@@ -117,7 +138,7 @@ public class BeneficiaryController : Controller
             var type = model.Id == 0 ? "Added" : "Updated";
             var actiontype = type;
 
-            var actionlink = $"Beneficiary/BeneficiaryInformation/{beneficiaryData.PagibigNumber}";
+            var actionlink = $"Beneficiary/Details/{beneficiaryData.PagibigNumber}";
 
             await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_BENEFICIARY_MGMT, actionlink, actiontype, beneficiaryData.PagibigNumber, userId, companyId);
 

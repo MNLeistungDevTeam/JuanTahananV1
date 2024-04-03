@@ -3,6 +3,7 @@ using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.NotificationRepo;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Services;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
@@ -55,6 +56,15 @@ namespace DMS.Infrastructure.Services
             var uniqueReceivers = roleNames;
 
             var notifData = $"{actionType} Applicant: {transactionNo}";
+
+            if (moduleCode == ModuleCodes2.CONST_BENEFICIARY_MGMT)
+            {
+                notifData = $"{actionType} Beneficiary: {transactionNo}";
+            }
+            else if (moduleCode == ModuleCodes2.CONST_APPLICANTSREQUESTS)
+            {
+                notifData = $"{actionType} Applicant: {transactionNo}";
+            }
 
             // Send notifications to users
             foreach (var receiver in uniqueReceivers)

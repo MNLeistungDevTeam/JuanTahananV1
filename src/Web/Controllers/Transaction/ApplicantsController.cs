@@ -204,6 +204,9 @@ namespace Template.Web.Controllers.Transaction
                 {
                     return BadRequest($"{applicantCode}: no record Found!");
                 }
+
+                var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
+
                 vwModel.ApplicantsPersonalInformationModel = applicantinfo;
 
                 var applicantloaninfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -227,6 +230,44 @@ namespace Template.Web.Controllers.Transaction
                 if (borrowerInfo != null)
                 {
                     vwModel.BarrowersInformationModel = borrowerInfo;
+                }
+                else
+                {
+                    if (beneficiaryData != null)
+                    {
+                        vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
+                        vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
+                        vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                        vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                        vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                        vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
+                        vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                        vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                        vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                        vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                        vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+
+                        vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
+                        vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
+                        vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
+                        vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
+                        vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
+                        vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
+                        vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
+                        vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+
+                        vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                        vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                        //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
+                        //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
+                    }
                 }
 
                 var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -502,6 +543,48 @@ namespace Template.Web.Controllers.Transaction
                         // make the usage of hangfire
                         userModel.Action = "created";
                         _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+
+                        #region Create BeneficiaryInformation
+
+                        beneficiaryModel.UserId = user.Id;
+                        beneficiaryModel.CompanyId = 1;
+                        beneficiaryModel.PagibigNumber = user.PagibigNumber;
+                        beneficiaryModel.LastName = vwModel.BarrowersInformationModel.LastName;
+                        beneficiaryModel.FirstName = vwModel.BarrowersInformationModel.FirstName;
+                        beneficiaryModel.MiddleName = vwModel.BarrowersInformationModel.MiddleName;
+                        beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                        beneficiaryModel.BirthDate = vwModel.BarrowersInformationModel.BirthDate;
+                        beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                        beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
+                        beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
+                        beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
+                        beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
+                        beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
+                        beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
+                        beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
+                        beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
+                        beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
+                        beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+
+                        beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                        beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                        beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                        beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                        beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                        beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                        beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                        beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+
+                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                        beneficiaryModel.IsPermanentAddressAbroad = vwModel.BarrowersInformationModel.IsPermanentAddressAbroad;  // no condition because all address is required
+                        beneficiaryModel.IsPresentAddressAbroad = vwModel.BarrowersInformationModel.IsPresentAddressAbroad; // no condition because all address is required
+
+                        await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
+
+                        #endregion Create BeneficiaryInformation
                     }
                     else
                     {
@@ -566,48 +649,6 @@ namespace Template.Web.Controllers.Transaction
 
                         await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
                     }
-
-                    #region Create BeneficiaryInformation
-
-                    beneficiaryModel.UserId = user.Id;
-                    beneficiaryModel.CompanyId = 1;
-                    beneficiaryModel.PagibigNumber = newApplicantData.PagibigNumber;
-                    beneficiaryModel.LastName = vwModel.BarrowersInformationModel.LastName;
-                    beneficiaryModel.FirstName = vwModel.BarrowersInformationModel.FirstName;
-                    beneficiaryModel.MiddleName = vwModel.BarrowersInformationModel.MiddleName;
-                    beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
-                    beneficiaryModel.BirthDate = vwModel.BarrowersInformationModel.BirthDate;
-                    beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
-                    beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
-                    beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-                    beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
-                    beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
-                    beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
-                    beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
-                    beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
-                    beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
-                    beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
-                    beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
-
-                    beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
-                    beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
-                    beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
-                    beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
-                    beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
-                    beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
-                    beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
-                    beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
-
-                    beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
-                    beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
-                    beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
-
-                    beneficiaryModel.IsPermanentAddressAbroad = vwModel.BarrowersInformationModel.IsPermanentAddressAbroad;  // no condition because all address is required
-                    beneficiaryModel.IsPresentAddressAbroad = vwModel.BarrowersInformationModel.IsPresentAddressAbroad; // no condition because all address is required
-
-                    await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
-
-                    #endregion Create BeneficiaryInformation
                 }
 
                 //edit saving all data
@@ -615,8 +656,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
-                   var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
-
+                    var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     applicantCode = applicationData.Code;
 
@@ -694,14 +734,12 @@ namespace Template.Web.Controllers.Transaction
 
                 // last stage pass parameter code
 
-              
-
                 #region Notification
 
                 var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
                 var actiontype = type;
 
-                var actionlink = $"Applicants/HLF068/{applicantCode}";
+                var actionlink = $"Applicants/Details/{applicantCode}";
 
                 await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantCode, userId, companyId);
 
