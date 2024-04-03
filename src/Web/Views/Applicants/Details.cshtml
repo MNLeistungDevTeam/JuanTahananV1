@@ -140,15 +140,6 @@
                                     </button>
                                 }
 
-                                else if (Model.ApplicantsPersonalInformationModel.Remarks != null)
-                                {
-
-                                    <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
-
-
-
-
-                                }
 
 
 
@@ -181,14 +172,14 @@
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <h4>Buyer</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold"> @Model.BarrowersInformationModel.Name</h3>
                                                 <p>@Model.BarrowersInformationModel.MobileNumber</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <h4>Unit</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">
@@ -198,12 +189,22 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <h4>Developer</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3">
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null)
+                                            {
+                                                <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                            }
+
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>

@@ -469,6 +469,7 @@ namespace Template.Web.Controllers.Transaction
                 // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
                 int companyId = int.Parse(User.FindFirstValue("Company"));
+                var applicantCode = "";
 
                 //create  new beneficiary
 
@@ -520,11 +521,13 @@ namespace Template.Web.Controllers.Transaction
                     #endregion Register User and Send Email
 
                     vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
-                    vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
+                    //vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
                     var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+                    applicantCode = newApplicantData.Code;
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
@@ -612,7 +615,10 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
-                    await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+                   var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+
+                    applicantCode = applicationData.Code;
 
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
@@ -688,20 +694,20 @@ namespace Template.Web.Controllers.Transaction
 
                 // last stage pass parameter code
 
-                var applicantdata = await _applicantsPersonalInformationRepo.GetByUserAsync(user.Id);
+              
 
                 #region Notification
 
                 var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
                 var actiontype = type;
 
-                var actionlink = $"Applicants/HLF068/{applicantdata.Code}";
+                var actionlink = $"Applicants/HLF068/{applicantCode}";
 
-                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantdata.Code, userId, companyId);
+                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantCode, userId, companyId);
 
                 #endregion Notification
 
-                return Ok(applicantdata.Code);
+                return Ok(applicantCode);
             }
             catch (System.Exception ex)
             {
