@@ -2,6 +2,7 @@
 	@roleName NVARCHAR(50)
 AS
  BEGIN
+       
      SELECT
         usr.Id,
         usr.UserName,
@@ -14,7 +15,6 @@ AS
         usr.MiddleName,
         usr.LastName,
         COALESCE(ap.TotalLoanCounts, 0) AS TotalLoanCounts,
-        ap.Code ApplicantCode,
         usr.PagibigNumber
     FROM 
         [User] usr
@@ -23,9 +23,9 @@ AS
     LEFT JOIN 
         [Role] r ON r.Id = usrl.RoleId
     LEFT JOIN (
-        SELECT UserId, COUNT(Id) AS TotalLoanCounts,Code
+         SELECT UserId,COUNT(Id) AS TotalLoanCounts
         FROM ApplicantsPersonalInformation
-        GROUP BY UserId,Code
+        GROUP BY UserId
     ) ap ON ap.UserId = usr.Id
     WHERE 
         r.[Name] = @roleName
