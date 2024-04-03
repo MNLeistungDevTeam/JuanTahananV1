@@ -214,15 +214,40 @@ $(function () {
             let formData = $form.serialize();
             formData = formData.replace(/ApprovalLevel\./g, "");
 
+            let approvalStatus = $("#ApprovalLevel_Status").val();
+
+            let action = "";
+            let text = "";
+            let confirmButtonText = "";
+
+            if (approvalStatus == 1) {
+                action = "Submit";
+                text = "Are you sure you wish to proceed with submitting this application?";
+                confirmButtonText = "submit";
+            } else if (approvalStatus == 2) {
+                action = "Defer";
+                text = "Are you sure you wish to proceed with deferring this application?";
+                confirmButtonText = "defer";
+            } else if (approvalStatus == 3 || approvalStatus == 4) {
+                action = "Approve";
+                text = "Are you sure you wish to proceed with approving this application?";
+                confirmButtonText = "approve";
+            } else if (approvalStatus == 5) {
+                action = "Withdrawn";
+                text = "Are you sure you wish to proceed with withdrawing this application?";
+                confirmButtonText = "withdrawn";
+            }
+
+
             // Use SweetAlert for confirmation
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You are about to submit the form. Proceed?",
+                title: `${action} Application`,
+                text: text,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit',
+                confirmButtonText: `Yes, ${confirmButtonText} it`,
                 cancelButtonText: 'No, cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
