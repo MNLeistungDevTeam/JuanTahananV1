@@ -61,16 +61,6 @@ public class AuthenticationService : IAuthenticationService
             }
         }
 
-        if (!string.IsNullOrEmpty(user.Email))
-        {
-            var existingPagibigNumber = await _userRepository.GetByPagibigNumberAsync(user.PagibigNumber);
-
-            if (existingPagibigNumber != null)
-            {
-                throw new Exception("User with the same Email already exists");
-            }
-        }
-
         await _userRepository.ValidateEmailAsync(user);
 
         var userRepo = _mapper.Map<User>(user);

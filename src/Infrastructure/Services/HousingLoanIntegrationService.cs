@@ -61,25 +61,6 @@ namespace DMS.Infrastructure.Services
                 PagibigNumber = model.PagibigMidNumber
             };
 
-
-
-            
-
-            if (model.PagibigMidNumber.Length >= 12)
-            {
-                Console.WriteLine("Valid PagibigMidNumber.");
-                // Additional validation logic can be added here
-            }
-            else
-            {
-                Console.WriteLine("Invalid PagibigMidNumber. Length should be greater than or equal to 12.");
-            }
-
-
-
-
-
-
             // validate and  register user
             var userData = await _authService.RegisterUser(userModel);
 
