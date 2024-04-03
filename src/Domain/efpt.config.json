@@ -48,6 +48,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[BeneficiaryInformation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[CollateralInformation]",
          "ObjectType": 0
       },

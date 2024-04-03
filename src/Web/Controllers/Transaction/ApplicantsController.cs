@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using DevExpress.XtraReports.Design;
+using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
@@ -11,6 +12,7 @@ using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
@@ -52,6 +54,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IDocumentVerificationRepository _documentVerificationRepo;
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IRoleAccessRepository _roleAccessRepo;
+        private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
 
         private DMSDBContext _context;
 
@@ -77,7 +80,8 @@ namespace Template.Web.Controllers.Transaction
             ISourcePagibigFundRepository sourcePagibigFundRepo,
             IDocumentVerificationRepository documentVerificationRepo,
             IBackgroundJobClient backgroundJobClient,
-            IRoleAccessRepository roleAccessRepo)
+            IRoleAccessRepository roleAccessRepo,
+            IBeneficiaryInformationRepository beneficiaryInformationRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -102,6 +106,7 @@ namespace Template.Web.Controllers.Transaction
             _documentVerificationRepo = documentVerificationRepo;
             _backgroundJobClient = backgroundJobClient;
             _roleAccessRepo = roleAccessRepo;
+            _beneficiaryInformationRepo = beneficiaryInformationRepo;
         }
 
         #region View
@@ -124,19 +129,24 @@ namespace Template.Web.Controllers.Transaction
 
             var userData = await _userRepo.GetUserAsync(userId);
 
-            var applicationRecord = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(userData.PagibigNumber.ToString());
-            var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
-
             ApplicantViewModel viewModel = new();
 
             ApplicantsPersonalInformationModel applicantInfoModel = new();
+
+            var applicationRecord = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(userData.PagibigNumber.ToString());
+
+            if (applicationRecord.Count() > 0)
+            {
+                var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
+
+                if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
+                {
+                    applicantInfoModel.isCanAppliedNewApplication = true;
+                }
+            }
+
             applicantInfoModel.PagibigNumber = userData.PagibigNumber;
             applicantInfoModel.UserId = userData.Id;
-
-            if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
-            {
-                applicantInfoModel.isCanAppliedNewApplication = true;
-            }
 
             viewModel.ApplicantsPersonalInformationModel = applicantInfoModel;
             return View(viewModel);
@@ -274,6 +284,8 @@ namespace Template.Web.Controllers.Transaction
         {
             var vwModel = new ApplicantViewModel();
 
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
             var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
 
             vwModel.ApplicantsPersonalInformationModel.UserId = userData.Id;
@@ -287,6 +299,42 @@ namespace Template.Web.Controllers.Transaction
             vwModel.ApplicantsPersonalInformationModel.PagibigNumber = userData.PagibigNumber;
             vwModel.BarrowersInformationModel.Sex = userData.Gender;
             vwModel.BarrowersInformationModel.Suffix = userData.Suffix;
+
+            if (beneficiaryData != null)
+            {
+                vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
+                vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
+                vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
+                vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+
+                vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
+                vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
+                vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
+                vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
+                vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
+                vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
+                vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
+                vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+
+                vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
+                //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
+            }
 
             return View(vwModel);
         }
@@ -416,6 +464,8 @@ namespace Template.Web.Controllers.Transaction
                 }
 
                 var user = new User();
+                var beneficiaryModel = new BeneficiaryInformationModel();
+                var barrowerModel = new BarrowersInformation();
                 // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
                 int companyId = int.Parse(User.FindFirstValue("Company"));
@@ -513,6 +563,48 @@ namespace Template.Web.Controllers.Transaction
 
                         await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
                     }
+
+                    #region Create BeneficiaryInformation
+
+                    beneficiaryModel.UserId = user.Id;
+                    beneficiaryModel.CompanyId = 1;
+                    beneficiaryModel.PagibigNumber = newApplicantData.PagibigNumber;
+                    beneficiaryModel.LastName = vwModel.BarrowersInformationModel.LastName;
+                    beneficiaryModel.FirstName = vwModel.BarrowersInformationModel.FirstName;
+                    beneficiaryModel.MiddleName = vwModel.BarrowersInformationModel.MiddleName;
+                    beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                    beneficiaryModel.BirthDate = vwModel.BarrowersInformationModel.BirthDate;
+                    beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                    beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
+                    beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
+                    beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
+                    beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
+                    beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
+                    beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
+                    beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
+                    beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
+                    beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
+                    beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+
+                    beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                    beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                    beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                    beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                    beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                    beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                    beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                    beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+
+                    beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+                    beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+                    beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                    beneficiaryModel.IsPermanentAddressAbroad = vwModel.BarrowersInformationModel.IsPermanentAddressAbroad;  // no condition because all address is required
+                    beneficiaryModel.IsPresentAddressAbroad = vwModel.BarrowersInformationModel.IsPresentAddressAbroad; // no condition because all address is required
+
+                    await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
+
+                    #endregion Create BeneficiaryInformation
                 }
 
                 //edit saving all data
@@ -522,15 +614,52 @@ namespace Template.Web.Controllers.Transaction
 
                     await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
-
-                    
-
-
                     user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
 
                     if (vwModel.BarrowersInformationModel != null)
                     {
-                        await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
+                        var barrowerData = await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
+
+                        #region Create BeneficiaryInformation
+
+                        //beneficiaryModel.UserId = user.Id;
+                        //beneficiaryModel.CompanyId = 1;
+                        //beneficiaryModel.PagibigNumber = user.PagibigNumber;
+                        //beneficiaryModel.LastName = barrowerData.LastName;
+                        //beneficiaryModel.FirstName = barrowerData.FirstName;
+                        //beneficiaryModel.MiddleName = barrowerData.MiddleName;
+                        //beneficiaryModel.MobileNumber = barrowerData.MobileNumber;
+                        //beneficiaryModel.BirthDate = barrowerData.BirthDate;
+                        //beneficiaryModel.Sex = barrowerData.Sex;
+                        //beneficiaryModel.Email = barrowerData.Email;
+                        //beneficiaryModel.PresentUnitName = barrowerData.PresentUnitName;
+                        //beneficiaryModel.PresentBuildingName = barrowerData.PresentBuildingName;
+                        //beneficiaryModel.PresentLotName = barrowerData.PresentLotName;
+                        //beneficiaryModel.PresentSubdivisionName = barrowerData.PresentSubdivisionName;
+                        //beneficiaryModel.PresentBaranggayName = barrowerData.PresentBaranggayName;
+                        //beneficiaryModel.PresentMunicipalityName = barrowerData.PresentMunicipalityName;
+                        //beneficiaryModel.PresentProvinceName = barrowerData.PresentProvinceName;
+                        //beneficiaryModel.PresentZipCode = barrowerData.PresentZipCode;
+
+                        //beneficiaryModel.PermanentUnitName = barrowerData.PermanentUnitName;
+                        //beneficiaryModel.PermanentBuildingName = barrowerData.PermanentBuildingName;
+                        //beneficiaryModel.PermanentLotName = barrowerData.PermanentLotName;
+                        //beneficiaryModel.PermanentSubdivisionName = barrowerData.PermanentSubdivisionName;
+                        //beneficiaryModel.PermanentBaranggayName = barrowerData.PermanentBaranggayName;
+                        //beneficiaryModel.PermanentMunicipalityName = barrowerData.PermanentMunicipalityName;
+                        //beneficiaryModel.PermanentProvinceName = barrowerData.PermanentProvinceName;
+                        //beneficiaryModel.PermanentZipCode = barrowerData.PermanentZipCode;
+
+                        //beneficiaryModel.PropertyDeveloperName = barrowerData.PropertyDeveloperName;
+                        //beneficiaryModel.PropertyLocation = barrowerData.PropertyLocation;
+                        //beneficiaryModel.PropertyUnitLevelName = barrowerData.PropertyUnitLevelName;
+
+                        //beneficiaryModel.IsPermanentAddressAbroad = barrowerData.IsPermanentAddressAbroad.Value;  // no condition because all address is required
+                        //beneficiaryModel.IsPresentAddressAbroad = barrowerData.IsPresentAddressAbroad.Value; // no condition because all address is required
+
+                        //await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
+
+                        #endregion Create BeneficiaryInformation
                     }
 
                     if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)

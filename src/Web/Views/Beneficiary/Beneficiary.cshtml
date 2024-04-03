@@ -1,0 +1,325 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+
+
+@model DMS.Domain.Dto.BeneficiaryInformationDto.BeneficiaryInformationModel
+
+
+@{
+    string title = string.IsNullOrWhiteSpace(Model.PagibigNumber) ? "Add Beneficiary" : "Update Beneficiary - " + Model.PagibigNumber;
+    ViewData["Title"] = title;
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="ApplicantRequests">Applicant Requests</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="overlay dark d-none" id="beneficiary-overlay">
+        <span class='spinner-border spinner-border-lg'></span>
+    </div>
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <div id="rootwizard">
+            <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
+                <li class="nav-item" data-target-div="#collateraldata">
+                    <a href="#first" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+
+            </ul>
+
+
+            <div class="tab-content mb-0 b-0">
+
+
+                <form id="frm_beneficiary" method="post" asp-action="SaveBeneficiary" asp-controller="Beneficiary" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+                    <div asp-validation-summary="All"></div>
+                    <div class="tab-pane" id="collateraldata">
+
+
+                        <input hidden type="text" class="form-control rounded-3" asp-for="Id" value="@Model.Id">
+                        <input hidden type="text" class="form-control rounded-3" asp-for="UserId" value="@Model.UserId">
+                        <input hidden type="text" class="form-control rounded-3" asp-for="PagibigNumber" value="@Model.PagibigNumber">
+        
+
+
+
+                        <div class="row gy-2">
+                            <div class="col-md-12">
+                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+
+                                    <div class="row gy-2">
+                                        <div class="col-md-12">
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Beneficiary's Data</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="FirstName" required></label>
+                                                <input type="text" class="form-control rounded-3" asp-for="FirstName" required>
+                                                <span asp-validation-for="FirstName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="MiddleName"></label>
+                                                <input type="text" class="form-control rounded-3" asp-for="MiddleName">
+                                                <span asp-validation-for="MiddleName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="LastName" required></label>
+                                                <input type="text" class="form-control rounded-3" asp-for="LastName" required>
+                                                <span asp-validation-for="LastName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="BirthDate" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BirthDate" data-value="@Model.BirthDate" required>
+                                                <span asp-validation-for="BirthDate" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label asp-for="Sex" class="form-label fw-normal" required></label>
+                                                <select asp-for="Sex" class="rounded-4 selectize" data-value="@Model.Sex" required>
+                                                    <option value="">Select Gender ...</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                                <span asp-validation-for="Sex" class="invalid-tooltip"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                                Address & Contact Information
+                                            </h3>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="MobileNumber"></label>
+                                                <input type="number" class="form-control rounded-3 text-center" asp-for="MobileNumber">
+                                                <span asp-validation-for="MobileNumber" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="Email" required></label>
+                                                <input type="email" class="form-control rounded-3 text-center" asp-for="Email" required>
+                                                <span asp-validation-for="Email" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check form-check-inline">
+                                                <input asp-for="IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label header-title" asp-for="IsPermanentAddressAbroad"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentUnitName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentUnitName">
+                                                <span asp-validation-for="PermanentUnitName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentBuildingName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentBuildingName">
+                                                <span asp-validation-for="PermanentBuildingName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentLotName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="  PermanentLotName">
+                                                <span asp-validation-for="PermanentLotName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentStreetName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentStreetName">
+                                                <span asp-validation-for="PermanentStreetName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentSubdivisionName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentSubdivisionName">
+                                                <span asp-validation-for="PermanentSubdivisionName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentBaranggayName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentBaranggayName">
+                                                <span asp-validation-for="PermanentBaranggayName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentMunicipalityName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentMunicipalityName">
+                                                <span asp-validation-for="PermanentMunicipalityName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentProvinceName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PermanentProvinceName">
+                                                <span asp-validation-for="PermanentProvinceName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PermanentZipCode"></label>
+                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="PermanentZipCode">
+                                                <span asp-validation-for="PermanentZipCode" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check form-check-inline">
+                                                <input asp-for="IsPresentAddressAbroad" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label header-title" asp-for="IsPresentAddressAbroad"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentUnitName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentUnitName" required>
+                                                <span asp-validation-for="PresentUnitName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentBuildingName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentBuildingName" required>
+                                                <span asp-validation-for="PresentBuildingName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentLotName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentLotName" required>
+                                                <span asp-validation-for="PresentLotName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentStreetName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentStreetName" required>
+                                                <span asp-validation-for="PresentStreetName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentSubdivisionName"></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentSubdivisionName">
+                                                <span asp-validation-for="PresentSubdivisionName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentBaranggayName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentBaranggayName" required>
+                                                <span asp-validation-for="PresentBaranggayName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentMunicipalityName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentMunicipalityName" required>
+                                                <span asp-validation-for="PresentMunicipalityName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentProvinceName" required></label>
+                                                <input type="text" class="form-control rounded-3 text-center" asp-for="PresentProvinceName" required>
+                                                <span asp-validation-for="PresentProvinceName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PresentZipCode" required></label>
+                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="PresentZipCode" required>
+                                                <span asp-validation-for="PresentZipCode" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PropertyLocation"></label>
+                                                <input class="form-control rounded-3 text-center" asp-for="PropertyLocation">
+                                                <span asp-validation-for="PropertyLocation" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PropertyDeveloperName"></label>
+                                                <input class="form-control rounded-3 text-center" asp-for="PropertyDeveloperName">
+                                                <span asp-validation-for="PropertyDeveloperName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="PropertyUnitLevelName"></label>
+                                                <input class="form-control rounded-3 text-center" asp-for="PropertyUnitLevelName">
+                                                <span asp-validation-for="PropertyUnitLevelName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+                                    </div>
+                                </h3>
+                            </div>
+                        </div>
+
+                        <ul class="pager wizard mb-0 list-inline mt-1">
+                            <li class="previous list-inline-item" hidden>
+                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                            </li>
+                            <li class="next list-inline-item float-end">
+                                <button type="submit" class="btn btn-primary submit-form" id="btn_save">Submit</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                </form>
+            </div> <!-- tab-content -->
+        </div> <!-- end #rootwizard-->
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Beneficiary/CreateUpdateBeneficiaryScript.js" asp-append-version="true"></script>
+
+}

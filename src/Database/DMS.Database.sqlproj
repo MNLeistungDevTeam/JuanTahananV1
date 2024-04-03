@@ -105,6 +105,8 @@
     <Folder Include="Tables\Setup\SourcePagibigFund" />
     <Folder Include="Tables\Setup\Industry" />
     <Folder Include="Tables\Setup\DocumentVerification" />
+    <Folder Include="Tables\Setup\Beneficiary" />
+    <Folder Include="Stored Procedures\Setup\BeneficiaryInformation" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -218,6 +220,8 @@
     <Build Include="Stored Procedures\Setup\Document\spDocumentVerification_GetDocumentTypeId.sql" />
     <Build Include="Stored Procedures\Setup\Document\spDocumentType_GetById.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationVerificationDocuments.sql" />
+    <Build Include="Tables\Setup\Beneficiary\BeneficiaryInformation.sql" />
+    <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByPagibigNumber.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

@@ -42,29 +42,29 @@
 
 
 
-                                <span class="badge bg-secondary ms-auto fs-7">Application in Draft</span>
+                                <span class="badge bg-secondary ms-auto fs-9">Application in Draft</span>
 
 
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                             {
-                                <span class="badge bg-success ms-auto fs-7">PAG-IBIG Verified</span>
+                                <span class="badge bg-success ms-auto fs-9">PAG-IBIG Verified</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Withdrawn)
                             {
-                                <span class="badge bg-warning ms-auto fs-7">Withdrawn</span>
+                                <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                             {
-                                <span class="badge bg-info ms-auto fs-7">Submitted</span>
+                                <span class="badge bg-info ms-auto fs-9">Submitted</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                             {
-                                <span class="badge bg-success ms-auto fs-7">Developer Verified</span>
+                                <span class="badge bg-success ms-auto fs-9">Developer Verified</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                             {
-                                <span class="badge bg-danger ms-auto fs-7">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                                <span class="badge bg-danger ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
@@ -73,10 +73,6 @@
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
-
-
-
-                            <h3 class="badge bg-yellowgreen ms-auto font-18 d-none" id="header_remarks">Remarks: <span id="span_remarks"></span></h3>
 
 
                             @{
@@ -143,6 +139,20 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
+
+                                else if (Model.ApplicantsPersonalInformationModel.Remarks != null)
+                                {
+
+                                    <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+
+
+
+
+                                }
+
+
+
+
                             }
                         </div>
                         @* @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1)

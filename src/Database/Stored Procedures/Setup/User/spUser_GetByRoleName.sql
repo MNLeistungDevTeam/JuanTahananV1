@@ -14,7 +14,8 @@ AS
         usr.MiddleName,
         usr.LastName,
         COALESCE(ap.TotalLoanCounts, 0) AS TotalLoanCounts,
-        ap.Code ApplicantCode
+        ap.Code ApplicantCode,
+        usr.PagibigNumber
     FROM 
         [User] usr
     LEFT JOIN 

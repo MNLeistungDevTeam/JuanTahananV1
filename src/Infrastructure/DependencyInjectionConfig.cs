@@ -60,6 +60,8 @@ using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo;
+using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformationRepo;
 
 namespace Template.Infrastructure;
 
@@ -156,6 +158,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IApprovalLogRepository, ApprovalLogRepository>();
         services.AddScoped<ISourcePagibigFundRepository, SourcePagibigFundRepository>();
         services.AddScoped<IDocumentVerificationRepository, DocumentVerificationRepository>();
+        services.AddScoped<IBeneficiaryInformationRepository, BeneficiaryInformationRepository>();
 
         services.AddScoped<IHousingLoanIntegrationService, HousingLoanIntegrationService>();
         services.AddScoped<IReportsService, ReportsService>();
