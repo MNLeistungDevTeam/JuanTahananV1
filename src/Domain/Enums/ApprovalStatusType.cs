@@ -24,6 +24,10 @@ namespace DMS.Domain.Enums
         Deferred = 2,
         DeveloperVerified = 3,
         PagibigVerified = 4,
-        Withdrawn = 5
+        Withdrawn = 5,
+        PostSubmitted = 6,
+        DeveloperConfirmed = 7,
+        PagibigConfirmed = 8,
+        Disqualified = 9
     }
 }
