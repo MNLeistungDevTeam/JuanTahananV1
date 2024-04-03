@@ -114,8 +114,9 @@ $(function () {
             success: function (response) {
                 totalApplication.text(response.TotalApplication);
                 withdrawn_info.val(response.Withdrawn);
-                approved_info.val((response.PagIbigVerified + response.DeveloperVerified));
-                submitted_info.val(response.ApplicationDraft);
+                approved_info.val(response.PagIbigVerified);
+                submitted_info.val(response.Submitted);
+                disapprove_info.val(response.Deferred);
 
                 $('[data-plugin="knob"]').trigger('change');
             },

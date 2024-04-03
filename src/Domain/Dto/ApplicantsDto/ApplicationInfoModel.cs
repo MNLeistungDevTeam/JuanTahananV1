@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DMS.Domain.Dto.ApplicantsDto;
+﻿namespace DMS.Domain.Dto.ApplicantsDto;
 
 public class ApplicationInfoModel
 {
@@ -14,4 +8,6 @@ public class ApplicationInfoModel
     public decimal DeveloperVerified { get; set; }
     public decimal PagIbigVerified { get; set; }
     public decimal Withdrawn { get; set; }
+    public decimal Disqualified { get; set; }
+    public decimal Deferred { get; set; }
 }

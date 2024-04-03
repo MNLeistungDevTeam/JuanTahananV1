@@ -12,6 +12,10 @@ const $btnCancel = $('#btnCancel');
 const $approverModal = $('#approver-modal');
 const $approverDiv = $('#div_approval');
 
+var ApplicationId = $('#applicationId').val();
+var DocumentTypeId = 0;
+var DocumentId = 0;
+
 $(function () {
     let $btnSave = $('#btn_save');
 
@@ -22,6 +26,27 @@ $(function () {
     loadVerificationAttachments(CONST_APPLICANTCODE);
     loadApplicationAttachments(CONST_APPLICANTCODE);
 
+    console.log(ApplicationId);
+
+    //#regionEvent
+    $(document).on('click', '.upload-link', function () {
+        DocumentId = 0;
+        DocumentTypeId = $(this).find("#documentTypeId").val();
+
+        $('#fileInput').trigger('click');
+    });
+
+    // Handling file input change event
+    $('#fileInput').on('change', function () {
+        var file = this.files[0];
+        if (file) {
+            upload(file, DocumentTypeId, DocumentId);
+        }
+    });
+
+    //#endregion Event
+
+    //#region Function
     function loadVerificationAttachments(applicantCode) {
         $.ajax({
             url: baseUrl + "Applicants/GetEligibilityVerificationDocuments",
@@ -40,6 +65,8 @@ $(function () {
 
     function appendVerificationAttachments(items) {
         const groupedItems = {};
+
+        $("#div_verification").empty();
 
         // Group items by DocumentTypeName
         items.forEach(item => {
@@ -63,7 +90,10 @@ $(function () {
 
                 groupItems.forEach(item => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
-                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action" target="${item.DocumentName ? '_blank' : ''}" download="">
+                    const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
+                    const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
+                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled}>
+                                    <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
@@ -97,6 +127,8 @@ $(function () {
     function appendApplicationAttachments(items) {
         const groupedItems = {};
 
+        $("#div_application").empty();
+
         // Group items by DocumentTypeName
         items.forEach(item => {
             const groupId = item.DocumentTypeId;
@@ -119,7 +151,10 @@ $(function () {
 
                 groupItems.forEach(item => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
-                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action" target="${item.DocumentName ? '_blank' : ''}" download="">
+                    const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
+                    const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
+                    groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled}>
+                                    <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
@@ -238,7 +273,6 @@ $(function () {
                 confirmButtonText = "withdrawn";
             }
 
-
             // Use SweetAlert for confirmation
             Swal.fire({
                 title: `${action} Application`,
@@ -286,5 +320,43 @@ $(function () {
         $btnSave.removeClass();
     }
 
-    //#endregion
+    function upload(file, DocumentTypeId, DocumentId) {
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('ApplicationId', ApplicationId);
+        formData.append('DocumentTypeId', DocumentTypeId);
+        formData.append('DocumentId', DocumentId);
+
+        $.ajax({
+            url: '/Document/DocumentUploadFile',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                loading('Uploading...', true);
+            },
+            success: function (response) {
+                messageBox('Uploaded Successfully', "success", true);
+                //method removing iformfile
+                var myfile = $('#fileInput')[0];
+                myfile.files[0];
+
+                // remove filename
+                $('#fileInput').val('');
+
+                loader.close();
+
+                //Reload the tab
+                loadVerificationAttachments(CONST_APPLICANTCODE);
+                loadApplicationAttachments(CONST_APPLICANTCODE);
+            },
+            error: function (xhr, status, error) {
+                messageBox(xhr.responseText, "danger", true);
+                loader.close();
+            }
+        });
+    }
+
+    //#endregion Function
 });

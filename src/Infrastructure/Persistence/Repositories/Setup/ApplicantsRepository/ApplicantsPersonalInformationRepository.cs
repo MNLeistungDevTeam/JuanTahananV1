@@ -72,8 +72,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode) =>
            await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationVerificationDocuments", new { applicantCode });
 
-        public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId) =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId });
+        public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId, pagibigNumber });
 
         #endregion Get Methods
 
@@ -98,9 +98,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
-
-            _applicantPersonalInfo.PagibigNumber = _applicantPersonalInfo.PagibigNumber.Replace("-", "");
- 
 
             if (!string.IsNullOrEmpty(_applicantPersonalInfo.PagibigNumber))
             {

@@ -1,9 +1,10 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalInfo]
 
 @userId INT
+
 AS
  SELECT
- --Get submitted/pending review count
+	--Get submitted/pending review count
     COUNT(CASE WHEN ApprovalStatus = 1 THEN 1 END) OVER () AS TotalPendingReview,
 	--get pagibig verified
     COUNT(CASE WHEN ApprovalStatus = 4 THEN 1 END) OVER () AS TotalApprove,

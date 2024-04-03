@@ -211,6 +211,7 @@
                         </div>
                     </div>
                     <div class="col-xl-12">
+                        <input id="applicationId" value="@Model.ApplicantsPersonalInformationModel.Id" hidden />
                         <div class="card">
                             <div class="card-body">
                                 <div class="col-xl-12">
@@ -342,10 +343,11 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-
                                             <div id="div_verification" class="row">
                                             </div>
 
+                                            <!-- Hidden file input -->
+                                            <input type="file" id="fileInput" style="display:none;" multiple="false">
 
                                         </div>
                                         <!-- New tab content -->

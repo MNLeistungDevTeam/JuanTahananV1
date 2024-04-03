@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
@@ -511,6 +510,10 @@ namespace Template.Web.Controllers.Transaction
                 int userId = int.Parse(User.Identity.Name);
                 int companyId = int.Parse(User.FindFirstValue("Company"));
                 var applicantCode = "";
+
+                //Formatted
+                string pagibigNum = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
+                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = pagibigNum;
 
                 //create  new beneficiary
 

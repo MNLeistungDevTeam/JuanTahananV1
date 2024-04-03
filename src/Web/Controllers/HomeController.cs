@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
-using DMS.Domain.Enums;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Application.Services;
-using DMS.Domain.Dto.ModuleDto;
-using DMS.Domain.Dto.UserDto;
-using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository;
-using DMS.Web.Controllers.Services;
-using DMS.Web.Models;
 
 namespace DMS.Web.Controllers;
 
@@ -108,8 +102,9 @@ public class HomeController : Controller
 
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
+            string pagibigNumber = userdata.PagibigNumber;
 
-            var data = await _applicantsPersonalInformationRepo.GetApplicationInfo(roleId);
+            var data = await _applicantsPersonalInformationRepo.GetApplicationInfo(roleId, pagibigNumber);
 
             return Ok(data);
         }
