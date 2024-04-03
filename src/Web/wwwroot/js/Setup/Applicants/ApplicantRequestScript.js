@@ -121,20 +121,29 @@ $(function () {
         var applicationCode = tbl_applicants.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applicants.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
-
- 
         $("#btn_add").attr({
             "disabled": !(selectedRows === 0),
             "data-url": baseUrl + "Applicants/HLF068"
-        });
-        $("#btn_edit").attr({
-            "disabled": (selectedRows !== 1 || applicationStatus != 2) && applicationStatus != 0,
-            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
         });
 
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
+        });
+
+        $("#btn_edit").attr({
+            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+        });
+
+        $("#btn_generate_pdf").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
+        });
+
+        $("#btn_upload_document").attr({
+            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+            "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
         });
     });
 
@@ -152,6 +161,15 @@ $(function () {
     $("#btn_view").on('click', function () {
         location.href = $(this).attr("data-url");
     });
+
+    $("#btn_upload_document").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
+    $("#btn_generate_pdf").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
     $("#btn_refresh").on('click', function () {
         tbl_applicants.ajax.reload();
     });

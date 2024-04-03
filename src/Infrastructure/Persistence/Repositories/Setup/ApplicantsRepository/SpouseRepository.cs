@@ -28,8 +28,12 @@ public class SpouseRepository : ISpouseRepository
         _db = db;
     }
 
+ 
     public async Task<Spouse?> GetByIdAsync(int id) =>
-await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+    public async Task<List<Spouse>?> GetAllAsync() =>
+    await _context.Spouses.AsNoTracking().ToListAsync();
 
     public async Task<Spouse?> GetByApplicationInfoIdAsync(int id) =>
  await _context.Spouses.AsNoTracking().FirstOrDefaultAsync(x => x.ApplicantsPersonalInformationId == id);

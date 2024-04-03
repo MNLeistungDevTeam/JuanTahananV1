@@ -1,11 +1,11 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BasicBeneficiaryDto;
+using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using Hangfire;
 
 namespace DMS.Infrastructure.Services
@@ -19,6 +19,7 @@ namespace DMS.Infrastructure.Services
         private readonly IEmailService _emailService;
         private readonly INotificationService _notificationService;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
 
         public HousingLoanIntegrationService(IBarrowersInformationRepository barrowersInformationRepo,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
@@ -26,7 +27,8 @@ namespace DMS.Infrastructure.Services
             IUserRoleRepository userRoleRepo,
             IEmailService emailService,
             INotificationService notificationService,
-            IBackgroundJobClient backgroundJobClient)
+            IBackgroundJobClient backgroundJobClient,
+            IBeneficiaryInformationRepository beneficiaryInformationRepo)
         {
             _barrowersInformationRepo = barrowersInformationRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -35,11 +37,13 @@ namespace DMS.Infrastructure.Services
             _emailService = emailService;
             _notificationService = notificationService;
             _backgroundJobClient = backgroundJobClient;
+            _beneficiaryInformationRepo = beneficiaryInformationRepo;
         }
 
         public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model)
         {
             BarrowersInformationModel barrowerModel = new();
+            BeneficiaryInformationModel beneficiaryModel = new();
             ApplicantsPersonalInformationModel applicantInfoModel = new();
 
             #region Create Beneficiary User
@@ -57,6 +61,25 @@ namespace DMS.Infrastructure.Services
                 PagibigNumber = model.PagibigMidNumber
             };
 
+
+
+            
+
+            if (model.PagibigMidNumber.Length >= 12)
+            {
+                Console.WriteLine("Valid PagibigMidNumber.");
+                // Additional validation logic can be added here
+            }
+            else
+            {
+                Console.WriteLine("Invalid PagibigMidNumber. Length should be greater than or equal to 12.");
+            }
+
+
+
+
+
+
             // validate and  register user
             var userData = await _authService.RegisterUser(userModel);
 
@@ -65,12 +88,53 @@ namespace DMS.Infrastructure.Services
             //save as benificiary
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
-
             userModel.Action = "created";
             //// make the usage of hangfire
-            _backgroundJobClient.Enqueue(() =>   _emailService.SendUserCredential(userModel));
+            _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
 
             #endregion Create Beneficiary User
+
+            #region Create BeneficiaryInformation
+
+            beneficiaryModel.UserId = userData.Id;
+            beneficiaryModel.CompanyId = 1;
+            beneficiaryModel.PagibigNumber = model.PagibigMidNumber;
+            beneficiaryModel.LastName = model.LastName;
+            beneficiaryModel.FirstName = model.FirstName;
+            beneficiaryModel.MiddleName = model.MiddleName;
+            beneficiaryModel.MobileNumber = model.MobileNumber;
+            beneficiaryModel.BirthDate = model.BirthDate;
+            beneficiaryModel.MobileNumber = model.MobileNumber;
+            beneficiaryModel.Sex = model.Gender;
+            beneficiaryModel.Email = model.Email;
+            beneficiaryModel.PresentUnitName = model.PresentUnitName;
+            beneficiaryModel.PresentBuildingName = model.PresentBuildingName;
+            beneficiaryModel.PresentLotName = model.PresentLotName;
+            beneficiaryModel.PresentSubdivisionName = model.PresentSubdivisionName;
+            beneficiaryModel.PresentBaranggayName = model.PresentBarangayName;
+            beneficiaryModel.PresentMunicipalityName = model.PresentMunicipalityName;
+            beneficiaryModel.PresentProvinceName = model.PresentProvinceName;
+            beneficiaryModel.PresentZipCode = model.PresentZipCode;
+
+            beneficiaryModel.PermanentUnitName = model.PermanentUnitName;
+            beneficiaryModel.PermanentBuildingName = model.PermanentBuildingName;
+            beneficiaryModel.PermanentLotName = model.PermanentLotName;
+            beneficiaryModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
+            beneficiaryModel.PermanentBaranggayName = model.PermanentBarangayName;
+            beneficiaryModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
+            beneficiaryModel.PermanentProvinceName = model.PermanentProvinceName;
+            beneficiaryModel.PermanentZipCode = model.PermanentZipCode;
+
+            beneficiaryModel.PropertyDeveloperName = model.PropertyDeveloperName;
+            beneficiaryModel.PropertyLocation = model.PropertyLocation;
+            beneficiaryModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
+
+            beneficiaryModel.IsPermanentAddressAbroad = true; // no condition because all address is required
+            beneficiaryModel.IsPresentAddressAbroad = true; // no condition because all address is required
+
+            await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
+
+            #endregion Create BeneficiaryInformation
 
             #region Create Applicant
 
@@ -79,59 +143,59 @@ namespace DMS.Infrastructure.Services
             applicantInfoModel.PagibigNumber = model.PagibigMidNumber;
             applicantInfoModel.CompanyId = model.CompanyId;
 
-            var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, userModel.Id);
+            //  var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, userModel.Id);
 
             #endregion Create Applicant
 
             #region Barrow Data Transfer
 
-            barrowerModel.LastName = model.LastName;
-            barrowerModel.FirstName = model.FirstName;
-            barrowerModel.MiddleName = model.MiddleName;
-            barrowerModel.MobileNumber = model.MobileNumber;
-            barrowerModel.BirthDate = model.BirthDate;
-            barrowerModel.MobileNumber = model.MobileNumber;
-            barrowerModel.Sex = model.Gender;
-            barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
-            barrowerModel.Email = model.Email;
-            barrowerModel.PresentUnitName = model.PresentUnitName;
-            barrowerModel.PresentBuildingName = model.PresentBuildingName;
-            barrowerModel.PresentLotName = model.PresentLotName;
-            barrowerModel.PresentSubdivisionName = model.PresentSubdivisionName;
-            barrowerModel.PresentBaranggayName = model.PresentBarangayName;
-            barrowerModel.PresentMunicipalityName = model.PresentMunicipalityName;
-            barrowerModel.PresentProvinceName = model.PresentProvinceName;
-            barrowerModel.PresentZipCode = model.PresentZipCode;
+            //barrowerModel.LastName = model.LastName;
+            //barrowerModel.FirstName = model.FirstName;
+            //barrowerModel.MiddleName = model.MiddleName;
+            //barrowerModel.MobileNumber = model.MobileNumber;
+            //barrowerModel.BirthDate = model.BirthDate;
+            //barrowerModel.MobileNumber = model.MobileNumber;
+            //barrowerModel.Sex = model.Gender;
+            //barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
+            //barrowerModel.Email = model.Email;
+            //barrowerModel.PresentUnitName = model.PresentUnitName;
+            //barrowerModel.PresentBuildingName = model.PresentBuildingName;
+            //barrowerModel.PresentLotName = model.PresentLotName;
+            //barrowerModel.PresentSubdivisionName = model.PresentSubdivisionName;
+            //barrowerModel.PresentBaranggayName = model.PresentBarangayName;
+            //barrowerModel.PresentMunicipalityName = model.PresentMunicipalityName;
+            //barrowerModel.PresentProvinceName = model.PresentProvinceName;
+            //barrowerModel.PresentZipCode = model.PresentZipCode;
 
-            barrowerModel.PermanentUnitName = model.PermanentUnitName;
-            barrowerModel.PermanentBuildingName = model.PermanentBuildingName;
-            barrowerModel.PermanentLotName = model.PermanentLotName;
-            barrowerModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
-            barrowerModel.PermanentBaranggayName = model.PermanentBarangayName;
-            barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
-            barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
-            barrowerModel.PermanentZipCode = model.PermanentZipCode;
+            //barrowerModel.PermanentUnitName = model.PermanentUnitName;
+            //barrowerModel.PermanentBuildingName = model.PermanentBuildingName;
+            //barrowerModel.PermanentLotName = model.PermanentLotName;
+            //barrowerModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
+            //barrowerModel.PermanentBaranggayName = model.PermanentBarangayName;
+            //barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
+            //barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
+            //barrowerModel.PermanentZipCode = model.PermanentZipCode;
 
-            barrowerModel.PropertyDeveloperName = model.PropertyDeveloperName;
-            barrowerModel.PropertyLocation = model.PropertyLocation;
-            barrowerModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
+            //barrowerModel.PropertyDeveloperName = model.PropertyDeveloperName;
+            //barrowerModel.PropertyLocation = model.PropertyLocation;
+            //barrowerModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
 
-            barrowerModel.IsPermanentAddressAbroad = true; // no condition because all address is required
-            barrowerModel.IsPresentAddressAbroad = true; // no condition because all address is required
+            //barrowerModel.IsPermanentAddressAbroad = true; // no condition because all address is required
+            //barrowerModel.IsPresentAddressAbroad = true; // no condition because all address is required
 
             #endregion Barrow Data Transfer
 
             //save Barrower
-            await _barrowersInformationRepo.SaveAsync(barrowerModel);
+            // await _barrowersInformationRepo.SaveAsync(barrowerModel);
 
             #region Notification
 
-            var type = "Added";
-            var actiontype = type;
+            //var type = "Added";
+            //var actiontype = type;
 
-            var actionlink = $"Applicants/HLF068/{applicantInfoData.Code}";
+            //var actionlink = $"Applicants/HLF068/{applicantInfoData.Code}";
 
-            await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantInfoData.Code, 1, 1);
+            // await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantInfoData.Code, 1, 1);
 
             #endregion Notification
         }

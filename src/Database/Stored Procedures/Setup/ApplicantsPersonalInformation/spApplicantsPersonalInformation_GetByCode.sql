@@ -3,6 +3,7 @@
 AS
 	SELECT 
 		apl.*,
+		aps.Remarks,
 		CONCAT(u.LastName,', ',u.FirstName,'',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,

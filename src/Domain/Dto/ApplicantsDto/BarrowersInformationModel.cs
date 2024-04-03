@@ -33,7 +33,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Citizenship { get; set; }
 
         [DataType(DataType.Date)]
-
         [Display(Name = "Birth Date", Prompt = "Birth Date")]
         public DateTime? BirthDate { get; set; }
 
@@ -46,6 +45,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Home Number", Prompt = "Home Number")]
         public string? HomeNumber { get; set; }
 
+        [Required]
         [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
         public string? MobileNumber { get; set; }
 
@@ -53,30 +53,38 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Email", Prompt = "Email")]
         public string? Email { get; set; }
 
+        [Required]
         [Display(Name = "Present Unit", Prompt = "Unit Name")]
         public string? PresentUnitName { get; set; }
 
+        [Required]
         [Display(Name = "Present Building", Prompt = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
+        [Required]
         [Display(Name = "Present Lot", Prompt = "Lot Name")]
         public string? PresentLotName { get; set; }
 
+        [Required]
         [Display(Name = "Present Street", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
         [Display(Name = "Present Subdivision", Prompt = "Subdivision Name")]
         public string? PresentSubdivisionName { get; set; }
 
+        [Required]
         [Display(Name = "Present Baranggay", Prompt = "Baranggay Name")]
         public string? PresentBaranggayName { get; set; }
 
+        [Required]
         [Display(Name = "Present Municipality", Prompt = "Municipality Name")]
         public string? PresentMunicipalityName { get; set; }
 
+        [Required]
         [Display(Name = "Present Province", Prompt = "Province Name")]
         public string? PresentProvinceName { get; set; }
 
+        [Required]
         [Display(Name = "Present Zip Code", Prompt = "Zip Code")]
         public string? PresentZipCode { get; set; }
 

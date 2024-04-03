@@ -79,7 +79,7 @@ public class ReportController : Controller
                 userId = applicationInfo.UserId;
             }
 
-            var report = await _reportService.GenerateHousingLoanForm(userId, _hostingEnvironment.WebRootPath);
+            var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
 
             return View("RptHousingLoanApplication", report);
         }

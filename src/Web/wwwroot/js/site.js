@@ -173,25 +173,26 @@ $(function () {
         $(this).addClass('active');
         $('[data-bs-toggle="tab"][href="' + tab + '"]').tab('show');
     })
-    if (document.querySelector('#totalApplications')) {
-        getApplicationCount(function (callback) {
-            const options = {
-                useEasing: true,
-                useGrouping: true,
-                separator: ',',
-                decimal: '.',
-                suffix: ''
-            };
-            if (applications == null) {
-                applications = new CountUp(`totalApplications`, 0, callback, 0, 2, options);
-                if (!applications.error) {
-                    applications.start();
-                }
-            } else {
-                applications.update(callback);
-            }
-        })
-    }
+
+    //if (document.querySelector('#totalApplications')) {
+    //    getApplicationCount(function (callback) {
+    //        const options = {
+    //            useEasing: true,
+    //            useGrouping: true,
+    //            separator: ',',
+    //            decimal: '.',
+    //            suffix: ''
+    //        };
+    //        if (applications == null) {
+    //            applications = new CountUp(`#totalApplications`, 0, callback, 0, 2, options);
+    //            if (!applications.error) {
+    //                applications.start();
+    //            }
+    //        } else {
+    //            applications.update(callback);
+    //        }
+    //    })
+    //}
 
     $(".decimalInputMask").inputmask({
         alias: 'decimal',

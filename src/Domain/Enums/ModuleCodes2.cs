@@ -20,7 +20,7 @@ namespace DMS.Domain.Enums
         public const string CONST_FAQS = "FAQS";
         public const string CONST_HLF068 = "HLF068";
         public const string CONST_DOCUMENT = "DOCMT";
-        public const string CONST_BENEFICIARY = "BENEFICIARY";
+        public const string CONST_BENEFICIARY_MGMT = "BNF-MGMT";
         public const string CONST_APPLICANTSREQUESTS = "APLCNTREQ";
         public const string CONST_DocumentUpload = "DOCUPLOAD";
         public const string  CONST_APPROVERMNGMNT =  "APPROVER-MGMT";

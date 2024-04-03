@@ -33,6 +33,27 @@ GO
 
 
 
+
+ IF NOT EXISTS (SELECT 1 FROM [dbo].BeneficiaryInformation)
+BEGIN
+SET IDENTITY_INSERT BeneficiaryInformation ON;
+
+-- Insert dummy data into BarrowersInformation
+INSERT INTO BeneficiaryInformation
+    (Id, UserId,PagibigNumber, LastName, FirstName, MiddleName, Sex, Email,CreatedById)
+VALUES
+    (1, 4,'324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', 'beneficiary@email.com',1);
+    
+
+-- Disable identity insert for BarrowersInformation
+SET IDENTITY_INSERT BeneficiaryInformation OFF;
+END 
+GO
+
+
+
+
+
  IF NOT EXISTS (SELECT 1 FROM [dbo].ApprovalStatus)
 BEGIN
 SET IDENTITY_INSERT ApprovalStatus ON;

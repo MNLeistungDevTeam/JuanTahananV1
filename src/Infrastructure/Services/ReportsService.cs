@@ -38,7 +38,7 @@ namespace DMS.Infrastructure.Services
             _documentRepo = documentRepo;
         }
 
-        public async Task<LoanApplicationForm> GenerateHousingLoanForm(int userId, string? rootFolder)
+        public async Task<LoanApplicationForm> GenerateHousingLoanForm(string? applicationCode, string? rootFolder)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace DMS.Infrastructure.Services
 
                 byte[] formalPicture = new byte[0];
 
-                if (userId != 0)
+                if (applicationCode != null)
                 {
                     //var latestApplicationForm = (await _applicantsPersonalInformationRepo
                     //    .GetAllAsync())
@@ -67,7 +67,8 @@ namespace DMS.Infrastructure.Services
                     //        UserId = userId
                     //    };
 
-                    var applicantData = await _applicantpersonalInfoRepo.GetByUserAsync(userId);
+                    var applicantData = await _applicantpersonalInfoRepo.GetByCodeAsync(applicationCode);
+                    
 
                     if (applicantData != null)
                     {

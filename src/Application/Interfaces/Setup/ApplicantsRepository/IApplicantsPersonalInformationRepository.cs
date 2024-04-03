@@ -11,8 +11,12 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 {
     public interface IApplicantsPersonalInformationRepository
     {
+        Task<ApplicantsPersonalInformation> UpdateNoExclusionAsync(ApplicantsPersonalInformation applicant, int updatedById);
+
         Task<string> GenerateApplicationCode();
+
         Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId);
+
         Task<ApplicantsPersonalInformation?> GetByIdAsync(int id);
 
         Task<ApplicantsPersonalInformation?> GetbyUserId(int id);
@@ -25,15 +29,22 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<ApplicantsPersonalInformationModel?> GetByCodeAsync(string code);
 
-        Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId);
-
         Task<ApplicantsPersonalInformationModel?> GetAsync(int id);
+
         Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId);
+
         Task<ApplicantsPersonalInformation> CreateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
+
         Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
+
         Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId);
+
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
+
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetAllApplicationsByPagibigNumber(string? pagibigNumber);
+
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode);
+        Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId);
+        Task<ApplicationInfoModel?> GetApplicationInfo(int roleId);
     }
 }

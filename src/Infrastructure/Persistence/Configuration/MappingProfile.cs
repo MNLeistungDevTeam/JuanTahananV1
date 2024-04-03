@@ -4,6 +4,7 @@ using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
+using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.DocumentVerificationDto;
@@ -61,5 +62,6 @@ public class MappingProfile : Profile
         CreateMap<ApprovalLog, ApprovalLogModel>().ReverseMap();
 
         CreateMap<DocumentVerification, DocumentVerificationModel>().ReverseMap();
+        CreateMap<BeneficiaryInformation, BeneficiaryInformationModel>().ReverseMap();
     }
 }
