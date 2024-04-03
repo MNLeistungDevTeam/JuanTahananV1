@@ -48,6 +48,11 @@ public class AuthenticationService : IAuthenticationService
 
         if (!string.IsNullOrEmpty(user.PagibigNumber))
         {
+            if (user.PagibigNumber.Length < 12)
+            {
+                throw new Exception("Pagibig Number minimum length must 12");
+            }
+
             var existingPagibigNumber = await _userRepository.GetByPagibigNumberAsync(user.PagibigNumber);
 
             if (existingPagibigNumber != null)
@@ -279,10 +284,6 @@ public class AuthenticationService : IAuthenticationService
         return (await _userRepository.GetAllAsync()).Any(x => x.UserName == username);
     }
 
-
-
-
-
     public string GenerateTemporaryPasswordAsync(string name)
     {
         name = name.Replace(" ", "");
@@ -322,7 +323,6 @@ public class AuthenticationService : IAuthenticationService
             return outputPassword;
         }
     }
-
 
     public async Task<string> GenerateTemporaryUsernameAsync()
     {

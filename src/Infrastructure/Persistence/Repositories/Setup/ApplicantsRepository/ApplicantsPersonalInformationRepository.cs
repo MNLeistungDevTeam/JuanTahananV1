@@ -73,7 +73,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
            await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationVerificationDocuments", new { applicantCode });
 
         public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId) =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId});
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId });
 
         #endregion Get Methods
 
@@ -100,6 +100,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
             _applicantPersonalInfo.PagibigNumber = _applicantPersonalInfo.PagibigNumber.Replace("-", "");
+
+            if (!string.IsNullOrEmpty(_applicantPersonalInfo.PagibigNumber))
+            {
+                if (_applicantPersonalInfo.PagibigNumber.Length < 12)
+                {
+                    throw new Exception("Pagibig Number minimum length must 12");
+                }
+            }
 
             _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
 
