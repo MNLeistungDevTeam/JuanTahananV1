@@ -45,5 +45,6 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode);
         Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId);
+        Task<ApplicationInfoModel?> GetApplicationInfo(int roleId);
     }
 }
