@@ -119,8 +119,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
             else
-            {                                    //approvalstatus must not update
-                _applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);  /*await UpdateAsync(_applicantPersonalInfo, userId); */
+            {
+
+                var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
+
+                _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
+                //approvalstatus must not update
+                //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId); 
+
+                await UpdateAsync(_applicantPersonalInfo, userId);
 
                 var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(_applicantPersonalInfo.Id, _applicantPersonalInfo.CompanyId);
