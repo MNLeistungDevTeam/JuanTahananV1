@@ -238,41 +238,41 @@ namespace Template.Web.Controllers.Transaction
                 }
                 else
                 {
-                    if (beneficiaryData != null)
-                    {
-                        vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
-                        vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
-                        vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
-                        vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                        vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
-                        vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                        vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
-                        vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
-                        vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
-                        vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
-                        vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
-                        vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
-                        vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
-                        vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
-                        vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
-                        vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                    //if (beneficiaryData != null)
+                    //{
+                    //    vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                    //    vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                    //    vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                    //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    //    vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
+                    //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    //    vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
+                    //    vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                    //    vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                    //    vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                    //    vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
+                    //    vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                    //    vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                    //    vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                    //    vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                    //    vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
 
-                        vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
-                        vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
-                        vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
-                        vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
-                        vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
-                        vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
-                        vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
-                        vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+                    //    vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
+                    //    vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
+                    //    vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
+                    //    vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
+                    //    vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
+                    //    vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
+                    //    vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
+                    //    vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
 
-                        vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                        vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                        vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                    //    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                    //    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                    //    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
 
-                        //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
-                        //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
-                    }
+                    //    //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
+                    //    //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
+                    //}
                 }
 
                 var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
