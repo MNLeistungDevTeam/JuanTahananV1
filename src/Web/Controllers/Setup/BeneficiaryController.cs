@@ -70,7 +70,7 @@ public class BeneficiaryController : Controller
     {
         var vwModel = new BeneficiaryInformationModel();
 
-        var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+        //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
         var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
 
         if (beneficiaryData != null)
@@ -94,6 +94,8 @@ public class BeneficiaryController : Controller
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
             model.CompanyId = companyId;
+
+            model.PagibigNumber = model.PagibigNumber.Replace("-", "");
 
             //create  new beneficiary
 
@@ -119,6 +121,7 @@ public class BeneficiaryController : Controller
 
                 userModel.Id = userData.Id;
 
+                model.UserId = userData.Id;
                 //save as benificiary
                 await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 

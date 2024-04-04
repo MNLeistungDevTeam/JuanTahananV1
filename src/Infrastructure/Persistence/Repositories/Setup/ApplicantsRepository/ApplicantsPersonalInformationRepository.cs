@@ -85,7 +85,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 applicant.ModifiedById = updatedById;
                 applicant.DateModified = DateTime.Now;
-                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus");
+                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus","DateCreated","ModifiedById");
 
                 return applicant;
             }
@@ -107,10 +107,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 }
             }
 
-            _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
-
             if (model.Id == 0)
             {
+                _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+
                 _applicantPersonalInfo.Code = await GenerateApplicationCode();
 
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
@@ -119,8 +119,15 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
             }
             else
-            {                                    //approvalstatus must not update
-                _applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);  /*await UpdateAsync(_applicantPersonalInfo, userId); */
+            {
+
+                var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
+
+                _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
+                //approvalstatus must not update
+                //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId); 
+
+                await UpdateAsync(_applicantPersonalInfo, userId);
 
                 var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(_applicantPersonalInfo.Id, _applicantPersonalInfo.CompanyId);
