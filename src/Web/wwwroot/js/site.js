@@ -25,6 +25,8 @@ function localizer(input) {
 }
 
 $(function () {
+    updateBeneficiaryHousingLoanSideBarNav();
+
     $.fn.clearValidation = function () { var v = $(this).validate(); $('[name]', this).each(function () { v.successList.push(this); v.showErrors(); }); v.resetForm(); v.reset(); };
     function adjustDataTablesColumns() {
         $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
@@ -203,7 +205,6 @@ $(function () {
         autoGroup: true,
         placeholder: "0.00"
     });
-
 });
 function getApplicationCount(callback) {
     $.ajax({
@@ -971,4 +972,20 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
         placeholder: placeholder,
         max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
     });
+}
+
+function updateBeneficiaryHousingLoanSideBarNav() {
+    let pagibignumber = $("#txt_userPagibigNumber").val();
+
+    var $link = $('a.side-nav-link[href="/Applicants/NewHLF068"]');
+
+    // Check if element is found
+    if ($link.length > 0) {
+        // Append '/2434' to the current href value
+        var currentHref = $link.attr('href');
+        var newHref = currentHref +"/" + pagibignumber;
+
+        // Update the href attribute with the new value
+        $link.attr('href', newHref);
+    }
 }

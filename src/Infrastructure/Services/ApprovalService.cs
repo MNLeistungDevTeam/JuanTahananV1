@@ -94,7 +94,7 @@ namespace DMS.Infrastructure.Services
                 var userInfo = await _userRepo.GetUserAsync(approverId);
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
 
-                int[] statusExclusions = { (int)AppStatusType.Submitted, (int)AppStatusType.Withdrawn };
+                int[] statusExclusions = { (int)AppStatusType.Submitted, (int)AppStatusType.Withdrawn, (int)AppStatusType.PostSubmitted, (int)AppStatusType.Discontinued };
 
                 if (!statusExclusions.Contains(model.Status) && moduleStage == null)
                 {
@@ -107,7 +107,7 @@ namespace DMS.Infrastructure.Services
                 //ApprovalLevel approvalLevel = new();
                 int approvalLevelId = 0;
                 if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified 
-                    || model.Status == (int)AppStatusType.Deferred)
+                    || model.Status == (int)AppStatusType.Deferred || model.Status == (int)AppStatusType.PagibigConfirmed || model.Status == (int)AppStatusType.DeveloperConfirmed || model.Status == (int)AppStatusType.Disqualified)
                 {
                     var approvalLevelData = await _approvalLevelRepo.SaveAsync(model);
                     approvalLevelId = approvalLevelData.Id;

@@ -273,6 +273,24 @@ $(function () {
                 confirmButtonText = "withdrawn";
             }
 
+            else if (approvalStatus == 6) {
+                action = "Submit";
+                text = "Are you sure you wish to proceed with submitting this application?";
+                confirmButtonText = "submit";
+            } else if (approvalStatus == 9) {
+                action = "Defer";
+                text = "Are you sure you wish to proceed with deferring this application?";
+                confirmButtonText = "defer";
+            } else if (approvalStatus == 7 || approvalStatus == 8) {
+                action = "Approve";
+                text = "Are you sure you wish to proceed with approving this application?";
+                confirmButtonText = "approve";
+            } else if (approvalStatus == 10) {
+                action = "Withdrawn";
+                text = "Are you sure you wish to proceed with withdrawing this application?";
+                confirmButtonText = "withdrawn";
+            }
+
             // Use SweetAlert for confirmation
             Swal.fire({
                 title: `${action} Application`,

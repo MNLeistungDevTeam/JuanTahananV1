@@ -21,6 +21,10 @@ AS
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
 			WHEN apl.ApprovalStatus = 4 THEN 'PAG-IBIG Verified'
 			WHEN apl.ApprovalStatus = 5 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
+			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
+			WHEN apl.ApprovalStatus = 8 THEN 'PAG-IBIG Approved'
+			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 			CASE
@@ -62,11 +66,11 @@ AS
 			WHEN @roleId = 2 THEN  --LGU
 			CASE WHEN apl.ApprovalStatus IN (3,4,5) THEN 1 ELSE 0 END
             WHEN @roleId = 4 THEN --Beneficiary
-                CASE WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1 ELSE 0 END
+                CASE WHEN apl.ApprovalStatus IN (0,1,2,3,4,5,6,7,8,9,10) THEN 1 ELSE 0 END
 		      WHEN @roleId = 5 THEN --Developer 
-                CASE WHEN apl.ApprovalStatus IN (1,2,3,4,5) THEN 1 ELSE 0 END
+                CASE WHEN apl.ApprovalStatus IN (1,2,3,4,5,6,7,8,9,10) THEN 1 ELSE 0 END
 				WHEN @roleId = 3 THEN --Pagibig 
-                CASE WHEN apl.ApprovalStatus IN (2,3,4,5) THEN 1 ELSE 0 END
+                CASE WHEN apl.ApprovalStatus IN (2,3,4,5,7,8,9,10) THEN 1 ELSE 0 END
         END
     );
 RETURN 0

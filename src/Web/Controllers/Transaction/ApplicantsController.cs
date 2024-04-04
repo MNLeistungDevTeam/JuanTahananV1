@@ -136,7 +136,9 @@ namespace Template.Web.Controllers.Transaction
 
             if (applicationRecord.Count() > 0)
             {
-                var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
+                var latestRecord = applicationRecord.OrderByDescending(a => a.DateCreated).FirstOrDefault();
+
+                //var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
 
                 if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
                 {
@@ -168,12 +170,16 @@ namespace Template.Web.Controllers.Transaction
                 }
 
                 var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
+                var applicationPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(2, applicantCode);
 
-                var incompleteDocumentData = eligibilityPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
+                var incompleteDocumentDataStage1 = eligibilityPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
+                var incompleteDocumentDataStage2 = applicationPhaseDocument.Where(dv => dv.TotalDocumentCount == 0).ToList();
 
                 applicantinfo.isRequiredDocumentsUploaded = false;
 
-                if (incompleteDocumentData.Count > 0)
+                applicantinfo.StageNo = (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified) ? 2 : 1;
+
+                if ((applicantinfo.StageNo == 1 && incompleteDocumentDataStage1.Count > 0) || (applicantinfo.StageNo != 1 && incompleteDocumentDataStage2.Count > 0))
                 {
                     applicantinfo.isRequiredDocumentsUploaded = true;
                 }

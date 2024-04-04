@@ -87,9 +87,9 @@
             <div class="row">
                 <div class="col-md-6 mb-2 align-items-md-center">
 
-                    @if (Model.ApplicantsPersonalInformationModel.isCanAppliedNewApplication == false)
+                    @if (Model.ApplicantsPersonalInformationModel.isCanAppliedNewApplication == true)
                     {
-                        <button class="btn btn-light btn-sm waves-effect" id="btn_add" data-pagibignumber="@Model.ApplicantsPersonalInformationModel.PagibigNumber" disabled><span class="mdi mdi-plus"></span> Add</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_add" data-pagibignumber="@Model.ApplicantsPersonalInformationModel.PagibigNumber"><span class="mdi mdi-plus"></span> Add</button>
 
 
 
@@ -97,13 +97,13 @@
 
                     else
                     {
-                        <button class="btn btn-light btn-sm waves-effect" id="btn_add" data-pagibignumber="@Model.ApplicantsPersonalInformationModel.PagibigNumber"><span class="mdi mdi-plus"></span> Add</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_add" data-pagibignumber="@Model.ApplicantsPersonalInformationModel.PagibigNumber" disabled><span class="mdi mdi-plus"></span> Add</button>
 
 
                     }
 
 
-                    <button class="btn btn-light btn-sm waves-effect" id="btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                    <button class="btn btn-light btn-sm waves-effect" id="btn_edit"><span class="mdi mdi-square-edit-outline"></span> Edit</button>
                     <button class="btn btn-light btn-sm waves-effect" id="btn_view" disabled><span class="fe-info"></span> View Detail</button>
                     <button class="btn btn-light btn-sm waves-effect" id="btn_generate_pdf" disabled><span class="far fa-file-pdf"></span> View Pdf</button>
                     <button class="btn btn-light btn-sm waves-effect" id="btn_upload_document" disabled><span class="fas fa-file-upload"></span> Upload Document</button>
