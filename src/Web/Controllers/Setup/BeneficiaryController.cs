@@ -95,6 +95,8 @@ public class BeneficiaryController : Controller
             int companyId = int.Parse(User.FindFirstValue("Company"));
             model.CompanyId = companyId;
 
+            model.PagibigNumber = model.PagibigNumber.Replace("-", "");
+
             //create  new beneficiary
 
             if (model.UserId == 0)
@@ -119,6 +121,7 @@ public class BeneficiaryController : Controller
 
                 userModel.Id = userData.Id;
 
+                model.UserId = userData.Id;
                 //save as benificiary
                 await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 

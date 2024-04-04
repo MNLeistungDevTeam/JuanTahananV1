@@ -47,6 +47,9 @@ namespace DMS.Infrastructure.Services
             BeneficiaryInformationModel beneficiaryModel = new();
             ApplicantsPersonalInformationModel applicantInfoModel = new();
 
+
+            model.PagibigMidNumber = model.PagibigMidNumber.Replace("-", "");
+
             #region Create Beneficiary User
 
             //Create Beneficiary User
