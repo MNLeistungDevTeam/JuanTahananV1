@@ -86,6 +86,11 @@ $(function () {
                         `;
                 }
             },
+            {
+                data: 'Stage',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
 
         ],
         drawCallback: function () {

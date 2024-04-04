@@ -202,7 +202,23 @@
                                                 <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
                                             }
 
+
+                                            @if (Model.ApplicantsPersonalInformationModel.StageNo == 1)
+                                            {
+                                                <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks">Current Stage: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Stage</span></h3>
+                                            }
+                                            else
+
+                                            {
+
+                                                <h3 class="badge bg-primary ms-auto font-18" id="header_remarks">Current Stage: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Stage</span></h3>
+                                            }
+
                                         </div>
+
+
+                                     
+
 
 
                                     </div>

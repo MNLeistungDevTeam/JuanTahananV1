@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
+﻿ CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
  @roleId INT 
 AS
 	 SELECT 
@@ -22,7 +22,16 @@ AS
 			WHEN apl.ApprovalStatus = 4 THEN 'PAG-IBIG Verified'
 			WHEN apl.ApprovalStatus = 5 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
-		END ApplicationStatus
+		END ApplicationStatus,
+			CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'For Verification Approval'
+			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 'For Application Approval'
+		END Stage,
+		CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
+			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 2
+		END StageNo
+
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id

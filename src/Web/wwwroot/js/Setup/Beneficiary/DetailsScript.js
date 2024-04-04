@@ -37,11 +37,7 @@
                 visible: false
             },
 
-            {
-                data: 'IncomeAmount',
-                orderable: !0,
-                className: 'align-middle text-center'
-            },
+          
             {
                 data: 'Developer',
                 orderable: !0,
@@ -85,6 +81,11 @@
                         <span class="badge fs-6 border bg-secondary">${data}</span>
                         `;
                 }
+            },
+            {
+                data: 'Stage',
+                orderable: !0,
+                className: 'align-middle text-center'
             },
 
         ],

@@ -60,6 +60,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
 
         public string? Remarks { get; set; }
+
+        public string? Stage { get; set; }
+        public int? StageNo { get; set; }
         #endregion Display Properties
     }
 }

@@ -87,6 +87,14 @@ $(function () {
                 }
             },
 
+            {
+                data: 'Stage',
+                orderable: !0,
+                className: 'align-middle text-center'
+            },
+
+
+
         ],
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
