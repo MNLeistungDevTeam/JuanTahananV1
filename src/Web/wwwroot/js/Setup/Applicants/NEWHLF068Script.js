@@ -543,7 +543,7 @@ $(function () {
         // Check if age is 21 or older
         if (age < 21) {
             console.log("User is 21 or older");
-            messageBox('You have to be at least 21 years old to proceed', 'error');
+            messageBox('You have to be at least 21 years old to proceed','error');
 
             $(this).val('');
         }
@@ -893,6 +893,10 @@ $(function () {
                 return;
             }
 
+
+
+
+
             $.ajax({
                 url: $(this).attr("action"),
                 method: $(this).attr("method"),
@@ -942,6 +946,8 @@ $(function () {
                     button.attr({ disabled: false });
                 }
             });
+
+
 
             // Use SweetAlert for confirmation
             //Swal.fire({
@@ -1009,6 +1015,7 @@ $(function () {
             //});
         });
     }
+
 
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');

@@ -85,7 +85,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 applicant.ModifiedById = updatedById;
                 applicant.DateModified = DateTime.Now;
-                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus");
+                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus","DateCreated","ModifiedById");
 
                 return applicant;
             }
@@ -107,10 +107,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 }
             }
 
-            _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
-
             if (model.Id == 0)
             {
+                _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+
                 _applicantPersonalInfo.Code = await GenerateApplicationCode();
 
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);

@@ -40,13 +40,13 @@
 
 
                 <form id="frm_beneficiary" method="post" asp-action="SaveBeneficiary" asp-controller="Beneficiary" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-                    <div asp-validation-summary="All"></div>
+                  @*   <div asp-validation-summary="All"></div> *@
                     <div class="tab-pane" id="collateraldata">
 
 
                         <input hidden type="text" class="form-control rounded-3" asp-for="Id" value="@Model.Id">
                         <input hidden type="text" class="form-control rounded-3" asp-for="UserId" value="@Model.UserId">
-                        <input hidden type="text" class="form-control rounded-3" asp-for="PagibigNumber" value="@Model.PagibigNumber">
+                        @*    <input hidden type="text" class="form-control rounded-3" asp-for="PagibigNumber" value="@Model.PagibigNumber"> *@
 
 
 
@@ -108,14 +108,16 @@
                                                 <span asp-validation-for="MobileNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="Email" required></label>
-                                                <input type="email" class="form-control rounded-3 text-center" asp-for="Email" required>
-                                                <span asp-validation-for="Email" class="invalid-tooltip"> </span>
+                                                <label asp-for="PagibigNumber" class="form-label fw-normal" required></label>
+                                                <input class="form-control text-center rounded-3 pagibigInputMask" asp-for="PagibigNumber" required>
+                                                <span asp-validation-for="PagibigNumber" class="invalid-tooltip"></span>
                                             </div>
                                         </div>
+
+
+
 
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
@@ -140,7 +142,13 @@
                                                 <span asp-validation-for="PropertyUnitLevelName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
-
+                                        <div class="col-md-6">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="Email" required></label>
+                                                <input type="email" class="form-control rounded-3 text-center" asp-for="Email" required>
+                                                <span asp-validation-for="Email" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
 
 
 
@@ -297,7 +305,7 @@
 
 
 
-                                    
+
 
 
 

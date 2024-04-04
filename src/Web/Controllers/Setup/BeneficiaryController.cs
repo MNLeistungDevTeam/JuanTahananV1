@@ -70,7 +70,7 @@ public class BeneficiaryController : Controller
     {
         var vwModel = new BeneficiaryInformationModel();
 
-        var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+        //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
         var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
 
         if (beneficiaryData != null)
