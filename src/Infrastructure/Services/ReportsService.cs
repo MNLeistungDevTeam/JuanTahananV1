@@ -68,7 +68,6 @@ namespace DMS.Infrastructure.Services
                     //    };
 
                     var applicantData = await _applicantpersonalInfoRepo.GetByCodeAsync(applicationCode);
-                    
 
                     if (applicantData != null)
                     {
@@ -83,11 +82,12 @@ namespace DMS.Infrastructure.Services
                         var documentLocation = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Location ?? "";
                         var documentName = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Name ?? "";
 
+                        if (!string.IsNullOrWhiteSpace(documentLocation))
+                        {
+                            string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
 
-
-                        string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
-
-                        formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
+                            formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
+                        }
                     }
 
                     var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);

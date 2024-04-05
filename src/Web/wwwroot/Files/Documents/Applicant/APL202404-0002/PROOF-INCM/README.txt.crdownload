@@ -1,0 +1,26 @@
+
+DIGITAL PERSONA 64-bit Installer v.1.6 FOR INSTALLATION IN WINDOWS 11
+
+IF YOU ENCOUNTER THIS ERROR WHILE INSTALLING THE SDK
+"Error 1310. Error writing to file: <path> .Verify that you have access to that directory."
+
+TRY THIS METHOD:
+
+Download "AdvancedRun" from Nirsoft and start CMD.exe as TrustedInstaller (Instructions are here).
+
+LINKG INTRUCTION HOW TO USE: https://www.winhelponline.com/blog/run-program-as-trustedinstaller-locked-registry-keys-files/#advancedrun
+
+DOWNLOAD LINK :https://www.nirsoft.net/utils/advanced_run.html
+
+In the TrustedInstaller Command Prompt, run:
+
+icacls c:\windows\system32\en-us /grant administrators:F
+
+icacls c:\windows\system32\en-us /grant "NT AUTHORITY\SYSTEM":F
+
+(For each command, you should see the message "Successfully processed 1 files; Failed processing 0 files" in the output.)
+
+Pls upload the screenshot.
+
+See if you can install the DigitalPersona driver/software now; launch the installer via admin Command Prompt or Task Manager → Run New Task → "Create this task with administrative privileges".
+

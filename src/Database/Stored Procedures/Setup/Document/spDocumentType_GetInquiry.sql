@@ -15,8 +15,7 @@ AS
 	 WHEN dt.FileType = 2  THEN 'Docx' 
 	 WHEN dt.FileType = 3  THEN 'Txt' 
 	 WHEN dt.FileType = 4  THEN 'Xlsx' 
-	 WHEN dt.FileType = 5  THEN 'Jpg' 
-	 WHEN dt.FileType = 6  THEN 'Png' 
+	 WHEN dt.FileType = 5  THEN 'Images*' 
 	 ELSE ''
 	 END FileFormat
  FROM DocumentType dt

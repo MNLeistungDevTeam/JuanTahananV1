@@ -106,6 +106,11 @@ $(() => {
         var applicationStatus = tbl_beneficiaries.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
         var pagibigNumber = tbl_beneficiaries.rows({ selected: true }).data().pluck("PagibigNumber").toArray().toString();
 
+        $("#btn_view").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Beneficiary/Details/" + pagibigNumber
+        });
+
         $("#btn_create").attr({
             "disabled": (selectedRows !== 1),
             "data-url": baseUrl + "Applicants/NewHLF068/" + pagibigNumber
@@ -116,23 +121,19 @@ $(() => {
             "data-url": baseUrl + "Beneficiary/BeneficiaryInformation/" + pagibigNumber
         });
 
-
-
         $("#btn_add").attr({
             "data-url": baseUrl + "Beneficiary/BeneficiaryInformation"
         });
+    });
 
-
-
+    $("#btn_view").on('click', function () {
+        location.href = $(this).attr("data-url");
     });
 
     $("#btn_add").on('click', function () {
         let link = $(this).attr("data-url");
 
         location.href = link;
-
-
-       
     });
 
     $("#btn_edit").on('click', function () {

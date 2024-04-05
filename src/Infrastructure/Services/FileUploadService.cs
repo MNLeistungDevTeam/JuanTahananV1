@@ -234,22 +234,48 @@ namespace DMS.Infrastructure.Services
 
                         string convertedToString = $".{fileType.ToString().ToLower()}";
 
-                        if (extension == ".jpeg" || extension == ".jpg")
+                        if (documentType.FileType == 5 && IsImageFileType(extension))
                         {
-                            extension = ".jpg";
+                            await _documentRepository.CreateAsync(document);
                         }
-
-                        if (extension != convertedToString)
+                        else if (extension != convertedToString)
                             throw new ArgumentException("Invalid Assigned File Type.");
+                        else
+                        {
+                            await _documentRepository.CreateAsync(document);
+                        }
                     }
-
-                    await _documentRepository.CreateAsync(document);
                 }
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        public static bool IsImageFileType(string fileType)
+        {
+            // Array of common image file extensions
+            string[] imageExtensions = {
+            ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff", ".ico",
+            ".webp", ".svg", ".eps", ".raw", ".psd", ".ai", ".indd",
+            ".jp2", ".jxr", ".wdp", ".hdp", ".dng", ".cr2", ".nef", ".orf",
+            ".arw", ".rw2", ".raf", ".sr2", ".pef", ".x3f", ".erf", ".mrw"
+        };
+
+            // Convert file type to lowercase for case-insensitive comparison
+            fileType = fileType.ToLower();
+
+            // Check if the file type matches any image extension
+            foreach (var extension in imageExtensions)
+            {
+                if (fileType.EndsWith(extension))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public async Task DeleteFileAsync(int documentId, string rootFolder)
