@@ -130,6 +130,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "TIN Number", Prompt = "XXX-XXX-XXX-XXXX")]
         public string? TinNumber { get; set; }
 
+        [Required]
         [DisplayName("Occupation Status")]
         public string? OccupationStatus { get; set; }
 
