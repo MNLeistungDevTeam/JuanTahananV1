@@ -161,7 +161,6 @@ public class UserController : Controller
             }
 
             var rootFolder = _webHostEnvironment.WebRootPath;
-
             string profileSaveLocation = Path.Combine("Files", "Images", "UserPics", model.User.UserName);
             string signatureSaveLocation = Path.Combine("Files", "Images", "UserSignatures", model.User.UserName);
 
@@ -175,16 +174,13 @@ public class UserController : Controller
 
             var returnUserData = await _userRepo.SaveUserAsync(model.User, model.UserApprover, userId);
 
-            if (model.User.Id == 0)
+            UserRoleModel updateUserRole = new()
             {
-                UserRoleModel userRole = new()
-                {
-                    UserId = returnUserData.Id,
-                    RoleId = model.User.UserRoleId.Value
-                };
+                UserId = returnUserData.Id,
+                RoleId = model.User.UserRoleId.Value
+            };
 
-                await _userRoleRepo.SaveAsync(userRole);
-            }
+            await _userRoleRepo.SaveAsync(updateUserRole);
 
             return Ok();
         }
