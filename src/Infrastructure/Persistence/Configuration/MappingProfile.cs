@@ -16,6 +16,7 @@ using DMS.Domain.Dto.ModuleTypeDto;
 using DMS.Domain.Dto.NotificationDto;
 using DMS.Domain.Dto.NotificationReceiverDto;
 using DMS.Domain.Dto.RoleDto;
+using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 
@@ -63,5 +64,6 @@ public class MappingProfile : Profile
 
         CreateMap<DocumentVerification, DocumentVerificationModel>().ReverseMap();
         CreateMap<BeneficiaryInformation, BeneficiaryInformationModel>().ReverseMap();
+        CreateMap<TemporaryLink, TemporaryLinkModel>().ReverseMap();
     }
 }

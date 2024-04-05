@@ -19,7 +19,7 @@
             <h3 class="text-dark mt-3 mb-1 ">Admin Portal</h3>
             <p class="m-0">Welcome back! Login to your account.</p>
             <p class="text-muted mb-4">Enter your Username and Password to start your session.</p>
-
+            
             <form asp-controller="Account" asp-action="Login" method="post" asp-antiforgery="true" id="frmLogin" asp-route-returnurl="@Model.ReturnUrl">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="mb-2">
@@ -90,11 +90,14 @@
             <div id="carouselExampleIndicators" class="carousel slide h-100" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                   @*  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> *@
                 </div>
+
+ 
+
                 <div class="carousel-inner h-100">
-                    <div class="carousel-item h-100 active" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/eiFOSAssets/Slide/1.jpg"));">
+                    <div class="carousel-item h-100 active" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/juantahananassets/backgrounds/family.png"));">
                         <div class="h-100 pt-3">
                             <div class="feature-container text-white p-4 pt-2">
                                 <div class="p-2 rounded" style="background-color: #fff; background-color: rgb(255 205 118 / 60%)" hidden>
@@ -104,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item h-100" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/eiFOSAssets/Slide/2.jpg"));">
+@*                     <div class="carousel-item h-100" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/eiFOSAssets/Slide/2.jpg"));">
                         <div class="h-100 pt-3">
                             <div class="feature-container text-white p-4 pt-2">
                                 <div class="p-2 rounded" style="background-color: #fff; background-color: rgb(255 205 118 / 60%)" hidden>
@@ -113,8 +116,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="carousel-item h-100" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/eiFOSAssets/Slide/3.jpg"));">
+                    </div> *@
+                   @*  <div class="carousel-item h-100" data-bs-interval="10000" style="background-image: url(@Url.Content("~/images/eiFOSAssets/Slide/3.jpg"));">
                         <div class="h-100 pt-3">
                             <div class="feature-container text-white p-4 pt-2">
                                 <div class="p-2 rounded" style="background-color: #fff; background-color: rgb(255 205 118 / 60%)">
@@ -123,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
                 </div>
             </div>
         </div>
