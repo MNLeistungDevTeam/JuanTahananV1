@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.Pdf;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
@@ -514,6 +515,13 @@ namespace Template.Web.Controllers.Transaction
                 var barrowerModel = new BarrowersInformation();
                 // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
+
+                var userinfo = await _userRepo.GetUserAsync(userId);
+                var currentuserRoleId = userinfo.UserRoleId;
+
+                //current user is beneficiary
+
+                 
                 int companyId = int.Parse(User.FindFirstValue("Company"));
                 var applicantCode = "";
 
@@ -524,6 +532,18 @@ namespace Template.Web.Controllers.Transaction
                 //create  new beneficiary
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
+
+                    //current user is beneficiary
+                if (currentuserRoleId == 4)
+                {
+                    var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+                    if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                    {
+                        return BadRequest("Can't be processed. You have a pending application!");
+                    }
+
+                }
 
                 {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
