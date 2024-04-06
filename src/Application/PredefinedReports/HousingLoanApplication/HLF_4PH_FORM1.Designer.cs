@@ -1542,7 +1542,7 @@
             // 
             this.xrTableCell42.CanGrow = false;
             this.xrTableCell42.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[Name]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[EmployerName]")});
             this.xrTableCell42.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
             this.xrTableCell42.Multiline = true;
             this.xrTableCell42.Name = "xrTableCell42";
@@ -2733,7 +2733,7 @@
             // 
             this.xrLabel69.CanGrow = false;
             this.xrLabel69.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 7,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[OccupationStatus]== \'Self-Employed\',true , false)\n\n\n\n\n\n")});
             this.xrLabel69.LocationFloat = new DevExpress.Utils.PointFloat(434.759F, 950.7626F);
             this.xrLabel69.Multiline = true;
             this.xrLabel69.Name = "xrLabel69";
@@ -2747,7 +2747,7 @@
             // 
             this.xrLabel68.CanGrow = false;
             this.xrLabel68.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([LoanParticularsInformationModel].[PurposeOfLoanId] == 7,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[OccupationStatus]== \'Employed\',true , false)\n\n\n\n\n")});
             this.xrLabel68.LocationFloat = new DevExpress.Utils.PointFloat(434.759F, 930.9108F);
             this.xrLabel68.Multiline = true;
             this.xrLabel68.Name = "xrLabel68";
@@ -3104,8 +3104,8 @@
             // 
             this.xrLabel39.CanGrow = false;
             this.xrLabel39.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[OcupationStatus]== \'Self-Employed\',true , false)" +
-                    "\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[OccupationStatus]== \'Self-Employed\',true , false" +
+                    ")\n\n\n\n\n\n")});
             this.xrLabel39.LocationFloat = new DevExpress.Utils.PointFloat(434.759F, 613.2689F);
             this.xrLabel39.Multiline = true;
             this.xrLabel39.Name = "xrLabel39";
@@ -3117,8 +3117,8 @@
             // 
             this.xrLabel38.CanGrow = false;
             this.xrLabel38.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[OcupationStatus]== \'Employed\',true , false)\n\n\n\n\n" +
-                    "")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BarrowersInformationModel].[OccupationStatus]== \'Employed\',true , false)\n\n\n\n" +
+                    "\n")});
             this.xrLabel38.LocationFloat = new DevExpress.Utils.PointFloat(434.759F, 599.4159F);
             this.xrLabel38.Multiline = true;
             this.xrLabel38.Name = "xrLabel38";
