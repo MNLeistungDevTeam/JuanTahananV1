@@ -275,6 +275,20 @@ public class DocumentController : Controller
 
             var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
 
+            // if withdrawn or reject cant be upload files any more
+            if (application.ApprovalStatus == 2 ||
+               application.ApprovalStatus == 5 ||
+               application.ApprovalStatus == 9 ||
+               application.ApprovalStatus == 10)
+            {
+                return BadRequest($"Can't Upload Document, this application is currently {application.ApplicationStatus}");
+            }
+
+            if (application.StageNo == 1 && application.ApprovalStatus != 4)
+            {
+                return BadRequest($"Can't Upload Document, this application is currently on Stage {application.Stage}");
+            }
+
             //var users = await _userRepository.GetAllAsync();
             //var user = users.FirstOrDefault(x => x.Id == application?.UserId);
 
@@ -293,7 +307,9 @@ public class DocumentController : Controller
             //DocumentId.Value
             //);
 
-            int userId = application.UserId;
+            int userId = int.Parse(User.Identity.Name);
+
+            //int userId = application.UserId;
             int companyId = application.CompanyId ?? 0;
             int documentTypeId = documentType.Id;
 

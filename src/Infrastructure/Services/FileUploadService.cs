@@ -245,6 +245,10 @@ namespace DMS.Infrastructure.Services
                             await _documentRepository.CreateAsync(document);
                         }
                     }
+                    else
+                    {
+                        await _documentRepository.CreateAsync(document);
+                    }
                 }
             }
             catch (Exception)
