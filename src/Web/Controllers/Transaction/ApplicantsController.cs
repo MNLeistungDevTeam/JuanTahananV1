@@ -521,7 +521,6 @@ namespace Template.Web.Controllers.Transaction
 
                 //current user is beneficiary
 
-                 
                 int companyId = int.Parse(User.FindFirstValue("Company"));
                 var applicantCode = "";
 
@@ -533,19 +532,18 @@ namespace Template.Web.Controllers.Transaction
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
 
-                    //current user is beneficiary
-                if (currentuserRoleId == 4)
                 {
-                    var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
-
-                    if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                    //current user is beneficiary
+                    if (currentuserRoleId == 4)
                     {
-                        return BadRequest("Can't be processed. You have a pending application!");
+                        var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+                        if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                        {
+                            return BadRequest("Can't be processed. You have a pending application!");
+                        }
                     }
 
-                }
-
-                {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
                     #region Register User and Send Email

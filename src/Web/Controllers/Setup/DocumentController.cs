@@ -275,6 +275,10 @@ public class DocumentController : Controller
 
             var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
 
+            var applicationverificationData= await _documentVerificationRepo.GetByTypeAsync(2, null);
+            var applicationDocument = applicationverificationData.ToList().Select(item => item.DocumentTypeId);
+
+
             // if withdrawn or reject cant be upload files any more
             if (application.ApprovalStatus == 2 ||
                application.ApprovalStatus == 5 ||
@@ -284,7 +288,7 @@ public class DocumentController : Controller
                 return BadRequest($"Can't Upload Document, this application is currently {application.ApplicationStatus}");
             }
 
-            if (application.StageNo == 1 && application.ApprovalStatus != 4)
+            if (application.StageNo == 1 && application.ApprovalStatus != 4 && applicationDocument.Contains(DocumentTypeId.Value))
             {
                 return BadRequest($"Can't Upload Document, this application is currently on Stage {application.Stage}");
             }

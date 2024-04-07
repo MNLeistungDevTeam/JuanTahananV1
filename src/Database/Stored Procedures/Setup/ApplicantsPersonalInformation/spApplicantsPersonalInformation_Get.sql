@@ -22,7 +22,8 @@ AS
 		CASE
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
 			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 2
-		END StageNo
+		END StageNo,
+		aps.Remarks
 	FROM ApplicantsPersonalInformation apl
 		LEFT JOIN (
 		SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,

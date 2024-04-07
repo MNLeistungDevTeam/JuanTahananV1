@@ -34,9 +34,14 @@ namespace DMS.Domain.Dto.ApplicantsDto
         #region Display Properties
 
         public string? ApplicantFullName { get; set; }
+        public string? ApplicantFirstName { get; set; }
+        public string? ApproverFullName { get; set; }
+        public string? ApproverFirstName { get; set; }
+        public string? ApproverRole { get; set; }
+        public string? ApplicantEmail { get; set; }
         public string? PositionName { get; set; }
         public string? ApplicationStatus { get; set; }
-
+      
         public decimal? IncomeAmount { get; set; }
         public string? Developer { get; set; }
         public string? ProjectLocation { get; set; }
@@ -63,6 +68,12 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public string? Stage { get; set; }
         public int? StageNo { get; set; }
+
+        public string? ApproverName { get; set; }
+       
+        public string? Email { get; set; }
+        
+
         #endregion Display Properties
     }
 }
