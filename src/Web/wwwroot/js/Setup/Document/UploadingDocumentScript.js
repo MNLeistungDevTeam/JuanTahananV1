@@ -5,8 +5,7 @@ $(async function () {
         2: '.docx',
         3: '.txt',
         4: '.xlsx',
-        5: ['.jpg', '.jpeg', '.JPEG', '.Jpg'], // Mapping both .jpg and .jpeg to the same value
-        6: '.png'
+        5: ['image/*'], // Mapping both .jpg and .jpeg to the same value
     };
 
     const $modal = $('#modal-file');
@@ -87,11 +86,15 @@ $(async function () {
 
         let fileFormats = FileFormats[documentType.FileType];
 
-        if (Array.isArray(fileFormats)) {
-            fileFormats = fileFormats.join(','); // Join array elements into a single string
+        if (documentType.FileType == 5) {
+            $('#file-input').attr('accept', fileFormats);
+        }
+        else if (Array.isArray(fileFormats)) {
+            fileFormats = fileFormats.join(',');
+
+            $('#file-input').attr('accept', fileFormats);
         }
 
-        $('#file-input').attr('accept', fileFormats);
         $('#file-input').trigger('click');
     });
     $('#tbl_files tbody').on('click', '.replace', function (e) {

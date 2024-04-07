@@ -11,9 +11,11 @@ using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.ModuleStageDto;
+using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Services
@@ -29,7 +31,8 @@ namespace DMS.Infrastructure.Services
         private readonly DMSDBContext _context;
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
-
+        private readonly IEmailService _emailService;
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
         public ApprovalService(IModuleRepository moduleRepo,
             IApprovalStatusRepository approvalStatusRepo,
@@ -39,7 +42,9 @@ namespace DMS.Infrastructure.Services
             DMSDBContext context,
             IUserRepository userRepo,
             IMapper mapper,
-            IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+            IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+            IEmailService emailService,
+            IBackgroundJobClient backgroundJobClient)
         {
             _moduleRepo = moduleRepo;
             _approvalStatusRepo = approvalStatusRepo;
@@ -49,7 +54,9 @@ namespace DMS.Infrastructure.Services
             _moduleStageRepo = moduleStageRepo;
             _userRepo = userRepo;
             _mapper = mapper;
-            _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo; 
+            _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
+            _emailService = emailService;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, ApprovalStatusType? status = ApprovalStatusType.PendingReview)
@@ -106,7 +113,7 @@ namespace DMS.Infrastructure.Services
 
                 //ApprovalLevel approvalLevel = new();
                 int approvalLevelId = 0;
-                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified 
+                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified
                     || model.Status == (int)AppStatusType.Deferred || model.Status == (int)AppStatusType.PagibigConfirmed || model.Status == (int)AppStatusType.DeveloperConfirmed || model.Status == (int)AppStatusType.Disqualified)
                 {
                     var approvalLevelData = await _approvalLevelRepo.SaveAsync(model);
@@ -124,6 +131,19 @@ namespace DMS.Infrastructure.Services
                 await _approvalLogRepo.SaveAsync(log, approverId);
 
                 await UpdateApprovalStatus(approvalStatus, model);
+
+                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified
+                  || model.Status == (int)AppStatusType.Deferred || model.Status == (int)AppStatusType.PagibigConfirmed || model.Status == (int)AppStatusType.DeveloperConfirmed || model.Status == (int)AppStatusType.Disqualified)
+                {
+                    if (approvalStatus.ModuleCode == ModuleCodes2.CONST_APPLICANTSREQUESTS)
+                    {
+                        var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
+
+                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId);
+
+                        _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatus(activeapplication, activeapplication.ApplicantEmail));
+                    }
+                }
             }
             catch (Exception)
             {
@@ -187,6 +207,7 @@ namespace DMS.Infrastructure.Services
 
                 approvalStatus.Status = approvalLevel.Status;
                 await UpdateTransactionApprovalStatus(approvalStatus, approvalLevel.ApproverId);
+
                 var statusSaved = await _approvalStatusRepo.SaveAsync(approvalStatus);
             }
             catch (Exception)

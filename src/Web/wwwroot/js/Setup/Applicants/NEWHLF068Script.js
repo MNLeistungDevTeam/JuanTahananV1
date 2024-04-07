@@ -1,7 +1,9 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 $(function () {
-    $(".selectize").selectize();
+    $(".selectize").selectize({
+        search: false
+    });
     $('.calendarpicker').flatpickr();
 
     $(".timepicker").flatpickr({

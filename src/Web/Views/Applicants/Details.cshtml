@@ -121,9 +121,9 @@
 
 
 
-                                            <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
-                                                <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
-                                            </button>
+                                            // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                            // </button>
 
                                         }
                                         else
@@ -138,9 +138,9 @@
 
 
 
-                                            <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
-                                                <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
-                                            </button>
+                                            // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                            // </button>
 
                                         }
 
@@ -148,6 +148,48 @@
 
 
                                     }
+
+
+
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
+                                    {
+
+
+
+
+
+
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+
+
+
+
+
+                                    }
+
+
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
+                                    {
+
+
+
+
+
+
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+
+
+
+
+
+                                    }
+                                   
+
+
 
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                                     {
@@ -275,6 +317,9 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
+                            <div class="overlay dark d-none" id="applicant-overlay">
+                                <span class='spinner-border spinner-border-lg'></span>
+                            </div>
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row">

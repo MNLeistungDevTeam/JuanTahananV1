@@ -12,7 +12,8 @@ namespace DMS.Domain.Enums
         Docx = 2,
         Txt = 3,
         Xlsx = 4,
-        Jpg = 5,
-        Png = 6
+        Image = 5,
+        //Jpg = 5,
+        //Png = 6
     }
 }

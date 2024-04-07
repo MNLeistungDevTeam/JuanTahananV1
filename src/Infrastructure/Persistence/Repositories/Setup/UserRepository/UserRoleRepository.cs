@@ -42,14 +42,30 @@ public class UserRoleRepository : IUserRoleRepository
 
     public async Task<UserRole> SaveAsync(UserRoleModel model)
     {
-        var _model = _mapper.Map<UserRole>(model);
+        try
+        {
+            var _model = _mapper.Map<UserRole>(model);
 
-        if (_model.Id == 0)
-            _model = await CreateAsync(_model);
-        else
-            _model = await UpdateAsync(_model);
+            int _modelId = await _context.UserRoles
+                .AsNoTracking()
+                .Where(m => m.UserId == _model.UserId)
+                .Select(m => (int?) m.Id)
+                .FirstOrDefaultAsync() ?? 0;
 
-        return _model;
+            if (_modelId == 0)
+                _model = await CreateAsync(_model);
+            else
+            {
+                _model.Id = _modelId;
+                _model = await UpdateAsync(_model);
+            }
+
+            return _model;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task<UserRole> CreateAsync(UserRole model)
