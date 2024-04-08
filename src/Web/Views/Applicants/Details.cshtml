@@ -3,9 +3,13 @@
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @model ApplicantViewModel
 @{
-    ViewData["Title"] = "Applicant Details";
-    ViewData["Breadcrumbs"] = "Details";
+   
 
+
+    string title = "Application Details -" + Model.ApplicantsPersonalInformationModel.Code;
+
+    ViewData["Title"] = title;
+    ViewData["Breadcrumbs"] = "Details";
     var currentUserId = _currentUserService.GetCurrentUserId();
     var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
 }
@@ -17,8 +21,7 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="Applicants" asp-action="ApplicantRequests">Applicant Requests</a></li>
-                    <li class="breadcrumb-item active">@ViewData["Breadcrumbs"]</li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewData["Title"]</h4>
@@ -244,7 +247,7 @@
 
 
 
-                                else if (currentUserRole.RoleId == 5 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
+                                else if ((currentUserRole.RoleId == 5 || currentUserRole.RoleId == 2) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperVerified)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -253,6 +256,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
+
                                 else if (currentUserRole.RoleId == 3 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigVerified)">
@@ -264,7 +268,7 @@
                                 }
 
 
-                                else if (currentUserRole.RoleId == 5 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
+                                else if ((currentUserRole.RoleId == 5 || currentUserRole.RoleId == 2) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
