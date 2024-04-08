@@ -977,7 +977,7 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
 function updateBeneficiaryHousingLoanSideBarNav() {
     let pagibignumber = $("#txt_userPagibigNumber").val();
 
-    var $link = $('a.side-nav-link[href="/Applicants/NewHLF068"]');
+    var $link = $('a.side-nav-link[href="/Applicants/HousingLoanForm"]');
 
     // Check if element is found
     if ($link.length > 0) {

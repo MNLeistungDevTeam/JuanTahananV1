@@ -71,10 +71,10 @@ $(() => {
                             </button>
                             <div class="dropdown-menu dropdown-menu-animated" style="">
                                 ${data != null ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Document</a>` : ''}
-                                 ${data != null ? `   <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Edit Active Housing Application</a>` : ''}
+                                 ${data != null ? `   <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Edit Active HLAF</a>` : ''}
                                     ${data != null ? `   <a class="dropdown-item" href="/Applicants/Details${applicantCode}">View Application Details</a>` : ''}
-                                 ${data == null ? `  <a class="dropdown-item" href="/Applicants/NEWHLF068/${row.PagibigNumber}">Create New Housing Application</a>` : ''}
-                                ${data != null ? `<a class="dropdown-item" href="/Report/LatestHousingForm${applicantCode}">View PDF</a>` : ''}
+                                 ${data == null ? `  <a class="dropdown-item" href="/Applicants/NEWHLF068/${row.PagibigNumber}">Create New HLAF</a>` : ''}
+                                ${data != null ? `<a class="dropdown-item" href="/Report/LatestHousingForm${applicantCode}">View PDF Version</a>` : ''}
                             </div>
                         </div>
                     `;
