@@ -30,8 +30,8 @@ AS
 		END ApplicationStatus,
 
 		CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'For Verification Approval'
-			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 'For Application Approval'
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'Credibility Verification'
+			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 'Loan Application'
 		END Stage,
 		CASE
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
