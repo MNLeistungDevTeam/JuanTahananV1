@@ -1,11 +1,25 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+
 $(function () {
+    //var form2DateObt1 = $("#Form2PageModel_DateObtained1");
+    //var form2DateObt2 = $("#Form2PageModel_DateObtained2");
+    //var form2DateObt3 = $("#Form2PageModel_DateObtained3");
+
+    //var form2DateFull1 = $("#Form2PageModel_DateFullyPaid1");
+    //var form2DateFull2 = $("#Form2PageModel_DateFullyPaid2");
+    //var form2DateFull3 = $("#Form2PageModel_DateFullyPaid3");
+
     $(".selectize").selectize({
         search: false
     });
 
     $('.calendarpicker').flatpickr();
+
+    $('.present-calendar-picker').flatpickr({
+        dateFormat: "Y-m-d",
+        maxDate: moment().format("YYYY-MM-DD")
+    });
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -37,6 +51,8 @@ $(function () {
     $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
+
+    initializeLoanCreditDate();
 
     rebindValidators();
 
@@ -725,7 +741,6 @@ $(function () {
         ////var isCharacterOrHyphen = (e.keyCode >= 65 && e.keyCode <= 90) ||  // A-Z
         ////keyCode == 45; // hyphen
 
-
         //if (!regexZip.test(key)) {
         //    console.log(e.key);
         //    e.preventDefault();
@@ -922,6 +937,26 @@ $(function () {
     $('#SpouseModel_BusinessTelNo').on('keydown', function (e) {
         // Reject inputs
         //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $(`[id^="Form2PageModel_TradeTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+    
+    $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
         let rejectCodes = ['e', 'E'];
 
         if ($.inArray(e.key, rejectCodes) > -1) {
@@ -1270,6 +1305,53 @@ $(function () {
         });
 
         return isValid;
+    }
+
+    function initializeLoanCreditDate() {
+        const dateFormat = "Y-m-d";
+        var currentDate = moment().format("YYYY-MM-DD");
+
+        $('[id^="Form2PageModel_DateObtained"]').flatpickr({
+            dateFormat: dateFormat,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let fullyPaidId = instance.input.id.replace("DateObtained", "DateFullyPaid");
+
+                if (dateStr === '') {
+                    $(`#${fullyPaidId}`).val("");
+                    return;
+                }
+
+                $(`#${fullyPaidId}`).flatpickr({
+                    dateFormat: dateFormat,
+                    minDate: dateStr,
+                    onChange: function (selectedDatesArr, dateString, instance1) {
+                        let obtainedId = instance1.input.id.replace("DateFullyPaid", "DateObtained");
+                        let obtVal = $(`#${obtainedId}`).val();
+                        console.log(obtVal);
+                        if (obtVal === '') {
+                            $(`#${instance1.input.id}`).val("");
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('[id^="Form2PageModel_DateFullyPaid"]').flatpickr({
+            dateFormat: dateFormat,
+            minDate: currentDate,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let obtainedId = instance.input.id.replace("DateFullyPaid", "DateObtained");
+                let obtVal = $(`#${obtainedId}`).val();
+                console.log(obtVal);
+                if (obtVal === '') {
+                    $(`#${instance.input.id}`).val("");
+                    return;
+                }
+            }
+        });
     }
 
     //#endregion
