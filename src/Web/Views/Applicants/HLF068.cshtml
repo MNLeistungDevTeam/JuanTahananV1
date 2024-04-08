@@ -140,7 +140,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-control rounded-3 text-center" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-control rounded-3 text-start" required>
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="invalid-tooltip"></span>
                                 </div>
                             </div>
@@ -377,7 +377,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
+                                                <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
                                                 <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -497,7 +497,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode">
+                                                <input class="form-control rounded-3 codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode" maxlength="10">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -566,7 +566,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode" required></label>
-                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" required>
+                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" maxlength="10" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -837,7 +837,7 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode">
+                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode" maxlength="10">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -856,7 +856,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
+                                                <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -924,7 +924,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
-                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
+                                    <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
                                     <span asp-validation-for="SpouseModel.BirthDate" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -1065,7 +1065,7 @@
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
-                                    <input class="form-control rounded-3  codeInputMask codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode">
+                                    <input class="form-control rounded-3  codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode" maxlength="10">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -2172,5 +2172,5 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-    <script src="~/js/Setup/Applicants/HLF069Script.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Applicants/HLF068Script.js" asp-append-version="true"></script>
 }
