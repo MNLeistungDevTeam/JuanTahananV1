@@ -46,33 +46,56 @@ $(() => {
                 data: 'StatusOnline',
                 orderable: !0,
                 className: 'align-middle text-center',
+                visible: false,
                 render: function (data) {
                     return `
                         <span class="badge fs-6 border bg-secondary">${data}</span>
                         `;
                 }
             },
+
+       
             {
-                data: null,
+                data: 'ActiveApplicationCode',
                 orderable: !0,
                 className: 'align-middle text-center',
-                visible: false,
-                render: function (data) {
-                    let applicantCode = data.ApplicantCode != null ? `/${data.ApplicantCode}` : "";
+                visible: true,
+                render: function (data,type, row) {
+                    let applicantCode = data != "" ? `/${data}` : "";
+                    //console.log(data);
+                    //console.log(row.ActiveApplicationCode);
                     return `
                         <div class="dropdown btn-group">
                             <button class="btn btn-light waves-effect" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="mdi mdi-dots-horizontal"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-animated" style="">
-                                ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Document</a>` : ''}
-                                <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Housing Application</a>
-                                ${data.TotalLoanCounts != 0 ? `<a class="dropdown-item" href="/Report/LatestHousingForm${applicantCode}">View PDF</a>` : ''}
+                                ${data != null ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Document</a>` : ''}
+                                 ${data != null ? `   <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Edit Active Housing Application</a>` : ''}
+                                    ${data != null ? `   <a class="dropdown-item" href="/Applicants/Details${applicantCode}">View Application Details</a>` : ''}
+                                 ${data == null ? `  <a class="dropdown-item" href="/Applicants/NEWHLF068/${row.PagibigNumber}">Create New Housing Application</a>` : ''}
+                                ${data != null ? `<a class="dropdown-item" href="/Report/LatestHousingForm${applicantCode}">View PDF</a>` : ''}
                             </div>
                         </div>
                     `;
                 }
-            }
+            },
+
+
+
+            {
+                data: 'PagibigNumber',
+                orderable: !0,
+                className: 'align-middle text-center',
+                visible: false,
+                render: function (data) {
+                    return data;
+                }
+            },
+
+
+
+
         ],
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
@@ -111,10 +134,10 @@ $(() => {
             "data-url": baseUrl + "Beneficiary/Details/" + pagibigNumber
         });
 
-        $("#btn_create").attr({
-            "disabled": (selectedRows !== 1),
-            "data-url": baseUrl + "Applicants/NewHLF068/" + pagibigNumber
-        });
+        //$("#btn_create").attr({
+        //    "disabled": (selectedRows !== 1),
+        //    "data-url": baseUrl + "Applicants/HLF068/"
+        //});
 
         $("#btn_edit").attr({
             "disabled": (selectedRows !== 1),
@@ -143,7 +166,7 @@ $(() => {
     });
 
     $("#btn_create").on('click', function () {
-        let link = $(this).attr("data-url");
+        let link = baseUrl + "Applicants/HLF068";
 
         location.href = link;
     });
