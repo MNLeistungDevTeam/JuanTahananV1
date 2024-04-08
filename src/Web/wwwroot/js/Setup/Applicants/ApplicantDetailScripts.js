@@ -309,9 +309,12 @@ $(function () {
                         method: $form.attr("method"),
                         data: formData,
                         beforeSend: function () {
+                            $("#applicant-overlay").removeClass('d-none');
                             $btnSave.attr({ disabled: true });
                         },
                         success: function (response) {
+                            $("#applicant-overlay").addClass('d-none');
+
                             messageBox("Successfully saved.", "success");
 
                             $btnSave.attr({ disabled: false });

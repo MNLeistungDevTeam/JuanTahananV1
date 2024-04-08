@@ -157,6 +157,33 @@ $(function () {
             });
         }
 
+        if (selectedRows == 1 && applicationStatus == 0) {
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+        else if (selectedRows == 1 && applicationStatus == 2) {
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
+        else if (selectedRows == 1 && applicationStatus == 9) {
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
+        else {
+            $("#btn_upload_document").attr({
+                "disabled": true,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
@@ -165,11 +192,6 @@ $(function () {
         $("#btn_generate_pdf").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
-        });
-
-        $("#btn_upload_document").attr({
-            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
-            "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
         });
     });
 

@@ -1,7 +1,13 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 $(function () {
-    $(".selectize").selectize();
+    $(".selectize").selectize({
+        search: false
+
+    });
+
+
+
     $('.calendarpicker').flatpickr();
 
     $(".timepicker").flatpickr({
@@ -152,10 +158,12 @@ $(function () {
         purposeOfLoanDropdown.off('load');
     });
 
+
     $modeofPaymentDropdown = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).selectize({
         valueField: 'Id',
         labelField: 'Description',
-        searchField: 'Description',
+        create: false,
+        readOnly: true,
         preload: true,
         load: function (query, callback) {
             $.ajax({
@@ -197,7 +205,19 @@ $(function () {
         modeofPaymentDropdown.off('load');
     });
 
+
     //#endregion
+
+    //#region Set Selectize to readonly
+    $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
+    $('#LoanParticularsInformationModel_ModeOfPaymentId-selectized').prop('readonly', true);
+    $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
+    $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_HomeOwnerShip-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_OccupationStatus-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_PreparedMailingAddress-selectized').prop('readonly', true);
+    $('#SpouseModel_OccupationStatus-selectized').prop('readonly', true);
+    //#endregion Set Selectize to readonly
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
@@ -210,32 +230,72 @@ $(function () {
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
+        //// Get the raw value without the input mask
+        //var rawValue = $(this).inputmask('unmaskedvalue');
+
+        //// Convert the raw value to a numeric format
+        //var numericValue = parseFloat(rawValue);
+
+        //// Check if the length exceeds 7 characters
+        //if (rawValue.length > 7 || numericValue > 7000000) {
+        //    messageBox("Desired Loan Amount cannot exceed 7,000,000!", "danger", true);
+        //    $(this).addClass("input-validation-error is-invalid");
+        //    $(this).val(0); // Reset the input value to 0
+        //}
+
         // Get the raw value without the input mask
         var rawValue = $(this).inputmask('unmaskedvalue');
 
         // Convert the raw value to a numeric format
         var numericValue = parseFloat(rawValue);
 
-        // Check if the length exceeds 7 characters
-        if (rawValue.length > 7 || numericValue > 7000000) {
+        // Check if the numeric value exceeds 7 million
+        if (numericValue > 7000000) {
             messageBox("Desired Loan Amount cannot exceed 7,000,000!", "danger", true);
             $(this).addClass("input-validation-error is-invalid");
             $(this).val(0); // Reset the input value to 0
         }
+
+        // Check if the length exceeds 7 characters
+        if (rawValue.length > 7) {
+            // Truncate input to 7 characters
+            var truncatedValue = rawValue.substring(0, 7);
+            $(this).val(truncatedValue); // Set the input value
+        }
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function () {
-        var inputValue = $(this).val().toString();
-        var numericValue = parseInt(inputValue, 10);
+        //var inputValue = $(this).val().toString();
+        //var numericValue = parseInt(inputValue, 10);
 
-        if (numericValue > 30 || inputValue.length > 2) {
-            //alert("Input value exceeds 30!");
+        //if (numericValue > 30 || inputValue.length > 2) {
+        //    //alert("Input value exceeds 30!");
 
-            messageBox("Desired Loan Term Years exceeds 30!", "danger", true);
+        //    messageBox("Desired Loan Term Years exceeds 30!", "danger", true);
 
-            $('#LoanParticularsInformationModel_DesiredLoanTermYears').trigger('invalid');
+        //    $('#LoanParticularsInformationModel_DesiredLoanTermYears').trigger('invalid');
 
-            $(this).val(0);
+        //    $(this).val(0);
+        //}
+
+        // Get the raw value without the input mask
+        var rawValue = $(this).val().toString();
+
+        // Convert the raw value to a numeric format
+        var numericValue = parseInt(rawValue, 10);
+
+        // Check if the numeric value exceeds 7 million
+        if (numericValue > 30) {
+            messageBox("Desired Loan Terms exceeds 30!", "danger", true);
+            $(this).trigger('invalid');
+            $(this).val(0); // Reset the input value to 0
+        }
+
+        // Check if the length exceeds 7 characters
+        if (rawValue.length > 2) {
+            // Truncate input to 7 characters
+            var truncatedValue = rawValue.substring(0, 2);
+            $(this).val(truncatedValue); // Set the input value
         }
     });
 

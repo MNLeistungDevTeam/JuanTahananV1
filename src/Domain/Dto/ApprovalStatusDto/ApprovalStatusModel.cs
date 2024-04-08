@@ -38,6 +38,7 @@ namespace DMS.Domain.Dto.ApprovalStatusDto
         public int? ApprovalLevelStatus { get; set; }   
         public int? MaxModuleStageLevel { get; set; }   
         public int? CurrentModuleStageLevel { get; set; }   
+        public string? ModuleCode { get; set; }   
 
     }
 }
