@@ -112,7 +112,6 @@
         tbl_role.on('draw', () => {
             customCheckRows(tbl_role);
         });
-
     }
     function customCheckRows(element) {
         var row2minimum = element.rows({ selected: true }).count();
@@ -125,7 +124,7 @@
                 let btn_edit = currentElement.find('.btn_edit');
                 let btn_view = currentElement.find('.btn_view');
                 if (row2minimum > 1) {
-                    btn_delete.attr('disabled', id >= 1 ? true : false);
+                    btn_delete.attr('disabled', id > 1 ? true : false);
                     btn_view.attr('disabled', true)
                     btn_edit.attr('disabled', true);
                     btn_add.attr('disabled', true);

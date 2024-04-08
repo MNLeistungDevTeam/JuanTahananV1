@@ -983,9 +983,25 @@ function updateBeneficiaryHousingLoanSideBarNav() {
     if ($link.length > 0) {
         // Append '/2434' to the current href value
         var currentHref = $link.attr('href');
-        var newHref = currentHref +"/" + pagibignumber;
+        var newHref = currentHref + "/" + pagibignumber;
 
         // Update the href attribute with the new value
         $link.attr('href', newHref);
     }
+}
+
+function updateUserProfile() {
+    const userId = $("#txt_userId").val();
+    const defaultProfile = "/images/user/default.png";
+    $.ajax({
+        url: baseUrl + "User/GetUser/" + userId,
+        success: function (response) {
+            $('#userProfile').attr("src", response.ProfilePicture);
+            $('#notifProfile').attr("src", response.ProfilePicture);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $('#userProfile').attr("src", defaultProfile);
+            $('#notifProfile').attr("src", defaultProfile);
+        }
+    });
 }
