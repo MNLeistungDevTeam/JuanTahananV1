@@ -266,9 +266,9 @@ public class DocumentController : Controller
             double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
 
             // Check if the file size exceeds 3MB
-            if (fileSizeInMegabytes > 3)
+            if (fileSizeInMegabytes > 5)
             {
-                throw new Exception("File size exceeds 3MB");
+                throw new Exception("File size exceeds 5MB");
             }
 
             var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
