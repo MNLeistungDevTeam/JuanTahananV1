@@ -73,6 +73,10 @@ $(function () {
         var Id = tbl_company.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var Name = tbl_company.rows({ selected: true }).data().pluck("Name").toArray().toString();
 
+        $("#btn_add").attr({
+            "disabled": (selectedRows === 1)
+        });
+
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),
             "data-id": Id
