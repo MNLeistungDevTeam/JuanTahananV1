@@ -1,14 +1,12 @@
-﻿using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
 using DMS.Domain.Enums;
-using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,11 +22,17 @@ public class BeneficiaryController : Controller
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly IUserRoleRepository _userRoleRepo;
     private readonly IEmailService _emailService;
+    private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
 
-    public BeneficiaryController(IUserRepository userRepo, 
+    public BeneficiaryController(
+        IUserRepository userRepo,
         IBeneficiaryInformationRepository beneficiaryInformationRepo,
         INotificationService notificationService,
-        IAuthenticationService authenticationService, IBackgroundJobClient backgroundJobClient, IUserRoleRepository userRoleRepo, IEmailService emailService)
+        IAuthenticationService authenticationService,
+        IBackgroundJobClient backgroundJobClient,
+        IUserRoleRepository userRoleRepo,
+        IEmailService emailService,
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
@@ -36,14 +40,16 @@ public class BeneficiaryController : Controller
         _authenticationService = authenticationService;
         _backgroundJobClient = backgroundJobClient;
         _userRoleRepo = userRoleRepo;
-        _emailService = emailService;   
+        _emailService = emailService;
+        _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
     }
+
+    #region Views
 
     public IActionResult Index()
     {
         return View();
     }
-
 
     [Route("[controller]/Details/{pagibigNumber?}")]
     public async Task<IActionResult> Details(string? pagibigNumber = null)
@@ -63,8 +69,6 @@ public class BeneficiaryController : Controller
         return View(vwModel);
     }
 
-
-
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
     public async Task<IActionResult> Beneficiary(string? pagibigNumber = null)
     {
@@ -80,6 +84,10 @@ public class BeneficiaryController : Controller
 
         return View(vwModel);
     }
+
+    #endregion Views
+
+    #region API Operation
 
     [HttpPost]
     public async Task<IActionResult> SaveBeneficiary(BeneficiaryInformationModel model)
@@ -154,4 +162,6 @@ public class BeneficiaryController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+    #endregion API Operation
 }

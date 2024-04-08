@@ -126,9 +126,9 @@ $(function () {
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applications.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
-        //$("#btn_add").attr({
-        //    "disabled": !(selectedRows === 0),
-        //});
+        $("#btn_add").attr({
+            "disabled": !(selectedRows === 0),
+        });
 
         if (selectedRows == 1 && applicationStatus == 0) {
             $("#btn_edit").attr({

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -141,5 +142,19 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         public string? Email { get; set; }
 
         public string? ProfilePicture { get; set; } = string.Empty;
+
+        public int InitialAge
+        {
+            set
+            {
+                DateTime now = DateTime.Now;
+                int age = now.Year - BirthDate.Value.Year;
+                if (now < BirthDate.Value.AddYears(age))
+                {
+                    age--;
+                }
+                Age = age;
+            }
+        }
     }
 }
