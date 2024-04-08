@@ -195,13 +195,7 @@
                                 </h3>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="CollateralInformationModel.Municipality"></label>
-                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.Municipality" readonly>
-                                    <span asp-validation-for="CollateralInformationModel.Municipality" class="invalid-tooltip"> </span>
-                                </div>
-                            </div>
+
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.Street"></label>
@@ -209,6 +203,15 @@
                                     <span asp-validation-for="CollateralInformationModel.Street" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="CollateralInformationModel.Municipality"></label>
+                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.Municipality" readonly>
+                                    <span asp-validation-for="CollateralInformationModel.Municipality" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+                          
 
                             <div class="col-md-4">
                                 <div class="position-relative">
@@ -362,13 +365,31 @@
 
                                     <div class="row gy-2">
                                         <div class="col-md-12">
-                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower's Data</span>
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower's-Beneficiary's Data</span>
                                         </div>
+
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
+                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required readonly>
+                                                <span asp-validation-for="BarrowersInformationModel.LastName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required readonly>
                                                 <span asp-validation-for="BarrowersInformationModel.FirstName" class="invalid-tooltip"> </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
+                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix" readonly>
+                                                <span asp-validation-for="BarrowersInformationModel.Suffix" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -378,20 +399,8 @@
                                                 <span asp-validation-for="BarrowersInformationModel.MiddleName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required readonly>
-                                                <span asp-validation-for="BarrowersInformationModel.LastName" class="invalid-tooltip"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix" readonly>
-                                                <span asp-validation-for="BarrowersInformationModel.Suffix" class="invalid-tooltip"> </span>
-                                            </div>
-                                        </div>
+                                     
+                                     
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
@@ -431,9 +440,12 @@
                                                 <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
                                             </div>
                                         </div>
+
+
+
                                         <div class="col-md-12">
                                             <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Address & Contact Information
+                                                Borrower's Contact Details (indicate country code if abroad)
                                             </h3>
                                         </div>
                                         <div class="col-md-3">
@@ -457,6 +469,14 @@
                                                 <span asp-validation-for="BarrowersInformationModel.Email" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
+
+
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                                Permanent Home Address
+                                            </h3>
+                                        </div>
+                                      
                                         <div class="col-md-12">
                                             <div class="form-check form-check-inline">
                                                 <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input" readonly>
@@ -525,6 +545,13 @@
                                                 <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode" readonly>
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
                                             </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                                Present Home Address
+                                            </h3>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-check form-check-inline">
@@ -750,6 +777,8 @@
                                                 <span asp-validation-for="BarrowersInformationModel.IndustryName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
+
+
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
@@ -773,7 +802,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Employer Address & Contact Information
+                                                Employer/Contact Details (indicate country code if abroad)
                                             </h3>
                                         </div>
                                         <div class="col-md-4">
@@ -803,6 +832,13 @@
                                                 <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                                Employer/Business Address
+                                            </h3>
+                                        </div>
+
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
@@ -909,21 +945,7 @@
 
                         <div class="row gy-2">
                             <div class="col-md-12">
-                                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Spouse's Data'</span>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="SpouseModel.FirstName"></label>
-                                    <input type="text" class="form-control rounded-3" asp-for="SpouseModel.FirstName" readonly>
-                                    <span asp-validation-for="SpouseModel.FirstName" class="invalid-tooltip"> </span>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="position-relative">
-                                    <label class="form-label fw-normal" asp-for="SpouseModel.MiddleName"></label>
-                                    <input type="text" class="form-control rounded-3" asp-for="SpouseModel.MiddleName" readonly>
-                                    <span asp-validation-for="SpouseModel.MiddleName" class="invalid-tooltip"> </span>
-                                </div>
+                                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Spouse's Personal Data'</span>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
@@ -934,11 +956,29 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.FirstName"></label>
+                                    <input type="text" class="form-control rounded-3" asp-for="SpouseModel.FirstName" readonly>
+                                    <span asp-validation-for="SpouseModel.FirstName" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.Suffix"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.Suffix" readonly>
                                     <span asp-validation-for="SpouseModel.Suffix" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="position-relative">
+                                    <label class="form-label fw-normal" asp-for="SpouseModel.MiddleName"></label>
+                                    <input type="text" class="form-control rounded-3" asp-for="SpouseModel.MiddleName" readonly>
+                                    <span asp-validation-for="SpouseModel.MiddleName" class="invalid-tooltip"> </span>
+                                </div>
+                            </div>
+                         
+                       
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.Citizenship"></label>
@@ -967,12 +1007,7 @@
                                     <span asp-validation-for="SpouseModel.TinNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                    Employment Information
-                                </h3>
-                            </div>
-
+                          
 
 
                             <div class="col-md-9">
@@ -1023,6 +1058,11 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12">
+                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                    Employer/Business Address
+                                </h3>
+                            </div>
 
 
                             <div class="col-md-12">
@@ -1671,8 +1711,8 @@
                                                         MISCELLANEOUS
                                                     </h3>
                                                     <p class="text-white m-0">
-                                                        Answering the following questions are
-                                                        <strong class="text-warning">(optional)</strong>
+                                                        Answering the following questions with YES or NO, If your Answer is YES, please elaborate the details as required
+                                                       @*  <strong class="text-warning">(optional)</strong> *@
                                                     </p>
                                                 </th>
                                             </tr>

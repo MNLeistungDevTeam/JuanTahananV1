@@ -7,6 +7,9 @@ $(function () {
     });
 
     $("#btn_edit").on('click', function () {
+
+        $("#btn_edit").addClass("active");
+
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
 
         $("#frm_hlf068 .selectize").each(function () {
@@ -982,7 +985,7 @@ $(function () {
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
                     let type = (recordId == 0 ? "Added!" : "Updated!");
-                    let successMessage = `Beneficiary Successfully ${type}`;
+                    let successMessage = `Application Successfully ${type}`;
                     messageBox(successMessage, "success", true);
 
                     // Redirect handling
