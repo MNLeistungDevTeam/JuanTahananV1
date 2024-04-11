@@ -223,6 +223,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
+        
+        [DisplayName("My Present Address is same as my Permanent Address")]
+        public bool IsPresentAddressPermanentAddress { get; set; }
 
         [DisplayName("Is Business Address on Abroad")]
         public bool IsBusinessAddressAbroad { get; set; }
@@ -235,5 +238,18 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; }
+
+        public bool PresentAddressIsPermanentAddress()
+        {
+            return (
+                PresentBuildingName == PermanentBuildingName
+                && PresentLotName == PermanentLotName
+                && PresentSubdivisionName == PermanentSubdivisionName
+                && PresentBaranggayName == PermanentBaranggayName
+                && PresentMunicipalityName == PermanentMunicipalityName
+                && PresentProvinceName == PermanentProvinceName
+                && PresentZipCode == PermanentZipCode
+                );
+        }
     }
 }
