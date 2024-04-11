@@ -1,10 +1,10 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 $(function () {
+    var developerInput;
+
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
- 
-   
 
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
@@ -15,6 +15,8 @@ $(function () {
     $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
     initializeDecimalInputMask(".decimalInputMask5", 2);
+
+    initializeSelectizeDev();
 
     rebindValidators();
 
@@ -171,6 +173,43 @@ $(function () {
         });
 
         return isValid;
+    }
+
+    function initializeSelectizeDev() {
+        developerInput = $(`[id="PropertyDeveloperName"]`).selectize({
+            valueField: 'PropertyDeveloperName',
+            labelField: 'PropertyDeveloperName',
+            searchField: ['PropertyDeveloperName'],
+            placeholder: '(Select here)',
+            preload: true,
+            load: function (query, callback) {
+                $.ajax({
+                    //url: baseUrl + "Budget/GetBudget/created",
+                    url: baseUrl + "Beneficiary/GetPropertyDevelopers",
+                    success: function (results) {
+                        try {
+                            callback(results);
+                        } catch (e) {
+                            callback();
+                        }
+                    }
+                });
+            },
+            render: {
+                item: function (item, escape) {
+                    return ("<div>" +
+                        escape(item.PropertyDeveloperName) +
+                        "</div>"
+                    );
+                },
+                option: function (item, escape) {
+                    return ("<div class='py-1 px-2'>" +
+                        escape(item.PropertyDeveloperName) +
+                        "</div>"
+                    );
+                }
+            }
+        });
     }
 
     //#endregion

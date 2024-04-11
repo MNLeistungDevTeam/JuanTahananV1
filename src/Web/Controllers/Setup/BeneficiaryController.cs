@@ -6,6 +6,7 @@ using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Enums;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup;
 
+[Authorize]
 public class BeneficiaryController : Controller
 {
     private readonly IUserRepository _userRepo;
@@ -161,6 +163,12 @@ public class BeneficiaryController : Controller
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    public async Task<IActionResult> GetPropertyDevelopers()
+    {
+        var data = await _beneficiaryInformationRepo.GetPropertyDeveloperNames();
+        return Ok(data);
     }
 
     #endregion API Operation
