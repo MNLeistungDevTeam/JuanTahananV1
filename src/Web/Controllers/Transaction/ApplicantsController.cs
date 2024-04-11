@@ -126,7 +126,7 @@ namespace Template.Web.Controllers.Transaction
 
         [Route("[controller]/Beneficiary")]
         public async Task<IActionResult> Beneficiary()
-        {         
+        {
             int userId = int.Parse(User.Identity.Name);
 
             var userData = await _userRepo.GetUserAsync(userId);
@@ -167,16 +167,12 @@ namespace Template.Web.Controllers.Transaction
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
-
-            
-
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
                 //if the application is not access by beneficiary
                 if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
                 {
-                   
                     return View("AccessDenied");
                 }
 
@@ -673,9 +669,12 @@ namespace Template.Web.Controllers.Transaction
                     {
                         var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
 
-                        if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                        if (applicationDetail != null)
                         {
-                            return BadRequest("Can't be processed. You have a pending application!");
+                            if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                            {
+                                return BadRequest("Can't be processed. You have a pending application!");
+                            }
                         }
                     }
 
