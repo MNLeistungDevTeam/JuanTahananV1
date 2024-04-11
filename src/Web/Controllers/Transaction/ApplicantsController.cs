@@ -126,7 +126,7 @@ namespace Template.Web.Controllers.Transaction
 
         [Route("[controller]/Beneficiary")]
         public async Task<IActionResult> Beneficiary()
-        {
+        {         
             int userId = int.Parse(User.Identity.Name);
 
             var userData = await _userRepo.GetUserAsync(userId);
@@ -166,6 +166,19 @@ namespace Template.Web.Controllers.Transaction
                 var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+
+            
+
+                int userId = int.Parse(User.Identity.Name);
+                var userInfo = await _userRepo.GetUserAsync(userId);
+
+                //if the application is not access by beneficiary
+                if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
+                {
+                   
+                    return View("AccessDenied");
+                }
 
                 if (applicantinfo == null)
                 {

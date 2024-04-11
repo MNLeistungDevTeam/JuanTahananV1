@@ -1,5 +1,6 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
@@ -23,6 +24,7 @@ public class BeneficiaryController : Controller
     private readonly IUserRoleRepository _userRoleRepo;
     private readonly IEmailService _emailService;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+    private readonly IRoleAccessRepository _roleAccessRepo;
 
     public BeneficiaryController(
         IUserRepository userRepo,
@@ -32,7 +34,8 @@ public class BeneficiaryController : Controller
         IBackgroundJobClient backgroundJobClient,
         IUserRoleRepository userRoleRepo,
         IEmailService emailService,
-        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+        IRoleAccessRepository roleAccessRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
@@ -42,12 +45,18 @@ public class BeneficiaryController : Controller
         _userRoleRepo = userRoleRepo;
         _emailService = emailService;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
+        _roleAccessRepo = roleAccessRepo;
     }
 
     #region Views
 
-    public IActionResult Index()
+    public async Task <IActionResult> Index()
     {
+        var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_BENEFICIARY_MGMT);
+
+        if (roleAccess is null) { return View("AccessDenied"); }
+        if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
         return View();
     }
 
