@@ -1,5 +1,4 @@
 ﻿"use strict"
-
 $(async function () {
     //modules tables//
     var tbl_modules;
@@ -357,6 +356,10 @@ $(async function () {
         var Id = tbl_modules.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var ModuleDesc = tbl_modules.rows({ selected: true }).data().pluck("Description").toArray().toString();
 
+        $("#btn_add").attr({
+            "disabled": (selectedRows >= 1)
+        });
+
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),
             "data-id": Id
@@ -395,6 +398,10 @@ $(async function () {
         var selectedRows = tbl_module_type.rows({ selected: true, search: 'applied' }).count();
         var Id = tbl_module_type.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var Description = tbl_module_type.rows({ selected: true }).data().pluck("Description").toArray().toString();
+
+        $("#btn_add_module_type").attr({
+            "disabled": (selectedRows >= 1),
+        });
 
         $("#btn_edit_module_type").attr({
             "disabled": !(selectedRows === 1),
@@ -479,7 +486,7 @@ $(async function () {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',  
+            cancelButtonColor: '#d33',
             confirmButtonText: 'Confirm',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {

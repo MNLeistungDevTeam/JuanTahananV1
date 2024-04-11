@@ -1,7 +1,9 @@
-﻿using DMS.Application.Interfaces.Setup.UserRepository;
+﻿using DMS.Application.Interfaces.Setup.RoleRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.OtherDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,27 +22,35 @@ public class UserController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IFileUploadService _fileUploadService;
     private readonly IUserRoleRepository _userRoleRepo;
+    private readonly IRoleAccessRepository _roleAccessRepo;
 
     public UserController(
         IUserRepository userRepo,
         IAuthenticationService authenticationService,
         IWebHostEnvironment webHostEnvironment,
         IFileUploadService fileUploadService,
-        IUserRoleRepository userRoleRepo)
+        IUserRoleRepository userRoleRepo,
+        IRoleAccessRepository roleAccessRepo)
     {
         _userRepo = userRepo;
         _authenticationService = authenticationService;
         _webHostEnvironment = webHostEnvironment;
         _fileUploadService = fileUploadService;
         _userRoleRepo = userRoleRepo;
+        _roleAccessRepo = roleAccessRepo;
     }
 
     #region Views
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         try
         {
+            var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_USERMNGMT);
+
+            if (roleAccess is null) { return View("AccessDenied"); }
+            if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
             int userid = int.Parse(User.Identity.Name);
 
             var genders = new List<DropdownModel>

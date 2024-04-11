@@ -223,6 +223,7 @@
     <Build Include="Tables\Setup\Beneficiary\BeneficiaryInformation.sql" />
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByPagibigNumber.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetInfo.sql" />
+    <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetDistinctPropertyDeveloperName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

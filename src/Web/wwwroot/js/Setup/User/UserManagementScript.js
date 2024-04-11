@@ -439,8 +439,8 @@ $(function () {
                     console.log(recordId);
                     let type = (recordId == 0 ? "Added!" : "Updated!");
                     let successMessage = `User Successfully ${type}`;
-
                     messageBox(successMessage, "success", true);
+                    updateUserProfile()
 
                     loadUsers();
                     button.attr({ disabled: false });

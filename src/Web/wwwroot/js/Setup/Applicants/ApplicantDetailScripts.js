@@ -16,7 +16,15 @@ var ApplicationId = $('#applicationId').val();
 var DocumentTypeId = 0;
 var DocumentId = 0;
 
-$(function () {
+const FileFormats = {
+    1: ['.pdf'],
+    2: ['.docx'],
+    3: ['.txt'],
+    4: ['.xlsx'],
+    5: ['image/*'], // Mapping both .jpg and .jpeg to the same value
+};
+
+$(async function () {
     let $btnSave = $('#btn_save');
 
     //loadApprovalData();
@@ -29,9 +37,24 @@ $(function () {
     console.log(ApplicationId);
 
     //#regionEvent
-    $(document).on('click', '.upload-link', function () {
+    $(document).on('click', '.upload-link', async function () {
         DocumentId = 0;
         DocumentTypeId = $(this).find("#documentTypeId").val();
+        var documentType = await GetDocumentType(DocumentTypeId);
+
+        let fileFormats = FileFormats[documentType.FileType];
+
+        console.log(fileFormats);
+
+        if (fileFormats === undefined) {
+            $('#fileInput').attr('accept', '*/*');
+        }
+        else if (documentType.FileType == 5) {
+            $('#fileInput').attr('accept', fileFormats);
+        } else if (Array.isArray(fileFormats)) {
+            fileFormats = fileFormats.join(',');
+            $('#fileInput').attr('accept', fileFormats);
+        }
 
         $('#fileInput').trigger('click');
     });
@@ -380,4 +403,14 @@ $(function () {
     }
 
     //#endregion Function
+
+    async function GetDocumentType(documentTypeId) {
+        const response = $.ajax({
+            url: baseUrl + "Document/GetDocumentTypeById/" + documentTypeId,
+            method: "get",
+            data: 'json'
+        });
+
+        return response;
+    }
 });

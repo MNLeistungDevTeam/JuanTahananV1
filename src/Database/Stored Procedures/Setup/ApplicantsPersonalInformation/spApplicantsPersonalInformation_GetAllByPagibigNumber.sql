@@ -15,14 +15,26 @@ AS
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
-		CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
 			WHEN apl.ApprovalStatus = 4 THEN 'PAG-IBIG Verified'
 			WHEN apl.ApprovalStatus = 5 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
+			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
+			WHEN apl.ApprovalStatus = 8 THEN 'PAG-IBIG Approved'
+			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
-		END ApplicationStatus
+		END ApplicationStatus,
+			CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'Credibility Verification'
+			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 'Loan Application'
+		END Stage,
+		CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
+			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 2
+		END StageNo
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id

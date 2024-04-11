@@ -133,6 +133,7 @@ $(function () {
                 messageBox(successMessage, "success", true);
 
                 loadUserInfo();
+                updateUserProfile();
                 button.attr({ disabled: false });
                 button.html("<span class='mdi mdi-content-save-outline'></span> Save");
             },

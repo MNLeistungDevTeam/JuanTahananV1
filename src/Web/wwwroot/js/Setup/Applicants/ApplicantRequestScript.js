@@ -34,13 +34,15 @@ $(function () {
             {
                 data: 'HousingAccountNumber',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                visible: false
             },
 
             {
                 data: 'IncomeAmount',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                visible: false
             },
             {
                 data: 'Developer',
@@ -80,10 +82,49 @@ $(function () {
                 data: 'ApplicationStatus',
                 orderable: !0,
                 className: 'align-middle text-center',
-                render: function (data) {
-                    return `
-                        <span class="badge fs-6 border bg-secondary">${data}</span>
-                        `;
+                render: function (data, type,row) {
+                    var returndata = "";
+
+                    console.log(row.ApprovalStatusNumber);
+
+                    if (row.ApprovalStatusNumber == 0) {
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 1) {
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 2) {
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 3) {
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 4) {
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 5) {
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 6) {
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+
+                    else if (row.ApprovalStatusNumber == 7) {
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+
+                    else if (row.ApprovalStatusNumber == 8) {
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+
+                    else if (row.ApprovalStatusNumber == 9) {
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 10) {
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+
+                    return returndata;
                 }
             },
 
@@ -92,8 +133,6 @@ $(function () {
                 orderable: !0,
                 className: 'align-middle text-center'
             },
-
-
 
         ],
         drawCallback: function () {

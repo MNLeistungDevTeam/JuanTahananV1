@@ -5,6 +5,7 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,8 +44,12 @@ public class RoleController : Controller
 
     #region Views
 
-    public IActionResult Index()
+    public  async Task<IActionResult> Index()
     {
+        var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_ROLE_MGMT);
+
+        if (roleAccess is null) { return View("AccessDenied"); }
+        if (!roleAccess.CanRead) { return View("AccessDenied"); }
         return View();
     }
 

@@ -284,7 +284,6 @@
                                 <select class="form-control form-control-sm" id="ModuleStages_ApproverType_[${count}]" type="text" data-val="true" data-val-required="The ApproverType is required" name="ModuleStages[${count}].ApproverType">
                                     <option value="">Select Approver...</option>
                                     <option value="1">Role</option>
-                                    <option value="2">User</option>
                                 </select>
                             </div>
                             <span class="field-validation-valid text-danger" data-valmsg-for="ModuleStages[${count}].ApproverType" data-valmsg-replace="true"></span>

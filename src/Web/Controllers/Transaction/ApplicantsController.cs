@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.CodeParser;
 using DevExpress.Pdf;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
@@ -22,6 +23,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -124,7 +126,7 @@ namespace Template.Web.Controllers.Transaction
 
         [Route("[controller]/Beneficiary")]
         public async Task<IActionResult> Beneficiary()
-        {
+        {         
             int userId = int.Parse(User.Identity.Name);
 
             var userData = await _userRepo.GetUserAsync(userId);
@@ -164,6 +166,19 @@ namespace Template.Web.Controllers.Transaction
                 var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+
+            
+
+                int userId = int.Parse(User.Identity.Name);
+                var userInfo = await _userRepo.GetUserAsync(userId);
+
+                //if the application is not access by beneficiary
+                if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
+                {
+                   
+                    return View("AccessDenied");
+                }
 
                 if (applicantinfo == null)
                 {
@@ -386,6 +401,118 @@ namespace Template.Web.Controllers.Transaction
             return View(vwModel);
         }
 
+        [Route("[controller]/HousingLoanForm/{pagibigNumber?}")]
+        public async Task<IActionResult> HousingLoanForm(string? pagibigNumber = null)
+        {
+            var vwModel = new ApplicantViewModel();
+
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(beneficiaryData.UserId);
+
+            List<int> activeStatus = new List<int> { 2, 5, 9, 10 };
+
+            if (activeapplication != null && !activeStatus.Contains(activeapplication.ApprovalStatus.Value))
+            {
+                var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(activeapplication.Code);
+
+                vwModel.ApplicantsPersonalInformationModel = applicantinfo;
+
+                var applicantloaninfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                if (applicantloaninfo != null)
+                {
+                    vwModel.LoanParticularsInformationModel = applicantloaninfo;
+                    vwModel.ApplicantsPersonalInformationModel.UserId = applicantinfo.UserId;
+                    vwModel.ApplicantsPersonalInformationModel.Code = applicantinfo.Code;
+                }
+
+                var spouseInfo = await _spouseRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                if (spouseInfo != null)
+                {
+                    vwModel.SpouseModel = spouseInfo;
+                }
+
+                var borrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                if (borrowerInfo != null)
+                {
+                    vwModel.BarrowersInformationModel = borrowerInfo;
+                }
+
+                var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                if (collateralInfo != null)
+                {
+                    vwModel.CollateralInformationModel = collateralInfo;
+                }
+
+                var form2PageInfo = await _form2PageRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                if (form2PageInfo != null)
+                {
+                    vwModel.Form2PageModel = form2PageInfo;
+                }
+
+                return View("HousingLoanForm", vwModel);
+            }
+            else
+            {
+                if (beneficiaryData != null)
+                {
+                    var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+                    vwModel.ApplicantsPersonalInformationModel.UserId = userData.Id;
+
+                    vwModel.BarrowersInformationModel.FirstName = userData.FirstName ?? string.Empty;
+                    vwModel.BarrowersInformationModel.MiddleName = userData.MiddleName ?? string.Empty;
+                    vwModel.BarrowersInformationModel.LastName = userData.LastName ?? string.Empty;
+
+                    vwModel.BarrowersInformationModel.Email = userData.Email;
+
+                    vwModel.ApplicantsPersonalInformationModel.PagibigNumber = userData.PagibigNumber;
+                    vwModel.BarrowersInformationModel.Sex = userData.Gender;
+                    vwModel.BarrowersInformationModel.Suffix = userData.Suffix;
+
+                    vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                    vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                    vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
+                    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
+                    vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                    vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                    vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                    vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
+                    vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                    vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                    vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                    vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                    vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+
+                    vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
+                    vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
+                    vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
+                    vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
+                    vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
+                    vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
+                    vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
+                    vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+
+                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                    //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
+                    //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
+                }
+
+                return View("NewHLF068", vwModel);
+            }
+        }
+
         #endregion View
 
         #region Get Methods
@@ -411,6 +538,7 @@ namespace Template.Web.Controllers.Transaction
             int roleId = userdata.UserRoleId.Value;
 
             var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
+
             return Ok(data);
         }
 
@@ -496,6 +624,13 @@ namespace Template.Web.Controllers.Transaction
         {
             var data = await _sourcePagibigFundRepo.GetAllAsync();
             return Ok(data);
+        }
+
+        [Route("[controller]/GetAllApplicationByPagibigNum/{pagibigNumber}")]
+        public async Task<IActionResult> GetAllApplicationByPagibigNum(string pagibigNumber)
+        {
+            var result = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(pagibigNumber);
+            return Ok(result);
         }
 
         #endregion Get Methods

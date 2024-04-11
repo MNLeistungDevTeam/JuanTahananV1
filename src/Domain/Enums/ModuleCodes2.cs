@@ -14,6 +14,7 @@ namespace DMS.Domain.Enums
         public const string CONST_COMP = "COMP";
         public const string CONST_MODULE = "MODULE";
         public const string CONST_USERROLE = "USERROLE";
+        public const string CONST_USERMNGMT = "USER-ACC";
         public const string CONST_ROLE_MGMT = "ROLE";
         public const string CONST_APPLICANTS = "APLCNT";
         public const string CONST_PROFILE = "PROFILE";

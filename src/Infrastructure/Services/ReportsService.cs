@@ -53,7 +53,7 @@ namespace DMS.Infrastructure.Services
                 Form2PageModel form2InfoModel = new();
                 CollateralInformationModel collateralInfoModel = new();
 
-                byte[] formalPicture = new byte[0];
+                //byte[] formalPicture = new byte[0];
 
                 if (applicationCode != null)
                 {
@@ -74,21 +74,21 @@ namespace DMS.Infrastructure.Services
                         applicantInfoModel = applicantData;
                     }
 
-                    var applicantDocument = await _documentRepo.GetApplicantDocumentsByCode(applicantData.Code);
+                    //var applicantDocument = await _documentRepo.GetApplicantDocumentsByCode(applicantData.Code);
 
-                    if (applicantDocument.Count() > 0)
+                    //if (applicantDocument.Count() > 0)
 
-                    {
-                        var documentLocation = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Location ?? "";
-                        var documentName = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Name ?? "";
+                    //{
+                    //    var documentLocation = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Location ?? "";
+                    //    var documentName = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Name ?? "";
 
-                        if (!string.IsNullOrWhiteSpace(documentLocation))
-                        {
-                            string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
+                    //    if (!string.IsNullOrWhiteSpace(documentLocation))
+                    //    {
+                    //        string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
 
-                            formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
-                        }
-                    }
+                    //        formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
+                    //    }
+                    //}
 
                     var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);
 
@@ -131,7 +131,7 @@ namespace DMS.Infrastructure.Services
                 {
                     new ApplicantInformationReportModel()
                     {
-                    FormalPicture =  formalPicture,
+                    //FormalPicture =  formalPicture,
 
                 ApplicantsPersonalInformationModel =  applicantInfoModel,
                         SpouseModel = spouseInfoModel,

@@ -956,7 +956,7 @@ function checkFileExist(urlToFile) {
     }
 }
 
-function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false, rightAlign = true) {
     let placeholder = "";
 
     if (digits == 2) { placeholder = "0.00"; }
@@ -964,7 +964,7 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
 
     $(classname).inputmask({
         alias: 'decimal',
-        rightAlign: true,
+        rightAlign: rightAlign,
         groupSeparator: '.',
         digits: digits,
         allowMinus: isallownegative,
@@ -974,18 +974,54 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
     });
 }
 
+function initializeLeftDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+    //let placeholder = "";
+
+    //if (digits == 2) { placeholder = "0.00"; }
+    //else if (digits == 5) { placeholder = "0.00000"; }
+
+    //$(classname).inputmask({
+    //    alias: 'decimal',
+    //    rightAlign: true,
+    //    groupSeparator: '.',
+    //    digits: digits,
+    //    allowMinus: isallownegative,
+    //    autoGroup: true,
+    //    placeholder: placeholder,
+    //    max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+    //});
+
+    initializeDecimalInputMask(classname, digits, limiter, isallownegative, false);
+}
+
 function updateBeneficiaryHousingLoanSideBarNav() {
     let pagibignumber = $("#txt_userPagibigNumber").val();
 
-    var $link = $('a.side-nav-link[href="/Applicants/NewHLF068"]');
+    var $link = $('a.side-nav-link[href="/Applicants/HousingLoanForm"]');
 
     // Check if element is found
     if ($link.length > 0) {
         // Append '/2434' to the current href value
         var currentHref = $link.attr('href');
-        var newHref = currentHref +"/" + pagibignumber;
+        var newHref = currentHref + "/" + pagibignumber;
 
         // Update the href attribute with the new value
         $link.attr('href', newHref);
     }
+}
+
+function updateUserProfile() {
+    const userId = $("#txt_userId").val();
+    const defaultProfile = "/images/user/default.png";
+    $.ajax({
+        url: baseUrl + "User/GetUser/" + userId,
+        success: function (response) {
+            $('#userProfile').attr("src", response.ProfilePicture);
+            $('#notifProfile').attr("src", response.ProfilePicture);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $('#userProfile').attr("src", defaultProfile);
+            $('#notifProfile').attr("src", defaultProfile);
+        }
+    });
 }

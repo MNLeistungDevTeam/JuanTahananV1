@@ -99,6 +99,14 @@ namespace DMS.Infrastructure.Services
                 var moduleStages = await _moduleStageRepo.GetByModuleId(approvalStatus.ReferenceType);
 
                 var userInfo = await _userRepo.GetUserAsync(approverId);
+
+                //usage for developer and lgu can be approver
+                if (userInfo.UserRoleId == 2) {
+
+                    userInfo.UserRoleId = 5;
+                }
+
+
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
 
                 int[] statusExclusions = { (int)AppStatusType.Submitted, (int)AppStatusType.Withdrawn, (int)AppStatusType.PostSubmitted, (int)AppStatusType.Discontinued };

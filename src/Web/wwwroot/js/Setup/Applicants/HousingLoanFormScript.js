@@ -1,12 +1,29 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+
 $(function () {
     $(".selectize").selectize({
-        search: false
-
+        search: false,
     });
 
+    $("#btn_edit").on('click', function () {
 
+        $("#btn_edit").addClass("active");
+
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+
+        $("#frm_hlf068 .selectize").each(function () {
+            var selectize = $(this)[0].selectize;
+            selectize.lock();
+        });
+    });
+
+    $("#btn_pdf").on('click', function () {
+        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
+        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
+
+        window.open(link, '_blank');
+    });
 
     $('.calendarpicker').flatpickr();
 
@@ -158,7 +175,6 @@ $(function () {
         purposeOfLoanDropdown.off('load');
     });
 
-
     $modeofPaymentDropdown = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).selectize({
         valueField: 'Id',
         labelField: 'Description',
@@ -204,7 +220,6 @@ $(function () {
         //resourceCounter("modeofpayment");
         modeofPaymentDropdown.off('load');
     });
-
 
     //#endregion
 
@@ -970,7 +985,7 @@ $(function () {
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
                     let type = (recordId == 0 ? "Added!" : "Updated!");
-                    let successMessage = `Beneficiary Successfully ${type}`;
+                    let successMessage = `Application Successfully ${type}`;
                     messageBox(successMessage, "success", true);
 
                     // Redirect handling
