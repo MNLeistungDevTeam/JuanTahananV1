@@ -104,7 +104,7 @@
                                     <label asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="form-label fw-normal"></label>
                                     <select asp-for="LoanParticularsInformationModel.PurposeOfLoanId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.PurposeOfLoanId">
                                     </select>
-                                    <span asp-validation-for="LoanParticularsInformationModel.PurposeOfLoanId" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.PurposeOfLoanId" class="text-danger"></span>
 
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                         <input type="text" class="form-control rounded-3" asp-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber">
                                     }
 
-                                    <span asp-validation-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.ExistingHousingApplicationNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-12" hidden>
@@ -133,14 +133,14 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" required></label>
                                     <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" required>
-                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
                                     <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-control rounded-3 text-start" required>
-                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
@@ -157,7 +157,7 @@
                                         <option value="25">25</option>
                                         <option value="30">30</option>
                                     </select>
-                                    <span asp-validation-for="LoanParticularsInformationModel.RepricingPeriod" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.RepricingPeriod" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -166,7 +166,7 @@
                                     <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId" required>
                                         <option value="">Select Mode of Payment ...</option>
                                     </select>
-                                    <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -178,28 +178,28 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.Province"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.Province">
-                                    <span asp-validation-for="CollateralInformationModel.Province" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.Province" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.Municipality"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.Municipality">
-                                    <span asp-validation-for="CollateralInformationModel.Municipality" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.Municipality" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.Street"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.Street">
-                                    <span asp-validation-for="CollateralInformationModel.Street" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.Street" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.DeveloperName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.DeveloperName">
-                                    <span asp-validation-for="CollateralInformationModel.DeveloperName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.DeveloperName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -208,7 +208,7 @@
                                     <select asp-for="CollateralInformationModel.PropertyTypeId" class="rounded-4" data-value="@Model.CollateralInformationModel.PropertyTypeId">
                                         <option value="">Select Property Type ...</option>
                                     </select>
-                                    <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
 
 
                                 </div>
@@ -217,28 +217,28 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TctOctCctNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TctOctCctNumber">
-                                    <span asp-validation-for="CollateralInformationModel.TctOctCctNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.TctOctCctNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TaxDeclrationNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TaxDeclrationNumber">
-                                    <span asp-validation-for="CollateralInformationModel.TaxDeclrationNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.TaxDeclrationNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.LotUnitNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.LotUnitNumber">
-                                    <span asp-validation-for="CollateralInformationModel.LotUnitNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.LotUnitNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.BlockBuildingNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.BlockBuildingNumber">
-                                    <span asp-validation-for="CollateralInformationModel.BlockBuildingNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.BlockBuildingNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-12" hidden>
@@ -251,14 +251,14 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.LandArea"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.LandArea">
-                                    <span asp-validation-for="CollateralInformationModel.LandArea" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.LandArea" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.HouseAge"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.HouseAge">
-                                    <span asp-validation-for="CollateralInformationModel.HouseAge" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.HouseAge" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4" hidden>
@@ -288,14 +288,14 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.NumberOfStoreys"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.NumberOfStoreys">
-                                    <span asp-validation-for="CollateralInformationModel.NumberOfStoreys" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.NumberOfStoreys" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ProposedNoOfStoreys"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ProposedNoOfStoreys">
-                                    <span asp-validation-for="CollateralInformationModel.ProposedNoOfStoreys" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.ProposedNoOfStoreys" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4" hidden>
@@ -304,14 +304,14 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ExistingTotalFloorArea"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ExistingTotalFloorArea">
-                                    <span asp-validation-for="CollateralInformationModel.ExistingTotalFloorArea" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.ExistingTotalFloorArea" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.ProposedTotalFloorArea"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.ProposedTotalFloorArea">
-                                    <span asp-validation-for="CollateralInformationModel.ProposedTotalFloorArea" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="CollateralInformationModel.ProposedTotalFloorArea" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -342,42 +342,42 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.FirstName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.FirstName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MiddleName"></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.MiddleName">
-                                                <span asp-validation-for="BarrowersInformationModel.MiddleName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.MiddleName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.LastName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.LastName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix">
-                                                <span asp-validation-for="BarrowersInformationModel.Suffix" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.Suffix" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
                                                 <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Citizenship" required>
-                                                <span asp-validation-for="BarrowersInformationModel.Citizenship" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.Citizenship" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
                                                 <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
-                                                <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BirthDate" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -388,7 +388,7 @@
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.Sex" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="BarrowersInformationModel.Sex" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -402,7 +402,7 @@
                                                     <option value="Legally Separated">Legally Separated</option>
                                                     <option value="Widow/er">Widow/er</option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -414,21 +414,21 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
                                                 <input type="number" class="form-control rounded-30 " asp-for="BarrowersInformationModel.HomeNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber" required></label>
                                                 <input class="form-control rounded-3  mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
-                                                <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email" required></label>
                                                 <input type="email" class="form-control rounded-3 " asp-for="BarrowersInformationModel.Email" required>
-                                                <span asp-validation-for="BarrowersInformationModel.Email" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.Email" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -441,63 +441,63 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentUnitName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBuildingName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentLotName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentStreetName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBaranggayName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentMunicipalityName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentProvinceName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
                                                 <input class="form-control rounded-3 codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode" maxlength="10">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -510,63 +510,63 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentUnitName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBuildingName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentLotName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentStreetName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBaranggayName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentMunicipalityName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName" required></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentProvinceName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode" required></label>
                                                 <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" maxlength="10" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
@@ -578,7 +578,7 @@
                                                     <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
                                                     <option value="Rented">Rented</option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3 d-none" id="rentalForm">
@@ -594,14 +594,14 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
                                                 <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsofStay">
-                                                <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" hidden>
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
                                                 <input type="number" class="form-control rounded-3 " asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
-                                                <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -613,14 +613,14 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
                                                 <input class="form-control rounded-3 " asp-for="BarrowersInformationModel.SSSNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
                                                 <input class="form-control rounded-3  tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.TinNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.TinNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -631,21 +631,21 @@
                                                     <option value="Employed">Employed</option>
                                                     <option value="Self-Employed">Self-Employed</option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.OccupationStatus" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="BarrowersInformationModel.OccupationStatus" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
                                                 <input class="form-control  rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
-                                                <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.EmployerName">
-                                                <span asp-validation-for="BarrowersInformationModel.EmployerName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.EmployerName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -721,28 +721,28 @@
                                                         Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
                                                     </option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.IndustryName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.IndustryName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PositionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PositionName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PositionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsEmployment">
-                                                <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.NumberOfDependent">
-                                                <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -754,21 +754,21 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
                                                 <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
                                                 <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessEmail">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -781,63 +781,63 @@
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessUnitName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBuildingName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessLotName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessStreetName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBaranggayName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessMunicipalityName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
                                                 <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessProvinceName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
                                                 <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode" maxlength="10">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -849,14 +849,14 @@
                                                     <option value="Employer/Business Address">Employer/Business Address</option>
                                                     <option value="Permanent Home Address">Permanent Home Address</option>
                                                 </select>
-                                                <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="invalid-tooltip"></span>
+                                                <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
                                                 <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
+                                                <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="text-danger"> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -889,56 +889,56 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.FirstName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.FirstName">
-                                    <span asp-validation-for="SpouseModel.FirstName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.FirstName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.MiddleName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.MiddleName">
-                                    <span asp-validation-for="SpouseModel.MiddleName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.MiddleName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.LastName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.LastName">
-                                    <span asp-validation-for="SpouseModel.LastName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.LastName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.Suffix"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.Suffix">
-                                    <span asp-validation-for="SpouseModel.Suffix" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.Suffix" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.Citizenship"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="SpouseModel.Citizenship">
-                                    <span asp-validation-for="SpouseModel.Citizenship" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.Citizenship" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
                                     <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
-                                    <span asp-validation-for="SpouseModel.BirthDate" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.BirthDate" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.PagibigMidNumber"></label>
                                     <input class="form-control rounded-3  pagibigInputMask" asp-for="SpouseModel.PagibigMidNumber">
-                                    <span asp-validation-for="SpouseModel.PagibigMidNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.PagibigMidNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.TinNumber"></label>
                                     <input class="form-control rounded-3  tinInputMask" asp-for="SpouseModel.TinNumber">
-                                    <span asp-validation-for="SpouseModel.TinNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.TinNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -953,7 +953,7 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.BusinessName">
-                                    <span asp-validation-for="SpouseModel.BusinessName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.BusinessName" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -961,7 +961,7 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.YearsInEmployment"></label>
                                     <input type="number" class="form-control rounded-3 " asp-for="SpouseModel.YearsInEmployment">
-                                    <span asp-validation-for="SpouseModel.YearsInEmployment" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.YearsInEmployment" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -974,7 +974,7 @@
                                         <option value="Employed">Employed</option>
                                         <option value="Self-Employed">Self-Employed</option>
                                     </select>
-                                    <span asp-validation-for="SpouseModel.OccupationStatus" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.OccupationStatus" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -984,7 +984,7 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.EmploymentPosition"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.EmploymentPosition">
-                                    <span asp-validation-for="SpouseModel.EmploymentPosition" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.EmploymentPosition" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -993,7 +993,7 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
                                     <input type="number" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
-                                    <span asp-validation-for="SpouseModel.BusinessTelNo" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.BusinessTelNo" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -1009,63 +1009,63 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentUnitName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentUnitName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentUnitName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentUnitName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBuildingName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentBuildingName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentBuildingName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentBuildingName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentLotName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentLotName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentLotName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentLotName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentStreetName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentStreetName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentStreetName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentStreetName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentSubdivisionName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentSubdivisionName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentSubdivisionName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentSubdivisionName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBaranggayName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentBaranggayName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentBaranggayName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentBaranggayName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentMunicipalityName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentMunicipalityName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentMunicipalityName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentMunicipalityName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentProvinceName"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.SpouseEmploymentProvinceName">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentProvinceName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentProvinceName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
                                     <input class="form-control rounded-3  codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode" maxlength="10">
-                                    <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
@@ -1078,7 +1078,7 @@
                                         <option value="Employer/Business Address">Employer/Business Address</option>
                                         <option value="Permanent Home Address">Permanent Home Address</option>
                                     </select>
-                                    <span asp-validation-for="SpouseModel.PreparedMailingAddress" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="SpouseModel.PreparedMailingAddress" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -1154,7 +1154,7 @@
                                             Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
                                         </option>
                                     </select>
-                                    <span asp-validation-for="SpouseModel.IndustryId" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="SpouseModel.IndustryId" class="text-danger"> </span>
                                 </div>
                             </div>
                         </div>
@@ -1206,37 +1206,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Bank1">
-                                                        <span asp-validation-for="Form2PageModel.Bank1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Bank1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BranchAddress1">
-                                                        <span asp-validation-for="Form2PageModel.BranchAddress1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BranchAddress1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfAccount1">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AccountNumber1">
-                                                        <span asp-validation-for="Form2PageModel.AccountNumber1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AccountNumber1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 present-calendar-picker text-center" asp-for="Form2PageModel.DateOpened1" data-value="@Model.Form2PageModel.DateOpened1">
-                                                        <span asp-validation-for="Form2PageModel.DateOpened1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateOpened1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance1">
-                                                        <span asp-validation-for="Form2PageModel.AverageBalance1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AverageBalance1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1244,37 +1244,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Bank2">
-                                                        <span asp-validation-for="Form2PageModel.Bank2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Bank2" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BranchAddress2">
-                                                        <span asp-validation-for="Form2PageModel.BranchAddress2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BranchAddress2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfAccount2">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 text-center" asp-for="Form2PageModel.AccountNumber2">
-                                                        <span asp-validation-for="Form2PageModel.AccountNumber2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AccountNumber2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 present-calendar-picker text-center" asp-for="Form2PageModel.DateOpened2" data-value="@Model.Form2PageModel.DateOpened2">
-                                                        <span asp-validation-for="Form2PageModel.DateOpened2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateOpened2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance2">
-                                                        <span asp-validation-for="Form2PageModel.AverageBalance2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AverageBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1282,37 +1282,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Bank3">
-                                                        <span asp-validation-for="Form2PageModel.Bank3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Bank3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BranchAddress3">
-                                                        <span asp-validation-for="Form2PageModel.BranchAddress3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BranchAddress3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfAccount3">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfAccount3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.AccountNumber3">
-                                                        <span asp-validation-for="Form2PageModel.AccountNumber3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AccountNumber3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 present-calendar-picker text-center" asp-for="Form2PageModel.DateOpened3" data-value="@Model.Form2PageModel.DateOpened3">
-                                                        <span asp-validation-for="Form2PageModel.DateOpened3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateOpened3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AverageBalance3">
-                                                        <span asp-validation-for="Form2PageModel.AverageBalance3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AverageBalance3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1331,57 +1331,57 @@
                                                 <!-- Second row with 4 columns -->
                                                 <td colspan="3">
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.IssuerName1">
-                                                    <span asp-validation-for="Form2PageModel.IssuerName1" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.IssuerName1" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CardType1">
-                                                    <span asp-validation-for="Form2PageModel.CardType1" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardType1" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration1" data-value="@Model.Form2PageModel.CardExpiration1">
-                                                    <span asp-validation-for="Form2PageModel.CardExpiration1" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardExpiration1" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit1">
-                                                    <span asp-validation-for="Form2PageModel.CreditLimit1" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CreditLimit1" class="text-danger"> </span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <!-- Second row with 4 columns -->
                                                 <td colspan="3">
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.IssuerName2">
-                                                    <span asp-validation-for="Form2PageModel.IssuerName2" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.IssuerName2" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CardType2">
-                                                    <span asp-validation-for="Form2PageModel.CardType2" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardType2" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration2" data-value="@Model.Form2PageModel.CardExpiration2">
-                                                    <span asp-validation-for="Form2PageModel.CardExpiration2" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardExpiration2" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit2">
-                                                    <span asp-validation-for="Form2PageModel.CreditLimit2" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CreditLimit2" class="text-danger"> </span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <!-- Second row with 4 columns -->
                                                 <td colspan="3">
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.IssuerName3">
-                                                    <span asp-validation-for="Form2PageModel.IssuerName3" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.IssuerName3" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CardType3">
-                                                    <span asp-validation-for="Form2PageModel.CardType3" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardType3" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.CardExpiration3" data-value="@Model.Form2PageModel.CardExpiration3">
-                                                    <span asp-validation-for="Form2PageModel.CardExpiration3" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CardExpiration3" class="text-danger"> </span>
                                                 </td>
                                                 <td>
                                                     <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.CreditLimit3">
-                                                    <span asp-validation-for="Form2PageModel.CreditLimit3" class="invalid-tooltip"> </span>
+                                                    <span asp-validation-for="Form2PageModel.CreditLimit3" class="text-danger"> </span>
                                                 </td>
                                             </tr>
                                             <tr class="bg-black">
@@ -1401,37 +1401,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Location1">
-                                                        <span asp-validation-for="Form2PageModel.Location1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Location1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfProperty1">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost1">
-                                                        <span asp-validation-for="Form2PageModel.AquisitionCost1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AquisitionCost1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue1">
-                                                        <span asp-validation-for="Form2PageModel.MarketValue1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MarketValue1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance1">
-                                                        <span asp-validation-for="Form2PageModel.MortgageBalance1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MortgageBalance1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome1">
-                                                        <span asp-validation-for="Form2PageModel.RentalIncome1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.RentalIncome1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1439,37 +1439,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Location2">
-                                                        <span asp-validation-for="Form2PageModel.Location1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Location1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfProperty2">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost2">
-                                                        <span asp-validation-for="Form2PageModel.AquisitionCost2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AquisitionCost2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue2">
-                                                        <span asp-validation-for="Form2PageModel.MarketValue2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MarketValue2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance2">
-                                                        <span asp-validation-for="Form2PageModel.MortgageBalance2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MortgageBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome2">
-                                                        <span asp-validation-for="Form2PageModel.RentalIncome2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.RentalIncome2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1477,37 +1477,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Location3">
-                                                        <span asp-validation-for="Form2PageModel.Location3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Location3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TypeOfProperty3">
-                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TypeOfProperty3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AquisitionCost3">
-                                                        <span asp-validation-for="Form2PageModel.AquisitionCost3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AquisitionCost3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MarketValue3">
-                                                        <span asp-validation-for="Form2PageModel.MarketValue3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MarketValue3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.MortgageBalance3">
-                                                        <span asp-validation-for="Form2PageModel.MortgageBalance3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MortgageBalance3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.RentalIncome3">
-                                                        <span asp-validation-for="Form2PageModel.RentalIncome3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.RentalIncome3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1529,37 +1529,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditorAndAddress1">
-                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Security1">
-                                                        <span asp-validation-for="Form2PageModel.Security1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Security1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Type1">
-                                                        <span asp-validation-for="Form2PageModel.Type1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Type1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance1">
-                                                        <span asp-validation-for="Form2PageModel.AmountBalance1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AmountBalance1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime1" data-value="@Model.Form2PageModel.MaturityDateTime1">
-                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization1">
-                                                        <span asp-validation-for="Form2PageModel.Amortization1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Amortization1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1567,37 +1567,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditorAndAddress2">
-                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress2" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Security2">
-                                                        <span asp-validation-for="Form2PageModel.Security2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Security2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Type2">
-                                                        <span asp-validation-for="Form2PageModel.Type2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Type2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance2">
-                                                        <span asp-validation-for="Form2PageModel.AmountBalance2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AmountBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime2" data-value="@Model.Form2PageModel.MaturityDateTime2">
-                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization2">
-                                                        <span asp-validation-for="Form2PageModel.Amortization2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Amortization2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1605,37 +1605,37 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CreditorAndAddress3">
-                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CreditorAndAddress3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Security3">
-                                                        <span asp-validation-for="Form2PageModel.Security3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Security3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Type3">
-                                                        <span asp-validation-for="Form2PageModel.Type3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Type3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.AmountBalance3">
-                                                        <span asp-validation-for="Form2PageModel.AmountBalance3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.AmountBalance3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.MaturityDateTime3" data-value="@Model.Form2PageModel.MaturityDateTime3">
-                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MaturityDateTime3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.Amortization3">
-                                                        <span asp-validation-for="Form2PageModel.Amortization3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Amortization3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1655,7 +1655,7 @@
                                                     <div class="position-relative">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PendingCase"></label>
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
-                                                        <span asp-validation-for="Form2PageModel.PendingCase" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -1664,7 +1664,7 @@
                                                     <div class="position-relative">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PastDue"></label>
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
-                                                        <span asp-validation-for="Form2PageModel.PastDue" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -1673,7 +1673,7 @@
                                                     <div class="position-relative">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.BouncingChecks"></label>
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BouncingChecks">
-                                                        <span asp-validation-for="Form2PageModel.BouncingChecks" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BouncingChecks" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -1682,7 +1682,7 @@
                                                     <div class="position-relative">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.MedicalAdvice"></label>
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
-                                                        <span asp-validation-for="Form2PageModel.MedicalAdvice" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -1715,49 +1715,49 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BankFinancial1">
-                                                        <span asp-validation-for="Form2PageModel.BankFinancial1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BankFinancial1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Address1">
-                                                        <span asp-validation-for="Form2PageModel.Address1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Address1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Purpose1">
-                                                        <span asp-validation-for="Form2PageModel.Purpose1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Purpose1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.LoanSecurity1">
-                                                        <span asp-validation-for="Form2PageModel.LoanSecurity1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.LoanSecurity1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount1">
-                                                        <span asp-validation-for="Form2PageModel.HighestAmount1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.HighestAmount1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance1">
-                                                        <span asp-validation-for="Form2PageModel.PresentBalance1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.PresentBalance1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained1" data-value="@Model.Form2PageModel.DateObtained1">
-                                                        <span asp-validation-for="Form2PageModel.DateObtained1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateObtained1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid1" data-value="@Model.Form2PageModel.DateFullyPaid1">
-                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1765,49 +1765,49 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BankFinancial2">
-                                                        <span asp-validation-for="Form2PageModel.BankFinancial2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BankFinancial2" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Address2">
-                                                        <span asp-validation-for="Form2PageModel.Address2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Address2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Purpose2">
-                                                        <span asp-validation-for="Form2PageModel.Purpose2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Purpose2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.LoanSecurity2">
-                                                        <span asp-validation-for="Form2PageModel.LoanSecurity2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.LoanSecurity2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 text-center decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
-                                                        <span asp-validation-for="Form2PageModel.HighestAmount2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.HighestAmount2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3  decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
-                                                        <span asp-validation-for="Form2PageModel.PresentBalance2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.PresentBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
-                                                        <span asp-validation-for="Form2PageModel.DateObtained2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateObtained2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid2" data-value="@Model.Form2PageModel.DateFullyPaid2">
-                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1815,49 +1815,49 @@
                                                 <th>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BankFinancial3">
-                                                        <span asp-validation-for="Form2PageModel.BankFinancial3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.BankFinancial3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Address3">
-                                                        <span asp-validation-for="Form2PageModel.Address3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Address3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.Purpose3">
-                                                        <span asp-validation-for="Form2PageModel.Purpose3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.Purpose3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.LoanSecurity3">
-                                                        <span asp-validation-for="Form2PageModel.LoanSecurity3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.LoanSecurity3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount3">
-                                                        <span asp-validation-for="Form2PageModel.HighestAmount3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.HighestAmount3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance3">
-                                                        <span asp-validation-for="Form2PageModel.PresentBalance3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.PresentBalance3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained3" data-value="@Model.Form2PageModel.DateObtained3">
-                                                        <span asp-validation-for="Form2PageModel.DateObtained3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateObtained3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid3" data-value="@Model.Form2PageModel.DateFullyPaid3">
-                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.DateFullyPaid3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1875,19 +1875,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.NameSupplier1">
-                                                        <span asp-validation-for="Form2PageModel.NameSupplier1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.NameSupplier1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeAddress1">
-                                                        <span asp-validation-for="Form2PageModel.TradeAddress1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeAddress1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo1">
-                                                        <span asp-validation-for="Form2PageModel.TradeTellNo1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeTellNo1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1895,19 +1895,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.NameSupplier2">
-                                                        <span asp-validation-for="Form2PageModel.NameSupplier2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.NameSupplier2" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeAddress2">
-                                                        <span asp-validation-for="Form2PageModel.TradeAddress2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeAddress2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo2">
-                                                        <span asp-validation-for="Form2PageModel.TradeTellNo2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeTellNo2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1915,19 +1915,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.NameSupplier3">
-                                                        <span asp-validation-for="Form2PageModel.NameSupplier3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.NameSupplier3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeAddress3">
-                                                        <span asp-validation-for="Form2PageModel.TradeAddress3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeAddress3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo3">
-                                                        <span asp-validation-for="Form2PageModel.TradeTellNo3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.TradeTellNo3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1945,19 +1945,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterNameSupplier1">
-                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier1" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterAddress1">
-                                                        <span asp-validation-for="Form2PageModel.CharacterAddress1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterAddress1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo1">
-                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo1" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1965,19 +1965,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterNameSupplier2">
-                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier2" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterAddress2">
-                                                        <span asp-validation-for="Form2PageModel.CharacterAddress2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterAddress2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo2">
-                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo2" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1985,19 +1985,19 @@
                                                 <th colspan="6">
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterNameSupplier3">
-                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterNameSupplier3" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterAddress3">
-                                                        <span asp-validation-for="Form2PageModel.CharacterAddress3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterAddress3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
                                                         <input type="number" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo3">
-                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo3" class="invalid-tooltip"> </span>
+                                                        <span asp-validation-for="Form2PageModel.CharacterTellNo3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2014,28 +2014,28 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.FirstName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.FirstName">
-                                    <span asp-validation-for="Form2PageModel.FirstName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.FirstName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.MIddleName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.MIddleName">
-                                    <span asp-validation-for="Form2PageModel.MIddleName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.MIddleName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.LastName"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.LastName">
-                                    <span asp-validation-for="Form2PageModel.LastName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.LastName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.Suffix"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.Suffix">
-                                    <span asp-validation-for="Form2PageModel.Suffix" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.Suffix" class="text-danger"> </span>
                                 </div>
                             </div>
 
@@ -2043,91 +2043,91 @@
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.PagibigNumber"></label>
                                     <input type="number" class="form-control rounded-3" asp-for="Form2PageModel.PagibigNumber">
-                                    <span asp-validation-for="Form2PageModel.PagibigNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.PagibigNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.TinNumber"></label>
                                     <input class="form-control rounded-3 tinInputMask" asp-for="Form2PageModel.TinNumber">
-                                    <span asp-validation-for="Form2PageModel.TinNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.TinNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.ContactNumber"></label>
                                     <input type="text" class="form-control rounded-3" asp-for="Form2PageModel.ContactNumber">
-                                    <span asp-validation-for="Form2PageModel.ContactNumber" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.ContactNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.Email"></label>
                                     <input type="email" class="form-control rounded-3" asp-for="Form2PageModel.Email">
-                                    <span asp-validation-for="Form2PageModel.Email" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.Email" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersUnitName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersUnitName">
-                                    <span asp-validation-for="Form2PageModel.SellersUnitName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersUnitName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersBuildingName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersBuildingName">
-                                    <span asp-validation-for="Form2PageModel.SellersBuildingName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersBuildingName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersLotName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersLotName">
-                                    <span asp-validation-for="Form2PageModel.SellersLotName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersLotName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersStreetName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersStreetName">
-                                    <span asp-validation-for="Form2PageModel.SellersStreetName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersStreetName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersSubdivisionName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersSubdivisionName">
-                                    <span asp-validation-for="Form2PageModel.SellersSubdivisionName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersSubdivisionName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersBaranggayName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersBaranggayName">
-                                    <span asp-validation-for="Form2PageModel.SellersBaranggayName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersBaranggayName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersMunicipalityName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersMunicipalityName">
-                                    <span asp-validation-for="Form2PageModel.SellersMunicipalityName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersMunicipalityName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersProvinceName"></label>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.SellersProvinceName">
-                                    <span asp-validation-for="Form2PageModel.SellersProvinceName" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersProvinceName" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" col="9" hidden>
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="Form2PageModel.SellersZipCode"></label>
                                     <input class="form-control rounded-3 text-center codeInputMask" asp-for="Form2PageModel.SellersZipCode">
-                                    <span asp-validation-for="Form2PageModel.SellersZipCode" class="invalid-tooltip"> </span>
+                                    <span asp-validation-for="Form2PageModel.SellersZipCode" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" hidden>
@@ -2147,7 +2147,7 @@
                                         <option value="10">Seller of the Property</option>
                                         <option value="11">Newspaper/Magazine Ad</option> *@
                                     </select>
-                                    <span asp-validation-for="Form2PageModel.SourcePagibigFundId" class="invalid-tooltip"></span>
+                                    <span asp-validation-for="Form2PageModel.SourcePagibigFundId" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

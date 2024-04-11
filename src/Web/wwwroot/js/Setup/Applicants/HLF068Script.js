@@ -953,7 +953,7 @@ $(function () {
             e.preventDefault(); // Prevent the character from being entered
         }
     });
-    
+
     $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
         // Reject inputs 'e', '-', '+'
         //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
@@ -1129,6 +1129,7 @@ $(function () {
             if (!$(this).val()) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('was-validated');
+
                 isValid = false;
             } else {
                 $(this).removeClass('is-invalid');

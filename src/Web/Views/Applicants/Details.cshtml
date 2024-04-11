@@ -3,7 +3,7 @@
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @model ApplicantViewModel
 @{
-   
+
 
 
     string title = "Application Details -" + Model.ApplicantsPersonalInformationModel.Code;
@@ -51,7 +51,7 @@
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                             {
-                                <span class="badge bg-success ms-auto fs-9">PAG-IBIG Verified</span>
+                                <span class="badge bg-darkgreen ms-auto fs-9">PAG-IBIG Verified</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Withdrawn)
                             {
@@ -59,11 +59,11 @@
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                             {
-                                <span class="badge bg-info ms-auto fs-9">Submitted</span>
+                                <span class="badge bg-primary ms-auto fs-9">Submitted</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                             {
-                                <span class="badge bg-success ms-auto fs-9">Developer Verified</span>
+                                <span class="badge bg-lightgreen ms-auto fs-9">Developer Verified</span>
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                             {
@@ -73,23 +73,27 @@
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                             {
-                                <span class="badge bg-danger ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                                <span class="badge bg-blue ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
                             {
-                                <span class="badge bg-danger ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                                <span class="badge bg-lightgreen ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
                             {
-                                <span class="badge bg-danger ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                                <span class="badge bg-darkgreen ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                             {
                                 <span class="badge bg-danger ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                            }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Discontinued)
+                            {
+                                <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
 
 
@@ -190,7 +194,7 @@
 
 
                                     }
-                                   
+
 
 
 
@@ -352,22 +356,13 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null)
+                                            @*   @if (Model.ApplicantsPersonalInformationModel.Remarks != null)
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                            <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
                                             }
+                                            *@
 
 
-                                            @if (Model.ApplicantsPersonalInformationModel.StageNo == 1)
-                                            {
-                                                <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks">Current Stage: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Stage</span></h3>
-                                            }
-                                            else
-
-                                            {
-
-                                                <h3 class="badge bg-primary ms-auto font-18" id="header_remarks">Current Stage: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Stage</span></h3>
-                                            }
 
                                         </div>
 
@@ -430,7 +425,13 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active show" id="home-b1" role="tabpanel">
                                             <div class="row">
+
+
+
                                                 <div class="col-md-6">
+
+
+
 
                                                     <div class="row">
                                                         <label class="col-md-2 text-md-end">Last Name:</label>
@@ -438,6 +439,8 @@
                                                             <p>@Model.BarrowersInformationModel.LastName</p>
                                                         </div>
                                                     </div>
+
+
 
 
                                                     <div class="row">
@@ -474,6 +477,22 @@
                                                 </div>
                                                 <div class="col-md-6">
 
+
+                                                    <div class="row align-items-center">
+                                                        <label class="col-md-2 text-md-end">Current Stage:</label>
+                                                        <div class="col-md-10">
+                                                            @if (Model.ApplicantsPersonalInformationModel.StageNo == 1)
+                                                            {
+                                                                <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
+                                                            }
+                                                            else
+
+                                                            {
+
+                                                                <h3 class="badge bg-primary ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
+                                                            }
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
                                                         <label class="col-md-2 text-md-end">Birth Date:</label>
                                                         <div class="col-md-10">
@@ -514,6 +533,11 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 1)
+                                            {
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                            }
+
                                             <div id="div_verification" class="row">
                                             </div>
 
@@ -523,6 +547,13 @@
                                         </div>
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
+
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 2)
+                                            {
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                            }
+
+
                                             <div id="div_application" class="row">
                                             </div>
                                         </div>

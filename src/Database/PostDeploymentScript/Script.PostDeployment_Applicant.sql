@@ -51,9 +51,6 @@ END
 GO
 
 
-
-
-
  IF NOT EXISTS (SELECT 1 FROM [dbo].ApprovalStatus)
 BEGIN
 SET IDENTITY_INSERT ApprovalStatus ON;
