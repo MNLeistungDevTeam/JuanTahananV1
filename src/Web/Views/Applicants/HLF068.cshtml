@@ -139,7 +139,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-control rounded-3 text-start" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="0" class="form-control rounded-3 text-start" required>
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="invalid-tooltip"></span>
                                 </div>
                             </div>
