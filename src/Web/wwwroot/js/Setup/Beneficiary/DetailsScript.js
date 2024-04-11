@@ -1,9 +1,13 @@
-﻿$(function () {
+﻿const pagibigNumber = $('#txt_applicantCode').val();
+
+
+$(function () {
+
+    console.log(pagibigNumber);
 
     var tbl_applicants = $("#tbl_applicants").DataTable({
         ajax: {
-            url: '/Applicants/GetApplicants',
-            method: 'GET',
+            url: baseUrl + 'Applicants/GetAllApplicationByPagibigNum/' + pagibigNumber,
             dataSrc: "",
         },
         columns: [

@@ -86,7 +86,10 @@ $(async function () {
 
         let fileFormats = FileFormats[documentType.FileType];
 
-        if (documentType.FileType == 5) {
+        if (fileFormats === undefined) {
+            $('#file-input').attr('accept', '*/*');
+        }
+        else if (documentType.FileType == 5) {
             $('#file-input').attr('accept', fileFormats);
         }
         else if (Array.isArray(fileFormats)) {
