@@ -15,6 +15,8 @@ const $approverDiv = $('#div_approval');
 var ApplicationId = $('#applicationId').val();
 var DocumentTypeId = 0;
 var DocumentId = 0;
+var verificationAttachmentFlag = false;
+var applicationAttachmentFlag = false;
 
 const FileFormats = {
     1: ['.pdf'],
@@ -37,6 +39,7 @@ $(async function () {
     console.log(ApplicationId);
 
     //#regionEvent
+
     $(document).on('click', '.upload-link', async function () {
         DocumentId = 0;
         DocumentTypeId = $(this).find("#documentTypeId").val();
@@ -97,32 +100,54 @@ $(async function () {
             const groupName = item.DocumentTypeName;
 
             if (!groupedItems[groupName]) {
-                groupedItems[groupName] = [];
+                groupedItems[groupName] = { items: [], count: 0 }; // Initialize count property
             }
-            groupedItems[groupName].push(item);
+            groupedItems[groupName].items.push(item);
+            if (item.DocumentName) {
+                groupedItems[groupName].count++; // Increment count if file is saved
+            }
         });
+
+        // Check if each group has a file attached
+        let allItemsHaveFiles = true;
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupData = groupedItems[groupName];
+                if (groupData.count !== groupData.items.length) {
+                    allItemsHaveFiles = false;
+                    break;
+                }
+            }
+        }
+
+        // If all items have files, alert a message
+        if (allItemsHaveFiles) {
+            verificationAttachmentFlag = true;
+            $("#btnSubmitApplication").prop('disabled', !(verificationAttachmentFlag));
+        }
 
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
-                const groupItems = groupedItems[groupName];
+                const groupData = groupedItems[groupName];
+                const groupItems = groupData.items;
                 const firstItem = groupItems[0];
                 let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
-                                <h4 class="header-title text-muted">${groupName}</h4>
-                                <div class="list-group">`;
+                            <h4 class="header-title text-muted">${groupName}</h4>
+                            <div class="list-group">`;
 
                 groupItems.forEach(item => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled}>
-                                    <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
-                                        </div>
+                                <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
                                     </div>
-                                </a>`;
+                                </div>
+                            </a>`;
                 });
 
                 groupHtml += `</div></div>`;
@@ -158,32 +183,54 @@ $(async function () {
             const groupName = item.DocumentTypeName;
 
             if (!groupedItems[groupName]) {
-                groupedItems[groupName] = [];
+                groupedItems[groupName] = { items: [], count: 0 }; // Initialize count property
             }
-            groupedItems[groupName].push(item);
+            groupedItems[groupName].items.push(item);
+            if (item.DocumentName) {
+                groupedItems[groupName].count++; // Increment count if file is saved
+            }
         });
+
+        // Check if each group has a file attached
+        let allItemsHaveFiles = true;
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupData = groupedItems[groupName];
+                if (groupData.count !== groupData.items.length) {
+                    allItemsHaveFiles = false;
+                    break;
+                }
+            }
+        }
+
+        // If all items have files, alert a message
+        if (allItemsHaveFiles) {
+            //applicationAttachmentFlag = true;
+            //$("#btnSubmitApplication").prop('disabled', !(verificationAttachmentFlag && applicationAttachmentFlag));
+        }
 
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
-                const groupItems = groupedItems[groupName];
+                const groupData = groupedItems[groupName];
+                const groupItems = groupData.items;
                 const firstItem = groupItems[0];
                 let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
-                                <h4 class="header-title text-muted">${groupName}</h4>
-                                <div class="list-group">`;
+                            <h4 class="header-title text-muted">${groupName}</h4>
+                            <div class="list-group">`;
 
                 groupItems.forEach(item => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     groupHtml += `<a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled}>
-                                    <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
-                                        </div>
+                                <input id="documentTypeId" value="${item.DocumentTypeId}" hidden>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName : 'Not Uploaded Yet'}
                                     </div>
-                                </a>`;
+                                </div>
+                            </a>`;
                 });
 
                 groupHtml += `</div></div>`;
