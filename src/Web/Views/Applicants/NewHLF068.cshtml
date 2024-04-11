@@ -140,7 +140,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" type="number" class="form-control rounded-3 text-center" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" type="number" class="form-control rounded-3 text-start" required>
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="invalid-tooltip"></span>
                                 </div>
                             </div>
@@ -377,7 +377,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
+                                                <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
                                                 <span asp-validation-for="BarrowersInformationModel.BirthDate" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -414,21 +414,21 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.HomeNumber">
+                                                <input type="number" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.HomeNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber" required></label>
-                                                <input class="form-control rounded-3 text-center mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
+                                                <input class="form-control rounded-3 text-start mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
                                                 <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email" required></label>
-                                                <input type="email" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.Email" required>
+                                                <input type="email" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.Email" required>
                                                 <span asp-validation-for="BarrowersInformationModel.Email" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -441,63 +441,63 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentUnitName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentUnitName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBuildingName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentBuildingName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentLotName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentLotName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentStreetName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentStreetName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentSubdivisionName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentSubdivisionName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentBaranggayName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentBaranggayName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentMunicipalityName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentMunicipalityName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PermanentProvinceName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PermanentProvinceName">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode">
+                                                <input class="form-control rounded-3 text-start codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -510,63 +510,63 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentUnitName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentUnitName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBuildingName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentBuildingName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentLotName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentLotName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentStreetName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentStreetName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentSubdivisionName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentSubdivisionName">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentBaranggayName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentBaranggayName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentMunicipalityName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentMunicipalityName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PresentProvinceName" required>
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PresentProvinceName" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode" required></label>
-                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" required>
+                                                <input class="form-control rounded-3 text-start codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -585,7 +585,7 @@
                                         <div class="col-md-3 d-none" id="rentalForm">
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.MonthlyRent" class="form-label fw-normal"></label>
-                                                <input asp-for="BarrowersInformationModel.MonthlyRent" type="number" class="form-control rounded-3 text-center">
+                                                <input asp-for="BarrowersInformationModel.MonthlyRent" type="number" class="form-control rounded-3 text-start">
                                             </div>
                                         </div>
 
@@ -594,14 +594,14 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsofStay">
+                                                <input type="number" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.YearsofStay">
                                                 <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" hidden>
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
+                                                <input type="number" class="form-control rounded-3 text-start" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
                                                 <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -613,14 +613,14 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
-                                                <input class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.SSSNumber">
+                                                <input class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.SSSNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
-                                                <input class="form-control rounded-3 text-center tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
+                                                <input class="form-control rounded-3 text-start tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.TinNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -638,14 +638,14 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
-                                                <input class="form-control text-center rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
+                                                <input class="form-control text-start rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
                                                 <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="invalid-tooltip"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.EmployerName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.EmployerName">
                                                 <span asp-validation-for="BarrowersInformationModel.EmployerName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -728,21 +728,21 @@
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.PositionName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PositionName">
                                                 <span asp-validation-for="BarrowersInformationModel.PositionName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.YearsEmployment">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.YearsEmployment">
                                                 <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.NumberOfDependent">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.NumberOfDependent">
                                                 <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -754,21 +754,21 @@
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                                                <input type="number" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                                                <input type="number" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessEmail">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessEmail">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -781,63 +781,63 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessUnitName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessUnitName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBuildingName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessBuildingName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessLotName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessLotName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessStreetName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessStreetName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessSubdivisionName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessSubdivisionName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessBaranggayName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessBaranggayName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessMunicipalityName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessMunicipalityName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
-                                                <input type="text" class="form-control rounded-3 text-center" asp-for="BarrowersInformationModel.BusinessProvinceName">
+                                                <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.BusinessProvinceName">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                                                <input class="form-control rounded-3 text-center codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode">
+                                                <input class="form-control rounded-3 text-start codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -856,7 +856,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
-                                                <input type="text" class="form-control rounded-3 text-center timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
+                                                <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
                                                 <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="invalid-tooltip"> </span>
                                             </div>
                                         </div>
@@ -924,21 +924,21 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
-                                    <input type="text" class="form-control rounded-3 text-center calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
+                                    <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
                                     <span asp-validation-for="SpouseModel.BirthDate" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.PagibigMidNumber"></label>
-                                    <input class="form-control rounded-3 text-center pagibigInputMask" asp-for="SpouseModel.PagibigMidNumber">
+                                    <input class="form-control rounded-3 text-start pagibigInputMask" asp-for="SpouseModel.PagibigMidNumber">
                                     <span asp-validation-for="SpouseModel.PagibigMidNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.TinNumber"></label>
-                                    <input class="form-control rounded-3 text-center tinInputMask" asp-for="SpouseModel.TinNumber">
+                                    <input class="form-control rounded-3 text-start tinInputMask" asp-for="SpouseModel.TinNumber">
                                     <span asp-validation-for="SpouseModel.TinNumber" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -953,7 +953,7 @@
                             <div class="col-md-9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.BusinessName">
                                     <span asp-validation-for="SpouseModel.BusinessName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -961,7 +961,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.YearsInEmployment"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.YearsInEmployment">
+                                    <input type="number" class="form-control rounded-3 text-start" asp-for="SpouseModel.YearsInEmployment">
                                     <span asp-validation-for="SpouseModel.YearsInEmployment" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -985,7 +985,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.EmploymentPosition"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.EmploymentPosition">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.EmploymentPosition">
                                     <span asp-validation-for="SpouseModel.EmploymentPosition" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -994,7 +994,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
-                                    <input type="number" class="form-control rounded-3 text-center" asp-for="SpouseModel.BusinessTelNo">
+                                    <input type="number" class="form-control rounded-3 text-start" asp-for="SpouseModel.BusinessTelNo">
                                     <span asp-validation-for="SpouseModel.BusinessTelNo" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
@@ -1010,63 +1010,63 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentUnitName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentUnitName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentUnitName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentUnitName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBuildingName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentBuildingName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentBuildingName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentBuildingName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentLotName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentLotName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentLotName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentLotName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentStreetName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentStreetName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentStreetName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentStreetName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentSubdivisionName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentSubdivisionName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentSubdivisionName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentSubdivisionName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentBaranggayName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentBaranggayName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentBaranggayName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentBaranggayName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentMunicipalityName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentMunicipalityName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentMunicipalityName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentMunicipalityName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentProvinceName"></label>
-                                    <input type="text" class="form-control rounded-3 text-center" asp-for="SpouseModel.SpouseEmploymentProvinceName">
+                                    <input type="text" class="form-control rounded-3 text-start" asp-for="SpouseModel.SpouseEmploymentProvinceName">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentProvinceName" class="invalid-tooltip"> </span>
                                 </div>
                             </div>
                             <div class="col-md-3" col="9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.SpouseEmploymentZipCode"></label>
-                                    <input class="form-control rounded-3 text-center codeInputMask codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode">
+                                    <input class="form-control rounded-3 text-start codeInputMask codeInputMask" asp-for="SpouseModel.SpouseEmploymentZipCode">
                                     <span asp-validation-for="SpouseModel.SpouseEmploymentZipCode" class="invalid-tooltip"> </span>
                                 </div>
                             </div>

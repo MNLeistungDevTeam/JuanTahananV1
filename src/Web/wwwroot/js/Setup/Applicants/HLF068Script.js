@@ -1,14 +1,25 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+
 $(function () {
+    //var form2DateObt1 = $("#Form2PageModel_DateObtained1");
+    //var form2DateObt2 = $("#Form2PageModel_DateObtained2");
+    //var form2DateObt3 = $("#Form2PageModel_DateObtained3");
+
+    //var form2DateFull1 = $("#Form2PageModel_DateFullyPaid1");
+    //var form2DateFull2 = $("#Form2PageModel_DateFullyPaid2");
+    //var form2DateFull3 = $("#Form2PageModel_DateFullyPaid3");
+
     $(".selectize").selectize({
         search: false
-
     });
 
-
-
     $('.calendarpicker').flatpickr();
+
+    $('.present-calendar-picker').flatpickr({
+        dateFormat: "Y-m-d",
+        maxDate: moment().format("YYYY-MM-DD")
+    });
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -37,9 +48,11 @@ $(function () {
 
     $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    $('.codeInputMask').inputmask({ mask: "9999" });
+    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" });
 
-    initializeDecimalInputMask(".decimalInputMask5", 2);
+    initializeLeftDecimalInputMask(".decimalInputMask5", 2);
+
+    initializeLoanCreditDate();
 
     rebindValidators();
 
@@ -158,7 +171,6 @@ $(function () {
         purposeOfLoanDropdown.off('load');
     });
 
-
     $modeofPaymentDropdown = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).selectize({
         valueField: 'Id',
         labelField: 'Description',
@@ -205,7 +217,6 @@ $(function () {
         modeofPaymentDropdown.off('load');
     });
 
-
     //#endregion
 
     //#region Set Selectize to readonly
@@ -229,7 +240,16 @@ $(function () {
         }
     });
 
-    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
+    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('keydown', function (e) {
+        // Reject inputs 'e', '+', '-'
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+        //console.log(e.key);
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function (e) {
         //// Get the raw value without the input mask
         //var rawValue = $(this).inputmask('unmaskedvalue');
 
@@ -264,7 +284,17 @@ $(function () {
         }
     });
 
-    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function () {
+    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('keydown', function (e) {
+        // Reject inputs 'e', '+', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function (e) {
         //var inputValue = $(this).val().toString();
         //var numericValue = parseInt(inputValue, 10);
 
@@ -326,6 +356,16 @@ $(function () {
         }
     });
 
+    $('#CollateralInformationModel_TctOctCctNumber').on('keydown', function (e) {
+        // Reject inputs 'e', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#CollateralInformationModel_TctOctCctNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -337,6 +377,16 @@ $(function () {
             messageBox("TctOctCctNumber must not exceed to 25 characters", "danger", true);
 
             $('#CollateralInformationModel_TctOctCctNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_TaxDeclrationNumber').on('keydown', function (e) {
+        // Reject inputs 'e', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -374,6 +424,16 @@ $(function () {
             messageBox("Block Building Number must not exceed to 25 characters", "danger", true);
 
             $('#CollateralInformationModel_BlockBuildingNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_LandArea').on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -625,6 +685,16 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_HomeNumber').on('keydown', function (e) {
+        // Reject inputs
+        /*let rejectCodes = ['KeyE'];*/
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
         //maximum 25 characters
@@ -635,6 +705,16 @@ $(function () {
             messageBox("HomeNumber must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_HomeNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_MobileNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -650,6 +730,21 @@ $(function () {
 
             $('#BarrowersInformationModel_MobileNumber').trigger('invalid');
         }
+    });
+
+    $('#BarrowersInformationModel_PermanentZipCode').on('keydown', function (e) {
+        //var keyCode = e.keyCode || e.which;
+
+        //let regexZip = /^[A-Z0-9-]*$/;
+        //let key = e.key;
+        //// Check if the key is a character or hyphen
+        ////var isCharacterOrHyphen = (e.keyCode >= 65 && e.keyCode <= 90) ||  // A-Z
+        ////keyCode == 45; // hyphen
+
+        //if (!regexZip.test(key)) {
+        //    console.log(e.key);
+        //    e.preventDefault();
+        //}
     });
 
     $('#BarrowersInformationModel_YearsofStay').on('input', function () {
@@ -680,6 +775,16 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_SSSNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_SSSNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -691,6 +796,16 @@ $(function () {
             messageBox("SSS Number must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_SSSNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_TinNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -708,6 +823,26 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_YearsEmployment').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#BarrowersInformationModel_NumberOfDependent').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     //$('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
     //    var inputValue = $(this).val().toString();
 
@@ -722,6 +857,16 @@ $(function () {
     //    }
     //});
 
+    $('#BarrowersInformationModel_BusinessDirectLineNumber').on('keydown', function (e) {
+        // Reject inputs
+        /*let rejectCodes = ['KeyE'];*/
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -733,6 +878,16 @@ $(function () {
             messageBox("Business Direct Line must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_BusinessDirectLineNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_BusinessTruckLineNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -758,6 +913,56 @@ $(function () {
 
     // Set value for SpouseModel_BirthDate
     setDateValue('#SpouseModel_BirthDate');
+
+    $('#SpouseModel_PagibigMidNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#SpouseModel_TinNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#SpouseModel_BusinessTelNo').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $(`[id^="Form2PageModel_TradeTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+    
+    $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
 
     //#endregion
 
@@ -1100,6 +1305,53 @@ $(function () {
         });
 
         return isValid;
+    }
+
+    function initializeLoanCreditDate() {
+        const dateFormat = "Y-m-d";
+        var currentDate = moment().format("YYYY-MM-DD");
+
+        $('[id^="Form2PageModel_DateObtained"]').flatpickr({
+            dateFormat: dateFormat,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let fullyPaidId = instance.input.id.replace("DateObtained", "DateFullyPaid");
+
+                if (dateStr === '') {
+                    $(`#${fullyPaidId}`).val("");
+                    return;
+                }
+
+                $(`#${fullyPaidId}`).flatpickr({
+                    dateFormat: dateFormat,
+                    minDate: dateStr,
+                    onChange: function (selectedDatesArr, dateString, instance1) {
+                        let obtainedId = instance1.input.id.replace("DateFullyPaid", "DateObtained");
+                        let obtVal = $(`#${obtainedId}`).val();
+                        console.log(obtVal);
+                        if (obtVal === '') {
+                            $(`#${instance1.input.id}`).val("");
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('[id^="Form2PageModel_DateFullyPaid"]').flatpickr({
+            dateFormat: dateFormat,
+            minDate: currentDate,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let obtainedId = instance.input.id.replace("DateFullyPaid", "DateObtained");
+                let obtVal = $(`#${obtainedId}`).val();
+                console.log(obtVal);
+                if (obtVal === '') {
+                    $(`#${instance.input.id}`).val("");
+                    return;
+                }
+            }
+        });
     }
 
     //#endregion

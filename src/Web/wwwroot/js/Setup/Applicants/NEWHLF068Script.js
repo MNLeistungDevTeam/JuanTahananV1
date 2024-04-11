@@ -35,7 +35,7 @@ $(function () {
 
     $('.codeInputMask').inputmask({ mask: "9999" });
 
-    initializeDecimalInputMask(".decimalInputMask5", 2);
+    initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     rebindValidators();
 
@@ -229,6 +229,14 @@ $(function () {
     $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function () {
         var inputValue = $(this).val().toString();
         var numericValue = parseInt(inputValue, 10);
+
+        if (numericValue <= 0) {
+            //messageBox("Desired Loan Term Years should not be negative!", "danger", true);
+
+            $('#LoanParticularsInformationModel_DesiredLoanTermYears').trigger('invalid');
+
+            $(this).val(0);
+        }
 
         if (numericValue > 30 || inputValue.length > 2) {
             //alert("Input value exceeds 30!");

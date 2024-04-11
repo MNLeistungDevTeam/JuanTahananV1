@@ -956,7 +956,7 @@ function checkFileExist(urlToFile) {
     }
 }
 
-function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false, rightAlign = true) {
     let placeholder = "";
 
     if (digits == 2) { placeholder = "0.00"; }
@@ -964,7 +964,7 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
 
     $(classname).inputmask({
         alias: 'decimal',
-        rightAlign: true,
+        rightAlign: rightAlign,
         groupSeparator: '.',
         digits: digits,
         allowMinus: isallownegative,
@@ -972,6 +972,26 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
         placeholder: placeholder,
         max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
     });
+}
+
+function initializeLeftDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+    //let placeholder = "";
+
+    //if (digits == 2) { placeholder = "0.00"; }
+    //else if (digits == 5) { placeholder = "0.00000"; }
+
+    //$(classname).inputmask({
+    //    alias: 'decimal',
+    //    rightAlign: true,
+    //    groupSeparator: '.',
+    //    digits: digits,
+    //    allowMinus: isallownegative,
+    //    autoGroup: true,
+    //    placeholder: placeholder,
+    //    max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+    //});
+
+    initializeDecimalInputMask(classname, digits, limiter, isallownegative, false);
 }
 
 function updateBeneficiaryHousingLoanSideBarNav() {
