@@ -291,6 +291,11 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.Form2PageModel = form2PageInfo;
                 }
+
+                if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
+                {
+                    vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
+                }
             }
 
             return View(vwModel);
@@ -706,14 +711,7 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-                        beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
-                        beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
-                        beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
-                        beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
-                        beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
-                        beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
-                        beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
-                        beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
@@ -723,6 +721,29 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
                         beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
                         beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+
+                        if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                        {
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+                        }
+                        else
+                        {
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+                        }
 
                         beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
                         beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;

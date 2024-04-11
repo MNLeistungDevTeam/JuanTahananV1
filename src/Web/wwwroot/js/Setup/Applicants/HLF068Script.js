@@ -747,6 +747,42 @@ $(function () {
         //}
     });
 
+    $(`[name^="BarrowersInformationModel.Permanent"]`).on('input', debounce(function () {
+        if ($(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).prop('checked')) {
+            $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentStreetName"]`).val($(`[name="BarrowersInformationModel.PermanentStreetName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentSubdivisionName"]`).val($(`[name="BarrowersInformationModel.PermanentSubdivisionName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBaranggayName"]`).val($(`[name="BarrowersInformationModel.PermanentBaranggayName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentMunicipalityName"]`).val($(`[name="BarrowersInformationModel.PermanentMunicipalityName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
+        }
+    }, 2000))
+
+    $(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).on('change', function (e) {
+        if ($(this).prop('checked')) {
+            $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentStreetName"]`).val($(`[name="BarrowersInformationModel.PermanentStreetName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentSubdivisionName"]`).val($(`[name="BarrowersInformationModel.PermanentSubdivisionName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBaranggayName"]`).val($(`[name="BarrowersInformationModel.PermanentBaranggayName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentMunicipalityName"]`).val($(`[name="BarrowersInformationModel.PermanentMunicipalityName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
+
+            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', true);
+
+            return;
+        }
+        else {
+            $(`[name^="BarrowersInformationModel.Present"]`).val("");
+            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', false);
+        }
+    });
+
     $('#BarrowersInformationModel_YearsofStay').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -953,7 +989,7 @@ $(function () {
             e.preventDefault(); // Prevent the character from being entered
         }
     });
-    
+
     $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
         // Reject inputs 'e', '-', '+'
         //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];

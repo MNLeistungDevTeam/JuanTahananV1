@@ -336,7 +336,7 @@
 
                                     <div class="row gy-2">
                                         <div class="col-md-12">
-                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower's Data</span>
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower-Beneficiary's Data</span>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
@@ -504,6 +504,14 @@
                                             <div class="form-check form-check-inline">
                                                 <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
                                                 <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check form-check-inline">
+                                                <input asp-for="BarrowersInformationModel.IsPresentAddressPermanentAddress" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label" asp-for="BarrowersInformationModel.IsPresentAddressPermanentAddress"></label>
+                                                <span asp-validation-for="BarrowersInformationModel.IsPresentAddressPermanentAddress" class="text-danger"> </span>
+
                                             </div>
                                         </div>
                                         <div class="col-md-3">
