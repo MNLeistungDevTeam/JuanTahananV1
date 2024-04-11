@@ -1039,17 +1039,17 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-                $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
+                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
-                purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
+                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
 
-                $(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                $(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                $(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
+                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
+                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
+                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
+                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
+                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
 
-                modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
+                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
 
                 //CollateralInformationModel.Province
                 //CollateralInformationModel.Municipality
