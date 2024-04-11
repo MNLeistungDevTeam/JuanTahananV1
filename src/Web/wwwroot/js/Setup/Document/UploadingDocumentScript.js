@@ -95,8 +95,17 @@ $(async function () {
         else if (Array.isArray(fileFormats)) {
             fileFormats = fileFormats.join(',');
 
-            $('#file-input').attr('accept', fileFormats);
+            $('#file-input').attr('accept', fileFormats);        
         }
+        else {
+
+            $('#file-input').attr('accept', fileFormats);
+
+     /*       console.log(fileFormats);*/
+
+        }
+ 
+
 
         $('#file-input').trigger('click');
     });

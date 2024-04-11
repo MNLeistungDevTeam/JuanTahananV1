@@ -5,6 +5,7 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,20 @@ public class BeneficiaryController : Controller
 
         var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
         var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+
+        int userId = int.Parse(User.Identity.Name);
+
+        var userInfo = await _userRepo.GetUserAsync(userId);
+
+        //if the application is not access by beneficiary
+        if (beneficiaryData.UserId != userId && userInfo.UserRoleId == 4)
+        {
+
+            return View("AccessDenied");
+        }
+
+
 
         //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
 
