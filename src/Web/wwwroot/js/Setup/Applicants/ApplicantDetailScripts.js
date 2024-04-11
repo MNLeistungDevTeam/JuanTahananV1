@@ -12,6 +12,7 @@ const $btnCancel = $('#btnCancel');
 const $approverModal = $('#approver-modal');
 const $approverDiv = $('#div_approval');
 
+var approvalStatus = $('[name="ApplicantsPersonalInformationModel.ApprovalStatus"]').val();
 var ApplicationId = $('#applicationId').val();
 var DocumentTypeId = 0;
 var DocumentId = 0;
@@ -108,24 +109,6 @@ $(async function () {
             }
         });
 
-        // Check if each group has a file attached
-        let allItemsHaveFiles = true;
-        for (const groupName in groupedItems) {
-            if (groupedItems.hasOwnProperty(groupName)) {
-                const groupData = groupedItems[groupName];
-                if (groupData.count !== groupData.items.length) {
-                    allItemsHaveFiles = false;
-                    break;
-                }
-            }
-        }
-
-        // If all items have files, alert a message
-        if (allItemsHaveFiles) {
-            verificationAttachmentFlag = true;
-            $("#btnSubmitApplication").prop('disabled', !(verificationAttachmentFlag));
-        }
-
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -153,6 +136,14 @@ $(async function () {
                 groupHtml += `</div></div>`;
                 $("#div_verification").append(groupHtml);
             }
+        }
+
+        //Count all the uploaded files
+        if (approvalStatus === '0') // Application Draft
+        {
+            var flag = allItemsHaveFiles(groupedItems);
+
+            $("#btnSubmitApplication").prop('disabled', !(flag));
         }
     }
 
@@ -191,24 +182,6 @@ $(async function () {
             }
         });
 
-        // Check if each group has a file attached
-        let allItemsHaveFiles = true;
-        for (const groupName in groupedItems) {
-            if (groupedItems.hasOwnProperty(groupName)) {
-                const groupData = groupedItems[groupName];
-                if (groupData.count !== groupData.items.length) {
-                    allItemsHaveFiles = false;
-                    break;
-                }
-            }
-        }
-
-        // If all items have files, alert a message
-        if (allItemsHaveFiles) {
-            //applicationAttachmentFlag = true;
-            //$("#btnSubmitApplication").prop('disabled', !(verificationAttachmentFlag && applicationAttachmentFlag));
-        }
-
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -236,6 +209,14 @@ $(async function () {
                 groupHtml += `</div></div>`;
                 $("#div_application").append(groupHtml);
             }
+        }
+
+        //Count all the uploaded files
+        if (approvalStatus === '4') //Pagibig Verified
+        {
+            var flag = allItemsHaveFiles(groupedItems);
+
+            $("#btnSubmitApplication").prop('disabled', !(flag));
         }
     }
 
@@ -392,6 +373,8 @@ $(async function () {
                             $approverModal.modal("hide");
 
                             location.reload();
+
+                            $("#btnSubmitApplication").prop('disabled', false);
                         },
                         error: function (response) {
                             // Error message handling
@@ -447,6 +430,18 @@ $(async function () {
                 loader.close();
             }
         });
+    }
+
+    function allItemsHaveFiles(groupedItems) {
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupData = groupedItems[groupName];
+                if (groupData.count !== groupData.items.length) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     //#endregion Function
