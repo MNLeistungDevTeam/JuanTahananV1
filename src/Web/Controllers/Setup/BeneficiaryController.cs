@@ -1,11 +1,14 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
@@ -13,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup;
 
+[Authorize]
 public class BeneficiaryController : Controller
 {
     private readonly IUserRepository _userRepo;
@@ -23,6 +27,7 @@ public class BeneficiaryController : Controller
     private readonly IUserRoleRepository _userRoleRepo;
     private readonly IEmailService _emailService;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+    private readonly IRoleAccessRepository _roleAccessRepo;
 
     public BeneficiaryController(
         IUserRepository userRepo,
@@ -32,7 +37,8 @@ public class BeneficiaryController : Controller
         IBackgroundJobClient backgroundJobClient,
         IUserRoleRepository userRoleRepo,
         IEmailService emailService,
-        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+        IRoleAccessRepository roleAccessRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
@@ -42,12 +48,18 @@ public class BeneficiaryController : Controller
         _userRoleRepo = userRoleRepo;
         _emailService = emailService;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
+        _roleAccessRepo = roleAccessRepo;
     }
 
     #region Views
 
-    public IActionResult Index()
+    public async Task <IActionResult> Index()
     {
+        var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_BENEFICIARY_MGMT);
+
+        if (roleAccess is null) { return View("AccessDenied"); }
+        if (!roleAccess.CanRead) { return View("AccessDenied"); }
+
         return View();
     }
 
@@ -58,6 +70,20 @@ public class BeneficiaryController : Controller
 
         var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
         var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+
+        int userId = int.Parse(User.Identity.Name);
+
+        var userInfo = await _userRepo.GetUserAsync(userId);
+
+        //if the application is not access by beneficiary
+        if (beneficiaryData.UserId != userId && userInfo.UserRoleId == 4)
+        {
+
+            return View("AccessDenied");
+        }
+
+
 
         //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
 
@@ -161,6 +187,12 @@ public class BeneficiaryController : Controller
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    public async Task<IActionResult> GetPropertyDevelopers()
+    {
+        var data = await _beneficiaryInformationRepo.GetPropertyDeveloperNames();
+        return Ok(data);
     }
 
     #endregion API Operation

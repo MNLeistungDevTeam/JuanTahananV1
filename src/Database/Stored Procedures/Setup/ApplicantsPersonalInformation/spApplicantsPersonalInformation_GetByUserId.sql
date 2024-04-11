@@ -22,12 +22,12 @@ SELECT TOP 1
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 			CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'For Verification Approval'
-			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 'For Application Approval'
+			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'Credibility Verification'
+			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 'Loan Application'
 		END Stage,
 		CASE
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
-			WHEN apl.ApprovalStatus  IN(6,7,8,9) THEN 2
+			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 2
 		END StageNo,
 		aps.Remarks	
 	FROM ApplicantsPersonalInformation apl
@@ -50,5 +50,5 @@ SELECT TOP 1
 	LEFT JOIN [User] u2 ON aps.ApproverId = u2.Id
 	LEFT JOIN [User] u1 ON apl.UserId = u1.Id
 	WHERE apl.UserId = @userId
---	ORDER BY DateCreated DESC
+ ORDER BY DateCreated DESC
 RETURN 0

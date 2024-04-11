@@ -15,6 +15,7 @@ namespace DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo
         Task<List<BeneficiaryInformation>> GetAllAsync();
         Task<BeneficiaryInformation?> GetByIdAsync(int id);
         Task<BeneficiaryInformationModel?> GetByPagibigNumberAsync(string? pagibigNumber);
+        Task<IEnumerable<dynamic>> GetPropertyDeveloperNames();
         Task<BeneficiaryInformation> SaveAsync(BeneficiaryInformationModel beneficiaryInformation, int userId);
         Task<BeneficiaryInformation> UpdateAsync(BeneficiaryInformation beneficiaryInformation, int userId);
     }

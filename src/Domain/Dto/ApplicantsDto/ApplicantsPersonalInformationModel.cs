@@ -72,7 +72,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ApproverName { get; set; }
        
         public string? Email { get; set; }
+        public int? ApprovalStatusNumber { get; set; }
+
         
+
 
         #endregion Display Properties
     }

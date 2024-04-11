@@ -84,6 +84,8 @@ public class DocumentController : Controller
     [Route("[controller]/DocumentUpload/{applicantCode?}")]
     public async Task<IActionResult> DocumentUpload(string applicantCode = null)
     {
+        int currentUserId = int.Parse(User.Identity.Name);
+
         int userId = 0;
         int applicantId = 0;
         if (applicantCode != null)
@@ -93,6 +95,14 @@ public class DocumentController : Controller
             if (applicantinfo == null)
             {
                 return BadRequest($"{applicantCode}: no record Found!");
+            }
+
+            var userInfo = await _userRepository.GetUserAsync(currentUserId);
+
+            //if the application is not access by beneficiary
+            if (applicantinfo.UserId != currentUserId && userInfo.UserRoleId == 4)
+            {
+                return View("AccessDenied");
             }
 
             //var user = await _userRepository.GetByIdAsync(applicantinfo.UserId);
@@ -266,9 +276,9 @@ public class DocumentController : Controller
             double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
 
             // Check if the file size exceeds 3MB
-            if (fileSizeInMegabytes > 3)
+            if (fileSizeInMegabytes > 5)
             {
-                throw new Exception("File size exceeds 3MB");
+                throw new Exception("File size exceeds 5MB");
             }
 
             var application = await _applicantsPersonalInformationRepo.GetAsync(ApplicationId.Value);
