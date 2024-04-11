@@ -119,21 +119,25 @@
         var currentElement = $(`#${$(element.table().node()).attr('id')}`);
         while (true) {
             if (currentElement.hasClass('card-body') || currentElement.hasClass('tab-pane') || currentElement.hasClass('modal-content')) {
+                let btn_add = currentElement.find('.btn_add');
                 let btn_delete = currentElement.find('.btn_delete');
                 let btn_edit = currentElement.find('.btn_edit');
                 let btn_view = currentElement.find('.btn_view');
                 if (row2minimum > 1) {
-                    btn_delete.attr('disabled', id ? true : false);
+                    btn_delete.attr('disabled', id > 1 ? true : false);
                     btn_view.attr('disabled', true)
                     btn_edit.attr('disabled', true);
+                    btn_add.attr('disabled', true);
                 } else if (row2minimum === 1) {
-                    btn_delete.attr('disabled', id ? true : false);
+                    btn_delete.attr('disabled', id === 1 ? true : false);
                     btn_edit.attr('disabled', false);
                     btn_view.attr('disabled', false)
+                    btn_add.attr('disabled', true);
                 } else {
                     btn_delete.attr('disabled', true);
                     btn_view.attr('disabled', true)
                     btn_edit.attr('disabled', true);
+                    btn_add.attr('disabled', false);
                 }
                 break;
             }

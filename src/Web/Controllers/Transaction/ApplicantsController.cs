@@ -525,6 +525,7 @@ namespace Template.Web.Controllers.Transaction
             int roleId = userdata.UserRoleId.Value;
 
             var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
+
             return Ok(data);
         }
 
@@ -610,6 +611,13 @@ namespace Template.Web.Controllers.Transaction
         {
             var data = await _sourcePagibigFundRepo.GetAllAsync();
             return Ok(data);
+        }
+
+        [Route("[controller]/GetAllApplicationByPagibigNum/{pagibigNumber}")]
+        public async Task<IActionResult> GetAllApplicationByPagibigNum(string pagibigNumber)
+        {
+            var result = await _applicantsPersonalInformationRepo.GetAllApplicationsByPagibigNumber(pagibigNumber);
+            return Ok(result);
         }
 
         #endregion Get Methods

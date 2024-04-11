@@ -112,7 +112,6 @@
                         <div class="card">
                             <div class="card-body">
 
-
                                 <div class="row">
 
                                     <div class="col-md-6">
@@ -122,7 +121,7 @@
                                         <p class="text-muted"><strong>Mobile :</strong><span class="ms-2" id="mobileno-profile">@Model.MobileNumber</span></p>
                                         <p class="text-muted"><strong>Email :</strong> <span class="ms-2" id="email-profile">@Model.Email</span></p>
                                         <p class="text-muted"><strong>Gender :</strong> <span class="ms-2" id="gender-profile">@Model.Sex</span></p>
-                                        <p class="text-muted"><strong>BirthDay :</strong> <span class="ms-2" id="birthday-profile">@Model.BirthDate</span></p>
+                                        <p class="text-muted"><strong>Birthday :</strong> <span class="ms-2" id="birthday-profile">@(Model.BirthDate?.ToString("MM/dd/yyyy"))</span></p>
                                         <p class="text-muted"><strong>Age :</strong> <span class="ms-2" id="age-profile">@Model.Age</span></p>
 
                                         <p class="text-muted"><strong>Property Location :</strong> <span class="ms-2" id="age-profile">@Model.PropertyLocation</span></p>
