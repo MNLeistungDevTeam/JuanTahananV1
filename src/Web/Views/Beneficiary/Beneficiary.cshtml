@@ -103,8 +103,8 @@
 
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="MobileNumber"></label>
-                                                <input type="number" class="form-control rounded-3 mb-2 text-center" asp-for="MobileNumber">
+                                                <label class="form-label fw-normal" asp-for="MobileNumber" required></label>
+                                                <input type="number" class="form-control rounded-3 mb-2 text-center" asp-for="MobileNumber" required>
                                                 <span asp-validation-for="MobileNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -129,8 +129,10 @@
 
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="PropertyDeveloperName"></label>
-                                                <input class="form-control rounded-3 mb-2 text-center" asp-for="PropertyDeveloperName">
+                                                <label class="form-label fw-normal" asp-for="PropertyDeveloperName" required></label>
+                                                <select class="form-select rounded-3 mb-2 text-center" asp-for="PropertyDeveloperName" required>
+                                                    <option value="">Select</option>
+                                                </select>
                                                 <span asp-validation-for="PropertyDeveloperName" class="text-danger"> </span>
                                             </div>
                                         </div>

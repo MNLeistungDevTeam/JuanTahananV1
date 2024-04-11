@@ -30,7 +30,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         public string FirstName { get; set; }
 
         [Display(Name = "Middle Name", Prompt = "Middle Name")]
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
 
         public string Name
         {
@@ -48,14 +48,16 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Required]
         [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
-        public string? MobileNumber { get; set; }
+        public string MobileNumber { get; set; }
 
         [Required]
         [Display(Name = "Gender", Prompt = "Gender")]
         public string? Sex { get; set; }
 
+        [DisplayName("Is Permanent Address on Abroad")]
         public bool IsPermanentAddressAbroad { get; set; }
 
+        [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
 
         [Required]
@@ -74,9 +76,8 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [Display(Name = "Present Street Name", Prompt = "Present Street Name")]
         public string PresentStreetName { get; set; }
 
-        [Required]
         [Display(Name = "Present Subdivision Name", Prompt = "Present Subdivision Name")]
-        public string PresentSubdivisionName { get; set; }
+        public string? PresentSubdivisionName { get; set; }
 
         [Required]
         [Display(Name = "Present Barangay Name", Prompt = "Present Barangay Name")]
@@ -121,8 +122,9 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [Display(Name = "Permanent Zip Code", Prompt = "Permanent Zip Code")]
         public string? PermanentZipCode { get; set; }
 
+        [Required]
         [Display(Name = "Property Developer Name", Prompt = "Property Developer Name")]
-        public string? PropertyDeveloperName { get; set; }
+        public string PropertyDeveloperName { get; set; }
 
         [Display(Name = "Property Location", Prompt = "Property Location")]
         public string? PropertyLocation { get; set; }
