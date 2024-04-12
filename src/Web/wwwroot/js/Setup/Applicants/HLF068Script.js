@@ -678,10 +678,12 @@ $(function () {
 
         // Check if age is 21 or older
         if (age < 21) {
-            console.log("User is 21 or older");
-            messageBox('You have to be at least 21 years old to proceed', 'error');
-
+            console.log("User is NOT 21 or older");
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeIn(0);
             $(this).val('');
+        }
+        else {
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeOut(0);
         }
     });
 

@@ -376,6 +376,9 @@
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
                                                 <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
                                                 <span asp-validation-for="BarrowersInformationModel.BirthDate" class="text-danger"> </span>
+                                                <span id="BarrowersInformationModel.BirthDate_RequiredAge" class="text-danger" style="display: none;">
+                                                    You have to be at least 21 years old to proceed
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -759,14 +762,14 @@
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
