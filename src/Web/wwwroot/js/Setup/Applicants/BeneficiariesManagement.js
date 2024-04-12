@@ -54,13 +54,12 @@ $(() => {
                 }
             },
 
-       
             {
                 data: 'ActiveApplicationCode',
                 orderable: !0,
                 className: 'align-middle text-center',
                 visible: true,
-                render: function (data,type, row) {
+                render: function (data, type, row) {
                     let applicantCode = data != "" ? `/${data}` : "";
                     //console.log(data);
                     //console.log(row.ActiveApplicationCode);
@@ -81,8 +80,6 @@ $(() => {
                 }
             },
 
-
-
             {
                 data: 'PagibigNumber',
                 orderable: !0,
@@ -92,9 +89,6 @@ $(() => {
                     return data;
                 }
             },
-
-
-
 
         ],
         drawCallback: function () {

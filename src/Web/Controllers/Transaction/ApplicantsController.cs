@@ -176,6 +176,12 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
+                //if the application approvalStatus is not greater than 4 on pagibig viewer
+                if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
+                {
+                    return View("AccessDenied");
+                }
+
                 if (applicantinfo == null)
                 {
                     return BadRequest($"{applicantCode}: no record Found!");
@@ -723,7 +729,6 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
