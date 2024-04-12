@@ -29,9 +29,9 @@ AS
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 
-		CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 'Credibility Verification'
-			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 'Loan Application'
+			CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 'Credibility Verification'
+			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 'Loan Application'
 		END Stage,
 		CASE
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1

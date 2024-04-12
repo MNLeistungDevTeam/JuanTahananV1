@@ -143,7 +143,8 @@ namespace Template.Web.Controllers.Transaction
 
                 //var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
 
-                if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
+                if (latestRecord != null && ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Deferred) || ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Withdrawn))
+
                 {
                     applicantInfoModel.isCanAppliedNewApplication = true;
                 }
@@ -723,7 +724,6 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
