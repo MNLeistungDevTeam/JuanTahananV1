@@ -2,7 +2,7 @@
 @{
     @if (!User.Identity.IsAuthenticated)
     {
-        Layout = "Layout/_NoAuthLayout";
+        Layout = "_NoAuthLayout";
     }
     ViewData["Title"] = "Error";
     var lottieLink = "https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs";
