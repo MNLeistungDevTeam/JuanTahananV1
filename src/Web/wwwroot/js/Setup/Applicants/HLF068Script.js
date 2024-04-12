@@ -334,7 +334,7 @@ $(function () {
         if (numericValue > 30) {
             messageBox("Desired Loan Terms exceeds 30!", "danger", true);
             $(this).trigger('invalid');
-            $(this).val(0); // Reset the input value to 0
+            $(this).val(30);
         }
 
         // Check if the length exceeds 7 characters
