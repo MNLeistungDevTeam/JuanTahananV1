@@ -4,9 +4,11 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers;
@@ -122,13 +124,38 @@ public class HomeController : Controller
     //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     //}
 
+    //[AllowAnonymous]
+    //public IActionResult Error(ErrorViewModel model)
+    //{
+    //    try
+    //    {
+    //        return View(model);
+    //    }
+    //    catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    //}
+
     [AllowAnonymous]
-    public IActionResult Error(ErrorViewModel model)
+    public IActionResult Error()
     {
-        try
+        string viewString = "Error";
+        var errorViewModel = new ErrorViewModel
         {
-            return View(model);
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+            Message = "An error occurred." // Default message
+        };
+
+        // Retrieve the exception details, if available
+        var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        if (exceptionHandlerPathFeature?.Error != null)
+        {
+            errorViewModel.Message = exceptionHandlerPathFeature.Error.Message;
+
+            if (errorViewModel.Message.Contains("Transaction is currently being used"))
+            {
+                viewString = "TransactionLocked";
+            }
         }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+
+        return View(viewString, errorViewModel);
     }
 }
