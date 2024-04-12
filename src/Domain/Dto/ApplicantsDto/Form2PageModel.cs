@@ -44,13 +44,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string TypeOfAccount3 { get; set; }
 
         [Display(Prompt = "Account number")]
-        public long? AccountNumber1 { get; set; }
+        public string? AccountNumber1 { get; set; }
 
         [Display(Prompt = "Account number")]
-        public long? AccountNumber2 { get; set; }
+        public string? AccountNumber2 { get; set; }
 
         [Display(Prompt = "Account number")]
-        public long? AccountNumber3 { get; set; }
+        public string? AccountNumber3 { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Prompt = "Date opened")]
@@ -338,13 +338,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string TradeAddress3 { get; set; }
 
         [Display(Prompt = "Trade Telephone No")]
-        public long? TradeTellNo1 { get; set; }
+        public string? TradeTellNo1 { get; set; }
 
         [Display(Prompt = "Trade Telephone No")]
-        public long? TradeTellNo2 { get; set; }
+        public string? TradeTellNo2 { get; set; }
 
         [Display(Prompt = "Trade Telephone No")]
-        public long? TradeTellNo3 { get; set; }
+        public string? TradeTellNo3 { get; set; }
 
         [Display(Prompt = "Character Name Supplier")]
         public string CharacterNameSupplier1 { get; set; }
@@ -365,13 +365,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string CharacterAddress3 { get; set; }
 
         [Display(Prompt = "Character Telephone No")]
-        public long? CharacterTellNo1 { get; set; }
+        public string? CharacterTellNo1 { get; set; }
 
         [Display(Prompt = "Character Telephone No")]
-        public long? CharacterTellNo2 { get; set; }
+        public string? CharacterTellNo2 { get; set; }
 
         [Display(Prompt = "Character Telephone No")]
-        public long? CharacterTellNo3 { get; set; }
+        public string? CharacterTellNo3 { get; set; }
 
         [Display(Prompt = "First Name")]
         public string FirstName { get; set; }

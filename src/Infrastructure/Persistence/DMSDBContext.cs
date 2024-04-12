@@ -475,6 +475,9 @@ public partial class DMSDBContext : DbContext
 
             entity.ToTable("Form2Page");
 
+            entity.Property(e => e.AccountNumber1).HasMaxLength(50);
+            entity.Property(e => e.AccountNumber2).HasMaxLength(50);
+            entity.Property(e => e.AccountNumber3).HasMaxLength(50);
             entity.Property(e => e.Agreement).HasDefaultValueSql("((1))");
             entity.Property(e => e.Amortization1).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Amortization2).HasColumnType("decimal(18, 2)");
@@ -506,6 +509,9 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.CharacterNameSupplier1).HasMaxLength(255);
             entity.Property(e => e.CharacterNameSupplier2).HasMaxLength(255);
             entity.Property(e => e.CharacterNameSupplier3).HasMaxLength(255);
+            entity.Property(e => e.CharacterTellNo1).HasMaxLength(50);
+            entity.Property(e => e.CharacterTellNo2).HasMaxLength(50);
+            entity.Property(e => e.CharacterTellNo3).HasMaxLength(50);
             entity.Property(e => e.ContactNumber).HasMaxLength(50);
             entity.Property(e => e.CreditLimit1).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreditLimit2).HasColumnType("decimal(18, 2)");
@@ -565,6 +571,9 @@ public partial class DMSDBContext : DbContext
             entity.Property(e => e.TradeAddress1).HasMaxLength(255);
             entity.Property(e => e.TradeAddress2).HasMaxLength(255);
             entity.Property(e => e.TradeAddress3).HasMaxLength(255);
+            entity.Property(e => e.TradeTellNo1).HasMaxLength(50);
+            entity.Property(e => e.TradeTellNo2).HasMaxLength(50);
+            entity.Property(e => e.TradeTellNo3).HasMaxLength(50);
             entity.Property(e => e.Type1).HasMaxLength(255);
             entity.Property(e => e.Type2).HasMaxLength(255);
             entity.Property(e => e.Type3).HasMaxLength(255);

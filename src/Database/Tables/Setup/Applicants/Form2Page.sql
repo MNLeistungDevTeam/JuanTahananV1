@@ -16,9 +16,9 @@
     [TypeOfAccount2] NVARCHAR(255) NULL,
     [TypeOfAccount3] NVARCHAR(255) NULL,
 
-    [AccountNumber1] BIGINT NULL,
-    [AccountNumber2] BIGINT NULL,
-    [AccountNumber3] BIGINT NULL,
+    [AccountNumber1] NVARCHAR(50) NULL,
+    [AccountNumber2] NVARCHAR(50) NULL,
+    [AccountNumber3] NVARCHAR(50) NULL,
 
     
     [DateOpened1] DATETIME2 NULL,
@@ -149,9 +149,9 @@
     [TradeAddress2] NVARCHAR(255) NULL,
     [TradeAddress3] NVARCHAR(255) NULL,
 
-    [TradeTellNo1] BIGINT NULL,
-    [TradeTellNo2] BIGINT NULL,
-    [TradeTellNo3] BIGINT NULL,
+    [TradeTellNo1] NVARCHAR(50) NULL,
+    [TradeTellNo2] NVARCHAR(50) NULL,
+    [TradeTellNo3] NVARCHAR(50) NULL,
 
     --character Reference
     [CharacterNameSupplier1] NVARCHAR(255) NULL,
@@ -162,9 +162,9 @@
     [CharacterAddress2] NVARCHAR(255) NULL,
     [CharacterAddress3] NVARCHAR(255) NULL,
 
-    [CharacterTellNo1] BIGINT NULL,
-    [CharacterTellNo2] BIGINT NULL,
-    [CharacterTellNo3] BIGINT NULL,
+    [CharacterTellNo1] NVARCHAR(50) NULL,
+    [CharacterTellNo2] NVARCHAR(50) NULL,
+    [CharacterTellNo3] NVARCHAR(50) NULL,
 
     --Seller Data
     [FirstName] NVARCHAR(255) NULL,
