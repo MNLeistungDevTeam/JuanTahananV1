@@ -209,21 +209,19 @@
                                         <option value="">Select Property Type ...</option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
-
-
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TctOctCctNumber"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TctOctCctNumber">
+                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.TctOctCctNumber">
                                     <span asp-validation-for="CollateralInformationModel.TctOctCctNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TaxDeclrationNumber"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TaxDeclrationNumber">
+                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.TaxDeclrationNumber">
                                     <span asp-validation-for="CollateralInformationModel.TaxDeclrationNumber" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -250,7 +248,7 @@
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.LandArea"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.LandArea">
+                                    <input type="number" min="0" class="form-control rounded-3" asp-for="CollateralInformationModel.LandArea">
                                     <span asp-validation-for="CollateralInformationModel.LandArea" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -761,14 +759,14 @@
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -1000,7 +998,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
-                                    <input type="number" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
+                                    <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
                                     <span asp-validation-for="SpouseModel.BusinessTelNo" class="text-danger"> </span>
                                 </div>
                             </div>
