@@ -139,7 +139,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-control rounded-3 text-start" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start" required>
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
@@ -209,21 +209,19 @@
                                         <option value="">Select Property Type ...</option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
-
-
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TctOctCctNumber"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TctOctCctNumber">
+                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.TctOctCctNumber">
                                     <span asp-validation-for="CollateralInformationModel.TctOctCctNumber" class="text-danger"> </span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.TaxDeclrationNumber"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.TaxDeclrationNumber">
+                                    <input type="text" class="form-control rounded-3" asp-for="CollateralInformationModel.TaxDeclrationNumber">
                                     <span asp-validation-for="CollateralInformationModel.TaxDeclrationNumber" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -250,7 +248,7 @@
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.LandArea"></label>
-                                    <input type="number" class="form-control rounded-3" asp-for="CollateralInformationModel.LandArea">
+                                    <input type="number" min="0" class="form-control rounded-3" asp-for="CollateralInformationModel.LandArea">
                                     <span asp-validation-for="CollateralInformationModel.LandArea" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -378,6 +376,9 @@
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
                                                 <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
                                                 <span asp-validation-for="BarrowersInformationModel.BirthDate" class="text-danger"> </span>
+                                                <span id="BarrowersInformationModel.BirthDate_RequiredAge" class="text-danger" style="display: none;">
+                                                    You have to be at least 21 years old to proceed
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -516,29 +517,29 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentUnitName" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName"></label>
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentUnitName">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBuildingName" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName"></label>
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBuildingName">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentLotName" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName"></label>
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentLotName">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentStreetName" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName"></label>
+                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentStreetName">
                                                 <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -658,8 +659,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName" required></label>
-                                                <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
+                                                <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName">
                                                     <option value="">Select Industry...</option>
                                                     <option value="1">Accounting</option>
                                                     <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
@@ -761,14 +762,14 @@
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -862,8 +863,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact" required></label>
-                                                <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact" required>
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact"></label>
+                                                <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact">
                                                 <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -1000,7 +1001,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
-                                    <input type="number" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
+                                    <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
                                     <span asp-validation-for="SpouseModel.BusinessTelNo" class="text-danger"> </span>
                                 </div>
                             </div>

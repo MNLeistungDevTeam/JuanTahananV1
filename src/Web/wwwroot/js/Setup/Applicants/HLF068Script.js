@@ -46,10 +46,26 @@ $(function () {
         clearIncomplete: true
     });
 
-    $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
+    //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" });
 
+    // Disable 'e', '+', and '-'
+
+
+    // Disable 'e', '+', retain '-'
+    $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
+    $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
+    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
+
+
+    // Disable 'e', retain '-', '+'
+    $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+
+    
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     initializeLoanCreditDate();
@@ -318,7 +334,7 @@ $(function () {
         if (numericValue > 30) {
             messageBox("Desired Loan Terms exceeds 30!", "danger", true);
             $(this).trigger('invalid');
-            $(this).val(0); // Reset the input value to 0
+            $(this).val(30);
         }
 
         // Check if the length exceeds 7 characters
@@ -662,10 +678,12 @@ $(function () {
 
         // Check if age is 21 or older
         if (age < 21) {
-            console.log("User is 21 or older");
-            messageBox('You have to be at least 21 years old to proceed', 'error');
-
+            console.log("User is NOT 21 or older");
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeIn(0);
             $(this).val('');
+        }
+        else {
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeOut(0);
         }
     });
 

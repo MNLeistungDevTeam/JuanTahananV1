@@ -53,19 +53,15 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Email", Prompt = "Email")]
         public string? Email { get; set; }
 
-        [Required]
         [Display(Name = "Present Unit", Prompt = "Unit Name")]
         public string? PresentUnitName { get; set; }
 
-        [Required]
         [Display(Name = "Present Building", Prompt = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
-        [Required]
         [Display(Name = "Present Lot", Prompt = "Lot Name")]
         public string? PresentLotName { get; set; }
 
-        [Required]
         [Display(Name = "Present Street", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
@@ -138,7 +134,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? EmployerName { get; set; }
 
         [DisplayName("Industry")]
-        public string IndustryName { get; set; }
+        public string? IndustryName { get; set; }
 
         [Display(Name = "Position", Prompt = "Position")]
         public string? PositionName { get; set; }
@@ -186,10 +182,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? BusinessContactNumber { get; set; }
 
         [Display(Name = "Business Direct Line Number", Prompt = "Input number")]
-        public int? BusinessDirectLineNumber { get; set; }
+        public string? BusinessDirectLineNumber { get; set; }
 
         [Display(Name = "Business Truck Line Number", Prompt = "Input number")]
-        public int? BusinessTruckLineNumber { get; set; }
+        public string? BusinessTruckLineNumber { get; set; }
 
         [Display(Name = "Business Email", Prompt = "Email")]
         public string? BusinessEmail { get; set; }

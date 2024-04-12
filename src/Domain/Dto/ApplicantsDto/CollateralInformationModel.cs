@@ -29,10 +29,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? PropertyTypeId { get; set; }
 
         [Display(Name = "TCT/OCT/CCT Number", Prompt = "Input number")]
-        public int? TctOctCctNumber { get; set; }
+        public string? TctOctCctNumber { get; set; }
 
         [Display(Name = "Tax Declaration Number", Prompt = "Input number")]
-        public int? TaxDeclrationNumber { get; set; }
+        public string? TaxDeclrationNumber { get; set; }
 
         [Display(Name = "Lot Unit Number", Prompt = "Input number")]
         public int? LotUnitNumber { get; set; }
