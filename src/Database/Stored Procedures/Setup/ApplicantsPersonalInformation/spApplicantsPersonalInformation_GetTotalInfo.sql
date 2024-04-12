@@ -4,12 +4,14 @@
 
 AS
  SELECT
-	--Get submitted/pending review count
-    COUNT(CASE WHEN ApprovalStatus = 1 THEN 1 END) OVER () AS TotalPendingReview,
-	--get pagibig verified
-    COUNT(CASE WHEN ApprovalStatus = 4 THEN 1 END) OVER () AS TotalApprove,
-	--get defered count
-    COUNT(CASE WHEN ApprovalStatus = 2 THEN 1 END) OVER () AS TotalDisApprove
+	-- Get the count of drafts
+	COUNT(CASE WHEN ApprovalStatus = 0 THEN 1 END) AS TotalPendingReview,
+	-- Get the count of Submitted
+	COUNT(CASE WHEN ApprovalStatus = 1 THEN 1 END) AS TotalSubmitted,
+	-- Get the count of Pagibig/Developer approved
+	COUNT(CASE WHEN ApprovalStatus = 7 OR ApprovalStatus = 8 THEN 1 END) AS TotalApprove,
+	-- Get the count of deferred
+	COUNT(CASE WHEN ApprovalStatus = 2 OR ApprovalStatus = 9 THEN 1 END) AS TotalDisApprove
 FROM
     ApplicantsPersonalInformation
 
