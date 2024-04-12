@@ -7,15 +7,13 @@ $(function () {
     });
 
     $("#btn_edit").on('click', function () {
-
         $("#btn_edit").addClass("active");
 
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
 
-        $("#frm_hlf068 .selectize").each(function () {
-            var selectize = $(this)[0].selectize;
-            selectize.lock();
-        });
+        $('#frm_hlf068').find('.selectized').each(function (i, e) {
+            e.selectize.unlock()
+        })
     });
 
     $("#btn_pdf").on('click', function () {
@@ -833,6 +831,10 @@ $(function () {
     //        messageBox("An error occurred during the submission.", "danger", true);
     //    }
     //});
+
+    $('#frm_hlf068').find('.selectized').each(function (i, e) {
+        e.selectize.lock()
+    })
 
     //#region Methods
 

@@ -67,7 +67,7 @@ $(function () {
             },
 
             {
-                data: 'DateCreated',
+                data: 'DateSubmitted',
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {

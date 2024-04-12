@@ -74,8 +74,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Email { get; set; }
         public int? ApprovalStatusNumber { get; set; }
 
-        
 
+        public DateTime? DateSubmitted { get; set; }
 
         #endregion Display Properties
     }

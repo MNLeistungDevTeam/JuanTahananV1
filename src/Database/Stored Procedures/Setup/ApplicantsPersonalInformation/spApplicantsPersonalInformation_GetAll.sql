@@ -35,7 +35,8 @@ AS
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
 			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 2
 		END StageNo,
-		apl.ApprovalStatus ApprovalStatusNumber
+		apl.ApprovalStatus ApprovalStatusNumber,
+		aplog.DateCreated DateSubmitted
 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
@@ -58,7 +59,12 @@ AS
 		) aplvl ON aps1.Id = aplvl.ApprovalStatusId
 		LEFT JOIN [User] ua ON aplvl.ApproverId = ua.Id
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
-	) aps ON apl.Id = aps.ReferenceId
+	) aps ON apl.Id = aps.ReferenceId 
+	LEFT JOIN (
+					select * from ApprovalLog
+					Where [Action] = 1 
+	) aplog ON   aplog.ReferenceId = apl.Id 
+
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	 WHERE 
     1 = (

@@ -286,6 +286,7 @@ public class DocumentController : Controller
             var documentType = await _documentTypeRepo.GetByIdAsync(DocumentTypeId.Value);
 
             var applicationverificationData = await _documentVerificationRepo.GetByTypeAsync(2, null);
+
             var applicationDocument = applicationverificationData.ToList().Select(item => item.DocumentTypeId);
 
             // if withdrawn or reject cant be upload files any more

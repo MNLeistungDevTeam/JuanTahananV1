@@ -104,6 +104,7 @@
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
+                            <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
                         </h3>
                     </div>
                     <div class="col-md-6 mb-2">
@@ -399,14 +400,44 @@
                                             </a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                            <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
+                                                
+                                               
+                                                <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
+
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 4)
+                                                    {
+                                                        <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
+                                                    }
+                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                                    {
+                                                        <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
+                                                    }
+                                                    
+                                                </span>
+
                                                 <i class="mdi mdi-settings-outline d-md-none d-block"></i>
                                                 <span class="d-none d-md-block">Verification Attachments</span>
                                             </a>
                                         </li>
                                         <!-- New tabs -->
                                         <li class="nav-item" role="presentation">
-                                            <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" tabindex="-1">
+                                            <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
+                                                
+                                                <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
+
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 7)
+                                                    {
+                                                        <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
+                                                    }
+                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                                    {
+                                                        <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
+                                                    }
+
+                                                </span>
+
+                                                <i class="mdi mdi-settings-outline d-md-none d-block"></i>
                                                 <span class="d-none d-md-block">Application Attachments</span>
                                             </a>
                                         </li>
@@ -541,9 +572,6 @@
                                             <div id="div_verification" class="row">
                                             </div>
 
-                                            <!-- Hidden file input -->
-                                            <input type="file" id="fileInput" style="display:none;" multiple="false">
-
                                         </div>
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
@@ -556,6 +584,7 @@
 
                                             <div id="div_application" class="row">
                                             </div>
+
                                         </div>
                                         <div class="tab-pane" id="tab5" role="tabpanel">
                                             <p>Content for Tab 5.</p>
@@ -563,6 +592,9 @@
                                         <div class="tab-pane" id="tab6" role="tabpanel">
                                             <p>Content for Tab 6.</p>
                                         </div>
+
+                                        <!-- Hidden file input -->
+                                        <input type="file" id="fileInput" multiple="false" hidden>
                                     </div>
                                 </div>
                             </div>
@@ -604,7 +636,7 @@
                     </div>
                     <div class="mb-2" id="action-container">
                         <label asp-for="ApprovalLevel.Remarks"></label>
-                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks" required></textarea>
                         <span asp-validation-for="ApprovalLevel.Remarks" class="text-danger"></span>
                     </div>
                 </div>

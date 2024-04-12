@@ -34,13 +34,15 @@ $(function () {
             {
                 data: 'HousingAccountNumber',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                visible: false
             },
 
             {
                 data: 'IncomeAmount',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                visible: false
             },
             {
                 data: 'Developer',
@@ -65,7 +67,7 @@ $(function () {
             },
 
             {
-                data: 'DateCreated',
+                data: 'DateSubmitted',
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {

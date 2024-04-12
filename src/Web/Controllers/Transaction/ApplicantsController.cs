@@ -126,7 +126,7 @@ namespace Template.Web.Controllers.Transaction
 
         [Route("[controller]/Beneficiary")]
         public async Task<IActionResult> Beneficiary()
-        {         
+        {
             int userId = int.Parse(User.Identity.Name);
 
             var userData = await _userRepo.GetUserAsync(userId);
@@ -167,16 +167,12 @@ namespace Template.Web.Controllers.Transaction
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
-
-            
-
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
                 //if the application is not access by beneficiary
                 if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
                 {
-                   
                     return View("AccessDenied");
                 }
 
@@ -303,6 +299,11 @@ namespace Template.Web.Controllers.Transaction
                 if (form2PageInfo != null)
                 {
                     vwModel.Form2PageModel = form2PageInfo;
+                }
+
+                if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
+                {
+                    vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
                 }
             }
 
@@ -673,9 +674,12 @@ namespace Template.Web.Controllers.Transaction
                     {
                         var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
 
-                        if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                        if (applicationDetail != null)
                         {
-                            return BadRequest("Can't be processed. You have a pending application!");
+                            if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                            {
+                                return BadRequest("Can't be processed. You have a pending application!");
+                            }
                         }
                     }
 
@@ -719,14 +723,7 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-                        beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
-                        beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
-                        beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
-                        beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
-                        beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
-                        beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
-                        beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
-                        beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
@@ -736,6 +733,29 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
                         beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
                         beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+
+                        if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                        {
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+                        }
+                        else
+                        {
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+                        }
 
                         beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
                         beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
