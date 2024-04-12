@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace DMS.Domain.Dto.ApprovalLevelDto
         /// </summary>
         public int Level { get; set; }
 
+        [Required]
         public string? Remarks { get; set; }
 
         public DateTime DateUpdated { get; set; }
