@@ -16,6 +16,8 @@ namespace DMS.Web.Controllers.Setup;
 
 public class ApprovalController : Controller
 {
+    #region Fields
+
     private readonly IModuleRepository _moduleRepo;
     private readonly IModuleStageApproverRepository _moduleStageApproverRepo;
     private readonly IApprovalService _approvalService;
@@ -35,7 +37,9 @@ public class ApprovalController : Controller
         _roleAccessRepo = roleAccessRepo;
     }
 
-    #region View
+    #endregion Fields
+
+    #region Views
 
     public async Task<IActionResult> Index()
     {
@@ -53,11 +57,9 @@ public class ApprovalController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    #endregion View
+    #endregion Views
 
-    #region Api
-
-    #region Get
+    #region API Getters
 
     [Route("[controller]/GetByReferenceModuleCodeAsync/{referenceId}/{moduleCode?}")]
     public async Task<IActionResult> GetByReferenceModuleCodeAsync(int referenceId, string? moduleCode)
@@ -70,9 +72,9 @@ public class ApprovalController : Controller
         return Ok(data);
     }
 
-    #endregion Get
+    #endregion API Getters
 
-    #region Action Methods
+    #region API Operation
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -129,7 +131,5 @@ public class ApprovalController : Controller
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    #endregion Action Methods
-
-    #endregion Api
+    #endregion API Operation
 }

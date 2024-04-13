@@ -48,6 +48,8 @@ public class ModuleController : Controller
 
     //[ModuleServices(ModuleCodes.Module, typeof(IModuleRepository))]
 
+    #region Views
+
     public async Task<IActionResult> Index()
     {
         try
@@ -89,6 +91,8 @@ public class ModuleController : Controller
             throw;
         }
     }
+
+    #endregion Views
 
     #region Old Api
 
@@ -170,7 +174,7 @@ public class ModuleController : Controller
 
     #region Modules API
 
-    #region Get Methods
+    #region API Getters
 
     public async Task<IActionResult> GetAll()
     {
@@ -250,7 +254,7 @@ public class ModuleController : Controller
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    #endregion Get Methods
+    #endregion API Getters
 
     #region Action Methods
 

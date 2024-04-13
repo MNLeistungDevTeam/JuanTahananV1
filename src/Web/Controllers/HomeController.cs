@@ -14,13 +14,20 @@ namespace DMS.Web.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
+    #region Fields
+
     private readonly ILogger<HomeController> _logger;
     private readonly IUserRepository _userRepo;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
 
-    public HomeController(ILogger<HomeController> logger, IUserRepository userRepo, ICurrentUserService currentUserService, IMapper mapper, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IUserRepository userRepo,
+        ICurrentUserService currentUserService,
+        IMapper mapper,
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
     {
         _logger = logger;
         _userRepo = userRepo;
@@ -28,6 +35,10 @@ public class HomeController : Controller
         _mapper = mapper;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
     }
+
+    #endregion Fields
+
+    #region Views
 
     //[ModuleServices(ModuleCodes.Home, typeof(IModuleRepository))]
     public IActionResult Index()
@@ -67,6 +78,8 @@ public class HomeController : Controller
             return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
         }
     }
+
+    #endregion Views
 
     public async Task<IActionResult> UpdateThemeUserColor(string color)
     {

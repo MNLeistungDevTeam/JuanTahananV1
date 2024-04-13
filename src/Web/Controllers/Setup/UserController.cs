@@ -17,6 +17,8 @@ namespace DMS.Web.Controllers.Setup;
 
 public class UserController : Controller
 {
+    #region Fields
+
     private readonly IUserRepository _userRepo;
     private readonly IAuthenticationService _authenticationService;
     private readonly IWebHostEnvironment _webHostEnvironment;
@@ -39,6 +41,8 @@ public class UserController : Controller
         _userRoleRepo = userRoleRepo;
         _roleAccessRepo = roleAccessRepo;
     }
+
+    #endregion Fields
 
     #region Views
 

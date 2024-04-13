@@ -19,6 +19,8 @@ namespace DMS.Web.Controllers.Setup;
 [Authorize]
 public class RoleController : Controller
 {
+    #region Fields
+
     private readonly IRoleRepository _roleRepo;
     private readonly IRoleAccessRepository _roleAccessRepo;
     private readonly IModuleRepository _moduleRepo;
@@ -42,9 +44,11 @@ public class RoleController : Controller
         _userRepo = userRepo;
     }
 
+    #endregion Fields
+
     #region Views
 
-    public  async Task<IActionResult> Index()
+    public async Task<IActionResult> Index()
     {
         var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_ROLE_MGMT);
 
