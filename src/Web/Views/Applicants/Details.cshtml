@@ -3,10 +3,7 @@
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @model ApplicantViewModel
 @{
-
-
-
-    string title = "Application Details -" + Model.ApplicantsPersonalInformationModel.Code;
+    string title = "Application Details - " + Model.ApplicantsPersonalInformationModel.Code;
 
     ViewData["Title"] = title;
     ViewData["Breadcrumbs"] = "Details";
@@ -592,8 +589,6 @@
                                             <p>Content for Tab 6.</p>
                                         </div>
 
-                                        <!-- Hidden file input -->
-                                        <input type="file" id="fileInput" multiple="false" hidden>
                                     </div>
                                 </div>
                             </div>
@@ -636,7 +631,6 @@
                     <div class="mb-2" id="action-container">
                         <label asp-for="ApprovalLevel.Remarks"></label>
                         <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks" required></textarea>
-                        <span asp-validation-for="ApprovalLevel.Remarks" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer bg-soft-light border-top">

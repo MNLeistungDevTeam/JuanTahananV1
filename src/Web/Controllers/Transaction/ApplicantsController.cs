@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.CodeParser;
-using DevExpress.Pdf;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
@@ -35,6 +33,8 @@ namespace Template.Web.Controllers.Transaction
     [Authorize]
     public class ApplicantsController : Controller
     {
+        #region Fields
+
         private readonly IUserRepository _userRepo;
         private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
         private readonly ILoanParticularsInformationRepository _loanParticularsInformationRepo;
@@ -111,7 +111,9 @@ namespace Template.Web.Controllers.Transaction
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
         }
 
-        #region View
+        #endregion Fields
+
+        #region Views
 
         //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
 
@@ -173,6 +175,12 @@ namespace Template.Web.Controllers.Transaction
 
                 //if the application is not access by beneficiary
                 if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
+                {
+                    return View("AccessDenied");
+                }
+
+                //if the application approvalStatus is not greater than 4 on pagibig viewer
+                if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
                 {
                     return View("AccessDenied");
                 }
@@ -532,9 +540,9 @@ namespace Template.Web.Controllers.Transaction
             }
         }
 
-        #endregion View
+        #endregion Views
 
-        #region Get Methods
+        #region API Getters
 
         public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
             Ok(await _userRepo.spGetByRoleName(roleName));
@@ -652,7 +660,9 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
-        #endregion Get Methods
+        #endregion API Getters
+
+        #region API Operations
 
         [HttpPost]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
@@ -965,6 +975,8 @@ namespace Template.Web.Controllers.Transaction
 
             return userData;
         }
+
+        #endregion API Operations
 
         #region Helper Methods
 

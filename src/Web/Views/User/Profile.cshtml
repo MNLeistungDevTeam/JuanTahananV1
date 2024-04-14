@@ -110,7 +110,7 @@
                                             </div>
                                             <div>
                                                 <label asp-for="User.Gender" class="form-label"></label>
-                                                <select class="form-control selectize" asp-for="User.Gender" asp-items="@(new SelectList(Model.User.Genders, "Description", "Description"))" data-value="@Model.">
+                                                <select class="form-control selectize" asp-for="User.Gender" asp-items="@(new SelectList(Model.User.Genders, "Description", "Description"))" data-value="@Model." required>
                                                     <option value="">Select Gender...</option>
                                                 </select>
                                                 <span asp-validation-for="User.Gender" class="text-danger"></span>

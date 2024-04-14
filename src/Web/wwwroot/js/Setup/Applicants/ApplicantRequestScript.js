@@ -229,7 +229,7 @@ $(function () {
             },
             success: function (response) {
                 if (response) {
-                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalPendingReview : 0}</span>`);
+                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalSubmitted : 0}</span>`);
                     info_total_approved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalApprove : 0}</span>`);
                     info_total_disapproved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalDisApprove : 0}</span>`);
                 }

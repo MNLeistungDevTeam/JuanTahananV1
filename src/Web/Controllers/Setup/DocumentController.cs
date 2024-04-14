@@ -21,6 +21,8 @@ namespace DMS.Web.Controllers.Setup;
 [Authorize]
 public class DocumentController : Controller
 {
+    #region Fields
+
     private readonly IDocumentTypeRepository _documentTypeRepo;
     private readonly IFileUploadService _uploadService;
     private readonly IWebHostEnvironment _hostingEnvironment;
@@ -54,6 +56,8 @@ public class DocumentController : Controller
         _documentVerificationRepo = documentVerificationRepo;
         _currentUserRoleAccessService = currentUserRoleAccessService;
     }
+
+    #endregion Fields
 
     #region Views
 
@@ -122,6 +126,7 @@ public class DocumentController : Controller
 
     #region API Getters
 
+    //Document Repository
     public async Task<IActionResult> GetAllUploadedDocuments(int applicationId) =>
         Ok(await _documentRepo.SpGetAllApplicationSubmittedDocuments(applicationId));
 
@@ -136,6 +141,7 @@ public class DocumentController : Controller
     public async Task<IActionResult> GetApplicantUploadedDocumentByDocumentType(int documentTypeId, string applicantCode) =>
         Ok(await _documentRepo.GetApplicantDocumentsByDocumentType(documentTypeId, applicantCode));
 
+    //Document Verification Repository
     public async Task<IActionResult> GetEligibilityApplicationDocument(string? applicantCode)
     {
         int type = 1; // eligibility documents
@@ -168,6 +174,7 @@ public class DocumentController : Controller
         return Ok(data);
     }
 
+    //Document Type Repository
     public async Task<IActionResult> GetDocumentById(int id) =>
         Ok((await _documentTypeRepo.SpGetAllUserDocumentTypes()).FirstOrDefault(x => x.Id == id));
 
