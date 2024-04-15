@@ -198,7 +198,7 @@ namespace Template.Web.Controllers.Transaction
 
                 applicantinfo.isRequiredDocumentsUploaded = false;
 
-                applicantinfo.StageNo = (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified) ? 2 : 1;
+                //applicantinfo.StageNo = (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified) ? 2 : 1;
 
                 if ((applicantinfo.StageNo == 1 && incompleteDocumentDataStage1.Count > 0) || (applicantinfo.StageNo != 1 && incompleteDocumentDataStage2.Count > 0))
                 {
