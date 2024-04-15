@@ -9,7 +9,7 @@ AS
 		ar.[Name] ApproverRole,
 		CONCAT(u2.Firstname,' ',u2.MiddleName,' ',u2.LastName) ApproverFullName,
 		u2.FirstName ApproverFirstName,
-	CASE
+		CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'

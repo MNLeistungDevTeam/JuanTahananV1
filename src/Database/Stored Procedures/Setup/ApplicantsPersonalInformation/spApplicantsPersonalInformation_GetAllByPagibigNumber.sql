@@ -15,7 +15,7 @@ AS
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
-CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'

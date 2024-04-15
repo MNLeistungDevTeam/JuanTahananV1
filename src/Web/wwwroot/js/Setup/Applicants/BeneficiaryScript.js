@@ -116,10 +116,10 @@ $(function () {
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
 
-                    else if (row.ApprovalStatusNumber == 9) {
+                    else if (row.ApprovalStatusNumber == 10) {
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 10) {
+                    else if (row.ApprovalStatusNumber == 9) {
                         returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
                     }
 
