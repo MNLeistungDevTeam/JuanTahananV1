@@ -384,6 +384,7 @@ $(async function () {
         let modalLabel = $("#approver-modalLabel");
         let transactionNo = $(`[name="ApplicantsPersonalInformationModel.Code"]`).val();
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
+        let roleName = $("#txt_role_code").val();
 
         remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
         $btnSave.removeClass()
@@ -402,6 +403,7 @@ $(async function () {
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
         }
 
+        $("#author_txt").html(`Author: ${roleName}`);
         $("[name='ApprovalLevel.Status']").val(action);
         $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
 
@@ -517,11 +519,11 @@ $(async function () {
 
                             $("#btnSubmitApplication").prop('disabled', false);
                         },
-                        error: function (error) {
+                        error: function (response) {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(error.responseText, "danger", false);
+                            messageBox(response.responseText, "danger", true);
                         }
                     });
                 }
@@ -567,9 +569,7 @@ $(async function () {
                 loadApplicationAttachments(CONST_APPLICANTCODE);
             },
             error: function (xhr, status, error) {
-
-
-                (xhr.responseText, "danger", true);
+                messageBox(xhr.responseText, "danger", true);
                 loader.close();
             }
         });
