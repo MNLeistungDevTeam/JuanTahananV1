@@ -93,16 +93,45 @@
                                 <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
 
-
-
-
-
-
-
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
                         </h3>
+
+
+                        <div class="mt-4">
+                            <label class="form-label fw-normal">Stage:</label>
+                            <div class="form-check form-check-inline ms-2">
+                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input">
+                                <label class="form-check-label" for="customRadio3">Credit Verification</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input">
+                                <label class="form-check-label" for="customRadio4">Application Completion</label>
+                            </div>
+                              <div class="form-check form-check-inline">
+                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input">
+                                <label class="form-check-label" for="customRadio4">Post approval</label>
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+                        <div class="col-md-3">
+                                <label class="form-label fw-normal">Status:</label>
+                                <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
+                                    <option value="">Select First Stage.... </option>
+                                    <option value="3">Developer Verified</option>
+                                    <option value="10">Pagibig Verified</option>
+                                    <option value="20">Developer Approved</option>
+                                    <option value="25">Pagibig Approved</option>
+                                </select>
+                      
+                        </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
@@ -516,8 +545,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-
-
                                                     <div class="row align-items-center">
                                                         <label class="col-md-3 text-md-end">Current Stage:</label>
                                                         <div class="col-md-9">
@@ -525,8 +552,11 @@
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
+                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8) 
+                                                            {
+                                                                <h3 class="badge bg-darkgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
+                                                            }
                                                             else
-
                                                             {
                                                                 <h3 class="badge bg-primary ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }

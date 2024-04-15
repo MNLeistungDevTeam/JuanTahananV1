@@ -71,6 +71,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public string? Email { get; set; }
         public int? ApprovalStatusNumber { get; set; }
+        public string? ApprovalStageLimit { get; set; } = string.Empty;
 
         public DateTime? DateSubmitted { get; set; }
 

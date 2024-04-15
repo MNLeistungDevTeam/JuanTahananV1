@@ -1148,3 +1148,7 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .bg-darkgreen {
     background-color: darkgreen;
 }
+
+.text-orange {
+    color: orange;
+}

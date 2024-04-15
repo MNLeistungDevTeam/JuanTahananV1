@@ -1,29 +1,30 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 
+
+
 $(function () {
+    //var form2DateObt1 = $("#Form2PageModel_DateObtained1");
+    //var form2DateObt2 = $("#Form2PageModel_DateObtained2");
+    //var form2DateObt3 = $("#Form2PageModel_DateObtained3");
+
+    //var form2DateFull1 = $("#Form2PageModel_DateFullyPaid1");
+    //var form2DateFull2 = $("#Form2PageModel_DateFullyPaid2");
+    //var form2DateFull3 = $("#Form2PageModel_DateFullyPaid3");
+
+
+    //#region Initialization
+
     $(".selectize").selectize({
-        search: false,
-    });
-
-    $("#btn_edit").on('click', function () {
-        $("#btn_edit").addClass("active");
-
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
-
-        $('#frm_hlf068').find('.selectized').each(function (i, e) {
-            e.selectize.unlock()
-        })
-    });
-
-    $("#btn_pdf").on('click', function () {
-        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
-        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
-
-        window.open(link, '_blank');
+        search: false
     });
 
     $('.calendarpicker').flatpickr();
+
+    $('.present-calendar-picker').flatpickr({
+        dateFormat: "Y-m-d",
+        maxDate: moment().format("YYYY-MM-DD")
+    });
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -50,72 +51,41 @@ $(function () {
         clearIncomplete: true
     });
 
-    $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    $('.codeInputMask').inputmask({ mask: "9999" });
 
-    initializeDecimalInputMask(".decimalInputMask5", 2);
+
+    //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
+
+    // Disable 'e', '+', and '-'
+
+    // Disable 'e', '+', retain '-'
+    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
+    $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
+    $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
+    $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
+
+    // Disable 'e', retain '-', '+'
+    $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+
+    initializeLeftDecimalInputMask(".decimalInputMask5", 2);
+
+
+
+    //#endregion
+
+  
+
+
+    initializeLoanCreditDate();
 
     rebindValidators();
 
-    $('#rootwizard').bootstrapWizard({
-        onNext: function (tab, navigation, index, e) {
-            console.log("Next button clicked");
-
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the previous form (loanparticulars) and remove 'fade' class
-            var prevForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            currentForm.addClass('was-validated');
-
-            // Validate the current form
-            var isValid = validateForm(currentForm);
-
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                return;
-            }
-
-            if (!isValid) {
-                // If validation fails, prevent navigation to the next step
-                return false;
-            } else {
-                // Hide the current form
-                currentForm.addClass('fade').prop('hidden', true);
-
-                // Show the previous form
-                prevForm.removeClass('fade').prop('hidden', false);
-            }
-        },
-        onPrevious: function (tab, navigation, index) {
-            console.log("Previous button clicked");
-
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the current form (collateral) and remove 'fade' class
-            var nextForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            // Hide the current form
-            currentForm.addClass('fade').prop('hidden', true);
-
-            // Show the next form
-            nextForm.removeClass('fade').prop('hidden', false);
-
-            // Always return true to allow navigation to the previous step
-            return true;
-        }
-    });
 
     //#region Loan Particulars
 
@@ -242,7 +212,16 @@ $(function () {
         }
     });
 
-    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function () {
+    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('keydown', function (e) {
+        // Reject inputs 'e', '+', '-'
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+        //console.log(e.key);
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function (e) {
         //// Get the raw value without the input mask
         //var rawValue = $(this).inputmask('unmaskedvalue');
 
@@ -277,7 +256,17 @@ $(function () {
         }
     });
 
-    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function () {
+    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('keydown', function (e) {
+        // Reject inputs 'e', '+', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function (e) {
         //var inputValue = $(this).val().toString();
         //var numericValue = parseInt(inputValue, 10);
 
@@ -301,7 +290,7 @@ $(function () {
         if (numericValue > 30) {
             messageBox("Desired Loan Terms exceeds 30!", "danger", true);
             $(this).trigger('invalid');
-            $(this).val(0); // Reset the input value to 0
+            $(this).val(30);
         }
 
         // Check if the length exceeds 7 characters
@@ -339,6 +328,16 @@ $(function () {
         }
     });
 
+    $('#CollateralInformationModel_TctOctCctNumber').on('keydown', function (e) {
+        // Reject inputs 'e', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#CollateralInformationModel_TctOctCctNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -350,6 +349,16 @@ $(function () {
             messageBox("TctOctCctNumber must not exceed to 25 characters", "danger", true);
 
             $('#CollateralInformationModel_TctOctCctNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_TaxDeclrationNumber').on('keydown', function (e) {
+        // Reject inputs 'e', '-'
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -387,6 +396,16 @@ $(function () {
             messageBox("Block Building Number must not exceed to 25 characters", "danger", true);
 
             $('#CollateralInformationModel_BlockBuildingNumber').trigger('invalid');
+        }
+    });
+
+    $('#CollateralInformationModel_LandArea').on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E', '-', '-', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -615,10 +634,12 @@ $(function () {
 
         // Check if age is 21 or older
         if (age < 21) {
-            console.log("User is 21 or older");
-            messageBox('You have to be at least 21 years old to proceed', 'error');
-
+            console.log("User is NOT 21 or older");
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeIn(0);
             $(this).val('');
+        }
+        else {
+            $(`[id="BarrowersInformationModel.BirthDate_RequiredAge"]`).fadeOut(0);
         }
     });
 
@@ -638,6 +659,16 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_HomeNumber').on('keydown', function (e) {
+        // Reject inputs
+        /*let rejectCodes = ['KeyE'];*/
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_HomeNumber').on('input', function () {
         var inputValue = $(this).val().toString();
         //maximum 25 characters
@@ -648,6 +679,16 @@ $(function () {
             messageBox("HomeNumber must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_HomeNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_MobileNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -662,6 +703,57 @@ $(function () {
             messageBox("Mobile Number must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_MobileNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_PermanentZipCode').on('keydown', function (e) {
+        //var keyCode = e.keyCode || e.which;
+
+        //let regexZip = /^[A-Z0-9-]*$/;
+        //let key = e.key;
+        //// Check if the key is a character or hyphen
+        ////var isCharacterOrHyphen = (e.keyCode >= 65 && e.keyCode <= 90) ||  // A-Z
+        ////keyCode == 45; // hyphen
+
+        //if (!regexZip.test(key)) {
+        //    console.log(e.key);
+        //    e.preventDefault();
+        //}
+    });
+
+    $(`[name^="BarrowersInformationModel.Permanent"]`).on('input', debounce(function () {
+        if ($(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).prop('checked')) {
+            $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentStreetName"]`).val($(`[name="BarrowersInformationModel.PermanentStreetName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentSubdivisionName"]`).val($(`[name="BarrowersInformationModel.PermanentSubdivisionName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBaranggayName"]`).val($(`[name="BarrowersInformationModel.PermanentBaranggayName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentMunicipalityName"]`).val($(`[name="BarrowersInformationModel.PermanentMunicipalityName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
+        }
+    }, 2000))
+
+    $(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).on('change', function (e) {
+        if ($(this).prop('checked')) {
+            $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentStreetName"]`).val($(`[name="BarrowersInformationModel.PermanentStreetName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentSubdivisionName"]`).val($(`[name="BarrowersInformationModel.PermanentSubdivisionName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentBaranggayName"]`).val($(`[name="BarrowersInformationModel.PermanentBaranggayName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentMunicipalityName"]`).val($(`[name="BarrowersInformationModel.PermanentMunicipalityName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
+            $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
+
+            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', true);
+
+            return;
+        }
+        else {
+            $(`[name^="BarrowersInformationModel.Present"]`).val("");
+            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', false);
         }
     });
 
@@ -693,6 +785,16 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_SSSNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_SSSNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -704,6 +806,16 @@ $(function () {
             messageBox("SSS Number must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_SSSNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_TinNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -721,6 +833,26 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_YearsEmployment').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#BarrowersInformationModel_NumberOfDependent').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     //$('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
     //    var inputValue = $(this).val().toString();
 
@@ -735,6 +867,16 @@ $(function () {
     //    }
     //});
 
+    $('#BarrowersInformationModel_BusinessDirectLineNumber').on('keydown', function (e) {
+        // Reject inputs
+        /*let rejectCodes = ['KeyE'];*/
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('input', function () {
         var inputValue = $(this).val().toString();
 
@@ -746,6 +888,16 @@ $(function () {
             messageBox("Business Direct Line must not exceed to 25 characters", "danger", true);
 
             $('#BarrowersInformationModel_BusinessDirectLineNumber').trigger('invalid');
+        }
+    });
+
+    $('#BarrowersInformationModel_BusinessTruckLineNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
         }
     });
 
@@ -772,69 +924,147 @@ $(function () {
     // Set value for SpouseModel_BirthDate
     setDateValue('#SpouseModel_BirthDate');
 
+    $('#SpouseModel_PagibigMidNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#SpouseModel_TinNumber').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE', 'NumpadAdd'];
+        let rejectCodes = ['e', 'E', '+'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#SpouseModel_BusinessTelNo').on('keydown', function (e) {
+        // Reject inputs
+        //let rejectCodes = ['KeyE'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $(`[id^="Form2PageModel_TradeTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     //#endregion
 
-    //$('#form2').on('submit', async function (e) {
-    //    e.preventDefault();
-    //    let $loanparticulars = $('#loanparticulars');
-    //    let $collateraldata = $('#collateraldata');
-    //    let $spousedata = $('#spousedata');
-    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-    //        return;
-    //    }
-    //    let loanparticulars = $loanparticulars.serializeArray();
-    //    let collateraldata = $collateraldata.serializeArray();
-    //    let spousedata = $spousedata.serializeArray();
-    //    let form2 = $(this).serializeArray();
-    //    let combinedData = {};
-    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-    //        combinedData[obj.name] = obj.value;
-    //    });
 
-    //    // Use await before the AJAX call
-    //    try {
-    //        await $.ajax({
-    //            type: 'POST',
-    //            url: '/Applicants/SaveHLF068',
-    //            data: combinedData,
-    //            beforeSend: function () {
-    //                loading("Saving Changes...");
-    //            },
-    //            success: async function (response) {
-    //                messageBox("Successfully", "success", true);
 
-    //                if (applicantInfoIdVal == 0) {
-    //                    loader.close();
-    //                    setTimeout(function () {
-    //                        window.location.href = "/Applicants/HLF068/" + response;
-    //                    }, 2000);
-    //                }
-    //                else {
-    //                    loader.close();
+    //#region Events
 
-    //                    setTimeout(function () {
-    //                        // Redirect to the specified location
-    //                        window.location.href = "/Applicants/ApplicantRequests";
-    //                    }, 2000); // 2000 milliseconds = 2 seconds
-    //                }
-    //            },
-    //            error: async function (jqXHR, textStatus, errorThrown) {
-    //                console.log(jqXHR.responseText);
-    //                messageBox(jqXHR.responseText, "danger", true);
-    //                loader.close();
-    //            }
-    //        });
-    //    } catch (error) {
-    //        // Handle any errors from the AJAX request
-    //        console.log(error);
-    //        // Optionally display an error message
-    //        messageBox("An error occurred during the submission.", "danger", true);
-    //    }
-    //});
+    $('#rootwizard').bootstrapWizard({
+        onNext: function (tab, navigation, index, e) {
+            console.log("Next button clicked");
 
-    $('#frm_hlf068').find('.selectized').each(function (i, e) {
-        e.selectize.lock()
-    })
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the previous form (loanparticulars) and remove 'fade' class
+            var prevForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            currentForm.addClass('was-validated');
+
+            // Validate the current form
+            var isValid = validateForm(currentForm);
+
+            // If current form is "form2", return without proceeding to next step
+            if (currentFormName == "form2") {
+                return;
+            }
+
+            if (!isValid) {
+                // If validation fails, prevent navigation to the next step
+                return false;
+            } else {
+                // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false);
+            }
+        },
+        onPrevious: function (tab, navigation, index) {
+            console.log("Previous button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the current form (collateral) and remove 'fade' class
+            var nextForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            // Hide the current form
+            currentForm.addClass('fade').prop('hidden', true);
+
+            // Show the next form
+            nextForm.removeClass('fade').prop('hidden', false);
+
+            // Always return true to allow navigation to the previous step
+            return true;
+        }
+    });
+    $("#btn_edit").on('click', function () {
+        $("#btn_edit").addClass("active");
+
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+
+        $('#frm_hlf068').find('.selectized').each(function (i, e) {
+            e.selectize.unlock()
+        })
+    });
+
+    $("#btn_pdf").on('click', function () {
+        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
+        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
+
+        window.open(link, '_blank');
+    });
+
+    // to initialize first the selectize before lock
+    $(document).ready(function () {
+        $('#frm_hlf068').find('.selectized').each(function (i, e) {
+            e.selectize.lock();
+        });
+    });
+
+
+    //#endregion
+
 
     //#region Methods
 
@@ -851,17 +1081,17 @@ $(function () {
             url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
             method: 'Get',
             success: function (response) {
-                $(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
+                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
 
-                purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
+                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
 
-                $(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                $(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                $(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                $(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
+                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
+                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
+                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
+                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
+                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
 
-                modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
+                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
 
                 //CollateralInformationModel.Province
                 //CollateralInformationModel.Municipality
@@ -941,6 +1171,7 @@ $(function () {
             if (!$(this).val()) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('was-validated');
+
                 isValid = false;
             } else {
                 $(this).removeClass('is-invalid');
@@ -1117,6 +1348,53 @@ $(function () {
         });
 
         return isValid;
+    }
+
+    function initializeLoanCreditDate() {
+        const dateFormat = "Y-m-d";
+        var currentDate = moment().format("YYYY-MM-DD");
+
+        $('[id^="Form2PageModel_DateObtained"]').flatpickr({
+            dateFormat: dateFormat,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let fullyPaidId = instance.input.id.replace("DateObtained", "DateFullyPaid");
+
+                if (dateStr === '') {
+                    $(`#${fullyPaidId}`).val("");
+                    return;
+                }
+
+                $(`#${fullyPaidId}`).flatpickr({
+                    dateFormat: dateFormat,
+                    minDate: dateStr,
+                    onChange: function (selectedDatesArr, dateString, instance1) {
+                        let obtainedId = instance1.input.id.replace("DateFullyPaid", "DateObtained");
+                        let obtVal = $(`#${obtainedId}`).val();
+                        console.log(obtVal);
+                        if (obtVal === '') {
+                            $(`#${instance1.input.id}`).val("");
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+
+        $('[id^="Form2PageModel_DateFullyPaid"]').flatpickr({
+            dateFormat: dateFormat,
+            minDate: currentDate,
+            maxDate: currentDate,
+            onChange: function (selectedDates, dateStr, instance) {
+                let obtainedId = instance.input.id.replace("DateFullyPaid", "DateObtained");
+                let obtVal = $(`#${obtainedId}`).val();
+                console.log(obtVal);
+                if (obtVal === '') {
+                    $(`#${instance.input.id}`).val("");
+                    return;
+                }
+            }
+        });
     }
 
     //#endregion
