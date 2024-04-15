@@ -398,11 +398,11 @@
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
-                                                
-                                               
+
+
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 4)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6 )
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
@@ -410,7 +410,7 @@
                                                     {
                                                         <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
                                                     }
-                                                    
+
                                                 </span>
 
                                                 <i class="mdi mdi-settings-outline d-md-none d-block"></i>
@@ -420,14 +420,14 @@
                                         <!-- New tabs -->
                                         <li class="nav-item" role="presentation">
                                             <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
-                                                
+
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 7)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
-                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
                                                     {
                                                         <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
                                                     }
@@ -457,9 +457,6 @@
 
 
                                                 <div class="col-md-6">
-
-
-
 
                                                     <div class="row">
                                                         <label class="col-md-2 text-md-end">Last Name:</label>
@@ -561,7 +558,7 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 1)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus <= 5)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
                                             }
@@ -573,7 +570,9 @@
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 2)
+
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6)
+
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
                                             }

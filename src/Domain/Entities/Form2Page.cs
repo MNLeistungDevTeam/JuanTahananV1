@@ -29,11 +29,11 @@ public partial class Form2Page
 
     public string TypeOfAccount3 { get; set; }
 
-    public long? AccountNumber1 { get; set; }
+    public string AccountNumber1 { get; set; }
 
-    public long? AccountNumber2 { get; set; }
+    public string AccountNumber2 { get; set; }
 
-    public long? AccountNumber3 { get; set; }
+    public string AccountNumber3 { get; set; }
 
     public DateTime? DateOpened1 { get; set; }
 
@@ -211,11 +211,11 @@ public partial class Form2Page
 
     public string TradeAddress3 { get; set; }
 
-    public long? TradeTellNo1 { get; set; }
+    public string TradeTellNo1 { get; set; }
 
-    public long? TradeTellNo2 { get; set; }
+    public string TradeTellNo2 { get; set; }
 
-    public long? TradeTellNo3 { get; set; }
+    public string TradeTellNo3 { get; set; }
 
     public string CharacterNameSupplier1 { get; set; }
 
@@ -229,11 +229,11 @@ public partial class Form2Page
 
     public string CharacterAddress3 { get; set; }
 
-    public long? CharacterTellNo1 { get; set; }
+    public string CharacterTellNo1 { get; set; }
 
-    public long? CharacterTellNo2 { get; set; }
+    public string CharacterTellNo2 { get; set; }
 
-    public long? CharacterTellNo3 { get; set; }
+    public string CharacterTellNo3 { get; set; }
 
     public string FirstName { get; set; }
 

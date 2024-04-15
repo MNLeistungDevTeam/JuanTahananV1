@@ -123,9 +123,9 @@ public partial class BarrowersInformation
 
     public string BusinessContactNumber { get; set; }
 
-    public int? BusinessDirectLineNumber { get; set; }
+    public string BusinessDirectLineNumber { get; set; }
 
-    public int? BusinessTruckLineNumber { get; set; }
+    public string BusinessTruckLineNumber { get; set; }
 
     public string BusinessEmail { get; set; }
 

@@ -13,7 +13,6 @@ $(function () {
 
             {
                 data: 'Code',
-                orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
@@ -22,53 +21,44 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'PagibigNumber',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'HousingAccountNumber',
-                orderable: !0,
                 className: 'align-middle text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                orderable: !0,
                 className: 'align-middle text-center',
                 visible: false
             },
             {
                 data: 'Developer',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'ProjectLocation',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'Unit',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'LoanAmount',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'DateSubmitted',
-                orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
@@ -80,7 +70,6 @@ $(function () {
             },
             {
                 data: 'ApplicationStatus',
-                orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data, type,row) {
                     var returndata = "";
@@ -130,7 +119,6 @@ $(function () {
 
             {
                 data: 'Stage',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
@@ -152,7 +140,9 @@ $(function () {
         select: true,
         scrollY: '24rem',
         scrollX: true,
-        order: [[1, "desc"]],
+        orderable: false,
+        sort: false,
+        //order: [[1, "desc"]],
         pageLength: 10,
         searchHighlight: true,
         stateSave: false,
