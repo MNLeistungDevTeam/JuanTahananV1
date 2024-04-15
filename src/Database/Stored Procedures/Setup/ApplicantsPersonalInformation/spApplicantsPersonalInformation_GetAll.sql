@@ -38,10 +38,9 @@ AS
 		END StageNo,
 		apl.ApprovalStatus ApprovalStatusNumber,
 		aplog.DateCreated DateSubmitted,
-		CONCAT(u2.LastFailedAttempt, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
-		aps.Remarks
-
+		aps.Remarks  
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id

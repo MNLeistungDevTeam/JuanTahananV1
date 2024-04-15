@@ -24,9 +24,9 @@ AS
 			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 1
 			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
-		CONCAT(u2.LastFailedAttempt, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
-		aps.Remarks
+		aps.Remarks 
 
 	FROM ApplicantsPersonalInformation apl
 		LEFT JOIN (
