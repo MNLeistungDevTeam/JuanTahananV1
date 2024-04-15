@@ -9,7 +9,7 @@ SELECT TOP 1
 		ar.[Name] ApproverRole,
 		CONCAT(u2.Firstname,' ',u2.MiddleName,' ',u2.LastName) ApproverFullName,
 		u2.FirstName ApproverFirstName,
-		CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
@@ -18,7 +18,7 @@ SELECT TOP 1
 			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'PAG-IBIG Approved'
-			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 			CASE
