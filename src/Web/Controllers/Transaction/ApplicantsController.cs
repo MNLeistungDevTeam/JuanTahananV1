@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.CodeParser;
-using DevExpress.Pdf;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
@@ -35,6 +33,8 @@ namespace Template.Web.Controllers.Transaction
     [Authorize]
     public class ApplicantsController : Controller
     {
+        #region Fields
+
         private readonly IUserRepository _userRepo;
         private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
         private readonly ILoanParticularsInformationRepository _loanParticularsInformationRepo;
@@ -111,7 +111,9 @@ namespace Template.Web.Controllers.Transaction
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
         }
 
-        #region View
+        #endregion Fields
+
+        #region Views
 
         //[ModuleServices(ModuleCodes.Beneficiary, typeof(IModuleRepository))]
 
@@ -143,7 +145,8 @@ namespace Template.Web.Controllers.Transaction
 
                 //var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
 
-                if (latestRecord != null && latestRecord.ApprovalStatus == 2 || latestRecord.ApprovalStatus == 5)
+                if (latestRecord != null && ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Deferred) || ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Withdrawn))
+
                 {
                     applicantInfoModel.isCanAppliedNewApplication = true;
                 }
@@ -172,6 +175,12 @@ namespace Template.Web.Controllers.Transaction
 
                 //if the application is not access by beneficiary
                 if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
+                {
+                    return View("AccessDenied");
+                }
+
+                //if the application approvalStatus is not greater than 4 on pagibig viewer
+                if (applicantinfo.ApprovalStatus < 3 && userInfo.UserRoleName == "Pag-ibig")
                 {
                     return View("AccessDenied");
                 }
@@ -210,104 +219,121 @@ namespace Template.Web.Controllers.Transaction
         [Route("[controller]/HLF068/{applicantCode?}")]
         public async Task<IActionResult> HLF068(string? applicantCode = null)
         {
-            var vwModel = new ApplicantViewModel();
-
-            //check if applicant code not null go to edit form
-            if (applicantCode != null)
+            try
             {
-                var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+                var vwModel = new ApplicantViewModel();
 
-                if (applicantinfo == null)
+                int userId = int.Parse(User.Identity.Name);
+
+                var userInfo = await _userRepo.GetUserAsync(userId);
+
+                //check if applicant code not null go to edit form
+                if (applicantCode != null)
                 {
-                    return BadRequest($"{applicantCode}: no record Found!");
+                    var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+
+                    if (applicantinfo == null)
+                    {
+                        throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
+                    }
+
+                    //if current log user is beneficiary
+                    if (userId != applicantinfo.UserId && userInfo.UserRoleId == 4)
+                    {
+                        throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
+                    }
+
+                    var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
+
+                    vwModel.ApplicantsPersonalInformationModel = applicantinfo;
+
+                    var applicantloaninfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                    if (applicantloaninfo != null)
+                    {
+                        vwModel.LoanParticularsInformationModel = applicantloaninfo;
+                        vwModel.ApplicantsPersonalInformationModel.UserId = applicantinfo.UserId;
+                        vwModel.ApplicantsPersonalInformationModel.Code = applicantinfo.Code;
+                    }
+
+                    var spouseInfo = await _spouseRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                    if (spouseInfo != null)
+                    {
+                        vwModel.SpouseModel = spouseInfo;
+                    }
+
+                    var borrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                    if (borrowerInfo != null)
+                    {
+                        vwModel.BarrowersInformationModel = borrowerInfo;
+                    }
+                    else
+                    {
+                        //if (beneficiaryData != null)
+                        //{
+                        //    vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                        //    vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                        //    vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                        //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        //    vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
+                        //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        //    vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
+                        //    vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                        //    vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                        //    vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                        //    vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
+                        //    vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                        //    vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                        //    vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                        //    vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                        //    vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+
+                        //    vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
+                        //    vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
+                        //    vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
+                        //    vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
+                        //    vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
+                        //    vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
+                        //    vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
+                        //    vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+
+                        //    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                        //    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                        //    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                        //    //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
+                        //    //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
+                        //}
+                    }
+
+                    var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                    if (collateralInfo != null)
+                    {
+                        vwModel.CollateralInformationModel = collateralInfo;
+                    }
+
+                    var form2PageInfo = await _form2PageRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                    if (form2PageInfo != null)
+                    {
+                        vwModel.Form2PageModel = form2PageInfo;
+                    }
+
+                    if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
+                    {
+                        vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
+                    }
                 }
 
-                var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
-
-                vwModel.ApplicantsPersonalInformationModel = applicantinfo;
-
-                var applicantloaninfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
-                if (applicantloaninfo != null)
-                {
-                    vwModel.LoanParticularsInformationModel = applicantloaninfo;
-                    vwModel.ApplicantsPersonalInformationModel.UserId = applicantinfo.UserId;
-                    vwModel.ApplicantsPersonalInformationModel.Code = applicantinfo.Code;
-                }
-
-                var spouseInfo = await _spouseRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
-                if (spouseInfo != null)
-                {
-                    vwModel.SpouseModel = spouseInfo;
-                }
-
-                var borrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
-                if (borrowerInfo != null)
-                {
-                    vwModel.BarrowersInformationModel = borrowerInfo;
-                }
-                else
-                {
-                    //if (beneficiaryData != null)
-                    //{
-                    //    vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
-                    //    vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
-                    //    vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
-                    //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                    //    vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
-                    //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                    //    vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
-                    //    vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
-                    //    vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
-                    //    vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
-                    //    vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
-                    //    vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
-                    //    vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
-                    //    vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
-                    //    vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
-                    //    vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
-
-                    //    vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
-                    //    vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
-                    //    vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
-                    //    vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
-                    //    vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
-                    //    vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
-                    //    vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
-                    //    vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
-
-                    //    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                    //    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                    //    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
-
-                    //    //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
-                    //    //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
-                    //}
-                }
-
-                var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
-                if (collateralInfo != null)
-                {
-                    vwModel.CollateralInformationModel = collateralInfo;
-                }
-
-                var form2PageInfo = await _form2PageRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
-                if (form2PageInfo != null)
-                {
-                    vwModel.Form2PageModel = form2PageInfo;
-                }
-
-                if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
-                {
-                    vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
-                }
+                return View(vwModel);
             }
-
-            return View(vwModel);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IActionResult> ApplicantRequests()
@@ -514,9 +540,9 @@ namespace Template.Web.Controllers.Transaction
             }
         }
 
-        #endregion View
+        #endregion Views
 
-        #region Get Methods
+        #region API Getters
 
         public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
             Ok(await _userRepo.spGetByRoleName(roleName));
@@ -634,7 +660,9 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
-        #endregion Get Methods
+        #endregion API Getters
+
+        #region API Operations
 
         [HttpPost]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
@@ -723,7 +751,6 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
-
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
@@ -948,6 +975,8 @@ namespace Template.Web.Controllers.Transaction
 
             return userData;
         }
+
+        #endregion API Operations
 
         #region Helper Methods
 

@@ -45,7 +45,7 @@ try
     // Add services to the container.
     builder.Services.AddControllersWithViews();
     builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-    builder.Services.AddRazorPages();
+   // builder.Services.AddRazorPages();
     builder.Services.AddSignalR();
     builder.Services.AddHttpContextAccessor();
 
@@ -234,8 +234,8 @@ try
 
     if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     {
-        app.UseDeveloperExceptionPage();
-        //app.UseExceptionHandler("/Home/Error");
+        //app.UseDeveloperExceptionPage();
+        app.UseExceptionHandler("/Home/Error");
     }
     else
     {

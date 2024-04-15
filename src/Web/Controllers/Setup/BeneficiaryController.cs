@@ -19,6 +19,8 @@ namespace DMS.Web.Controllers.Setup;
 [Authorize]
 public class BeneficiaryController : Controller
 {
+    #region Fields
+
     private readonly IUserRepository _userRepo;
     private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
     private readonly INotificationService _notificationService;
@@ -51,6 +53,8 @@ public class BeneficiaryController : Controller
         _roleAccessRepo = roleAccessRepo;
     }
 
+    #endregion Fields
+
     #region Views
 
     public async Task <IActionResult> Index()
@@ -82,8 +86,6 @@ public class BeneficiaryController : Controller
 
             return View("AccessDenied");
         }
-
-
 
         //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
 

@@ -13,7 +13,6 @@ $(function () {
 
             {
                 data: 'Code',
-                orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
@@ -22,53 +21,44 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'PagibigNumber',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'HousingAccountNumber',
-                orderable: !0,
                 className: 'align-middle text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                orderable: !0,
                 className: 'align-middle text-center',
                 visible: false
             },
             {
                 data: 'Developer',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'ProjectLocation',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'Unit',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
             {
                 data: 'LoanAmount',
-                orderable: !0,
                 className: 'align-middle text-center'
             },
 
             {
                 data: 'DateSubmitted',
-                orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
@@ -80,48 +70,44 @@ $(function () {
             },
             {
                 data: 'ApplicationStatus',
-                orderable: !0,
                 className: 'align-middle text-center',
-                render: function (data, type,row) {
+                render: function (data, type, row) {
                     var returndata = "";
 
                     console.log(row.ApprovalStatusNumber);
 
-                    if (row.ApprovalStatusNumber == 0) {
+                    if (row.ApprovalStatusNumber == 0) { // draft
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 1) {
+                    else if (row.ApprovalStatusNumber == 1) { // submitted
                         returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 2) {
+                    else if (row.ApprovalStatusNumber == 2) { // withdrawn
                         returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 3) {
+                    else if (row.ApprovalStatusNumber == 3) { // DeveloperVerified
                         returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 4) {
+                    else if (row.ApprovalStatusNumber == 4) { // PagibigVerified
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 5) {
+                    else if (row.ApprovalStatusNumber == 5) { // Withdrawn
                         returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 6) {
+                    else if (row.ApprovalStatusNumber == 6) { // PostSubmitted
                         returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                     }
-
-                    else if (row.ApprovalStatusNumber == 7) {
+                    else if (row.ApprovalStatusNumber == 7) { // DeveloperConfirmed
                         returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                     }
-
-                    else if (row.ApprovalStatusNumber == 8) {
+                    else if (row.ApprovalStatusNumber == 8) { // PagibigConfirmed
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
-
-                    else if (row.ApprovalStatusNumber == 9) {
-                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 10) {
+                    else if (row.ApprovalStatusNumber == 9) { // Disqualified
                         returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 10) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
 
                     return returndata;
@@ -130,8 +116,27 @@ $(function () {
 
             {
                 data: 'Stage',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                render: function (data, type, row) {
+                    var returndata;
+
+                    console.log(data);
+                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    return returndata;
+                }
+
             },
 
         ],
@@ -152,7 +157,9 @@ $(function () {
         select: true,
         scrollY: '24rem',
         scrollX: true,
-        order: [[1, "desc"]],
+        orderable: false,
+        sort: false,
+        //order: [[1, "desc"]],
         pageLength: 10,
         searchHighlight: true,
         stateSave: false,
@@ -239,7 +246,7 @@ $(function () {
             },
             success: function (response) {
                 if (response) {
-                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalPendingReview : 0}</span>`);
+                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalSubmitted : 0}</span>`);
                     info_total_approved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalApprove : 0}</span>`);
                     info_total_disapproved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalDisApprove : 0}</span>`);
                 }

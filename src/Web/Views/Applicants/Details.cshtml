@@ -1,17 +1,17 @@
 ﻿@using DMS.Domain.Enums
 @inject DMS.Application.Services.ICurrentUserService _currentUserService
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
+@inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo;
 @model ApplicantViewModel
 @{
-
-
-
-    string title = "Application Details -" + Model.ApplicantsPersonalInformationModel.Code;
+    string title = "Application Details - " + Model.ApplicantsPersonalInformationModel.Code;
 
     ViewData["Title"] = title;
     ViewData["Breadcrumbs"] = "Details";
     var currentUserId = _currentUserService.GetCurrentUserId();
     var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
+
+    var roleInfo = await _roleRepo.GetByIdAsync(currentUserRole.RoleId);
 }
 
 <!-- start page title -->
@@ -96,16 +96,44 @@
                                 <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
 
-
-
-
-
-
-
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
                         </h3>
+
+
+                        <div class="mt-4" hidden>
+                            <label class="form-label fw-normal">Stage:</label>
+                            <div class="form-check form-check-inline ms-2">
+                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" value="Credit Verification">
+                                <label class="form-check-label" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" value="Application Completion">
+                                <label class="form-check-label" for="customRadio4" data-name="Application Completion">Application Completion</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" value="Post approval">
+                                <label class="form-check-label" for="customRadio5" data-name="Post approval">Post approval</label>
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        <div class="col-md-3" hidden>
+                                <label class="form-label fw-normal">Status:</label>
+                                <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
+                                    <option value="">Select First Stage.... </option>
+                                    <option value="3">Developer Verified</option>
+                                    <option value="10">Pagibig Verified</option>
+                                    <option value="20">Developer Approved</option>
+                                    <option value="25">Pagibig Approved</option>
+                                </select>
+                      
+                        </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
@@ -240,10 +268,24 @@
                                     }
 
 
-
-
-
-
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
 
                                 }
 
@@ -292,6 +334,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
+
 
 
 
@@ -401,11 +444,11 @@
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a href="#settings-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
-                                                
-                                               
+
+
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 4)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6 )
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
@@ -413,7 +456,7 @@
                                                     {
                                                         <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
                                                     }
-                                                    
+
                                                 </span>
 
                                                 <i class="mdi mdi-settings-outline d-md-none d-block"></i>
@@ -423,14 +466,14 @@
                                         <!-- New tabs -->
                                         <li class="nav-item" role="presentation">
                                             <a href="#tab4" data-bs-toggle="tab" aria-expanded="false" class="nav-link position-relative" aria-selected="false" role="tab" tabindex="-1">
-                                                
+
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus > 7)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
-                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
                                                     {
                                                         <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
                                                     }
@@ -460,9 +503,6 @@
 
 
                                                 <div class="col-md-6">
-
-
-
 
                                                     <div class="row">
                                                         <label class="col-md-2 text-md-end">Last Name:</label>
@@ -507,8 +547,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-
-
                                                     <div class="row align-items-center">
                                                         <label class="col-md-2 text-md-end">Current Stage:</label>
                                                         <div class="col-md-10">
@@ -516,10 +554,12 @@
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
-                                                            else
-
+                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8) 
                                                             {
-
+                                                                <h3 class="badge bg-darkgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
+                                                            }
+                                                            else
+                                                            {
                                                                 <h3 class="badge bg-primary ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
                                                         </div>
@@ -564,9 +604,17 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 1)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 3 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4)
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
+                                            }
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                            {
+                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                    Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
                                             }
 
                                             <div id="div_verification" class="row">
@@ -576,11 +624,21 @@
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.StageNo == 2)
-                                            {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
-                                            }
 
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 7 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
+
+                                            {
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                    </h3>
+                                            }
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
+                                            {
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    Remarks:
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
+                                            }
 
                                             <div id="div_application" class="row">
                                             </div>
@@ -593,8 +651,6 @@
                                             <p>Content for Tab 6.</p>
                                         </div>
 
-                                        <!-- Hidden file input -->
-                                        <input type="file" id="fileInput" multiple="false" hidden>
                                     </div>
                                 </div>
                             </div>
@@ -636,8 +692,10 @@
                     </div>
                     <div class="mb-2" id="action-container">
                         <label asp-for="ApprovalLevel.Remarks"></label>
-                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks" required></textarea>
-                        <span asp-validation-for="ApprovalLevel.Remarks" class="text-danger"></span>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-12 text-muted">Author: @roleInfo.Name</span>
                     </div>
                 </div>
                 <div class="modal-footer bg-soft-light border-top">
