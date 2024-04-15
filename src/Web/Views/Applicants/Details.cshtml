@@ -1,6 +1,7 @@
 ﻿@using DMS.Domain.Enums
 @inject DMS.Application.Services.ICurrentUserService _currentUserService
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
+@inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo;
 @model ApplicantViewModel
 @{
     string title = "Application Details - " + Model.ApplicantsPersonalInformationModel.Code;
@@ -9,6 +10,8 @@
     ViewData["Breadcrumbs"] = "Details";
     var currentUserId = _currentUserService.GetCurrentUserId();
     var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
+
+    var roleInfo = await _roleRepo.GetByIdAsync(currentUserRole.RoleId);
 }
 
 <!-- start page title -->
@@ -99,21 +102,20 @@
                         </h3>
 
 
-                        <div class="mt-4">
+                        <div class="mt-4" hidden>
                             <label class="form-label fw-normal">Stage:</label>
                             <div class="form-check form-check-inline ms-2">
-                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input">
-                                <label class="form-check-label" for="customRadio3">Credit Verification</label>
+                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" value="Credit Verification">
+                                <label class="form-check-label" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input">
-                                <label class="form-check-label" for="customRadio4">Application Completion</label>
+                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" value="Application Completion">
+                                <label class="form-check-label" for="customRadio4" data-name="Application Completion">Application Completion</label>
                             </div>
-                              <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input">
-                                <label class="form-check-label" for="customRadio4">Post approval</label>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" value="Post approval">
+                                <label class="form-check-label" for="customRadio5" data-name="Post approval">Post approval</label>
                             </div>
-
 
 
 
@@ -121,7 +123,7 @@
 
 
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" hidden>
                                 <label class="form-label fw-normal">Status:</label>
                                 <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
                                     <option value="">Select First Stage.... </option>
@@ -626,14 +628,15 @@
                                             @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 7 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                     </h3>
                                             }
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
                                             {
-                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    Remarks:
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
 
@@ -692,7 +695,7 @@
                         <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
                     </div>
                     <div class="mb-2">
-                        <span class="font-12 text-muted">Author: @Model.ApplicantsPersonalInformationModel.PositionName</span>
+                        <span class="font-12 text-muted">Author: @roleInfo.Name</span>
                     </div>
                 </div>
                 <div class="modal-footer bg-soft-light border-top">
