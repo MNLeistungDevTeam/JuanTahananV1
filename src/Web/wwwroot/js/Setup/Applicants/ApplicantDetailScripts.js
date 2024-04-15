@@ -102,15 +102,15 @@ $(async function () {
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
+        let formated = fileFormats.join(',');
 
         if (fileFormats === undefined) {
-            $('#fileInput').attr('accept', '*/*');
+            fileInput.prop('accept', '*/*');
         }
         else if (documentType.FileType == 5) {
-            $('#fileInput').attr('accept', fileFormats);
+            fileInput.prop('accept', formated);
         } else if (Array.isArray(fileFormats)) {
-            fileFormats = fileFormats.join(',');
-            $('#fileInput').attr('accept', fileFormats);
+            fileInput.prop('accept', formated);
         }
 
         fileInput.trigger('click');
@@ -413,6 +413,7 @@ $(async function () {
         let modalLabel = $("#approver-modalLabel");
         let transactionNo = $(`[name="ApplicantsPersonalInformationModel.Code"]`).val();
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
+        let roleName = $("#txt_role_code").val();
 
         remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
         $btnSave.removeClass()
@@ -431,6 +432,7 @@ $(async function () {
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
         }
 
+        $("#author_txt").html(`Author: ${roleName}`);
         $("[name='ApprovalLevel.Status']").val(action);
         $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
 
@@ -550,7 +552,7 @@ $(async function () {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(error.responseText, "danger", false, false);
+                            messageBox(response.responseText, "danger", true);
                         }
                     });
                 }

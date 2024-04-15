@@ -86,38 +86,38 @@ $(function () {
 
                     console.log(row.ApprovalStatusNumber);
 
-                    if (row.ApprovalStatusNumber == 0) {
+                    if (row.ApprovalStatusNumber == 0) { // draft
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 1) {
+                    else if (row.ApprovalStatusNumber == 1) { // submitted
                         returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 2) {
+                    else if (row.ApprovalStatusNumber == 2) { // withdrawn
                         returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 3) {
+                    else if (row.ApprovalStatusNumber == 3) { // DeveloperVerified
                         returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 4) {
+                    else if (row.ApprovalStatusNumber == 4) { // PagibigVerified
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 5) {
+                    else if (row.ApprovalStatusNumber == 5) { // Withdrawn
                         returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 6) {
+                    else if (row.ApprovalStatusNumber == 6) { // PostSubmitted
                         returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 7) {
+                    else if (row.ApprovalStatusNumber == 7) { // DeveloperConfirmed
                         returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 8) {
+                    else if (row.ApprovalStatusNumber == 8) { // PagibigConfirmed
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 9) {
+                    else if (row.ApprovalStatusNumber == 9) { // Disqualified
                         returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
                     }
-                    else if (row.ApprovalStatusNumber == 10) {
-                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    else if (row.ApprovalStatusNumber == 10) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
 
                     return returndata;
