@@ -361,6 +361,19 @@ $(async function () {
         }
     }
 
+    function GetApprovalStatus(groupedItems) {
+        const Items = {};
+
+        if (approvalStatus === '0') {
+            Items = groupedItems;
+        } else if (approvalStatus === '4') {
+            Items = groupedItems;
+        }
+
+        var flag = allItemsHaveFiles(Items);
+        $("#btnSubmitApplication").prop('disabled', !(flag));
+    }
+
     //#region Approval
 
     //$("#btn_save").on("click", function () {
@@ -428,43 +441,43 @@ $(async function () {
             let formData = $form.serialize();
             formData = formData.replace(/ApprovalLevel\./g, "");
 
-            let approvalStatus = $("#ApprovalLevel_Status").val();
+            let approvalLevelStatus = $("#ApprovalLevel_Status").val();
 
             let action = "";
             let text = "";
             let confirmButtonText = "";
 
-            if (approvalStatus == 1) {
+            if (approvalLevelStatus == 1) {
                 action = "Submit";
                 text = "Are you sure you wish to proceed with submitting this application?";
                 confirmButtonText = "submit";
-            } else if (approvalStatus == 2) {
+            } else if (approvalLevelStatus == 2) {
                 action = "Defer";
                 text = "Are you sure you wish to proceed with deferring this application?";
                 confirmButtonText = "defer";
-            } else if (approvalStatus == 3 || approvalStatus == 4) {
+            } else if (approvalLevelStatus == 3 || approvalLevelStatus == 4) {
                 action = "Approve";
                 text = "Are you sure you wish to proceed with approving this application?";
                 confirmButtonText = "approve";
-            } else if (approvalStatus == 5) {
+            } else if (approvalLevelStatus == 5) {
                 action = "Withdrawn";
                 text = "Are you sure you wish to proceed with withdrawing this application?";
                 confirmButtonText = "withdrawn";
             }
 
-            else if (approvalStatus == 6) {
+            else if (approvalLevelStatus == 6) {
                 action = "Submit";
                 text = "Are you sure you wish to proceed with submitting this application?";
                 confirmButtonText = "submit";
-            } else if (approvalStatus == 9) {
+            } else if (approvalLevelStatus == 9) {
                 action = "Defer";
                 text = "Are you sure you wish to proceed with deferring this application?";
                 confirmButtonText = "defer";
-            } else if (approvalStatus == 7 || approvalStatus == 8) {
+            } else if (approvalLevelStatus == 7 || approvalLevelStatus == 8) {
                 action = "Approve";
                 text = "Are you sure you wish to proceed with approving this application?";
                 confirmButtonText = "approve";
-            } else if (approvalStatus == 10) {
+            } else if (approvalLevelStatus == 10) {
                 action = "Withdrawn";
                 text = "Are you sure you wish to proceed with withdrawing this application?";
                 confirmButtonText = "withdrawn";

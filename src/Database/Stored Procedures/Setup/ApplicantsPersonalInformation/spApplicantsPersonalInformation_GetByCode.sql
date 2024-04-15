@@ -25,7 +25,7 @@ AS
 			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'PAG-IBIG Approved'
-			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 

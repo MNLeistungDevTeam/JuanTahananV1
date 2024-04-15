@@ -120,7 +120,7 @@ $(function () {
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
                     else if (row.ApprovalStatusNumber == 10) {
-                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
 
                     return returndata;

@@ -180,7 +180,7 @@ namespace Template.Web.Controllers.Transaction
                 }
 
                 //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
+                if (applicantinfo.ApprovalStatus < 3 && userInfo.UserRoleName == "Pag-ibig")
                 {
                     return View("AccessDenied");
                 }

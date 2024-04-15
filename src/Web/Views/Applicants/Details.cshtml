@@ -237,10 +237,24 @@
                                     }
 
 
-
-
-
-
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
+                                    {
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
+                                            <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
+                                        </button>
+                                    }
 
                                 }
 
@@ -289,6 +303,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
+
 
 
 
