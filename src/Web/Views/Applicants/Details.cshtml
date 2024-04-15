@@ -573,9 +573,17 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus <= 6)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 3 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4)
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
+                                            }
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                            {
+                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                    Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
                                             }
 
                                             <div id="div_verification" class="row">
@@ -586,12 +594,19 @@
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 7)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 7 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                    </h3>
                                             }
-
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
+                                            {
+                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                </h3>
+                                            }
 
                                             <div id="div_application" class="row">
                                             </div>
@@ -646,6 +661,9 @@
                     <div class="mb-2" id="action-container">
                         <label asp-for="ApprovalLevel.Remarks"></label>
                         <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-12 text-muted">Author: @Model.ApplicantsPersonalInformationModel.PositionName</span>
                     </div>
                 </div>
                 <div class="modal-footer bg-soft-light border-top">

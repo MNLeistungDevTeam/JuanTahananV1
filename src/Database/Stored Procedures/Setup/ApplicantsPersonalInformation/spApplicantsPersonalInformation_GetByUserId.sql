@@ -29,7 +29,10 @@ SELECT TOP 1
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
 			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 2
 		END StageNo,
-		aps.Remarks	
+		CONCAT(u2.LastFailedAttempt, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		u2.Position AS ApproverRole,
+		aps.Remarks
+
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId
@@ -49,6 +52,7 @@ SELECT TOP 1
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON aps.ApproverId = u2.Id
 	LEFT JOIN [User] u1 ON apl.UserId = u1.Id
+
 	WHERE apl.UserId = @userId
  ORDER BY DateCreated DESC
 RETURN 0

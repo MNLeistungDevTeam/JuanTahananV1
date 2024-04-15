@@ -41,7 +41,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ApplicantEmail { get; set; }
         public string? PositionName { get; set; }
         public string? ApplicationStatus { get; set; }
-      
+
         public decimal? IncomeAmount { get; set; }
         public string? Developer { get; set; }
         public string? ProjectLocation { get; set; }
@@ -62,18 +62,15 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public bool? isCanAppliedNewApplication { get; set; }
         public bool? isApplicationCurrentActive { get; set; }
 
-
-
         public string? Remarks { get; set; }
 
         public string? Stage { get; set; }
         public int? StageNo { get; set; }
 
         public string? ApproverName { get; set; }
-       
+
         public string? Email { get; set; }
         public int? ApprovalStatusNumber { get; set; }
-
 
         public DateTime? DateSubmitted { get; set; }
 
