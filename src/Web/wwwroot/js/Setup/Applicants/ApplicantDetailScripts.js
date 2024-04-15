@@ -73,15 +73,15 @@ $(async function () {
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
+        let formated = fileFormats.join(',');
 
         if (fileFormats === undefined) {
-            $('#fileInput').attr('accept', '*/*');
+            fileInput.prop('accept', '*/*');
         }
         else if (documentType.FileType == 5) {
-            $('#fileInput').attr('accept', fileFormats);
+            fileInput.prop('accept', formated);
         } else if (Array.isArray(fileFormats)) {
-            fileFormats = fileFormats.join(',');
-            $('#fileInput').attr('accept', fileFormats);
+            fileInput.prop('accept', formated);
         }
 
         fileInput.trigger('click');
