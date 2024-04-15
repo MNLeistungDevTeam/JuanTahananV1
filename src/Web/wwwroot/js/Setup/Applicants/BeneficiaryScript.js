@@ -107,30 +107,47 @@ $(function () {
                     else if (row.ApprovalStatusNumber == 6) {
                         returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                     }
-
                     else if (row.ApprovalStatusNumber == 7) {
                         returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                     }
-
                     else if (row.ApprovalStatusNumber == 8) {
                         returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
                     }
-
                     else if (row.ApprovalStatusNumber == 9) {
-                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
                     }
                     else if (row.ApprovalStatusNumber == 10) {
-                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
                     }
 
                     return returndata;
                 }
             },
-
             {
                 data: 'Stage',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                render: function (data, type, row) {
+                    var returndata;
+
+                    console.log(data);
+                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    console.log(data)
+
+                    return returndata;
+                }
             },
 
         ],
