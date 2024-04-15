@@ -179,11 +179,11 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
-                //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
-                {
-                    return View("AccessDenied");
-                }
+                ////if the application approvalStatus is not greater than 4 on pagibig viewer
+                //if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
+                //{
+                //    return View("AccessDenied");
+                //}
 
                 if (applicantinfo == null)
                 {
