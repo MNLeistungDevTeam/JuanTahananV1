@@ -33,12 +33,34 @@ $(async function () {
 
     loadVerificationAttachments(CONST_APPLICANTCODE);
     loadApplicationAttachments(CONST_APPLICANTCODE);
+    $(document).ready(function () {
+        $('input[name="customRadio1"]').change(function () {
+            // Get the value of the selected radio button
+            var selectedOption = $('input[name="customRadio1"]:checked').val();
+            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
+            //alert("Selected option: " + selectedOptionText);
 
-    $('input[name="customRadio1"]').change(function () {
-        // Get the value of the selected radio button
-        var selectedOption = $('input[name="customRadio1"]:checked').val();
-        var selectedOptionText = $('input[name="customRadio1"]:checked').next('label').data('name');
-        console.log("Selected option: ", selectedOptionText, " (Value: ", selectedOption, ")");
+            if (selectedOptionText === "Application Completion") {
+                // Manipulate the select options
+                $('.selectize option').show(); // Hide all options first
+                // Show only the options needed
+                $('.selectize option[value="7"]').hide();
+            }
+
+            else if (selectedOptionText === "Credit Verification") {
+                // Manipulate the select options
+                $('.selectize option').show(); // Hide all options first
+                // Show only the options needed
+                $('.selectize option[value="5"]').hide();
+                $('.selectize option[value="6"]').hide();
+                $('.selectize option[value="7"]').hide();
+            }
+
+            else {
+                // If not "Verification", show all options
+                $('.selectize option').show();
+            }
+        });
     });
 
     //#region Event

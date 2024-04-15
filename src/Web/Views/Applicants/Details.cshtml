@@ -105,15 +105,15 @@
                         <div class="mt-4">
                             <label class="form-label fw-normal">Stage:</label>
                             <div class="form-check form-check-inline ms-2">
-                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" value="Credit Verification">
+                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" data-name="Credit Verification">
                                 <label class="form-check-label" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" value="Application Completion">
+                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" data-name="Application Completion">
                                 <label class="form-check-label" for="customRadio4" data-name="Application Completion">Application Completion</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" value="Post approval">
+                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" data-name="Post approval">
                                 <label class="form-check-label" for="customRadio5" data-name="Post approval">Post approval</label>
                             </div>
 
@@ -127,10 +127,13 @@
                                 <label class="form-label fw-normal">Status:</label>
                                 <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
                                     <option value="">Select First Stage.... </option>
+                                   <option value="1">Application in Draft</option>
+                                    <option value="2">Submitted</option>
                                     <option value="3">Developer Verified</option>
-                                    <option value="10">Pagibig Verified</option>
-                                    <option value="20">Developer Approved</option>
-                                    <option value="25">Pagibig Approved</option>
+                                    <option value="4">Pagibig Verified</option>
+                                    <option value="5">Post Submitted</option>
+                                    <option value="6">Developer Approved</option>
+                                    <option value="7">Pagibig Approved</option>
                                 </select>
                       
                         </div>
