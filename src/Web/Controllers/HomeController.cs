@@ -125,7 +125,7 @@ public class HomeController : Controller
         }
         catch (Exception)
         {
-            throw;
+            return BadRequest();
         }
     }
 

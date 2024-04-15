@@ -179,11 +179,11 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
-                ////if the application approvalStatus is not greater than 4 on pagibig viewer
-                //if (applicantinfo.ApprovalStatus < 4 && userInfo.UserRoleName == "Pag-ibig")
-                //{
-                //    return View("AccessDenied");
-                //}
+                //if the application approvalStatus is not greater than 4 on pagibig viewer
+                if (applicantinfo.ApprovalStatus < 3 && userInfo.UserRoleName == "Pag-ibig")
+                {
+                    return View("AccessDenied");
+                }
 
                 if (applicantinfo == null)
                 {
@@ -198,12 +198,7 @@ namespace Template.Web.Controllers.Transaction
 
                 applicantinfo.isRequiredDocumentsUploaded = false;
 
-                //if (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified)
-                //{
-                //    applicantinfo.StageNo = 2;
-                //}
-
-                //applicantinfo.StageNo = (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified) ? 2 : 1;
+                applicantinfo.StageNo = (applicantinfo.ApprovalStatus == (int)AppStatusType.PagibigVerified) ? 2 : 1;
 
                 if ((applicantinfo.StageNo == 1 && incompleteDocumentDataStage1.Count > 0) || (applicantinfo.StageNo != 1 && incompleteDocumentDataStage2.Count > 0))
                 {

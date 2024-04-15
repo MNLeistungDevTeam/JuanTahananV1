@@ -37,7 +37,10 @@ AS
 			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
 		apl.ApprovalStatus ApprovalStatusNumber,
-		aplog.DateCreated DateSubmitted
+		aplog.DateCreated DateSubmitted,
+		CONCAT(u2.LastFailedAttempt, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		u2.Position AS ApproverRole,
+		aps.Remarks
 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
@@ -67,6 +70,8 @@ AS
 	) aplog ON   aplog.ReferenceId = apl.Id 
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
+	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId
+
 	 WHERE 
     1 = (
         CASE  
