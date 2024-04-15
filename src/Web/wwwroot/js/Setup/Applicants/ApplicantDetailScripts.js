@@ -517,11 +517,11 @@ $(async function () {
 
                             $("#btnSubmitApplication").prop('disabled', false);
                         },
-                        error: function (response) {
+                        error: function (error) {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(error.responseText, "danger", false, false);
+                            messageBox(error.responseText, "danger", false);
                         }
                     });
                 }
@@ -567,7 +567,9 @@ $(async function () {
                 loadApplicationAttachments(CONST_APPLICANTCODE);
             },
             error: function (xhr, status, error) {
-                messageBox(xhr.responseText, "danger", true);
+
+
+                (xhr.responseText, "danger", true);
                 loader.close();
             }
         });

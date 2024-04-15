@@ -22,7 +22,6 @@ namespace DMS.Domain.Dto.ApprovalLevelDto
         /// </summary>
         public int Level { get; set; }
 
-        [Required]
         public string? Remarks { get; set; }
 
         public DateTime DateUpdated { get; set; }
