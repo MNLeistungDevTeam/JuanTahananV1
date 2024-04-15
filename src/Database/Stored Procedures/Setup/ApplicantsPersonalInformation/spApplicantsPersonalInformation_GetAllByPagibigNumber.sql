@@ -19,11 +19,11 @@ AS
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
-			WHEN apl.ApprovalStatus = 4 THEN 'PAG-IBIG Verified'
+			WHEN apl.ApprovalStatus = 4 THEN 'Pag-IBIG Verified'
 			WHEN apl.ApprovalStatus = 5 THEN 'Withdrawn'
 			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
-			WHEN apl.ApprovalStatus = 8 THEN 'PAG-IBIG Approved'
+			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
 			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
@@ -33,8 +33,8 @@ AS
 			WHEN apl.ApprovalStatus = 8 THEN 'Post-Approval'
 		END Stage,
 		CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
-			WHEN apl.ApprovalStatus  IN(6,7,8,9,10) THEN 2
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 1
+			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
