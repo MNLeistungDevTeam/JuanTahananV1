@@ -573,7 +573,7 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus <= 5)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus <= 6)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
                                             }
@@ -586,7 +586,7 @@
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 7)
 
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
@@ -645,7 +645,7 @@
                     </div>
                     <div class="mb-2" id="action-container">
                         <label asp-for="ApprovalLevel.Remarks"></label>
-                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks" required></textarea>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer bg-soft-light border-top">
