@@ -1,4 +1,4 @@
-﻿ CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAllByPagibigNumber]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAllByPagibigNumber]
 	@pagibigNumber NVARCHAR(50) 
 AS
 	SELECT 
@@ -27,9 +27,10 @@ CASE
 			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
-				CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 'Credibility Verification'
-			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 'Loan Application'
+		CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 'Credit Verification'
+			WHEN apl.ApprovalStatus IN (4,6,7,9,10) THEN 'Application Completion'
+			WHEN apl.ApprovalStatus = 8 THEN 'Post-Approval'
 		END Stage,
 		CASE
 			WHEN apl.ApprovalStatus IN (0,1,2,3,4,5) THEN 1
@@ -58,8 +59,6 @@ CASE
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
- 
- WHERE apl.PagibigNumber = @pagibigNumber
- ORDER BY apl.DateCreated,aps.LastUpdate DESC
-
+	WHERE apl.PagibigNumber = @pagibigNumber
+	ORDER BY apl.DateCreated,aps.LastUpdate DESC
 RETURN 0
