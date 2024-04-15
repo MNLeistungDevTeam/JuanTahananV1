@@ -93,12 +93,6 @@
                                 <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
 
-
-
-
-
-
-
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
@@ -536,8 +530,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-
-
                                                     <div class="row align-items-center">
                                                         <label class="col-md-2 text-md-end">Current Stage:</label>
                                                         <div class="col-md-10">
@@ -545,10 +537,12 @@
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
-                                                            else
-
+                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8) 
                                                             {
-
+                                                                <h3 class="badge bg-darkgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
+                                                            }
+                                                            else
+                                                            {
                                                                 <h3 class="badge bg-primary ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
                                                         </div>
