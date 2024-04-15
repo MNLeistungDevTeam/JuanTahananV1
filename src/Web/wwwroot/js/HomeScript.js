@@ -113,10 +113,10 @@ $(function () {
             },
             success: function (response) {
                 totalApplication.text(response.TotalApplication);
-                withdrawn_info.val(response.Withdrawn);
-                approved_info.val(response.PagIbigVerified);
+                withdrawn_info.val((response.Withdrawn));
+                approved_info.val((response.PagibigConfirmed + response.DeveloperConfirmed));
                 submitted_info.val(response.Submitted);
-                disapprove_info.val(response.Deferred);
+                disapprove_info.val((response.Disqualified + response.Discontinued));
 
                 $('[data-plugin="knob"]').trigger('change');
             },
