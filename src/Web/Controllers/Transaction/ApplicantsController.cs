@@ -1015,31 +1015,22 @@ namespace Template.Web.Controllers.Transaction
         private static string GenerateRandomPassword()
         {
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
-
-            // Use a random seed based on the current time
             Random rand = new Random();
 
             // Generate random password length between 10 and 12 characters
-            int passwordLength = rand.Next(10, 13);
+            int passwordLength = rand.Next(10, 13); // Returns a value between 10 and 12 (exclusive)
 
-            // Generate a random password
-            StringBuilder passwordBuilder = new StringBuilder(passwordLength);
-            for (int i = 0; i < passwordLength; i++)
-            {
-                passwordBuilder.Append(allowedChars[rand.Next(allowedChars.Length)]);
-            }
+            // Hash the current time to introduce some randomness
+            string timeStamp = DateTime.Now.Ticks.ToString();
 
-            // Hash the combined string using SHA-256
+            // Concatenate the GUID with the current time
+            string combinedString = Guid.NewGuid().ToString("N").Substring(0, 16) + timeStamp;
+
+            // Use SHA-256 to hash the combined string
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(passwordBuilder.ToString());
+                byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
                 byte[] hash = sha256.ComputeHash(bytes);
-
-                // Introduce additional randomness
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    bytes[i] ^= (byte)rand.Next(256);
-                }
 
                 // Convert the byte array to a hexadecimal string
                 StringBuilder sb = new StringBuilder();
@@ -1048,11 +1039,23 @@ namespace Template.Web.Controllers.Transaction
                     sb.Append(b.ToString("x2"));
                 }
 
-                // Ensure a fixed length of 14 characters for the output password
+                // Ensure the password is within the desired length range
                 string hashedString = sb.ToString();
-                string outputPassword = hashedString.Substring(0, 10);
+                if (hashedString.Length < passwordLength)
+                {
+                    // If the hashed string is shorter than the desired length, pad it with additional characters
+                    while (hashedString.Length < passwordLength)
+                    {
+                        hashedString += allowedChars[rand.Next(allowedChars.Length)];
+                    }
+                }
+                else if (hashedString.Length > passwordLength)
+                {
+                    // If the hashed string is longer than the desired length, truncate it
+                    hashedString = hashedString.Substring(0, passwordLength);
+                }
 
-                return outputPassword;
+                return hashedString;
             }
         }
 
