@@ -63,37 +63,7 @@ $(async function () {
         });
     });
 
-    //#region Event
-
-    //$(document).on('click', '.upload-link', async function () {
-    //    DocumentId = 0;
-    //    DocumentTypeId = $(this).find("#documentTypeId").val();
-    //    var documentType = await GetDocumentType(DocumentTypeId);
-
-    //    let fileFormats = FileFormats[documentType.FileType];
-
-    //    if (fileFormats === undefined) {
-    //        $('#fileInput').attr('accept', '*/*');
-    //    }
-    //    else if (documentType.FileType == 5) {
-    //        $('#fileInput').attr('accept', fileFormats);
-    //    } else if (Array.isArray(fileFormats)) {
-    //        fileFormats = fileFormats.join(',');
-    //        $('#fileInput').attr('accept', fileFormats);
-    //    }
-
-    //    $('#fileInput').trigger('click');
-    //});
-
-    //// Handling file input change event
-    //$('#fileInput').on('change', function () {
-    //    var file = this.files[0];
-    //    if (file) {
-    //        upload(file, DocumentTypeId, DocumentId);
-    //    }
-    //});
-
-    //#endregion Event
+ 
 
     //#region Events
     $(document).on('click', '.upload-link', async function () {
@@ -102,14 +72,10 @@ $(async function () {
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
-        let formated = fileFormats.join(',');
-
-        if (fileFormats === undefined) {
+        if (fileFormats === undefined || !Array.isArray(fileFormats)) {
             fileInput.prop('accept', '*/*');
-        }
-        else if (documentType.FileType == 5) {
-            fileInput.prop('accept', formated);
-        } else if (Array.isArray(fileFormats)) {
+        } else {
+            let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
         }
 
