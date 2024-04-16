@@ -236,7 +236,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                    List<int> inActiveStatuses = new List<int> { 2, 5, 9, 10 };
+                    List<int> inActiveStatuses = new List<int> { 0,2, 5, 9, 10 };
 
 
 

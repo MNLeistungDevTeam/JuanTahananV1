@@ -13,6 +13,8 @@ const $approverModal = $('#approver-modal');
 const $approverDiv = $('#div_approval');
 
 let approvalStatus = $('[name="ApplicantsPersonalInformationModel.ApprovalStatus"]').val();
+let stageNo = $('#txt_stageNo').val();
+
 let ApplicationId = $('#applicationId').val();
 let DocumentTypeId = 0;
 
@@ -33,6 +35,7 @@ $(async function () {
 
     loadVerificationAttachments(CONST_APPLICANTCODE);
     loadApplicationAttachments(CONST_APPLICANTCODE);
+
     $(document).ready(function () {
         $('input[name="customRadio1"]').change(function () {
             // Get the value of the selected radio button
@@ -63,8 +66,6 @@ $(async function () {
         });
     });
 
- 
-
     //#region Events
     $(document).on('click', '.upload-link', async function () {
         DocumentTypeId = $(this).data("document-type-id");
@@ -94,7 +95,7 @@ $(async function () {
     $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function () {
         let action = $(this).attr("data-value");
 
-        await openApprovalModal(action)
+        await openApprovalModal(action);
     });
 
     //#endregion Events
@@ -356,24 +357,20 @@ $(async function () {
         }
     }
 
-    function GetApprovalStatus(groupedItems) {
-        const Items = {};
+    //function GetApprovalStatus(groupedItems) {
+    //    const Items = {};
 
-        if (approvalStatus === '0') {
-            Items = groupedItems;
-        } else if (approvalStatus === '4') {
-            Items = groupedItems;
-        }
+    //    if (approvalStatus === '0') {
+    //        Items = groupedItems;
+    //    } else if (approvalStatus === '4') {
+    //        Items = groupedItems;
+    //    }
 
-        var flag = allItemsHaveFiles(Items);
-        $("#btnSubmitApplication").prop('disabled', !(flag));
-    }
+    //    var flag = allItemsHaveFiles(Items);
+    //    $("#btnSubmitApplication").prop('disabled', !(flag));
+    //}
 
     //#region Approval
-
-    //$("#btn_save").on("click", function () {
-    //    rebindValidator();
-    //});
 
     async function openApprovalModal(action) {
         let modalLabel = $("#approver-modalLabel");

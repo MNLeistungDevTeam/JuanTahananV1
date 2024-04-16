@@ -120,18 +120,18 @@
 
 
                         <div class="col-md-3">
-                                <label class="form-label fw-normal">Status:</label>
-                                <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
-                                    <option value="">Select First Stage.... </option>
-                                   <option value="1">Application in Draft</option>
-                                    <option value="2">Submitted</option>
-                                    <option value="3">Developer Verified</option>
-                                    <option value="4">Pagibig Verified</option>
-                                    <option value="5">Post Submitted</option>
-                                    <option value="6">Developer Approved</option>
-                                    <option value="7">Pagibig Approved</option>
-                                </select>
-                      
+                            <label class="form-label fw-normal">Status:</label>
+                            <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
+                                <option value="">Select First Stage.... </option>
+                                <option value="1">Application in Draft</option>
+                                <option value="2">Submitted</option>
+                                <option value="3">Developer Verified</option>
+                                <option value="4">Pagibig Verified</option>
+                                <option value="5">Post Submitted</option>
+                                <option value="6">Developer Approved</option>
+                                <option value="7">Pagibig Approved</option>
+                            </select>
+
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
@@ -345,24 +345,7 @@
 
                             }
                         </div>
-                        @* @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 1)
-                        {
 
-                        <button type="button" class="btn btn-primary rounded-end" id="btnApprove">
-                        Approve <i class="fe-check-circle"></i>
-                        </button>
-
-                        <button type="button" class="btn btn-primary rounded-end" id="btnDefer">
-                        Defer <i class="fe-x-circle"></i>
-                        </button>
-                        }
-                        else
-                        {
-                        <button type="button" class="btn btn-link text-decoration-none">
-                        Review application <i class="mdi mdi-arrow-right"></i>
-                        </button>
-
-                        } *@
                     </div>
                 </div>
                 <div class="row">
@@ -374,14 +357,14 @@
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <h4>Buyer</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold"> @Model.BarrowersInformationModel.Name</h3>
                                                 <p>@Model.BarrowersInformationModel.MobileNumber</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <h4>Unit</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">
@@ -391,25 +374,12 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <h4>Developer</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
                                             </div>
                                         </div>
-
-                                        <div class="col-md-3">
-                                            @*   @if (Model.ApplicantsPersonalInformationModel.Remarks != null)
-                                            {
-                                            <h3 class="badge bg-yellowgreen ms-auto font-18" id="header_remarks">Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span></h3>
-                                            }
-                                            *@
-
-
-
-                                        </div>
-
-
 
 
 
@@ -421,6 +391,7 @@
                     </div>
                     <div class="col-xl-12">
                         <input id="applicationId" value="@Model.ApplicantsPersonalInformationModel.Id" hidden />
+                        <input id="txt_stageNo" value="@Model.ApplicantsPersonalInformationModel.StageNo" hidden />
                         <div class="card">
                             <div class="card-body">
                                 <div class="col-xl-12">
@@ -447,7 +418,7 @@
 
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6 )
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
@@ -553,7 +524,7 @@
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
-                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8) 
+                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
                                                             {
                                                                 <h3 class="badge bg-darkgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
@@ -605,13 +576,15 @@
 
                                             @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 3 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4)
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: 
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
                                             {
-                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole
                                                     Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
@@ -627,9 +600,10 @@
                                             @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 7 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: 
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
-                                                    </h3>
+                                                </h3>
                                             }
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
                                             {
