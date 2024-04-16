@@ -3,7 +3,7 @@
 AS
 	SELECT 
 		apl.*,
-		CONCAT(u.LastName,', ',u.FirstName,'',u.MiddleName) ApplicantFullName,
+		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
 		bi.PropertyDeveloperName Developer,

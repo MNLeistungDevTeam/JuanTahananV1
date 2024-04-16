@@ -13,7 +13,7 @@ $(function () {
 
             {
                 data: 'Code',
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
@@ -21,45 +21,51 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'PagibigNumber',
-                className: 'align-middle text-center'
+                className: 'text-end'
             },
             {
                 data: 'HousingAccountNumber',
-                className: 'align-middle text-center',
+                className: 'text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                className: 'align-middle text-center',
+                className: 'text-end',
                 visible: false
             },
             {
                 data: 'Developer',
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'ProjectLocation',
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'Unit',
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'LoanAmount',
-                className: 'align-middle text-center'
+                className: 'text-end',
+                render: function (data, type, row) {
+
+                    let loanAmount =  numeral(data).format('0,0.00');
+                    return `₱${loanAmount}`;
+                }
+               
             },
 
             {
                 data: 'DateSubmitted',
-                className: 'align-middle text-center',
+                className: 'text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD');
@@ -68,9 +74,35 @@ $(function () {
                     }
                 }
             },
+          
+
+            {
+                data: 'Stage',
+                className: '',
+                render: function (data, type, row) {
+                    var returndata;
+
+                    console.log(data);
+                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    return returndata;
+                }
+            },
+
             {
                 data: 'ApplicationStatus',
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     var returndata = "";
 
@@ -113,32 +145,22 @@ $(function () {
                     return returndata;
                 }
             },
-
             {
-                data: 'Stage',
-                className: 'align-middle text-center',
+                data: 'LastUpdated',
+                className: 'text-center',
                 render: function (data, type, row) {
-                    var returndata;
+                  
+                    if (data && data.trim() !== "") {
+                        return moment(data).format('YYYY-MM-DD HH:mm');
 
-                    console.log(data);
-                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
-                        // `Credit Verification`
-                        returndata = `<span class="text-orange">${data}</span>`;
+                    } else {
+                        return "";
                     }
-                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
-                        // `Application Completion`
-                        returndata = `<span class="text-primary">${data}</span>`;
-                    }
-                    else if (row.ApprovalStatusNumber === 8) {
-                        // `Post-Approval`
-                        returndata = `<span class="text-success">${data}</span>`;
-                    }
-
-                    return returndata;
                 }
             },
-
         ],
+
+
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
