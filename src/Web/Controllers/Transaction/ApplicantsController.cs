@@ -698,7 +698,8 @@ namespace Template.Web.Controllers.Transaction
                         UserModel userModel = new()
                         {
                             Email = vwModel.BarrowersInformationModel.Email,
-                            Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                            //Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                            Password = GenerateRandomPassword(), //sample output aDf!23@4kLp
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
@@ -1006,6 +1007,50 @@ namespace Template.Web.Controllers.Transaction
                 // Ensure a fixed length of 14 characters for the output password
                 string hashedString = sb.ToString();
                 string outputPassword = name + hashedString.Substring(0, 10);
+
+                return outputPassword;
+            }
+        }
+
+        private static string GenerateRandomPassword()
+        {
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+
+            // Use a random seed based on the current time
+            Random rand = new Random();
+
+            // Generate random password length between 10 and 12 characters
+            int passwordLength = rand.Next(10, 13);
+
+            // Generate a random password
+            StringBuilder passwordBuilder = new StringBuilder(passwordLength);
+            for (int i = 0; i < passwordLength; i++)
+            {
+                passwordBuilder.Append(allowedChars[rand.Next(allowedChars.Length)]);
+            }
+
+            // Hash the combined string using SHA-256
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(passwordBuilder.ToString());
+                byte[] hash = sha256.ComputeHash(bytes);
+
+                // Introduce additional randomness
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    bytes[i] ^= (byte)rand.Next(256);
+                }
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hash)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                // Ensure a fixed length of 14 characters for the output password
+                string hashedString = sb.ToString();
+                string outputPassword = hashedString.Substring(0, 10);
 
                 return outputPassword;
             }
