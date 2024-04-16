@@ -34,6 +34,13 @@ $(async function () {
     loadVerificationAttachments(CONST_APPLICANTCODE);
     loadApplicationAttachments(CONST_APPLICANTCODE);
 
+    $('input[name="customRadio1"]').change(function () {
+        // Get the value of the selected radio button
+        var selectedOption = $('input[name="customRadio1"]:checked').val();
+        var selectedOptionText = $('input[name="customRadio1"]:checked').next('label').data('name');
+        console.log("Selected option: ", selectedOptionText, " (Value: ", selectedOption, ")");
+    });
+
     //#region Event
 
     //$(document).on('click', '.upload-link', async function () {
