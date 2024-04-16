@@ -1,4 +1,5 @@
-﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
+﻿@using DMS.Application.Interfaces.Setup.ApplicantsRepository
+@using DMS.Application.Interfaces.Setup.ModuleRepository
 @using DMS.Application.Interfaces.Setup.RoleRepository
 @using DMS.Application.Interfaces.Setup.UserRepository
 @using DMS.Application.Services;
@@ -7,6 +8,7 @@
 @inject IModuleRepository _moduleRepo;
 @inject IUserRepository _userRepo;
 @inject IRoleAccessRepository _roleRepo;
+@inject IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
 @inject IStringLocalizer<SharedResources> localizer
 @inject IFtpDownloaderService _ftpDownloaderService
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment;
@@ -16,8 +18,8 @@
     var userInfo = await _userRepo.GetUserAsync(userId);
     string userProfile = Url.Content("~/images/user/default.png");
 
-    List<string> exclusions = new() { "Dashboard", "Navigation", "Applicants" };
-
+    string[] exclusions = { "Dashboard", "Navigation", "Applicants" };
+    string[] btmPaddingRemoval = { "Admin Panel" };
 
     if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
         if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, userInfo.ProfilePicture[1..].Replace("/", "\\"))))
@@ -73,9 +75,42 @@
                         <small class="d-block text-truncate text-center text-dark fw-semibold">@ViewData["Position"]</small>
                     </div>
                 </li>
+                @if (userInfo.UserRoleId == 4)
+                {
+                    <li class="side-nav-item mb-2 d-flex align-items-center justify-content-center">
+                    @{
+                        //var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId && activeStatus.Contains(item.));
+                        Dictionary<string, string> btnParameters = new()
+                        {
+                            { "text", "Apply for a loan" },
+                            { "link", $"/Applicants/NewHLF068/{userInfo.PagibigNumber}" },
+                            { "color", "primary" },
+                        };
+
+                        // Beneficiary
+                        int[] inactiveStatus = { 2, 5, 9, 10 };
+
+                        var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+                        // Runs if data is not null and status is active (warning button)
+                        if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))
+                        {
+                            btnParameters["text"] = "View my application";
+                            btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
+                            btnParameters["color"] = "warning";
+                        }
+
+                        // check if url is the same as the current one
+                        var urlCheck = Context.Request.Path == btnParameters["link"];
+
+                        <a role="button" class="btn btn-@btnParameters["color"] @(urlCheck ? "disabled" : "")" href="@btnParameters["link"]" style="border-radius: 8px!important;" aria-disabled="@urlCheck">
+                            @btnParameters["text"]
+                        </a>
+                    }
+                    </li>
+                }
 
                 @*<li class="side-nav-title">@localizer["Navigation"]</li>*@
-
                 @foreach (var moduleGroup in moduleGroups)
                 {
                     var _parentModules = parentModules.Where(m => m.ModuleType == moduleGroup.ModuleType);
@@ -87,7 +122,12 @@
 
                     @if (_parentModules.Any())
                     {
-                        <li class="side-nav-title @(exclusions.Contains(moduleGroup.ModuleType) ? "d-none" : "")">@moduleGroup.ModuleType</li>
+                        var hideClass = exclusions.Contains(moduleGroup.ModuleType) ? "d-none" : "";
+                        var btmPadding = btmPaddingRemoval.Contains(moduleGroup.ModuleType) ? "padding-bottom: 0px;" : "";
+
+                        <li class="side-nav-title @(hideClass)" style="@(btmPadding)">
+                            @moduleGroup.ModuleType
+                        </li>
                     }
                     else
                     {
