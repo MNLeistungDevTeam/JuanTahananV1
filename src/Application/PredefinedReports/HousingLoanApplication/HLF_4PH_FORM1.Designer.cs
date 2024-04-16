@@ -1999,7 +1999,7 @@
             this.xrTableCell19.CanShrink = true;
             this.xrTableCell19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[PermanentUnitName]")});
-            this.xrTableCell19.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
+            this.xrTableCell19.Font = new DevExpress.Drawing.DXFont("Tahoma", 5F);
             this.xrTableCell19.Multiline = true;
             this.xrTableCell19.Name = "xrTableCell19";
             this.xrTableCell19.StylePriority.UseFont = false;
@@ -2076,7 +2076,7 @@
             this.xrTableCell10.CanGrow = false;
             this.xrTableCell10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[LastName]")});
-            this.xrTableCell10.Font = new DevExpress.Drawing.DXFont("Tahoma", 8F);
+            this.xrTableCell10.Font = new DevExpress.Drawing.DXFont("Tahoma", 7F);
             this.xrTableCell10.Multiline = true;
             this.xrTableCell10.Name = "xrTableCell10";
             this.xrTableCell10.StylePriority.UseFont = false;

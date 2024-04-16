@@ -13,8 +13,7 @@ $(function () {
 
             {
                 data: 'Code',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
@@ -22,54 +21,51 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'PagibigNumber',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'text-end'
             },
             {
                 data: 'HousingAccountNumber',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-end',
                 visible: false
             },
             {
                 data: 'Developer',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'ProjectLocation',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'Unit',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'LoanAmount',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'text-end',
+                render: function (data, type, row) {
+
+                    let loanAmount = numeral(data).format('0,0.00');
+                    return `₱${loanAmount}`;
+                }
+
             },
 
             {
                 data: 'DateSubmitted',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD');
@@ -78,9 +74,35 @@ $(function () {
                     }
                 }
             },
+
+            
+            {
+                data: 'Stage',
+                className: '',
+                render: function (data, type, row) {
+                    var returndata;
+
+                    console.log(data);
+                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    return returndata;
+                }
+            },
+
             {
                 data: 'ApplicationStatus',
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     var returndata = "";
 
@@ -124,33 +146,20 @@ $(function () {
                 }
             },
             {
-                data: 'Stage',
-                orderable: !0,
-                className: 'align-middle text-center',
+                data: 'LastUpdated',
+                className: 'text-center',
                 render: function (data, type, row) {
-                    var returndata;
 
-                    console.log(data);
-                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
-                        // `Credit Verification`
-                        returndata = `<span class="text-orange">${data}</span>`;
-                    }
-                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
-                        // `Application Completion`
-                        returndata = `<span class="text-primary">${data}</span>`;
-                    }
-                    else if (row.ApprovalStatusNumber === 8) {
-                        // `Post-Approval`
-                        returndata = `<span class="text-success">${data}</span>`;
-                    }
+                    if (data && data.trim() !== "") {
+                        return moment(data).format('YYYY-MM-DD HH:mm');
 
-                    console.log(data)
-
-                    return returndata;
+                    } else {
+                        return "";
+                    }
                 }
             },
-
         ],
+
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
@@ -188,20 +197,7 @@ $(function () {
             "disabled": !(selectedRows === 0),
         });
 
-        if (selectedRows == 1 && applicationStatus == 0) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_edit").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
@@ -215,20 +211,13 @@ $(function () {
             });
         }
 
-        if (selectedRows == 1 && applicationStatus == 0) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
             });
         }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_upload_document").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode

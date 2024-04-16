@@ -3,7 +3,7 @@
 AS
 	 SELECT 
 		apl.*,
-		CONCAT(u.LastName,', ',u.FirstName,'',u.MiddleName) ApplicantFullName,
+		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
 		bi.PropertyDeveloperName Developer,
@@ -38,6 +38,10 @@ AS
 		END StageNo,
 		apl.ApprovalStatus ApprovalStatusNumber,
 		aplog.DateCreated DateSubmitted,
+		CASE
+			WHEN apl.ApprovalStatus = 0 THEN NULL
+			ELSE 	apl.DateModified 
+		END LastUpdated,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks  
