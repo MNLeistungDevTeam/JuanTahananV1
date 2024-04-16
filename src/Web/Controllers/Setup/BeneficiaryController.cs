@@ -9,6 +9,7 @@ using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
@@ -30,6 +31,7 @@ public class BeneficiaryController : Controller
     private readonly IEmailService _emailService;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
     private readonly IRoleAccessRepository _roleAccessRepo;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
     public BeneficiaryController(
         IUserRepository userRepo,
@@ -40,7 +42,8 @@ public class BeneficiaryController : Controller
         IUserRoleRepository userRoleRepo,
         IEmailService emailService,
         IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
-        IRoleAccessRepository roleAccessRepo)
+        IRoleAccessRepository roleAccessRepo,
+        IWebHostEnvironment webHostEnvironment)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
@@ -51,6 +54,7 @@ public class BeneficiaryController : Controller
         _emailService = emailService;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
         _roleAccessRepo = roleAccessRepo;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     #endregion Fields
@@ -163,7 +167,9 @@ public class BeneficiaryController : Controller
 
                 userModel.Action = "created";
                 //// make the usage of hangfire
-                _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+                _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
+
+
 
                 #endregion Create Beneficiary User
             }

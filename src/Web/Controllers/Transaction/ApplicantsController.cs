@@ -19,6 +19,7 @@ using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IRoleAccessRepository _roleAccessRepo;
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         private DMSDBContext _context;
 
@@ -83,7 +85,8 @@ namespace Template.Web.Controllers.Transaction
             IDocumentVerificationRepository documentVerificationRepo,
             IBackgroundJobClient backgroundJobClient,
             IRoleAccessRepository roleAccessRepo,
-            IBeneficiaryInformationRepository beneficiaryInformationRepo)
+            IBeneficiaryInformationRepository beneficiaryInformationRepo,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -109,6 +112,7 @@ namespace Template.Web.Controllers.Transaction
             _backgroundJobClient = backgroundJobClient;
             _roleAccessRepo = roleAccessRepo;
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         #endregion Fields
@@ -698,7 +702,7 @@ namespace Template.Web.Controllers.Transaction
 
                         // make the usage of hangfire
                         userModel.Action = "created";
-                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel,_webHostEnvironment.WebRootPath));
 
                         #region Create BeneficiaryInformation
 
