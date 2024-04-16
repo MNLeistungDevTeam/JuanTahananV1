@@ -55,6 +55,11 @@
       "provider": "unpkg",
       "library": "izitoast@1.4.0",
       "destination": "wwwroot/lib/izitoast/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "intl-tel-input@21.1.4",
+      "destination": "wwwroot/lib/intl-tel-input/"
     }
   ]
 }
