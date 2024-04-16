@@ -1017,6 +1017,46 @@ $(function () {
         }
     });
 
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-pdRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PastDue']");
+
+        if ($("#pdRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-bcRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
+
+        if ($("#bcRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-maRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
+
+        if ($("#maRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
     //#endregion
 
     //$('#form2').on('submit', async function (e) {
@@ -1203,8 +1243,16 @@ $(function () {
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
 
+        // Prevent form submission when "Enter" key is pressed
+        $form.on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        });
+
         $form.on("submit", function (e) {
             e.preventDefault();
+            
             let formData = new FormData(e.target);
 
             if ($(this).valid() == false) {

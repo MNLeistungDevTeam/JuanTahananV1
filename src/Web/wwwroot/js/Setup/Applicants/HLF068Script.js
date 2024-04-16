@@ -1242,6 +1242,13 @@ $(function () {
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
 
+        // Prevent form submission when "Enter" key is pressed
+        $form.on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        });
+
         $form.on("submit", function (e) {
             e.preventDefault();
             let formData = new FormData(e.target);

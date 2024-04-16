@@ -52,8 +52,6 @@ $(function () {
     });
 
 
-
-
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
     // Disable 'e', '+', and '-'
@@ -970,6 +968,46 @@ $(function () {
         }
     });
 
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-pdRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PastDue']");
+
+        if ($("#pdRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-bcRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
+
+        if ($("#bcRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-maRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
+
+        if ($("#maRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
     //#endregion
 
 
@@ -1156,7 +1194,7 @@ $(function () {
             url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
             method: 'Get',
             success: function () {
-            },
+            },  
             error: function () {
             }
         });
@@ -1213,6 +1251,13 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
+
+        // Prevent form submission when "Enter" key is pressed
+        $form.on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        });
 
         $form.on("submit", function (e) {
             e.preventDefault();

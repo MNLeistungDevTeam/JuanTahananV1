@@ -577,15 +577,15 @@
                                             @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 3 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
-                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole Remarks:
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                    Remarks:
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
                                             {
                                                 <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
-                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole
-                                                    Remarks: <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                    Remarks: 
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
 
