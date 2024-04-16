@@ -1170,14 +1170,15 @@ html[data-bs-theme="dark"] .text-theme-primary {
 }
 
 .selectize-control.multi .selectize-input.locked > div, .selectize-control.multi .selectize-input.locked > div.active {
-    color: #878787;
+    color: #86adbd;
     background: white;
     border: 0 solid white
 }
 
 .selectize-control .selectize-input.locked {
-    opacity: .5;
-    background-color: var(--ct-dropdown-bg-custom);
+    opacity: .8;
+    background-color: #f3ebeb38 !important;
+    pointer-events: none;
 }
 
 .selectize-control.plugin-remove_button .locked .item .remove:hover {
