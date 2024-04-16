@@ -236,6 +236,10 @@ namespace Template.Web.Controllers.Transaction
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
+                    List<int> inActiveStatuses = new List<int> { 2, 5, 9, 10 };
+
+
+
                     if (applicantinfo == null)
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
@@ -245,6 +249,10 @@ namespace Template.Web.Controllers.Transaction
                     if (userId != applicantinfo.UserId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
+                    }
+                    else if (!inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
+                    {
+                        throw new Exception($"Transaction ({applicantCode})" + " is currently in active status, cant be accessible!");
                     }
 
                     //var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
@@ -702,7 +710,7 @@ namespace Template.Web.Controllers.Transaction
 
                         // make the usage of hangfire
                         userModel.Action = "created";
-                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel,_webHostEnvironment.WebRootPath));
+                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 
                         #region Create BeneficiaryInformation
 

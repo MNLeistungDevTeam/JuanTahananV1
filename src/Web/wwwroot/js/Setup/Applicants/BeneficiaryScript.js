@@ -188,20 +188,7 @@ $(function () {
             "disabled": !(selectedRows === 0),
         });
 
-        if (selectedRows == 1 && applicationStatus == 0) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_edit").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
@@ -215,20 +202,13 @@ $(function () {
             });
         }
 
-        if (selectedRows == 1 && applicationStatus == 0) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
             });
         }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_upload_document").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode

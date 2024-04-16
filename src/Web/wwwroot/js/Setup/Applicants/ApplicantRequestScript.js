@@ -136,7 +136,6 @@ $(function () {
 
                     return returndata;
                 }
-
             },
 
         ],
@@ -185,20 +184,54 @@ $(function () {
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
         });
 
-        $("#btn_edit").attr({
-            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
-            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-        });
-
         $("#btn_generate_pdf").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
         });
 
-        $("#btn_upload_document").attr({
-            "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
-            "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
-        });
+        //$("#btn_edit").attr({
+        //    "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+        //    "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+        //});
+
+        //$("#btn_upload_document").attr({
+        //    "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+        //    "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+        //});
+
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
+            $("#btn_edit").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+            });
+        }
+
+        else {
+            $("#btn_edit").attr({
+                "disabled": true,
+                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+            });
+        }
+
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+        else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
+        else {
+            $("#btn_upload_document").attr({
+                "disabled": true,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
     });
 
     //#endregion
