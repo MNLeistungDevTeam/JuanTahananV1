@@ -75,13 +75,9 @@ $(function () {
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
-
-
     //#endregion
 
   
-
-
     initializeLoanCreditDate();
 
     rebindValidators();
@@ -722,7 +718,7 @@ $(function () {
     });
 
     $(`[name^="BarrowersInformationModel.Permanent"]`).on('input', debounce(function () {
-        if ($(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).prop('checked')) {
+        if ($(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).prop('checked')) {
             $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
             $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
             $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
@@ -735,7 +731,7 @@ $(function () {
         }
     }, 2000))
 
-    $(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).on('change', function (e) {
+    $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).on('change', function (e) {
         if ($(this).prop('checked')) {
             $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
             $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
@@ -747,13 +743,13 @@ $(function () {
             $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
             $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
 
-            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', true);
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', true);
 
             return;
         }
         else {
-            $(`[name^="BarrowersInformationModel.Present"]`).val("");
-            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', false);
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).val("");
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', false);
         }
     });
 
@@ -1042,9 +1038,21 @@ $(function () {
         $("#btn_edit").addClass("active");
 
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
+        $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
+
+        if ($(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).prop('checked')) {
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', true);
+        }
+
+        $.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
+            elem._flatpickr.set("allowInput", true);
+            elem._flatpickr.set("clickOpens", true);
+            //elem._flatpickr.set("wrap", true);
+        });
 
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
-            e.selectize.unlock()
+            e.selectize.unlock();
         })
     });
 
@@ -1055,25 +1063,39 @@ $(function () {
         window.open(link, '_blank');
     });
 
-    // to initialize first the selectize before lock
-    $(document).ready(function () {
-        $('#frm_hlf068').find('.selectized').each(function (i, e) {
-            e.selectize.lock();
-        });
-    });
-
 
     //#endregion
 
 
     //#region Methods
 
-    $(document).ready(function () {
+    $(function () {
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true);
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").addClass("disabled");
+        $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
+
+        /*
+        $('.calendarpicker')
+        $('.present-calendar-picker')
+        $(".timepicker")
+        */
+
+        $.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
+            elem._flatpickr.set("allowInput", false);
+            elem._flatpickr.set("clickOpens", false);
+            //elem._flatpickr.set("wrap", true);
+        });
+
         loadloanParticularInformation(applicantInfoIdVal);
         loadSpouseInformation(applicantInfoIdVal);
         loadBorrowerInformation(applicantInfoIdVal);
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
+
+        // initialize first the selectize before lock
+        $('#frm_hlf068').find('.selectized').each(function (i, e) {
+            e.selectize.lock();
+        });
     });
 
     function loadloanParticularInformation(id) {
@@ -1194,12 +1216,17 @@ $(function () {
 
         $form.on("submit", function (e) {
             e.preventDefault();
-            let formData = new FormData(e.target);
 
-            if ($(this).valid() == false) {
+            // re-enable checkboxes on submission
+            // Important: this snippet should come first before validation and FormData varialble
+            $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
+
+            if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
                 return;
             }
+
+            let formData = new FormData(e.target);
 
             $.ajax({
                 url: $(this).attr("action"),

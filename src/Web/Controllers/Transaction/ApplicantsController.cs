@@ -327,9 +327,9 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.Form2PageModel = form2PageInfo;
                     }
 
-                    if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
+                    if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
                     {
-                        vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
+                        vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress = true;
                     }
                 }
 
@@ -471,6 +471,10 @@ namespace Template.Web.Controllers.Transaction
                 if (borrowerInfo != null)
                 {
                     vwModel.BarrowersInformationModel = borrowerInfo;
+                }
+                if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                {
+                    vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress = true;
                 }
 
                 var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -766,7 +770,7 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
                         beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
 
-                        if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                        if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress)
                         {
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
