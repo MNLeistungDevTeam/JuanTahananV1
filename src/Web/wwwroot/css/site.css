@@ -1156,3 +1156,35 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .iti {
     width: 100%;
 }
+
+.selectize-control.plugin-remove_button .locked .item .remove:hover {
+    background: 0
+}
+
+.selectize-control.plugin-remove_button .locked .item .remove {
+    border-left-color: white
+}
+
+.selectize-input.locked, .selectize-input.locked * {
+    cursor: default !important
+}
+
+.selectize-control.multi .selectize-input.locked > div, .selectize-control.multi .selectize-input.locked > div.active {
+    color: #86adbd;
+    background: white;
+    border: 0 solid white
+}
+
+.selectize-control .selectize-input.locked {
+    opacity: .8;
+    background-color: #f3ebeb38 !important;
+    pointer-events: none;
+}
+
+.selectize-control.plugin-remove_button .locked .item .remove:hover {
+    background: 0
+}
+
+.selectize-control.plugin-remove_button .locked .item .remove {
+    border-left-color: white
+}

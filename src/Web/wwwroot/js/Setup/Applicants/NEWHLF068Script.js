@@ -765,7 +765,7 @@ $(function () {
     });
 
     $(`[name^="BarrowersInformationModel.Permanent"]`).on('input', debounce(function () {
-        if ($(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).prop('checked')) {
+        if ($(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).prop('checked')) {
             $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
             $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
             $(`[name="BarrowersInformationModel.PresentLotName"]`).val($(`[name="BarrowersInformationModel.PermanentLotName"]`).val());
@@ -778,7 +778,7 @@ $(function () {
         }
     }, 2000))
 
-    $(`[name="BarrowersInformationModel.IsPresentAddressPermanentAddress"]`).on('change', function (e) {
+    $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).on('change', function (e) {
         if ($(this).prop('checked')) {
             $(`[name="BarrowersInformationModel.PresentUnitName"]`).val($(`[name="BarrowersInformationModel.PermanentUnitName"]`).val());
             $(`[name="BarrowersInformationModel.PresentBuildingName"]`).val($(`[name="BarrowersInformationModel.PermanentBuildingName"]`).val());
@@ -790,13 +790,13 @@ $(function () {
             $(`[name="BarrowersInformationModel.PresentProvinceName"]`).val($(`[name="BarrowersInformationModel.PermanentProvinceName"]`).val());
             $(`[name="BarrowersInformationModel.PresentZipCode"]`).val($(`[name="BarrowersInformationModel.PermanentZipCode"]`).val());
 
-            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', true);
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', true);
 
             return;
         }
         else {
-            $(`[name^="BarrowersInformationModel.Present"]`).val("");
-            $(`[name^="BarrowersInformationModel.Present"]`).prop('readonly', false);
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).val("");
+            $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', false);
         }
     });
 
