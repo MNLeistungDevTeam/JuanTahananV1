@@ -5,6 +5,18 @@ let localizedStrings;
 loadLocalizedStrings();
 var loader = null;
 var applications = null;
+
+const intlTelConfig = {
+    showSelectedDialCode: false,
+    showFlags: true,
+    allowDropdown: false,
+    strictMode: false,
+    initialCountry: "ph",
+    utilsScript: "/lib/intl-tel-input/build/js/utils.js"
+};
+
+const intlTelErrors = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
 function loadLocalizedStrings() {
     $.ajax({
         url: '/Localization/GetLocalizedStrings',

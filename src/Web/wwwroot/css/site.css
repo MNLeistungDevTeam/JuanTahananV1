@@ -1152,3 +1152,7 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .text-orange {
     color: orange;
 }
+
+.iti {
+    width: 100%;
+}

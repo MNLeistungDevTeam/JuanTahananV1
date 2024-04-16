@@ -337,13 +337,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Prompt = "Trade Address")]
         public string TradeAddress3 { get; set; }
 
-        [Display(Prompt = "Trade Telephone No")]
+        [Display(Prompt = "Trade Telephone No. 1")]
         public string? TradeTellNo1 { get; set; }
 
-        [Display(Prompt = "Trade Telephone No")]
+        [Display(Prompt = "Trade Telephone No. 2")]
         public string? TradeTellNo2 { get; set; }
 
-        [Display(Prompt = "Trade Telephone No")]
+        [Display(Prompt = "Trade Telephone No. 3")]
         public string? TradeTellNo3 { get; set; }
 
         [Display(Prompt = "Character Name Supplier")]
@@ -364,13 +364,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Prompt = "Character Address")]
         public string CharacterAddress3 { get; set; }
 
-        [Display(Prompt = "Character Telephone No")]
+        [Display(Prompt = "Character Telephone No. 1")]
         public string? CharacterTellNo1 { get; set; }
 
-        [Display(Prompt = "Character Telephone No")]
+        [Display(Prompt = "Character Telephone No. 2")]
         public string? CharacterTellNo2 { get; set; }
 
-        [Display(Prompt = "Character Telephone No")]
+        [Display(Prompt = "Character Telephone No. 3")]
         public string? CharacterTellNo3 { get; set; }
 
         [Display(Prompt = "First Name")]
