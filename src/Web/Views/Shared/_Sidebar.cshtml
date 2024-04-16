@@ -16,7 +16,7 @@
     var userInfo = await _userRepo.GetUserAsync(userId);
     string userProfile = Url.Content("~/images/user/default.png");
 
-
+    List<string> exclusions = new() { "Dashboard", "Navigation", "Applicants" };
 
 
     if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
@@ -74,15 +74,20 @@
                     </div>
                 </li>
 
-                <li class="side-nav-title">@localizer["Navigation"]</li>
+                @*<li class="side-nav-title">@localizer["Navigation"]</li>*@
 
                 @foreach (var moduleGroup in moduleGroups)
                 {
                     var _parentModules = parentModules.Where(m => m.ModuleType == moduleGroup.ModuleType);
 
+                    // @if (exclusions.Contains(moduleGroup.ModuleType))
+                    // {
+                    //     continue;
+                    // }
+
                     @if (_parentModules.Any())
                     {
-                        <li class="side-nav-title">@moduleGroup.ModuleType</li>
+                        <li class="side-nav-title @(exclusions.Contains(moduleGroup.ModuleType) ? "d-none" : "")">@moduleGroup.ModuleType</li>
                     }
                     else
                     {
