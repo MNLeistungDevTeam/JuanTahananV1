@@ -73,7 +73,7 @@
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                             {
-                                <span class="badge bg-blue ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
+                                <span class="badge bg-primary ms-auto fs-9">@(Model.ApplicantsPersonalInformationModel.ApplicationStatus)</span>
                             }
 
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
@@ -103,24 +103,20 @@
 
 
                         <div class="mt-4">
-                            <label class="form-label fw-normal">Stage:</label>
+                            <label class="form-label fw-normal fs-4">Stage:</label>
                             <div class="form-check form-check-inline ms-2">
                                 <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" data-name="Credit Verification">
-                                <label class="form-check-label" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
+                                <label class="form-check-label fs-4" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" data-name="Application Completion">
-                                <label class="form-check-label" for="customRadio4" data-name="Application Completion">Application Completion</label>
+                                <label class="form-check-label fs-4" for="customRadio4" data-name="Application Completion">Application Completion</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" data-name="Post approval">
-                                <label class="form-check-label" for="customRadio5" data-name="Post approval">Post approval</label>
+                                <label class="form-check-label fs-4" for="customRadio5" data-name="Post approval">Post approval</label>
                             </div>
-
-
-
                         </div>
-
 
 
                         <div class="col-md-3">
