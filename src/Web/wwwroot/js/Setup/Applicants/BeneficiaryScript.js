@@ -192,10 +192,7 @@ $(function () {
         var id = tbl_applications.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applications.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
-
-        $("#btn_add").attr({
-            "disabled": !(selectedRows === 0),
-        });
+ 
 
         if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_edit").attr({
