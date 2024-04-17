@@ -13,8 +13,7 @@ $(function () {
 
             {
                 data: 'Code',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
@@ -22,54 +21,51 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'PagibigNumber',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'text-end'
             },
             {
                 data: 'HousingAccountNumber',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-end',
                 visible: false
             },
             {
                 data: 'Developer',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'ProjectLocation',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
 
             {
                 data: 'Unit',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: ''
             },
             {
                 data: 'LoanAmount',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'text-end',
+                render: function (data, type, row) {
+
+                    let loanAmount = numeral(data).format('0,0.00');
+                    return `₱${loanAmount}`;
+                }
+
             },
 
             {
                 data: 'DateSubmitted',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD');
@@ -78,55 +74,11 @@ $(function () {
                     }
                 }
             },
-            {
-                data: 'ApplicationStatus',
-                className: 'align-middle text-center',
-                render: function (data, type, row) {
-                    var returndata = "";
 
-                    console.log(row.ApprovalStatusNumber);
-
-                    if (row.ApprovalStatusNumber == 0) {
-                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 1) {
-                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 2) {
-                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 3) {
-                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 4) {
-                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 5) {
-                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 6) {
-                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 7) {
-                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 8) {
-                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 9) {
-                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
-                    }
-                    else if (row.ApprovalStatusNumber == 10) {
-                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
-                    }
-
-                    return returndata;
-                }
-            },
+            
             {
                 data: 'Stage',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: '',
                 render: function (data, type, row) {
                     var returndata;
 
@@ -144,13 +96,70 @@ $(function () {
                         returndata = `<span class="text-success">${data}</span>`;
                     }
 
-                    console.log(data)
-
                     return returndata;
                 }
             },
 
+            {
+                data: 'ApplicationStatus',
+                className: '',
+                render: function (data, type, row) {
+                    var returndata = "";
+
+                    console.log(row.ApprovalStatusNumber);
+
+                    if (row.ApprovalStatusNumber == 0) { // draft
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 1) { // submitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 2) { // withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 3) { // DeveloperVerified
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 4) { // PagibigVerified
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 5) { // Withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 6) { // PostSubmitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 7) { // DeveloperConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 8) { // PagibigConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 9) { // Disqualified
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 10) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+
+                    return returndata;
+                }
+            },
+            {
+                data: 'LastUpdated',
+                className: 'text-center',
+                render: function (data, type, row) {
+
+                    if (data && data.trim() !== "") {
+                        return moment(data).format('YYYY-MM-DD HH:mm');
+
+                    } else {
+                        return "";
+                    }
+                }
+            },
         ],
+
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
@@ -188,20 +197,7 @@ $(function () {
             "disabled": !(selectedRows === 0),
         });
 
-        if (selectedRows == 1 && applicationStatus == 0) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_edit").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_edit").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
@@ -215,20 +211,13 @@ $(function () {
             });
         }
 
-        if (selectedRows == 1 && applicationStatus == 0) {
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
             });
         }
-        else if (selectedRows == 1 && applicationStatus == 2) {
-            $("#btn_upload_document").attr({
-                "disabled": false,
-                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
-            });
-        }
-
-        else if (selectedRows == 1 && applicationStatus == 9) {
+        else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
             $("#btn_upload_document").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode

@@ -112,11 +112,12 @@ $(function () {
                 totalApplication.html(loading_text);
             },
             success: function (response) {
+                console.log(response);
                 totalApplication.text(response.TotalApplication);
-                withdrawn_info.val((response.Withdrawn));
-                approved_info.val((response.PagibigConfirmed + response.DeveloperConfirmed));
-                submitted_info.val(response.Submitted);
-                disapprove_info.val((response.Disqualified + response.Discontinued));
+                withdrawn_info.val(response.TotalWithdrawn);
+                approved_info.val(response.TotalApprove);
+                submitted_info.val(response.TotalSubmitted);
+                disapprove_info.val(response.TotalDisApprove);
 
                 $('[data-plugin="knob"]').trigger('change');
             },

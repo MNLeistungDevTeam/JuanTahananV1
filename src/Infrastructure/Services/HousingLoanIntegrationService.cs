@@ -41,12 +41,11 @@ namespace DMS.Infrastructure.Services
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
         }
 
-        public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model)
+        public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder)
         {
             BarrowersInformationModel barrowerModel = new();
             BeneficiaryInformationModel beneficiaryModel = new();
             ApplicantsPersonalInformationModel applicantInfoModel = new();
-
 
             model.PagibigMidNumber = model.PagibigMidNumber.Replace("-", "");
 
@@ -75,7 +74,7 @@ namespace DMS.Infrastructure.Services
 
             userModel.Action = "created";
             //// make the usage of hangfire
-            _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+            _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, rootFolder));
 
             #endregion Create Beneficiary User
 

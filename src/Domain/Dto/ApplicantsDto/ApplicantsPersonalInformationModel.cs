@@ -74,6 +74,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ApprovalStageLimit { get; set; } = string.Empty;
 
         public DateTime? DateSubmitted { get; set; }
+        public DateTime? LastUpdated { get; set; }
 
         #endregion Display Properties
     }

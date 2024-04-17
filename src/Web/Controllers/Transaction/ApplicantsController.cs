@@ -19,6 +19,7 @@ using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IRoleAccessRepository _roleAccessRepo;
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         private DMSDBContext _context;
 
@@ -83,7 +85,8 @@ namespace Template.Web.Controllers.Transaction
             IDocumentVerificationRepository documentVerificationRepo,
             IBackgroundJobClient backgroundJobClient,
             IRoleAccessRepository roleAccessRepo,
-            IBeneficiaryInformationRepository beneficiaryInformationRepo)
+            IBeneficiaryInformationRepository beneficiaryInformationRepo,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -109,6 +112,7 @@ namespace Template.Web.Controllers.Transaction
             _backgroundJobClient = backgroundJobClient;
             _roleAccessRepo = roleAccessRepo;
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         #endregion Fields
@@ -173,21 +177,21 @@ namespace Template.Web.Controllers.Transaction
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
+                if (applicantinfo == null)
+                {
+                    return BadRequest($"{applicantCode}: no record Found!");
+                }
+
                 //if the application is not access by beneficiary
-                if (applicantinfo.UserId != userId && userInfo.UserRoleId == 4)
+                if (applicantinfo.UserId != userId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                 {
                     return View("AccessDenied");
                 }
 
                 //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < 3 && userInfo.UserRoleName == "Pag-ibig")
+                if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
                 {
                     return View("AccessDenied");
-                }
-
-                if (applicantinfo == null)
-                {
-                    return BadRequest($"{applicantCode}: no record Found!");
                 }
 
                 var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
@@ -232,18 +236,26 @@ namespace Template.Web.Controllers.Transaction
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
+                    List<int> inActiveStatuses = new List<int> { 0,2, 5, 9, 10 };
+
+
+
                     if (applicantinfo == null)
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
                     }
 
                     //if current log user is beneficiary
-                    if (userId != applicantinfo.UserId && userInfo.UserRoleId == 4)
+                    if (userId != applicantinfo.UserId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
                     }
+                    else if (!inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
+                    {
+                        throw new Exception($"Transaction ({applicantCode})" + " is currently in active status, cant be accessible!");
+                    }
 
-                    var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
+                    //var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(applicantinfo.PagibigNumber);
 
                     vwModel.ApplicantsPersonalInformationModel = applicantinfo;
 
@@ -269,44 +281,6 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
                     }
-                    else
-                    {
-                        //if (beneficiaryData != null)
-                        //{
-                        //    vwModel.BarrowersInformationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
-                        //    vwModel.BarrowersInformationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
-                        //    vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
-                        //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                        //    vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
-                        //    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
-                        //    vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
-                        //    vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
-                        //    vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
-                        //    vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
-                        //    vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
-                        //    vwModel.BarrowersInformationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
-                        //    vwModel.BarrowersInformationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
-                        //    vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
-                        //    vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
-                        //    vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
-
-                        //    vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
-                        //    vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
-                        //    vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
-                        //    vwModel.BarrowersInformationModel.PermanentSubdivisionName = beneficiaryData.PermanentSubdivisionName;
-                        //    vwModel.BarrowersInformationModel.PermanentBaranggayName = beneficiaryData.PermanentBaranggayName;
-                        //    vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
-                        //    vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
-                        //    vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
-
-                        //    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                        //    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                        //    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
-
-                        //    //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
-                        //    //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
-                        //}
-                    }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
@@ -322,9 +296,9 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.Form2PageModel = form2PageInfo;
                     }
 
-                    if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress())
+                    if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
                     {
-                        vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress = true;
+                        vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress = true;
                     }
                 }
 
@@ -466,6 +440,10 @@ namespace Template.Web.Controllers.Transaction
                 if (borrowerInfo != null)
                 {
                     vwModel.BarrowersInformationModel = borrowerInfo;
+                }
+                if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                {
+                    vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress = true;
                 }
 
                 var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -720,7 +698,8 @@ namespace Template.Web.Controllers.Transaction
                         UserModel userModel = new()
                         {
                             Email = vwModel.BarrowersInformationModel.Email,
-                            Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                            //Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                            Password = GenerateRandomPassword(), //sample output aDf!23@4kLp
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
@@ -736,7 +715,7 @@ namespace Template.Web.Controllers.Transaction
 
                         // make the usage of hangfire
                         userModel.Action = "created";
-                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential(userModel));
+                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 
                         #region Create BeneficiaryInformation
 
@@ -761,7 +740,7 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
                         beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
 
-                        if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
+                        if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress)
                         {
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
@@ -1030,6 +1009,53 @@ namespace Template.Web.Controllers.Transaction
                 string outputPassword = name + hashedString.Substring(0, 10);
 
                 return outputPassword;
+            }
+        }
+
+        private static string GenerateRandomPassword()
+        {
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+            Random rand = new Random();
+
+            // Generate random password length between 10 and 12 characters
+            int passwordLength = rand.Next(10, 13); // Returns a value between 10 and 12 (exclusive)
+
+            // Hash the current time to introduce some randomness
+            string timeStamp = DateTime.Now.Ticks.ToString();
+
+            // Concatenate the GUID with the current time
+            string combinedString = Guid.NewGuid().ToString("N").Substring(0, 16) + timeStamp;
+
+            // Use SHA-256 to hash the combined string
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
+                byte[] hash = sha256.ComputeHash(bytes);
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hash)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                // Ensure the password is within the desired length range
+                string hashedString = sb.ToString();
+                if (hashedString.Length < passwordLength)
+                {
+                    // If the hashed string is shorter than the desired length, pad it with additional characters
+                    while (hashedString.Length < passwordLength)
+                    {
+                        hashedString += allowedChars[rand.Next(allowedChars.Length)];
+                    }
+                }
+                else if (hashedString.Length > passwordLength)
+                {
+                    // If the hashed string is longer than the desired length, truncate it
+                    hashedString = hashedString.Substring(0, passwordLength);
+                }
+
+                return hashedString;
             }
         }
 

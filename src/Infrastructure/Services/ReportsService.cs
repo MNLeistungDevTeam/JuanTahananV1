@@ -126,6 +126,17 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
+             
+                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus" };
+                List<string> excludedSpouse = new List<string> { "OccupationStatus" };
+
+                applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);
+                barrowerInfoModel = ConvertStringPropertiesToUppercase(barrowerInfoModel, excludedBarrower);
+                spouseInfoModel = ConvertStringPropertiesToUppercase(spouseInfoModel, excludedSpouse);
+                loanParticularsInfoModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel);
+                form2InfoModel = ConvertStringPropertiesToUppercase(form2InfoModel);
+                collateralInfoModel = ConvertStringPropertiesToUppercase(collateralInfoModel);
+
                 List<ApplicantInformationReportModel> dataSource = new()
 
                 {
@@ -133,12 +144,12 @@ namespace DMS.Infrastructure.Services
                     {
                     //FormalPicture =  formalPicture,
 
-                ApplicantsPersonalInformationModel =       ConvertStringPropertiesToUppercase(applicantInfoModel),
-                        SpouseModel = ConvertStringPropertiesToUppercase(spouseInfoModel),
-                        BarrowersInformationModel =  ConvertStringPropertiesToUppercase(barrowerInfoModel),
-                        LoanParticularsInformationModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel),
-                        Form2PageModel = ConvertStringPropertiesToUppercase(form2InfoModel),
-                        CollateralInformationModel = ConvertStringPropertiesToUppercase(collateralInfoModel),
+                      ApplicantsPersonalInformationModel =   applicantInfoModel,
+                        SpouseModel = spouseInfoModel,
+                        BarrowersInformationModel =  barrowerInfoModel,
+                        LoanParticularsInformationModel = loanParticularsInfoModel,
+                        Form2PageModel = form2InfoModel,
+                        CollateralInformationModel = collateralInfoModel,
                     }
                 };
 
@@ -154,7 +165,7 @@ namespace DMS.Infrastructure.Services
             }
         }
 
-        public static T ConvertStringPropertiesToUppercase<T>(T obj)
+        public static T ConvertStringPropertiesToUppercase<T>(T obj, List<string>? excludedProperties = null)
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
 
@@ -162,10 +173,13 @@ namespace DMS.Infrastructure.Services
             {
                 if (property.PropertyType == typeof(string) && property.CanWrite)
                 {
-                    string value = (string)property.GetValue(obj);
-                    if (value != null)
+                    if (excludedProperties == null || !excludedProperties.Contains(property.Name))
                     {
-                        property.SetValue(obj, value.ToUpper());
+                        string? value = (string?)property.GetValue(obj);
+                        if (value != null)
+                        {
+                            property.SetValue(obj, value.ToUpper());
+                        }
                     }
                 }
             }

@@ -13,6 +13,8 @@ const $approverModal = $('#approver-modal');
 const $approverDiv = $('#div_approval');
 
 let approvalStatus = $('[name="ApplicantsPersonalInformationModel.ApprovalStatus"]').val();
+let stageNo = $('#txt_stageNo').val();
+
 let ApplicationId = $('#applicationId').val();
 let DocumentTypeId = 0;
 
@@ -34,44 +36,35 @@ $(async function () {
     loadVerificationAttachments(CONST_APPLICANTCODE);
     loadApplicationAttachments(CONST_APPLICANTCODE);
 
-    $('input[name="customRadio1"]').change(function () {
-        // Get the value of the selected radio button
-        var selectedOption = $('input[name="customRadio1"]:checked').val();
-        var selectedOptionText = $('input[name="customRadio1"]:checked').next('label').data('name');
-        console.log("Selected option: ", selectedOptionText, " (Value: ", selectedOption, ")");
+    $(document).ready(function () {
+        $('input[name="customRadio1"]').change(function () {
+            // Get the value of the selected radio button
+            var selectedOption = $('input[name="customRadio1"]:checked').val();
+            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
+            //alert("Selected option: " + selectedOptionText);
+
+            if (selectedOptionText === "Application Completion") {
+                // Manipulate the select options
+                $('.selectize option').show(); // Hide all options first
+                // Show only the options needed
+                $('.selectize option[value="7"]').hide();
+            }
+
+            else if (selectedOptionText === "Credit Verification") {
+                // Manipulate the select options
+                $('.selectize option').show(); // Hide all options first
+                // Show only the options needed
+                $('.selectize option[value="5"]').hide();
+                $('.selectize option[value="6"]').hide();
+                $('.selectize option[value="7"]').hide();
+            }
+
+            else {
+                // If not "Verification", show all options
+                $('.selectize option').show();
+            }
+        });
     });
-
-    //#region Event
-
-    //$(document).on('click', '.upload-link', async function () {
-    //    DocumentId = 0;
-    //    DocumentTypeId = $(this).find("#documentTypeId").val();
-    //    var documentType = await GetDocumentType(DocumentTypeId);
-
-    //    let fileFormats = FileFormats[documentType.FileType];
-
-    //    if (fileFormats === undefined) {
-    //        $('#fileInput').attr('accept', '*/*');
-    //    }
-    //    else if (documentType.FileType == 5) {
-    //        $('#fileInput').attr('accept', fileFormats);
-    //    } else if (Array.isArray(fileFormats)) {
-    //        fileFormats = fileFormats.join(',');
-    //        $('#fileInput').attr('accept', fileFormats);
-    //    }
-
-    //    $('#fileInput').trigger('click');
-    //});
-
-    //// Handling file input change event
-    //$('#fileInput').on('change', function () {
-    //    var file = this.files[0];
-    //    if (file) {
-    //        upload(file, DocumentTypeId, DocumentId);
-    //    }
-    //});
-
-    //#endregion Event
 
     //#region Events
     $(document).on('click', '.upload-link', async function () {
@@ -80,15 +73,11 @@ $(async function () {
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
-
-        if (fileFormats === undefined) {
-            $('#fileInput').attr('accept', '*/*');
-        }
-        else if (documentType.FileType == 5) {
-            $('#fileInput').attr('accept', fileFormats);
-        } else if (Array.isArray(fileFormats)) {
-            fileFormats = fileFormats.join(',');
-            $('#fileInput').attr('accept', fileFormats);
+        if (fileFormats === undefined || !Array.isArray(fileFormats)) {
+            fileInput.prop('accept', '*/*');
+        } else {
+            let formated = fileFormats.join(',');
+            fileInput.prop('accept', formated);
         }
 
         fileInput.trigger('click');
@@ -106,7 +95,7 @@ $(async function () {
     $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function () {
         let action = $(this).attr("data-value");
 
-        await openApprovalModal(action)
+        await openApprovalModal(action);
     });
 
     //#endregion Events
@@ -368,29 +357,26 @@ $(async function () {
         }
     }
 
-    function GetApprovalStatus(groupedItems) {
-        const Items = {};
+    //function GetApprovalStatus(groupedItems) {
+    //    const Items = {};
 
-        if (approvalStatus === '0') {
-            Items = groupedItems;
-        } else if (approvalStatus === '4') {
-            Items = groupedItems;
-        }
+    //    if (approvalStatus === '0') {
+    //        Items = groupedItems;
+    //    } else if (approvalStatus === '4') {
+    //        Items = groupedItems;
+    //    }
 
-        var flag = allItemsHaveFiles(Items);
-        $("#btnSubmitApplication").prop('disabled', !(flag));
-    }
+    //    var flag = allItemsHaveFiles(Items);
+    //    $("#btnSubmitApplication").prop('disabled', !(flag));
+    //}
 
     //#region Approval
-
-    //$("#btn_save").on("click", function () {
-    //    rebindValidator();
-    //});
 
     async function openApprovalModal(action) {
         let modalLabel = $("#approver-modalLabel");
         let transactionNo = $(`[name="ApplicantsPersonalInformationModel.Code"]`).val();
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
+        let roleName = $("#txt_role_code").val();
 
         remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
         $btnSave.removeClass()
@@ -409,6 +395,7 @@ $(async function () {
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
         }
 
+        $("#author_txt").html(`Author: ${roleName}`);
         $("[name='ApprovalLevel.Status']").val(action);
         $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
 
@@ -528,7 +515,7 @@ $(async function () {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(error.responseText, "danger", false, false);
+                            messageBox(response.responseText, "danger", true);
                         }
                     });
                 }
