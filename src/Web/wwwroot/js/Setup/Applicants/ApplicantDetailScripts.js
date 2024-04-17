@@ -64,6 +64,19 @@ $(async function () {
                 $('.selectize option').show();
             }
         });
+
+        $(document).ready(function () {
+            // Add click event listener to the tab
+            $('[href="#tab4"]').click(function () {
+                // Display alert message
+
+                if (stageNo == 1) {
+                    messageBox('Cant Proceed to Application Tab, this application is currently on Credit Verification stage!', 'danger');
+
+                    document.querySelector('a[href="#settings-b1"]').click();
+                }
+            });
+        });
     });
 
     //#region Events
@@ -378,21 +391,53 @@ $(async function () {
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
         let roleName = $("#txt_role_code").val();
 
-        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
         $btnSave.removeClass()
 
-        if (action == 1) {
+        if (action == 1) {      //submitted
             modalLabel.html('<span class="fe-send"></span> Submit Application');
             $btnSave.addClass("btn btn-primary").html('<span class="fe-send"></span> Submit')
-        } else if (action == 5) {
-            modalLabel.html('<span class="mdi mdi-book-cancel-outline"></span> Withdraw Application');
-            $btnSave.addClass("btn btn-warning").html('<span class="mdi mdi-book-cancel-outline"></span> Confirm')
-        } else if (action == 2) {
+
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        }
+
+        else if (action == 6) {   //post-submitted
+            modalLabel.html('<span class="fe-send"></span> Submit Application');
+            $btnSave.addClass("btn btn-primary").html('<span class="fe-send"></span> Submit')
+
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        }
+
+        else if (action == 2) {        // deferred
             modalLabel.html('<span class="fe-x-circle"></span> Defer Application');
             $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
-        } else {
+
+            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+        }
+
+        else if (action == 5) {       // withdraw
+            modalLabel.html('<span class="mdi mdi-book-cancel-outline"></span> Withdraw Application');
+            $btnSave.addClass("btn btn-warning").html('<span class="mdi mdi-book-cancel-outline"></span> Confirm')
+
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        }
+
+        else if (action == 10) {       // discontinued
+            modalLabel.html('<span class="mdi mdi-book-cancel-outline"></span> Withdraw Application');
+            $btnSave.addClass("btn btn-warning").html('<span class="mdi mdi-book-cancel-outline"></span> Confirm')
+
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        }
+
+        else if (action == 9) {        // disapproved
+            modalLabel.html('<span class="fe-x-circle"></span> Defer Application');
+            $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
+            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+        }
+
+        else {
             modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
         }
 
         $("#author_txt").html(`Author: ${roleName}`);
