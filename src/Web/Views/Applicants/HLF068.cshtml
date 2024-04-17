@@ -1,9 +1,13 @@
-﻿@inject IStringLocalizer<SharedResources> localizer
+﻿@using DMS.Web.Controllers.Services
+
+@inject IStringLocalizer<SharedResources> localizer
 
 @model ApplicantViewModel
 @{
     string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Application" : "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
+
+    
 }
 
 <!-- start page title -->
@@ -132,7 +136,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" required></label>
-                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" required>
+                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" title="@Html.DescriptionFor(m => m.LoanParticularsInformationModel.DesiredLoanAmount)" required>
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="text-danger"></span>
                                 </div>
                             </div>
@@ -174,6 +178,11 @@
                                     <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">COLLATERAL</span>
                                 </h3>
                             </div>
+                            <div class="col-md-12">
+                                <h3 class="header-title">
+                                    Property Location
+                                </h3>
+                            </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.Province"></label>
@@ -195,6 +204,12 @@
                                     <span asp-validation-for="CollateralInformationModel.Street" class="text-danger"> </span>
                                 </div>
                             </div>
+
+                            <div class="col-md-12">
+                                <h3 class="header-title pb-2 mb-2 border-bottom-dashed">
+                                </h3>
+                            </div>
+
                             <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="CollateralInformationModel.DeveloperName"></label>
@@ -330,561 +345,572 @@
                         @*  <form id="collateraldata" method="post" action="#" class="form-horizontal needs-validation" novalidate></form> *@
                         <div class="row gy-2">
                             <div class="col-md-12">
-                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-
-                                    <div class="row gy-2">
-                                        <div class="col-md-12">
-                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BORROWER-BENEFICIARY'S DATA</span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.FirstName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MiddleName"></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.MiddleName">
-                                                <span asp-validation-for="BarrowersInformationModel.MiddleName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.LastName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix">
-                                                <span asp-validation-for="BarrowersInformationModel.Suffix" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
-                                                <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Citizenship" required>
-                                                <span asp-validation-for="BarrowersInformationModel.Citizenship" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
-                                                <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
-                                                <span asp-validation-for="BarrowersInformationModel.BirthDate" class="text-danger"> </span>
-                                                <span id="BarrowersInformationModel.BirthDate_RequiredAge" class="text-danger" style="display: none;">
-                                                    You have to be at least 21 years old to proceed
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.Sex" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.Sex" required>
-                                                    <option value="">Select Gender ...</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.Sex" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.MaritalStatus" required>
-                                                    <option value="">Select Marital Status ... </option>
-                                                    <option value="Single/Unmarried">Single/Unmarried</option>
-                                                    <option value="Married">Married</option>
-                                                    <option value="Annulled">Annulled</option>
-                                                    <option value="Legally Separated">Legally Separated</option>
-                                                    <option value="Widow/er">Widow/er</option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Address & Contact Information
-                                            </h3>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
-                                                <input type="tel" class="form-control rounded-30 " asp-for="BarrowersInformationModel.HomeNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="text-danger"> </span>
-                                                <span name="BarrowersInformationModel.HomeNumber.Error" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber" required></label>
-                                                <input type="tel" class="form-control rounded-3  mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
-                                                <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="text-danger"> </span>
-                                                <span name="BarrowersInformationModel.MobileNumber.Error" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email" required></label>
-                                                <input type="email" class="form-control rounded-3 " asp-for="BarrowersInformationModel.Email" required>
-                                                <span asp-validation-for="BarrowersInformationModel.Email" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12" hidden>
-                                            <div class="form-check form-check-inline">
-                                                <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
-                                                <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPermanentAddressAbroad"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentUnitName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBuildingName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentLotName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentStreetName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBaranggayName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentMunicipalityName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentProvinceName">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" col="9">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
-                                                <input class="form-control rounded-3 codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode" maxlength="10">
-                                                <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12" hidden>
-                                            <div class="form-check form-check-inline">
-                                                <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
-                                                <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-check form-check-inline">
-                                                <input asp-for="BarrowersInformationModel.PresentAddressIsPermanentAddress" type="checkbox" class="form-check-input">
-                                                <label class="form-check-label" asp-for="BarrowersInformationModel.PresentAddressIsPermanentAddress"></label>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentAddressIsPermanentAddress" class="text-danger"> </span>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentUnitName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBuildingName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentLotName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentStreetName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBaranggayName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentMunicipalityName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName" required></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentProvinceName" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" col="9">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode" required></label>
-                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" maxlength="10" required>
-                                                <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" col="9">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                    <option value="">Select HomeOwnership ... </option>
-                                                    <option value="Company">Company</option>
-                                                    <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
-                                                    <option value="Rented">Rented</option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 d-none" id="rentalForm">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.MonthlyRent" class="form-label fw-normal"></label>
-                                                <input asp-for="BarrowersInformationModel.MonthlyRent" type="number" class="form-control rounded-3 ">
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsofStay">
-                                                <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" hidden>
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
-                                                <input type="number" class="form-control rounded-3 " asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
-                                                <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Employment Information
-                                            </h3>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
-                                                <input class="form-control rounded-3 " asp-for="BarrowersInformationModel.SSSNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
-                                                <input class="form-control rounded-3  tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.TinNumber" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.OccupationStatus" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.OccupationStatus" required readonly>
-                                                    <option value="">Select Occupation Status ...</option>
-                                                    <option value="Employed">Employed</option>
-                                                    <option value="Self-Employed">Self-Employed</option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.OccupationStatus" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
-                                                <input class="form-control  rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
-                                                <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.EmployerName">
-                                                <span asp-validation-for="BarrowersInformationModel.EmployerName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
-                                                <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName">
-                                                    <option value="">Select Industry...</option>
-                                                    <option value="1">Accounting</option>
-                                                    <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
-                                                    <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
-                                                    <option value="4">Basic Materials</option>
-                                                    <option value="5">
-                                                        Business Process Outsourcing
-                                                        (BPO)
-                                                    </option>
-                                                    <option value="6">
-                                                        Construction
-                                                    </option>
-                                                    <option value="7">Education & Training </option>
-                                                    <option value="8">
-                                                        Electricity, Gas and Water
-                                                        Supply
-                                                    </option>
-                                                    <option value="9">
-                                                        Extra-Territorial Organization &
-                                                        Bodies
-                                                    </option>
-                                                    <option value="10">
-                                                        Financial Services/Intermediation
-                                                    </option>
-                                                    <option value="11">
-                                                        HR/Recruitment
-                                                    </option>
-                                                    <option value="12">
-                                                        Health and Social Work;
-                                                        Health and Medical Services
-                                                    </option>
-                                                    <option value="13">
-                                                        Life Sciences
-                                                    </option>
-                                                    <option value="14">
-                                                        Management
-                                                    </option>
-                                                    <option value="15">
-                                                        Manufacturing
-                                                    </option>
-                                                    <option value="16">
-                                                        Media
-                                                    </option>
-                                                    <option value="17">
-                                                        Mining and Quanrying
-                                                    </option>
-                                                    <option value="18">
-                                                        Other Community, Social & Personal Service Activities
-                                                    </option>
-                                                    <option value="19">
-                                                        Public Administration & Defense;
-                                                        Compulsory Social Security
-                                                    </option>
-                                                    <option value="20">
-                                                        Technology
-                                                    </option>
-                                                    <option value="21">
-                                                        Transport, Storage
-                                                    </option>
-                                                    <option value="22">
-                                                        Transport, Storage and Communications
-                                                    </option>
-                                                    <option value="23">
-                                                        Travel and Leisure
-                                                    </option>
-                                                    <option value="24">
-                                                        Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
-                                                    </option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.IndustryName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PositionName">
-                                                <span asp-validation-for="BarrowersInformationModel.PositionName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsEmployment">
-                                                <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.NumberOfDependent">
-                                                <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Employer Address & Contact Information
-                                            </h3>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
-                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
-                                                <span name="BarrowersInformationModel.BusinessDirectLineNumber.Error" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
-                                                <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
-                                                <span name="BarrowersInformationModel.BusinessTruckLineNumber.Error" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessEmail">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12" hidden>
-                                            <div class="form-check form-check-inline">
-                                                <input asp-for="BarrowersInformationModel.IsBusinessAddressAbroad" type="checkbox" class="form-check-input">
-                                                <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessUnitName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBuildingName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessLotName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessStreetName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessSubdivisionName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBaranggayName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessMunicipalityName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
-                                                <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessProvinceName">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3" col="9">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
-                                                <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode" maxlength="10">
-                                                <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="text-danger"> </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
-                                                <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.PreparedMailingAddress" readonly required>
-                                                    <option value="">Select Preferred Mailing Address ...</option>
-                                                    <option value="Present Home Address">Present Home Address</option>
-                                                    <option value="Employer/Business Address">Employer/Business Address</option>
-                                                    <option value="Permanent Home Address">Permanent Home Address</option>
-                                                </select>
-                                                <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact"></label>
-                                                <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact">
-                                                <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="text-danger"> </span>
-                                            </div>
+                                <div class="row gy-2">
+                                    <div class="col-md-12">
+                                        <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BORROWER-BENEFICIARY'S DATA</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.FirstName" required></label>
+                                            <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.FirstName" required>
+                                            <span asp-validation-for="BarrowersInformationModel.FirstName" class="text-danger"> </span>
                                         </div>
                                     </div>
-                                </h3>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MiddleName"></label>
+                                            <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.MiddleName">
+                                            <span asp-validation-for="BarrowersInformationModel.MiddleName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.LastName" required></label>
+                                            <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.LastName" required>
+                                            <span asp-validation-for="BarrowersInformationModel.LastName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Suffix"></label>
+                                            <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Suffix">
+                                            <span asp-validation-for="BarrowersInformationModel.Suffix" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Citizenship" required></label>
+                                            <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.Citizenship" required>
+                                            <span asp-validation-for="BarrowersInformationModel.Citizenship" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BirthDate" required></label>
+                                            <span class="fs-6 fst-italic">@Html.DescriptionFor(m => m.BarrowersInformationModel.BirthDate)</span>
+                                            <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="BarrowersInformationModel.BirthDate" data-value="@Model.BarrowersInformationModel.BirthDate" required>
+                                            <span asp-validation-for="BarrowersInformationModel.BirthDate" class="text-danger"> </span>
+                                            <span id="BarrowersInformationModel.BirthDate_RequiredAge" class="text-danger" style="display: none;">
+                                                You have to be at least 21 years old to proceed
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.Sex" class="form-label fw-normal" required></label>
+                                            <select asp-for="BarrowersInformationModel.Sex" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.Sex" required>
+                                                <option value="">Select Gender ...</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.Sex" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
+                                            <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.MaritalStatus" required>
+                                                <option value="">Select Marital Status ... </option>
+                                                <option value="Single/Unmarried">Single/Unmarried</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Annulled">Annulled</option>
+                                                <option value="Legally Separated">Legally Separated</option>
+                                                <option value="Widow/er">Widow/er</option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                            Borrower's Contact Details
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
+                                            <input type="tel" class="form-control rounded-30 " asp-for="BarrowersInformationModel.HomeNumber">
+                                            <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="text-danger"> </span>
+                                            <span name="BarrowersInformationModel.HomeNumber.Error" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber" required></label>
+                                            <input type="tel" class="form-control rounded-3  mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.MobileNumber)" required>
+                                            <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="text-danger"> </span>
+                                            <span name="BarrowersInformationModel.MobileNumber.Error" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.Email" required></label>
+                                            <input type="email" class="form-control rounded-3 " asp-for="BarrowersInformationModel.Email" required>
+                                            <span asp-validation-for="BarrowersInformationModel.Email" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                            Permanent Home Address
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-12" hidden>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
+                                            <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPermanentAddressAbroad"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentUnitName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentUnitName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentUnitName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentUnitName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBuildingName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBuildingName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentBuildingName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentBuildingName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentLotName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentLotName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentLotName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentLotName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentStreetName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentStreetName">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentStreetName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentSubdivisionName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentSubdivisionName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentSubdivisionName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentSubdivisionName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentBaranggayName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentBaranggayName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentBaranggayName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentBaranggayName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentMunicipalityName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentMunicipalityName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentMunicipalityName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentMunicipalityName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentProvinceName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PermanentProvinceName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PermanentProvinceName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentProvinceName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" col="9">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PermanentZipCode"></label>
+                                            <input class="form-control rounded-3 codeInputMask" asp-for="BarrowersInformationModel.PermanentZipCode" maxlength="10">
+                                            <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                            Present Home Address
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-12" hidden>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
+                                            <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="BarrowersInformationModel.PresentAddressIsPermanentAddress" type="checkbox" class="form-check-input">
+                                            <label class="form-check-label" asp-for="BarrowersInformationModel.PresentAddressIsPermanentAddress"></label>
+                                            <span asp-validation-for="BarrowersInformationModel.PresentAddressIsPermanentAddress" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentUnitName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentUnitName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentUnitName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PresentUnitName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBuildingName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBuildingName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentBuildingName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PresentBuildingName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentLotName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentLotName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentLotName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PresentLotName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentStreetName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentStreetName">
+                                            <span asp-validation-for="BarrowersInformationModel.PresentStreetName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentSubdivisionName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentSubdivisionName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentSubdivisionName)">
+                                            <span asp-validation-for="BarrowersInformationModel.PresentSubdivisionName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentBaranggayName" required></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentBaranggayName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentBaranggayName)" required>
+                                            <span asp-validation-for="BarrowersInformationModel.PresentBaranggayName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentMunicipalityName" required></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentMunicipalityName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentMunicipalityName)" required>
+                                            <span asp-validation-for="BarrowersInformationModel.PresentMunicipalityName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentProvinceName" required></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PresentProvinceName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.PresentProvinceName)" required>
+                                            <span asp-validation-for="BarrowersInformationModel.PresentProvinceName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" col="9">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PresentZipCode" required></label>
+                                            <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.PresentZipCode" maxlength="10" required>
+                                            <span asp-validation-for="BarrowersInformationModel.PresentZipCode" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" col="9">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
+                                            <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
+                                                <option value="">Select HomeOwnership ... </option>
+                                                <option value="Company">Company</option>
+                                                <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
+                                                <option value="Rented">Rented</option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 d-none" id="rentalForm">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.MonthlyRent" class="form-label fw-normal"></label>
+                                            <input asp-for="BarrowersInformationModel.MonthlyRent" type="number" class="form-control rounded-3 ">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsofStay"></label>
+                                            <input type="number" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsofStay" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.YearsofStay)">
+                                            <span asp-validation-for="BarrowersInformationModel.YearsofStay" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" hidden>
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber"></label>
+                                            <input type="number" class="form-control rounded-3 " asp-for="ApplicantsPersonalInformationModel.HousingAccountNumber">
+                                            <span asp-validation-for="ApplicantsPersonalInformationModel.HousingAccountNumber" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                            Employment Information
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
+                                            <input class="form-control rounded-3 " asp-for="BarrowersInformationModel.SSSNumber" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.SSSNumber)">
+                                            <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
+                                            <input class="form-control rounded-3  tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
+                                            <span asp-validation-for="BarrowersInformationModel.TinNumber" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.OccupationStatus" class="form-label fw-normal" required></label>
+                                            <select asp-for="BarrowersInformationModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.OccupationStatus" required readonly>
+                                                <option value="">Select Occupation Status ...</option>
+                                                <option value="Employed">Employed</option>
+                                                <option value="Self-Employed">Self-Employed</option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.OccupationStatus" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
+                                            <input class="form-control  rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
+                                            <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.EmployerName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.EmployerName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.EmployerName)">
+                                            <span asp-validation-for="BarrowersInformationModel.EmployerName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
+                                            <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName">
+                                                <option value="">Select Industry...</option>
+                                                <option value="1">Accounting</option>
+                                                <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
+                                                <option value="3">Agriculture, Hunting, Forestry & Fishing </option>
+                                                <option value="4">Basic Materials</option>
+                                                <option value="5">
+                                                    Business Process Outsourcing
+                                                    (BPO)
+                                                </option>
+                                                <option value="6">
+                                                    Construction
+                                                </option>
+                                                <option value="7">Education & Training </option>
+                                                <option value="8">
+                                                    Electricity, Gas and Water
+                                                    Supply
+                                                </option>
+                                                <option value="9">
+                                                    Extra-Territorial Organization &
+                                                    Bodies
+                                                </option>
+                                                <option value="10">
+                                                    Financial Services/Intermediation
+                                                </option>
+                                                <option value="11">
+                                                    HR/Recruitment
+                                                </option>
+                                                <option value="12">
+                                                    Health and Social Work;
+                                                    Health and Medical Services
+                                                </option>
+                                                <option value="13">
+                                                    Life Sciences
+                                                </option>
+                                                <option value="14">
+                                                    Management
+                                                </option>
+                                                <option value="15">
+                                                    Manufacturing
+                                                </option>
+                                                <option value="16">
+                                                    Media
+                                                </option>
+                                                <option value="17">
+                                                    Mining and Quanrying
+                                                </option>
+                                                <option value="18">
+                                                    Other Community, Social & Personal Service Activities
+                                                </option>
+                                                <option value="19">
+                                                    Public Administration & Defense;
+                                                    Compulsory Social Security
+                                                </option>
+                                                <option value="20">
+                                                    Technology
+                                                </option>
+                                                <option value="21">
+                                                    Transport, Storage
+                                                </option>
+                                                <option value="22">
+                                                    Transport, Storage and Communications
+                                                </option>
+                                                <option value="23">
+                                                    Travel and Leisure
+                                                </option>
+                                                <option value="24">
+                                                    Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
+                                                </option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.IndustryName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PositionName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.PositionName">
+                                            <span asp-validation-for="BarrowersInformationModel.PositionName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.YearsEmployment"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.YearsEmployment">
+                                            <span asp-validation-for="BarrowersInformationModel.YearsEmployment" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.NumberOfDependent"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.NumberOfDependent">
+                                            <span asp-validation-for="BarrowersInformationModel.NumberOfDependent" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                            Employer/Business Address & Contact Details
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
+                                            <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
+                                            <span name="BarrowersInformationModel.BusinessDirectLineNumber.Error" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
+                                            <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
+                                            <span name="BarrowersInformationModel.BusinessTruckLineNumber.Error" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessEmail"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessEmail">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" hidden>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="BarrowersInformationModel.IsBusinessAddressAbroad" type="checkbox" class="form-check-input">
+                                            <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessUnitName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessUnitName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessUnitName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessUnitName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBuildingName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBuildingName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessBuildingName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessBuildingName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessLotName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessLotName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessLotName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessLotName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessStreetName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessStreetName">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessStreetName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessSubdivisionName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessSubdivisionName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessSubdivisionName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessSubdivisionName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessBaranggayName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessBaranggayName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessBaranggayName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessBaranggayName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessMunicipalityName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessMunicipalityName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessMunicipalityName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessMunicipalityName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessProvinceName"></label>
+                                            <input type="text" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessProvinceName" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.BusinessProvinceName)">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessProvinceName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" col="9">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessZipCode"></label>
+                                            <input class="form-control rounded-3  codeInputMask" asp-for="BarrowersInformationModel.BusinessZipCode" maxlength="10">
+                                            <span asp-validation-for="BarrowersInformationModel.BusinessZipCode" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="BarrowersInformationModel.PreparedMailingAddress" class="form-label fw-normal" required></label>
+                                            <select asp-for="BarrowersInformationModel.PreparedMailingAddress" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.PreparedMailingAddress" readonly required>
+                                                <option value="">Select Preferred Mailing Address ...</option>
+                                                <option value="Present Home Address">Present Home Address</option>
+                                                <option value="Employer/Business Address">Employer/Business Address</option>
+                                                <option value="Permanent Home Address">Permanent Home Address</option>
+                                            </select>
+                                            <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact"></label>
+                                            <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact">
+                                            <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <ul class="pager wizard mb-0 list-inline">
-                            <li class="previous list-inline-item">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
-                            </li>
-                            <li class="next list-inline-item float-end">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                            </li>
-                        </ul>
+                        <div class="col-md-12 mt-3">
+                            <ul class="pager wizard mb-0 list-inline">
+                                <li class="previous list-inline-item">
+                                    <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                </li>
+                                <li class="next list-inline-item float-end">
+                                    <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
 
@@ -936,6 +962,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BirthDate"></label>
+                                    <span class="fs-6 fst-italic">@Html.DescriptionFor(m => m.SpouseModel.BirthDate)</span>
                                     <input type="text" class="form-control rounded-3 text-start calendarpicker" asp-for="SpouseModel.BirthDate" data-value="@Model.SpouseModel.BirthDate">
                                     <span asp-validation-for="SpouseModel.BirthDate" class="text-danger"> </span>
                                 </div>
@@ -960,8 +987,6 @@
                                 </h3>
                             </div>
 
-
-
                             <div class="col-md-9">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessName"></label>
@@ -979,7 +1004,7 @@
                             </div>
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.OccupationStatus"></label>
                                     <select asp-for="SpouseModel.OccupationStatus" class="rounded-4 selectize readonly" data-value="@Model.SpouseModel.OccupationStatus">
@@ -991,9 +1016,7 @@
                                 </div>
                             </div>
 
-
-
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.EmploymentPosition"></label>
                                     <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.EmploymentPosition">
@@ -1002,7 +1025,7 @@
                             </div>
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
                                     <input type="tel" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
@@ -1012,6 +1035,11 @@
                             </div>
 
 
+                            <div class="col-md-12">
+                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
+                                    Employer/Business Address
+                                </h3>
+                            </div>
 
                             <div class="col-md-12" hidden>
                                 <div class="form-check form-check-inline">
@@ -1173,18 +1201,16 @@
                             </div>
                         </div>
 
-
-
-
-
-                        <ul class="pager wizard mb-0 list-inline mt-1">
-                            <li class="previous list-inline-item">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
-                            </li>
-                            <li class="next list-inline-item float-end">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                            </li>
-                        </ul>
+                        <div class="col-md-12 mt-3">
+                            <ul class="pager wizard mb-0 list-inline mt-1">
+                                <li class="previous list-inline-item">
+                                    <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                </li>
+                                <li class="next list-inline-item float-end">
+                                    <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
 
@@ -1204,6 +1230,7 @@
                                             <tr class="bg-black">
                                                 <th colspan="6" class="text-center">
                                                     <h3 class="text-white m-0">BANK ACCOUNTS</h3>
+                                                    <span class="text-white fs-6 fst-italic">(Indicate your 3 most active)</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1332,13 +1359,14 @@
                                             </tr>
                                             <tr class="bg-black">
                                                 <th colspan="6" class="text-center">
-                                                    <h3 class="text-white m-0">CREDIT CARD OWNED</h3>
+                                                    <h3 class="text-white m-0">CREDIT CARDS OWNED</h3>
+                                                    <span class="text-white fs-6 fst-italic">(Indicate your 3 most active)</span>
                                                 </th>
                                             </tr>
                                             <tr class="text-center fw-bold text-dark">
                                                 <th colspan="3">ISSUER NAME</th>
-                                                <td>CARD TYPE</td>
-                                                <td>CARD EXPIRY</td>
+                                                <td>CARD TYPE<br /><span class="fs-6 fst-italic">(e.g. Visa/Mastercard)</span></td>
+                                                <td>CARD EXPIRY<br /><span class="fs-6 fst-italic">(mm/yyyy)</span></td>
                                                 <td>CREDIT LIMIT</td>
                                             </tr>
                                             <tr>
@@ -1406,7 +1434,7 @@
                                             <tr class="text-center fw-bold text-dark">
                                                 <th>LOCATION</th>
                                                 <td>TYPE OF PROPERTY</td>
-                                                <td>AQUISITION COST</td>
+                                                <td>ACQUISITION COST</td>
                                                 <td>MARKET VALUE</td>
                                                 <td>MORTGAGE BALANCE</td>
                                                 <td>RENTAL INCOME</td>
@@ -1535,7 +1563,7 @@
                                                 <th>CREDITOR & ADDRESS</th>
                                                 <td>SECURITY</td>
                                                 <td>TYPE</td>
-                                                <td>AMOUNT BALANCE</td>
+                                                <td>AMOUNT/BALANCE</td>
                                                 <td>MATURITY DATE</td>
                                                 <td>MO. AMORTIZATION</td>
                                             </tr>
@@ -1659,8 +1687,11 @@
                                                         MISCELLANEOUS
                                                     </h3>
                                                     <p class="text-white m-0">
-                                                        Answering the following questions are
-                                                        <strong class="text-warning">(optional)</strong>
+                                                        (Answer the following questions with 
+                                                        <strong class="text-warning">YES</strong> or 
+                                                        <strong class="text-warning">NO</strong>. 
+                                                        If your answer is <strong class="text-warning">YES</strong>, please elaborate the details as required)
+                                                        @* <strong class="text-warning">(optional)</strong> *@
                                                     </p>
                                                 </th>
                                             </tr>
@@ -1750,20 +1781,20 @@
                                         <thead>
                                             <tr class="bg-black">
                                                 <th colspan="8" class="text-center">
-                                                    <h3 class="text-white m-0">LOAN CREDIT REFERENCES</h3>
+                                                    <h3 class="text-white m-0">LOAN AND CREDIT REFERENCES</h3>
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="text-center fw-bold text-dark">
-                                                <th>BANK FINANCIAL INSTITUTION</th>
+                                                <th>BANK/FINANCIAL INSTITUTION</th>
                                                 <td>ADDRESS</td>
                                                 <td>PURPOSE</td>
                                                 <td>SECURITY</td>
                                                 <td>HIGHEST AMOUNT OWED</td>
                                                 <td>PRESENT BALANCE</td>
                                                 <td>DATE OBTAINED</td>
-                                                <td>DATE FULLYPAID</td>
+                                                <td>DATE FULLY PAID</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -1917,13 +1948,13 @@
                                             </tr>
                                             <tr class="bg-black">
                                                 <th colspan="8" class="text-center">
-                                                    <h3 class="text-white m-0">TRADE REFERENCES</h3>
+                                                    <h3 class="text-white m-0">TRADE REFERENCES <span class="text-white fs-6 fst-italic">(For Self-Employed Only)</span></h3>
                                                 </th>
                                             </tr>
                                             <tr class="text-center fw-bold text-dark">
-                                                <th colspan="6">CREDITOR & ADDRESS</th>
-                                                <td>SECURITY</td>
-                                                <td>TEL NO.</td>
+                                                <th colspan="6">NAME OF SUPPLIER</th>
+                                                <td>ADDRESS</td>
+                                                <td>TEL. NO.</td>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
@@ -1996,7 +2027,7 @@
                                             <tr class="text-center fw-bold text-dark">
                                                 <th colspan="6">NAME</th>
                                                 <td>ADDRESS</td>
-                                                <td>TEL NO.</td>
+                                                <td>TEL. NO.</td>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">

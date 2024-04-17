@@ -194,13 +194,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Prompt = "Type")]
         public string Type3 { get; set; }
 
-        [Display(Prompt = "Amount balance")]
+        [Display(Prompt = "Amount/Balance")]
         public decimal? AmountBalance1 { get; set; }
 
-        [Display(Prompt = "Amount balance")]
+        [Display(Prompt = "Amount/Balance")]
         public decimal? AmountBalance2 { get; set; }
 
-        [Display(Prompt = "Amount balance")]
+        [Display(Prompt = "Amount/Balance")]
         public decimal? AmountBalance3 { get; set; }
 
         [DataType(DataType.Date)]
@@ -226,16 +226,16 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Prompt = "Amortization")]
         public decimal? Amortization3 { get; set; }
 
-        [DisplayName("Are there past or pending cases against you? \n if Yes, please indicate the nature, plaintiff,amount involved and the status")]
+        [DisplayName("Are there past or pending cases against you? \nIf Yes, please indicate the nature, plaintiff, amount involved and the status.")]
         public string PendingCase { get; set; }
 
-        [DisplayName("Do you have past due obligations? \n if yes, please indicate the creditor's name,nature, amount involved and due date")]
+        [DisplayName("Do you have past due obligations? \nIf yes, please indicate the creditor's name, nature, amount involved and due date.")]
         public string PastDue { get; set; }
 
-        [DisplayName("Was your bank account ever closed because of mishandling or issuance of bouncing checks?, if yes please indicate the bank's name, nature amount and date")]
+        [DisplayName("Was your bank account ever closed because of mishandling or issuance of bouncing checks? \nIf yes, please indicate the bank's name, nature amount and date")]
         public string BouncingChecks { get; set; }
 
-        [DisplayName("Have you ever been diagnosed,treated or given medical advice by physician or other health care provider?, if yes please indicate the condition/diagnosis")]
+        [DisplayName("Have you ever been diagnosed, treated or given medical advice by physician or other health care provider? \nIf yes please indicate the condition/diagnosis.")]
         public string MedicalAdvice { get; set; }
 
         [Display(Prompt = "Bank financial")]
