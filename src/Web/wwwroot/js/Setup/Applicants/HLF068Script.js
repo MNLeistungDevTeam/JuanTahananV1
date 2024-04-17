@@ -1,4 +1,4 @@
-﻿/// <reference path="../../../lib/intl-tel-input/build/js/utils.js" />
+﻿
 const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 

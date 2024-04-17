@@ -16,6 +16,6 @@ namespace DMS.Application.Services
         Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body);
         Task SendUserConfirmationMessage(UserModel model);
         Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail);
- 
+
     }
 }

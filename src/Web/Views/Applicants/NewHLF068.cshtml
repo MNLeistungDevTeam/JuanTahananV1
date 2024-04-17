@@ -22,7 +22,6 @@
 </div>
 <!-- end page title -->
 
-
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
@@ -415,15 +414,17 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.HomeNumber"></label>
-                                                <input type="text" class="form-control rounded-30 " asp-for="BarrowersInformationModel.HomeNumber">
+                                                <input type="tel" class="form-control rounded-30 " asp-for="BarrowersInformationModel.HomeNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.HomeNumber" class="text-danger"> </span>
+                                                <span name="BarrowersInformationModel.HomeNumber.Error" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.MobileNumber" required></label>
-                                                <input class="form-control rounded-3  mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
+                                                <input type="tel" class="form-control rounded-3  mobileNumInputMask" asp-for="BarrowersInformationModel.MobileNumber" required>
                                                 <span asp-validation-for="BarrowersInformationModel.MobileNumber" class="text-danger"> </span>
+                                                <span name="BarrowersInformationModel.MobileNumber.Error" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -765,6 +766,7 @@
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessDirectLineNumber"></label>
                                                 <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessDirectLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessDirectLineNumber" class="text-danger"> </span>
+                                                <span name="BarrowersInformationModel.BusinessDirectLineNumber.Error" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -772,6 +774,7 @@
                                                 <label class="form-label fw-normal" asp-for="BarrowersInformationModel.BusinessTruckLineNumber"></label>
                                                 <input type="tel" class="form-control rounded-3 " asp-for="BarrowersInformationModel.BusinessTruckLineNumber">
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessTruckLineNumber" class="text-danger"> </span>
+                                                <span name="BarrowersInformationModel.BusinessTruckLineNumber.Error" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -1002,8 +1005,9 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="SpouseModel.BusinessTelNo"></label>
-                                    <input type="text" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
+                                    <input type="tel" class="form-control rounded-3 " asp-for="SpouseModel.BusinessTelNo">
                                     <span asp-validation-for="SpouseModel.BusinessTelNo" class="text-danger"> </span>
+                                    <span name="SpouseModel.BusinessTelNo.Error" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -1328,7 +1332,7 @@
                                             </tr>
                                             <tr class="bg-black">
                                                 <th colspan="6" class="text-center">
-                                                    <h3 class="text-white m-0">CREDIT CARDS OWNED</h3>
+                                                    <h3 class="text-white m-0">CREDIT CARD OWNED</h3>
                                                 </th>
                                             </tr>
                                             <tr class="text-center fw-bold text-dark">
@@ -1936,8 +1940,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo1">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo1">
                                                         <span asp-validation-for="Form2PageModel.TradeTellNo1" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.TradeTellNo1.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1956,8 +1961,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo2">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo2">
                                                         <span asp-validation-for="Form2PageModel.TradeTellNo2" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.TradeTellNo2.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1976,8 +1982,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo3">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.TradeTellNo3">
                                                         <span asp-validation-for="Form2PageModel.TradeTellNo3" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.TradeTellNo3.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2006,8 +2013,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo1">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo1">
                                                         <span asp-validation-for="Form2PageModel.CharacterTellNo1" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.CharacterTellNo1.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2026,8 +2034,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo2">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo2">
                                                         <span asp-validation-for="Form2PageModel.CharacterTellNo2" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.CharacterTellNo2.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2046,8 +2055,9 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo3">
+                                                        <input type="tel" class="form-control rounded-3 text-center" asp-for="Form2PageModel.CharacterTellNo3">
                                                         <span asp-validation-for="Form2PageModel.CharacterTellNo3" class="text-danger"> </span>
+                                                        <span name="Form2PageModel.CharacterTellNo3.Error" class="text-danger"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2218,9 +2228,6 @@
         </div> <!-- end #rootwizard-->
     </div>
 </div>
-
-
-
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>

@@ -2,13 +2,8 @@
 const roleName = $("#txt_role_name").val();
 
 $(function () {
-    //var form2DateObt1 = $("#Form2PageModel_DateObtained1");
-    //var form2DateObt2 = $("#Form2PageModel_DateObtained2");
-    //var form2DateObt3 = $("#Form2PageModel_DateObtained3");
-
-    //var form2DateFull1 = $("#Form2PageModel_DateFullyPaid1");
-    //var form2DateFull2 = $("#Form2PageModel_DateFullyPaid2");
-    //var form2DateFull3 = $("#Form2PageModel_DateFullyPaid3");
+    var telNoArray = [];
+    var itiFlag = false;
 
     $(".selectize").selectize({
         search: false
@@ -48,7 +43,7 @@ $(function () {
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    // Disable 'e', '+', and '-'
+    // Disable 'e', '+', and '-' - not yet
 
     // Disable 'e', '+', retain '-'
     $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
@@ -57,17 +52,20 @@ $(function () {
     $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
 
     // Disable 'e', retain '-', '+'
-    $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
-    $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    //$(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     initializeLoanCreditDate();
+
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
 
@@ -355,6 +353,46 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     })
+
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-pdRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PastDue']");
+
+        if ($("#pdRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-bcRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
+
+        if ($("#bcRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-maRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
+
+        if ($("#maRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
 
     //#endregion
 
@@ -1017,46 +1055,6 @@ $(function () {
         }
     });
 
-    $('.radio-pcRadio input[type="radio"]').on('change', function () {
-        let $inputField = $("[name='Form2PageModel.PendingCase']");
-
-        if ($("#pcRadioBtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-        }
-    });
-
-    $(".radio-pdRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.PastDue']");
-
-        if ($("#pdRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-        }
-    });
-
-    $(".radio-bcRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
-
-        if ($("#bcRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-        }
-    });
-
-    $(".radio-maRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
-
-        if ($("#maRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-        }
-    });
-
     //#endregion
 
     //$('#form2').on('submit', async function (e) {
@@ -1252,7 +1250,7 @@ $(function () {
 
         $form.on("submit", function (e) {
             e.preventDefault();
-            
+
             let formData = new FormData(e.target);
 
             if ($(this).valid() == false) {
@@ -1454,6 +1452,64 @@ $(function () {
                 }
             }
         });
+    }
+
+    function initializeIntlTelInput() {
+        //var homeNum = intlTelInput(document.getElementById(`BarrowersInformationModel_HomeNumber`), intlTelConfig);
+        //var mobileNum = intlTelInput(document.getElementById(`BarrowersInformationModel_MobileNumber`), intlTelConfig);
+        //var businessDirectLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessDirectLineNumber`), intlTelConfig);
+        //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
+        //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
+
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessTruckLineNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`SpouseModel.BusinessTelNo`)[0], intlTelConfig));
+
+        $.each($(`input[name^="Form2PageModel.TradeTellNo"]`), function (i, element) {
+            let elem = intlTelInput(element, intlTelConfig);
+            telNoArray.push(elem);
+        });
+
+        $.each($(`input[name^="Form2PageModel.CharacterTellNo"]`), function (i, element) {
+            let elem = intlTelInput(element, intlTelConfig);
+            telNoArray.push(elem);
+        });
+
+        console.log(telNoArray);
+
+        // apply validation
+        for (var index in telNoArray) {
+            let itiElement = telNoArray[index];
+
+            $(`[name="${itiElement.a.name}"]`).on('input', function () {
+                let id = $(this).attr('id');
+                let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+
+                console.log(itiInstance.isValidNumberPrecise());
+
+                if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                    console.log(itiInstance.getValidationError());
+                    $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+                }
+                else {
+                    $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+                }
+            });
+        }
+
+        //itiFlag = true;
+    }
+
+    function initializeBasicTelInput() {
+        $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+        $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
 
     //#endregion

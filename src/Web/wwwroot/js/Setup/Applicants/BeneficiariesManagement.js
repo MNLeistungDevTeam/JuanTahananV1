@@ -69,7 +69,7 @@ $(() => {
                                 <i class="mdi mdi-dots-horizontal"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-animated" style="">
-                                ${data != null ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Document</a>` : ''}
+                                ${data != null ? `<a class="dropdown-item" href="/Document/DocumentUpload${applicantCode}">Upload Requirements</a>` : ''}
                                  ${data != null ? `   <a class="dropdown-item" href="/Applicants/HLF068${applicantCode}">Edit Active HLAF</a>` : ''}
                                     ${data != null ? `   <a class="dropdown-item" href="/Applicants/Details${applicantCode}">View Application Details</a>` : ''}
                                  ${data == null ? `  <a class="dropdown-item" href="/Applicants/NEWHLF068/${row.PagibigNumber}">Create New HLAF</a>` : ''}
