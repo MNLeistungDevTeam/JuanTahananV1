@@ -64,6 +64,19 @@ $(async function () {
                 $('.selectize option').show();
             }
         });
+
+        $(document).ready(function () {
+            // Add click event listener to the tab
+            $('[href="#tab4"]').click(function () {
+                // Display alert message
+
+                if (stageNo == 1) {
+                    messageBox('Cant Proceed to Application Tab, this application is currently on Credit Verification stage!', 'danger');
+
+                    document.querySelector('a[href="#settings-b1"]').click();
+                }
+            });
+        });
     });
 
     //#region Events
