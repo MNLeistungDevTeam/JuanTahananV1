@@ -5,7 +5,7 @@ using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ReportDto;
-using DMS.Domain.Utilities;
+using System.Reflection;
 
 namespace DMS.Infrastructure.Services
 {
@@ -133,12 +133,12 @@ namespace DMS.Infrastructure.Services
                     {
                     //FormalPicture =  formalPicture,
 
-                ApplicantsPersonalInformationModel =  applicantInfoModel,
-                        SpouseModel = spouseInfoModel,
-                        BarrowersInformationModel = barrowerInfoModel,
-                        LoanParticularsInformationModel = loanParticularsInfoModel,
-                        Form2PageModel = form2InfoModel,
-                        CollateralInformationModel = collateralInfoModel,
+                ApplicantsPersonalInformationModel =       ConvertStringPropertiesToUppercase(applicantInfoModel),
+                        SpouseModel = ConvertStringPropertiesToUppercase(spouseInfoModel),
+                        BarrowersInformationModel =  ConvertStringPropertiesToUppercase(barrowerInfoModel),
+                        LoanParticularsInformationModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel),
+                        Form2PageModel = ConvertStringPropertiesToUppercase(form2InfoModel),
+                        CollateralInformationModel = ConvertStringPropertiesToUppercase(collateralInfoModel),
                     }
                 };
 
@@ -152,6 +152,25 @@ namespace DMS.Infrastructure.Services
             {
                 throw;
             }
+        }
+
+        public static T ConvertStringPropertiesToUppercase<T>(T obj)
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.PropertyType == typeof(string) && property.CanWrite)
+                {
+                    string value = (string)property.GetValue(obj);
+                    if (value != null)
+                    {
+                        property.SetValue(obj, value.ToUpper());
+                    }
+                }
+            }
+
+            return obj;
         }
     }
 }

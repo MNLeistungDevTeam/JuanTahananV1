@@ -9,7 +9,7 @@ AS
 		ar.[Name] ApproverRole,
 		CONCAT(u2.Firstname,' ',u2.MiddleName,' ',u2.LastName) ApproverFullName,
 		u2.FirstName ApproverFirstName,
-		CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
@@ -18,7 +18,7 @@ AS
 			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
-			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 		CASE
@@ -30,7 +30,9 @@ AS
 			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 1
 			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
-		aps.Remarks	
+		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		u2.Position AS ApproverRole,
+		aps.Remarks 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId

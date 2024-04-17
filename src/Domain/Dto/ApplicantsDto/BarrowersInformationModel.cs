@@ -133,6 +133,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Employer", Prompt = "Employer Name")]
         public string? EmployerName { get; set; }
 
+        [Required]
         [DisplayName("Industry")]
         public string? IndustryName { get; set; }
 

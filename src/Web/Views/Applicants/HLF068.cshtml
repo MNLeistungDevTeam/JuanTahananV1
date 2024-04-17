@@ -95,7 +95,7 @@
                         <div class="row gy-2">
                             <div class="col-md-12">
                                 <h3 class="text-dark float-start">
-                                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Loan Particulars</span>
+                                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">LOAN PARTICULARS</span>
                                 </h3>
                             </div>
 
@@ -171,7 +171,7 @@
                             </div>
                             <div class="col-md-12">
                                 <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Collateral</span>
+                                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">COLLATERAL</span>
                                 </h3>
                             </div>
                             <div class="col-md-4">
@@ -334,7 +334,7 @@
 
                                     <div class="row gy-2">
                                         <div class="col-md-12">
-                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Borrower-Beneficiary's Data</span>
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BORROWER-BENEFICIARY'S DATA</span>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
@@ -434,7 +434,7 @@
                                                 <span asp-validation-for="BarrowersInformationModel.Email" class="text-danger"> </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" hidden>
                                             <div class="form-check form-check-inline">
                                                 <input asp-for="BarrowersInformationModel.IsPermanentAddressAbroad" type="checkbox" class="form-check-input">
                                                 <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPermanentAddressAbroad"></label>
@@ -503,7 +503,7 @@
                                                 <span asp-validation-for="BarrowersInformationModel.PermanentZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" hidden>
                                             <div class="form-check form-check-inline">
                                                 <input asp-for="BarrowersInformationModel.IsPresentAddressAbroad" type="checkbox" class="form-check-input">
                                                 <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsPresentAddressAbroad"></label>
@@ -784,7 +784,7 @@
                                                 <span asp-validation-for="BarrowersInformationModel.BusinessEmail" class="text-danger"> </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" hidden>
                                             <div class="form-check form-check-inline">
                                                 <input asp-for="BarrowersInformationModel.IsBusinessAddressAbroad" type="checkbox" class="form-check-input">
                                                 <label class="form-check-label header-title" asp-for="BarrowersInformationModel.IsBusinessAddressAbroad"></label>
@@ -896,7 +896,7 @@
 
                         <div class="row gy-2">
                             <div class="col-md-12">
-                                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Spouse's Data'</span>
+                                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">SPOUSE'S PERSONAL DATA</span>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
@@ -1013,7 +1013,7 @@
 
 
 
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="form-check form-check-inline">
                                     <input asp-for="SpouseModel.IsSpouseAddressAbroad" type="checkbox" class="form-check-input">
                                     <label class="form-check-label header-title" asp-for="SpouseModel.IsSpouseAddressAbroad"></label>
@@ -1203,7 +1203,7 @@
                                         <thead>
                                             <tr class="bg-black">
                                                 <th colspan="6" class="text-center">
-                                                    <h3 class="text-white m-0">BANK ACCOUNTS (Indicate your 3 most active)</h3>
+                                                    <h3 class="text-white m-0">BANK ACCOUNTS</h3>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1332,7 +1332,7 @@
                                             </tr>
                                             <tr class="bg-black">
                                                 <th colspan="6" class="text-center">
-                                                    <h3 class="text-white m-0">CREDIT CARD OWNED (Indicate your 3 most active)</h3>
+                                                    <h3 class="text-white m-0">CREDIT CARD OWNED</h3>
                                                 </th>
                                             </tr>
                                             <tr class="text-center fw-bold text-dark">
@@ -1666,36 +1666,76 @@
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
-                                                    <div class="position-relative">
+                                                    <div class="position-relative radio-pcRadio">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PendingCase"></label>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
+                                                        <div class="mb-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" id="pcRadioBtn1" name="customRadio1" class="form-check-input">
+                                                                <label class="form-check-label" for="pcRadioBtn1">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" id="pcRadioBtn2" name="customRadio1" class="form-check-input" checked>
+                                                                <label class="form-check-label" for="pcRadioBtn2">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase" disabled>
                                                         <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
-                                                    <div class="position-relative">
+                                                    <div class="position-relative radio-pdRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PastDue"></label>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
+                                                        <div class="mb-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio2" id="pdRbtn1" />
+                                                                <label class="form-check-label">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio2" id="pdRbtn2" checked />
+                                                                <label class="form-check-label">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue" disabled>
                                                         <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
-                                                    <div class="position-relative">
+                                                    <div class="position-relative radio-bcRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.BouncingChecks"></label>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BouncingChecks">
+                                                        <div class="mb-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn1"/>
+                                                                <label class="form-check-label">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn2" checked/>
+                                                                <label class="form-check-label">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BouncingChecks" disabled />
                                                         <span asp-validation-for="Form2PageModel.BouncingChecks" class="text-danger"> </span>
                                                     </div>
                                                 </th>
                                             </tr>
                                             <tr>
                                                 <th colspan="6">
-                                                    <div class="position-relative">
+                                                    <div class="position-relative radio-maRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.MedicalAdvice"></label>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
+                                                        <div class="mb-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio4" id="maRbtn1" />
+                                                                <label class="form-check-label">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="customRadio4" id="maRbtn2" checked />
+                                                                <label class="form-check-label">No</label>
+                                                            </div>
+                                                        </div>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice" disabled>
                                                         <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1710,7 +1750,7 @@
                                         <thead>
                                             <tr class="bg-black">
                                                 <th colspan="8" class="text-center">
-                                                    <h3 class="text-white m-0">LOAN AND CREDIT REFERENCES</h3>
+                                                    <h3 class="text-white m-0">LOAN CREDIT REFERENCES</h3>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1877,7 +1917,7 @@
                                             </tr>
                                             <tr class="bg-black">
                                                 <th colspan="8" class="text-center">
-                                                    <h3 class="text-white m-0">TRADE REFERENCES (For Self-Employed only)</h3>
+                                                    <h3 class="text-white m-0">TRADE REFERENCES</h3>
                                                 </th>
                                             </tr>
                                             <tr class="text-center fw-bold text-dark">

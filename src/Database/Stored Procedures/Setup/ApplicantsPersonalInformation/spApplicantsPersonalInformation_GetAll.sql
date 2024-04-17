@@ -3,7 +3,7 @@
 AS
 	 SELECT 
 		apl.*,
-		CONCAT(u.LastName,', ',u.FirstName,'',u.MiddleName) ApplicantFullName,
+		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
 		bi.PropertyDeveloperName Developer,
@@ -15,7 +15,7 @@ AS
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
-		CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
@@ -24,7 +24,7 @@ AS
 			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
-			WHEN apl.ApprovalStatus = 9 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 		CASE
@@ -37,8 +37,14 @@ AS
 			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
 		apl.ApprovalStatus ApprovalStatusNumber,
-		aplog.DateCreated DateSubmitted
-
+		aplog.DateCreated DateSubmitted,
+		CASE
+			WHEN apl.ApprovalStatus = 0 THEN NULL
+			ELSE 	apl.DateModified 
+		END LastUpdated,
+		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		u2.Position AS ApproverRole,
+		aps.Remarks  
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id
@@ -67,6 +73,8 @@ AS
 	) aplog ON   aplog.ReferenceId = apl.Id 
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
+	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId
+
 	 WHERE 
     1 = (
         CASE  

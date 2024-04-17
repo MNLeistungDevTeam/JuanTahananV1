@@ -1,19 +1,11 @@
-﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿
+
+const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 
-
-
 $(function () {
-    //var form2DateObt1 = $("#Form2PageModel_DateObtained1");
-    //var form2DateObt2 = $("#Form2PageModel_DateObtained2");
-    //var form2DateObt3 = $("#Form2PageModel_DateObtained3");
-
-    //var form2DateFull1 = $("#Form2PageModel_DateFullyPaid1");
-    //var form2DateFull2 = $("#Form2PageModel_DateFullyPaid2");
-    //var form2DateFull3 = $("#Form2PageModel_DateFullyPaid3");
-
-
-    //#region Initialization
+    var telNoArray = [];
+    var itiFlag = false;
 
     $(".selectize").selectize({
         search: false
@@ -51,12 +43,9 @@ $(function () {
         clearIncomplete: true
     });
 
-
-
-
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
-    // Disable 'e', '+', and '-'
+    // Disable 'e', '+', and '-' - not yet
 
     // Disable 'e', '+', retain '-'
     $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
@@ -65,23 +54,81 @@ $(function () {
     $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
 
     // Disable 'e', retain '-', '+'
-    $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
-    $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+    //$(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    //$(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
-    //#endregion
-
-  
     initializeLoanCreditDate();
+
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
 
+    $('#rootwizard').bootstrapWizard({
+        onNext: function (tab, navigation, index, e) {
+            console.log("Next button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the previous form (loanparticulars) and remove 'fade' class
+            var prevForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            currentForm.addClass('was-validated');
+
+            // Validate the current form
+            var isValid = validateForm(currentForm);
+
+            // If current form is "form2", return without proceeding to next step
+            if (currentFormName == "form2") {
+                return;
+            }
+
+            if (!isValid) {
+                // If validation fails, prevent navigation to the next step
+                return false;
+            } else {
+                // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false);
+            }
+        },
+        onPrevious: function (tab, navigation, index) {
+            console.log("Previous button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the current form (collateral) and remove 'fade' class
+            var nextForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            // Hide the current form
+            currentForm.addClass('fade').prop('hidden', true);
+
+            // Show the next form
+            nextForm.removeClass('fade').prop('hidden', false);
+
+            // Always return true to allow navigation to the previous step
+            return true;
+        }
+    });
 
     //#region Loan Particulars
 
@@ -308,6 +355,46 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     })
+
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-pdRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PastDue']");
+
+        if ($("#pdRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-bcRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
+
+        if ($("#bcRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
+
+    $(".radio-maRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
+
+        if ($("#maRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
+    });
 
     //#endregion
 
@@ -972,68 +1059,66 @@ $(function () {
 
     //#endregion
 
+    //$('#form2').on('submit', async function (e) {
+    //    e.preventDefault();
+    //    let $loanparticulars = $('#loanparticulars');
+    //    let $collateraldata = $('#collateraldata');
+    //    let $spousedata = $('#spousedata');
+    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
+    //        return;
+    //    }
+    //    let loanparticulars = $loanparticulars.serializeArray();
+    //    let collateraldata = $collateraldata.serializeArray();
+    //    let spousedata = $spousedata.serializeArray();
+    //    let form2 = $(this).serializeArray();
+    //    let combinedData = {};
+    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
+    //        combinedData[obj.name] = obj.value;
+    //    });
 
+    //    // Use await before the AJAX call
+    //    try {
+    //        await $.ajax({
+    //            type: 'POST',
+    //            url: '/Applicants/SaveHLF068',
+    //            data: combinedData,
+    //            beforeSend: function () {
+    //                loading("Saving Changes...");
+    //            },
+    //            success: async function (response) {
+    //                messageBox("Successfully", "success", true);
 
-    //#region Events
+    //                if (applicantInfoIdVal == 0) {
+    //                    loader.close();
+    //                    setTimeout(function () {
+    //                        window.location.href = "/Applicants/HLF068/" + response;
+    //                    }, 2000);
+    //                }
+    //                else {
+    //                    loader.close();
 
-    $('#rootwizard').bootstrapWizard({
-        onNext: function (tab, navigation, index, e) {
-            console.log("Next button clicked");
+    //                    setTimeout(function () {
+    //                        // Redirect to the specified location
+    //                        window.location.href = "/Applicants/ApplicantRequests";
+    //                    }, 2000); // 2000 milliseconds = 2 seconds
+    //                }
+    //            },
+    //            error: async function (jqXHR, textStatus, errorThrown) {
+    //                console.log(jqXHR.responseText);
+    //                messageBox(jqXHR.responseText, "danger", true);
+    //                loader.close();
+    //            }
+    //        });
+    //    } catch (error) {
+    //        // Handle any errors from the AJAX request
+    //        console.log(error);
+    //        // Optionally display an error message
+    //        messageBox("An error occurred during the submission.", "danger", true);
+    //    }
+    //});
 
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
+    //#region Methods
 
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the previous form (loanparticulars) and remove 'fade' class
-            var prevForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            currentForm.addClass('was-validated');
-
-            // Validate the current form
-            var isValid = validateForm(currentForm);
-
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                return;
-            }
-
-            if (!isValid) {
-                // If validation fails, prevent navigation to the next step
-                return false;
-            } else {
-                // Hide the current form
-                currentForm.addClass('fade').prop('hidden', true);
-
-                // Show the previous form
-                prevForm.removeClass('fade').prop('hidden', false);
-            }
-        },
-        onPrevious: function (tab, navigation, index) {
-            console.log("Previous button clicked");
-
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the current form (collateral) and remove 'fade' class
-            var nextForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            // Hide the current form
-            currentForm.addClass('fade').prop('hidden', true);
-
-            // Show the next form
-            nextForm.removeClass('fade').prop('hidden', false);
-
-            // Always return true to allow navigation to the previous step
-            return true;
-        }
-    });
     $("#btn_edit").on('click', function () {
         $("#btn_edit").addClass("active");
 
@@ -1064,10 +1149,7 @@ $(function () {
     });
 
 
-    //#endregion
 
-
-    //#region Methods
 
     $(function () {
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true);
@@ -1213,6 +1295,13 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
+
+        // Prevent form submission when "Enter" key is pressed
+        $form.on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        });
 
         $form.on("submit", function (e) {
             e.preventDefault();
@@ -1422,6 +1511,64 @@ $(function () {
                 }
             }
         });
+    }
+
+    function initializeIntlTelInput() {
+        //var homeNum = intlTelInput(document.getElementById(`BarrowersInformationModel_HomeNumber`), intlTelConfig);
+        //var mobileNum = intlTelInput(document.getElementById(`BarrowersInformationModel_MobileNumber`), intlTelConfig);
+        //var businessDirectLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessDirectLineNumber`), intlTelConfig);
+        //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
+        //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
+
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessTruckLineNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`SpouseModel.BusinessTelNo`)[0], intlTelConfig));
+
+        $.each($(`input[name^="Form2PageModel.TradeTellNo"]`), function (i, element) {
+            let elem = intlTelInput(element, intlTelConfig);
+            telNoArray.push(elem);
+        });
+
+        $.each($(`input[name^="Form2PageModel.CharacterTellNo"]`), function (i, element) {
+            let elem = intlTelInput(element, intlTelConfig);
+            telNoArray.push(elem);
+        });
+
+        console.log(telNoArray);
+
+        // apply validation
+        for (var index in telNoArray) {
+            let itiElement = telNoArray[index];
+
+            $(`[name="${itiElement.a.name}"]`).on('input', function () {
+                let id = $(this).attr('id');
+                let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+
+                console.log(itiInstance.isValidNumberPrecise());
+
+                if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                    console.log(itiInstance.getValidationError());
+                    $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+                }
+                else {
+                    $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+                }
+            });
+        }
+
+        //itiFlag = true;
+    }
+
+    function initializeBasicTelInput() {
+        $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+        $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
 
     //#endregion

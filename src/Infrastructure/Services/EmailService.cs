@@ -13,6 +13,9 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Dto.EmailSettingsDto;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ModuleDto;
+using DMS.Domain.Dto.TemporaryLinkDto;
+using DMS.Domain.Entities;
 
 namespace DMS.Infrastructure.Services
 {
@@ -53,7 +56,7 @@ namespace DMS.Infrastructure.Services
 
 
 
-        public async Task SendApplicationStatus(ApplicantsPersonalInformationModel model,string receiverEmail)
+        public async Task SendApplicationStatus(ApplicantsPersonalInformationModel model,string receiverEmail) 
         {
             string body = @"
             <!doctype html>
@@ -154,11 +157,10 @@ namespace DMS.Infrastructure.Services
             {
                 Text = body
             };
-            var emails = new List<string> {receiverEmail };
+            var emails = new List<string> { receiverEmail };
             var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
             await SendEmailAsync(emails, subject, emailBody);
         }
-
 
         public async Task SendUserCredential(UserModel model)
         {
@@ -194,55 +196,48 @@ namespace DMS.Infrastructure.Services
                                 <tr>
                                     <td style=""height:20px;"">&nbsp;</td>
                                 </tr>
+                               <tr>
+                        <td>
+                            <table width=""95%"" border=""0"" align=""center"" cellpadding=""0"" cellspacing=""0""
+                                   style=""max-width:670px; background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"">
                                 <tr>
-                                    <td>
-                                        <table width=""95%"" border=""0"" align=""center"" cellpadding=""0"" cellspacing=""0""
-                                            style=""max-width:670px; background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"">
-                                            <tr>
-                                                <td style=""height:40px;"">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""padding:0 35px;"">
-                                                    <h1 style=""color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"">Get started
-                                                    </h1>
-                                                    <p style=""font-size:15px; color:#455056; margin:8px 0 0; line-height:24px;"">
-                                                        Your account has been {actiontype} on the eiDOC Partnership with JuanTahanan Project. Below are your system generated credentials, <br><strong>Please change
-                                                            the password immediately after login</strong>.</p>
-                                                    <span
-                                                        style=""display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;""></span>
-                                                    <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
-                                                        <strong
-                                                            style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">Username:</strong> {1}
-                                                        <strong
-                                                    </p>
-                                                    <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
-                                                        <strong
-                                                            style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">Password:</strong> {2}
-                                                        <strong
-                                                    </p>
+                                    <td style=""height:40px;"">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style=""padding:0 35px;"">
+                                        <h1 style=""color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"">Get started</h1>
+                                        <p style=""font-size:15px; color:#455056; margin:8px 0 0; line-height:24px;"">Your account has been {actiontype} on the eiDOC Partnership with JuanTahanan Project. Below are your system generated credentials,<br><strong>Please change the password immediately after login</strong>.</p>
+                                        <span style=""display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;""></span>
+                                        <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
+                                            <span style=""font-size: 13px; color:rgba(0,0,0,.64); font-weight:normal;"">Username: </span>
+                                            <strong style=""display: block;font-size: 16px; margin: 0 0 4px; color:#1e1e2d; font-weight:bold;"">{1}</strong>
+                                        </p>
+                                        <p style=""margin-bottom: 1em;""></p> <!-- Add 1 line spacing -->
+                                        <p style=""color:#455056; font-size:18px;line-height:20px; margin:0; font-weight: 500;"">
+                                            <span style=""font-size: 13px; color:rgba(0,0,0,.64); font-weight:normal;"">Password: </span>
+                                            <strong style=""display: block;font-size: 16px; margin: 0 0 4px; color:#1e1e2d; font-weight:bold;"">{2}</strong>
+                                        </p>
 
-                                                    <a href=""https://juantahanan-dms.mnleistung.ph""
-                                                        style=""background:#FEC10E;text-decoration:none !important; display:inline-block; font-weight:500; margin-top:24px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"">Login
-                                                        to your Account</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style=""height:40px;"">&nbsp;</td>
-                                            </tr>
-                                        </table>
+
+                                        <a href=""https://testjuantahanan.mnleistung.ph/"" style=""background:#FEC10E;text-decoration:none !important; display:inline-block; font-weight:500; margin-top:20px; margin-bottom: 30px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"">Login to your Account</a>
+
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style=""height:20px;"">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td style=""text-align:center;"">
-                                        <p style=""font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;"">&copy; <strong>juantahanan-dms.mnleistung.ph</strong> </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style=""height:80px;"">&nbsp;</td>
-                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=""height:20px;"">&nbsp;</td>
+                    </tr> 
+                    <tr>
+                        <td style=""text-align: center;"">
+                            <p style=""font-size: 14px; color: rgba(69, 80, 86, 0.7411764705882353); line-height: 18px; margin: 0 0 0;"">
+                            &copy; <strong>testjuantahanan.mnleistung.ph</strong>
+                            </p>
+                        </td>
+                    </tr>
+
                             </table>
                         </td>
                     </tr>
@@ -261,6 +256,34 @@ namespace DMS.Infrastructure.Services
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
             await SendEmailAsync(emails, subject, emailBody);
+        }
+
+        public async Task SendUserCredential2(UserModel? model,string? rootFolder)
+        {
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "UserCredentialTemplate.html");
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            //string filePath = Path.Combine("EmailTemplate", "UserCredentialTemplate.html");
+            //string rootDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            //string fullPath = Path.Combine(rootDirectory, filePath);
+
+           
+            body = body.Replace("{name}", model.Name).Replace("{userName}", model.UserName).Replace("{password}", model.Password).Replace("{actiontype}", model.Action);
+
+            var emails = new List<string> { model.Email };
+            var subject = $"Welcome {model.Name} to project JuanTahanan!";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+            await SendEmailAsync(emails, subject, generatedbody);
         }
 
         public async Task SendUserConfirmationMessage(UserModel model)
@@ -327,7 +350,7 @@ namespace DMS.Infrastructure.Services
                                                             style=""display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;"">If this was a mistake, just ignore this email and nothing will happen</strong>
                                                         <strong
                                                     </p>
-                                                   
+
                                                 </td>
                                             </tr>
                                             <tr>
@@ -366,11 +389,6 @@ namespace DMS.Infrastructure.Services
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
             await SendEmailAsync(emails, subject, emailBody);
         }
-
-
-
-
-
 
         public async Task SendApplicationStatusToBeneficiary(UserModel model)
         {
@@ -474,9 +492,5 @@ namespace DMS.Infrastructure.Services
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
             await SendEmailAsync(emails, subject, emailBody);
         }
-
-
-
-
     }
 }

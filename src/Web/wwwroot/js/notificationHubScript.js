@@ -13,8 +13,28 @@ $(function () {
     //#region Signal R
 
     notifConnection.on("AddNotifToPage", function (user, message) {
-        toastr.info(message, user);
-        loadSideDashInfo();
+        //toastr.info(message, user);
+        //loadSideDashInfo();
+        var currentURL = window.location.href;
+
+        // Split the URL by '/'
+        var parts = currentURL.split('/');
+
+        // Get the last part of the URL path
+        var urlParams = parts.pop();
+
+        console.log(message)
+        console.log(urlParams)
+
+        if (urlParams === message) {
+            let messageDisplay = user + " update status of Application: " + message;
+            console.log('success');
+
+            iziToasterBox(messageDisplay);
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
     });
 
     notifConnection.on("AddNotifGroup", function (companycode, message) {
