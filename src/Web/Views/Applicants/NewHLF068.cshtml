@@ -584,9 +584,9 @@
                                             <div class="position-relative">
                                                 <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                                 <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                    <option value="">Select HomeOwnership ... </option>
+                                                    <option value="">Select Home Ownership ... </option>
                                                     <option value="Company">Company</option>
-                                                    <option value="Living w/ relatives/parents Separated">Living w/ relatives/parents</option>
+                                                    <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
                                                     <option value="Rented">Rented</option>
                                                 </select>
                                                 <span asp-validation-for="BarrowersInformationModel.HomeOwnerShip" class="text-danger"></span>
@@ -661,8 +661,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName"></label>
-                                                <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName">
+                                                <label class="form-label fw-normal" asp-for="BarrowersInformationModel.IndustryName" required></label>
+                                                <select asp-for="BarrowersInformationModel.IndustryName" class="rounded-4 selectize" data-value="BarrowersInformationModel.IndustryName" required>
                                                     <option value="">Select Industry...</option>
                                                     <option value="1">Accounting</option>
                                                     <option value="2">Activities of Private Households as Employer's & Undifferentiated Production Activities of Private Households</option>
