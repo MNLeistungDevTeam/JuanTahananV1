@@ -143,7 +143,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Employer/Business Name (if self-employed)", Prompt = "Employer Name", Description = "Employer/Business Name (if self-employed)")]
         public string? EmployerName { get; set; }
 
-        [Required]
         [DisplayName("Industry")]
         public string? IndustryName { get; set; }
 
