@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using DMS.Domain.Entities;
 using DMS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
