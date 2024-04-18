@@ -31,6 +31,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? CompanyId { get; set; }
         public int? ApprovalStatus { get; set; }
 
+        public int? EncodedStage { get; set; }
+        public int? EncodedStatus { get; set; }
+
+
+
+
+
         #region Display Properties
 
         public string? ApplicantFullName { get; set; }
