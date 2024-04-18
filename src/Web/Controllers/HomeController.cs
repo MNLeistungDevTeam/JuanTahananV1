@@ -1,32 +1,35 @@
 ﻿using AutoMapper;
-using DMS.Domain.Enums;
+using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Application.Services;
+using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.Interfaces.Setup.ModuleRepository;
-using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Application.Services;
-using DMS.Domain.Dto.ModuleDto;
-using DMS.Domain.Dto.UserDto;
-using DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository;
-using DMS.Web.Controllers.Services;
-using DMS.Web.Models;
 
 namespace DMS.Web.Controllers;
 
 [Authorize]
 public class HomeController : Controller
 {
+    #region Fields
+
     private readonly ILogger<HomeController> _logger;
     private readonly IUserRepository _userRepo;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
 
-    public HomeController(ILogger<HomeController> logger, IUserRepository userRepo, ICurrentUserService currentUserService, IMapper mapper, IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IUserRepository userRepo,
+        ICurrentUserService currentUserService,
+        IMapper mapper,
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
     {
         _logger = logger;
         _userRepo = userRepo;
@@ -34,6 +37,10 @@ public class HomeController : Controller
         _mapper = mapper;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
     }
+
+    #endregion Fields
+
+    #region Views
 
     //[ModuleServices(ModuleCodes.Home, typeof(IModuleRepository))]
     public IActionResult Index()
@@ -73,6 +80,9 @@ public class HomeController : Controller
             return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
         }
     }
+
+    #endregion Views
+
     public async Task<IActionResult> UpdateThemeUserColor(string color)
     {
         try
@@ -92,12 +102,33 @@ public class HomeController : Controller
         }
         catch (Exception ex)
         {
-
             return BadRequest(ex.Message);
         }
     }
-    public async Task<IActionResult> GetApplicationsCount() =>
-        Ok((await _applicantsPersonalInformationRepo.GetAllAsync()).Count);
+
+    //public async Task<IActionResult> GetApplicationsCount() =>
+    //    Ok((await _applicantsPersonalInformationRepo.GetAllAsync()).Count);
+
+    public async Task<IActionResult> GetApplicationsCount()
+    {
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+            string pagibigNumber = userdata.PagibigNumber;
+
+            var data = await _applicantsPersonalInformationRepo.GetApplicationInfo(roleId, pagibigNumber);
+
+            return Ok(data);
+        }
+        catch (Exception)
+        {
+            return BadRequest();
+        }
+    }
+
     //[AllowAnonymous]
     //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     //public IActionResult Error()
@@ -106,13 +137,38 @@ public class HomeController : Controller
     //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     //}
 
+    //[AllowAnonymous]
+    //public IActionResult Error(ErrorViewModel model)
+    //{
+    //    try
+    //    {
+    //        return View(model);
+    //    }
+    //    catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    //}
+
     [AllowAnonymous]
-    public IActionResult Error(ErrorViewModel model)
+    public IActionResult Error()
     {
-        try
+        string viewString = "Error";
+        var errorViewModel = new ErrorViewModel
         {
-            return View(model);
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+            Message = "An error occurred." // Default message
+        };
+
+        // Retrieve the exception details, if available
+        var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        if (exceptionHandlerPathFeature?.Error != null)
+        {
+            errorViewModel.Message = exceptionHandlerPathFeature.Error.Message;
+
+            if (errorViewModel.Message.Contains("Transaction is currently being used"))
+            {
+                viewString = "TransactionLocked";
+            }
         }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+
+        return View(viewString, errorViewModel);
     }
 }

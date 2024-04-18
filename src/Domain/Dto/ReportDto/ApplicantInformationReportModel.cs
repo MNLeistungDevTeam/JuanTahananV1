@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace DMS.Domain.Dto.ReportDto
 {
-   
+
     public class ApplicantInformationReportModel
     {
+
+        public byte[]? FormalPicture { get; set;  }
         public ApplicantsPersonalInformationModel ApplicantsPersonalInformationModel { get; set; } = new();
         public LoanParticularsInformationModel LoanParticularsInformationModel { get; set; } = new();
         public CollateralInformationModel CollateralInformationModel { get; set; } = new();

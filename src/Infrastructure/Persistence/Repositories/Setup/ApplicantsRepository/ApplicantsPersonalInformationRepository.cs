@@ -37,7 +37,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             _approvalStatusRepo = approvalStatusRepo;
         }
 
-        #region Get
+        #region Get Methods
 
         public async Task<ApplicantsPersonalInformation?> GetByIdAsync(int id) =>
             await _context.ApplicantsPersonalInformations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
@@ -54,7 +54,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicantsPersonalInformationModel?> GetByCodeAsync(string code) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByCode", new { code });
 
-        public async Task<ApplicantsPersonalInformationModel?> GetByUserAsync(int userId) =>
+        public async Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId) =>
@@ -63,28 +63,59 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId) =>
            await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { userId });
 
-
-
         public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetAllApplicationsByPagibigNumber(string? pagibigNumber) =>
-     await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAllByPagibigNumber", new { pagibigNumber });
-      
-
+            await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAllByPagibigNumber", new { pagibigNumber });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode) =>
-             await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetEligibilityVerficationDocuments", new { applicantCode });
+             await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetEligibilityVerificationDocuments", new { applicantCode });
 
-        #endregion Get
+        public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode) =>
+           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationVerificationDocuments", new { applicantCode });
+
+        public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId, pagibigNumber });
+
+        #endregion Get Methods
 
         #region Api
+
+        public async Task<ApplicantsPersonalInformation> UpdateNoExclusionAsync(ApplicantsPersonalInformation applicant, int updatedById)
+        {
+            try
+            {
+                applicant.ModifiedById = updatedById;
+                applicant.DateModified = DateTime.Now;
+                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus","DateCreated","ModifiedById");
+
+                return applicant;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<ApplicantsPersonalInformation> SaveAsync(ApplicantsPersonalInformationModel model, int userId)
         {
             var _applicantPersonalInfo = _mapper.Map<ApplicantsPersonalInformation>(model);
 
-            _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+            if (!string.IsNullOrEmpty(_applicantPersonalInfo.PagibigNumber))
+            {
+                if (_applicantPersonalInfo.PagibigNumber.Length < 12)
+                {
+                    throw new Exception("Pagibig Number minimum length must 12");
+                }
+            }
 
             if (model.Id == 0)
             {
+
+
+                if (_applicantPersonalInfo.ApprovalStatus is null) {
+                    _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+                }
+               
+
                 _applicantPersonalInfo.Code = await GenerateApplicationCode();
 
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
@@ -94,7 +125,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             }
             else
             {
-                _applicantPersonalInfo = await UpdateAsync(_applicantPersonalInfo, userId);
+
+                var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
+
+                _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
+                //approvalstatus must not update
+                //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId); 
+
+                await UpdateAsync(_applicantPersonalInfo, userId);
 
                 var moduleStage = await _moduleRepo.GetByCodeAsync(ModuleCodes2.CONST_APPLICANTSREQUESTS);
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(_applicantPersonalInfo.Id, _applicantPersonalInfo.CompanyId);

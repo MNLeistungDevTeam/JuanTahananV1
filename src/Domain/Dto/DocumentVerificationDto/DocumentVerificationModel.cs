@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
 
         public int? DocumentTypeId { get; set; }
 
+        [Display(Name ="Verification Type")]
         public int? Type { get; set; }
 
         public int? CreatedById { get; set; }
@@ -27,5 +29,8 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
         public string? ModifiedBy { get; set; }
 
         public int? TotalDocumentCount { get; set; }
+
+
+        public string? DocumentFileType { get; set; }
     }
 }

@@ -21,7 +21,6 @@ public class EfCoreHelper<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-
     // CreateAsync(T entity)
     // CreateAsync(T entity, )
     // string[] excluded = ["CreatedById", "DateCreated"];
@@ -112,5 +111,4 @@ public class EfCoreHelper<T> where T : class
             throw;
         }
     }
-
 }

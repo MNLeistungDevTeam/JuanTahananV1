@@ -43,5 +43,11 @@ namespace DMS.Domain.Dto.DocumentDto
         public int ModifiedById { get; set; }
 
         public DateTime DateModified { get; set; }
+
+        #region Display Properties
+
+        public string? DocuTypeDesc { get; set; }
+
+        #endregion Display Properties
     }
 }

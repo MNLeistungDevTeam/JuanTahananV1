@@ -230,6 +230,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form asp-action="SaveModule" asp-antiforgery="true" method="post" role="form" id="frm_module" enctype="multipart/form-data">
+                <div asp-validation-summary="All"></div>
                 <input type="hidden" asp-for="Module.Id" />
                 <div class="modal-body">
                     <div class="row">

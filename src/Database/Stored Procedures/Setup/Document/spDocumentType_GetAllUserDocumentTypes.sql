@@ -3,6 +3,7 @@ AS
     SELECT
         dct.Id,
         dct.[Description],
+        dct.Code,
         COUNT(DISTINCT dc.Id) AS TotalDocumentCount,
         usrc.UserName AS CreatedBy,
         dct.DateCreated,
@@ -21,6 +22,7 @@ AS
     GROUP BY
         dct.Id,
         dct.[Description],
+         dct.Code,
         usrc.UserName,
         dct.DateCreated,
         usrm.UserName,

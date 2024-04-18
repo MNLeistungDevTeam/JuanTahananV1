@@ -48,6 +48,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[BeneficiaryInformation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[CollateralInformation]",
          "ObjectType": 0
       },
@@ -161,6 +165,10 @@
       },
       {
          "Name": "[dbo].[SqlDataConnections]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TemporaryLink]",
          "ObjectType": 0
       },
       {

@@ -133,6 +133,7 @@ $(function () {
                 messageBox(successMessage, "success", true);
 
                 loadUserInfo();
+                updateUserProfile();
                 button.attr({ disabled: false });
                 button.html("<span class='mdi mdi-content-save-outline'></span> Save");
             },
@@ -197,9 +198,6 @@ function loadUserInfo() {
             $("input[name='User.Email']").val(response.Email);
             $("input[name='User.Position']").val(response.Position);
             $("select[name='User.Gender']").data('selectize').setValue(response.Gender);
-
- 
-
 
             $("[name='User.IsDisabled']").prop("checked", response.IsDisabled);
 

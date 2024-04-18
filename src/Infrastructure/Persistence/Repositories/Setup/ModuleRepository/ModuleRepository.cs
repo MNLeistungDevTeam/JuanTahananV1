@@ -33,6 +33,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
             _moduleStageRepo = moduleStageRepo;
         }
 
+        #region Get Methods
+
         public async Task<Module?> GetByIdAsync(int id) =>
             await _context.Modules.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -51,6 +53,10 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         public async Task<List<ModuleModel>> GetWithApproversAsync() =>
             (await _db.LoadDataAsync<ModuleModel, dynamic>("spModule_GetWithApprovers", new { })).ToList();
 
+        #endregion Get Methods
+
+        #region Action Methods
+
         public async Task<Module> SaveAsync2(ModuleModel model)
         {
             var _module = _mapper.Map<Module>(model);
@@ -62,7 +68,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
             return _module;
         }
 
-        public async Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel> moduleStages, int userId)
+        public async Task<Module> SaveAsync(ModuleModel module, List<ModuleStageModel?> moduleStages, int userId)
         {
             var _module = _mapper.Map<Module>(module);
 
@@ -149,10 +155,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ModuleRepository
         {
             var entities = await _context.Modules.Where(m => ids.Contains(m.Id)).ToListAsync();
 
-            if(entities is not null)
+            if (entities is not null)
             {
                 await _contextHelper.BatchDeleteAsync(entities);
             }
         }
+
+        #endregion Action Methods
     }
 }

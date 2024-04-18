@@ -26,4 +26,5 @@ public interface IDocumentTypeRepository
     Task BatchDeleteAsync2(int[] ids);
 
     Task<IEnumerable<DocumentTypeModel?>> GetInquiryAsync();
+    Task<DocumentTypeModel?> GetDocumentTypeById(int id);
 }

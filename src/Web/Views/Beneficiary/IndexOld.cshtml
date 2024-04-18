@@ -1,0 +1,141 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+
+@{
+
+}
+
+<div class="card card-outline rounded-4">
+    <div class="card-header rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3 d-flex justify-content-center align-items-center">
+                <div class="auth-logo">
+                    <div class="logo logo-dark">
+                        <span class="logo-lg">
+                            <img src="~/images/JuanTahananAssets/Logo/Pag-IBIG.svg" alt="logo" style="height:100px;">
+                        </span>
+                    </div>
+
+                    <div class="logo logo-light">
+                        <span class="logo-lg">
+                            <img src="~/images/JuanTahananAssets/Logo/Pag-IBIG.svg" alt="logo" style="height:100px;">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 d-flex justify-content-center align-items-center">
+                <h1 class="m-0 d-print-none fw-bold text-dark text-uppercase text-truncate">Buyer Confirmation Form</h1>
+            </div>
+            <div class="col-3">
+                <div class="float-end">
+                    <small class="text-secondary text-truncated">HQF-WLF-252</small>
+                    <br />
+                    <small class="text-secondary text-truncated">(v01,01,2023)</small>
+                </div>
+            </div>
+        </div>
+        <form id="bcf_form" class="needs-validation" novalidate method="post" action="/Module/SaveModuleList">
+            <div class="row gy-2 mt-2 mb-2">
+                <div class="col-xxl-12">
+                    <h4 class="header-title pb-2 mb-2 border-bottom-dashed">Personal Information</h4>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Name of Proponent</label>
+                        <input type="text" class="form-control" required>
+                        <span  class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Juridical Personality</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-1">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Prefix</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-4">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>First Name</label>
+                        <input type="text" class="form-control" required>
+                        <span class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-2">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Middle Name</label>
+                        <input type="text" class="form-control" required>
+                        <span class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-4">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Last Name</label>
+                        <input type="text" class="form-control" required>
+                        <span class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-1">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Suffix</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>BirthDate</label>
+                        <input type="text" class="form-control" required>
+                        <span class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Marital Status</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Mother's Maiden Name'</label>
+                        <input type="text" class="form-control" required>
+                        <span class="invalid-tooltip"> </span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Employment Status</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-12">
+                    <h4 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">Address Information</h4>
+                </div>
+                <div class="col-xxl-12">
+                    <div class="position-relative">
+                        <label class="form-label fw-normal" required>Present Home Address</label>
+                        <select placeholder="Select Status" class="form-select" required>
+                        </select>
+                        <span class="invalid-tooltip"></span>
+                    </div>
+                </div>
+            </div>
+            <a asp-controller="Document" asp-action="Index" class=" btn float-end btn-warning btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Submit</a>
+        </form>
+    </div>
+</div>
+

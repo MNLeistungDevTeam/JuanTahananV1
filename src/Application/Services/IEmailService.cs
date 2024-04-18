@@ -1,4 +1,5 @@
-﻿using DMS.Domain.Dto.UserDto;
+﻿using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.UserDto;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,11 @@ namespace DMS.Application.Services
 {
     public interface IEmailService
     {
-        Task SendUserInfo(UserModel model);
+        Task SendUserCredential2(UserModel? model, string? rootFolder);
+        Task SendUserCredential(UserModel model);
         Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body);
+        Task SendUserConfirmationMessage(UserModel model);
+        Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail);
+
     }
 }

@@ -3,7 +3,7 @@
 AS
 	SELECT 
 		apl.*,
-		CONCAT(u.LastName,', ',u.FirstName,'',u.MiddleName) ApplicantFullName,
+		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
 		bi.PropertyDeveloperName Developer,
@@ -15,14 +15,30 @@ AS
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
-		CASE
+	CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
-			WHEN apl.ApprovalStatus = 4 THEN 'PAG-IBIG Verified'
+			WHEN apl.ApprovalStatus = 4 THEN 'Pag-IBIG Verified'
 			WHEN apl.ApprovalStatus = 5 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 6 THEN 'Submitted'
+			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
+			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
+			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
 			ELSE CONCAT('Deferred by ', ar.[Name])
-		END ApplicationStatus
+		END ApplicationStatus,
+		CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 'Credit Verification'
+			WHEN apl.ApprovalStatus IN (4,6,7,9,10) THEN 'Application Completion'
+			WHEN apl.ApprovalStatus = 8 THEN 'Post-Approval'
+		END Stage,
+		CASE
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 1
+			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
+		END StageNo,
+		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
+		u2.Position AS ApproverRole,
+		aps.Remarks 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id
@@ -34,7 +50,7 @@ AS
 		ur.RoleId ApproverRoleId
 		FROM ApprovalStatus aps1
 		LEFT JOIN (
-			SELECT  aplvl1.* 
+			SELECT  aplvl1.*
 			FROM ApprovalLevel aplvl1
 			INNER JOIN (
 				SELECT ApprovalStatusId, MAX(Id) Id
@@ -46,8 +62,7 @@ AS
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
- 
- WHERE apl.PagibigNumber = @pagibigNumber
-
-
+	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId
+	WHERE apl.PagibigNumber = @pagibigNumber
+	ORDER BY apl.DateCreated,aps.LastUpdate DESC
 RETURN 0

@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] | eiDOC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/favico.png">
+
+    @await RenderSectionAsync("Links", required: false)
+
+    <!-- App css -->
+    <link rel="stylesheet" href="~/css/datatables.bundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bootstrap-fileinput.bundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.thirdparty.bundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/CodeFox/css/app.css" id="app-style" asp-append-version="true" />
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="loading authentication-bg">
+
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer class="footer footer-alt">
+        <script>document.write(new Date().getFullYear())</script> &copy; eiDOC Powered by&nbsp;<a href="https://mnleistung.de" class="link-dark text-decoration-underline">MNLeistung Inc.</a>
+    </footer>
+
+    <!-- Vendor js -->
+    <script src="~/js/site.thirdparty.bundle.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

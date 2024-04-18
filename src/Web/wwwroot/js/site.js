@@ -5,6 +5,18 @@ let localizedStrings;
 loadLocalizedStrings();
 var loader = null;
 var applications = null;
+
+const intlTelConfig = {
+    showSelectedDialCode: false,
+    showFlags: true,
+    allowDropdown: false,
+    strictMode: false,
+    initialCountry: "ph",
+    utilsScript: "/lib/intl-tel-input/build/js/utils.js"
+};
+
+const intlTelErrors = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
 function loadLocalizedStrings() {
     $.ajax({
         url: '/Localization/GetLocalizedStrings',
@@ -25,6 +37,8 @@ function localizer(input) {
 }
 
 $(function () {
+    updateBeneficiaryHousingLoanSideBarNav();
+
     $.fn.clearValidation = function () { var v = $(this).validate(); $('[name]', this).each(function () { v.successList.push(this); v.showErrors(); }); v.resetForm(); v.reset(); };
     function adjustDataTablesColumns() {
         $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
@@ -173,25 +187,36 @@ $(function () {
         $(this).addClass('active');
         $('[data-bs-toggle="tab"][href="' + tab + '"]').tab('show');
     })
-    if (document.querySelector('#totalApplications')) {
-        getApplicationCount(function (callback) {
-            const options = {
-                useEasing: true,
-                useGrouping: true,
-                separator: ',',
-                decimal: '.',
-                suffix: ''
-            };
-            if (applications == null) {
-                applications = new CountUp(`totalApplications`, 0, callback, 0, 2, options);
-                if (!applications.error) {
-                    applications.start();
-                }
-            } else {
-                applications.update(callback);
-            }
-        })
-    }
+
+    //if (document.querySelector('#totalApplications')) {
+    //    getApplicationCount(function (callback) {
+    //        const options = {
+    //            useEasing: true,
+    //            useGrouping: true,
+    //            separator: ',',
+    //            decimal: '.',
+    //            suffix: ''
+    //        };
+    //        if (applications == null) {
+    //            applications = new CountUp(`#totalApplications`, 0, callback, 0, 2, options);
+    //            if (!applications.error) {
+    //                applications.start();
+    //            }
+    //        } else {
+    //            applications.update(callback);
+    //        }
+    //    })
+    //}
+
+    $(".decimalInputMask").inputmask({
+        alias: 'decimal',
+        rightAlign: false,
+        groupSeparator: '.',
+        digits: 2,
+        allowMinus: false,
+        autoGroup: true,
+        placeholder: "0.00"
+    });
 });
 function getApplicationCount(callback) {
     $.ajax({
@@ -253,6 +278,54 @@ function messageBox(message, type = "success", isToastr = false, isTimed = true)
             Swal.fire(title, 'Error Occurred! - Please see error logs for more information', type);
         } else Swal.fire(title, message, type);
     }
+}
+
+function iziToasterBox(message, type = 'success') {
+    let head = "";
+    let icons = "";
+    let barColor = "";
+    let bg = "";
+
+    switch (type) {
+        case "success":
+            head = "Success";
+            icons = `ico-success`;
+            barColor = "#5ba035"
+            bg = "#8fce00";
+            break;
+        case 'info':
+            head = "Information"
+            icons = "ico-info";
+            barColor = "#3b98b5";
+            bg = "#3d85c6";
+            break;
+        case 'warning':
+            head = "Warning";
+            icons = "ico-warning";
+            barColor = "#da8609";
+            bg = "#fc750a";
+            break;
+        case 'danger':
+            head = "Error";
+            icons = "ico-error";
+            barColor = "#b83206";
+            bg = "#FF0000";
+        default:
+    }
+
+    iziToast.show({
+        title: head,
+        icon: icons,
+        backgroundColor: bg,
+        progressBarColor: barColor,
+        position: 'topCenter',
+        message: `<div style="max-width: 512px;" class="fw-bold">${message}</div>`,
+        theme: 'light',
+        close: true,
+        timeout: 4000,
+        transitionIn: 'fadeInDown',
+        transitionOut: 'fadeOutUp',
+    });
 }
 
 function convertDate(data, format = "YYYY-MM-DD") {
@@ -369,7 +442,6 @@ function fileToByteArray(file) {
         reader.readAsArrayBuffer(file);
     });
 }
-
 
 function addRequiredClass() {
     $("input, select, textarea").each(function () {
@@ -542,7 +614,7 @@ function addAddress(addressObj = {}) {
     </div>
 </div>`;
     $(".address_div").append(rowToAdd);
-   /* addressCount++;*/
+    /* addressCount++;*/
 
     let countryDropdown, $countryDropdown;
     let addressTypeDropdown, $addressTypeDropdown;
@@ -896,7 +968,7 @@ function checkFileExist(urlToFile) {
     }
 }
 
-function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false, rightAlign = true) {
     let placeholder = "";
 
     if (digits == 2) { placeholder = "0.00"; }
@@ -904,12 +976,64 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
 
     $(classname).inputmask({
         alias: 'decimal',
-        rightAlign: true,
+        rightAlign: rightAlign,
         groupSeparator: '.',
         digits: digits,
         allowMinus: isallownegative,
         autoGroup: true,
         placeholder: placeholder,
         max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+    });
+}
+
+function initializeLeftDecimalInputMask(classname = ".decimalInputMask", digits = 2, limiter = "900,000,000,000,000", isallownegative = false) {
+    //let placeholder = "";
+
+    //if (digits == 2) { placeholder = "0.00"; }
+    //else if (digits == 5) { placeholder = "0.00000"; }
+
+    //$(classname).inputmask({
+    //    alias: 'decimal',
+    //    rightAlign: true,
+    //    groupSeparator: '.',
+    //    digits: digits,
+    //    allowMinus: isallownegative,
+    //    autoGroup: true,
+    //    placeholder: placeholder,
+    //    max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+    //});
+
+    initializeDecimalInputMask(classname, digits, limiter, isallownegative, false);
+}
+
+function updateBeneficiaryHousingLoanSideBarNav() {
+    let pagibignumber = $("#txt_userPagibigNumber").val();
+
+    var $link = $('a.side-nav-link[href="/Applicants/HousingLoanForm"]');
+
+    // Check if element is found
+    if ($link.length > 0) {
+        // Append '/2434' to the current href value
+        var currentHref = $link.attr('href');
+        var newHref = currentHref + "/" + pagibignumber;
+
+        // Update the href attribute with the new value
+        $link.attr('href', newHref);
+    }
+}
+
+function updateUserProfile() {
+    const userId = $("#txt_userId").val();
+    const defaultProfile = "/images/user/default.png";
+    $.ajax({
+        url: baseUrl + "User/GetUser/" + userId,
+        success: function (response) {
+            $('#userProfile').attr("src", response.ProfilePicture);
+            $('#notifProfile').attr("src", response.ProfilePicture);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $('#userProfile').attr("src", defaultProfile);
+            $('#notifProfile').attr("src", defaultProfile);
+        }
     });
 }

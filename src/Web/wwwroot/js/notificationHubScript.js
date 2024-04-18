@@ -3,7 +3,7 @@
 const notifConnection = new signalR.HubConnectionBuilder().withUrl(baseUrl + "notificationHub").build();
 const onlineUserCount = new signalR.HubConnectionBuilder().withUrl(baseUrl + "onlineUserHub").build();
 const companyCode = $("#txt_company_code").val();
-const notifRoleName = $("#txt_role_name").val();
+const notifRoleName = $("#txt_role_code").val();
 const notifUserId = $("#txt_userId").val();
 var currentNotifPage = 1;
 var notifPageLimit;
@@ -11,12 +11,38 @@ var notiftype = 3;
 
 $(function () {
     //#region Signal R
+
     notifConnection.on("AddNotifToPage", function (user, message) {
-        toastr.info(message, user);
-        loadSideDashInfo();
+        //toastr.info(message, user);
+        //loadSideDashInfo();
+        var currentURL = window.location.href;
+
+        // Split the URL by '/'
+        var parts = currentURL.split('/');
+
+        // Get the last part of the URL path
+        var urlParams = parts.pop();
+
+        console.log(message)
+        console.log(urlParams)
+
+        if (urlParams === message) {
+            let messageDisplay = user + " update status of Application: " + message;
+            console.log('success');
+
+            iziToasterBox(messageDisplay);
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
     });
-    notifConnection.on("AddNotifGroup", function (message) {
+
+    notifConnection.on("AddNotifGroup", function (companycode, message) {
         //reset to 1
+        console.log(companycode);
+
+        iziToasterBox(message);
+
         currentNotifPage = 1;
         loadNotif(currentNotifPage, notiftype);
     });

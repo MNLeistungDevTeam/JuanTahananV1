@@ -1,22 +1,15 @@
 ﻿using AutoMapper;
-using DMS.Domain.Dto.UserDto;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.SignalR;
-using System.ComponentModel.Design;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Hubs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.StaticFiles;
-
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
 
 namespace DMS.Infrastructure.Services
 {
@@ -27,18 +20,21 @@ namespace DMS.Infrastructure.Services
         private readonly IHubContext<UploaderHub> _hubContext;
         private readonly IUserDocumentRepository _userDocumentRepo;
         private readonly IMapper _mapper;
+        private readonly IDocumentTypeRepository _documentTypeRepo;
 
         public FileUploadService(IDocumentRepository documentRepository,
             IFtpDownloaderService ftpDownloaderService,
             IHubContext<UploaderHub> hubContext,
             IUserDocumentRepository userDocumentRepo,
-            IMapper mapper)
+            IMapper mapper,
+            IDocumentTypeRepository documentTypeRepo)
         {
             _documentRepository = documentRepository;
             _ftpDownloaderService = ftpDownloaderService;
             _hubContext = hubContext;
             _userDocumentRepo = userDocumentRepo;
             _mapper = mapper;
+            _documentTypeRepo = documentTypeRepo;
         }
 
         #region FTP Base Directory File Upload
@@ -64,6 +60,7 @@ namespace DMS.Infrastructure.Services
                     string rawFilePath = Path.Combine(saveLocation, uniqueFileName);
                     string filePath = Path.Combine(rootPath, rawFilePath);
                     var existingDocument = await _documentRepository.GetById(DocumentId);
+
                     if (existingDocument != null)
                     {
                         await _ftpDownloaderService.DeleteFileAsync(existingDocument.Location);
@@ -173,59 +170,116 @@ namespace DMS.Infrastructure.Services
             int userId,
             int companyId)
         {
-            if (files == null)
-                return;
-
-            foreach (var formFile in files)
+            try
             {
-                if (formFile.Length <= 0)
+                if (files == null)
+                    return;
+
+                foreach (var formFile in files)
                 {
-                    continue;
+                    if (formFile.Length <= 0)
+                    {
+                        continue;
+                    }
+
+                    //// Generate a unique filename for the uploaded file
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+                    //// Combine the save location with the unique filename
+
+                    //using (FileStream stream = new(filePath, FileMode.Create))
+                    //{
+                    //    //await formFile.CopyToAsync(stream);
+                    //}
+
+                    // Create a new Document entity to save in the database
+
+                    string fileName = await ExistingFileCheck(Path.Combine(rootPath, saveLocation, formFile.FileName));
+                    Directory.CreateDirectory(Path.Combine(rootPath, saveLocation));
+
+                    using var stream = new FileStream(Path.Combine(rootPath, saveLocation, fileName), FileMode.Create);
+                    await formFile.CopyToAsync(stream);
+
+                    string rawFilePath = $"/{saveLocation.Replace("\\", "/")}/";
+                    string filePath = Path.Combine(rootPath, rawFilePath);
+                    // return $"/{saveLocation.Replace("\\", "/")}/{fileName}";
+                    var provider = new FileExtensionContentTypeProvider();
+                    string contentType = string.Empty;
+
+                    provider.TryGetContentType(fileName, out contentType);
+
+                    string extension = Path.GetExtension(fileName).ToLower();
+
+                    Document document = new()
+                    {
+                        ReferenceId = referenceId,
+                        ReferenceNo = referenceNo,
+                        ReferenceTypeId = referenceType,
+                        Code = uniqueFileName,
+                        Name = formFile.FileName,
+                        Location = filePath,
+                        Size = (int)formFile.Length,
+                        DocumentTypeId = documentTypeId,
+                        FileType = contentType,
+                        IsFolder = false,
+                        CompanyId = companyId,
+                        CreatedById = userId
+                    };
+
+                    //File Type validation
+                    var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
+
+                    if (documentType.FileType != null)
+                    {
+                        FileType fileType = (FileType)documentType.FileType;
+
+                        string convertedToString = $".{fileType.ToString().ToLower()}";
+
+                        if (documentType.FileType == 5 && IsImageFileType(extension))
+                        {
+                            await _documentRepository.CreateAsync(document);
+                        }
+                        else if (extension != convertedToString)
+                            throw new ArgumentException("Invalid Assigned File Type.");
+                        else
+                        {
+                            await _documentRepository.CreateAsync(document);
+                        }
+                    }
+                    else
+                    {
+                        await _documentRepository.CreateAsync(document);
+                    }
                 }
-
-                //// Generate a unique filename for the uploaded file
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
-                //// Combine the save location with the unique filename
-
-                //using (FileStream stream = new(filePath, FileMode.Create))
-                //{
-                //    //await formFile.CopyToAsync(stream);
-                //}
-
-                // Create a new Document entity to save in the database
-
-                string fileName = await ExistingFileCheck(Path.Combine(rootPath, saveLocation, formFile.FileName));
-                Directory.CreateDirectory(Path.Combine(rootPath, saveLocation));
-
-                using var stream = new FileStream(Path.Combine(rootPath, saveLocation, fileName), FileMode.Create);
-                await formFile.CopyToAsync(stream);
-
-                string rawFilePath = $"/{saveLocation.Replace("\\", "/")}/";
-                string filePath = Path.Combine(rootPath, rawFilePath);
-                // return $"/{saveLocation.Replace("\\", "/")}/{fileName}";
-                var provider = new FileExtensionContentTypeProvider();
-                string contentType = string.Empty;
-
-                provider.TryGetContentType(fileName, out contentType);
-
-                Document document = new()
-                {
-                    ReferenceId = referenceId,
-                    ReferenceNo = referenceNo,
-                    ReferenceTypeId = referenceType,
-                    Code = uniqueFileName,
-                    Name = formFile.FileName,
-                    Location = filePath,
-                    Size = (int)formFile.Length,
-                    DocumentTypeId = documentTypeId,
-                    FileType = contentType,
-                    IsFolder = false,
-                    CompanyId = companyId,
-                    CreatedById = userId
-                };
-
-                await _documentRepository.CreateAsync(document);
             }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static bool IsImageFileType(string fileType)
+        {
+            // Array of common image file extensions
+            string[] imageExtensions = {
+            ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff", ".ico",
+            ".webp", ".svg", ".eps", ".raw", ".psd", ".ai", ".indd",
+            ".jp2", ".jxr", ".wdp", ".hdp", ".dng", ".cr2", ".nef", ".orf",
+            ".arw", ".rw2", ".raf", ".sr2", ".pef", ".x3f", ".erf", ".mrw"
+        };
+
+            // Convert file type to lowercase for case-insensitive comparison
+            fileType = fileType.ToLower();
+
+            // Check if the file type matches any image extension
+            foreach (var extension in imageExtensions)
+            {
+                if (fileType.EndsWith(extension))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public async Task DeleteFileAsync(int documentId, string rootFolder)
@@ -234,7 +288,10 @@ namespace DMS.Infrastructure.Services
 
             if (document != null)
             {
-                var filePath = Path.Combine(rootFolder, document.Location);
+                //var filePath = Path.Combine(rootFolder, document.Location, document.Name);
+
+                string filePath = string.Format("{0}{1}{2}", rootFolder, document.Location.Replace("/", "\\"), document.Name);
+
                 // Delete the file from the file system
                 if (File.Exists(filePath))
                 {

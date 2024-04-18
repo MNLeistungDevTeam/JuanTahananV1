@@ -1,10 +1,11 @@
 ﻿using DevExpress.XtraReports.UI;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
-using DMS.Application.PredefinedReports;
+using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ReportDto;
+using System.Reflection;
 
 namespace DMS.Infrastructure.Services
 {
@@ -17,12 +18,15 @@ namespace DMS.Infrastructure.Services
         private readonly IForm2PageRepository _form2PageRepo;
         private readonly ICollateralInformationRepository _collateralInfoRepo;
 
+        private readonly IDocumentRepository _documentRepo;
+
         public ReportsService(IApplicantsPersonalInformationRepository applicantpersonalInfoRepo,
             IBarrowersInformationRepository barrowersInfoRepo,
             ISpouseRepository spouseRepo,
             ILoanParticularsInformationRepository loanParticularsInfoRepo,
             IForm2PageRepository form2PageRepo,
-            ICollateralInformationRepository collateralInfoRepo)
+            ICollateralInformationRepository collateralInfoRepo,
+            IDocumentRepository documentRepo)
         {
             _applicantpersonalInfoRepo = applicantpersonalInfoRepo;
             _barrowersInfoRepo = barrowersInfoRepo;
@@ -31,9 +35,10 @@ namespace DMS.Infrastructure.Services
             _form2PageRepo = form2PageRepo;
             _collateralInfoRepo = collateralInfoRepo;
             _loanParticularsInfoRepo = loanParticularsInfoRepo;
+            _documentRepo = documentRepo;
         }
 
-        public async Task<LoanApplicationForm> GenerateHousingLoanForm(int userId)
+        public async Task<LoanApplicationForm> GenerateHousingLoanForm(string? applicationCode, string? rootFolder)
         {
             try
             {
@@ -48,10 +53,13 @@ namespace DMS.Infrastructure.Services
                 Form2PageModel form2InfoModel = new();
                 CollateralInformationModel collateralInfoModel = new();
 
-                if (userId != 0)
+                //byte[] formalPicture = new byte[0];
+
+                if (applicationCode != null)
                 {
                     //var latestApplicationForm = (await _applicantsPersonalInformationRepo
                     //    .GetAllAsync())
+
                     //    .Where(x => x.UserId == userId)
                     //    .OrderByDescending(x => x.DateCreated)
                     //    .FirstOrDefault() ?? new ApplicantsPersonalInformation()
@@ -59,12 +67,28 @@ namespace DMS.Infrastructure.Services
                     //        UserId = userId
                     //    };
 
-                    var applicantData = await _applicantpersonalInfoRepo.GetByUserAsync(userId);
+                    var applicantData = await _applicantpersonalInfoRepo.GetByCodeAsync(applicationCode);
 
                     if (applicantData != null)
                     {
                         applicantInfoModel = applicantData;
                     }
+
+                    //var applicantDocument = await _documentRepo.GetApplicantDocumentsByCode(applicantData.Code);
+
+                    //if (applicantDocument.Count() > 0)
+
+                    //{
+                    //    var documentLocation = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Location ?? "";
+                    //    var documentName = applicantDocument.FirstOrDefault(d => d.DocumentTypeId == 7)?.Name ?? "";
+
+                    //    if (!string.IsNullOrWhiteSpace(documentLocation))
+                    //    {
+                    //        string fileLocation = string.Format("{0}{1}{2}", rootFolder, documentLocation.Replace("/", "\\"), documentName);
+
+                    //        formalPicture = FileMethodHelper.FileToByteArray(fileLocation);
+                    //    }
+                    //}
 
                     var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);
 
@@ -102,14 +126,27 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
+             
+                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus" };
+                List<string> excludedSpouse = new List<string> { "OccupationStatus" };
+
+                applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);
+                barrowerInfoModel = ConvertStringPropertiesToUppercase(barrowerInfoModel, excludedBarrower);
+                spouseInfoModel = ConvertStringPropertiesToUppercase(spouseInfoModel, excludedSpouse);
+                loanParticularsInfoModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel);
+                form2InfoModel = ConvertStringPropertiesToUppercase(form2InfoModel);
+                collateralInfoModel = ConvertStringPropertiesToUppercase(collateralInfoModel);
+
                 List<ApplicantInformationReportModel> dataSource = new()
 
                 {
                     new ApplicantInformationReportModel()
                     {
-                        ApplicantsPersonalInformationModel =  applicantInfoModel,
+                    //FormalPicture =  formalPicture,
+
+                      ApplicantsPersonalInformationModel =   applicantInfoModel,
                         SpouseModel = spouseInfoModel,
-                        BarrowersInformationModel = barrowerInfoModel,
+                        BarrowersInformationModel =  barrowerInfoModel,
                         LoanParticularsInformationModel = loanParticularsInfoModel,
                         Form2PageModel = form2InfoModel,
                         CollateralInformationModel = collateralInfoModel,
@@ -126,6 +163,28 @@ namespace DMS.Infrastructure.Services
             {
                 throw;
             }
+        }
+
+        public static T ConvertStringPropertiesToUppercase<T>(T obj, List<string>? excludedProperties = null)
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.PropertyType == typeof(string) && property.CanWrite)
+                {
+                    if (excludedProperties == null || !excludedProperties.Contains(property.Name))
+                    {
+                        string? value = (string?)property.GetValue(obj);
+                        if (value != null)
+                        {
+                            property.SetValue(obj, value.ToUpper());
+                        }
+                    }
+                }
+            }
+
+            return obj;
         }
     }
 }

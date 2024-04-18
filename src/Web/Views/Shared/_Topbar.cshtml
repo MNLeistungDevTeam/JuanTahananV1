@@ -11,13 +11,19 @@
 @inject IRoleAccessRepository _roleAccessRepo;
 @inject IUserRepository _userRepo;
 @inject ICompanyRepository _companyRepo;
-
 @{
     int userId = int.Parse(User.Identity.Name);
     int companyId = int.TryParse(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Company")?.Value, out int result) ? result : 0;
 
     var companyInfo = await _companyRepo.GetByIdAsync(companyId);
     var userInfo = await _userRepo.GetUserAsync(userId);
+    string userProfile = Url.Content("~/images/user/default.png");
+
+    
+    if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
+        if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, userInfo.ProfilePicture[1..].Replace("/", "\\"))))
+            userProfile = Url.Content("~" + userInfo.ProfilePicture);
+
 }
 
 
@@ -28,6 +34,7 @@
 <input type="hidden" id="txt_role_name" value="@userInfo.UserRoleName" />
 <input type="hidden" id="txt_role_code" value="@userInfo.UserRoleCode" />
 <input type="hidden" id="txt_userId" value="@userId" />
+<input type="hidden" id="txt_userPagibigNumber" value="@userInfo.PagibigNumber" />
 
 
 
@@ -150,7 +157,7 @@
 
 
                 <!---notification--->
-                <li class="dropdown notification-list">
+                <li class="dropdown notification-list d-none">
                     <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="fe-bell font-22"></i>
                         <span class="badge bg-danger rounded-circle noti-icon-badge noti-span" hidden>0</span>
@@ -230,7 +237,7 @@
                 <li class="d-none d-sm-inline-block">
                     <a class="nav-link nav-user waves-effect waves-light" asp-controller="User" asp-action="Profile" role="button" aria-haspopup="false" aria-expanded="false">
                         <span class="account-user-avatar">
-                            <img src="@ViewData["Profile"]" alt="user-image" width="32" class="rounded-circle user-profile avatar-sm">
+                            <img src="@Url.Content("~" + userProfile)" alt="user-image" width="32" class="rounded-circle user-profile avatar-sm" id="notifProfile">
                         </span>
                         <span class="d-lg-flex flex-column gap-1 d-none">
                             <span class="my-0 font-15 fw-semibold text-dark">

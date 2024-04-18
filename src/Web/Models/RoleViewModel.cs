@@ -7,13 +7,13 @@ namespace DMS.Web.Models;
 
 public class RoleViewModel
 {
-    public RoleModel Role { get; set; }
-    public List<RoleAccessModel> RoleAccess { get; set; }
-    public UserRoleModel UserRole { get; set; }
+    public RoleModel? Role { get; set; }
+    public List<RoleAccessModel?> RoleAccess { get; set; }
+    public UserRoleModel? UserRole { get; set; }
 
-    public RoleViewModel()
-    {
-        Role = new();
-        RoleAccess = new();
-    }
+    //public RoleViewModel()
+    //{
+    //    Role = new();
+    //    RoleAccess = new();
+    //}
 }

@@ -4,7 +4,7 @@
             Document Upload
             <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">@ViewBag.ApplicationCode</span>
         </h3>
-        <h3 class="text-muted float-end font-15">Maximum File size 3MB</h3>
+        <h3 class="text-muted float-end font-15">Maximum File size 5MB</h3>
     </div>
     <div class="card-body">
         <div class="row gy-2">
@@ -27,7 +27,7 @@
                 <input hidden type="text" class="form-control" value="@ViewBag.AppplicationId" id="applicationId" />
                 <input type="hidden" class="form-control" value="@ViewBag.ApplicationCode" id="txt_applicationCode" />
 
-                <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg" />
+                <input type="file" id="file-input" style="display: none;" />
                 <div class="tab-content">
                     <div class="tab-pane active show" id="module-list">
                         <div class="row">
@@ -62,7 +62,9 @@
                                         </th>
                                         <th>Document Name</th>
                                         <th hidden>Document Type Id</th>
+                                        <th>File Type</th>
                                         <th>Uploaded Documents</th>
+                                   
                                     </tr>
                                 </thead>
                             </table>
@@ -99,6 +101,7 @@
                                         </th>
                                         <th>Document Name</th>
                                         <th hidden>Document Type Id</th>
+                                        <th>File Type</th>
                                         <th>Uploaded Documents</th>
                                     </tr>
                                 </thead>
@@ -141,5 +144,5 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @section Scripts {
-    <script src="~/js/setup/document/uploadingdocuments.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Document/UploadingDocumentScript.js" asp-append-version="true"></script>
 }

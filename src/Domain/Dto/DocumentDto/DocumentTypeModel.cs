@@ -6,7 +6,9 @@ namespace DMS.Domain.Dto.DocumentDto
     {
         public int Id { get; set; }
 
-        [Display(Name = "File Name", Prompt = "Input filename")]
+        public string? Code { get; set; }
+
+        [Display(Name = "File Name", Prompt = "Input Filename")]
         [StringLength(255)]
         [Required(ErrorMessage = "this field is required!")]
         public string? Description { get; set; }
@@ -24,10 +26,18 @@ namespace DMS.Domain.Dto.DocumentDto
         public int? DeletedById { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
-        public int? TotalDocumentCount { get; set; }
 
+        [Display(Name = "File Type", Prompt = "Select File Type")]
+        public int? FileType { get; set; }
+
+        #region Display Properties
+
+        public int? TotalDocumentCount { get; set; }
         public string? VerificationTypeDescription { get; set; }
         public int? VerificationType { get; set; }
         public int? DocumentVerificationId { get; set; }
+        public string? FileFormat { get; set; }
+
+        #endregion Display Properties
     }
 }

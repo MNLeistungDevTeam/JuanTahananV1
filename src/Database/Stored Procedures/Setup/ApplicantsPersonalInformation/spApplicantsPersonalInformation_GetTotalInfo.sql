@@ -1,14 +1,17 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalInfo]
 
 @userId INT
+
 AS
  SELECT
-	-- GET Submitted/Pending Review Count
-    COUNT(CASE WHEN ApprovalStatus = 1 THEN 1 END) OVER () AS TotalPendingReview,
-	-- GET Pagibig Verified Count
-    COUNT(CASE WHEN ApprovalStatus = 4 THEN 1 END) OVER () AS TotalApprove,
-	-- GET Deferred Count
-    COUNT(CASE WHEN ApprovalStatus = 2 THEN 1 END) OVER () AS TotalDisApprove
+	-- Get the count of drafts
+	COUNT(CASE WHEN ApprovalStatus = 0 THEN 1 END) AS TotalPendingReview,
+	-- Get the count of Submitted
+	COUNT(CASE WHEN ApprovalStatus IN (1,6) THEN 1 END) AS TotalSubmitted,
+	-- Get the count of Pagibig/Developer approved
+	COUNT(CASE WHEN ApprovalStatus IN (3,4,7,8) THEN 1 END) AS TotalApprove,
+	-- Get the count of deferred
+	COUNT(CASE WHEN ApprovalStatus = 2 OR ApprovalStatus = 9 THEN 1 END) AS TotalDisApprove
 FROM
     ApplicantsPersonalInformation
 

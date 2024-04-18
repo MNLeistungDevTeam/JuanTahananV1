@@ -1,4 +1,9 @@
-﻿@inject IStringLocalizer<SharedResources> localizer
+﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
+@using DMS.Application.Interfaces.Setup.UserRepository
+@inject IStringLocalizer<SharedResources> localizer
+
+@inject IUserRepository _userRepo;
+@inject IModuleRepository _moduleRepo;
 
 @{
     // Layout = "_SidebarLayout";
@@ -9,30 +14,33 @@
     <div class="col-xl-8 row">
         <div class="col-xl-12">
             <div class="card rounded-4">
+                <div class="card-header">
+                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
+                </div>
                 <div class="card-body">
                     <div class="row gy-2 gx-0">
                         <div class="col-md-3">
                             <div class="text-center">
-                                <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Disable display input</h6>
+                                <input id="submitted_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
+                                <h6 class="text-muted mt-2">Submitted</h6>
                             </div> <!-- end .text-center -->
                         </div>
                         <div class="col-md-3">
                             <div class="text-center">
-                                <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Disable display input</h6>
+                                <input id="approved_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
+                                <h6 class="text-muted mt-2">Approved</h6>
                             </div> <!-- end .text-center -->
                         </div>
                         <div class="col-md-3">
                             <div class="text-center">
-                                <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Disable display input</h6>
+                                <input id="disapprove_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
+                                <h6 class="text-muted mt-2">Disapprove</h6>
                             </div> <!-- end .text-center -->
                         </div>
                         <div class="col-md-3">
                             <div class="text-center">
-                                <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Disable display input</h6>
+                                <input id="withdrawn_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
+                                <h6 class="text-muted mt-2">Withdrawn</h6>
                             </div> <!-- end .text-center -->
                         </div>
                     </div>
@@ -42,6 +50,10 @@
         <div class="col-xl-7">
             <div class="card d-block card-h-100 rounded-4">
                 <!-- project-thumbnail -->
+
+                <div class="card-header">
+                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
+                </div>
                 <div class="card-body position-relative">
                     <div data-provide="datepicker-inline" data-date-today-highlight="true" class="calendar-widget"></div>
                     <!-- project title-->
@@ -69,6 +81,9 @@
                         Timeline
                     </h4>
                     <span class="badge bg-warning text-theme-primary">BCF-08121</span>
+                </div>
+                <div class="card-header">
+                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
                 </div>
                 <div class="card-body py-0 mb-3" data-simplebar style="max-height: 50vh;">
                     <div class="timeline-alt py-0">
@@ -194,7 +209,7 @@
         </div>
     </div>
 </div>
-</div>
+
 @section Scripts {
     <script src="~/js/HomeScript.js" asp-append-version="true"></script>
 }

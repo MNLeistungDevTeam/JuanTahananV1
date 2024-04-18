@@ -32,4 +32,8 @@ public partial class ApplicantsPersonalInformation
     public int? CompanyId { get; set; }
 
     public int? ApprovalStatus { get; set; }
+
+    public int? EncodedStage { get; set; }
+
+    public int? EncodedStatus { get; set; }
 }

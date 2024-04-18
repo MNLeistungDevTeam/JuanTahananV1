@@ -5,6 +5,6 @@ namespace DMS.Application.Services
 {
     public interface IReportsService
     {
-        Task<LoanApplicationForm> GenerateHousingLoanForm(int userId);
+        Task<LoanApplicationForm> GenerateHousingLoanForm(string? applicationCode, string? rootFolder);
     }
 }

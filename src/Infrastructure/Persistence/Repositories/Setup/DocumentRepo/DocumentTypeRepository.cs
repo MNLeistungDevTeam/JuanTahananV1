@@ -37,15 +37,20 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
           await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetDocumentsByApplicantInformationCode", new { applicantCode });
 
         public async Task<IEnumerable<DocumentTypeModel?>> GetInquiryAsync() =>
-            await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetInquiry", new {});
+            await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetInquiry", new { });
+
+        public async Task<DocumentTypeModel?> GetDocumentTypeById(int id) =>
+            await _db.LoadSingleAsync<DocumentTypeModel, dynamic>("spDocumentType_GetById", new { id });
 
         public async Task<DocumentType> SaveAsync(DocumentTypeModel model)
         {
             var documentType = _mapper.Map<DocumentType>(model);
+
             if (model.Id == 0)
                 documentType = await CreateAsync(documentType);
             else
                 documentType = await UpdateAsync(documentType);
+
             return documentType;
         }
 
@@ -54,8 +59,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             model.DateCreated = DateTime.UtcNow;
             model.CreatedById = _currentUserService.GetCurrentUserId();
 
-            model = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
-            return model;
+            var result = await _contextHelper.CreateAsync(model, "DateModified", "ModifiedById");
+            return result;
         }
 
         public async Task<DocumentType> UpdateAsync(DocumentType model)
@@ -63,8 +68,8 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
             model.DateModified = DateTime.UtcNow;
             model.ModifiedById = _currentUserService.GetCurrentUserId();
 
-            model = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
-            return model;
+            var result = await _contextHelper.UpdateAsync(model, "DateCreated", "CreatedById");
+            return result;
         }
 
         public async Task DeleteAsync(int id)

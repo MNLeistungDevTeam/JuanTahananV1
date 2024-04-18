@@ -159,6 +159,9 @@
   <data name="Detached" xml:space="preserve">
     <value>Detached</value>
   </data>
+  <data name="eiDOC" xml:space="preserve">
+    <value>Juan Tahanan</value>
+  </data>
   <data name="File Content" xml:space="preserve">
     <value>File Content</value>
   </data>

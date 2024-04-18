@@ -1,5 +1,4 @@
 ﻿"use strict"
-
 $(async function () {
     //modules tables//
     var tbl_modules;
@@ -165,7 +164,7 @@ $(async function () {
 
     tbl_modules = $("#tbl_modules").DataTable({
         ajax: {
-            url: baseUrl + "Module/GetModules",
+            url: baseUrl + "Module/GetAll",
             dataSrc: ""
         },
         language: {
@@ -203,7 +202,7 @@ $(async function () {
                 data: "Icon",
                 class: "text-center",
                 render: function (data, type, row) {
-                    return data ? `<i class="${data}"></i>` : null;
+                    return data;
                 }
             },
             {
@@ -295,7 +294,7 @@ $(async function () {
                 data: "Icon",
                 class: "text-center",
                 render: function (data, type, row) {
-                    return data ? `<i class="${data}"></i>` : null;
+                    return data;
                 }
             },
             {
@@ -357,6 +356,10 @@ $(async function () {
         var Id = tbl_modules.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var ModuleDesc = tbl_modules.rows({ selected: true }).data().pluck("Description").toArray().toString();
 
+        $("#btn_add").attr({
+            "disabled": (selectedRows >= 1)
+        });
+
         $("#btn_edit").attr({
             "disabled": !(selectedRows === 1),
             "data-id": Id
@@ -395,6 +398,10 @@ $(async function () {
         var selectedRows = tbl_module_type.rows({ selected: true, search: 'applied' }).count();
         var Id = tbl_module_type.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var Description = tbl_module_type.rows({ selected: true }).data().pluck("Description").toArray().toString();
+
+        $("#btn_add_module_type").attr({
+            "disabled": (selectedRows >= 1),
+        });
 
         $("#btn_edit_module_type").attr({
             "disabled": !(selectedRows === 1),
@@ -435,11 +442,11 @@ $(async function () {
     });
 
     $("[name='Module.Icon']").on("input change blur", function () {
-        $("#txt_module_icon").html(`<i class="${$(this).val()}" ></class>`);
+        $("#txt_module_icon").html($(this).val());
     });
 
     $("[name='ModuleType.Icon']").on("input change blur", function () {
-        $("#txt_module_type_icon").html(`<i class="${$(this).val()}" ></class>`);
+        $("#txt_module_type_icon").html($(this).val());
     });
 
     $("#btn_save_module").on("click", function () {
@@ -479,7 +486,7 @@ $(async function () {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',  
+            cancelButtonColor: '#d33',
             confirmButtonText: 'Confirm',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {
@@ -589,6 +596,8 @@ $(async function () {
     $("#btn_delete_module_type").on("click", function () {
         var ModuleTypeIds = $(this).attr("data-id");
         var ModuleTypeDesc = $(this).attr("data-desc");
+
+        console.log(ModuleTypeIds);
 
         Swal.fire({
             title: 'Are you sure?',
@@ -863,15 +872,15 @@ $(async function () {
             });
 
             $("[name='Module.Ordinal']").val(moduleInfo.Ordinal);
-            $("[name='Module.IsDisabled']").prop("checked", moduleInfo.IsEnabled);
+            $("[name='Module.IsDisabled']").prop("checked", moduleInfo.IsDisabled);
             $("[name='Module.IsVisible']").prop("checked", moduleInfo.IsVisible);
             $("[name='Module.InMaintenance']").prop("checked", moduleInfo.InMaintenance);
             $("[name='Module.WithApprover']").prop("checked", moduleInfo.WithApprover);
 
-            $("#tbl_module_stages tbody").empty();
-            for (var moduleStage of moduleStages) {
-                addModuleStage(moduleStage);
-            }
+            //$("#tbl_module_stages tbody").empty();
+            //for (var moduleStage of moduleStages) {
+            //    addModuleStage(moduleStage);
+            //}
             rebindValidators();
         }
 

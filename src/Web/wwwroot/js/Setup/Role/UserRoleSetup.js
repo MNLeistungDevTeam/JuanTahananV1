@@ -1,16 +1,19 @@
+"use strict";
+
 $(() => {
-    "strict";
     const $tbl_userrole = document.querySelector('#tbl_user_role');
     var $modal = $('#modal-user-role');
     var $form = $('#user_role_form');
     var usersDropdown, $usersDropdown;
+
     $('select').selectize();
+
     $usersDropdown = $('#UserRole_UsersId').selectize({
         plugins: ["remove_button"],
         delimiter: ",",
         valueField: 'value',
         labelField: 'text',
-        searchField: ['text','position'],
+        searchField: ['text', 'position'],
         selectOnTab: true,
         create: false,
         persist: true,
@@ -58,14 +61,14 @@ $(() => {
                     className: 'ps-2',
                     render: function (data) {
                         return `
-                                    <div class="d-flex align-items-center">
-                                        <img src="${data.ProfilePicture == null ? '/images/user/default.png' : "/images/user/" + data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
-                                        <div>
-                                            <div>${data.Name}</div>
-                                            <a href="${data.Email}" class="text-decoration-none">${data.Email}</a>
-                                        </div>
+                                <div class="d-flex align-items-center">
+                                    <img src="${data.ProfilePicture == null ? '/images/user/default.png' : data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
+                                    <div>
+                                        <div>${data.Name}</div>
+                                        <a href="${data.Email}" class="text-decoration-none">${data.Email}</a>
                                     </div>
-                                `;
+                                </div>
+                            `;
                     }
                 },
                 {
@@ -117,7 +120,6 @@ $(() => {
             },
             select: {
                 style: "os"
-
             },
             scrollY: '24rem',
             scrollX: true,
@@ -182,8 +184,12 @@ $(() => {
     $form.on('submit', function (e) {
         e.preventDefault();
         var button = $(this).find('button[type="submit"]');
+
         if (!$(this).valid())
             return;
+
+        var userRoleId = $("[name='UserRole.Id']").val();
+
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -192,10 +198,12 @@ $(() => {
                 button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
             },
             success: function (data) {
+                let successMessage = "";
+                successMessage = `User Role Successfully ${userRoleId == 0 ? "Added" : "Updated"}!`;
+                messageBox(successMessage, "success", true);
                 button.html('Save').attr('disabled', false);
                 tbl_userrole.ajax.reload();
                 $modal.modal('hide');
-                messageBox(`Module Successfully ${data}`, "success", true);
             },
             error: async function (jqXHR, textStatus, errorThrown) {
                 button.html('Save').attr('disabled', false);

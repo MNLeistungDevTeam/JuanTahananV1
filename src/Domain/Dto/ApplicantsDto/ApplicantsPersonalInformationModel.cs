@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DMS.Domain.Dto.ApplicantsDto
 {
@@ -19,7 +14,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         //[Display(Name = "Pag-lBIG MID Number/RTN", Prompt = "Input Number")]
         //[Range(0, 999999999999)]
-        [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "Input Pag-IBIG Number")]
+        [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }
 
         public DateTime DateCreated { get; set; }
@@ -36,9 +31,21 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? CompanyId { get; set; }
         public int? ApprovalStatus { get; set; }
 
+        public int? EncodedStage { get; set; }
+        public int? EncodedStatus { get; set; }
+
+
+
+
+
         #region Display Properties
 
         public string? ApplicantFullName { get; set; }
+        public string? ApplicantFirstName { get; set; }
+        public string? ApproverFullName { get; set; }
+        public string? ApproverFirstName { get; set; }
+        public string? ApproverRole { get; set; }
+        public string? ApplicantEmail { get; set; }
         public string? PositionName { get; set; }
         public string? ApplicationStatus { get; set; }
 
@@ -58,11 +65,24 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int DocumentSize { get; set; }
         public string? DocumentFileType { get; set; }
 
-
-
-
         public bool? isRequiredDocumentsUploaded { get; set; }
         public bool? isCanAppliedNewApplication { get; set; }
+        public bool? isApplicationCurrentActive { get; set; }
+
+        public string? Remarks { get; set; }
+
+        public string? Stage { get; set; }
+        public int? StageNo { get; set; }
+
+        public string? ApproverName { get; set; }
+
+        public string? Email { get; set; }
+        public int? ApprovalStatusNumber { get; set; }
+        public string? ApprovalStageLimit { get; set; } = string.Empty;
+
+        public DateTime? DateSubmitted { get; set; }
+        public DateTime? LastUpdated { get; set; }
+
         #endregion Display Properties
     }
 }

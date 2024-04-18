@@ -1,15 +1,29 @@
-﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
+﻿@using DMS.Application.Interfaces.Setup.ApplicantsRepository
+@using DMS.Application.Interfaces.Setup.ModuleRepository
 @using DMS.Application.Interfaces.Setup.RoleRepository
+@using DMS.Application.Interfaces.Setup.UserRepository
 @using DMS.Application.Services;
 @using DMS.Web.Controllers.Services
 @using System.Security.Claims
 @inject IModuleRepository _moduleRepo;
+@inject IUserRepository _userRepo;
 @inject IRoleAccessRepository _roleRepo;
+@inject IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
 @inject IStringLocalizer<SharedResources> localizer
 @inject IFtpDownloaderService _ftpDownloaderService
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment;
 
 @{
     int userId = int.Parse(User.Identity.Name);
+    var userInfo = await _userRepo.GetUserAsync(userId);
+    string userProfile = Url.Content("~/images/user/default.png");
+
+    string[] exclusions = { "Dashboard", "Navigation", "Applicants" };
+    string[] btmPaddingRemoval = { "Admin Panel" };
+
+    if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
+        if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, userInfo.ProfilePicture[1..].Replace("/", "\\"))))
+            userProfile = Url.Content("~" + userInfo.ProfilePicture);
 
     var modules = await _roleRepo.GetByUserId(userId);
     var moduleGroups = modules.Where(m => m.CanRead && m.ModuleTypeIsVisible && !m.ModuleTypeIsDisabled).OrderBy(m => m.ModuleTypeOrder).Select(m => new { m.ModuleType, m.ModuleTypeIcon, m.ModuleTypeController, m.ModuleTypeAction }).Distinct();
@@ -54,29 +68,73 @@
                 <li class="side-nav-item d-flex align-items-center justify-content-center">
                     <div class="side-profile mb-3">
                         <div class="auth-avatar text-center">
-                            <img src="@ViewData["Profile"]" alt="A" class="img-fluid rounded-circle mx-auto avatar-xxxl img-thumbnail user-profile">
+                            <img src="@Url.Content("~" + userProfile)" alt="A" class="img-fluid rounded-circle mx-auto avatar-xxxl img-thumbnail user-profile" id="userProfile">
                             <div class="mx-auto d-none" style="width: 140px; height: 140px; font-size: 50px;"><span class="auth-initial-avatar avatar-title fw-bold text-white rounded-circle" style="background-color: #000;">A</span></div>
                         </div>
                         <h4 class="mt-3 mb-0 text-dark fw-bold text-center">@ViewData["Name"]</h4>
                         <small class="d-block text-truncate text-center text-dark fw-semibold">@ViewData["Position"]</small>
                     </div>
                 </li>
+                @if (userInfo.UserRoleId == 4)
+                {
+                    <li class="side-nav-item mb-2 d-flex align-items-center justify-content-center">
+                    @{
+                        //var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId && activeStatus.Contains(item.));
+                        Dictionary<string, string> btnParameters = new()
+                        {
+                            { "text", "Apply for a loan" },
+                            { "link", $"/Applicants/NewHLF068/{userInfo.PagibigNumber}" },
+                            { "color", "primary" },
+                        };
 
-                <li class="side-nav-title">@localizer["Navigation"]</li>
+                        // Beneficiary
+                        int[] inactiveStatus = { 2, 5, 9, 10 };
 
+                        var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+                        // Runs if data is not null and status is active (warning button)
+                        if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))
+                        {
+                            btnParameters["text"] = "View my application";
+                            btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
+                            btnParameters["color"] = "warning";
+                        }
+
+                        // check if url is the same as the current one
+                        var urlCheck = Context.Request.Path == btnParameters["link"];
+
+                        <a role="button" class="btn btn-@btnParameters["color"] @(urlCheck ? "disabled" : "")" href="@btnParameters["link"]" style="border-radius: 8px!important;" aria-disabled="@urlCheck">
+                            @btnParameters["text"]
+                        </a>
+                    }
+                    </li>
+                }
+
+                @*<li class="side-nav-title">@localizer["Navigation"]</li>*@
                 @foreach (var moduleGroup in moduleGroups)
                 {
                     var _parentModules = parentModules.Where(m => m.ModuleType == moduleGroup.ModuleType);
 
+                    // @if (exclusions.Contains(moduleGroup.ModuleType))
+                    // {
+                    //     continue;
+                    // }
+
                     @if (_parentModules.Any())
                     {
-                        <li class="side-nav-title">@moduleGroup.ModuleType</li>
+                        var hideClass = exclusions.Contains(moduleGroup.ModuleType) ? "d-none" : "";
+                        var btmPadding = btmPaddingRemoval.Contains(moduleGroup.ModuleType) ? "padding-bottom: 0px;" : "";
+
+                        <li class="side-nav-title @(hideClass)" style="@(btmPadding)">
+                            @moduleGroup.ModuleType
+                        </li>
                     }
                     else
                     {
                         <li class="side-nav-item">
                             <a asp-controller="@moduleGroup.ModuleTypeController" asp-action="@moduleGroup.ModuleTypeAction" class="side-nav-link">
-                                <i class="@moduleGroup.ModuleTypeIcon"></i>
+                                @* <i class="@moduleGroup.ModuleTypeIcon"></i> *@
+                                @Html.Raw(@moduleGroup.ModuleTypeIcon)
                                 <span> @moduleGroup.ModuleType </span>
                             </a>
                         </li>
@@ -114,7 +172,8 @@
                             {
                                 <li class="side-nav-item">
                                     <a asp-controller="@parentModule.ModuleController" asp-action="@parentModule.ModuleAction" class="side-nav-link">
-                                        <i class="@parentModule.ModuleIcon"></i>
+                                        @* <i class="@parentModule.ModuleIcon"></i> *@
+                                        @Html.Raw(@parentModule.ModuleIcon)
                                         <span> @parentModule.ModuleName </span>
                                     </a>
                                 </li>

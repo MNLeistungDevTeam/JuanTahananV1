@@ -30,8 +30,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Required]
         [DisplayName("Gender")]
         public string? Gender { get; set; } = string.Empty;
-
-        [Required]
+ 
         [DisplayName("Age")]
         public int Age { get; set; }
 
@@ -99,18 +98,18 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [DisplayName("Subdivision")]
         public string? PermanentSubdivisionName { get; set; } = string.Empty;
 
-        [Required]
+ 
         [DisplayName("Barangay")]
         public string? PermanentBarangayName { get; set; } = string.Empty;
 
-        [Required]
+ 
         [DisplayName("Municipality")]
         public string? PermanentMunicipalityName { get; set; } = string.Empty;
 
         [DisplayName("Province")]
         public string? PermanentProvinceName { get; set; } = string.Empty;
 
-        [Required]
+ 
         [DisplayName("Zip Code")]
         public string? PermanentZipCode { get; set; } = string.Empty;
 

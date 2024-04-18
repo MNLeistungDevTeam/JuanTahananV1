@@ -53,7 +53,7 @@ public class CompanyController : Controller
 
     #endregion Fields
 
-    #region View
+    #region Views
 
     public async Task<IActionResult> Index()
     {
@@ -78,7 +78,6 @@ public class CompanyController : Controller
             return View(companyVm);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
-
     }
 
     public async Task<IActionResult> Create()
@@ -98,15 +97,6 @@ public class CompanyController : Controller
             };
 
             return View("Create", companyVm);
-        }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
-    }
-
-    public IActionResult InfiniteScroll()
-    {
-        try
-        {
-            return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
@@ -143,12 +133,11 @@ public class CompanyController : Controller
         }
     }
 
-    #endregion View
+    #endregion Views
 
-    #region API
+    #region API Getters
 
-    #region Get Methods
-
+    //Company Repository
     public async Task<IActionResult> GetSubCompanies(int id)
     {
         try
@@ -180,6 +169,15 @@ public class CompanyController : Controller
         return Ok(data);
     }
 
+    public async Task<IActionResult> GetLoggedInCompany()
+    {
+        int companyId = int.Parse(User.FindFirstValue("Company"));
+        var data = await _companyRepo.GetCompany(companyId);
+
+        return Ok(data);
+    }
+
+    //Company Logo Repository
     public async Task<IActionResult> GetCompanyLogos(int companyId)
     {
         var data = await _companyLogoRepo.GetByCompanyId(companyId);
@@ -187,6 +185,7 @@ public class CompanyController : Controller
         return Ok(data);
     }
 
+    //Address Repository
     public async Task<IActionResult> GetCompanyAddresses(int companyId)
     {
         //int compId = int.Parse(User.FindFirstValue("Company"));
@@ -196,17 +195,10 @@ public class CompanyController : Controller
         return Ok(data);
     }
 
+    //Company Settings Repository
     public async Task<IActionResult> GetCompanySettingByCompanyId(int companyId)
     {
         var data = await _companySettingsRepo.GetByCompanyIdAsync(companyId);
-
-        return Ok(data);
-    }
-
-    public async Task<IActionResult> GetLoggedInCompany()
-    {
-        int companyId = int.Parse(User.FindFirstValue("Company"));
-        var data = await _companyRepo.GetCompany(companyId);
 
         return Ok(data);
     }
@@ -229,7 +221,7 @@ public class CompanyController : Controller
         }
     }
 
-    #endregion Get Methods
+    #endregion API Getters
 
     #region Operation Methods
 
@@ -288,5 +280,4 @@ public class CompanyController : Controller
 
     #endregion Operation Methods
 
-    #endregion API
 }

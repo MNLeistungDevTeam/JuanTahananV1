@@ -13,8 +13,7 @@ $(function () {
 
             {
                 data: 'Code',
-                orderable: !0,
-                className: 'align-middle text-center',
+                className: 'align-middle',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
@@ -22,51 +21,50 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle'
             },
 
             {
                 data: 'PagibigNumber',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle'
             },
             {
                 data: 'HousingAccountNumber',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-end',
+                visible: false
             },
             {
                 data: 'Developer',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle'
             },
             {
                 data: 'ProjectLocation',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle'
             },
 
             {
                 data: 'Unit',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle'
             },
             {
                 data: 'LoanAmount',
-                orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-end',
+                render: function (data, type, row) {
+
+                    let loanAmount = numeral(data).format('0,0.00');
+                    return `₱${loanAmount}`;
+                }
+
             },
 
             {
-                data: 'DateCreated',
-                orderable: !0,
+                data: 'DateSubmitted',
                 className: 'align-middle text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
@@ -76,18 +74,93 @@ $(function () {
                     }
                 }
             },
+
+
             {
-                data: 'ApplicationStatus',
-                orderable: !0,
-                className: 'align-middle text-center',
-                render: function (data) {
-                    return `
-                        <span class="badge fs-6 border bg-secondary">${data}</span>
-                        `;
+                data: 'Stage',
+                className: 'align-middle',
+                render: function (data, type, row) {
+                    var returndata;
+
+                    console.log(data);
+                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    return returndata;
                 }
             },
 
+            {
+                data: 'ApplicationStatus',
+                className: 'align-middle',
+                render: function (data, type, row) {
+                    var returndata = "";
+
+                    console.log(row.ApprovalStatusNumber);
+
+                    if (row.ApprovalStatusNumber == 0) { // draft
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 1) { // submitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 2) { // withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 3) { // DeveloperVerified
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 4) { // PagibigVerified
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 5) { // Withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 6) { // PostSubmitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 7) { // DeveloperConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 8) { // PagibigConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 9) { // Disqualified
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 10) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+
+                    return returndata;
+                }
+            },
+            {
+                data: 'LastUpdated',
+                className: 'align-middle text-center',
+                render: function (data, type, row) {
+
+                    if (data && data.trim() !== "") {
+                        return moment(data).format('YYYY-MM-DD HH:mm');
+
+                    } else {
+                        return "";
+                    }
+                }
+            },
         ],
+
+
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
@@ -105,7 +178,9 @@ $(function () {
         select: true,
         scrollY: '24rem',
         scrollX: true,
-        order: [[1, "desc"]],
+        orderable: false,
+        sort: false,
+        //order: [[1, "desc"]],
         pageLength: 10,
         searchHighlight: true,
         stateSave: false,
@@ -119,21 +194,66 @@ $(function () {
         var selectedRows = tbl_applicants.rows({ selected: true, search: 'applied' }).count();
         var id = tbl_applicants.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applicants.rows({ selected: true }).data().pluck("Code").toArray().toString();
+        var applicationStatus = tbl_applicants.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
         $("#btn_add").attr({
             "disabled": !(selectedRows === 0),
             "data-url": baseUrl + "Applicants/HLF068"
         });
 
-        $("#btn_edit").attr({
-            "disabled": !(selectedRows === 1),
-            "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
-        });
-
         $("#btn_view").attr({
             "disabled": !(selectedRows === 1),
             "data-url": baseUrl + "Applicants/Details/" + applicationCode
         });
+
+        $("#btn_generate_pdf").attr({
+            "disabled": !(selectedRows === 1),
+            "data-url": baseUrl + "Report/LatestHousingForm/" + applicationCode
+        });
+
+        //$("#btn_edit").attr({
+        //    "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+        //    "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+        //});
+
+        //$("#btn_upload_document").attr({
+        //    "disabled": selectedRows !== 1 || (applicationStatus === 2 || applicationStatus === 0),
+        //    "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+        //});
+
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
+            $("#btn_edit").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+            });
+        }
+
+        else {
+            $("#btn_edit").attr({
+                "disabled": true,
+                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+            });
+        }
+
+        if (selectedRows == 1 && applicationStatus == 0) {  //application draft
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+        else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
+        else {
+            $("#btn_upload_document").attr({
+                "disabled": true,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
     });
 
     //#endregion
@@ -150,6 +270,15 @@ $(function () {
     $("#btn_view").on('click', function () {
         location.href = $(this).attr("data-url");
     });
+
+    $("#btn_upload_document").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
+    $("#btn_generate_pdf").on('click', function () {
+        location.href = $(this).attr("data-url");
+    });
+
     $("#btn_refresh").on('click', function () {
         tbl_applicants.ajax.reload();
     });
@@ -172,12 +301,16 @@ $(function () {
             },
             success: function (response) {
                 if (response) {
-                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalPendingReview : 0}</span>`);
+                    info_for_approval.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalSubmitted : 0}</span>`);
                     info_total_approved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalApprove : 0}</span>`);
                     info_total_disapproved.html(`<span data-plugin="counterup">${response.length > 0 ? response[0].TotalDisApprove : 0}</span>`);
                 }
 
                 $("[data-plugin='counterup']").counterUp();
+            }, error: function (jqXHR) {
+                info_for_approval.html(`<span data-plugin="counterup">0</span>`);
+                info_total_approved.html(`<span data-plugin="counterup">0</span>`);
+                info_total_disapproved.html(`<span data-plugin="counterup">0</span>`);
             }
         });
     }

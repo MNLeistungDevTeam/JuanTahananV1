@@ -21,9 +21,9 @@ public partial class CollateralInformation
 
     public int? PropertyTypeId { get; set; }
 
-    public int? TctOctCctNumber { get; set; }
+    public string TctOctCctNumber { get; set; }
 
-    public int? TaxDeclrationNumber { get; set; }
+    public string TaxDeclrationNumber { get; set; }
 
     public int? LotUnitNumber { get; set; }
 

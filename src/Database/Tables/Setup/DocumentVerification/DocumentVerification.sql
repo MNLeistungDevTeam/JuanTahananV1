@@ -7,5 +7,5 @@
 	DateCreated DATETIME2(7) NULL,
 	ModifiedById INT NULL,
 	DateModified DATETIME2(7) NULL,
-	FOREIGN KEY (DocumentTypeId) REFERENCES DocumentType(Id) ON DELETE CASCADE
+	--FOREIGN KEY (DocumentTypeId) REFERENCES DocumentType(Id) ON DELETE CASCADE
 )
