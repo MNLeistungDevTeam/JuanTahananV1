@@ -366,6 +366,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -376,6 +377,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -386,6 +388,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -396,6 +399,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -741,7 +745,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').addClass('d-none');
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
         }
     });
 
@@ -1176,6 +1180,7 @@ $(function () {
         loadBorrowerInformation(applicantInfoIdVal);
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
+        initializeRadioBtnMisc();
 
         // initialize first the selectize before lock
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
@@ -1573,5 +1578,33 @@ $(function () {
         $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
 
+    function initializeRadioBtnMisc() {
+
+        let pendingCaseValue = $("[name='Form2PageModel.PendingCase']").val();
+        let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
+        let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
+        let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
+
+        // Set checked status for PendingCase radio buttons
+        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
+        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+        //$("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+
+        // Set checked status for PastDue radio buttons
+        $("#pdRbtn1").prop("checked", !!pastDueValue);
+        $("#pdRbtn2").prop("checked", !pastDueValue);
+        //$("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+
+        // Set checked status for BouncingChecks radio buttons
+        $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
+        $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+        //$("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+
+        // Set checked status for MedicalAdvice radio buttons
+        $("#maRbtn1").prop("checked", !!medicalAdviceValue);
+        $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        //$("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+    }
     //#endregion
 });
