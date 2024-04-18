@@ -736,6 +736,7 @@ namespace Template.Web.Controllers.Transaction
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                        beneficiaryModel.PermanentStreetName = vwModel.BarrowersInformationModel.PermanentStreetName;
                         beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
                         beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
                         beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
@@ -745,6 +746,7 @@ namespace Template.Web.Controllers.Transaction
 
                         if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress)
                         {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
                             beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
@@ -756,6 +758,7 @@ namespace Template.Web.Controllers.Transaction
                         }
                         else
                         {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
                             beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
@@ -765,6 +768,8 @@ namespace Template.Web.Controllers.Transaction
                             beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
                             beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
                         }
+
+
 
                         beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
                         beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;

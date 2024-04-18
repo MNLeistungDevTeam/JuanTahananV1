@@ -1,8 +1,51 @@
-﻿
-const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 
 $(function () {
+
+    $(document).ready(function () {
+
+        $('input[name="customRadio1"]').change(function () {
+            // Get the value of the selected radio button
+
+            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
+
+
+
+            if (applicantInfoIdVal == 0) {
+
+
+                if (selectedOptionText === "Application Completion") {
+                    
+
+
+                    if (roleName == 'Developer') {
+
+                        $('.selectize option[value="3"], .selectize option[value="4"]').hide();
+
+                      
+                        $('.selectize')[0].selectize.refreshOptions();
+
+                    }
+
+                }
+
+                else if (selectedOptionText === "Credit Verification") {
+                    // Manipulate the select options
+                    $('.selectize option').show(); // Hide all options first
+                    // Show only the options needed
+                    $('.selectize option[value="5"]').hide();
+                    $('.selectize option[value="6"]').hide();
+                    $('.selectize option[value="7"]').hide();
+                }
+
+               
+            }
+        });
+
+    });
+   
+
     var telNoArray = [];
     var itiFlag = false;
 
@@ -18,7 +61,7 @@ $(function () {
         dateFormat: "m/d/Y",
         maxDate: moment().format("MM/DD/YYYY")
     });
-    
+
     $(".timepicker").flatpickr({
         enableTime: true,
         noCalendar: true,
@@ -1304,7 +1347,8 @@ $(function () {
 
                     // Redirect handling
                     if (applicantInfoIdVal == 0) {
-                        setTimeout(function () {8
+                        setTimeout(function () {
+                            8
                             $("#beneficiary-overlay").addClass('d-none');
                             window.location.href = "/Applicants/HLF068/" + response;
                         }, 2000);

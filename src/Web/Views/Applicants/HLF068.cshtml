@@ -7,7 +7,7 @@
     string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Application" : "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 
-    
+
 }
 
 <!-- start page title -->
@@ -75,7 +75,7 @@
 
                 <div class="col-md-3">
                     <label class="form-label fw-normal">Status:</label>
-                    <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
+                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedStatus" class="rounded-4 selectize"data-value="@Model.ApplicantsPersonalInformationModel.EncodedStatus">
                         <option value="">Select First Stage.... </option>
                         <option value="1">Application in Draft</option>
                         <option value="2">Submitted</option>
@@ -96,6 +96,7 @@
 
                     <div class="tab-pane" id="loanparticulars">
 
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.EncodedStage" value="@Model.ApplicantsPersonalInformationModel.EncodedStage">
 
 
                         @*   <form id="loanparticulars" method="post" action="#" class="form-horizontal needs-validation" novalidate>
@@ -1723,9 +1724,9 @@
                                                         MISCELLANEOUS
                                                     </h3>
                                                     <p class="text-white m-0">
-                                                        (Answer the following questions with 
-                                                        <strong class="text-warning">YES</strong> or 
-                                                        <strong class="text-warning">NO</strong>. 
+                                                        (Answer the following questions with
+                                                        <strong class="text-warning">YES</strong> or
+                                                        <strong class="text-warning">NO</strong>.
                                                         If your answer is <strong class="text-warning">YES</strong>, please elaborate the details as required)
                                                         @* <strong class="text-warning">(optional)</strong> *@
                                                     </p>
@@ -1775,11 +1776,11 @@
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.BouncingChecks"></label>
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn1"/>
+                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn1" />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn2" checked/>
+                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn2" checked />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
