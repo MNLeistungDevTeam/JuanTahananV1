@@ -26,14 +26,14 @@ namespace DMS.Domain.Dto.ApplicantsDto
             }
         }
 
-        [Display(Name = "Suffix", Prompt = "Suffix")]
+        [Display(Name = "Name Extension (if applicable)", Prompt = "Name Extension")]
         public string? Suffix { get; set; }
 
         [Display(Name = "Citizenship", Prompt = "Citizenship")]
         public string? Citizenship { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name = "Birth Date", Prompt = "Birth Date")]
+        [Display(Name = "Date of Birth", Prompt = "Birth Date", Description = "(mm/dd/yyyy)")]
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Sex")]
@@ -46,70 +46,79 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? HomeNumber { get; set; }
 
         [Required]
-        [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
+        [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
         [Required]
-        [Display(Name = "Email", Prompt = "Email")]
+        [Display(Name = "Email Address", Prompt = "Email")]
         public string? Email { get; set; }
 
-        [Display(Name = "Present Unit", Prompt = "Unit Name")]
+
+        // Present
+
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PresentUnitName { get; set; }
 
-        [Display(Name = "Present Building", Prompt = "Building Name")]
+        [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
-        [Display(Name = "Present Lot", Prompt = "Lot Name")]
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? PresentLotName { get; set; }
 
-        [Display(Name = "Present Street", Prompt = "Street Name")]
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
-        [Display(Name = "Present Subdivision", Prompt = "Subdivision Name")]
+        [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PresentSubdivisionName { get; set; }
 
         [Required]
-        [Display(Name = "Present Baranggay", Prompt = "Baranggay Name")]
+        [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
         public string? PresentBaranggayName { get; set; }
 
         [Required]
-        [Display(Name = "Present Municipality", Prompt = "Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PresentMunicipalityName { get; set; }
 
         [Required]
-        [Display(Name = "Present Province", Prompt = "Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PresentProvinceName { get; set; }
 
         [Required]
-        [Display(Name = "Present Zip Code", Prompt = "Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        [Display(Name = "Permanent Unit", Prompt = "Unit Name")]
+
+
+        // Permanent
+
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PermanentUnitName { get; set; }
 
-        [Display(Name = "Permanent Building", Prompt = "Building Name")]
+        [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PermanentBuildingName { get; set; }
 
-        [Display(Name = "Permanent Lot", Prompt = "Lot Name")]
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? PermanentLotName { get; set; }
 
-        [Display(Name = "Permanent Street", Prompt = "Street Name")]
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PermanentStreetName { get; set; }
 
-        [Display(Name = "Permanent Subdivision", Prompt = "Subdivision Name")]
+        [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
 
-        [Display(Name = "Permanent Baranggay", Prompt = "Baranggay Name")]
+        [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
         public string? PermanentBaranggayName { get; set; }
 
-        [Display(Name = "Permanent Municipality", Prompt = "Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PermanentMunicipalityName { get; set; }
 
-        [Display(Name = "Permanent Province", Prompt = "Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PermanentProvinceName { get; set; }
 
-        [Display(Name = "Permanent Zip Code", Prompt = "Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
+
+
 
         [Display(Name = "Home Ownership", Prompt = "Home Ownership")]
         public string HomeOwnerShip { get; set; }
@@ -117,63 +126,63 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Monthly Rent", Prompt = "Monthly Rent")]
         public Decimal? MonthlyRent { get; set; }
 
-        [Display(Name = "Years of Stay", Prompt = "Years")]
+        [Display(Name = "Years of stay in Present Home Address", Prompt = "Years", Description = "Years of stay in Present Home Address")]
         public int? YearsofStay { get; set; }
 
-        [Display(Name = "SSS Number", Prompt = "XX-XXXXXXX-XX")]
+        [Display(Name = "EE SSS/GSIS ID No.", Prompt = "XX-XXXXXXX-XX", Description = "EE SSS/GSIS ID No.")]
         public string? SSSNumber { get; set; }
 
-        [Display(Name = "TIN Number", Prompt = "XXX-XXX-XXX-XXXX")]
+        [Display(Name = "TIN", Prompt = "XXX-XXX-XXX-XXXX")]
         public string? TinNumber { get; set; }
 
         [Required]
-        [DisplayName("Occupation Status")]
+        [DisplayName("Occupation")]
         public string? OccupationStatus { get; set; }
 
-        [Display(Name = "Employer", Prompt = "Employer Name")]
+
+        [Display(Name = "Employer/Business Name (if self-employed)", Prompt = "Employer Name", Description = "Employer/Business Name (if self-employed)")]
         public string? EmployerName { get; set; }
 
-        [Required]
         [DisplayName("Industry")]
         public string? IndustryName { get; set; }
 
-        [Display(Name = "Position", Prompt = "Position")]
+        [Display(Name = "Position and Department", Prompt = "Position")]
         public string? PositionName { get; set; }
 
         [Display(Name = "Department", Prompt = "Department")]
         public string? DepartmentName { get; set; }
 
-        [Display(Name = "Years Employment", Prompt = "Years Employement")]
+        [Display(Name = "Years in Employment/Business", Prompt = "Years in Employment/Business")]
         public int? YearsEmployment { get; set; }
 
-        [Display(Name = "Number of Dependents", Prompt = "No of Dependents")]
+        [Display(Name = "No. of Dependent/s", Prompt = "No. of Dependent/s")]
         public int? NumberOfDependent { get; set; }
 
-        [Display(Name = "Business Unit", Prompt = "Unit Name")]
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? BusinessUnitName { get; set; }
 
-        [Display(Name = "Business Building", Prompt = "Building Name")]
+        [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? BusinessBuildingName { get; set; }
 
-        [Display(Name = "Business Lot", Prompt = "Lot Name")]
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? BusinessLotName { get; set; }
 
-        [Display(Name = "Business Street", Prompt = "Street Name")]
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? BusinessStreetName { get; set; }
 
-        [Display(Name = "Business Subdivision", Prompt = "Subdivision Name")]
+        [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? BusinessSubdivisionName { get; set; }
 
-        [Display(Name = "Business Baranggay", Prompt = "Baranggay Name")]
+        [Display(Name = "Barangay", Prompt = "Baranggay Name", Description = "Barangay")]
         public string? BusinessBaranggayName { get; set; }
 
-        [Display(Name = "Business Municipality", Prompt = "Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality Name", Description = "Municipality/City")]
         public string? BusinessMunicipalityName { get; set; }
 
-        [Display(Name = "Business Province", Prompt = "Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? BusinessProvinceName { get; set; }
 
-        [Display(Name = "Business Zip Code", Prompt = "Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? BusinessZipCode { get; set; }
 
         [Display(Name = "Business Country", Prompt = "Country")]
@@ -182,19 +191,19 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Business Contact Number", Prompt = "Input number")]
         public string? BusinessContactNumber { get; set; }
 
-        [Display(Name = "Business Direct Line Number", Prompt = "Input number")]
+        [Display(Name = "Business (Direct Line)", Prompt = "Input number")]
         public string? BusinessDirectLineNumber { get; set; }
 
-        [Display(Name = "Business Truck Line Number", Prompt = "Input number")]
+        [Display(Name = "Business (Trunk Line)", Prompt = "Input number")]
         public string? BusinessTruckLineNumber { get; set; }
 
-        [Display(Name = "Business Email", Prompt = "Email")]
+        [Display(Name = "Employer/Business Email Address", Prompt = "Email")]
         public string? BusinessEmail { get; set; }
 
         [Display(Name = "Preferred Mailing Address", Prompt = "Mailing Address")]
         public string PreparedMailingAddress { get; set; }
 
-        [Display(Name = "Preferred Time To Contact", Prompt = "Preferred Time to Contact")]
+        [Display(Name = "Preferred Time to be Contacted (for Employer)", Prompt = "Preferred Time to Contact")]
         public string? PreferredTimeToContact { get; set; }
 
         [DisplayName("Date Created")]
