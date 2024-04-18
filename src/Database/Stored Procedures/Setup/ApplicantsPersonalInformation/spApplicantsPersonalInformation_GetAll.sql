@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
 	@roleId INT 
 AS
 	 SELECT 
