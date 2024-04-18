@@ -91,7 +91,7 @@ $(function () {
             var isValid = validateForm(currentForm);
 
             // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2" && roleName != 'Developer' && applicantInfoIdVal == 0) {
+            if (currentFormName == "form2" && roleName != 'Developer' && applicantInfoIdVal == 0 || currentFormName == "form2" && roleName != 'Pagibig' && applicantInfoIdVal == 0) {
          
                 $("#liform2_next").addClass("d-none").prop('disabled', true);
                 $("#liform2_submit").removeClass("d-none").prop('disabled', false);
@@ -250,7 +250,7 @@ $(function () {
     //#endregion
 
     $(document).ready(function () {
-        if (roleName == 'Developer') {
+        if (roleName == 'Developer' || roleName == 'Pagibig') {
             $("#div_stageapprovalsettings").removeClass('d-none');
             $("#div_postapproval").addClass('d-none');
         }
@@ -264,7 +264,7 @@ $(function () {
                 if (selectedOptionText === "Application Completion") {
                     $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
 
-                    if (roleName == 'Developer') {
+                    if (roleName == 'Developer' || roleName == 'Pagibig') {
                         $("#div_stageapprovalsettings").removeClass('d-none');
                     }
                 }
