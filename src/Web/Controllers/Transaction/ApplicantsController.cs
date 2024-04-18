@@ -149,11 +149,16 @@ namespace Template.Web.Controllers.Transaction
 
                 //var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
 
+                //make it reverse
                 if (latestRecord != null && ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Deferred) || ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Withdrawn))
 
                 {
                     applicantInfoModel.isCanAppliedNewApplication = true;
                 }
+            }
+            else
+            { // if had no record yet means it can applied new application
+                applicantInfoModel.isCanAppliedNewApplication = true;
             }
 
             applicantInfoModel.PagibigNumber = userData.PagibigNumber;
@@ -236,9 +241,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                    List<int> inActiveStatuses = new List<int> { 0,2, 5, 9, 10 };
-
-
+                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10 };
 
                     if (applicantinfo == null)
                     {

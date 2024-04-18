@@ -102,37 +102,7 @@
                         </h3>
 
 
-                        <div class="mt-4">
-                            <label class="form-label fw-normal fs-4">Stage:</label>
-                            <div class="form-check form-check-inline ms-2">
-                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" data-name="Credit Verification">
-                                <label class="form-check-label fs-4" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" data-name="Application Completion">
-                                <label class="form-check-label fs-4" for="customRadio4" data-name="Application Completion">Application Completion</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" data-name="Post approval">
-                                <label class="form-check-label fs-4" for="customRadio5" data-name="Post approval">Post approval</label>
-                            </div>
-                        </div>
 
-
-                        <div class="col-md-3">
-                            <label class="form-label fw-normal">Status:</label>
-                            <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
-                                <option value="">Select First Stage.... </option>
-                                <option value="1">Application in Draft</option>
-                                <option value="2">Submitted</option>
-                                <option value="3">Developer Verified</option>
-                                <option value="4">Pagibig Verified</option>
-                                <option value="5">Post Submitted</option>
-                                <option value="6">Developer Approved</option>
-                                <option value="7">Pagibig Approved</option>
-                            </select>
-
-                        </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
@@ -324,7 +294,7 @@
                                     </button>
                                 }
 
-                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Developer && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -333,14 +303,6 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-
-
-
-
-
-
-
 
 
                             }
@@ -584,7 +546,7 @@
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                                             {
                                                 <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
-                                                    Remarks: 
+                                                    Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
@@ -600,9 +562,10 @@
                                             @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: 
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
-                                                    </h3>
+                                                </h3>
                                             }
                                             else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                             {

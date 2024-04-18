@@ -59,6 +59,7 @@ namespace DMS.Infrastructure.Services
                 UserName = await _authService.GenerateTemporaryUsernameAsync(),
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                MiddleName = model.MiddleName,
                 Gender = model.Gender,
                 Position = "Beneficiary",
                 PagibigNumber = model.PagibigMidNumber
@@ -94,6 +95,7 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PresentUnitName = model.PresentUnitName;
             beneficiaryModel.PresentBuildingName = model.PresentBuildingName;
             beneficiaryModel.PresentLotName = model.PresentLotName;
+            beneficiaryModel.PresentStreetName = model.PresentStreetName;
             beneficiaryModel.PresentSubdivisionName = model.PresentSubdivisionName;
             beneficiaryModel.PresentBaranggayName = model.PresentBarangayName;
             beneficiaryModel.PresentMunicipalityName = model.PresentMunicipalityName;
@@ -103,6 +105,7 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PermanentUnitName = model.PermanentUnitName;
             beneficiaryModel.PermanentBuildingName = model.PermanentBuildingName;
             beneficiaryModel.PermanentLotName = model.PermanentLotName;
+            beneficiaryModel.PermanentStreetName = model.PermanentStreetName;
             beneficiaryModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
             beneficiaryModel.PermanentBaranggayName = model.PermanentBarangayName;
             beneficiaryModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
@@ -113,8 +116,8 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PropertyLocation = model.PropertyLocation;
             beneficiaryModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
 
-            beneficiaryModel.IsPermanentAddressAbroad = true; // no condition because all address is required
-            beneficiaryModel.IsPresentAddressAbroad = true; // no condition because all address is required
+            beneficiaryModel.IsPermanentAddressAbroad = false; // no condition because all address is required
+            beneficiaryModel.IsPresentAddressAbroad = false; // no condition because all address is required
 
             await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
 
