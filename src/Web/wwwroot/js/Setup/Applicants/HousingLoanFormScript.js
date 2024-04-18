@@ -69,7 +69,7 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    initializeIntlTelInput();
+    //initializeIntlTelInput();
     //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
