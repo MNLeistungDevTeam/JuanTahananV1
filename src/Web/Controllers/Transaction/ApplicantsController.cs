@@ -769,8 +769,6 @@ namespace Template.Web.Controllers.Transaction
                             beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
                         }
 
-
-
                         beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
                         beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
                         beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
@@ -803,6 +801,7 @@ namespace Template.Web.Controllers.Transaction
                     //vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+                    vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
 
                     var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
@@ -851,6 +850,9 @@ namespace Template.Web.Controllers.Transaction
                 else
                 {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+
+
 
                     var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 

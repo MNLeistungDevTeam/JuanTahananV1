@@ -109,7 +109,12 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
             if (model.Id == 0)
             {
-                _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+
+
+                if (_applicantPersonalInfo.ApprovalStatus is null) {
+                    _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
+                }
+               
 
                 _applicantPersonalInfo.Code = await GenerateApplicationCode();
 

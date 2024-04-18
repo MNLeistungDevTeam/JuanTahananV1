@@ -2,50 +2,6 @@
 const roleName = $("#txt_role_name").val();
 
 $(function () {
-
-    $(document).ready(function () {
-
-        $('input[name="customRadio1"]').change(function () {
-            // Get the value of the selected radio button
-
-            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
-
-
-
-            if (applicantInfoIdVal == 0) {
-
-
-                if (selectedOptionText === "Application Completion") {
-                    
-
-
-                    if (roleName == 'Developer') {
-
-                        $('.selectize option[value="3"], .selectize option[value="4"]').hide();
-
-                      
-                        $('.selectize')[0].selectize.refreshOptions();
-
-                    }
-
-                }
-
-                else if (selectedOptionText === "Credit Verification") {
-                    // Manipulate the select options
-                    $('.selectize option').show(); // Hide all options first
-                    // Show only the options needed
-                    $('.selectize option[value="5"]').hide();
-                    $('.selectize option[value="6"]').hide();
-                    $('.selectize option[value="7"]').hide();
-                }
-
-               
-            }
-        });
-
-    });
-   
-
     var telNoArray = [];
     var itiFlag = false;
 
@@ -135,7 +91,12 @@ $(function () {
             var isValid = validateForm(currentForm);
 
             // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
+            if (currentFormName == "form2" && roleName != 'Developer' && applicantInfoIdVal == 0) {
+         
+                $("#liform2_next").addClass("d-none").prop('disabled', true);
+                $("#liform2_submit").removeClass("d-none").prop('disabled', false);
+
+
                 return;
             }
 
@@ -162,6 +123,16 @@ $(function () {
             // Hide the current form (collateral) and remove 'fade' class
             var nextForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
+
+
+
+            $("#form3").addClass('was-validated').prop('hidden', true);
+
+
+            //if (currentForm == 'form2') {
+            //    $("#form3").addClass('was-validated').prop('hidden', true);
+
+            //}
 
             // Hide the current form
             currentForm.addClass('fade').prop('hidden', true);
@@ -277,6 +248,33 @@ $(function () {
     });
 
     //#endregion
+
+    $(document).ready(function () {
+        if (roleName == 'Developer') {
+            $("#div_stageapprovalsettings").removeClass('d-none');
+            $("#div_postapproval").addClass('d-none');
+        }
+
+        $('input[name="customRadio1"]').change(function () {
+            // Get the value of the selected radio button
+
+            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
+
+            if (applicantInfoIdVal == 0) {
+                if (selectedOptionText === "Application Completion") {
+                    $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
+
+                    if (roleName == 'Developer') {
+                        $("#div_stageapprovalsettings").removeClass('d-none');
+                    }
+                }
+
+                else if (selectedOptionText === "Credit Verification") {
+                    $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
+                }
+            }
+        });
+    });
 
     //#region Set Selectize to readonly
     $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
@@ -1345,14 +1343,26 @@ $(function () {
                     let successMessage = `Beneficiary Successfully ${type}`;
                     messageBox(successMessage, "success", true);
 
+                    let encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStatus").val();
+
                     // Redirect handling
                     if (applicantInfoIdVal == 0) {
-                        setTimeout(function () {
-                            8
-                            $("#beneficiary-overlay").addClass('d-none');
-                            window.location.href = "/Applicants/HLF068/" + response;
-                        }, 2000);
-                    } else {
+                        //not applicationindraft
+                        if (encodedStageVal > 1) {
+                            setTimeout(function () {
+                                $("#beneficiary-overlay").addClass('d-none');
+                                window.location.href = "/Applicants/Details/" + response;
+                            }, 2000);
+                        }
+                        else {
+                            setTimeout(function () {
+                                $("#beneficiary-overlay").addClass('d-none');
+                                window.location.href = "/Applicants/HLF068/" + response;
+                            }, 2000);
+                        }
+                    }
+
+                    else {
                         var link = "Applicants/Beneficiary";
                         if (roleName != 'Beneficiary') {
                             link = "Applicants/ApplicantRequests";

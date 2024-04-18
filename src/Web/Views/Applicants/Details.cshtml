@@ -294,7 +294,7 @@
                                     </button>
                                 }
 
-                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed  && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
