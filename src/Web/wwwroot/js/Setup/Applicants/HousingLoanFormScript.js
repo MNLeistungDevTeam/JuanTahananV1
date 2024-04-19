@@ -11,12 +11,15 @@ $(function () {
         search: false
     });
 
-    $('.calendarpicker').flatpickr();
+    $('.calendarpicker').flatpickr({
+        dateFormat: "m/d/Y",
+    });
 
     $('.present-calendar-picker').flatpickr({
-        dateFormat: "Y-m-d",
-        maxDate: moment().format("YYYY-MM-DD")
+        dateFormat: "m/d/Y",
+        maxDate: moment().format("MM/DD/YYYY")
     });
+
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -1437,10 +1440,9 @@ $(function () {
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');
         if (dataValue && dataValue.trim() !== '') {
-            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+            $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
         }
     }
-
     function lengthValidator() {
         var isValid = true;
         var elements = [

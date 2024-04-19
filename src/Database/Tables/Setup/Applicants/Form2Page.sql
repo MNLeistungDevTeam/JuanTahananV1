@@ -4,167 +4,167 @@
 	[ApplicantsPersonalInformationId] INT NOT NULL,
 
     --Bank Account
-    [Bank1] NVARCHAR(40) NULL,
-    [Bank2] NVARCHAR(40) NULL,
-    [Bank3] NVARCHAR(40) NULL,
+    [Bank1] NVARCHAR(255) NULL,
+    [Bank2] NVARCHAR(255) NULL,
+    [Bank3] NVARCHAR(255) NULL,
 
-    [BranchAddress1] NVARCHAR(40) NULL,
-    [BranchAddress2] NVARCHAR(40) NULL,
-    [BranchAddress3] NVARCHAR(40) NULL,
+    [BranchAddress1] NVARCHAR(255) NULL,
+    [BranchAddress2] NVARCHAR(255) NULL,
+    [BranchAddress3] NVARCHAR(255) NULL,
 
-    [TypeOfAccount1] NVARCHAR(40) NULL,
-    [TypeOfAccount2] NVARCHAR(40) NULL,
-    [TypeOfAccount3] NVARCHAR(40) NULL,
+    [TypeOfAccount1] NVARCHAR(255) NULL,
+    [TypeOfAccount2] NVARCHAR(255) NULL,
+    [TypeOfAccount3] NVARCHAR(255) NULL,
 
-    [AccountNumber1] NVARCHAR(40) NULL,
-    [AccountNumber2] NVARCHAR(40) NULL,
-    [AccountNumber3] NVARCHAR(40) NULL,
+    [AccountNumber1] NVARCHAR(50) NULL,
+    [AccountNumber2] NVARCHAR(50) NULL,
+    [AccountNumber3] NVARCHAR(50) NULL,
 
     
-    [DateOpened1] DATE NULL,
-    [DateOpened2] DATE NULL,
-    [DateOpened3] DATE NULL,
+    [DateOpened1] DATETIME2 NULL,
+    [DateOpened2] DATETIME2 NULL,
+    [DateOpened3] DATETIME2 NULL,
 
-    [AverageBalance1] DECIMAL(10,2) NULL,
-    [AverageBalance2] DECIMAL(10,2) NULL,
-    [AverageBalance3] DECIMAL(10,2) NULL,
+    [AverageBalance1] DECIMAL(18,2) NULL,
+    [AverageBalance2] DECIMAL(18,2) NULL,
+    [AverageBalance3] DECIMAL(18,2) NULL,
 
     --Credit Card Owned
-    [IssuerName1] NVARCHAR(40) NULL,
-    [IssuerName2] NVARCHAR(40) NULL,
-    [IssuerName3] NVARCHAR(40) NULL,
+    [IssuerName1] NVARCHAR(255) NULL,
+    [IssuerName2] NVARCHAR(255) NULL,
+    [IssuerName3] NVARCHAR(255) NULL,
 
-    [CardType1] NVARCHAR(24) NULL,
-    [CardType2] NVARCHAR(24) NULL,
-    [CardType3] NVARCHAR(24) NULL,
+    [CardType1] NVARCHAR(255) NULL,
+    [CardType2] NVARCHAR(255) NULL,
+    [CardType3] NVARCHAR(255) NULL,
 
-    [CardExpiration1] DATE NULL,
-    [CardExpiration2] DATE NULL,
-    [CardExpiration3] DATE NULL,
+    [CardExpiration1] DATETIME2 NULL,
+    [CardExpiration2] DATETIME2 NULL,
+    [CardExpiration3] DATETIME2 NULL,
 
-    [CreditLimit1] DECIMAL(10,2) NULL,
-    [CreditLimit2] DECIMAL(10,2) NULL,
-    [CreditLimit3] DECIMAL(10,2) NULL,
+    [CreditLimit1] DECIMAL(18,2) NULL,
+    [CreditLimit2] DECIMAL(18,2) NULL,
+    [CreditLimit3] DECIMAL(18,2) NULL,
 
     --Real Estate Owned
 
-    [Location1] NVARCHAR(40) NULL,
-    [Location2] NVARCHAR(40) NULL,
-    [Location3] NVARCHAR(40) NULL,
+    [Location1] NVARCHAR(255) NULL,
+    [Location2] NVARCHAR(255) NULL,
+    [Location3] NVARCHAR(255) NULL,
 
-    [TypeOfProperty1] NVARCHAR(24) NULL,
-    [TypeOfProperty2] NVARCHAR(24) NULL,
-    [TypeOfProperty3] NVARCHAR(24) NULL,
+    [TypeOfProperty1] NVARCHAR(255) NULL,
+    [TypeOfProperty2] NVARCHAR(255) NULL,
+    [TypeOfProperty3] NVARCHAR(255) NULL,
 
-    [AquisitionCost1] DECIMAL(10,2) NULL,
-    [AquisitionCost2] DECIMAL(10,2) NULL,
-    [AquisitionCost3] DECIMAL(10,2) NULL,
+    [AquisitionCost1] DECIMAL(18,2) NULL,
+    [AquisitionCost2] DECIMAL(18,2) NULL,
+    [AquisitionCost3] DECIMAL(18,2) NULL,
 
-    [MarketValue1] DECIMAL(10,2) NULL,
-    [MarketValue2] DECIMAL(10,2) NULL,
-    [MarketValue3] DECIMAL(10,2) NULL,
+    [MarketValue1] DECIMAL(18,2) NULL,
+    [MarketValue2] DECIMAL(18,2) NULL,
+    [MarketValue3] DECIMAL(18,2) NULL,
 
-    [MortgageBalance1] DECIMAL(10,2) NULL,
-    [MortgageBalance2] DECIMAL(10,2) NULL,
-    [MortgageBalance3] DECIMAL(10,2) NULL,
+    [MortgageBalance1] DECIMAL(18,2) NULL,
+    [MortgageBalance2] DECIMAL(18,2) NULL,
+    [MortgageBalance3] DECIMAL(18,2) NULL,
 
-    [RentalIncome1] DECIMAL(10,2) NULL,
-    [RentalIncome2] DECIMAL(10,2) NULL,
-    [RentalIncome3] DECIMAL(10,2) NULL,
+    [RentalIncome1] DECIMAL(18,2) NULL,
+    [RentalIncome2] DECIMAL(18,2) NULL,
+    [RentalIncome3] DECIMAL(18,2) NULL,
 
     --Outstanding Credit Loan
-    [CreditorAndAddress1] NVARCHAR(128) NULL,
-    [CreditorAndAddress2] NVARCHAR(128) NULL,
-    [CreditorAndAddress3] NVARCHAR(128) NULL,
+    [CreditorAndAddress1] NVARCHAR(255) NULL,
+    [CreditorAndAddress2] NVARCHAR(255) NULL,
+    [CreditorAndAddress3] NVARCHAR(255) NULL,
 
-    [Security1] NVARCHAR(40) NULL,
-    [Security2] NVARCHAR(40) NULL,
-    [Security3] NVARCHAR(40) NULL,
+    [Security1] NVARCHAR(255) NULL,
+    [Security2] NVARCHAR(255) NULL,
+    [Security3] NVARCHAR(255) NULL,
 
-    [Type1] NVARCHAR(40) NULL,
-    [Type2] NVARCHAR(40) NULL,
-    [Type3] NVARCHAR(40) NULL,
+    [Type1] NVARCHAR(255) NULL,
+    [Type2] NVARCHAR(255) NULL,
+    [Type3] NVARCHAR(255) NULL,
 
-    [AmountBalance1] DECIMAL(10,2) NULL,
-    [AmountBalance2] DECIMAL(10,2) NULL,
-    [AmountBalance3] DECIMAL(10,2) NULL,
+    [AmountBalance1] DECIMAL(18,2) NULL,
+    [AmountBalance2] DECIMAL(18,2) NULL,
+    [AmountBalance3] DECIMAL(18,2) NULL,
 
 
-    [MaturityDateTime1] DATE NULL,
-    [MaturityDateTime2] DATE NULL,
-    [MaturityDateTime3] DATE NULL,
+    [MaturityDateTime1] DATETIME2 NULL,
+    [MaturityDateTime2] DATETIME2 NULL,
+    [MaturityDateTime3] DATETIME2 NULL,
 
-    [Amortization1] DECIMAL(10,2) NULL,
-    [Amortization2] DECIMAL(10,2) NULL,
-    [Amortization3] DECIMAL(10,2) NULL,
+    [Amortization1] DECIMAL(18,2) NULL,
+    [Amortization2] DECIMAL(18,2) NULL,
+    [Amortization3] DECIMAL(18,2) NULL,
 
     --Misclananous
-    [PendingCase] NVARCHAR(255) NULL,
-    [PastDue] NVARCHAR(255) NULL,
-    [BouncingChecks] NVARCHAR(255) NULL,
-    [MedicalAdvice] NVARCHAR(255) NULL,
+    [PendingCase] NVARCHAR(MAX) NULL,
+    [PastDue] NVARCHAR(MAX) NULL,
+    [BouncingChecks] NVARCHAR(MAX) NULL,
+    [MedicalAdvice] NVARCHAR(MAX) NULL,
 
 
     --loan Credit reference
-    [BankFinancial1] NVARCHAR(40) NULL,
-    [BankFinancial2] NVARCHAR(40) NULL,
-    [BankFinancial3] NVARCHAR(40) NULL,
+    [BankFinancial1] NVARCHAR(255) NULL,
+    [BankFinancial2] NVARCHAR(255) NULL,
+    [BankFinancial3] NVARCHAR(255) NULL,
 
-    [Address1] NVARCHAR(40) NULL,
-    [Address2] NVARCHAR(40) NULL,
-    [Address3] NVARCHAR(40) NULL,
+    [Address1] NVARCHAR(MAX) NULL,
+    [Address2] NVARCHAR(MAX) NULL,
+    [Address3] NVARCHAR(MAX) NULL,
 
-    [Purpose1] NVARCHAR(40) NULL,
-    [Purpose2] NVARCHAR(40) NULL,
-    [Purpose3] NVARCHAR(40) NULL,
-
-
-    [LoanSecurity1] NVARCHAR(40) NULL,
-    [LoanSecurity2] NVARCHAR(40) NULL,
-    [LoanSecurity3] NVARCHAR(40) NULL,
-
-    [HighestAmount1] DECIMAL(10,2) NULL,
-    [HighestAmount2] DECIMAL(10,2) NULL,
-    [HighestAmount3] DECIMAL(10,2) NULL,
+    [Purpose1] NVARCHAR(255) NULL,
+    [Purpose2] NVARCHAR(255) NULL,
+    [Purpose3] NVARCHAR(255) NULL,
 
 
-    [PresentBalance1] DECIMAL(10,2) NULL,
-    [PresentBalance2] DECIMAL(10,2) NULL,
-    [PresentBalance3] DECIMAL(10,2) NULL,
+    [LoanSecurity1] NVARCHAR(255) NULL,
+    [LoanSecurity2] NVARCHAR(255) NULL,
+    [LoanSecurity3] NVARCHAR(255) NULL,
 
-    [DateObtained1] DATE NULL,
-    [DateObtained2] DATE NULL,
-    [DateObtained3] DATE NULL,
+    [HighestAmount1] DECIMAL(18,2) NULL,
+    [HighestAmount2] DECIMAL(18,2) NULL,
+    [HighestAmount3] DECIMAL(18,2) NULL,
 
-    [DateFullyPaid1] DATE NULL,
-    [DateFullyPaid2] DATE NULL,
-    [DateFullyPaid3] DATE NULL,
+
+    [PresentBalance1] DECIMAL(18,2) NULL,
+    [PresentBalance2] DECIMAL(18,2) NULL,
+    [PresentBalance3] DECIMAL(18,2) NULL,
+
+    [DateObtained1] DATETIME2 NULL,
+    [DateObtained2] DATETIME2 NULL,
+    [DateObtained3] DATETIME2 NULL,
+
+    [DateFullyPaid1] DATETIME2 NULL,
+    [DateFullyPaid2] DATETIME2 NULL,
+    [DateFullyPaid3] DATETIME2 NULL,
 
     --TradeReferences
-    [NameSupplier1] NVARCHAR(128) NULL,
-    [NameSupplier2] NVARCHAR(128) NULL,
-    [NameSupplier3] NVARCHAR(128) NULL,
+    [NameSupplier1] NVARCHAR(255) NULL,
+    [NameSupplier2] NVARCHAR(255) NULL,
+    [NameSupplier3] NVARCHAR(255) NULL,
 
-    [TradeAddress1] NVARCHAR(40) NULL,
-    [TradeAddress2] NVARCHAR(40) NULL,
-    [TradeAddress3] NVARCHAR(40) NULL,
+    [TradeAddress1] NVARCHAR(255) NULL,
+    [TradeAddress2] NVARCHAR(255) NULL,
+    [TradeAddress3] NVARCHAR(255) NULL,
 
-    [TradeTellNo1] NVARCHAR(25) NULL,
-    [TradeTellNo2] NVARCHAR(25) NULL,
-    [TradeTellNo3] NVARCHAR(25) NULL,
+    [TradeTellNo1] NVARCHAR(50) NULL,
+    [TradeTellNo2] NVARCHAR(50) NULL,
+    [TradeTellNo3] NVARCHAR(50) NULL,
 
     --character Reference
-    [CharacterNameSupplier1] NVARCHAR(128) NULL,
-    [CharacterNameSupplier2] NVARCHAR(128) NULL,
-    [CharacterNameSupplier3] NVARCHAR(128) NULL,
+    [CharacterNameSupplier1] NVARCHAR(255) NULL,
+    [CharacterNameSupplier2] NVARCHAR(255) NULL,
+    [CharacterNameSupplier3] NVARCHAR(255) NULL,
 
-    [CharacterAddress1] NVARCHAR(40) NULL,
-    [CharacterAddress2] NVARCHAR(40) NULL,
-    [CharacterAddress3] NVARCHAR(40) NULL,
+    [CharacterAddress1] NVARCHAR(255) NULL,
+    [CharacterAddress2] NVARCHAR(255) NULL,
+    [CharacterAddress3] NVARCHAR(255) NULL,
 
-    [CharacterTellNo1] NVARCHAR(25) NULL,
-    [CharacterTellNo2] NVARCHAR(25) NULL,
-    [CharacterTellNo3] NVARCHAR(25) NULL,
+    [CharacterTellNo1] NVARCHAR(50) NULL,
+    [CharacterTellNo2] NVARCHAR(50) NULL,
+    [CharacterTellNo3] NVARCHAR(50) NULL,
 
     --Seller Data
     [FirstName] NVARCHAR(255) NULL,

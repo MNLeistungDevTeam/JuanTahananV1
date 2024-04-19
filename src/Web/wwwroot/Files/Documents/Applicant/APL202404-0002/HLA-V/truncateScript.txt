@@ -1,0 +1,33 @@
+ 
+
+Truncate Table [User]
+Truncate Table [Role]
+Truncate Table [UserRole]
+
+Truncate Table [Module]
+
+Truncate Table [ModuleType]
+
+Truncate Table [RoleAccess]
+
+Truncate Table [Document]
+DELETE FROM [DocumentType]
+Truncate Table [DocumentVerification]
+
+
+Truncate Table [ApplicantsPersonalInformation]
+Truncate Table [BarrowersInformation]
+Truncate Table [CollateralInformation]
+Truncate Table [Spouse]
+Truncate Table [LoanParticularsInformation]
+Truncate Table [Form2Page]
+
+Truncate Table [ApprovalStatus]
+Truncate Table [ApprovalLevel]
+Truncate Table [ApprovalLog]
+
+Delete From [Notification]
+Truncate Table [NotificationReceiver]
+
+
+Truncate Table [BeneficiaryInformation]
