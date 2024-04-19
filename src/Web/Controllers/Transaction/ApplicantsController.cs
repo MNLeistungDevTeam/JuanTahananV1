@@ -241,7 +241,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10 };
+                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10 ,11};
 
                     if (applicantinfo == null)
                     {
@@ -780,12 +780,15 @@ namespace Template.Web.Controllers.Transaction
 
                         #endregion Create BeneficiaryInformation
 
-                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+                         vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = 0;
+
+                        // vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
                     }
                     else
                     {
 
-                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = 0;
+                        // vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
 
 
                         user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);

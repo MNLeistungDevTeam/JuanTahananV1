@@ -2576,7 +2576,7 @@
             // 
             this.xrLabel91.CanGrow = false;
             this.xrLabel91.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 21,true , false)\n\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 22,true , false)\n\n\n\n\n\n\n")});
             this.xrLabel91.LocationFloat = new DevExpress.Utils.PointFloat(684.5313F, 1014.459F);
             this.xrLabel91.Multiline = true;
             this.xrLabel91.Name = "xrLabel91";
@@ -2590,7 +2590,7 @@
             // 
             this.xrLabel78.CanGrow = false;
             this.xrLabel78.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 22,true , false)\n\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 23,true , false)\n\n\n\n\n\n\n")});
             this.xrLabel78.LocationFloat = new DevExpress.Utils.PointFloat(684.5313F, 1035.464F);
             this.xrLabel78.Multiline = true;
             this.xrLabel78.Name = "xrLabel78";
@@ -2604,7 +2604,7 @@
             // 
             this.xrLabel85.CanGrow = false;
             this.xrLabel85.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 23,true , false)\n\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 24,true , false)\n\n\n\n\n\n\n")});
             this.xrLabel85.LocationFloat = new DevExpress.Utils.PointFloat(684.5313F, 1046.392F);
             this.xrLabel85.Multiline = true;
             this.xrLabel85.Name = "xrLabel85";
@@ -2619,7 +2619,7 @@
             this.xrLabel90.CanGrow = false;
             this.xrLabel90.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 19,true , false)\n\n\n\n\n\n\n")});
-            this.xrLabel90.LocationFloat = new DevExpress.Utils.PointFloat(420.6093F, 1067.09F);
+            this.xrLabel90.LocationFloat = new DevExpress.Utils.PointFloat(420.6092F, 1067.09F);
             this.xrLabel90.Multiline = true;
             this.xrLabel90.Name = "xrLabel90";
             this.xrLabel90.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -2702,7 +2702,7 @@
             // 
             this.xrLabel82.CanGrow = false;
             this.xrLabel82.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 5,true , false)\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 6,true , false)\n\n\n\n\n\n")});
             this.xrLabel82.LocationFloat = new DevExpress.Utils.PointFloat(39.43565F, 1086.352F);
             this.xrLabel82.Multiline = true;
             this.xrLabel82.Name = "xrLabel82";
@@ -2805,7 +2805,7 @@
             this.xrLabel72.Multiline = true;
             this.xrLabel72.Name = "xrLabel72";
             this.xrLabel72.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel72.SizeF = new System.Drawing.SizeF(17.08751F, 10.92761F);
+            this.xrLabel72.SizeF = new System.Drawing.SizeF(17.08751F, 10.07678F);
             this.xrLabel72.StylePriority.UseTextAlignment = false;
             this.xrLabel72.Text = "✓";
             this.xrLabel72.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
@@ -2856,7 +2856,7 @@
             // 
             this.xrLabel74.CanGrow = false;
             this.xrLabel74.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 6,true , false)\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([SpouseModel].[IndustryId]== 5,true , false)\n\n\n\n\n\n")});
             this.xrLabel74.LocationFloat = new DevExpress.Utils.PointFloat(220.2007F, 998.8593F);
             this.xrLabel74.Multiline = true;
             this.xrLabel74.Name = "xrLabel74";

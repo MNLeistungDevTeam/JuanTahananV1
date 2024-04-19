@@ -92,7 +92,7 @@
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
                             {
-                                <span class="badge bg-warning ms-auto fs-9">For Resubmission</span>
+                                <span class="badge bg-teal ms-auto fs-9">For Resubmission</span>
                             }
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
@@ -319,7 +319,7 @@
 
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6 && Model.ApplicantsPersonalInformationModel.ApprovalStatus != 11)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }

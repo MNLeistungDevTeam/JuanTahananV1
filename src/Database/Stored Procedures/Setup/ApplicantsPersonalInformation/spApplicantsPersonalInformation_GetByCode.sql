@@ -25,16 +25,16 @@ AS
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
 			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
-			WHEN apl.ApprovalStatus = 11 THEN 'For Resubmition'
+			WHEN apl.ApprovalStatus = 11 THEN 'For Resubmission'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 		CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 'Credit Verification'
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5,11) THEN 'Credit Verification'
 			WHEN apl.ApprovalStatus IN (4,6,7,9,10) THEN 'Application Completion'
 			WHEN apl.ApprovalStatus = 8 THEN 'Post-Approval'
 		END Stage,
 		CASE
-			WHEN apl.ApprovalStatus IN (0,1,2,3,5) THEN 1
+			WHEN apl.ApprovalStatus IN (0,1,2,3,5,11) THEN 1
 			WHEN apl.ApprovalStatus  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,

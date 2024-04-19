@@ -1606,5 +1606,22 @@ $(function () {
         //$("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
 
     }
+
+    $("#btn_edit").on('click', function () {
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+
+        $("#frm_hlf068 .selectize").each(function () {
+            var selectize = $(this)[0].selectize;
+            selectize.lock();
+        });
+    });
+
+    $("#btn_pdf").on('click', function () {
+        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
+        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
+
+        window.open(link, '_blank');
+    });
+
     //#endregion
 });
