@@ -25,6 +25,7 @@ AS
 			WHEN apl.ApprovalStatus = 7 THEN 'Developer Approved'
 			WHEN apl.ApprovalStatus = 8 THEN 'Pag-IBIG Approved'
 			WHEN apl.ApprovalStatus = 10 THEN 'Withdrawn'
+			WHEN apl.ApprovalStatus = 11 THEN 'For Resubmition'
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 		CASE
@@ -39,7 +40,6 @@ AS
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks 
-
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id

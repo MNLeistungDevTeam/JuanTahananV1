@@ -42,12 +42,7 @@
                             <input hidden id="txt_applicantCode" value="@Model.ApplicantsPersonalInformationModel.Code" />
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
-
-
-
                                 <span class="badge bg-secondary ms-auto fs-9">Application in Draft</span>
-
-
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                             {
@@ -95,41 +90,32 @@
                             {
                                 <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                            {
+                                <span class="badge bg-warning ms-auto fs-9">For Resubmission</span>
+                            }
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
                         </h3>
-
-
-
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
-
-
                             @{
                                 if (currentUserId == Model.ApplicantsPersonalInformationModel.UserId)
                                 {
                                     @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                                     {
-
-
-
                                         @if (Model.ApplicantsPersonalInformationModel.isRequiredDocumentsUploaded == true)
-
                                         {
 
                                             <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)" disabled>
                                                 <i class="fe-send me-1"></i> <span>Submit Application</span>
                                             </button>
-
-
-
                                             // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             // </button>
-
                                         }
                                         else
 
@@ -153,54 +139,20 @@
 
 
                                     }
-
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                     {
-
-
-
-
-
-
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
-
-
-
-
-
                                     }
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                     {
-
-
-
-
-
-
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
-
-
-
-
-
                                     }
-
-
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                                     {
-
-
-
                                         @if (Model.ApplicantsPersonalInformationModel.isRequiredDocumentsUploaded == true)
 
                                         {
@@ -227,16 +179,7 @@
                                                 <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             </button>
                                         }
-
-
-
-
-
-
-
                                     }
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                     {
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
@@ -255,14 +198,13 @@
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
                                     }
-
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                    {
+                                        <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)">
+                                            <i class="fe-send me-1"></i> <span>Submit Application</span>
+                                        </button>
+                                    }
                                 }
-
-
-
-
-
-
                                 else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperVerified)">
@@ -271,8 +213,10 @@
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
+                                        <i class="fe-repeat me-1"></i><span>Return</span>
+                                    </button>
                                 }
-
                                 else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigVerified)">
@@ -282,8 +226,6 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-
                                 else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperConfirmed)">
@@ -293,8 +235,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed  && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -303,8 +244,6 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-
                             }
                         </div>
 
