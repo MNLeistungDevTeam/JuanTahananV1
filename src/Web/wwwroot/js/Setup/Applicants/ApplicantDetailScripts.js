@@ -497,6 +497,14 @@ $(async function () {
                 confirmButtonText = "withdrawn";
             }
 
+            else if (approvalLevelStatus == 11) {
+                action = "Resubmission";
+                text = "Are you sure you wish to proceed with for-resubmission this application?";
+                confirmButtonText = " for-resubmission";
+            }
+
+
+
             // Use SweetAlert for confirmation
             Swal.fire({
                 title: `${action} Application`,
