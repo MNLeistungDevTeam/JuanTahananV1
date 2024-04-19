@@ -26,21 +26,21 @@ $(function () {
     });
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-9999999-99",
+        mask: "9{9,12}",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999-99999",
+        mask: "9{9,14}",
         placeholder: "X",
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
@@ -69,6 +69,13 @@ $(function () {
     initializeIntlTelInput();
     //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
+    //assessPresentPermanentCheckbox();
+
+    assessCheckbox(
+        $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`),
+        $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
+    );
+
     rebindValidators();
 
     $('#rootwizard').bootstrapWizard({
@@ -95,7 +102,6 @@ $(function () {
          
                 $("#liform2_next").addClass("d-none").prop('disabled', true);
                 $("#liform2_submit").removeClass("d-none").prop('disabled', false);
-
 
                 return;
             }
@@ -1590,6 +1596,15 @@ $(function () {
         $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
         $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
+
+    //function assessPresentPermanentCheckbox() {
+    //    if (!$(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).prop('checked')) {
+    //        $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', false);
+    //        return;
+    //    }
+
+    //    $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', true);
+    //}
 
     //#endregion
 });

@@ -1048,3 +1048,12 @@ function updateUserProfile() {
         }
     });
 }
+
+function assessCheckbox(checkbox, target) {
+    if (checkbox.prop('checked')) {
+        target.prop('readonly', true);
+        return;
+    }
+
+    target.prop('readonly', false);
+}
