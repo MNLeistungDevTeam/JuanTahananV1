@@ -29,6 +29,7 @@ namespace DMS.Domain.Enums
         DeveloperConfirmed = 7,
         PagibigConfirmed = 8,
         Disqualified = 9,
-        Discontinued = 10              //Postwithdrawn
+        Discontinued = 10,              //Postwithdrawn
+        ForResubmition = 11
     }
 }

@@ -404,7 +404,11 @@ $(async function () {
             $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
             remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
         }
-
+        else if (action == 11) {
+            modalLabel.html('<span class="fe-repeat"></span> Return for Revision');
+            $btnSave.addClass("btn btn-warning").html('<span class="fe-repeat"></span> Return for Revision')
+            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+        }
         else {
             modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
