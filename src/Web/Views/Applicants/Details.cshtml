@@ -42,12 +42,7 @@
                             <input hidden id="txt_applicantCode" value="@Model.ApplicantsPersonalInformationModel.Code" />
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
-
-
-
                                 <span class="badge bg-secondary ms-auto fs-9">Application in Draft</span>
-
-
                             }
                             else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                             {
@@ -95,71 +90,32 @@
                             {
                                 <span class="badge bg-warning ms-auto fs-9">Withdrawn</span>
                             }
+                            else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                            {
+                                <span class="badge bg-teal ms-auto fs-9">For Resubmission</span>
+                            }
 
                             <input asp-for="ApplicantsPersonalInformationModel.Code" class="form-control" placeholder="Transaction No." readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.Id" class="form-control" placeholder="Id" readonly hidden />
                             <input asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" class="form-control" readonly hidden />
                         </h3>
-
-
-                        <div class="mt-4">
-                            <label class="form-label fw-normal fs-4">Stage:</label>
-                            <div class="form-check form-check-inline ms-2">
-                                <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" data-name="Credit Verification">
-                                <label class="form-check-label fs-4" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" data-name="Application Completion">
-                                <label class="form-check-label fs-4" for="customRadio4" data-name="Application Completion">Application Completion</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="customRadio5" name="customRadio1" class="form-check-input" data-name="Post approval">
-                                <label class="form-check-label fs-4" for="customRadio5" data-name="Post approval">Post approval</label>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-3">
-                            <label class="form-label fw-normal">Status:</label>
-                            <select readonly asp-for="ApplicantsPersonalInformationModel.ApprovalStageLimit" class="rounded-4 selectize">
-                                <option value="">Select First Stage.... </option>
-                                <option value="1">Application in Draft</option>
-                                <option value="2">Submitted</option>
-                                <option value="3">Developer Verified</option>
-                                <option value="4">Pagibig Verified</option>
-                                <option value="5">Post Submitted</option>
-                                <option value="6">Developer Approved</option>
-                                <option value="7">Pagibig Approved</option>
-                            </select>
-
-                        </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="d-flex justify-content-end align-items-center gap-1">
-
-
                             @{
                                 if (currentUserId == Model.ApplicantsPersonalInformationModel.UserId)
                                 {
                                     @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                                     {
-
-
-
                                         @if (Model.ApplicantsPersonalInformationModel.isRequiredDocumentsUploaded == true)
-
                                         {
 
                                             <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)" disabled>
                                                 <i class="fe-send me-1"></i> <span>Submit Application</span>
                                             </button>
-
-
-
                                             // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             // </button>
-
                                         }
                                         else
 
@@ -183,54 +139,20 @@
 
 
                                     }
-
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                     {
-
-
-
-
-
-
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
-
-
-
-
-
                                     }
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                     {
-
-
-
-
-
-
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
-
-
-
-
-
                                     }
-
-
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                                     {
-
-
-
                                         @if (Model.ApplicantsPersonalInformationModel.isRequiredDocumentsUploaded == true)
 
                                         {
@@ -257,16 +179,7 @@
                                                 <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             </button>
                                         }
-
-
-
-
-
-
-
                                     }
-
-
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                     {
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
@@ -285,15 +198,14 @@
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
                                     }
-
+                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                    {
+                                        <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)">
+                                            <i class="fe-send me-1"></i> <span>Submit Application</span>
+                                        </button>
+                                    }
                                 }
-
-
-
-
-
-
-                                else if ((currentUserRole.RoleId == 5 || currentUserRole.RoleId == 2) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
+                                else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperVerified)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -301,9 +213,11 @@
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
+                                        <i class="fe-repeat me-1"></i><span>Return</span>
+                                    </button>
                                 }
-
-                                else if (currentUserRole.RoleId == 3 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigVerified)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -312,9 +226,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-
-                                else if ((currentUserRole.RoleId == 5 || currentUserRole.RoleId == 2) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
+                                else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.DeveloperConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -323,8 +235,7 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-                                else if (currentUserRole.RoleId == 3 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
@@ -333,16 +244,6 @@
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
                                 }
-
-
-
-
-
-
-
-
-
-
                             }
                         </div>
 
@@ -418,7 +319,7 @@
 
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4 || Model.ApplicantsPersonalInformationModel.ApprovalStatus >= 6 && Model.ApplicantsPersonalInformationModel.ApprovalStatus != 11)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
@@ -439,11 +340,11 @@
 
                                                 <span class="position-absolute top-0 end-0 translate-middle-y pe-3">
 
-                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
+                                                    @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
                                                     {
                                                         <i class="mdi mdi-check-circle text-success me-0"> Verified</i>
                                                     }
-                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
+                                                    else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                                     {
                                                         <i class="mdi mdi-alert-circle text-danger me-0"> Deferred</i>
                                                     }
@@ -524,7 +425,7 @@
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
-                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
+                                                            else if (Model.ApplicantsPersonalInformationModel.StageNo == 2 && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
                                                             {
                                                                 <h3 class="badge bg-darkgreen ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
                                                             }
@@ -574,17 +475,17 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 3 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 4)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
                                                     Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
-                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 2)
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                                             {
                                                 <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
-                                                    Remarks: 
+                                                    Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
@@ -597,14 +498,15 @@
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 7 || Model.ApplicantsPersonalInformationModel.ApprovalStatus == 8)
+                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">Remarks: 
+                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
-                                                    </h3>
+                                                </h3>
                                             }
-                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == 9)
+                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
                                                     Remarks:

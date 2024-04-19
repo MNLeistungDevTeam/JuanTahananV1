@@ -13,7 +13,7 @@ $(function () {
 
             {
                 data: 'Code',
-                className: '',
+                className: 'align-middle',
                 render: function (data, type, row) {
                     return `<a href="${baseUrl}Applicants/Details/${data}" target="_blank">${data}</a>`;
                 }
@@ -21,51 +21,49 @@ $(function () {
 
             {
                 data: 'ApplicantFullName',
-                className: ''
+                className: 'align-middle'
             },
 
             {
                 data: 'PagibigNumber',
-                className: 'text-end'
+                className: 'align-middle'
             },
             {
                 data: 'HousingAccountNumber',
-                className: 'text-center',
+                className: 'align-middle text-center',
                 visible: false
             },
 
             {
                 data: 'IncomeAmount',
-                className: 'text-end',
+                className: 'align-middle text-end',
                 visible: false
             },
             {
                 data: 'Developer',
-                className: ''
+                className: 'align-middle'
             },
             {
                 data: 'ProjectLocation',
-                className: ''
+                className: 'align-middle'
             },
 
             {
                 data: 'Unit',
-                className: ''
+                className: 'align-middle'
             },
             {
                 data: 'LoanAmount',
-                className: 'text-end',
+                className: 'align-middle text-end',
                 render: function (data, type, row) {
-
                     let loanAmount = numeral(data).format('0,0.00');
                     return `₱${loanAmount}`;
                 }
-
             },
 
             {
                 data: 'DateSubmitted',
-                className: 'text-center',
+                className: 'align-middle text-center',
                 render: function (data) {
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD');
@@ -75,15 +73,13 @@ $(function () {
                 }
             },
 
-            
             {
                 data: 'Stage',
-                className: '',
+                className: 'align-middle',
                 render: function (data, type, row) {
-                    var returndata;
+                    var returndata = "";
 
-                    console.log(data);
-                    if ([0, 1, 2, 3, 5].includes(row.ApprovalStatusNumber)) {
+                    if ([0, 1, 2, 3, 5,11].includes(row.ApprovalStatusNumber)) {
                         // `Credit Verification`
                         returndata = `<span class="text-orange">${data}</span>`;
                     }
@@ -96,13 +92,15 @@ $(function () {
                         returndata = `<span class="text-success">${data}</span>`;
                     }
 
+                   
+
                     return returndata;
                 }
             },
 
             {
                 data: 'ApplicationStatus',
-                className: '',
+                className: 'align-middle',
                 render: function (data, type, row) {
                     var returndata = "";
 
@@ -142,17 +140,19 @@ $(function () {
                         returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
 
+                    else if (row.ApprovalStatusNumber == 11) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                    }
+
                     return returndata;
                 }
             },
             {
                 data: 'LastUpdated',
-                className: 'text-center',
+                className: 'align-middle text-center',
                 render: function (data, type, row) {
-
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD HH:mm');
-
                     } else {
                         return "";
                     }
@@ -177,7 +177,9 @@ $(function () {
         select: true,
         scrollY: '24rem',
         scrollX: true,
-        order: [[1, "desc"]],
+        sortable: false,
+        sort: false,
+        order: [[3, 'desc']],
         pageLength: 10,
         searchHighlight: true,
         stateSave: false,
@@ -193,11 +195,14 @@ $(function () {
         var applicationCode = tbl_applications.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applications.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
 
-        $("#btn_add").attr({
-            "disabled": !(selectedRows === 0),
-        });
-
         if (selectedRows == 1 && applicationStatus == 0) {  //application draft
+            $("#btn_edit").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
+            });
+        }
+
+        else if (selectedRows == 1 && applicationStatus == 11) { //for resubmission
             $("#btn_edit").attr({
                 "disabled": false,
                 "data-url": baseUrl + "Applicants/HLF068/" + applicationCode
@@ -217,6 +222,13 @@ $(function () {
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
             });
         }
+        else if (selectedRows == 1 && applicationStatus == 11) { //for resubmission
+            $("#btn_upload_document").attr({
+                "disabled": false,
+                "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
+            });
+        }
+
         else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
             $("#btn_upload_document").attr({
                 "disabled": false,

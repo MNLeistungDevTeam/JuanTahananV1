@@ -9,11 +9,13 @@ $(function () {
         search: false
     });
 
-    $('.calendarpicker').flatpickr();
+    $('.calendarpicker').flatpickr({
+        dateFormat: "m/d/Y",
+    });
 
     $('.present-calendar-picker').flatpickr({
-        dateFormat: "Y-m-d",
-        maxDate: moment().format("YYYY-MM-DD")
+        dateFormat: "m/d/Y",
+        maxDate: moment().format("MM/DD/YYYY")
     });
 
     $(".timepicker").flatpickr({
@@ -64,7 +66,7 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    initializeIntlTelInput();
+    //initializeIntlTelInput();
     //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
@@ -249,7 +251,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
         }
     });
 
@@ -361,6 +363,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -371,6 +374,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -381,6 +385,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -391,6 +396,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -1123,6 +1129,7 @@ $(function () {
         loadBorrowerInformation(applicantInfoIdVal);
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
+        initializeRadioBtnMisc();
     });
 
     function loadloanParticularInformation(id) {
@@ -1378,7 +1385,7 @@ $(function () {
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');
         if (dataValue && dataValue.trim() !== '') {
-            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+            $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
         }
     }
 
@@ -1511,6 +1518,34 @@ $(function () {
         $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
         $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
+
+    //function initializeradiobtnmisc() {
+    //    let pendingcasevalue = $("[name='form2pagemodel.pendingcase']").val();
+    //    let pastduevalue = $("[name='form2pagemodel.pastdue']").val();
+    //    let bouncingchecksvalue = $("[name='form2pagemodel.bouncingchecks']").val();
+    //    let medicaladvicevalue = $("[name='form2pagemodel.medicaladvice']").val();
+
+    //    // set checked status for pendingcase radio buttons
+    //    $("#pcradiobtn1").prop("checked", !!pendingcasevalue);
+    //    $("#pcradiobtn2").prop("checked", !pendingcasevalue);
+    //    $("[name='form2pagemodel.pendingcase']").prop("disabled", pendingcasevalue);
+
+    //    // set checked status for pastdue radio buttons
+    //    $("#pdrbtn1").prop("checked", !!pastduevalue);
+    //    $("#pdrbtn2").prop("checked", !pastduevalue);
+    //    $("[name='form2pagemodel.pastdue']").prop("disabled", pastduevalue);
+
+    //    // set checked status for bouncingchecks radio buttons
+    //    $("#bcrbtn1").prop("checked", !!bouncingchecksvalue);
+    //    $("#bcrbtn2").prop("checked", !bouncingchecksvalue);
+    //    $("[name='form2pagemodel.bouncingchecks']").prop("disabled", bouncingchecksvalue);
+
+    //    // set checked status for medicaladvice radio buttons
+    //    $("#marbtn1").prop("checked", !!medicaladvicevalue);
+    //    $("#marbtn2").prop("checked", !medicaladvicevalue);
+    //    $("[name='form2pagemodel.medicaladvice']").prop("disabled", medicaladvicevalue);
+
+    //}
 
     //#endregion
 });

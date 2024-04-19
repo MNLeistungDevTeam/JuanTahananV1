@@ -11,12 +11,15 @@ $(function () {
         search: false
     });
 
-    $('.calendarpicker').flatpickr();
+    $('.calendarpicker').flatpickr({
+        dateFormat: "m/d/Y",
+    });
 
     $('.present-calendar-picker').flatpickr({
-        dateFormat: "Y-m-d",
-        maxDate: moment().format("YYYY-MM-DD")
+        dateFormat: "m/d/Y",
+        maxDate: moment().format("MM/DD/YYYY")
     });
+
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -66,7 +69,7 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    initializeIntlTelInput();
+    //initializeIntlTelInput();
     //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
@@ -363,6 +366,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -373,6 +377,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -383,6 +388,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -393,6 +399,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val();
         }
     });
 
@@ -738,7 +745,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').addClass('d-none');
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required');
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
         }
     });
 
@@ -1173,6 +1180,7 @@ $(function () {
         loadBorrowerInformation(applicantInfoIdVal);
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
+        initializeRadioBtnMisc();
 
         // initialize first the selectize before lock
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
@@ -1437,10 +1445,9 @@ $(function () {
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');
         if (dataValue && dataValue.trim() !== '') {
-            $(selector).val(moment(dataValue).format("YYYY/MM/DD"));
+            $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
         }
     }
-
     function lengthValidator() {
         var isValid = true;
         var elements = [
@@ -1570,6 +1577,51 @@ $(function () {
         $(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
         $(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
     }
+
+    function initializeRadioBtnMisc() {
+
+        let pendingCaseValue = $("[name='Form2PageModel.PendingCase']").val();
+        let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
+        let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
+        let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
+
+        // Set checked status for PendingCase radio buttons
+        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
+        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+        //$("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+
+        // Set checked status for PastDue radio buttons
+        $("#pdRbtn1").prop("checked", !!pastDueValue);
+        $("#pdRbtn2").prop("checked", !pastDueValue);
+        //$("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+
+        // Set checked status for BouncingChecks radio buttons
+        $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
+        $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+        //$("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+
+        // Set checked status for MedicalAdvice radio buttons
+        $("#maRbtn1").prop("checked", !!medicalAdviceValue);
+        $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        //$("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+    }
+
+    $("#btn_edit").on('click', function () {
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+
+        $("#frm_hlf068 .selectize").each(function () {
+            var selectize = $(this)[0].selectize;
+            selectize.lock();
+        });
+    });
+
+    $("#btn_pdf").on('click', function () {
+        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
+        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
+
+        window.open(link, '_blank');
+    });
 
     //#endregion
 });
