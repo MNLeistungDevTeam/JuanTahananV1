@@ -89,5 +89,16 @@ AS
                 CASE WHEN apl.ApprovalStatus IN (1,2,3,4,5,6,7,8,9,10) THEN 1 ELSE 0 END
         END
     )
-	ORDER BY apl.DateModified DESC;
+	--ORDER BY apl.DateModified DESC;
+	--ORDER BY apl.Id DESC, apl.DateModified DESC;
+	ORDER BY
+		CASE
+			WHEN @roleId IN (1, 2, 5, 3) THEN apl.Id
+			WHEN @roleId = 4 THEN CASE WHEN apl.ApprovalStatus = 0 THEN 1 ELSE 0 END
+			ELSE 0
+		END DESC,
+		CASE
+			WHEN @roleId IN (1, 2, 5, 3) THEN apl.DateModified
+			ELSE NULL
+    END DESC;
 RETURN 0
