@@ -236,12 +236,19 @@ namespace Template.Web.Controllers.Transaction
 
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
+                string returnViewPage = "HLF068";
+
+                if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
+                {
+                    returnViewPage = "Beneficiary_HLF068";
+                }
+
                 //check if applicant code not null go to edit form
                 if (applicantCode != null)
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10 ,11};
+                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10, 11 };
 
                     if (applicantinfo == null)
                     {
@@ -305,7 +312,7 @@ namespace Template.Web.Controllers.Transaction
                     }
                 }
 
-                return View(vwModel);
+                return View(returnViewPage, vwModel);
             }
             catch (Exception)
             {
@@ -780,16 +787,11 @@ namespace Template.Web.Controllers.Transaction
 
                         #endregion Create BeneficiaryInformation
 
-                         vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = 0;
-
-                        // vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
                     }
                     else
                     {
-
-                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = 0;
-                        // vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
-
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
 
                         user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
 

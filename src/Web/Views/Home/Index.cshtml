@@ -43,10 +43,10 @@ else if (userInfo.UserRoleId is (int)PredefinedRoleType.Lgu)
 
 else if (userInfo.UserRoleId is (int)PredefinedRoleType.Beneficiary)
 {
-    @await Html.PartialAsync("_DeveloperDashboardPartial")
+    @await Html.PartialAsync("_BeneficiaryDashboardPartial")
     ;
     @section Scripts {
-    <script src="~/js/PagIBIGDashboardPartialScript.js" asp-append-version="true"></script>
+    <script src="~/js/HomeScript.js" asp-append-version="true"></script>
     }
 }
 

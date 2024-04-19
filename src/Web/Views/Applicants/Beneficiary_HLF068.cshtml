@@ -1200,7 +1200,7 @@
                                         <option value="23">
                                             Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
                                         </option>
-                                    </select> 
+                                    </select>
                                     <span asp-validation-for="SpouseModel.IndustryId" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -1714,7 +1714,7 @@
                                                                 <label class="form-check-label" for="pcRadioBtn2">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
                                                         <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1733,7 +1733,7 @@
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
                                                         <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1771,7 +1771,7 @@
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
                                                         <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -2252,87 +2252,6 @@
                             <li class="previous list-inline-item">
                                 <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
                             </li>
-                            <li class="next list-inline-item float-end">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                            </li>
-                            
-                        </ul>
-                    </div>
-
-
-
-
-                    <div class="tab-pane fade" id="form3" hidden>
-
-
-                        <div class="row gy-2">
-
-                            <div class="col-12">
-
-                                <table class="table table-bordered mb-0">
-                                    <thead>
-                                        <tr class="bg-black">
-                                            <th colspan="12" class="text-center">
-                                                <h3 class="text-white m-0">Stage Approval Setup</h3>
-                                                <span class="text-white fs-6 fst-italic">(Please Choose the desired Stage and Status of Application)</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="text-center fw-bold text-dark">
-                                            <th>Stages</th>
-                                            <td>Status</td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <th>
-                                                <div>
-
-                                                    <div class="form-check form-check-inline ms-2">
-                                                        <input type="radio" id="customRadio3" name="customRadio1" class="form-check-input" data-name="Credit Verification">
-                                                        <label class="form-check-label fs-4" for="customRadio3" data-name="Credit Verification">Credit Verification</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="radio" id="customRadio4" name="customRadio1" class="form-check-input" data-name="Application Completion">
-                                                        <label class="form-check-label fs-4" for="customRadio4" data-name="Application Completion">Application Completion</label>
-                                                    </div>
-
-                                                </div>
-
-                                            </th>
-                                            <td>
-                                                <div>
-
-                                                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedStatus" class="rounded-4 selectize" data-value="@Model.ApplicantsPersonalInformationModel.EncodedStatus">
-                                                        <option value="">Select First Stage.... </option>
-                                                        <option value="0">Application in Draft</option>
-                                                        <option value="1">Submitted</option>
-                                                        <option value="3">Developer Verified</option>
-                                                        <option value="4">Pagibig Verified</option>
-                                                        <option value="6">Post Submitted</option>
-                                                        <option value="7">Developer Approved</option>
-                                                        <option value="8">Pagibig Approved</option>
-                                                    </select>
-
-                                                </div>
-                                            </td>
-
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-
-
-                            </div>
-                        </div>
-
-
-                        <ul class="pager wizard mb-0 list-inline mt-1">
-                            <li class="previous list-inline-item">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
-                            </li>
 
                             <li class="next list-inline-item float-end">
                                 <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068">Submit</button>
@@ -2342,6 +2261,7 @@
 
 
 
+ 
 
 
                 </form>
@@ -2352,5 +2272,5 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-    <script src="~/js/Setup/Applicants/HLF068Script.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Applicants/HLF068-BeneficiaryScript.js" asp-append-version="true"></script>
 }
