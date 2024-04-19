@@ -1,9 +1,13 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
 
 $(function () {
     var telNoArray = [];
     var itiFlag = false;
+
+
+  
 
     $(".selectize").selectize({
         search: false
@@ -44,6 +48,11 @@ $(function () {
         placeholder: "X",
         clearIncomplete: true
     });
+
+
+    var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
+
+
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
@@ -295,25 +304,6 @@ $(function () {
     //#endregion
 
     $(document).ready(function () {
-
-
- 
-
-
-
-
-
-
-
-
-
-
-        if (roleName == 'Developer' || roleName == 'Pag-ibig' || roleName == 'Local Government Unit (LGU)' || roleName != "Beneficiary") {
-            $("#div_stageapprovalsettings").removeClass('d-none');
-        }
-
-        var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
-
         $('input[name="customRadio1"]').change(function () {
             // Get the value of the selected radio button
 
@@ -321,80 +311,68 @@ $(function () {
 
             var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
 
-      
             if (selectedOptionText === "Application Completion") {
+                $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
 
+                encodedStatusdropDown.clearOptions();
 
-                    $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
+                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+                    $("#div_stageapprovalsettings").removeClass('d-none');
 
-                    encodedStatusdropDown.clearOptions();
+                    var optionsToAdd = [
 
-                    if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-                        $("#div_stageapprovalsettings").removeClass('d-none');
+                        { value: '4', text: 'Pagibig Verified' },
+                        { value: '6', text: 'Post Submitted' },
+                        { value: '7', text: 'Developer Approved' },
 
-                        var optionsToAdd = [
+                    ];
 
-                            { value: '4', text: 'Pagibig Verified' },
-                            { value: '6', text: 'Post Submitted' },
-                            { value: '7', text: 'Developer Approved' },
-
-                        ];
-
-                        encodedStatusdropDown.addOption(optionsToAdd);
-                    }
-
-                    else {
-
-                        encodedStatusdropDown.clearOptions();
-
-
-                        var optionsToAdd = [
-                            { value: '4', text: 'Pagibig Verified' },
-                            { value: '6', text: 'Post Submitted' },
-                            { value: '8', text: 'Pagibig Approved' }
-
-                        ];
-
-                        encodedStatusdropDown.addOption(optionsToAdd);
-                    }
+                    encodedStatusdropDown.addOption(optionsToAdd);
                 }
 
-
-
-
-
-                else if (selectedOptionText === "Credit Verification") {
-                    $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
-
+                else {
                     encodedStatusdropDown.clearOptions();
 
-                    if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-                        $("#div_stageapprovalsettings").removeClass('d-none');
+                    var optionsToAdd = [
+                        { value: '4', text: 'Pagibig Verified' },
+                        { value: '6', text: 'Post Submitted' },
+                        { value: '8', text: 'Pagibig Approved' }
 
-                        var optionsToAdd = [
-                            { value: '0', text: 'Application In Draft' },
-                            { value: '1', text: 'Submitted' },
-                            { value: '3', text: 'Developer Verified' }
-                        ];
+                    ];
 
-                        encodedStatusdropDown.addOption(optionsToAdd);
-                    }
-
-                    else {
-                        encodedStatusdropDown.clearOptions();
-
-
-
-                        var optionsToAdd = [
-                            { value: '0', text: 'Application In Draft' },
-                            { value: '1', text: 'Submitted' },
-                            { value: '4', text: 'Pagibig Verified' },
-                        ];
-
-                        encodedStatusdropDown.addOption(optionsToAdd);
-                    }
+                    encodedStatusdropDown.addOption(optionsToAdd);
                 }
-       
+            }
+
+            else if (selectedOptionText === "Credit Verification") {
+                $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
+
+                encodedStatusdropDown.clearOptions();
+
+                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+                    $("#div_stageapprovalsettings").removeClass('d-none');
+
+                    var optionsToAdd = [
+                        { value: '0', text: 'Application In Draft' },
+                        { value: '1', text: 'Submitted' },
+                        { value: '3', text: 'Developer Verified' }
+                    ];
+
+                    encodedStatusdropDown.addOption(optionsToAdd);
+                }
+
+                else {
+                    encodedStatusdropDown.clearOptions();
+
+                    var optionsToAdd = [
+                        { value: '0', text: 'Application In Draft' },
+                        { value: '1', text: 'Submitted' },
+                        { value: '4', text: 'Pagibig Verified' },
+                    ];
+
+                    encodedStatusdropDown.addOption(optionsToAdd);
+                }
+            }
         });
     });
 
@@ -415,7 +393,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
         }
     });
 
@@ -1744,6 +1722,18 @@ $(function () {
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        if (encodedStageVal == 1) {
+            $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true).prop("disabled", true);
+
+            $('#customRadio3').prop('checked', true);
+        }
+
+        else if (encodedStageVal === 2) {
+            $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true).prop("disabled", true);;
+
+            $('#customRadio5').click();
+        }
     }
 
     //#endregion
