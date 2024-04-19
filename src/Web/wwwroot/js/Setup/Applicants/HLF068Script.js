@@ -505,7 +505,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val("");
+            $inputField.val(null);
         }
     });
 
@@ -1723,6 +1723,7 @@ $(function () {
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
 
+
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true).prop("disabled", true);
 
@@ -1734,7 +1735,11 @@ $(function () {
 
             $('#customRadio5').click();
         }
+
     }
+
+    //function initializeRadioBtn
+
 
     //#endregion
 });

@@ -1,6 +1,4 @@
-﻿
-
-const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 
 $(function () {
@@ -19,7 +17,6 @@ $(function () {
         dateFormat: "m/d/Y",
         maxDate: moment().format("MM/DD/YYYY")
     });
-
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -1155,13 +1152,11 @@ $(function () {
         window.open(link, '_blank');
     });
 
-
-
-
     $(function () {
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true);
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").addClass("disabled");
         $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
+        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', true);
 
         /*
         $('.calendarpicker')
@@ -1169,18 +1164,20 @@ $(function () {
         $(".timepicker")
         */
 
-        $.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
-            elem._flatpickr.set("allowInput", false);
-            elem._flatpickr.set("clickOpens", false);
-            //elem._flatpickr.set("wrap", true);
-        });
-
         loadloanParticularInformation(applicantInfoIdVal);
         loadSpouseInformation(applicantInfoIdVal);
         loadBorrowerInformation(applicantInfoIdVal);
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
         initializeRadioBtnMisc();
+        //loadLoanCreditRefDates();
+
+        //disabled the flatpicker
+        //$.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
+        //    elem._flatpickr.set("allowInput", false);
+        //    elem._flatpickr.set("clickOpens", false);
+        //    //elem._flatpickr.set("wrap", true);
+        //});
 
         // initialize first the selectize before lock
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
@@ -1509,6 +1506,13 @@ $(function () {
             minDate: currentDate,
             maxDate: currentDate,
             onChange: function (selectedDates, dateStr, instance) {
+                let fullyPaidId = instance.input.id.replace("DateFullyPaid", "DateObtained");
+
+                if (dateStr === '') {
+                    $(`#${fullyPaidId}`).val("");
+                    return;
+                }
+
                 let obtainedId = instance.input.id.replace("DateFullyPaid", "DateObtained");
                 let obtVal = $(`#${obtainedId}`).val();
                 console.log(obtVal);
@@ -1579,7 +1583,6 @@ $(function () {
     }
 
     function initializeRadioBtnMisc() {
-
         let pendingCaseValue = $("[name='Form2PageModel.PendingCase']").val();
         let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
@@ -1604,11 +1607,11 @@ $(function () {
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
         //$("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-
     }
 
     $("#btn_edit").on('click', function () {
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
 
         $("#frm_hlf068 .selectize").each(function () {
             var selectize = $(this)[0].selectize;
