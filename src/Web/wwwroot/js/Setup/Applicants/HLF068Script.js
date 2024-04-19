@@ -72,6 +72,16 @@ $(function () {
     initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
 
+
+    //assessPresentPermanentCheckbox();
+
+    assessCheckbox(
+        $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`),
+        $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
+    );
+
+
+
     rebindValidators();
 
 

@@ -1149,6 +1149,12 @@ html[data-bs-theme="dark"] .text-theme-primary {
     background-color: darkgreen;
 }
 
+
+.bg-teal {
+    background-color: darkblue;
+}
+
+
 .text-orange {
     color: orange;
 }
