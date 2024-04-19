@@ -1,0 +1,151 @@
+﻿<div class="row">
+    <div class="col-xl-8">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="widget-rounded-circle card p-2 px-3 bg-info bg-gradient shadow">
+                    <div class="row">
+                        <div class="col-6 align-self-end pt-4">
+                            <div class="float-start">
+                                <p class="text-white text-truncate fw-semibold fs-5 mb-0">
+                                    Needs <br />
+                                    Developer Approval
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 align-self-start pb-4">
+                            <div class="float-end">
+                                <p class="text-white fw-bolder fs-1" id="info_for_dev_approval">
+                                    <span data-plugin="counterup">10000</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div> <!-- end row-->
+
+                    <a href="#" id="dash_link_for_dev_approval" data-val="" class="stretched-link"></a>
+                </div> <!-- end widget-rounded-circle-->
+            </div> <!-- end col-->
+            <div class="col-xl-6">
+                <div class="widget-rounded-circle card p-2 px-3 bg-warning bg-gradient shadow">
+                    <div class="row">
+                        <div class="col-6 align-self-end pt-4">
+                            <div class="float-start">
+                                <p class="text-white text-truncate fw-semibold fs-5 mb-0">
+                                    Needs <br />
+                                    Pag-IBIG Approval
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 align-self-start pb-4">
+                            <div class="float-end">
+                                <p class="text-white fw-bolder fs-1" id="info_for_gov_approval"><span data-plugin="counterup">10000</span></p>
+                            </div>
+                        </div>
+                    </div> <!-- end row-->
+
+                    <a href="#" id="dash_link_for_gov_approval" data-val="" class="stretched-link"></a>
+                </div> <!-- end widget-rounded-circle-->
+            </div> <!-- end col-->
+            <div class="col-xl-6">
+                <div class="widget-rounded-circle card p-2 px-3 bg-purple bg-gradient shadow">
+                    <div class="row">
+                        <div class="col-6 align-self-end pt-4">
+                            <div class="float-start">
+                                <p class="text-white text-truncate fw-semibold fs-5 mb-0">
+                                    New Applications
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 align-self-start pb-4">
+                            <div class="float-end">
+                                <p class="text-white fw-bolder fs-1" id="info_for_new_applications"><span data-plugin="counterup">10000</span></p>
+                            </div>
+                        </div>
+                    </div> <!-- end row-->
+
+                    <a href="#" id="dash_link_for_new_applications" data-val="" class="stretched-link"></a>
+                </div> <!-- end widget-rounded-circle-->
+            </div> <!-- end col-->
+            <div class="col-xl-6">
+                <div class="widget-rounded-circle card p-2 px-3 bg-pink bg-gradient shadow">
+                    <div class="row">
+                        <div class="col-6 align-self-end pt-4">
+                            <div class="float-start">
+                                <p class="text-white text-truncate fw-semibold fs-5 mb-0">
+                                    Ready for <br />
+                                    Post-approval
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 align-self-start pb-4">
+                            <div class="float-end">
+                                <p class="text-white fw-bolder fs-1" id="info_for_post_approval"><span data-plugin="counterup">10000</span></p>
+                            </div>
+                        </div>
+                    </div> <!-- end row-->
+
+                    <a href="#" id="dash_link_for_post_approval" data-val="" class="stretched-link"></a>
+                </div> <!-- end widget-rounded-circle-->
+            </div> <!-- end col-->
+        </div>
+    </div>
+    <div class="col-xl-4 mb-3">
+        <div class="card h-100 text-center" style="min-height: 275px; max-height: 275px; overflow: hidden; display: block;">
+            <img class="card-img-top mx-auto" style="max-width: 100%;" src="~/images/juantahananassets/backgrounds/family.png" />
+            @* image here *@
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card" style="min-height: 600px; max-height: 600px;">
+            <div class="card-body">
+                <div class="row text-center">
+                    <p class="fw-bolder fs-3">Credit Verification Status Breakdown</p>
+                </div>
+                <div class="row">
+                    <div id="ApexCharts_CreditVerificationStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card" style="min-height: 600px; max-height: 600px;">
+            <div class="card-body">
+                <div class="row text-center">
+                    <p class="text-uppercase fw-bolder fs-3">Application Stages</p>
+                </div>
+                <div class="row">
+                    <div id="ApexCharts_AppStagesDonut"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card" style="min-height: 600px; max-height: 600px;">
+            <div class="card-body">
+                <div class="row text-center">
+                    <p class="text-uppercase fw-bolder fs-3">Approve-Defer Ratio</p>
+                </div>
+                <div class="row">
+                    <div id="ApexCharts_ApproveDeferRatioPie"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8">
+        <div class="card" style="min-height: 600px; max-height: 600px;">
+            <div class="card-body">
+                <div class="row text-center">
+                    <p class="fw-bolder fs-3">Application Completion Status Breakdown</p>
+                </div>
+                <div class="row">
+                    <div id="ApexCharts_AppCompletionStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
