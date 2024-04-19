@@ -1,130 +1,355 @@
-//$(function () {
-//    let reportsDiv = $("#reports-div");
-//    loadReports();
 
-//    function loadReports() {
-//        $.ajax({
-//            url: "/Report/GetReportList/",
-//            success: function (data) {
-//                let reportListData = cleanReportList(data);
-//                let reportItem = "";
-//                let reportTypes = ['Main Report', 'Sub Report'];
+//loadApplicationInfo();
 
-//                for (let report of reportListData) {
-//                    var reportName = report.name;
-//                    var reportSubtitle = reportName.subString(reportName.indexOf("("), reportName.indexOf(")") + 1);
-//                    reportName = reportName.replace(reportSubtitle, '');
+//function loadApplicationInfo() {
+//    let submitted_info = $('#submitted_info');
+//    let approved_info = $('#approved_info');
+//    let disapprove_info = $('#disapprove_info');
+//    let withdrawn_info = $('#withdrawn_info');
+//    let totalApplication = $('#totalApplications');
+//    let loading_text = "<span class='spinner-border spinner-border-sm'></span>";
 
-//                    reportItem += `
-//                            <div class="col-lg-3">
-//                                <div class="card">
-//                                    <div class="card-body">
-//                                        <h5 class="header-title mb-0">${reportName}</h5>
-//                                        <p class="card-text"></p>
-//                                    </div>
-//                                    <div class="card-body">
-//                                        <a href="/Report/Viewer?reportName=${report.name}" class="card-link text-custom">${localizer("Viewer")}</a>
-//                                        <a href="/Report/Designer?reportName=${report.name}" class="card-link text-custom">${localizer("Designer")}</a>
-//                                        ${report.isCustomReport ? `<button data-name="${report.name}" class="btn p-0 text-danger float-end js-delete">${localizer("Delete")}</button>` : ''}
-//                                    </div>
-//                                </div>
-//                            </div>`;
-//                }
+//    $.ajax({
+//        url: baseUrl + "Home/GetApplicationsCount",
 
-//                reportsDiv.empty();
-//                reportsDiv.append(reportItem);
-//            }
-//        });
-//    }
+//        beforeSend: function () {
+//            totalApplication.html(loading_text);
+//        },
+//        success: function (response) {
+//            console.log(response);
+//            totalApplication.text(response.TotalApplication);
+//            withdrawn_info.val(response.TotalWithdrawn);
+//            approved_info.val(response.TotalApprove);
+//            submitted_info.val(response.TotalSubmitted);
+//            disapprove_info.val(response.TotalDisApprove);
 
-//    $(document).on("click", ".js-delete", function () {
-//        let reportName = $(this).attr("data-name");
-
-//        Swal.fire({
-//            title: 'Are you sure?',
-//            text: `The following report will be deleted: ${reportName}`,
-//            icon: 'question',
-//            showCancelButton: true,
-//            confirmButtonColor: '#3085d6',
-//            cancelButtonColor: '#d33',
-//            confirmButtonText: 'Confirm',
-//            showLoaderOnConfirm: true,
-//            preConfirm: () => {
-//                return fetch(`/Report/DeleteReport/`,
-//                    {
-//                        method: "DELETE",
-//                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-//                        body: `reportName=${reportName}`
-//                    })
-//                    .then(response => {
-//                        if (!response.ok) {
-//                            throw new Error(response.statusText)
-//                        }
-//                        return response;
-//                    })
-//                    .catch(error => {
-//                        Swal.showValidationMessage(
-//                            `Request failed: ${error}`
-//                        )
-//                    })
-//            },
-//            allowOutsideClick: () => !Swal.isLoading()
-//        }).then((result) => {
-//            if (result.isConfirmed) {
-//                messageBox("Record(s) successfully deleted.", "success", true);
-//                loadReports();
-//            }
-//        })
-//    });
-
-//    function cleanReportList(data) {
-//        const uniqueData = {};
-
-//        for (let item of data) {
-//            const name = item.name;
-//            const isCustom = item.isCustomReport;
-
-//            if (!(name in uniqueData) || (isCustom && !uniqueData[name].isCustomReport)) {
-//                uniqueData[name] = item;
-//            }
+//            $('[data-plugin="knob"]').trigger('change');
+//        },
+//        error: function (jqXHR, textStatus, errorThrown) {
+//            totalApplication.text(0);
+//            $('[data-plugin="knob"]').val(0);
 //        }
+//    });
+//}
 
-//        // Return the unique data from the object
-//        return Object.values(uniqueData);
-//    }
-//});
 
 $(function () {
-    loadApplicationInfo();
+    const $creditVerificationChart = document.querySelector('#ApexCharts_CreditVerificationStatus');
+    const $appCompletionChart = document.querySelector('#ApexCharts_AppCompletionStatus');
+    const $approveDeferRatioPie = document.querySelector('#ApexCharts_ApproveDeferRatioPie');
+    const $appStagesDonut = document.querySelector('#ApexCharts_AppStagesDonut');
 
-    function loadApplicationInfo() {
-        let submitted_info = $('#submitted_info');
-        let approved_info = $('#approved_info');
-        let disapprove_info = $('#disapprove_info');
-        let withdrawn_info = $('#withdrawn_info');
-        let totalApplication = $('#totalApplications');
-        let loading_text = "<span class='spinner-border spinner-border-sm'></span>";
+    var creditVerificationChart;
+    var appCompletionChart;
+    var approveDeferRatioPie;
+    var appStagesDonut;
 
-        $.ajax({
-            url: baseUrl + "Home/GetApplicationsCount",
-
-            beforeSend: function () {
-                totalApplication.html(loading_text);
+    if ($creditVerificationChart && $("#ApexCharts_CreditVerificationStatus svg").length === 0) {
+        var options = {
+            chart: {
+                height: 450,
+                type: 'bar',
+                toolbar: {
+                    show: true
+                }
             },
-            success: function (response) {
-                console.log(response);
-                totalApplication.text(response.TotalApplication);
-                withdrawn_info.val(response.TotalWithdrawn);
-                approved_info.val(response.TotalApprove);
-                submitted_info.val(response.TotalSubmitted);
-                disapprove_info.val(response.TotalDisApprove);
-
-                $('[data-plugin="knob"]').trigger('change');
+            noData: {
+                text: "No data for the selected period",
+                align: 'center',
+                verticalAlign: 'middle',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: undefined,
+                    fontSize: '14px',
+                    fontFamily: undefined
+                }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                totalApplication.text(0);
-                $('[data-plugin="knob"]').val(0);
+            legend: {
+                show: false,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    borderRadius: 3,
+                    endingShape: 'rounded',
+                    distributed: true,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            colors: [
+                bs5ColorDictionary["secondary"],
+                bs5ColorDictionary["info"],
+                '#00ff00',
+                bs5ColorDictionary["success"],
+                bs5ColorDictionary["danger"],
+                bs5ColorDictionary["danger"],
+                bs5ColorDictionary["warning"]
+            ],
+            series: [{
+                name: 'Count',
+                data: [30, 68, 22, 15, 10, 8, 2]
+            }],
+            xaxis: {
+                categories: [
+                    ['Application', 'in Draft'],
+                    'Submitted',
+                    ['Developer', 'Verified'],
+                    ['Pag-IBIG', 'Verified'],
+                    ['Developer', 'Deferred'],
+                    ['Pag-IBIG', 'Deferred'],
+                    'Withdrawn'
+                ],
+                labels: {
+                    rotate: -45,
+                    trim: true
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            grid: {
+                row: {
+                    colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.2
+                },
+                borderColor: '#f1f3fa',
+                padding: {
+                    bottom: 10
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return numeral(val).format('0,0');
+                    }
+                }
             }
-        });
+        }
+
+        creditVerificationChart = new ApexCharts($creditVerificationChart, options);
+        creditVerificationChart.render();
     }
+
+    if ($appCompletionChart && $("#ApexCharts_AppCompletionStatus svg").length === 0) {
+        var options = {
+            chart: {
+                height: 450,
+                type: 'bar',
+                toolbar: {
+                    show: true
+                }
+            },
+            noData: {
+                text: "No data for the selected period",
+                align: 'center',
+                verticalAlign: 'middle',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: undefined,
+                    fontSize: '14px',
+                    fontFamily: undefined
+                }
+            },
+            legend: {
+                show: false,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    borderRadius: 3,
+                    endingShape: 'rounded',
+                    distributed: true,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            colors: [
+                bs5ColorDictionary["info"],
+                '#00ff00',
+                bs5ColorDictionary["success"],
+                bs5ColorDictionary["danger"],
+                bs5ColorDictionary["danger"],
+                bs5ColorDictionary["warning"]
+            ],
+            series: [{
+                name: 'Count',
+                data: [31, 10, 22, 55, 1, 9]
+            }],
+            xaxis: {
+                categories: [
+                    'Submitted',
+                    ['Developer', 'Verified'],
+                    ['Pag-IBIG', 'Verified'],
+                    ['Developer', 'Deferred'],
+                    ['Pag-IBIG', 'Deferred'],
+                    'Withdrawn'
+                ],
+                labels: {
+                    rotate: -45,
+                    trim: true
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            grid: {
+                row: {
+                    colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.2
+                },
+                borderColor: '#f1f3fa',
+                padding: {
+                    bottom: 10
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return numeral(val).format('0,0');
+                    }
+                }
+            }
+        }
+
+        appCompletionChart = new ApexCharts($appCompletionChart, options);
+        appCompletionChart.render();
+    }
+
+    if ($appStagesDonut && $("#ApexCharts_AppStagesDonut svg").length === 0) {
+        var options = {
+            series: [63, 29, 8],
+            chart: {
+                width: '100%',
+                height: 500,
+                type: 'donut',
+                offsetX: 0,
+                offsetY: 10,
+            },
+            plotOptions: {
+                pie: {
+                    offsetX: 0,
+                    offsetY: 50,
+                    startAngle: 0,
+                    endAngle: 360,
+                    donut: {
+                        size: '50%',
+                    },
+                    dataLabels: {
+                        offset: -5,
+                        minAngleToShowLabel: 10
+                    }, 
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            labels: ["Credit Verification", "Application Completion", "Post-approval"],
+            fill: {
+                type: 'solid',
+                colors: ['#126387', '#EE6A25', '#186A24']
+            },
+            colors: ['#126387', '#EE6A25', '#186A24'],
+            legend: {
+                //width: 200,
+                position: 'top',
+                floating: false,
+                fontSize: '14px',
+                //horizontalAlign: 'center',
+                colors: ['#126387', '#EE6A25', '#186A24'],
+                offsetX: 0,
+                offsetY: 0,
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    }
+                }
+            }]
+        };
+
+        appStagesDonut = new ApexCharts($appStagesDonut, options);
+        appStagesDonut.render();
+    }
+
+    if ($approveDeferRatioPie && $("#ApexCharts_ApproveDeferRatioPie svg").length === 0) {
+        var options = {
+            series: [33, 67],
+            chart: {
+                width: '100%',
+                height: 500,
+                type: 'pie',
+                offsetX: 0,
+                offsetY: 10,
+            },
+            plotOptions: {
+                pie: {
+                    offsetX: 0,
+                    offsetY: 50,
+                    startAngle: 0,
+                    endAngle: 360,
+                    dataLabels: {
+                        offset: -5,
+                        minAngleToShowLabel: 10
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            labels: ["Approved", "Deferred"],
+            fill: {
+                type: 'solid',
+                colors: ['#126387', '#EE6A25']
+            },
+            colors: ['#126387', '#EE6A25'],
+            //legend: {
+            //    width: 200,
+            //    height: 100,
+            //    position: 'bottom',
+            //    horizontalAlign: 'center',
+            //    formatter: function (val, opts) {
+            //        return val;
+            //    },
+            //    colors: [bs5ColorDictionary["primary"], bs5ColorDictionary["warning"]],
+            //    floating: false,
+            //    fontSize: '14px',
+            //    offsetX: 0,
+            //    offsetY: 10
+            //}
+            legend: {
+                show: true,
+                height: 100,
+                position: 'bottom',
+                //horizontalAlign: 'center',
+                floating: false,
+                fontSize: '14px',
+                offsetX: 0,
+                offsetY: 10
+            },
+        };
+
+        approveDeferRatioPie = new ApexCharts($approveDeferRatioPie, options);
+        approveDeferRatioPie.render();
+    }
+
+
 });
