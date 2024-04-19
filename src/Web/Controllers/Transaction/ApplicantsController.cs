@@ -779,9 +779,15 @@ namespace Template.Web.Controllers.Transaction
                         await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
 
                         #endregion Create BeneficiaryInformation
+
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
                     }
                     else
                     {
+
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+
+
                         user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
 
                         vwModel.BarrowersInformationModel.FirstName = user.FirstName ?? string.Empty;
@@ -801,7 +807,6 @@ namespace Template.Web.Controllers.Transaction
                     //vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
-                    vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
 
                     var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
@@ -850,9 +855,6 @@ namespace Template.Web.Controllers.Transaction
                 else
                 {
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
-
-
-
 
                     var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 

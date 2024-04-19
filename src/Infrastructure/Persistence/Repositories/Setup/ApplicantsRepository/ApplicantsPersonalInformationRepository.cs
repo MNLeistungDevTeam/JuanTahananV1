@@ -163,7 +163,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             applicantPersonalInfo.DateModified = DateTime.Now;
             applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
-            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById");
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById","EncodedStage","EncodedStatus");
             return applicantPersonalInfo;
         }
 
