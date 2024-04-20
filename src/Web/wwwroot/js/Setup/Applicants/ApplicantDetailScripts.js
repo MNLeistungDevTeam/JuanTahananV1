@@ -345,7 +345,7 @@ $(async function () {
     //    }
     //}
 
-    function appendApplicationAttachmentsV2(items) {
+    function appendApplicationAttachmentsV3(items) {
         const groupedItems = {};
 
         $("#div_application").empty();
@@ -399,6 +399,64 @@ $(async function () {
             $("#btnSubmitApplication").prop('disabled', !(flag));
         }
     }
+
+
+    function appendApplicationAttachmentsV2(items) {
+        const groupedItems = {};
+
+        $("#div_application").empty();
+
+        // Group items by DocumentTypeName
+        items.forEach(item => {
+            const groupId = item.DocumentTypeId;
+            const groupName = item.DocumentTypeName;
+
+            if (!groupedItems[groupName]) {
+                groupedItems[groupName] = [];
+            }
+            groupedItems[groupName].push(item);
+        });
+
+        // Append grouped items
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupItems = groupedItems[groupName];
+                const firstItem = groupItems[0];
+                let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
+                        <h4 class="header-title text-muted">${groupName}</h4>
+                        <div class="list-group">`;
+
+                groupItems.forEach((item, index) => {
+                    const itemLink = item.DocumentLocation + item.DocumentName;
+                    const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
+                    const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
+                    const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+
+                    groupHtml += `<div class="file-upload-wrapper">
+                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                    </div>
+                                </div>
+                            </a>
+                          </div>`;
+                });
+
+                groupHtml += `</div></div>`;
+                $("#div_application").append(groupHtml);
+            }
+        }
+
+        // Count all the uploaded files
+        if (approvalStatus === '4') //Pagibig Verified
+        {
+            var flag = allItemsHaveFiles(groupedItems);
+            $("#btnSubmitApplication").prop('disabled', !(flag));
+        }
+    }
+
 
     //function GetApprovalStatus(groupedItems) {
     //    const Items = {};
