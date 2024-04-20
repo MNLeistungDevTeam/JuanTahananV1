@@ -11,7 +11,7 @@ AS
     FROM 
         ApplicantsPersonalInformation 
     WHERE 
-        ApprovalStatus IN (0,1,3,4,6,7,8)
+        ApprovalStatus IN (0,1,3,4,6,7,8,11)
 )
 
 SELECT

@@ -69,8 +69,9 @@ AS
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
 	) aps ON apl.Id = aps.ReferenceId 
 	LEFT JOIN (
-					select * from ApprovalLog
-					Where [Action] = 1 
+					select Top 1 * from ApprovalLog
+					Where [Action] = 1  
+					Order by DateCreated Desc
 	) aplog ON   aplog.ReferenceId = apl.Id 
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
