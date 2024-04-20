@@ -841,8 +841,8 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
@@ -924,8 +924,8 @@ namespace Template.Web.Controllers.Transaction
 
                     if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
                     {
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
