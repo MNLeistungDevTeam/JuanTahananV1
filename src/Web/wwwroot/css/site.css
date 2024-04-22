@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'rosmitta';
     src: url('../fonts/rosmitta.ttf') format('truetype');
@@ -17,10 +16,12 @@ table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.data
 table.dataTable tbody > tr.selected td, table.dataTable tbody > tr > .selected td {
     border-color: rgb(var(--dt-row-selected));
 }
+
 .avatar-xxxl {
     height: 9.5rem;
     width: 9.5rem;
 }
+
 table.dataTable > tbody > tr > td.select-checkbox:before, table.dataTable > tbody > tr > th.select-checkbox:before {
     content: " ";
     margin-top: -6px;
@@ -712,8 +713,8 @@ table.dataTable thead th.dt-colresizable-bound-max {
     position: relative;
     font-size: inherit;
     color: var(--ct-danger);*/
-    /* padding-left: 0.25rem; */
-    /*font-weight: 600;
+/* padding-left: 0.25rem; */
+/*font-weight: 600;
 }*/
 
 /* overlapping fix for context menu */
@@ -918,11 +919,13 @@ label[required]:after {
     content: "";*/ /* Display default message if content is empty */
 /*}*/
 .form-horizontal .invalid-tooltip {
-    display:none!important;
+    display: none !important;
 }
+
 .form-horizontal [class="error"] {
-    display:none!important;
+    display: none !important;
 }
+
 html[data-layout=topnav] .topnav .navbar-nav .nav-link {
     height: 100%;
 }
@@ -930,8 +933,6 @@ html[data-layout=topnav] .topnav .navbar-nav .nav-link {
 .landing-full-screen-view {
     min-height: calc(100vh - var(--ct-topbar-height) + var(--ct-footer-height) - 5.3rem);
 }
-
-
 
 .fp-watermark {
     display: none !important;
@@ -958,7 +959,6 @@ body #sidebar-menu > ul > li:hover > a {
     color: #EB2188;
 }
 
-
 .leftside-menu li > a.active > h4 {
     color: #DE1E35 !important;
     font-weight: 700 !important;
@@ -973,14 +973,13 @@ body #sidebar-menu > ul > li:hover > a {
     font-weight: 700 !important;
 }
 
+.side-nav .menuitem-active > a:hover, .side-nav .menuitem-active > a:focus, .side-nav .menuitem-active > a:active {
+    color: #252C7D;
+}
 
-    .side-nav .menuitem-active > a:hover, .side-nav .menuitem-active > a:focus, .side-nav .menuitem-active > a:active {
-        color: #252C7D;
-    }
-
-    .side-nav .menuitem-active > a:active, .side-nav .menuitem-active > a:focus, .side-nav .menuitem-active > a:active {
-        color: #FEC10E;
-    }
+.side-nav .menuitem-active > a:active, .side-nav .menuitem-active > a:focus, .side-nav .menuitem-active > a:active {
+    color: #FEC10E;
+}
 
 .leftside-menu {
     transition: all .1s ease-out;
@@ -1018,7 +1017,6 @@ html[data-bs-theme="dark"] .text-theme-primary {
     border-color: #FEC10E !important;
 }
 
-
 .filtr-item {
     width: 33.6%;
 }
@@ -1041,8 +1039,8 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .nav-tabs.nav-bordered li a.active {
     border-bottom: 2px solid var(--ct-warning)
 }
-.account-tab-trigger {
 
+.account-tab-trigger {
 }
 
     .account-tab-trigger.active {
@@ -1064,6 +1062,7 @@ html[data-bs-theme="dark"] .text-theme-primary {
     box-shadow: 2px 5px 5px #00000040;
     cursor: pointer;
 }
+
 .auth-avatar {
     position: relative;
     overflow: hidden; /* Ensure content inside is not visible outside */
@@ -1111,6 +1110,7 @@ html[data-bs-theme="dark"] .text-theme-primary {
 #avatar-input {
     display: none; /* Hide the file input */
 }
+
 .beneficiary-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
@@ -1127,9 +1127,11 @@ html[data-bs-theme="dark"] .text-theme-primary {
         transform: translateY(0) rotate(0) scale(1);
         transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
+
 .leftside-menu:hover {
-    overflow:visible!important;
+    overflow: visible !important;
 }
+
 .bg-yellowgreen {
     background-color: yellowgreen;
 }
@@ -1138,22 +1140,17 @@ html[data-bs-theme="dark"] .text-theme-primary {
     background-color: darkorange;
 }
 
-
-
 .bg-lightgreen {
     background-color: lightgreen;
 }
 
- 
 .bg-darkgreen {
     background-color: darkgreen;
 }
 
-
 .bg-teal {
     background-color: darkblue;
 }
-
 
 .text-orange {
     color: orange;
@@ -1194,3 +1191,65 @@ html[data-bs-theme="dark"] .text-theme-primary {
 .selectize-control.plugin-remove_button .locked .item .remove {
     border-left-color: white
 }
+
+.side-nav .btn-application {
+    display: block;
+    list-style: none;
+    position: relative;
+    white-space: nowrap;
+    color: var(--ct-menu-item-color);
+    -webkit-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+    font-size: var(--ct-menu-item-font-size);
+    padding: var(--ct-menu-item-padding-y) var(--ct-menu-item-padding-x);
+}
+
+    .side-nav .btn-application:hover, .side-nav .btn-application:focus, .side-nav .btn-application:active {
+        color: var(--ct-menu-item-hover-color);
+        text-decoration: none;
+    }
+
+    .side-nav .btn-application i {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-size: var(--ct-menu-item-icon-size);
+        line-height: var(--ct-menu-item-icon-size);
+        width: calc(var(--ct-leftbar-width-sm) - var(--ct-menu-item-padding-x) * 2);
+        min-width: calc(var(--ct-leftbar-width-sm) - var(--ct-menu-item-padding-x) * 2);
+    }
+
+html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-menu .side-nav .text-btn-application {
+    display: none !important;
+}
+
+html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-menu .side-nav .icon-btn-application {
+    text-align: center !important;
+}
+
+.side-nav .btn-application {
+    color: white !important;
+}
+
+.beneficiary-sidecard {
+    border-top-left-radius: 10px; /* Adjust the radius as needed */
+    border-bottom-left-radius: 10px; /* Adjust the radius as needed */
+    writing-mode: vertical-lr;
+    /*transform: rotate(90deg);*/
+    transform-origin: center center;
+    /*list-style-type: none;*/
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    /*background-color: beige;*/
+    color: white !important;
+    align-content: center;
+}
+
+    .beneficiary-sidecard > p {
+        display: block;
+        transform: rotate(180deg);
+    }
+
+    
