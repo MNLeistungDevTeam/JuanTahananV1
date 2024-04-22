@@ -127,7 +127,7 @@ namespace DMS.Infrastructure.Services
                 }
 
              
-                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus" };
+                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
                 List<string> excludedSpouse = new List<string> { "OccupationStatus" };
 
                 applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);

@@ -385,7 +385,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
         }
     });
 

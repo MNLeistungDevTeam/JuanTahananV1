@@ -79,7 +79,7 @@ $(function () {
                 render: function (data, type, row) {
                     var returndata = "";
 
-                    if ([0, 1, 2, 3, 5,11].includes(row.ApprovalStatusNumber)) {
+                    if ([0, 1, 2, 3, 5, 11].includes(row.ApprovalStatusNumber)) {
                         // `Credit Verification`
                         returndata = `<span class="text-orange">${data}</span>`;
                     }
@@ -100,8 +100,6 @@ $(function () {
                 className: 'align-middle',
                 render: function (data, type, row) {
                     var returndata = "";
-
-                    console.log(row.ApprovalStatusNumber);
 
                     if (row.ApprovalStatusNumber == 0) { // draft
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
@@ -237,8 +235,6 @@ $(function () {
             });
         }
 
-
-
         if (selectedRows == 1 && applicationStatus == 0) {  //application draft
             $("#btn_upload_document").attr({
                 "disabled": false,
@@ -251,8 +247,6 @@ $(function () {
                 "data-url": baseUrl + "Document/DocumentUpload/" + applicationCode
             });
         }
-
-
 
         else if (selectedRows == 1 && applicationStatus == 4) { //pagibig verified
             $("#btn_upload_document").attr({

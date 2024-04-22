@@ -83,6 +83,11 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? DateSubmitted { get; set; }
         public DateTime? LastUpdated { get; set; }
 
+
+        public int? DocumentSequence { get; set; }
+
+
+
         #endregion Display Properties
     }
 }

@@ -113,9 +113,7 @@
                                             <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)" disabled>
                                                 <i class="fe-send me-1"></i> <span>Submit Application</span>
                                             </button>
-                                            // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
-                                            //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
-                                            // </button>
+
                                         }
                                         else
 
@@ -129,9 +127,7 @@
 
 
 
-                                            // <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
-                                            //     <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
-                                            // </button>
+
 
                                         }
 
@@ -147,6 +143,8 @@
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                     {
+
+
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
@@ -217,6 +215,8 @@
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
                                 }
+
+
                                 else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigVerified)">
@@ -233,6 +233,10 @@
                                     </button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Disqualified)">
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
+                                    </button>
+
+                                    <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
+                                        <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
                                 }
                                 else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)

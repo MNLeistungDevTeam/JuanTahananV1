@@ -51,10 +51,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? PreferredTimeToContact { get; set; }
 
         [Display(Name = "Last Name", Prompt = "Last Name")]
-        public string? LastName { get; set; }
+        public string? LastName { get; set; } = string.Empty;   
 
-        [Display(Name = "First Name", Prompt = "First Name")]
-        public string? FirstName { get; set; }
+        [Display(Name = "First Name", Prompt = "First Name")] 
+        public string? FirstName { get; set; } = string.Empty;
 
         [Display(Name = "Middle Name", Prompt = "Middle Name")]
         public string? MiddleName { get; set; }

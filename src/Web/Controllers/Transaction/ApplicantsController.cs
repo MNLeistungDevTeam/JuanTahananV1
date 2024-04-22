@@ -665,7 +665,6 @@ namespace Template.Web.Controllers.Transaction
                 var user = new User();
                 var beneficiaryModel = new BeneficiaryInformationModel();
                 var barrowerModel = new BarrowersInformation();
-                // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
 
                 var userinfo = await _userRepo.GetUserAsync(userId);
@@ -680,19 +679,19 @@ namespace Template.Web.Controllers.Transaction
                 string pagibigNum = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
                 vwModel.ApplicantsPersonalInformationModel.PagibigNumber = pagibigNum;
 
-                //create  new beneficiary
+                //create  new beneficiary and housingloan application
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
 
                 {
                     //current user is beneficiary
-                    if (currentuserRoleId == 4)
+                    if (currentuserRoleId == (int)PredefinedRoleType.Beneficiary)
                     {
                         var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
 
                         if (applicationDetail != null)
                         {
-                            if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                            if (applicationDetail.ApprovalStatus != (int)AppStatusType.Deferred && applicationDetail.ApprovalStatus != (int)AppStatusType.Withdrawn && applicationDetail.ApprovalStatus != (int)AppStatusType.Disqualified && applicationDetail.ApprovalStatus != (int)AppStatusType.Discontinued)
                             {
                                 return BadRequest("Can't be processed. You have a pending application!");
                             }
@@ -713,6 +712,7 @@ namespace Template.Web.Controllers.Transaction
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
+                            MiddleName = vwModel.BarrowersInformationModel.MiddleName,
                             Gender = vwModel.BarrowersInformationModel.Sex,
                             PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber
                         };
@@ -809,7 +809,6 @@ namespace Template.Web.Controllers.Transaction
                     #endregion Register User and Send Email
 
                     vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
-                    //vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
@@ -842,8 +841,8 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
@@ -925,8 +924,8 @@ namespace Template.Web.Controllers.Transaction
 
                     if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
                     {
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
