@@ -6,17 +6,6 @@ using System.Threading.Tasks;
 
 namespace DMS.Domain.Enums
 {
-    public enum ApprovalStatusType
-    {
-        Pending = 0,
-        PendingReview = 1,
-        Approved = 2,
-        Disapproved = 3,
-        Returned = 4,
-        Closed = 5,
-        Cancelled = 6,
-    }
-
     public enum AppStatusType
     {
         Draft = 0,
@@ -32,4 +21,6 @@ namespace DMS.Domain.Enums
         Discontinued = 10,              //Postwithdrawn
         ForResubmition = 11
     }
+
+     
 }

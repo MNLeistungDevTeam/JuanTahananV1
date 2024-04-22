@@ -3,6 +3,7 @@
 @using DMS.Application.Interfaces.Setup.RoleRepository
 @using DMS.Application.Interfaces.Setup.UserRepository
 @using DMS.Application.Services;
+@using DMS.Domain.Enums
 @using DMS.Web.Controllers.Services
 @using System.Security.Claims
 @inject IModuleRepository _moduleRepo;
@@ -75,39 +76,48 @@
                         <small class="d-block text-truncate text-center text-dark fw-semibold">@ViewData["Position"]</small>
                     </div>
                 </li>
-                @if (userInfo.UserRoleId == 4)
+                @if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                 {
                     <li class="side-nav-item mb-2 d-flex align-items-center justify-content-center">
-                    @{
-                        //var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId && activeStatus.Contains(item.));
-                        Dictionary<string, string> btnParameters = new()
-                        {
-                            { "text", "Apply for a loan" },
-                            { "link", $"/Applicants/NewHLF068/{userInfo.PagibigNumber}" },
-                            { "color", "primary" },
-                        };
+                        @{
+                            //var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId && activeStatus.Contains(item.));
+                            Dictionary<string, string> btnParameters = new()
+                            {
+                                { "text", "Apply for a loan" },
+                                { "link", $"/Applicants/NewHLF068/{userInfo.PagibigNumber}" },
+                                { "color", "primary" },
+                                { "icon", "mdi-clipboard-plus-outline" }
+                            };
 
-                        // Beneficiary
-                        int[] inactiveStatus = { 2, 5, 9, 10 };
+                            // Beneficiary
+                            int[] inactiveStatus = { 2, 5, 9, 10 };
 
-                        var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+                            var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
 
-                        // Runs if data is not null and status is active (warning button)
-                        if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))
-                        {
-                            btnParameters["text"] = "View my application";
-                            btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
-                            btnParameters["color"] = "warning";
+                            // Runs if data is not null and status is active (warning button)
+                            if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))
+                            {
+                                btnParameters["text"] = "View my application";
+                                btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
+                                btnParameters["color"] = "warning";
+                                btnParameters["icon"] = "mdi-clipboard-edit-outline";
+                            }
+
+                            // check if url is the same as the current one
+                            var urlCheck = Context.Request.Path == btnParameters["link"];
+                            var ariaDisabled = urlCheck ? "aria-disabled=\"true\"" : "";
+
+                            <a role="button" class="btn-application align-items-center btn btn-@btnParameters["color"] @(urlCheck ? "disabled" : "")" href="@btnParameters["link"]" style="border-radius: 8px!important;" @ariaDisabled >
+                                <i class="mdi @btnParameters["icon"] text-start icon-btn-application"></i>
+                                <span class="text-btn-application text-end">@btnParameters["text"]</span>
+                            </a>
+
+                            // <button class="btn btn-@btnParameters["color"]" id="btn_redirection" onclick="location.href='@btnParameters["link"]'" style="border-radius: 8px!important;" @(urlCheck ? "disabled" : "")>
+                            //     <i class="mdi @btnParameters["icon"]"></i>
+                            //     <span class="btn-side-nav-link">@btnParameters["text"]</span>
+                            // </button>
                         }
-
-                        // check if url is the same as the current one
-                        var urlCheck = Context.Request.Path == btnParameters["link"];
-
-                        <a role="button" class="btn btn-@btnParameters["color"] @(urlCheck ? "disabled" : "")" href="@btnParameters["link"]" style="border-radius: 8px!important;" aria-disabled="@urlCheck">
-                            @btnParameters["text"]
-                        </a>
-                    }
-                    </li>
+                     </li>
                 }
 
                 @*<li class="side-nav-title">@localizer["Navigation"]</li>*@

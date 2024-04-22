@@ -225,6 +225,10 @@
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Deferred)">
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
                                     </button>
+
+                                    <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
+                                        <i class="fe-repeat me-1"></i><span>Return</span>
+                                    </button>
                                 }
                                 else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                 {
@@ -239,13 +243,20 @@
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
                                 }
-                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed && Model.ApplicantsPersonalInformationModel.EncodedStatus == null)
+                                else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
                                 {
                                     <button type="button" class="btn btn-success waves-effect waves-light" id="btnApprove" data-value="@((int)AppStatusType.PagibigConfirmed)">
                                         <i class="fe-check-square me-1"></i> <span>Approve</span>
                                     </button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.Disqualified)">
                                         <i class="fe-x-circle me-1"></i> <span>Defer</span>
+
+
+                                    </button>
+
+
+                                    <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
+                                        <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
                                 }
                             }
@@ -479,14 +490,14 @@
                                         </div>
                                         <div class="tab-pane" id="settings-b1" role="tabpanel">
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
+                                            @if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified))
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
                                                     Remarks:
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
-                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
+                                            else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                                             {
                                                 <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
                                                     Remarks:
@@ -502,7 +513,7 @@
                                         <div class="tab-pane" id="tab4" role="tabpanel">
 
 
-                                            @if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
+                                            @if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed))
 
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
@@ -510,7 +521,7 @@
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
-                                            else if (Model.ApplicantsPersonalInformationModel.Remarks != null && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
+                                            else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
                                                     Remarks:

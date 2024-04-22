@@ -910,7 +910,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact"></label>
-                                            <input type="text" class="form-control rounded-3 text-start timepicker" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact">
+                                            <input type="text" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.PreferredTimeToContact" value="@Model.BarrowersInformationModel.PreferredTimeToContact">
                                             <span asp-validation-for="BarrowersInformationModel.PreferredTimeToContact" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -1713,17 +1713,17 @@
                                                 <th colspan="6">
                                                     <div class="position-relative radio-pcRadio">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PendingCase"></label>
-                                                        <div class="mb-2" hidden>
+                                                        <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" id="pcRadioBtn1" name="customRadio1" class="form-check-input">
+                                                                <input type="radio" id="pcRadioBtn1" name="pendingCaseRbtn" class="form-check-input" required>
                                                                 <label class="form-check-label" for="pcRadioBtn1">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" id="pcRadioBtn2" name="customRadio1" class="form-check-input" checked>
+                                                                <input type="radio" id="pcRadioBtn2" name="pendingCaseRbtn" class="form-check-input" required>
                                                                 <label class="form-check-label" for="pcRadioBtn2">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase" disabled>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
                                                         <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1732,17 +1732,17 @@
                                                 <th colspan="6">
                                                     <div class="position-relative radio-pdRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PastDue"></label>
-                                                        <div class="mb-2" hidden>
+                                                        <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio2" id="pdRbtn1" />
+                                                                <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio2" id="pdRbtn2" checked />
+                                                                <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue" disabled>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
                                                         <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1751,17 +1751,17 @@
                                                 <th colspan="6">
                                                     <div class="position-relative radio-bcRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.BouncingChecks"></label>
-                                                        <div class="mb-2" hidden>
+                                                        <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn1" />
+                                                                <input type="radio" class="form-check-input" name="bouncingChecksRbtn" id="bcRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio3" id="bcRbtn2" checked />
+                                                                <input type="radio" class="form-check-input" name="bouncingChecksRbtn" id="bcRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BouncingChecks" disabled />
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.BouncingChecks" />
                                                         <span asp-validation-for="Form2PageModel.BouncingChecks" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1770,17 +1770,17 @@
                                                 <th colspan="6">
                                                     <div class="position-relative radio-maRbtn">
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.MedicalAdvice"></label>
-                                                        <div class="mb-2" hidden>
+                                                        <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio4" id="maRbtn1" />
+                                                                <input type="radio" class="form-check-input" name="medicalAdviceRbtn" id="maRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" name="customRadio4" id="maRbtn2" checked />
+                                                                <input type="radio" class="form-check-input" name="medicalAdviceRbtn" id="maRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice" disabled>
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
                                                         <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>

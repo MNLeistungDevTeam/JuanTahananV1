@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.Utils;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
@@ -85,7 +86,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             {
                 applicant.ModifiedById = updatedById;
                 applicant.DateModified = DateTime.Now;
-                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus","DateCreated","ModifiedById");
+                applicant = await _contextHelper.UpdateAsync(applicant, "ApprovalStatus", "DateCreated", "ModifiedById");
 
                 return applicant;
             }
@@ -110,27 +111,29 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
             if (model.Id == 0)
             {
 
-
-                if (_applicantPersonalInfo.ApprovalStatus is null) {
+                if (_applicantPersonalInfo.ApprovalStatus is null)
+                {
                     _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
                 }
-               
 
                 _applicantPersonalInfo.Code = await GenerateApplicationCode();
 
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
 
+
+                int? intValue = _applicantPersonalInfo.ApprovalStatus; 
+                AppStatusType enumValue = (AppStatusType)intValue;
+
                 // Create Initial Approval Status
-                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value);
+                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(_applicantPersonalInfo.Id, ModuleCodes2.CONST_APPLICANTSREQUESTS, userId, _applicantPersonalInfo.CompanyId.Value, enumValue);
             }
             else
             {
-
                 var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
 
                 _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
                 //approvalstatus must not update
-                //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId); 
+                //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);
 
                 await UpdateAsync(_applicantPersonalInfo, userId);
 
@@ -163,7 +166,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             applicantPersonalInfo.DateModified = DateTime.Now;
             applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
-            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById","EncodedStage","EncodedStatus");
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById", "EncodedStage", "EncodedStatus");
             return applicantPersonalInfo;
         }
 
