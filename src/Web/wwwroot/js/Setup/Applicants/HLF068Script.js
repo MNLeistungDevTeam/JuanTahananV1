@@ -6,9 +6,6 @@ $(function () {
     var telNoArray = [];
     var itiFlag = false;
 
-
-  
-
     $(".selectize").selectize({
         search: false
     });
@@ -31,7 +28,7 @@ $(function () {
         time_24hr: true
     });
 
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+    //$('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
         placeholder: 'X',
         clearIncomplete: true
@@ -49,10 +46,7 @@ $(function () {
         clearIncomplete: true
     });
 
-
     var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
-
-
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
@@ -1389,6 +1383,7 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
+        
 
         // Prevent form submission when "Enter" key is pressed
         $form.on("keydown", function (e) {
@@ -1723,7 +1718,6 @@ $(function () {
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
 
-
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true).prop("disabled", true);
 
@@ -1735,11 +1729,11 @@ $(function () {
 
             $('#customRadio5').click();
         }
-
     }
 
     //function initializeRadioBtn
 
+    //function initializeRadioBtn
 
     //#endregion
 });

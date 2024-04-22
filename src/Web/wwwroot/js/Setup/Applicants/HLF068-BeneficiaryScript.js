@@ -71,8 +71,6 @@ $(function () {
     //initializeIntlTelInput();
     initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
-
-
     //assessPresentPermanentCheckbox();
 
     assessCheckbox(
@@ -80,10 +78,7 @@ $(function () {
         $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
     );
 
-
-
     rebindValidators();
-
 
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
@@ -117,8 +112,6 @@ $(function () {
 
             // If current form is "form2", return without proceeding to next step
             if (currentFormName == "form2") {
-
-
                 $("#form2").removeClass('fade').prop('hidden', false);
                 return;
             }
@@ -1450,7 +1443,6 @@ $(function () {
                     let encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStatus").val();
 
                     //Redirect handling
-
 
                     if (applicantInfoIdVal == 0) {
                         //not applicationindraft

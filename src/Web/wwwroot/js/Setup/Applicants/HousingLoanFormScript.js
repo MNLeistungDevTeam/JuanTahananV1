@@ -1170,7 +1170,6 @@ $(function () {
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
         initializeRadioBtnMisc();
-        //loadLoanCreditRefDates();
 
         //disabled the flatpicker
         //$.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
