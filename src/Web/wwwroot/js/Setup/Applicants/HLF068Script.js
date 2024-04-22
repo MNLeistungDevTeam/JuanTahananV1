@@ -28,7 +28,7 @@ $(function () {
         time_24hr: true
     });
 
-    //$('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
         placeholder: 'X',
         clearIncomplete: true
@@ -510,7 +510,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val("");
+            $inputField.val(null);
         }
     });
 
@@ -521,7 +521,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val("");
+            $inputField.val(null);
         }
     });
 
@@ -532,7 +532,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val("");
+            $inputField.val(null);
         }
     });
 
@@ -1383,7 +1383,6 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
-        
 
         // Prevent form submission when "Enter" key is pressed
         $form.on("keydown", function (e) {
@@ -1730,10 +1729,5 @@ $(function () {
             $('#customRadio5').click();
         }
     }
-
-    //function initializeRadioBtn
-
-    //function initializeRadioBtn
-
     //#endregion
 });
