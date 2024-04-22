@@ -5,6 +5,9 @@ $(function () {
     var telNoArray = [];
     var editableFlag = false;
 
+
+    $("#btn_savehlf068").prop('disabled', true);
+
     $(".selectize").selectize({
         search: false
     });
@@ -1144,6 +1147,7 @@ $(function () {
     $("#btn_edit").on('click', function () {
         editableFlag = true;
         $(this).addClass("active");
+  
 
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
@@ -1162,6 +1166,9 @@ $(function () {
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
             e.selectize.unlock();
         })
+
+
+        $("#btn_savehlf068").prop('disabled', false);
     });
 
     $("#btn_pdf").on('click', function () {
@@ -1332,7 +1339,13 @@ $(function () {
 
             // re-enable checkboxes on submission
             // Important: this snippet should come first before validation and FormData varialble
-            $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
+            $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled").prop('disabled', false);
+            $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+            $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
+            $('input[type="radio"]').prop('disabled', false);
+
+
+
 
             if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
