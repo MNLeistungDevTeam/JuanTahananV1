@@ -1,4 +1,6 @@
 $(() => {
+    var defaultUserPic = "/images/user/default.png";
+
     var tbl_beneficiaries = $("#tbl_beneficiaries").DataTable({
         ajax: {
             url: '/Applicants/GetUsersByRoleName',
@@ -12,14 +14,14 @@ $(() => {
             {
                 data: null,
                 orderable: true,
-                className: 'ps-2',
+                className: 'ps-2',  
                 render: function (data) {
                     return `
                                     <div class="d-flex align-items-center">
-                                        <img src="${data.ProfilePicture == '' ? '/images/user/default.png' : "/images/user/" + data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
+                                        <img src="${data.ProfilePicture == '' ? defaultUserPic : data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
                                         <div>
                                             <div>${data.Name}</div>
-                                            <a href="${data.Email}" class="text-decoration-none">${data.Email}</a>
+                                      <a href="mailto:${data.Email}" class="text-decoration-none">${data.Email}</a>
                                         </div>
                                     </div>
                                 `;
