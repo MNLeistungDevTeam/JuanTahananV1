@@ -2465,7 +2465,9 @@
             // 
             this.xrTableCell3.CanGrow = false;
             this.xrTableCell3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat([CollateralInformationModel].[Street],\',\')")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif(IsNullOrEmpty([CollateralInformationModel].[Street]),false,true)"),
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(IsNullOrEmpty([CollateralInformationModel].[Street]), \'\', [CollateralInformat" +
+                    "ionModel].[Street] + \',\')\n")});
             this.xrTableCell3.Font = new DevExpress.Drawing.DXFont("Tahoma", 7F);
             this.xrTableCell3.Multiline = true;
             this.xrTableCell3.Name = "xrTableCell3";
@@ -2477,7 +2479,8 @@
             // 
             this.xrTableCell4.CanGrow = false;
             this.xrTableCell4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat([CollateralInformationModel].[Municipality],\',\')")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(IsNullOrEmpty([CollateralInformationModel].[Municipality]), \'\', [CollateralIn" +
+                    "formationModel].[Municipality] + \',\')\n\n")});
             this.xrTableCell4.Font = new DevExpress.Drawing.DXFont("Tahoma", 7F);
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
