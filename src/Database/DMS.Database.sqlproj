@@ -224,6 +224,10 @@
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByPagibigNumber.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetInfo.sql" />
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetDistinctPropertyDeveloperName.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalApplication.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalCreditVerif.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppVerif.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppStatusAndStage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

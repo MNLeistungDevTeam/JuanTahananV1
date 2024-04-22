@@ -648,6 +648,46 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
+        public async Task<IActionResult> GetTotalApplicants()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId);
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalCreditVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif();
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalAppVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif();
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalAppStatusAndStage()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppStatusAndStage();
+            return Ok(result);
+        }
+
         #endregion API Getters
 
         #region API Operations
