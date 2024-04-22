@@ -3,7 +3,7 @@ const roleName = $("#txt_role_name").val();
 
 $(function () {
     var telNoArray = [];
-    var itiFlag = false;
+    var editableFlag = false;
 
     $(".selectize").selectize({
         search: false
@@ -85,20 +85,38 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            currentForm.addClass('was-validated');
 
             // Validate the current form
-            var isValid = validateForm(currentForm);
+           
 
             // If current form is "form2", return without proceeding to next step
             if (currentFormName == "form2") {
                 return;
             }
 
-            if (!isValid) {
-                // If validation fails, prevent navigation to the next step
-                return false;
+            if (editableFlag)
+            {
+                console.log("editableFlag is true");
+
+                currentForm.addClass('was-validated');
+                var isValid = validateForm(currentForm);
+
+                if (!isValid) {
+                    // If validation fails, prevent navigation to the next step
+                    console.log("validation fail");
+                    return false;
+                } else {
+
+                    console.log('fade executed');
+                    // Hide the current form
+                    currentForm.addClass('fade').prop('hidden', true);
+
+                    // Show the previous form
+                    prevForm.removeClass('fade').prop('hidden', false);
+                }
             } else {
+
+                console.log('fade executed');
                 // Hide the current form
                 currentForm.addClass('fade').prop('hidden', true);
 
@@ -1124,7 +1142,8 @@ $(function () {
     //#region Methods
 
     $("#btn_edit").on('click', function () {
-        $("#btn_edit").addClass("active");
+        editableFlag = true;
+        $(this).addClass("active");
 
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
