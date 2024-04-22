@@ -48,5 +48,9 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId);
 
         Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber);
+        Task<ApplicationInfoModel?> GetTotalApplication(int roleId);
+        Task<ApplicationInfoModel?> GetTotalCreditVerif();
+        Task<ApplicationInfoModel?> GetTotalAppVerif();
+        Task<ApplicationInfoModel?> GetTotalAppStatusAndStage();
     }
 }

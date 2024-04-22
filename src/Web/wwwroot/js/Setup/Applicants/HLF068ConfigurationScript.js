@@ -1,32 +1,43 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
-const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
+
+let purposeofloanVal = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).attr('data-value');
+let modeofpaymentVal = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).attr('data-value');
+let propertyTypeVal = $(`[name='CollateralInformationModel.PropertyTypeId']`).attr('data-value');
+let sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
+
+let purposeOfLoanDropdown, $purposeOfLoanDropdown;
+let modeofPaymentDropdown, $modeofPaymentDropdown;
+let propertyTypeDropdown, $propertyTypeDropdown;
+let sourePagibigFundDropdown, $sourePagibigFundDropdown;
+
+let telNoArray = [];
+let itiFlag = false;
+
+$(".selectize").selectize({
+    search: false
+});
+
+$('.calendarpicker').flatpickr({
+    dateFormat: "m/d/Y",
+});
+
+$('.present-calendar-picker').flatpickr({
+    dateFormat: "m/d/Y",
+    maxDate: moment().format("MM/DD/YYYY")
+});
+
+$(".timepicker").flatpickr({
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+});
 
 $(function () {
-    var telNoArray = [];
-    var itiFlag = false;
+    //#region Initialization
 
-    $(".selectize").selectize({
-        search: false
-    });
-
-    $('.calendarpicker').flatpickr({
-        dateFormat: "m/d/Y",
-    });
-
-    $('.present-calendar-picker').flatpickr({
-        dateFormat: "m/d/Y",
-        maxDate: moment().format("MM/DD/YYYY")
-    });
-
-    $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize.lock();
-
-    $(".timepicker").flatpickr({
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-    });
+    //#region inputmask
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
@@ -46,159 +57,35 @@ $(function () {
         clearIncomplete: true
     });
 
-    var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
+    $('.codeInputMask').inputmask({ // zip code
+        regex: "^[A-Z0-9-]*$"
+    });
 
-    //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
+    $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({
+        regex: `^\\d(?:-?\\d+)*$`
+    });
 
-    // Disable 'e', '+', and '-' - not yet
+    $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({
+        regex: `^\\d(?:-?\\d+)*$`
+    });
 
-    // Disable 'e', '+', retain '-'
-    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
-    $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
-    $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
-    $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
-
-    // Disable 'e', retain '-', '+'
-    //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    //$(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    //$(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    //$(`[name="BarrowersInformationModel.BusinessTruckLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    //$(`[name="SpouseModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
-    //$(`[name^="Form2PageModel.TradeTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
-    //$(`[name^="Form2PageModel.CharacterTellNo"]`).inputmask({ regex: `^[0-9+-]*$` });
+    $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({
+        regex: "^[A-Z0-9-]*$"
+    });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
-
-    initializeLoanCreditDate();
 
     //initializeIntlTelInput();
     initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
-    //assessPresentPermanentCheckbox();
+    //#endregion inputmask
 
     assessCheckbox(
         $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`),
         $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
     );
 
-    rebindValidators();
-
-    $('#rootwizard').bootstrapWizard({
-        onNext: function (tab, navigation, index, e) {
-            console.log("Next button clicked");
-
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the previous form (loanparticulars) and remove 'fade' class
-            var prevForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            currentForm.addClass('was-validated');
-
-            // Validate the current form
-            var isValid = validateForm(currentForm);
-
-            if (!isValid) {
-                // If validation fails, prevent navigation to the next step
-                return false;
-            } else {
-                // Hide the current form
-                currentForm.addClass('fade').prop('hidden', true);
-
-                // Show the previous form
-                prevForm.removeClass('fade').prop('hidden', false);
-            }
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
-                $("#liform2_next").removeClass("d-none").prop('disabled', false);
-                $("#liform2_submit").addClass("d-none").prop('disabled', true);
-
-                $("#form3").prop('hidden', false).removeClass('fade');
-                $("#form2").prop('hidden', true);
-
-                console.log('trigger');
-                return;
-            }
-
-            //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //}
-
-            //// If current form is "spousedata", return without proceeding to next step
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
-            //    $("#liform2_next").removeClass("d-none").prop('disabled', false);
-            //    $("#liform2_submit").addClass("d-none").prop('disabled', true);
-
-            //    $("#form3").prop('hidden', false);
-            //    $("#form2").prop('hidden', true);
-
-            //    console.log('trigger');
-            //    return;
-            //}
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log('trigger');
-            //}
-
-            //else if (currentFormName == "spousedata") {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log(0);
-            //}
-
-            //if (currentFormName == "form2" && applicantInfoIdVal == 0) {
-            //    $("#form2").removeClass("fade");
-
-            //    $("#form3").prop('hidden', true);
-            //    $("#form2").prop('hidden', false);
-
-            //    console.log('trigger');
-            //    return;
-            //}
-        },
-        onPrevious: function (tab, navigation, index) {
-            console.log("Previous button clicked");
-
-            var currentForm = $($(tab).data("target-div"));
-            var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the current form (collateral) and remove 'fade' class
-            var nextForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            $("#form3").addClass('was-validated').prop('hidden', true);
-
-            // Hide the current form
-            currentForm.addClass('fade').prop('hidden', true);
-
-            // Show the next form
-            nextForm.removeClass('fade').prop('hidden', false);
-
-            // Always return true to allow navigation to the previous step
-            return true;
-        }
-    });
-
-    //#region Loan Particulars
-
-    //#region Selectize
-
-    var purposeofloanVal = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).attr('data-value');
-    var modeofpaymentVal = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).attr('data-value');
+    //#region selectize
 
     $purposeOfLoanDropdown = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).selectize({
         valueField: 'Id',
@@ -292,101 +179,176 @@ $(function () {
         modeofPaymentDropdown.off('load');
     });
 
-    //#endregion
-
-    $(document).ready(function () {
-        $('input[name="customRadio1"]').change(function () {
-            // Get the value of the selected radio button
-
-            encodedStatusdropDown.unlock();
-
-            var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
-
-            if (selectedOptionText === "Application Completion") {
-                $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
-
-                encodedStatusdropDown.clearOptions();
-
-                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-                    var optionsToAdd = [
-
-                        { value: '4', text: 'Pagibig Verified' },
-                        { value: '6', text: 'Post Submitted' },
-                        { value: '7', text: 'Developer Approved' },
-
-                    ];
-
-                    encodedStatusdropDown.addOption(optionsToAdd);
+    $propertyTypeDropdown = $(`[name='CollateralInformationModel.PropertyTypeId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Applicants/GetPropertyType',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
                 }
+            });
+        },
 
-                else {
-                    encodedStatusdropDown.clearOptions();
-
-                    var optionsToAdd = [
-                        { value: '4', text: 'Pagibig Verified' },
-                        { value: '6', text: 'Post Submitted' },
-                        { value: '8', text: 'Pagibig Approved' }
-
-                    ];
-
-                    encodedStatusdropDown.addOption(optionsToAdd);
-                }
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
             }
-
-            else if (selectedOptionText === "Credit Verification") {
-                $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
-
-                encodedStatusdropDown.clearOptions();
-
-                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-                    var optionsToAdd = [
-                        { value: '0', text: 'Application In Draft' },
-                        { value: '1', text: 'Submitted' },
-                        { value: '3', text: 'Developer Verified' }
-                    ];
-
-                    encodedStatusdropDown.addOption(optionsToAdd);
-                }
-
-                else {
-                    encodedStatusdropDown.clearOptions();
-
-                    var optionsToAdd = [
-                        { value: '0', text: 'Application In Draft' },
-                        { value: '1', text: 'Submitted' },
-                        { value: '4', text: 'Pagibig Verified' },
-                    ];
-
-                    encodedStatusdropDown.addOption(optionsToAdd);
-                }
-            }
-        });
+        },
     });
 
-    //#region Set Selectize to readonly
-    $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
-    $('#LoanParticularsInformationModel_ModeOfPaymentId-selectized').prop('readonly', true);
-    $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
-    $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_HomeOwnerShip-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_OccupationStatus-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_PreparedMailingAddress-selectized').prop('readonly', true);
-    $('#SpouseModel_OccupationStatus-selectized').prop('readonly', true);
-    //#endregion Set Selectize to readonly
+    propertyTypeDropdown = $propertyTypeDropdown[0].selectize;
 
-    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
-        if ($(this).val() == 'Rented') {
-            $('#rentalForm').show();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
-        } else {
-            $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
+    propertyTypeDropdown.on('load', function (options) {
+        propertyTypeDropdown.setValue(propertyTypeVal || '');
+        //resourceCounter("propertyType");
+        propertyTypeDropdown.off('load');
+    });
+
+    $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Applicants/GetAllSourcePagibigFund',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
+
+    sourePagibigFundDropdown.on('load', function (options) {
+        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
+        //resourceCounter("purposeofloan");
+        sourePagibigFundDropdown.off('load');
+    });
+
+    //#endregion selectize
+
+    setSelectizeReadonly();
+    setDateValueConfig();
+    initializeRadioBtnMisc();
+    initializeLoanCreditDate();
+
+    //#endregion Initialization
+
+    //#region Events
+
+    $('#rootwizard').bootstrapWizard({
+        onNext: function (tab, navigation, index, e) {
+            console.log("Next button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the previous form (loanparticulars) and remove 'fade' class
+            var prevForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            currentForm.addClass('was-validated');
+
+            // Validate the current form
+            var isValid = validateForm(currentForm);
+
+            if (!isValid) {
+                // If validation fails, prevent navigation to the next step
+                return false;
+            } else {
+                // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false);
+            }
+            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+                $("#liform2_next").removeClass("d-none").prop('disabled', false);
+                $("#liform2_submit").addClass("d-none").prop('disabled', true);
+
+                $("#form3").prop('hidden', false).removeClass('fade');
+                $("#form2").prop('hidden', true);
+
+                console.log('trigger');
+                return;
+            }
+        },
+        onPrevious: function (tab, navigation, index) {
+            console.log("Previous button clicked");
+
+            var currentForm = $($(tab).data("target-div"));
+            var currentFormName = currentForm.attr("id");
+
+            // Find the current tab pane
+            var currentTabPane = $('.tab-pane').eq(index);
+
+            // Hide the current form (collateral) and remove 'fade' class
+            var nextForm = currentTabPane;
+            console.log("Current form ID: " + currentFormName);
+
+            $("#form3").addClass('was-validated').prop('hidden', true);
+
+            // Hide the current form
+            currentForm.addClass('fade').prop('hidden', true);
+
+            // Show the next form
+            nextForm.removeClass('fade').prop('hidden', false);
+
+            // Always return true to allow navigation to the previous step
+            return true;
         }
     });
+
+    //#region LoanParticularsInformation
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('keydown', function (e) {
         // Reject inputs 'e', '+', '-'
@@ -398,19 +360,6 @@ $(function () {
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('input', function (e) {
-        //// Get the raw value without the input mask
-        //var rawValue = $(this).inputmask('unmaskedvalue');
-
-        //// Convert the raw value to a numeric format
-        //var numericValue = parseFloat(rawValue);
-
-        //// Check if the length exceeds 7 characters
-        //if (rawValue.length > 7 || numericValue > 7000000) {
-        //    messageBox("Desired Loan Amount cannot exceed 7,000,000!", "danger", true);
-        //    $(this).addClass("input-validation-error is-invalid");
-        //    $(this).val(0); // Reset the input value to 0
-        //}
-
         // Get the raw value without the input mask
         var rawValue = $(this).inputmask('unmaskedvalue');
 
@@ -443,19 +392,6 @@ $(function () {
     });
 
     $('#LoanParticularsInformationModel_DesiredLoanTermYears').on('input', function (e) {
-        //var inputValue = $(this).val().toString();
-        //var numericValue = parseInt(inputValue, 10);
-
-        //if (numericValue > 30 || inputValue.length > 2) {
-        //    //alert("Input value exceeds 30!");
-
-        //    messageBox("Desired Loan Term Years exceeds 30!", "danger", true);
-
-        //    $('#LoanParticularsInformationModel_DesiredLoanTermYears').trigger('invalid');
-
-        //    $(this).val(0);
-        //}
-
         // Get the raw value without the input mask
         var rawValue = $(this).val().toString();
 
@@ -488,6 +424,10 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     });
+
+    //#endregion LoanParticularsInformation
+
+    //#region RadioButtons
 
     $('.radio-pcRadio input[type="radio"]').on('change', function () {
         let $inputField = $("[name='Form2PageModel.PendingCase']");
@@ -533,7 +473,7 @@ $(function () {
         }
     });
 
-    //#endregion
+    //#endregion RadioButtons
 
     //#region Collateral
     $("#CollateralInformationModel_ExistingReasonChecker").on("change", function (event) {
@@ -707,139 +647,19 @@ $(function () {
         }
     });
 
-    //#region Selectize
+    //#endregion Collateral
 
-    var propertyTypeVal = $(`[name='CollateralInformationModel.PropertyTypeId']`).attr('data-value');
-    var propertyTypeDropdown, $propertyTypeDropdown;
+    //#region Barrowers
 
-    $propertyTypeDropdown = $(`[name='CollateralInformationModel.PropertyTypeId']`).selectize({
-        valueField: 'Id',
-        labelField: 'Description',
-        searchField: 'Description',
-        preload: true,
-        search: false,
-        load: function (query, callback) {
-            $.ajax({
-                url: baseUrl + 'Applicants/GetPropertyType',
-                success: function (results) {
-                    try {
-                        callback(results);
-                    } catch (e) {
-                        callback();
-                    }
-                },
-                error: function () {
-                    callback();
-                }
-            });
-        },
-
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.Description) +
-                    "</div>"
-                );
-            },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.Description) +
-                    "</div>"
-                );
-            }
-        },
+    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
+        if ($(this).val() == 'Rented') {
+            $('#rentalForm').show();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
+        } else {
+            $('#rentalForm').hide();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
+        }
     });
-
-    propertyTypeDropdown = $propertyTypeDropdown[0].selectize;
-
-    propertyTypeDropdown.on('load', function (options) {
-        propertyTypeDropdown.setValue(propertyTypeVal || '');
-        //resourceCounter("propertyType");
-        propertyTypeDropdown.off('load');
-    });
-
-    //#endregion
-
-    //#endregion
-
-    //#region Form2Page
-
-    $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
-        valueField: 'Id',
-        labelField: 'Name',
-        searchField: 'Name',
-        preload: true,
-        search: false,
-        load: function (query, callback) {
-            $.ajax({
-                url: baseUrl + 'Applicants/GetAllSourcePagibigFund',
-                success: function (results) {
-                    try {
-                        callback(results);
-                    } catch (e) {
-                        callback();
-                    }
-                },
-                error: function () {
-                    callback();
-                }
-            });
-        },
-
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            }
-        },
-    });
-
-    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
-
-    sourePagibigFundDropdown.on('load', function (options) {
-        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
-        //resourceCounter("purposeofloan");
-        sourePagibigFundDropdown.off('load');
-    });
-
-    // Set values for Form2PageModel_DateOpened fields
-    setDateValue('#Form2PageModel_DateOpened1');
-    setDateValue('#Form2PageModel_DateOpened2');
-    setDateValue('#Form2PageModel_DateOpened3');
-
-    // Set values for Form2PageModel_CardExpiration fields
-    setDateValue('#Form2PageModel_CardExpiration1');
-    setDateValue('#Form2PageModel_CardExpiration2');
-    setDateValue('#Form2PageModel_CardExpiration3');
-
-    // Set values for Form2PageModel_DateFullyPaid fields
-    setDateValue('#Form2PageModel_DateFullyPaid1');
-    setDateValue('#Form2PageModel_DateFullyPaid2');
-    setDateValue('#Form2PageModel_DateFullyPaid3');
-
-    // Set values for Form2PageModel_DateObtained fields
-    setDateValue('#Form2PageModel_DateObtained1');
-    setDateValue('#Form2PageModel_DateObtained2');
-    setDateValue('#Form2PageModel_DateObtained3');
-
-    setDateValue('#Form2PageModel_MaturityDateTime1');
-    setDateValue('#Form2PageModel_MaturityDateTime2');
-    setDateValue('#Form2PageModel_MaturityDateTime3');
-
-    //#endregion
-
-    //#region Barrower
-
-    // Set value for BarrowersInformationModel_BirthDate
-    setDateValue('#BarrowersInformationModel_BirthDate');
 
     $('#BarrowersInformationModel_BirthDate').on('change', function () {
         var birthdate = moment($(this).val());
@@ -1069,20 +889,6 @@ $(function () {
         }
     });
 
-    //$('#ApplicantsPersonalInformationModel_PagibigNumber').on('input', function () {
-    //    var inputValue = $(this).val().toString();
-
-    //    //maximum 25 characters
-    //    if (inputValue.length > 12) {
-    //        //alert("Input value exceeds 7 characters!");
-    //        $(this).val(inputValue.substring(0, 12));
-
-    //        messageBox("PagIBIG Number must not exceed to 12 characters", "danger", true);
-
-    //        $('#ApplicantsPersonalInformationModel_PagibigNumber').trigger('invalid');
-    //    }
-    //});
-
     $('#BarrowersInformationModel_BusinessDirectLineNumber').on('keydown', function (e) {
         // Reject inputs
         /*let rejectCodes = ['KeyE'];*/
@@ -1131,14 +937,9 @@ $(function () {
         }
     });
 
-    //BarrowersInformationModel_HomeOwnerShip
-
-    //#endregion
+    //#endregion Barrowers
 
     //#region Spouse
-
-    // Set value for SpouseModel_BirthDate
-    setDateValue('#SpouseModel_BirthDate');
 
     $('#SpouseModel_PagibigMidNumber').on('keydown', function (e) {
         // Reject inputs
@@ -1190,161 +991,60 @@ $(function () {
         }
     });
 
-    //#endregion
+    //#endregion Spouse
 
-    //$('#form2').on('submit', async function (e) {
-    //    e.preventDefault();
-    //    let $loanparticulars = $('#loanparticulars');
-    //    let $collateraldata = $('#collateraldata');
-    //    let $spousedata = $('#spousedata');
-    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-    //        return;
-    //    }
-    //    let loanparticulars = $loanparticulars.serializeArray();
-    //    let collateraldata = $collateraldata.serializeArray();
-    //    let spousedata = $spousedata.serializeArray();
-    //    let form2 = $(this).serializeArray();
-    //    let combinedData = {};
-    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-    //        combinedData[obj.name] = obj.value;
-    //    });
+    //#endregion Events
 
-    //    // Use await before the AJAX call
-    //    try {
-    //        await $.ajax({
-    //            type: 'POST',
-    //            url: '/Applicants/SaveHLF068',
-    //            data: combinedData,
-    //            beforeSend: function () {
-    //                loading("Saving Changes...");
-    //            },
-    //            success: async function (response) {
-    //                messageBox("Successfully", "success", true);
+    //#region Functions
 
-    //                if (applicantInfoIdVal == 0) {
-    //                    loader.close();
-    //                    setTimeout(function () {
-    //                        window.location.href = "/Applicants/HLF068/" + response;
-    //                    }, 2000);
-    //                }
-    //                else {
-    //                    loader.close();
-
-    //                    setTimeout(function () {
-    //                        // Redirect to the specified location
-    //                        window.location.href = "/Applicants/ApplicantRequests";
-    //                    }, 2000); // 2000 milliseconds = 2 seconds
-    //                }
-    //            },
-    //            error: async function (jqXHR, textStatus, errorThrown) {
-    //                console.log(jqXHR.responseText);
-    //                messageBox(jqXHR.responseText, "danger", true);
-    //                loader.close();
-    //            }
-    //        });
-    //    } catch (error) {
-    //        // Handle any errors from the AJAX request
-    //        console.log(error);
-    //        // Optionally display an error message
-    //        messageBox("An error occurred during the submission.", "danger", true);
-    //    }
-    //});
-
-    //#region Methods
-
-    $(document).ready(function () {
-        loadloanParticularInformation(applicantInfoIdVal);
-        loadSpouseInformation(applicantInfoIdVal);
-        loadBorrowerInformation(applicantInfoIdVal);
-        loadCollateralInformation(applicantInfoIdVal);
-        loadForm2PageInformation(applicantInfoIdVal);
-        initializeRadioBtnMisc();
-    });
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
+    function setSelectizeReadonly() {
+        $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
+        $('#LoanParticularsInformationModel_ModeOfPaymentId-selectized').prop('readonly', true);
+        $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
+        $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
+        $('#BarrowersInformationModel_HomeOwnerShip-selectized').prop('readonly', true);
+        $('#BarrowersInformationModel_OccupationStatus-selectized').prop('readonly', true);
+        $('#BarrowersInformationModel_PreparedMailingAddress-selectized').prop('readonly', true);
+        $('#SpouseModel_OccupationStatus-selectized').prop('readonly', true);
     }
 
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
+    function setDateValueConfig() {
+        // Set values for Form2PageModel_DateOpened fields
+        setDateValue('#Form2PageModel_DateOpened1');
+        setDateValue('#Form2PageModel_DateOpened2');
+        setDateValue('#Form2PageModel_DateOpened3');
+
+        // Set values for Form2PageModel_CardExpiration fields
+        setDateValue('#Form2PageModel_CardExpiration1');
+        setDateValue('#Form2PageModel_CardExpiration2');
+        setDateValue('#Form2PageModel_CardExpiration3');
+
+        // Set values for Form2PageModel_DateFullyPaid fields
+        setDateValue('#Form2PageModel_DateFullyPaid1');
+        setDateValue('#Form2PageModel_DateFullyPaid2');
+        setDateValue('#Form2PageModel_DateFullyPaid3');
+
+        // Set values for Form2PageModel_DateObtained fields
+        setDateValue('#Form2PageModel_DateObtained1');
+        setDateValue('#Form2PageModel_DateObtained2');
+        setDateValue('#Form2PageModel_DateObtained3');
+
+        setDateValue('#Form2PageModel_MaturityDateTime1');
+        setDateValue('#Form2PageModel_MaturityDateTime2');
+        setDateValue('#Form2PageModel_MaturityDateTime3');
+
+        // Set value for BarrowersInformationModel_BirthDate
+        setDateValue('#BarrowersInformationModel_BirthDate');
+
+        // Set value for SpouseModel_BirthDate
+        setDateValue('#SpouseModel_BirthDate');
     }
 
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
+    function setDateValue(selector) {
+        let dataValue = $(selector).attr('data-value');
+        if (dataValue && dataValue.trim() !== '') {
+            $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
+        }
     }
 
     function validateForm(form) {
@@ -1366,194 +1066,6 @@ $(function () {
 
         return isValid;
     }
-
-    function rebindValidators() {
-        let $form = $("#frm_hlf068");
-        let button = $("#btn_savehlf068");
-
-        $form.unbind();
-        $form.data("validator", null);
-        $.validator.unobtrusive.parse($form);
-        $form.validate($form.data("unobtrusiveValidation").options);
-        $form.data("validator").settings.ignore = "";
-
-        // Prevent form submission when "Enter" key is pressed
-        $form.on("keydown", function (e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-            }
-        });
-
-        $form.on("submit", function (e) {
-            e.preventDefault();
-            let formData = new FormData(e.target);
-
-            if ($(this).valid() == false) {
-                messageBox("Please fill out all required fields!", "danger", true);
-                return;
-            }
-
-            //console.log(telNoArray.filter(iti => iti.a.hasAttribute('required') || iti.a.value));
-
-            if (!(telNoArray.filter(iti => iti.a.hasAttribute('required') || iti.a.value).every(iti => iti.isValidNumberPrecise()))) {
-                let arrayOfInvalidTels = telNoArray.filter(iti => (iti.a.hasAttribute('required') || iti.a.value) && !iti.isValidNumberPrecise());
-                //let listOfInvalids = ``;
-
-                for (var index in arrayOfInvalidTels) {
-                    let itiElement = arrayOfInvalidTels[index];
-                    $(`span[name="${itiElement.a.name}.Error"]`).html(intlTelErrors[itiElement.getValidationError()]);
-                }
-
-                //console.log(arrayOfInvalidTels);
-
-                messageBox("Some contact numbers entered are invalid, please double check or re-enter them!", "danger", true);
-                return;
-            }
-
-            for (var index in telNoArray) {
-                let itiElement = telNoArray[index];
-                formData.set(itiElement.a.name, itiElement.getNumber());
-            }
-
-            $.ajax({
-                url: $(this).attr("action"),
-                method: $(this).attr("method"),
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
-                    button.attr({ disabled: true });
-                    $("#beneficiary-overlay").removeClass('d-none');
-                },
-                success: function (response) {
-                    // Success message handling
-                    let recordId = $("input[name='User.Id']").val();
-                    console.log(recordId);
-                    let type = (recordId == 0 ? "Added!" : "Updated!");
-                    let successMessage = `Beneficiary Successfully ${type}`;
-                    messageBox(successMessage, "success", true);
-
-                    let encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStatus").val();
-
-                    //Redirect handling
-
-                    if (applicantInfoIdVal == 0) {
-                        //not applicationindraft
-                        if (encodedStageVal > 1) {
-                            setTimeout(function () {
-                                $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/Details/" + response;
-                            }, 2000);
-                        }
-                        else {
-                            setTimeout(function () {
-                                $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/HLF068/" + response;
-                            }, 2000);
-                        }
-                    }
-
-                    else {
-                        var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
-                            link = "Applicants/ApplicantRequests";
-                        }
-                        setTimeout(function () {
-                            $("#beneficiary-overlay").addClass('d-none');
-                            // Redirect to the specified location
-                            window.location.href = baseUrl + link;
-                        }, 2000);
-                    }
-
-                    // Reset button state
-                    button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-                },
-                error: function (response) {
-                    // Error message handling
-                    messageBox(response.responseText, "danger");
-                    $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-                    button.attr({ disabled: false });
-                }
-            });
-
-            // Use SweetAlert for confirmation
-            //Swal.fire({
-            //    title: 'Are you sure?',
-            //    text: "You are about to submit the form. Proceed?",
-            //    icon: 'warning',
-            //    showCancelButton: true,
-            //    confirmButtonColor: '#3085d6',
-            //    cancelButtonColor: '#d33',
-            //    confirmButtonText: 'Yes, submit',
-            //    cancelButtonText: 'No, cancel'
-            //}).then((result) => {
-            //    if (result.isConfirmed) {
-            //        // User confirmed, proceed with form submission
-            //        $.ajax({
-            //            url: $(this).attr("action"),
-            //            method: $(this).attr("method"),
-            //            data: formData,
-            //            cache: false,
-            //            contentType: false,
-            //            processData: false,
-            //            beforeSend: function () {
-            //                button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
-            //                button.attr({ disabled: true });
-            //                $("#beneficiary-overlay").removeClass('d-none');
-            //            },
-            //            success: function (response) {
-            //                // Success message handling
-            //                let recordId = $("input[name='User.Id']").val();
-            //                console.log(recordId);
-            //                let type = (recordId == 0 ? "Added!" : "Updated!");
-            //                let successMessage = `Beneficiary Successfully ${type}`;
-            //                messageBox(successMessage, "success", true);
-
-            //                // Redirect handling
-            //                if (applicantInfoIdVal == 0) {
-            //                    setTimeout(function () {
-            //                        $("#beneficiary-overlay").addClass('d-none');
-            //                        window.location.href = "/Applicants/HLF068/" + response;
-            //                    }, 2000);
-            //                } else {
-            //                    var link = "Applicants/Beneficiary";
-            //                    if (roleName != 'Beneficiary') {
-            //                        link = "Applicants/ApplicantRequests";
-            //                    }
-            //                    setTimeout(function () {
-            //                        $("#beneficiary-overlay").addClass('d-none');
-            //                        // Redirect to the specified location
-            //                        window.location.href = baseUrl + link;
-            //                    }, 2000);
-            //                }
-            //                // Reset button state
-            //                button.attr({ disabled: false });
-            //                button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-            //            },
-            //            error: function (response) {
-            //                // Error message handling
-            //                messageBox(response.responseText, "danger");
-            //                $("#beneficiary-overlay").addClass('d-none');
-            //                button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-            //                button.attr({ disabled: false });
-            //            }
-            //        });
-            //    }
-            //});
-        });
-    }
-
-    function setDateValue(selector) {
-        let dataValue = $(selector).attr('data-value');
-        if (dataValue && dataValue.trim() !== '') {
-            $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
-        }
-    }
-
     function lengthValidator() {
         var isValid = true;
         var elements = [
@@ -1627,12 +1139,6 @@ $(function () {
     }
 
     function initializeIntlTelInput() {
-        //var homeNum = intlTelInput(document.getElementById(`BarrowersInformationModel_HomeNumber`), intlTelConfig);
-        //var mobileNum = intlTelInput(document.getElementById(`BarrowersInformationModel_MobileNumber`), intlTelConfig);
-        //var businessDirectLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessDirectLineNumber`), intlTelConfig);
-        //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
-        //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
-
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -1709,18 +1215,7 @@ $(function () {
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-
-        if (encodedStageVal == 1) {
-            $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true).prop("disabled", true);
-
-            $('#customRadio3').prop('checked', true);
-        }
-
-        else if (encodedStageVal === 2) {
-            $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true).prop("disabled", true);;
-
-            $('#customRadio5').click();
-        }
     }
-    //#endregion
+
+    //#endregion Functions
 });

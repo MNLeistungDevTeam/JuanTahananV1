@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.Utils;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
@@ -76,6 +75,18 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber) =>
             await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId, pagibigNumber });
 
+        public async Task<ApplicationInfoModel?> GetTotalApplication(int roleId) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalApplication", new { roleId });
+
+        public async Task<ApplicationInfoModel?> GetTotalCreditVerif() =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalCreditVerif", new { });
+
+        public async Task<ApplicationInfoModel?> GetTotalAppVerif() =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppVerif", new { });
+
+        public async Task<ApplicationInfoModel?> GetTotalAppStatusAndStage() =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppStatusAndStage", new { });
+
         #endregion Get Methods
 
         #region Api
@@ -110,7 +121,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
             if (model.Id == 0)
             {
-
                 if (_applicantPersonalInfo.ApprovalStatus is null)
                 {
                     _applicantPersonalInfo.ApprovalStatus = (int)AppStatusType.Draft;
@@ -120,8 +130,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
                 _applicantPersonalInfo = await CreateAsync(_applicantPersonalInfo, userId);
 
-
-                int? intValue = _applicantPersonalInfo.ApprovalStatus; 
+                int? intValue = _applicantPersonalInfo.ApprovalStatus;
                 AppStatusType enumValue = (AppStatusType)intValue;
 
                 // Create Initial Approval Status

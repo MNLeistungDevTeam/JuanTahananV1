@@ -21,6 +21,4 @@ namespace DMS.Domain.Enums
         Discontinued = 10,              //Postwithdrawn
         ForResubmition = 11
     }
-
-     
 }
