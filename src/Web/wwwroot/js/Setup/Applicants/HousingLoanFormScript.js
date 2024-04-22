@@ -363,7 +363,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val();
+            $inputField.val(null);
         }
     });
 
@@ -374,7 +374,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val();
+            $inputField.val(null);
         }
     });
 
@@ -385,7 +385,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val();
+            $inputField.val(null);
         }
     });
 
@@ -396,7 +396,7 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val();
+            $inputField.val(null);
         }
     });
 
@@ -1157,6 +1157,7 @@ $(function () {
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").addClass("disabled");
         $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
         $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', true);
+        $('input[type="radio"]').prop('disabled', true);
 
         /*
         $('.calendarpicker')
@@ -1170,7 +1171,6 @@ $(function () {
         loadCollateralInformation(applicantInfoIdVal);
         loadForm2PageInformation(applicantInfoIdVal);
         initializeRadioBtnMisc();
-        //loadLoanCreditRefDates();
 
         //disabled the flatpicker
         //$.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
@@ -1591,32 +1591,37 @@ $(function () {
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
         $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
-        //$("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+        $("[name='Form2PageModel.PendingCase']").prop("disabled",);
 
         // Set checked status for PastDue radio buttons
         $("#pdRbtn1").prop("checked", !!pastDueValue);
         $("#pdRbtn2").prop("checked", !pastDueValue);
-        //$("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
 
         // Set checked status for BouncingChecks radio buttons
         $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
         $("#bcRbtn2").prop("checked", !bouncingChecksValue);
-        //$("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
 
         // Set checked status for MedicalAdvice radio buttons
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
         $("#maRbtn2").prop("checked", !medicalAdviceValue);
-        //$("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
 
     $("#btn_edit").on('click', function () {
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
+        $('input[type="radio"]').prop('disabled', false);
 
         $("#frm_hlf068 .selectize").each(function () {
             var selectize = $(this)[0].selectize;
             selectize.lock();
         });
+
+        //reinitialize miscellaneous radio buttons
+        initializeRadioBtnMisc();
     });
 
     $("#btn_pdf").on('click', function () {

@@ -673,11 +673,10 @@ namespace Template.Web.Controllers.Transaction
                 //current user is beneficiary
 
                 int companyId = int.Parse(User.FindFirstValue("Company"));
-                var applicantCode = "";
+                var applicantCode = string.Empty;
 
-                //Formatted
-                string pagibigNum = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
-                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = pagibigNum;
+                //Unmasked
+                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
 
                 //create  new beneficiary and housingloan application
 
