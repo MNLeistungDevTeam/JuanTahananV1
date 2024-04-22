@@ -740,6 +740,12 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
 
+                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+
+                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
                         beneficiaryModel.PermanentStreetName = vwModel.BarrowersInformationModel.PermanentStreetName;
