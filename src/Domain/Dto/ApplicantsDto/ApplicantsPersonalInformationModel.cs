@@ -34,10 +34,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? EncodedStage { get; set; }
         public int? EncodedStatus { get; set; }
 
-
-
-
-
         #region Display Properties
 
         public string? ApplicantFullName { get; set; }
@@ -55,8 +51,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? Unit { get; set; }
         public decimal? LoanAmount { get; set; }
         public int? LoanYears { get; set; }
-
-        public int LoanYears { get; set; }
 
         //Documents
 
@@ -86,10 +80,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? DateSubmitted { get; set; }
         public DateTime? LastUpdated { get; set; }
 
-
         public int? DocumentSequence { get; set; }
-
-
 
         #endregion Display Properties
     }
