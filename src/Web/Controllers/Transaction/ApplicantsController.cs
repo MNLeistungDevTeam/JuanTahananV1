@@ -678,19 +678,8 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
-        public async Task<IActionResult> GetTotalAppStatusAndStage()
-        {
-            int userId = int.Parse(User.Identity.Name);
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
-
-            var result = await _applicantsPersonalInformationRepo.GetTotalAppStatusAndStage();
-            return Ok(result);
-        }
-
         public async Task<IActionResult> GetBeneficiaryActiveApplication()
         {
-
             int userId = int.Parse(User.Identity.Name);
 
             dynamic applicantInfo;
@@ -722,9 +711,8 @@ namespace Template.Web.Controllers.Transaction
             //    ApplicantInfo = applicantInfo,
             //    LoanParticularsInfo = lpInfo,
             //};
-
-
         }
+
         #endregion API Getters
 
         #region API Operations

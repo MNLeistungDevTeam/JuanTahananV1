@@ -84,9 +84,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicationInfoModel?> GetTotalAppVerif() =>
             await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppVerif", new { });
 
-        public async Task<ApplicationInfoModel?> GetTotalAppStatusAndStage() =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppStatusAndStage", new { });
-
         #endregion Get Methods
 
         #region Api

@@ -14,7 +14,7 @@ AS
 		-- Get the count of Pagibig Deffered
 		COUNT(CASE WHEN apl.ApprovalStatus IN (2) and x.RoleId = 3  THEN 1 END) AS  PagibigDeferred,
 		-- Get the count of Developer Deffered
-		COUNT(CASE WHEN apl.ApprovalStatus IN (2) and x.RoleId = 5   THEN 1 END) AS DeveloperDeferred,
+		COUNT(CASE WHEN apl.ApprovalStatus IN (2) and x.RoleId IN (5,2)   THEN 1 END) AS DeveloperDeferred,
 		-- Get the count of Withdrawn
 		COUNT(CASE WHEN apl.ApprovalStatus = 5 THEN 1 END) AS Withdrawn
 

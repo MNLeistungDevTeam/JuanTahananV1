@@ -475,7 +475,10 @@ $(async function () {
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
         let roleName = $("#txt_role_code").val();
 
-        $btnSave.removeClass()
+        $btnSave.removeClass();
+        $('.text-danger.validation-summary-errors').removeClass('validation-summary-errors').addClass('validation-summary-valid')
+            .find('li').css('display', 'none');
+        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
 
         if (action == 1) {      //submitted
             modalLabel.html('<span class="fe-send"></span> Submit Application');
@@ -529,11 +532,6 @@ $(async function () {
             modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
             remarksInput.removeAttr("data-val-required").attr("required", false).removeClass("input-validation-error").addClass("valid");
-            $('.text-danger.validation-summary-errors')
-                .removeClass('validation-summary-errors')
-                .addClass('validation-summary-valid')
-                .find('li')
-                .css('display', 'none');
         }
 
         $("#author_txt").html(`Author: ${roleName}`);

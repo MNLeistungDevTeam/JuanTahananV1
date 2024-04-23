@@ -88,7 +88,7 @@ AS
 		      WHEN @roleId = 5 THEN --Developer 
                 CASE WHEN apl.ApprovalStatus IN (1,2,3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
 				WHEN @roleId = 3 THEN --Pagibig 
-                CASE WHEN apl.ApprovalStatus IN (4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
+                CASE WHEN apl.ApprovalStatus IN (3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
         END
     )
 	--ORDER BY apl.DateModified DESC;
