@@ -648,6 +648,43 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
+        public async Task<IActionResult> GetBeneficiaryActiveApplication()
+        {
+
+            int userId = int.Parse(User.Identity.Name);
+
+            dynamic applicantInfo;
+            var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+            if (data is null)
+            {
+                applicantInfo = new ApplicantsPersonalInformationModel()
+                {
+                    ApplicationStatus = null,
+                    Code = "------",
+                    LoanAmount = 0,
+                    LoanYears = 0,
+                    ProjectLocation = "----------"
+                };
+            }
+            else
+            {
+                applicantInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
+            }
+
+            return Ok(applicantInfo);
+
+            //var lpInfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantInfo.Id);
+
+            //dynamic combinedData = new
+            //{
+            //    CurrentApplication = data,
+            //    ApplicantInfo = applicantInfo,
+            //    LoanParticularsInfo = lpInfo,
+            //};
+
+
+        }
         #endregion API Getters
 
         #region API Operations

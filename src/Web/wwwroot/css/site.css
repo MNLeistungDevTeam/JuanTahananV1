@@ -1295,6 +1295,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 
 /* HTML: <div class="ribbon">Your text content</div> */
 .custom-ribbon {
+    --class-item-bg: #60bd3c;
+
     font-size: 28px;
     font-weight: bold;
     font: 700 18px/1 "Lato", sans-serif;
