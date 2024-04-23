@@ -122,23 +122,17 @@ $(() => {
                 $(`[id="credit_history_status"]`).removeClass('text-warning');
                 $(`[id="credit_history_remarks"]`).removeClass('text-muted');
 
-                if (data.ApproverRoleId === 3 && [2, 9].includes(data.ApprovalStatus)) {
+                if ([3, 5].includes(data.ApproverRoleId) && [2, 9].includes(data.ApprovalStatus)) {
                     $(`[id="credit_history_status"]`).addClass('text-danger');
                     $(`[id="credit_history_remarks"]`).addClass('text-danger');
 
-                    $(`[id="credit_history_status"]`).html("Deferred by Pag-IBIG");
+                    let roleMessage = {
+                        3: "Deferred by Pag-IBIG",
+                        5: "Deferred by Developer"
+                    };
+
+                    $(`[id="credit_history_status"]`).html(roleMessage[data.ApproverRoleId]);
                     $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
-
-                }
-                else if (data.ApproverRoleId === 5 && [2, 9].includes(data.ApprovalStatus)) {
-                    $(`[id="credit_history_status"]`).addClass('text-danger');
-                    $(`[id="credit_history_remarks"]`).addClass('text-danger');
-
-                    $(`[id="credit_history_status"]`).html("Deferred by Developer");
-                    $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
-                }
-                else {
-
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
