@@ -1440,17 +1440,26 @@ $(function () {
                     //Redirect handling
 
                     if (applicantInfoIdVal == 0) {
-                        //not applicationindraft
-                        if (encodedStageVal > 1) {
+                        //less than or not developer verified
+                        if (roleName == "Pag-ibig" < 4)
+                        {
+                            setTimeout(function () {
+                                $("#beneficiary-overlay").addClass('d-none');
+                                window.location.href = "/Applicants/ApplicantRequests/" + response;
+                            }, 2000);
+                        }
+
+                        else if (encodedStageVal > 1) {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
                                 window.location.href = "/Applicants/Details/" + response;
                             }, 2000);
                         }
+
                         else {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/HLF068/" + response;
+                                window.location.href = "/Applicants/Details/" + response;
                             }, 2000);
                         }
                     }

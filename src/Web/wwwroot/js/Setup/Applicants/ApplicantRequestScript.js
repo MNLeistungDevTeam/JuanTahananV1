@@ -189,6 +189,7 @@ $(function () {
         var id = tbl_applicants.rows({ selected: true }).data().pluck("Id").toArray().toString();
         var applicationCode = tbl_applicants.rows({ selected: true }).data().pluck("Code").toArray().toString();
         var applicationStatus = tbl_applicants.rows({ selected: true }).data().pluck("ApprovalStatus").toArray().toString();
+        var encodedStatus = tbl_applicants.rows({ selected: true }).data().pluck("EncodedStatus").toArray().toString();
 
         $("#btn_add").attr({
             "disabled": !(selectedRows === 0),
