@@ -112,7 +112,7 @@ $(function () {
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
             }
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -1441,8 +1441,7 @@ $(function () {
 
                     if (applicantInfoIdVal == 0) {
                         //less than or not developer verified
-                        if (roleName == "Pag-ibig" < 4)
-                        {
+                        if (roleName == "Pag-ibig" < 4) {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
                                 window.location.href = "/Applicants/ApplicantRequests/" + response;
@@ -1478,13 +1477,13 @@ $(function () {
 
                     // Reset button state
                     button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                 },
                 error: function (response) {
                     // Error message handling
                     messageBox(response.responseText, "danger");
                     $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                     button.attr({ disabled: false });
                 }
             });
