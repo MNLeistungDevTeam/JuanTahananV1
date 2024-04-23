@@ -3,9 +3,7 @@ const roleName = $("#txt_role_name").val();
 
 $(function () {
 
-    //TEST
-
-
+    //test
     var telNoArray = [];
     var itiFlag = false;
 
