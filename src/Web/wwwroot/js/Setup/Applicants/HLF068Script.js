@@ -112,7 +112,7 @@ $(function () {
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
             }
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -196,9 +196,6 @@ $(function () {
     //#region Loan Particulars
 
     //#region Selectize
-
-    var purposeOfLoanDropdown, $purposeOfLoanDropdown;
-    var modeofPaymentDropdown, $modeofPaymentDropdown;
 
     var purposeofloanVal = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).attr('data-value');
     var modeofpaymentVal = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).attr('data-value');
@@ -490,7 +487,7 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
-    })
+    });
 
     $('.radio-pcRadio input[type="radio"]').on('change', function () {
         let $inputField = $("[name='Form2PageModel.PendingCase']");
@@ -766,10 +763,6 @@ $(function () {
     //#endregion
 
     //#region Form2Page
-
-    var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
-
-    var sourePagibigFundDropdown, $sourePagibigFundDropdown;
 
     $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
         valueField: 'Id',
@@ -1447,17 +1440,25 @@ $(function () {
                     //Redirect handling
 
                     if (applicantInfoIdVal == 0) {
-                        //not applicationindraft
-                        if (encodedStageVal > 1) {
+                        //less than or not developer verified
+                        if (roleName == "Pag-ibig" < 4) {
+                            setTimeout(function () {
+                                $("#beneficiary-overlay").addClass('d-none');
+                                window.location.href = "/Applicants/ApplicantRequests/" + response;
+                            }, 2000);
+                        }
+
+                        else if (encodedStageVal > 1) {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
                                 window.location.href = "/Applicants/Details/" + response;
                             }, 2000);
                         }
+
                         else {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/HLF068/" + response;
+                                window.location.href = "/Applicants/Details/" + response;
                             }, 2000);
                         }
                     }
@@ -1476,13 +1477,13 @@ $(function () {
 
                     // Reset button state
                     button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                 },
                 error: function (response) {
                     // Error message handling
                     messageBox(response.responseText, "danger");
                     $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                     button.attr({ disabled: false });
                 }
             });

@@ -33,8 +33,7 @@ else if (userInfo.UserRoleId is (int)PredefinedRoleType.Pagibig)
 
 else if (userInfo.UserRoleId is (int)PredefinedRoleType.Lgu)
 {
-    @await Html.PartialAsync("_DeveloperDashboardPartial")
-    ;
+    @await Html.PartialAsync("_DeveloperDashboardPartial");
     @section Scripts {
     <script src="~/js/PagIBIGDashboardPartialScript.js" asp-append-version="true"></script>
     }
@@ -43,10 +42,9 @@ else if (userInfo.UserRoleId is (int)PredefinedRoleType.Lgu)
 
 else if (userInfo.UserRoleId is (int)PredefinedRoleType.Beneficiary)
 {
-    @await Html.PartialAsync("_BeneficiaryDashBoardPartial")
-    ;
+    @await Html.PartialAsync("_BeneficiaryDashboardPartial");
     @section Scripts {
-    <script src="~/js/HomeScript.js" asp-append-version="true"></script>
+    <script src="~/js/BeneficiaryDashboardPartialScript.js" asp-append-version="true"></script>
     }
 }
 

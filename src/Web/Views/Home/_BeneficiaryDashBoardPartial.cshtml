@@ -8,45 +8,45 @@
 @{
     // Layout = "_SidebarLayout";
     ViewData["Title"] = "Home Page";
+
+    int userId = int.Parse(User.Identity.Name);
+    var user = await _userRepo.GetByIdNoTrackingAsync(userId);
 }
 
 <div class="row">
     <div class="col-xl-8">
         <div class="row">
-
             <div class="row">
                 <div class="d-flex flex-row">
-                    <h1 class="display-6">Hi, Albert! Welcome back.</h1>
+                    <h1 class="display-6">Hi, <span id="user_first_name">@(user.FirstName ?? "Juan")</span>! Welcome back.</h1>
                 </div>
                 <div class="d-flex flex-row">
                     <p class="text-muted">
-                        Your application is currently <span class="text-warning">awaiting</span> for <span class="text-primary">Pag-IBIG's verification</span>
+                        Your application is currently <span id="process_status" class="text-warning">awaiting</span> for <span id="process_name" class="text-primary">Pag-IBIG's verification</span>
                     </p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="card" style="min-height: 500px;">
-
-
-                    <div class="ribbon ribbon-top-right" id="status_contract">
-
-                        <span class="text-capilitize" style="background-color: #60bd3c;">Dev Verified</span>
-
+                    <div class="custom-ribbon" id="custom_ribbon">
+                        <div class="custom-ribbon-top-right text-capitalize" id="status_contract">
+                            Developer Verified
+                        </div>
                     </div>
 
                     <div class="row h-100">
-                        <div class="col-1 bg-warning beneficiary-sidecard">
-                            <p class="fs-3 mx-auto my-auto">
+                        <div class="col-1 bg-warning beneficiary-sidecard" id="beneficiary_sidecard">
+                            <p class="fs-3 mx-auto my-auto" id="beneficiary_sidecard_text">
                                 Credit Verification
                             </p>
                         </div>
                         <div class="col-11">
-                            <div class="card-body">
+                            <div class="card-body d-flex flex-column">
                                 <div class="row mb-2">
                                     <div class="col-6">
                                         <p>Reference Number</p>
-                                        <h1 class="fs-2 text-primary">APL2020-0892</h1>
+                                        <h1 id="reference_number" class="fs-2 text-primary">APL2020-0892</h1>
                                     </div>
                                     <div class="col-6">
                                         <img class="img-fluid" src="~/images/juantahananassets/logo/zeta_landscape_logo.png" alt="..." />
@@ -62,15 +62,15 @@
                                     <div class="col-4">
                                         <div class="row mb-1">
                                             <p>Requested Loan Amount</p>
-                                            <h1 class="fs-2 text-primary">₱ 500,000.00</h1>
+                                            <h1 class="fs-2 text-primary">₱ <span data-plugin="counterup"  id="requested_loan_amount">500,000.00</span></h1>
                                         </div>
                                         <div class="row mb-1">
                                             <p>Loan Term</p>
-                                            <h1 class="fs-2 text-primary">10 YEARS</h1>
+                                            <h1 class="fs-2 text-primary"><span data-plugin="counterup" id="loan_term">10</span> YEARS</h1>
                                         </div>
                                         <div class="row mb-1">
                                             <p>Project Location</p>
-                                            <h1 class="fs-2 text-primary">Bacolod City</h1>
+                                            <h1 id="project_location" class="fs-2 text-primary">Bacolod City</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -87,9 +87,9 @@
                             <div class="d-flex flex-column text-center align-items-center">
                                 <div class="row text-muted mb-2">Your application is currently at</div>
                                 <div class="row">
-                                    <h1 class="fs-3 fw-bolder text-warning">Credit Verification</h1>
+                                    <h1 id="application_status" class="fs-3 fw-bolder text-warning">Credit Verification</h1>
                                 </div>
-                                <div class="row text-muted">Ends after Pag-IBIG credit verification</div>
+                                <div id="application_status_remarks" class="row text-muted">Ends after Pag-IBIG credit verification</div>
                             </div>
                         </div>
                     </div>
@@ -100,9 +100,9 @@
                             <div class="d-flex flex-column text-center align-items-center">
                                 <div class="row text-muted mb-2">Your credit history has just been</div>
                                 <div class="row">
-                                    <h1 class="fs-3 fw-bolder text-success">Developer Verified</h1>
+                                    <h1 id="credit_history_status" class="fs-3 fw-bolder text-success">Developer Verified</h1>
                                 </div>
-                                <div class="row text-muted">A Pag-IBIG officer will review your eligibility shortly</div>                            
+                                <div id="credit_history_remarks" class="row text-muted">A Pag-IBIG officer will review your eligibility shortly</div>                            
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,6 @@
             
         </div>
     </div>
-
 
     <div class="col-xl-4">
         <div class="row">
@@ -123,7 +122,7 @@
                         </h4>
 
                     </div>
-                    <p><span class="badge bg-warning text-theme-primary ms-3">APL2020-0892</span></p>
+                    <p><span class="badge bg-warning text-theme-primary ms-3">ONGOING DEVELOPMENT</span></p>
                     <div class="card-body py-0 mb-3" data-simplebar="init" style="max-height: 50vh;">
 
 

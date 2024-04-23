@@ -346,7 +346,7 @@
                                                 </span>
 
                                                 <i class="mdi mdi-settings-outline d-md-none d-block"></i>
-                                                <span class="d-none d-md-block">Verification Attachments</span>
+                                                <span class="d-none d-md-block">Credit Attachments</span>
                                             </a>
                                         </li>
                                         <!-- New tabs -->
@@ -391,8 +391,8 @@
                                                 <div class="col-md-6">
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Last Name:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Last Name:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.LastName</p>
                                                         </div>
                                                     </div>
@@ -401,8 +401,8 @@
 
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Middle Name:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Middle Name:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.MiddleName</p>
                                                         </div>
                                                     </div>
@@ -410,8 +410,8 @@
 
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">First Name:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">First Name:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.FirstName</p>
                                                         </div>
                                                     </div>
@@ -419,23 +419,23 @@
 
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Email:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Email:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.Email</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Residence:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Residence:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.PresentBaranggayName @Model.BarrowersInformationModel.PresentMunicipalityName @Model.BarrowersInformationModel.PresentProvinceName</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="row align-items-center">
-                                                        <label class="col-md-2 text-md-end">Current Stage:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Current Stage:</label>
+                                                        <div class="col-md-9">
                                                             @if (Model.ApplicantsPersonalInformationModel.StageNo == 1)
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
@@ -451,29 +451,29 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Birth Date:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Birth Date:</label>
+                                                        <div class="col-md-9">
                                                             <p>@(Model.BarrowersInformationModel.BirthDate?.ToString("MM/dd/yyyy") ?? "")</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Marital Status:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Marital Status:</label>
+                                                        <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.MaritalStatus</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Employment Status:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Employment Status:</label>
+                                                        <div class="col-md-9">
                                                             <p></p>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <label class="col-md-2 text-md-end">Monthly Salary:</label>
-                                                        <div class="col-md-10">
+                                                        <label class="col-md-3 text-md-end">Monthly Salary:</label>
+                                                        <div class="col-md-9">
                                                             <p></p>
                                                         </div>
                                                     </div>

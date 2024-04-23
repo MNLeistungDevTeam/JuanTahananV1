@@ -1,8 +1,6 @@
 ﻿const pagibigNumber = $('#txt_applicantCode').val();
 
-
 $(function () {
-
     console.log(pagibigNumber);
 
     var tbl_applicants = $("#tbl_applicants").DataTable({
@@ -41,7 +39,6 @@ $(function () {
                 visible: false
             },
 
-          
             {
                 data: 'Developer',
                 orderable: !0,
@@ -96,8 +93,6 @@ $(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                 $('li.paginate_button.page-item.active > a').addClass('waves-effect')
-
- 
         },
         language: {
             "zeroRecords": "No Records Found....",
@@ -118,5 +113,4 @@ $(function () {
         dom: 'lrtip',
         processing: true
     });
-
 });

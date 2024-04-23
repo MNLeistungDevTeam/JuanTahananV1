@@ -193,11 +193,11 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
-                //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
-                {
-                    return View("AccessDenied");
-                }
+                ////if the application approvalStatus is not greater than 4 on pagibig viewer
+                //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
+                //{
+                //    return View("AccessDenied");
+                //}
 
                 var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
                 var applicationPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(2, applicantCode);
@@ -260,7 +260,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
                     }
-                    else if (!inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
+                    else if (userId == applicantinfo.UserId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary && !inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " is currently in active status, cant be accessible!");
                     }
@@ -524,7 +524,7 @@ namespace Template.Web.Controllers.Transaction
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
                 }
 
-                return View("NewHLF068", vwModel);
+                return View("Beneficiary_HLF068", vwModel);
             }
         }
 
@@ -648,6 +648,83 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
+        public async Task<IActionResult> GetTotalApplicants()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId);
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalCreditVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif();
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalAppVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif();
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalAppStatusAndStage()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppStatusAndStage();
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetBeneficiaryActiveApplication()
+        {
+
+            int userId = int.Parse(User.Identity.Name);
+
+            dynamic applicantInfo;
+            var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+
+            if (data is null)
+            {
+                applicantInfo = new ApplicantsPersonalInformationModel()
+                {
+                    ApplicationStatus = null,
+                    Code = "------",
+                    LoanAmount = 0,
+                    LoanYears = 0,
+                    ProjectLocation = "----------"
+                };
+            }
+            else
+            {
+                applicantInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
+            }
+
+            return Ok(applicantInfo);
+
+            //var lpInfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantInfo.Id);
+
+            //dynamic combinedData = new
+            //{
+            //    CurrentApplication = data,
+            //    ApplicantInfo = applicantInfo,
+            //    LoanParticularsInfo = lpInfo,
+            //};
+
+
+        }
         #endregion API Getters
 
         #region API Operations

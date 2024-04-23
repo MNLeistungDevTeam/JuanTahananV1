@@ -2,8 +2,13 @@
 const roleName = $("#txt_role_name").val();
 
 $(function () {
+
+    //test
     var telNoArray = [];
     var itiFlag = false;
+
+    //change
+
 
     $(".selectize").selectize({
         search: false
@@ -17,8 +22,6 @@ $(function () {
         dateFormat: "m/d/Y",
         maxDate: moment().format("MM/DD/YYYY")
     });
-
-    //$("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize.lock();
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -69,14 +72,7 @@ $(function () {
     initializeLoanCreditDate();
 
     //initializeIntlTelInput();
-    initializeBasicTelInput();    // Disable 'e', retain '-', '+'
-
-    //assessPresentPermanentCheckbox();
-
-    assessCheckbox(
-        $(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`),
-        $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
-    );
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     rebindValidators();
 
@@ -99,6 +95,11 @@ $(function () {
             // Validate the current form
             var isValid = validateForm(currentForm);
 
+            // If current form is "form2", return without proceeding to next step
+            if (currentFormName == "form2") {
+                return;
+            }
+
             if (!isValid) {
                 // If validation fails, prevent navigation to the next step
                 return false;
@@ -109,56 +110,6 @@ $(function () {
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
             }
-
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                $("#form2").removeClass('fade').prop('hidden', false);
-                return;
-            }
-
-            //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //}
-
-            //// If current form is "spousedata", return without proceeding to next step
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
-            //    $("#liform2_next").removeClass("d-none").prop('disabled', false);
-            //    $("#liform2_submit").addClass("d-none").prop('disabled', true);
-
-            //    $("#form3").prop('hidden', false);
-            //    $("#form2").prop('hidden', true);
-
-            //    console.log('trigger');
-            //    return;
-            //}
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log('trigger');
-            //}
-
-            //else if (currentFormName == "spousedata") {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log(0);
-            //}
-
-            //if (currentFormName == "form2" && applicantInfoIdVal == 0) {
-            //    $("#form2").removeClass("fade");
-
-            //    $("#form3").prop('hidden', true);
-            //    $("#form2").prop('hidden', false);
-
-            //    console.log('trigger');
-            //    return;
-            //}
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
@@ -172,8 +123,6 @@ $(function () {
             // Hide the current form (collateral) and remove 'fade' class
             var nextForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
-
-            //$("#form3").addClass('was-validated').prop('hidden', true);
 
             // Hide the current form
             currentForm.addClass('fade').prop('hidden', true);
@@ -290,84 +239,6 @@ $(function () {
 
     //#endregion
 
-    //$(document).ready(function () {
-    //    if (roleName == 'Developer' || roleName == 'Pag-ibig' || roleName == 'Local Government Unit (LGU)') {
-    //        $("#div_stageapprovalsettings").removeClass('d-none');
-    //        $("#div_postapproval").addClass('d-none');
-    //    }
-
-    //    var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
-
-    //    $('input[name="customRadio1"]').change(function () {
-    //        // Get the value of the selected radio button
-
-    //        encodedStatusdropDown.unlock();
-
-    //        var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
-
-    //        if (applicantInfoIdVal == 0) {
-    //            if (selectedOptionText === "Application Completion") {
-    //                $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
-
-    //                encodedStatusdropDown.clearOptions();
-
-    //                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-    //                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-    //                    var optionsToAdd = [
-
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                        { value: '6', text: 'Post Submitted' },
-    //                        { value: '7', text: 'Developer Approved' },
-
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-
-    //                else {
-    //                    var optionsToAdd = [
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                        { value: '6', text: 'Post Submitted' },
-    //                        { value: '8', text: 'Pagibig Approved' }
-
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-    //            }
-
-    //            else if (selectedOptionText === "Credit Verification") {
-    //                $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
-
-    //                encodedStatusdropDown.clearOptions();
-
-    //                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-    //                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-    //                    var optionsToAdd = [
-    //                        { value: '0', text: 'Application In Draft' },
-    //                        { value: '1', text: 'Submitted' },
-    //                        { value: '3', text: 'Developer Verified' }
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-
-    //                else {
-    //                    var optionsToAdd = [
-    //                        { value: '0', text: 'Application In Draft' },
-    //                        { value: '1', text: 'Submitted' },
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-    //            }
-    //        }
-    //    });
-    //});
-
     //#region Set Selectize to readonly
     $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
     $('#LoanParticularsInformationModel_ModeOfPaymentId-selectized').prop('readonly', true);
@@ -385,7 +256,7 @@ $(function () {
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
             $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
         }
     });
 
@@ -1391,33 +1262,12 @@ $(function () {
 
         $form.on("submit", function (e) {
             e.preventDefault();
+
             let formData = new FormData(e.target);
 
             if ($(this).valid() == false) {
                 messageBox("Please fill out all required fields!", "danger", true);
                 return;
-            }
-
-            //console.log(telNoArray.filter(iti => iti.a.hasAttribute('required') || iti.a.value));
-
-            if (!(telNoArray.filter(iti => iti.a.hasAttribute('required') || iti.a.value).every(iti => iti.isValidNumberPrecise()))) {
-                let arrayOfInvalidTels = telNoArray.filter(iti => (iti.a.hasAttribute('required') || iti.a.value) && !iti.isValidNumberPrecise());
-                //let listOfInvalids = ``;
-
-                for (var index in arrayOfInvalidTels) {
-                    let itiElement = arrayOfInvalidTels[index];
-                    $(`span[name="${itiElement.a.name}.Error"]`).html(intlTelErrors[itiElement.getValidationError()]);
-                }
-
-                //console.log(arrayOfInvalidTels);
-
-                messageBox("Some contact numbers entered are invalid, please double check or re-enter them!", "danger", true);
-                return;
-            }
-
-            for (var index in telNoArray) {
-                let itiElement = telNoArray[index];
-                formData.set(itiElement.a.name, itiElement.getNumber());
             }
 
             $.ajax({
@@ -1440,27 +1290,13 @@ $(function () {
                     let successMessage = `Beneficiary Successfully ${type}`;
                     messageBox(successMessage, "success", true);
 
-                    let encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStatus").val();
-
-                    //Redirect handling
-
+                    // Redirect handling
                     if (applicantInfoIdVal == 0) {
-                        //not applicationindraft
-                        if (encodedStageVal > 1) {
-                            setTimeout(function () {
-                                $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/Details/" + response;
-                            }, 2000);
-                        }
-                        else {
-                            setTimeout(function () {
-                                $("#beneficiary-overlay").addClass('d-none');
-                                window.location.href = "/Applicants/HLF068/" + response;
-                            }, 2000);
-                        }
-                    }
-
-                    else {
+                        setTimeout(function () {
+                            $("#beneficiary-overlay").addClass('d-none');
+                            window.location.href = "/Applicants/HLF068/" + response;
+                        }, 2000);
+                    } else {
                         var link = "Applicants/Beneficiary";
                         if (roleName != 'Beneficiary') {
                             link = "Applicants/ApplicantRequests";
@@ -1471,7 +1307,6 @@ $(function () {
                             window.location.href = baseUrl + link;
                         }, 2000);
                     }
-
                     // Reset button state
                     button.attr({ disabled: false });
                     button.html("<span class='mdi mdi-content-save-outline'></span> Save");

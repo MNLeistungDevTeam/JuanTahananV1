@@ -1252,4 +1252,86 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         transform: rotate(180deg);
     }
 
-    
+/*.parent-ribbon {
+    overflow: hidden;*/ /* required */
+    /*width: 50%;*/ /* for demo only */
+    /*height: 250px*/ /* some non-zero number *//*;
+    margin: 25px auto;*/ /* for demo only */
+    /*border: 1px solid grey;*/ /* for demo only */
+    /*position: relative;*/ /* required  for demo*/
+/*}
+
+.basic-ribbon {
+    margin: 0;
+    padding: 0;
+    background: rebeccapurple;
+    color: white;
+    padding: 1em 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(30%) translateY(0%) rotate(45deg);
+    transform-origin: top left;
+}
+
+    .basic-ribbon:before,
+    .basic-ribbon:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        margin: 0 -1px;*/ /* tweak */
+        /*width: 100%;
+        height: 100%;
+        background: rebeccapurple;
+    }
+
+    .basic-ribbon:before {
+        right: 100%;
+    }
+
+    .basic-ribbon:after {
+        left: 100%;
+    }*/
+
+/* HTML: <div class="ribbon">Your text content</div> */
+.custom-ribbon {
+    --class-item-bg: #60bd3c;
+
+    font-size: 28px;
+    font-weight: bold;
+    font: 700 18px/1 "Lato", sans-serif;
+    color: #fff;
+}
+
+    .custom-ribbon .custom-ribbon-top-right {
+        --f: .5em; /* control the folded part */
+
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: 1.8;
+        padding-inline: 1lh;
+        padding-bottom: var(--f);
+        border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+        clip-path: polygon( 100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+        transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+        transform-origin: 0% 100%;
+        /*background-color: #BD1550;*/ /* the main color  */
+    }
+
+    /* HTML: <div class="ribbon">Your text content</div> */
+    .custom-ribbon .custom-ribbon-top-left {
+        --f: .5em; /* control the folded part */
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        line-height: 1.8;
+        padding-inline: 1lh;
+        padding-bottom: var(--f);
+        border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+        clip-path: polygon( 100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+        transform: translate(calc((cos(45deg) - 1)*100%), -100%) rotate(-45deg);
+        transform-origin: 100% 100%;
+        /*background-color: #F07818;*/ /* the main color  */
+    }

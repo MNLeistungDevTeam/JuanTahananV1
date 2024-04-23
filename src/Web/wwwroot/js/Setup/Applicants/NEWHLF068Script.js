@@ -2,6 +2,8 @@
 const roleName = $("#txt_role_name").val();
 
 $(function () {
+
+    //test
     var telNoArray = [];
     var itiFlag = false;
 
@@ -1304,13 +1306,13 @@ $(function () {
                     }
                     // Reset button state
                     button.attr({ disabled: false });
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                 },
                 error: function (response) {
                     // Error message handling
                     messageBox(response.responseText, "danger");
                     $("#beneficiary-overlay").addClass('d-none');
-                    button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                    button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                     button.attr({ disabled: false });
                 }
             });

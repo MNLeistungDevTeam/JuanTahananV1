@@ -14,7 +14,7 @@ $(() => {
             {
                 data: null,
                 orderable: true,
-                className: 'ps-2',  
+                className: 'ps-2',
                 render: function (data) {
                     return `
                                     <div class="d-flex align-items-center">
@@ -37,11 +37,16 @@ $(() => {
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {
+                    var dateApplied = "";
+
                     if (data && data.trim() !== "") {
-                        return moment(data).format('YYYY-MM-DD');
-                    } else {
-                        return "";
+                        let submDate = moment(data).format('MMM. D, YYYY'); // Format date as "Aug. 15, 2024"
+                        let submTime = moment(data).format('HH:mm'); // Format time in 24-hour format without AM/PM
+
+                        dateApplied = `${submDate}, at ${submTime}`; // Concatenate date and time
                     }
+
+                    return dateApplied;
                 }
             },
             {
