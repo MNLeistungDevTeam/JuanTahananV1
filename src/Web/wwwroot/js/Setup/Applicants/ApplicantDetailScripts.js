@@ -39,15 +39,21 @@ $(async function () {
     $(document).ready(function () {
          
         // Add click event listener to the tab
-        $('[href="#tab4"]').click(function () {
-            // Display alert message
+ 
 
-            if (stageNo == 1) {
-                messageBox('Cant Proceed to Application Tab, this application is currently on Credit Verification stage!', 'danger');
+        if (stageNo == 1) {
+             
+            //$('a[href="#tab4"]').on('click', function (event) {
+            //    event.preventDefault(); // Prevent default click behavior
+            //    messageBox('Navigation to this tab is disabled at this stage!', 'danger');
+            //});
 
-                document.querySelector('a[href="#settings-b1"]').click();
-            }
-        });
+            // Optionally, you can also add a disabled look to the tab to indicate visually that it's not clickable
+            $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
+
+        }
+
+     
     });
 
     //#region Events
