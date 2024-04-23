@@ -56,6 +56,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public decimal? LoanAmount { get; set; }
         public int? LoanYears { get; set; }
 
+        public int LoanYears { get; set; }
+
         //Documents
 
         public int DocumentId { get; set; }
