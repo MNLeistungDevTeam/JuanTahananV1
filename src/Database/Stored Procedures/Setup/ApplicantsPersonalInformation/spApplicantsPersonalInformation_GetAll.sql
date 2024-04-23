@@ -82,13 +82,13 @@ AS
         CASE  
             WHEN @roleId = 1 THEN 1 --Admin
 			WHEN @roleId = 2 THEN  --LGU
-			CASE WHEN apl.ApprovalStatus IN  (4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
+			CASE WHEN apl.ApprovalStatus IN  (1,2,3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
             WHEN @roleId = 4 THEN --Beneficiary
                 CASE WHEN apl.ApprovalStatus IN (0,1,2,3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
 		      WHEN @roleId = 5 THEN --Developer 
                 CASE WHEN apl.ApprovalStatus IN (1,2,3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
 				WHEN @roleId = 3 THEN --Pagibig 
-                CASE WHEN apl.ApprovalStatus IN (4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
+                CASE WHEN apl.ApprovalStatus IN (3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
         END
     )
 	--ORDER BY apl.DateModified DESC;

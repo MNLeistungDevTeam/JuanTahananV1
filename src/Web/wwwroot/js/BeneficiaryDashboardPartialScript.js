@@ -85,7 +85,6 @@ $(() => {
                 $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
                 let appStatus = data.Stage || "Unknown";
-                let appStatusColor;
                 let appStatusRemarks;
 
                 console.log(appStatus);
@@ -113,13 +112,34 @@ $(() => {
                     $(`[id="beneficiary_sidecard"]`).addClass('bg-success');
                     $(`[id="application_status"]`).addClass('text-success');
 
-                    appStatusRemarks = `Stage ends after Pag-IBIG credit verification`;
+                    appStatusRemarks = `Stage ends after disbursement of loan`;
                 }
-
 
                 $(`[id="beneficiary_sidecard"] [id="beneficiary_sidecard_text"]`).html(appStatus);
                 $(`[id="application_status"]`).html(appStatus);
                 $(`[id="application_status_remarks"]`).html(appStatusRemarks);
+
+                $(`[id="credit_history_status"]`).removeClass('text-warning');
+                $(`[id="credit_history_remarks"]`).removeClass('text-muted');
+
+                if (data.ApproverRoleId === 3 && [2, 9].includes(data.ApprovalStatus)) {
+                    $(`[id="credit_history_status"]`).addClass('text-danger');
+                    $(`[id="credit_history_remarks"]`).addClass('text-danger');
+
+                    $(`[id="credit_history_status"]`).html("Deferred by Pag-IBIG");
+                    $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
+
+                }
+                else if (data.ApproverRoleId === 5 && [2, 9].includes(data.ApprovalStatus)) {
+                    $(`[id="credit_history_status"]`).addClass('text-danger');
+                    $(`[id="credit_history_remarks"]`).addClass('text-danger');
+
+                    $(`[id="credit_history_status"]`).html("Deferred by Developer");
+                    $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
+                }
+                else {
+
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
             },
