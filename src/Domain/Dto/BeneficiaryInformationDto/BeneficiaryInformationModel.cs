@@ -60,19 +60,18 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
 
-        [Required]
+         
         [Display(Name = "Present Unit Name", Prompt = "Present Unit Name")]
         public string PresentUnitName { get; set; }
 
         [Display(Name = "Present Building Name", Prompt = "Present Building Name")]
-        [Required]
         public string PresentBuildingName { get; set; }
 
-        [Required]
+  
         [Display(Name = "Present Lot Name", Prompt = "Present Lot Name")]
         public string PresentLotName { get; set; }
 
-        [Required]
+      
         [Display(Name = "Present Street Name", Prompt = "Present Street Name")]
         public string PresentStreetName { get; set; }
 
