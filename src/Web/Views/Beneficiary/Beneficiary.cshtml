@@ -171,29 +171,29 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="PresentUnitName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentUnitName" required>
+                                                <label class="form-label fw-normal" asp-for="PresentUnitName"></label>
+                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentUnitName">
                                                 <span asp-validation-for="PresentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="PresentBuildingName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentBuildingName" required>
+                                                <label class="form-label fw-normal" asp-for="PresentBuildingName"></label>
+                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentBuildingName">
                                                 <span asp-validation-for="PresentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="PresentLotName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentLotName" required>
+                                                <label class="form-label fw-normal" asp-for="PresentLotName"></label>
+                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentLotName">
                                                 <span asp-validation-for="PresentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentStreetName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentStreetName" required>
+                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentStreetName">
                                                 <span asp-validation-for="PresentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -322,13 +322,14 @@
                                 <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
                             </li>
                             <li class="next list-inline-item float-end">
-                                <button type="submit" class="btn btn-primary submit-form" id="btn_save">Submit</button>
+                                <button type="submit" class="btn btn-primary submit-form" id="btn_save"><span class='mdi mdi-content-save-outline'></span>Save</button>
                             </li>
                         </ul>
                     </div>
 
                 </form>
-            </div> <!-- tab-content -->
+            </div>
+       
         </div> <!-- end #rootwizard-->
     </div>
 </div>
