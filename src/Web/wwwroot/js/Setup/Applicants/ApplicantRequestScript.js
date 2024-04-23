@@ -65,20 +65,12 @@ $(function () {
                 data: 'DateSubmitted',
                 className: 'align-middle text-center',
                 render: function (data) {
-                    var dateApplied = "";
 
                     if (data && data.trim() !== "") {
-                        let submDate = moment(data).format('YYYY-MM-DD');
-                        let submTime = moment(data).format('h:mm A');
-
-                        dateApplied = `${submDate} at ${submTime}`;
+                        return moment(data).format('YYYY-MM-DD');
+                    } else {
+                        return "";
                     }
-
-                    else {
-                        dateApplied = "";
-                    }
-
-                    return dateApplied;
                 }
             },
 
