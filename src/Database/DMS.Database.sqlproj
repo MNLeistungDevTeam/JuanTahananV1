@@ -234,6 +234,7 @@
     <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_Get.sql" />
     <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_GetAuditTrailTransactions.sql" />
     <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_GetByUser.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationTimelineByCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
