@@ -193,11 +193,11 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
-                //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
-                {
-                    return View("AccessDenied");
-                }
+                ////if the application approvalStatus is not greater than 4 on pagibig viewer
+                //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
+                //{
+                //    return View("AccessDenied");
+                //}
 
                 var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
                 var applicationPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(2, applicantCode);
@@ -260,7 +260,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
                     }
-                    else if (!inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
+                    else if (userId == applicantinfo.UserId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary && !inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " is currently in active status, cant be accessible!");
                     }
@@ -524,7 +524,7 @@ namespace Template.Web.Controllers.Transaction
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
                 }
 
-                return View("NewHLF068", vwModel);
+                return View("Beneficiary_HLF068", vwModel);
             }
         }
 

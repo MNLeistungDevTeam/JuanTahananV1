@@ -54,6 +54,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ProjectLocation { get; set; }
         public string? Unit { get; set; }
         public decimal? LoanAmount { get; set; }
+        public int? LoanYears { get; set; }
 
         //Documents
 

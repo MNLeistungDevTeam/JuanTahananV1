@@ -61,10 +61,6 @@
 
 
 
-
-
-
-
                     <div class="tab-pane" id="loanparticulars">
 
                         <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.EncodedStage" value="@Model.ApplicantsPersonalInformationModel.EncodedStage">
@@ -105,12 +101,12 @@
 
                             <div id="beneficiary-propInfo" class="row" @(string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "" : "hidden")>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12" hidden>
                                     <h3 class="text-dark float-start">
                                         <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BENEFICIARY PROPERTY INFO</span>
                                     </h3>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4" hidden>
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyDeveloperName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyDeveloperName">
@@ -118,14 +114,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-4" hidden>
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyUnitLevelName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyUnitLevelName">
                                         <span asp-validation-for="BarrowersInformationModel.PropertyUnitLevelName" class="text-danger"> </span>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4" hidden>
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyLocation"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyLocation">

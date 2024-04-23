@@ -6,11 +6,14 @@ AS
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-		bi.PropertyDeveloperName Developer,
-		bi.PropertyLocation ProjectLocation,
+		CASE WHEN 	bi.PropertyDeveloperName IS NULL THEN  bf.PropertyDeveloperName
+		END  Developer,
+		CASE WHEN bi.PropertyLocation IS NULL THEN  bf.PropertyLocation
+		END  ProjectLocation,
 		'' Project,
 		bi.PropertyUnitLevelName Unit,
 		lpi.DesiredLoanAmount As LoanAmount,
+		lpi.DesiredLoanTermYears As LoanYears,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	
@@ -42,6 +45,7 @@ AS
 		aps.Remarks 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
+	LEFT JOIN BeneficiaryInformation bf ON bf.UserId = apl.UserId
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN [User] u on u.Id = apl.UserId
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
