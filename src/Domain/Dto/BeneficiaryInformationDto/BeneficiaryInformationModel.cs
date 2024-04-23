@@ -23,16 +23,16 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Required]
         [Display(Name = "Last Name", Prompt = "Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         [Display(Name = "First Name", Prompt = "First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Display(Name = "Middle Name", Prompt = "Middle Name")]
         public string? MiddleName { get; set; }
 
-        public string Name
+        public string? Name
         {
             get
             {
@@ -48,7 +48,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Required]
         [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
-        public string MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
         [Required]
         [Display(Name = "Gender", Prompt = "Gender")]
@@ -62,37 +62,37 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
          
         [Display(Name = "Present Unit Name", Prompt = "Present Unit Name")]
-        public string PresentUnitName { get; set; }
+        public string? PresentUnitName { get; set; }
 
         [Display(Name = "Present Building Name", Prompt = "Present Building Name")]
-        public string PresentBuildingName { get; set; }
+        public string? PresentBuildingName { get; set; }
 
   
         [Display(Name = "Present Lot Name", Prompt = "Present Lot Name")]
-        public string PresentLotName { get; set; }
+        public string? PresentLotName { get; set; }
 
       
         [Display(Name = "Present Street Name", Prompt = "Present Street Name")]
-        public string PresentStreetName { get; set; }
+        public string? PresentStreetName { get; set; }
 
         [Display(Name = "Present Subdivision Name", Prompt = "Present Subdivision Name")]
-        public string? PresentSubdivisionName { get; set; }
+        public string?  PresentSubdivisionName { get; set; }
 
         [Required]
         [Display(Name = "Present Barangay Name", Prompt = "Present Barangay Name")]
-        public string PresentBaranggayName { get; set; }
+        public string? PresentBaranggayName { get; set; }
 
         [Required]
         [Display(Name = "Present Municipality Name", Prompt = "Present Municipality Name")]
-        public string PresentMunicipalityName { get; set; }
+        public string? PresentMunicipalityName { get; set; }
 
         [Required]
         [Display(Name = "Present Province Name", Prompt = "Present Province Name")]
-        public string PresentProvinceName { get; set; }
+        public string? PresentProvinceName { get; set; }
 
         [Required]
         [Display(Name = "Present Zip Code", Prompt = "Present Zip Code")]
-        public string PresentZipCode { get; set; }
+        public string? PresentZipCode { get; set; }
 
         [Display(Name = "Permanent Unit Name", Prompt = "Permanent Unit Name")]
         public string? PermanentUnitName { get; set; }
@@ -123,7 +123,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Required]
         [Display(Name = "Property Developer Name", Prompt = "Property Developer Name")]
-        public string PropertyDeveloperName { get; set; }
+        public string? PropertyDeveloperName { get; set; }
 
         [Display(Name = "Property Location", Prompt = "Property Location")]
         public string? PropertyLocation { get; set; }
