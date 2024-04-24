@@ -1,6 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
-const roleId =  $("#txt_roleId").val();
+const roleId = $("#txt_roleId").val();
 
 const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
 
@@ -969,6 +969,33 @@ $(function () {
         }
     });
 
+    $('#BarrowersInformationModel_MaritalStatus').on('change', function () {
+        var value = $(this).val();
+
+        $('#SpouseModel_FirstName').prop('required', false);
+        $('#SpouseModel_LastName').prop('required', false);
+        $('#SpouseModel_Citizenship').prop('required', false);
+        $('#SpouseModel_BirthDate').prop('required', false);
+        $('#SpouseModel_PagibigMidNumber').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', false);
+
+        if (value !== 'Married')
+            return;
+
+        $('#SpouseModel_FirstName').prop('required', true);
+        $('#SpouseModel_LastName').prop('required', true);
+        $('#SpouseModel_Citizenship').prop('required', true);
+        $('#SpouseModel_BirthDate').prop('required', true);
+        $('#SpouseModel_PagibigMidNumber').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
+    });
+
     //#region Set Selectize to readonly
     $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
     $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
@@ -1068,7 +1095,7 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }                                                            //Developer                                                                    //Pag-ibig                                                                      //LGU                           
+            }                                                            //Developer                                                                    //Pag-ibig                                                                      //LGU
             if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
@@ -1163,8 +1190,8 @@ $(function () {
                 $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
 
                 encodedStatusdropDown.clearOptions();
-                      // Developer   //LGU
-                if (roleId ==  5 || roleId == 2) {
+                // Developer   //LGU
+                if (roleId == 5 || roleId == 2) {
                     $("#div_stageapprovalsettings").removeClass('d-none');
 
                     var optionsToAdd = [
@@ -1190,7 +1217,7 @@ $(function () {
 
                 encodedStatusdropDown.clearOptions();
 
-                     // Developer   //LGU
+                // Developer   //LGU
                 if (roleId == 5 || roleId == 2) {
                     $("#div_stageapprovalsettings").removeClass('d-none');
 
@@ -1689,11 +1716,11 @@ $(function () {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);
 
             $('#rdo_creditVerification').prop('checked', true);
-        } 
+        }
 
         else if (encodedStageVal == 2) {
             $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true);
-            
+
             $('#rdo_aplCompletion').click();
         }
     }
