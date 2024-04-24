@@ -1688,13 +1688,13 @@ $(function () {
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);
 
-            $('#customRadio3').prop('checked', true);
-        }
+            $('#rdo_creditVerification').prop('checked', true);
+        } 
 
-        else if (encodedStageVal === 2) {
+        else if (encodedStageVal == 2) {
             $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true);
-
-            $('#customRadio5').click();
+            
+            $('#rdo_aplCompletion').click();
         }
     }
     //#endregion
