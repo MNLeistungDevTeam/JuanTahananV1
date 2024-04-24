@@ -1345,4 +1345,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     color: #0dcaf0 !important;
     background-color: #0dcaf0 !important;
     border-radius: 12px;
+    height: auto;
+    margin-top: -3px;
+    margin-bottom: -1px;
 }

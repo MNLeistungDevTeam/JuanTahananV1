@@ -8,11 +8,11 @@ AS
 
 	SELECT 
 		apl.Code,
-        apl.Id ReferenceId,
-        0  [Action],
+        0 ApprovalStatusNumber,
 		'Application In Draft' ApplicationStatus,
 		'Credit Verification' Stage,
 		1 StageNo,
+		0 ApproverRoleId,
 		apl.DateCreated
 	FROM
 		ApplicantsPersonalInformation apl
@@ -23,8 +23,7 @@ AS
 
 	SELECT
         apl.Code,
-        appLog.ReferenceId,
-        appLog.[Action],
+        appLog.[Action] ApprovalStatusNumber,
         CASE
 			WHEN appLog.[Action] = 0 THEN 'Application in Draft'
 			WHEN appLog.[Action] = 1 THEN 'Submitted'
@@ -39,17 +38,19 @@ AS
 			ELSE CONCAT('Deferred by ', ar.[Name])
 		END ApplicationStatus,
 		CASE
-			WHEN appLog.StageId IN (0,1,2,3,5,11) THEN 'Credit Verification'
-			WHEN appLog.StageId IN (4,6,7,9,10) THEN 'Application Completion'
-			WHEN appLog.StageId = 8 THEN 'Post-Approval'
+			WHEN appLog.[Action] IN (0,1,2,3,5,11) THEN 'Credit Verification'
+			WHEN appLog.[Action] IN (4,6,7,9,10) THEN 'Application Completion'
+			WHEN appLog.[Action] = 8 THEN 'Post-Approval'
 		END Stage,
 		CASE
-			WHEN appLog.StageId IN (0,1,2,3,5,11) THEN 1
-			WHEN appLog.StageId  IN(4,6,7,8,9,10) THEN 2
+			WHEN appLog.[Action] IN (0,1,2,3,5,11) THEN 1
+			WHEN appLog.[Action]  IN(4,6,7,8,9,10) THEN 2
 		END StageNo,
+		ur2.RoleId ApproverRoleId,
         appLog.DateCreated
     FROM ApplicantsPersonalInformation apl
     LEFT JOIN ApprovalLog appLog ON appLog.ReferenceId = apl.Id
+	LEFT JOIN UserRole ur2 ON appLog.CreatedById = ur2.UserId
 	LEFT JOIN [User] u on u.Id = apl.UserId
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
 	LEFT JOIN [Role] r ON r.Id = ur.RoleId
@@ -70,14 +71,14 @@ AS
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
 	) aps ON apl.Id = aps.ReferenceId 
 	LEFT JOIN (
-					select Top 1 * from ApprovalLog
-					Where [Action] = 1  
-					Order by DateCreated Desc
+					select Top 1 apl1.*  from ApprovalLog apl1
+					LEFT JOIN [UserRole] ur ON ur.UserId = apl1.CreatedById  
+					Where apl1.[Action] = 1  
+					Order by apl1.DateCreated Desc
 	) aplog ON   aplog.ReferenceId = apl.Id 
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
     WHERE
         apl.Code = @code
-		AND appLog.ReferenceId IS NOT NULL; -- No data will show if application status is on draft
-
+	 
 RETURN 0
