@@ -2335,9 +2335,12 @@
 
                                             </th>
                                             <td>
+                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus"  />
+                                                 
+
                                                 <div>
 
-                                                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedStatus" class="rounded-4 selectize" data-value="@Model.ApplicantsPersonalInformationModel.EncodedStatus">
+                                                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedPartialStatus" class="rounded-4 selectize" data-value="@Model.ApplicantsPersonalInformationModel.ApprovalStatus">
                                                         <option value="">Select First Stage.... </option>
                                                         <option value="0">Application in Draft</option>
                                                         <option value="1">Submitted</option>

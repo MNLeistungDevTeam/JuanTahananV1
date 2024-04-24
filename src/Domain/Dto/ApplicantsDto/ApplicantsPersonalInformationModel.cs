@@ -35,6 +35,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? EncodedStage { get; set; }
         public int? EncodedStatus { get; set; }
+        public int? EncodedPartialStatus { get; set; }
 
         #region Display Properties
 

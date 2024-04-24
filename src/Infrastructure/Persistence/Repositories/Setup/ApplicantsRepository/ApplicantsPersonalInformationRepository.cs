@@ -141,6 +141,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
 
                 _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
+
+                if (_applicantPersonalInfo.EncodedStatus != null) {
+
+                    _applicantPersonalInfo.ApprovalStatus = _applicantPersonalInfo.EncodedStatus;
+
+                }
+
+
                 //approvalstatus must not update
                 //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);
 
@@ -175,7 +183,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             applicantPersonalInfo.DateModified = DateTime.Now;
             applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
-            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById", "EncodedStage", "EncodedStatus");
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById");
             return applicantPersonalInfo;
         }
 
