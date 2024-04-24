@@ -56,6 +56,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
+        
+        public async Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code) =>
+          await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationTimelineByCode", new { code });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId) =>
           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAll", new { roleId });
