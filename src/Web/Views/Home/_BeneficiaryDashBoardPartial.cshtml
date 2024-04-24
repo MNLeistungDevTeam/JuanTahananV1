@@ -1,5 +1,6 @@
 ﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
 @using DMS.Application.Interfaces.Setup.UserRepository
+@using System.Security.Claims
 @inject IStringLocalizer<SharedResources> localizer
 
 @inject IUserRepository _userRepo;
@@ -11,6 +12,7 @@
 
     int userId = int.Parse(User.Identity.Name);
     var user = await _userRepo.GetByIdNoTrackingAsync(userId);
+
 }
 
 <div class="row" id="no_application">
@@ -89,7 +91,7 @@
                     <div class="card flex-fill">
                         <div class="card-body">
                             <div class="d-flex flex-column text-center align-items-center">
-                                <div class="row text-muted mb-2">Your application is currently at</div>
+                                <div class="row text-muted mb-2" id="application_status_label">Your application is currently at</div>
                                 <div class="row">
                                     <h1 id="application_status" class="fs-3 fw-bolder text-warning">Credit Verification</h1>
                                 </div>
@@ -102,7 +104,7 @@
                     <div class="card flex-fill">
                         <div class="card-body align-items-center">                            
                             <div class="d-flex flex-column text-center align-items-center">
-                                <div class="row text-muted mb-2">Your credit history has just been</div>
+                                <div class="row text-muted mb-2" id="credit_history_label">Your credit history has just been</div>
                                 <div class="row">
                                     <h1 id="credit_history_status" class="fs-3 fw-bolder">Developer Verified</h1>
                                 </div>
@@ -126,126 +128,123 @@
                         </h4>
 
                     </div>
-                    <p><span class="badge bg-warning text-theme-primary ms-3">ONGOING DEVELOPMENT</span></p>
+                    <p><span class="badge bg-warning ms-3">ONGOING DEVELOPMENT</span></p>
                     <div class="card-body py-0 mb-3" data-simplebar="init" style="max-height: 50vh;">
+                        <div class="col-md-12">
+                            <h2 id="timeline_refNo">No Application</h2>
 
+                            <div class="simplebar-wrapper" style="margin: 0px -24px;" id="simplebarWrapper">
+                                <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask">
+                                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                        <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
+                                            <div class="simplebar-content" style="padding: 0px 24px;">
+                                                <div class="timeline-alt py-0">
 
-                        <div class="simplebar-wrapper" style="margin: 0px -24px;">
-                            <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask">
-                                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
-                                        <div class="simplebar-content" style="padding: 0px 24px;">
-                                            <div class="timeline-alt py-0">
+                                                    @* <div class="timeline-item" id="timeline1">
+                                                        <div>
+                                                            <i class="far fa-circle text-info timeline-icon"></i>
+                                                        </div>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Submission (First Stage)</a>
+                                                            <p class="mb-0">Credit Verification</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                                                <div class="timeline-item" id="timeline1">
-                                                    @* <i class="fas fa-check-circle text-info timeline-icon"></i> *@
-                                                    <div>
+                                                    <div class="timeline-item" id="timeline2">
+                                                        <div>
+                                                            <i class="far fa-circle text-info timeline-icon"></i>
+                                                        </div>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Verified by Developer</a>
+                                                            <p class="mb-0">Credit Verification</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="timeline-item" id="timeline3">
                                                         <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Verified by Pag-IBIG</a>
+                                                            <p class="mb-0">Credit Verification</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Submission (First Stage)</a>
-                                                        <p class="mb-0">Credit Verification</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-                                                    </div>
-                                                </div>
 
-                                                <div class="timeline-item" id="timeline2">
-                                                    @* <i class="fas fa-check-circle bg-primary-lighten text-info timeline-icon" style="font-size: 16px;"></i> *@
-                                                    <div>
+                                                    <div class="timeline-item" id="timeline4">
                                                         <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Submission (Second Stage)</a>
+
+                                                            <p class="mb-0">Application Completion</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+
+                                                        </div>
                                                     </div>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Verified by Developer</a>
-                                                        <p class="mb-0">Credit Verification</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
+
+                                                    <div class="timeline-item" id="timeline5">
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Approved by Developer</a>
+                                                            <p class="mb-0">Application Completion</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+
+                                                        </div>
                                                     </div>
+
+                                                    <div class="timeline-item" id="timeline6">
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Approved by Pag-IBIG</a>
+                                                            <p class="mb-0">Application Completion</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="timeline-item" id="timeline7">
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Post-Approval</a>
+                                                            <p class="mb-0">Post-Approval</p>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="timeline-item" id="timeline8">
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                        <div class="timeline-item-info">
+                                                            <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Loan Disbursement</a>
+                                                            <p>
+                                                                <small class="text-muted timeline-date" hidden>October 12 2020</small>
+                                                            </p>
+
+
+                                                        </div>
+                                                    </div> *@
+
                                                 </div>
-
-                                                <div class="timeline-item" id="timeline3">
-                                                    @* <i class="fas fa-check-circle bg-primary-lighten text-info timeline-icon"></i> *@
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Verified by Pag-IBIG</a>
-                                                        <p class="mb-0">Credit Verification</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="timeline-item" id="timeline4">
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Submission (Second Stage)</a>
-
-                                                        <p class="mb-0">Application Completion</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="timeline-item" id="timeline5">
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Approved by Developer</a>
-                                                        <p class="mb-0">Application Completion</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="timeline-item" id="timeline6">
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Approved by Pag-IBIG</a>
-                                                        <p class="mb-0">Application Completion</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="timeline-item" id="timeline7">
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Post-Approval</a>
-                                                        <p class="mb-0">Post-Approval</p>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="timeline-item" id="timeline8">
-                                                    <i class="far fa-circle text-info timeline-icon"></i>
-                                                    <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block" id="timeline-item-text">Loan Disbursement</a>
-                                                        <p>
-                                                            <small class="text-muted timeline-date" hidden>October 12 2020</small>
-                                                        </p>
-
-
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div><div class="simplebar-placeholder" style="width: auto; height: 533px;"></div>
-                        </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 434px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div>
-                    
-                    
+                                </div><div class="simplebar-placeholder" style="width: auto; height: 533px;"></div>
+                            </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 434px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div>
+                        </div>
                     </div>
                 </div>
             </div> <!-- end col-->

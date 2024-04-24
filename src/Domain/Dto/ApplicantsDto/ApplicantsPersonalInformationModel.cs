@@ -84,6 +84,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? LastUpdated { get; set; }
 
         public int? DocumentSequence { get; set; }
+        public int? ApproverId { get; set; }
 
         #endregion Display Properties
     }

@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetApplicationTimelineByCode]
-	@code NVARCHAR(144)
+	@code NVARCHAR(144),
+	@companyId INT
 AS
 	SET NOCOUNT ON;
 
@@ -11,6 +12,7 @@ AS
 		1 StageNo,
 		0 ApproverRoleId,
 		apl.DateCreated
+		--1 AS NextApprovalStatus
 	FROM
 		ApplicantsPersonalInformation apl
 	WHERE
@@ -23,16 +25,20 @@ AS
         appLog.[Action] ApprovalStatusNumber,
         CASE
 			WHEN appLog.[Action] = 0 THEN 'Application in Draft'
-			WHEN appLog.[Action] = 1 THEN 'Submitted'
-			WHEN appLog.[Action] = 3 THEN 'Developer Verified'
-			WHEN appLog.[Action] = 4 THEN 'Pag-IBIG Verified'
-			WHEN appLog.[Action] = 5 THEN 'Withdrawn'
-			WHEN appLog.[Action] = 6 THEN 'Submitted'
-			WHEN appLog.[Action] = 7 THEN 'Developer Approved'
-			WHEN appLog.[Action] = 8 THEN 'Pag-IBIG Approved'
-			WHEN appLog.[Action] = 10 THEN 'Withdrawn'
+			WHEN appLog.[Action] = 1 THEN 'Application Submitted'
+			WHEN appLog.[Action] = 3 THEN 'Verified by Developer'
+			WHEN appLog.[Action] = 4 THEN 'Verified by Pag-IBIG'
+			WHEN appLog.[Action] = 5 THEN 'Application Withdrawn'
+			WHEN appLog.[Action] = 6 THEN 'Application Submitted'
+			WHEN appLog.[Action] = 7 THEN 'Approved by Developer'
+			WHEN appLog.[Action] = 8 THEN 'Approved by Pag-IBIG'
+			WHEN appLog.[Action] = 10 THEN 'Application Withdrawn'
 			WHEN appLog.[Action] = 11 THEN 'For Resubmission'
-			ELSE CONCAT('Deferred by ', ar.[Name])
+			ELSE 
+				CASE
+					WHEN ur2.RoleId = 3 THEN 'Deferred by Pag-IBIG'
+					WHEN ur2.RoleId = 5 THEN 'Deferred by Developer'
+				END 
 		END ApplicationStatus,
 		CASE
 			WHEN appLog.[Action] IN (0,1,2,3,5,11) THEN 'Credit Verification'
@@ -45,6 +51,8 @@ AS
 		END StageNo,
 		ur2.RoleId ApproverRoleId,
         appLog.DateCreated
+		--CASE WHEN LEAD(appLog.[Action]) OVER (ORDER BY appLog.DateCreated) IS NOT NULL THEN 1 ELSE 0 END AS NextApprovalStatus
+
     FROM ApplicantsPersonalInformation apl
     LEFT JOIN ApprovalLog appLog ON appLog.ReferenceId = apl.Id
 	LEFT JOIN UserRole ur2 ON appLog.CreatedById = ur2.UserId
@@ -76,7 +84,7 @@ AS
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
     WHERE
-        apl.Code = @code
-		AND appLog.ReferenceId IS NOT NULL; -- No data will show if application status is on draft
-	 
+        apl.Code = COALESCE(@code, apl.Code)
+		AND appLog.ReferenceId IS NOT NULL -- No data will show if application status is on draft
+		AND apl.CompanyId = @companyId
 RETURN 0

@@ -34,7 +34,8 @@ AS
 		END StageNo,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
-		aps.Remarks 
+		aps.Remarks,
+		aps.ApproverId
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId

@@ -731,15 +731,21 @@ namespace Template.Web.Controllers.Transaction
 
         public async Task<IActionResult> GetTimelineStatus()
         {
-            int userId = int.Parse(User.Identity.Name);
-            int companyId = int.Parse(User.FindFirstValue("Company"));
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var application = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
-            //var code = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
+                var application = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
-            var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application.Code, companyId);
+                var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application?.Code, companyId);
 
-            return Ok(timeline);
+                return Ok(timeline);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         #endregion API Getters
