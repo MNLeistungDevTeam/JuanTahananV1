@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -534,8 +535,21 @@ namespace Template.Web.Controllers.Transaction
 
         #region API Getters
 
-        public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
-            Ok(await _userRepo.spGetByRoleName(roleName));
+        public async Task<IActionResult> GetUsersByRoleName(string roleName)
+        {
+            try
+            {
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+
+                var result = await _userRepo.spGetByRoleName(roleName, companyId);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         public async Task<IActionResult> GetPurposeOfLoan() =>
             Ok(await _purposeOfLoanRepo.GetAllAsync());
@@ -613,18 +627,18 @@ namespace Template.Web.Controllers.Transaction
 
         public async Task<IActionResult> GetApprovalTotalInfo()
         {
-            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            int companyId = int.Parse(User.FindFirstValue("Company"));
             //int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId));
         }
 
         public async Task<IActionResult> GetBeneficiaryApprovalTotalInfo()
         {
-            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            int companyId = int.Parse(User.FindFirstValue("Company"));
             int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId));
         }
 
         public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
@@ -655,30 +669,36 @@ namespace Template.Web.Controllers.Transaction
         public async Task<IActionResult> GetTotalApplicants()
         {
             int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId);
+            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId);
             return Ok(result);
         }
 
         public async Task<IActionResult> GetTotalCreditVerif()
         {
             int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif();
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId);
             return Ok(result);
         }
 
         public async Task<IActionResult> GetTotalAppVerif()
         {
             int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif();
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId);
             return Ok(result);
         }
 
@@ -717,10 +737,11 @@ namespace Template.Web.Controllers.Transaction
             var application = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
             //var code = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
 
-            var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application.Code);
+            var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application.Code, companyId);
 
             return Ok(timeline);
         }
+
         #endregion API Getters
 
         #region API Operations

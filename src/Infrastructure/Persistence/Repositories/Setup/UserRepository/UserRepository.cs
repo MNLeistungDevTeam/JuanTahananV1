@@ -59,8 +59,8 @@ public class UserRepository : IUserRepository
     public async Task<List<UserModel>> GetUsersAsync() =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetAll", new { })).ToList();
 
-    public async Task<List<UserModel>> spGetByRoleName(string roleName) =>
-        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByRoleName", new { roleName })).ToList();
+    public async Task<List<UserModel>> spGetByRoleName(string roleName, int companyId) =>
+        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByRoleName", new { roleName , companyId})).ToList();
 
     public async Task<List<UserModel>> GetUserByUserRoleIdAsync(int userRoleId) =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByUserRoleId", new { userRoleId })).ToList();

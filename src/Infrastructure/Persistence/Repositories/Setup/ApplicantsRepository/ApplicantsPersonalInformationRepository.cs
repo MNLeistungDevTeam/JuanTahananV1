@@ -57,14 +57,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId, int companyId) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId, companyId });
 
-        public async Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code) =>
-          await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationTimelineByCode", new { code });
+        public async Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code, int companyId) =>
+          await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationTimelineByCode", new { code, companyId });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId, int? companyId) =>
           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAll", new { roleId, companyId });
 
-        public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId) =>
-           await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { userId });
+        public async Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId, int companyId) =>
+           await _db.LoadDataAsync<ApprovalInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalInfo", new { userId, companyId });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel>> GetAllApplicationsByPagibigNumber(string? pagibigNumber) =>
             await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAllByPagibigNumber", new { pagibigNumber });
@@ -78,14 +78,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         public async Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber) =>
             await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetInfo", new { roleId, pagibigNumber });
 
-        public async Task<ApplicationInfoModel?> GetTotalApplication(int roleId) =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalApplication", new { roleId });
+        public async Task<ApplicationInfoModel?> GetTotalApplication(int roleId, int companyId) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalApplication", new { roleId, companyId });
 
-        public async Task<ApplicationInfoModel?> GetTotalCreditVerif() =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalCreditVerif", new { });
+        public async Task<ApplicationInfoModel?> GetTotalCreditVerif(int companyId) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalCreditVerif", new { companyId });
 
-        public async Task<ApplicationInfoModel?> GetTotalAppVerif() =>
-            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppVerif", new { });
+        public async Task<ApplicationInfoModel?> GetTotalAppVerif(int companyId) =>
+            await _db.LoadSingleAsync<ApplicationInfoModel, dynamic>("spApplicantsPersonalInformation_GetTotalAppVerif", new { companyId });
 
         #endregion Get Methods
 

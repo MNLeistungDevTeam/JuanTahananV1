@@ -23,7 +23,7 @@ public interface IUserRepository
 
     Task<List<UserModel>> GetUsersAsync();
 
-    Task<List<UserModel>> spGetByRoleName(string roleName);
+    Task<List<UserModel>> spGetByRoleName(string roleName, int companyId);
 
     Task<User?> SaveUserAsync(UserModel user, List<UserApproverModel?> userApprovers, int userId);
 

@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalCreditVerif]
+	@companyId INT
 AS
 	SET NOCOUNT ON;
 	
@@ -24,5 +25,6 @@ AS
 		SELECT ApprovalStatusId,ur.RoleId,[Status] FROM ApprovalLevel 
 		LEFT JOIN [UserRole] ur ON ur.UserId = ApproverId  WHERE [Status] = 2) x 
 		ON x.ApprovalStatusId = aps.ReferenceId
+	WHERE apl.CompanyId = @companyId
 
 RETURN 0

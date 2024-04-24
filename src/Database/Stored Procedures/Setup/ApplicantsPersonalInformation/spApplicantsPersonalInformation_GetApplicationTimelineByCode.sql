@@ -3,9 +3,6 @@
 AS
 	SET NOCOUNT ON;
 
---DECLARE
---	@code NVARCHAR(100) = 'APL202401-0001'
-
 	SELECT 
 		apl.Code,
         0 ApprovalStatusNumber,
