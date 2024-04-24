@@ -1,10 +1,10 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId = $("#txt_roleId").val();
 
 $(function () {
     var telNoArray = [];
     var editableFlag = false;
-
 
     $("#btn_savehlf068").prop('disabled', true);
 
@@ -88,17 +88,14 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-
             // Validate the current form
-           
 
             // If current form is "form2", return without proceeding to next step
             if (currentFormName == "form2") {
                 return;
             }
 
-            if (editableFlag)
-            {
+            if (editableFlag) {
                 console.log("editableFlag is true");
 
                 currentForm.addClass('was-validated');
@@ -109,7 +106,6 @@ $(function () {
                     console.log("validation fail");
                     return false;
                 } else {
-
                     console.log('fade executed');
                     // Hide the current form
                     currentForm.addClass('fade').prop('hidden', true);
@@ -118,7 +114,6 @@ $(function () {
                     prevForm.removeClass('fade').prop('hidden', false);
                 }
             } else {
-
                 console.log('fade executed');
                 // Hide the current form
                 currentForm.addClass('fade').prop('hidden', true);
@@ -1147,7 +1142,6 @@ $(function () {
     $("#btn_edit").on('click', function () {
         editableFlag = true;
         $(this).addClass("active");
-  
 
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
@@ -1166,7 +1160,6 @@ $(function () {
         $('#frm_hlf068').find('.selectized').each(function (i, e) {
             e.selectize.unlock();
         })
-
 
         $("#btn_savehlf068").prop('disabled', false);
     });
@@ -1344,9 +1337,6 @@ $(function () {
             $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
             $('input[type="radio"]').prop('disabled', false);
 
-
-
-
             if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
                 return;
@@ -1382,7 +1372,9 @@ $(function () {
                         }, 2000);
                     } else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+
+                        //Beneficiary
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {

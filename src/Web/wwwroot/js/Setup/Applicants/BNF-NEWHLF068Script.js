@@ -1,5 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId = $("#txt_roleId").val();
 
 $(function () {
 
@@ -1296,9 +1297,11 @@ $(function () {
                             $("#beneficiary-overlay").addClass('d-none');
                             window.location.href = "/Applicants/HLF068/" + response;
                         }, 2000);
-                    } else {
+                    }
+                    else  //edit
+                    {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {

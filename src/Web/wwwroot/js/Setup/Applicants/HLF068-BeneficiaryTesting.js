@@ -89,7 +89,7 @@
 
                     else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {

@@ -1,5 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId = $("#txt_roleId").val();
 
 $(function () {
     var telNoArray = [];
@@ -17,8 +18,6 @@ $(function () {
         dateFormat: "m/d/Y",
         maxDate: moment().format("MM/DD/YYYY")
     });
-
-    //$("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize.lock();
 
     $(".timepicker").flatpickr({
         enableTime: true,
@@ -115,50 +114,6 @@ $(function () {
                 $("#form2").removeClass('fade').prop('hidden', false);
                 return;
             }
-
-            //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //}
-
-            //// If current form is "spousedata", return without proceeding to next step
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
-            //    $("#liform2_next").removeClass("d-none").prop('disabled', false);
-            //    $("#liform2_submit").addClass("d-none").prop('disabled', true);
-
-            //    $("#form3").prop('hidden', false);
-            //    $("#form2").prop('hidden', true);
-
-            //    console.log('trigger');
-            //    return;
-            //}
-            //else if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log('trigger');
-            //}
-
-            //else if (currentFormName == "spousedata") {
-            //    $("#liform2_submit").removeClass("d-none").prop('disabled', false).attr('type', 'submit');
-            //    $("#liform2_next").addClass("d-none").prop('disabled', true);
-
-            //    $("#form2").prop('hidden', false);
-            //    $("#form3").prop('hidden', true);
-
-            //    console.log(0);
-            //}
-
-            //if (currentFormName == "form2" && applicantInfoIdVal == 0) {
-            //    $("#form2").removeClass("fade");
-
-            //    $("#form3").prop('hidden', true);
-            //    $("#form2").prop('hidden', false);
-
-            //    console.log('trigger');
-            //    return;
-            //}
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
@@ -289,84 +244,6 @@ $(function () {
     });
 
     //#endregion
-
-    //$(document).ready(function () {
-    //    if (roleName == 'Developer' || roleName == 'Pag-ibig' || roleName == 'Local Government Unit (LGU)') {
-    //        $("#div_stageapprovalsettings").removeClass('d-none');
-    //        $("#div_postapproval").addClass('d-none');
-    //    }
-
-    //    var encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
-
-    //    $('input[name="customRadio1"]').change(function () {
-    //        // Get the value of the selected radio button
-
-    //        encodedStatusdropDown.unlock();
-
-    //        var selectedOptionText = $('input[name="customRadio1"]:checked').attr('data-name');
-
-    //        if (applicantInfoIdVal == 0) {
-    //            if (selectedOptionText === "Application Completion") {
-    //                $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
-
-    //                encodedStatusdropDown.clearOptions();
-
-    //                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-    //                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-    //                    var optionsToAdd = [
-
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                        { value: '6', text: 'Post Submitted' },
-    //                        { value: '7', text: 'Developer Approved' },
-
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-
-    //                else {
-    //                    var optionsToAdd = [
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                        { value: '6', text: 'Post Submitted' },
-    //                        { value: '8', text: 'Pagibig Approved' }
-
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-    //            }
-
-    //            else if (selectedOptionText === "Credit Verification") {
-    //                $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
-
-    //                encodedStatusdropDown.clearOptions();
-
-    //                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
-    //                    $("#div_stageapprovalsettings").removeClass('d-none');
-
-    //                    var optionsToAdd = [
-    //                        { value: '0', text: 'Application In Draft' },
-    //                        { value: '1', text: 'Submitted' },
-    //                        { value: '3', text: 'Developer Verified' }
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-
-    //                else {
-    //                    var optionsToAdd = [
-    //                        { value: '0', text: 'Application In Draft' },
-    //                        { value: '1', text: 'Submitted' },
-    //                        { value: '4', text: 'Pagibig Verified' },
-    //                    ];
-
-    //                    encodedStatusdropDown.addOption(optionsToAdd);
-    //                }
-    //            }
-    //        }
-    //    });
-    //});
 
     //#region Set Selectize to readonly
     $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
@@ -767,9 +644,9 @@ $(function () {
 
     var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
-    var sourePagibigFundDropdown, $sourePagibigFundDropdown;
+    var sourcePagibigFundDropdown, $sourcePagibigFundDropdown;
 
-    $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
+    $sourcePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
         valueField: 'Id',
         labelField: 'Name',
         searchField: 'Name',
@@ -807,12 +684,12 @@ $(function () {
         },
     });
 
-    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
+    sourcePagibigFundDropdown = $sourcePagibigFundDropdown[0].selectize;
 
-    sourePagibigFundDropdown.on('load', function (options) {
-        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
+    sourcePagibigFundDropdown.on('load', function (options) {
+        sourcePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
         //resourceCounter("purposeofloan");
-        sourePagibigFundDropdown.off('load');
+        sourcePagibigFundDropdown.off('load');
     });
 
     // Set values for Form2PageModel_DateOpened fields
@@ -1197,74 +1074,11 @@ $(function () {
 
     //#endregion
 
-    //$('#form2').on('submit', async function (e) {
-    //    e.preventDefault();
-    //    let $loanparticulars = $('#loanparticulars');
-    //    let $collateraldata = $('#collateraldata');
-    //    let $spousedata = $('#spousedata');
-    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-    //        return;
-    //    }
-    //    let loanparticulars = $loanparticulars.serializeArray();
-    //    let collateraldata = $collateraldata.serializeArray();
-    //    let spousedata = $spousedata.serializeArray();
-    //    let form2 = $(this).serializeArray();
-    //    let combinedData = {};
-    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-    //        combinedData[obj.name] = obj.value;
-    //    });
-
-    //    // Use await before the AJAX call
-    //    try {
-    //        await $.ajax({
-    //            type: 'POST',
-    //            url: '/Applicants/SaveHLF068',
-    //            data: combinedData,
-    //            beforeSend: function () {
-    //                loading("Saving Changes...");
-    //            },
-    //            success: async function (response) {
-    //                messageBox("Successfully", "success", true);
-
-    //                if (applicantInfoIdVal == 0) {
-    //                    loader.close();
-    //                    setTimeout(function () {
-    //                        window.location.href = "/Applicants/HLF068/" + response;
-    //                    }, 2000);
-    //                }
-    //                else {
-    //                    loader.close();
-
-    //                    setTimeout(function () {
-    //                        // Redirect to the specified location
-    //                        window.location.href = "/Applicants/ApplicantRequests";
-    //                    }, 2000); // 2000 milliseconds = 2 seconds
-    //                }
-    //            },
-    //            error: async function (jqXHR, textStatus, errorThrown) {
-    //                console.log(jqXHR.responseText);
-    //                messageBox(jqXHR.responseText, "danger", true);
-    //                loader.close();
-    //            }
-    //        });
-    //    } catch (error) {
-    //        // Handle any errors from the AJAX request
-    //        console.log(error);
-    //        // Optionally display an error message
-    //        messageBox("An error occurred during the submission.", "danger", true);
-    //    }
-    //});
-
-    //#region Methods
-
-    $(document).ready(function () {
-        loadloanParticularInformation(applicantInfoIdVal);
-        loadSpouseInformation(applicantInfoIdVal);
-        loadBorrowerInformation(applicantInfoIdVal);
-        loadCollateralInformation(applicantInfoIdVal);
-        loadForm2PageInformation(applicantInfoIdVal);
+    $(function () {
         initializeRadioBtnMisc();
     });
+
+    //#region Methods
 
     function loadloanParticularInformation(id) {
         $.ajax({
@@ -1462,8 +1276,12 @@ $(function () {
 
                     else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+
+                            //Beneficiary
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
+
+                            alert(1);
                         }
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
@@ -1697,22 +1515,22 @@ $(function () {
 
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+        // $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
         $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
 
         // Set checked status for PastDue radio buttons
         $("#pdRbtn1").prop("checked", !!pastDueValue);
-        $("#pdRbtn2").prop("checked", !pastDueValue);
+        //$("#pdRbtn2").prop("checked", !pastDueValue);
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
 
         // Set checked status for BouncingChecks radio buttons
         $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-        $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+        //$("#bcRbtn2").prop("checked", !bouncingChecksValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
 
         // Set checked status for MedicalAdvice radio buttons
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-        $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        // $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
 

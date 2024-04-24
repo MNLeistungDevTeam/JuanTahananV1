@@ -1,6 +1,7 @@
 ﻿$(function () {
     let encodedStatusdropDown = $("#ApplicantsPersonalInformationModel_EncodedStatus")[0].selectize;
     const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
+    const roleId = $("#txt_roleId").val();
 
     rebindValidators();
     encodedStatus(encodedStageVal);
@@ -18,8 +19,8 @@
             $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
 
             encodedStatusdropDown.clearOptions();
-
-            if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+                     //developer         //lgu
+            if (roleId ==  5 || roleId == 2) {
                 $("#div_stageapprovalsettings").removeClass('d-none');
 
                 var optionsToAdd = [
@@ -51,8 +52,8 @@
             $("#ApplicantsPersonalInformationModel_EncodedStage").val(1);
 
             encodedStatusdropDown.clearOptions();
-
-            if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+               //Developer             //lgu
+            if (roleId ==  5 || roleId ==  2) {
                 $("#div_stageapprovalsettings").removeClass('d-none');
 
                 var optionsToAdd = [
@@ -168,7 +169,9 @@
 
                     else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+
+                           //beneficiary
+                        if (roleId !=  4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {
