@@ -16,6 +16,7 @@
 
 @{
     int userId = int.Parse(User.Identity.Name);
+    int companyId = int.Parse(User.FindFirstValue("Company"));
     var userInfo = await _userRepo.GetUserAsync(userId);
     string userProfile = Url.Content("~/images/user/default.png");
 
@@ -92,7 +93,7 @@
                             // Beneficiary
                             int[] inactiveStatus = { 2, 5, 9, 10 };
 
-                            var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+                            var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
                             // Runs if data is not null and status is active (warning button)
                             if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))

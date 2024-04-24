@@ -37,7 +37,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
 
-        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId);
+        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId, int? companyId);
 
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
 
@@ -45,13 +45,12 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode);
 
-        Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId);
+        Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId, int companyId);
 
         Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber);
         Task<ApplicationInfoModel?> GetTotalApplication(int roleId);
         Task<ApplicationInfoModel?> GetTotalCreditVerif();
         Task<ApplicationInfoModel?> GetTotalAppVerif();
-        Task<ApplicationInfoModel?> GetTotalAppStatusAndStage();
         Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code);
     }
 }
