@@ -51,5 +51,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
         Task<ApplicationInfoModel?> GetTotalApplication(int roleId);
         Task<ApplicationInfoModel?> GetTotalCreditVerif();
         Task<ApplicationInfoModel?> GetTotalAppVerif();
+        Task<ApplicationInfoModel?> GetTotalAppStatusAndStage();
+        Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code);
     }
 }

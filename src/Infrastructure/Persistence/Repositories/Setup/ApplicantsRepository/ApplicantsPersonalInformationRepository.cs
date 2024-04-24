@@ -56,6 +56,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
 
         public async Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId) =>
           await _db.LoadSingleAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetByUserId", new { userId });
+        
+        public async Task<IEnumerable<ApplicantsPersonalInformationModel>?> GetApplicationTimelineByCode(string code) =>
+          await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetApplicationTimelineByCode", new { code });
 
         public async Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId) =>
           await _db.LoadDataAsync<ApplicantsPersonalInformationModel, dynamic>("spApplicantsPersonalInformation_GetAll", new { roleId });
@@ -138,6 +141,14 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
                 var applicationStatus = await GetByCodeAsync(_applicantPersonalInfo.Code);
 
                 _applicantPersonalInfo.ApprovalStatus = applicationStatus.ApprovalStatus;
+
+                if (_applicantPersonalInfo.EncodedStatus != null) {
+
+                    _applicantPersonalInfo.ApprovalStatus = _applicantPersonalInfo.EncodedStatus;
+
+                }
+
+
                 //approvalstatus must not update
                 //_applicantPersonalInfo = await UpdateNoExclusionAsync(_applicantPersonalInfo, userId);
 
@@ -172,7 +183,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApplicantsRepository
         {
             applicantPersonalInfo.DateModified = DateTime.Now;
             applicantPersonalInfo.ModifiedById = _currentUserService.GetCurrentUserId();
-            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById", "EncodedStage", "EncodedStatus");
+            applicantPersonalInfo = await _contextHelper.UpdateAsync(applicantPersonalInfo, "DateCreated", "CreatedById");
             return applicantPersonalInfo;
         }
 

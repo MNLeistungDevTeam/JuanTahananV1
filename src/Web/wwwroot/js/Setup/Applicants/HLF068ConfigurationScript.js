@@ -1,5 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId = $("#txt_roleId").val();
 
 let purposeofloanVal = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).attr('data-value');
 let modeofpaymentVal = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).attr('data-value');
@@ -310,8 +311,8 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+            }                                                                  //developer                                                                   //pagibig                                                                   //lgu
+            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId ==  3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 

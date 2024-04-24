@@ -229,11 +229,7 @@
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalApplication.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalCreditVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppVerif.sql" />
-    <Build Include="Tables\Setup\AuditTrail\AuditTrailHeader.sql" />
-    <Build Include="Tables\Setup\AuditTrail\AuditTrailRef.sql" />
-    <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_Get.sql" />
-    <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_GetAuditTrailTransactions.sql" />
-    <Build Include="Stored Procedures\Others\AuditTrail\spAuditTrail_GetByUser.sql" />
+    <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppStatusAndStage.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationTimelineByCode.sql" />
   </ItemGroup>
   <ItemGroup>
