@@ -713,17 +713,17 @@ namespace Template.Web.Controllers.Transaction
             }
 
             return Ok(applicantInfo);
+        }
 
-            //var lpInfo = await _loanParticularsInformationRepo.GetByApplicantIdAsync(applicantInfo.Id);
+        public async Task<IActionResult> GetTimelineStatus()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var application = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+            //var code = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
 
-            //dynamic combinedData = new
-            //{
-            //    CurrentApplication = data,
-            //    ApplicantInfo = applicantInfo,
-            //    LoanParticularsInfo = lpInfo,
-            //};
+            var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application.Code);
 
-
+            return Ok(timeline);
         }
         #endregion API Getters
 
