@@ -119,7 +119,13 @@ $(() => {
                 $(`[id="application_status"]`).html(appStatus);
                 $(`[id="application_status_remarks"]`).html(appStatusRemarks);
 
-                $(`[id="credit_history_status"]`).removeClass('text-warning');
+
+
+
+
+
+
+                $(`[id="credit_history_status"]`).removeClass('text-success');
                 $(`[id="credit_history_remarks"]`).removeClass('text-muted');
 
                 if ([3, 5].includes(data.ApproverRoleId) && [2, 9].includes(data.ApprovalStatus)) {
@@ -133,6 +139,14 @@ $(() => {
 
                     $(`[id="credit_history_status"]`).html(roleMessage[data.ApproverRoleId]);
                     $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
+                }
+                else if (!data.ApproverRoleId && data.ApprovalStatus === 0) {
+                    $(`[id="credit_history_status"]`).addClass('text-secondary');
+                    $(`[id="credit_history_remarks"]`).addClass('text-secondary');
+
+
+                    $(`[id="credit_history_status"]`).html("In Draft");
+                    $(`[id="credit_history_remarks"]`).html("Kindly complete and submit requirements");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
