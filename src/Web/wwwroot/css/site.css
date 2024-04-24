@@ -1339,3 +1339,10 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         transform-origin: 100% 100%;
         /*background-color: #F07818;*/ /* the main color  */
     }
+
+
+.timeline-item::before {
+    color: #0dcaf0 !important;
+    background-color: #0dcaf0 !important;
+    border-radius: 12px;
+}

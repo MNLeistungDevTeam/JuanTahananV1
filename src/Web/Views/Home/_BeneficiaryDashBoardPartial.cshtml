@@ -13,7 +13,11 @@
     var user = await _userRepo.GetByIdNoTrackingAsync(userId);
 }
 
-<div class="row">
+<div class="row" id="no_application">
+
+</div>
+
+<div class="row" id="with_application">
     <div class="col-xl-8">
         <div class="row">
             <div class="row">
@@ -132,8 +136,12 @@
                                     <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;">
                                         <div class="simplebar-content" style="padding: 0px 24px;">
                                             <div class="timeline-alt py-0">
-                                                <div class="timeline-item">
-                                                    <i class="fe-check-circle text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline1">
+                                                    @* <i class="fas fa-check-circle text-info timeline-icon"></i> *@
+                                                    <div>
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                    </div>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Submitted</a>
                                                         <p class="mb-0">Credit Verification</p>
@@ -143,8 +151,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="timeline-item">
-                                                    <i class="fe-check-circle bg-primary-lighten text-info timeline-icon"></i>
+                                                <div class="timeline-item" id="timeline2">
+                                                    @* <i class="fas fa-check-circle bg-primary-lighten text-info timeline-icon" style="font-size: 16px;"></i> *@
+                                                    <div>
+                                                        <i class="far fa-circle text-info timeline-icon"></i>
+                                                    </div>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Developer Verified</a>
                                                         <p class="mb-0">Credit Verification</p>
@@ -153,16 +164,19 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div class="timeline-item">
-                                                    <i class="fe-check-circle bg-primary-lighten text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline3">
+                                                    @* <i class="fas fa-check-circle bg-primary-lighten text-info timeline-icon"></i> *@
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Pag-IBIG Verification</a>
                                                         <p>Credit Verification</p>
 
                                                     </div>
                                                 </div>
-                                                <div class="timeline-item">
-                                                    <i class="fe-circle bg-primary-lighten text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline4">
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Submission</a>
 
@@ -170,35 +184,36 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="timeline-item">
-                                                    <i class="fe-circle bg-primary-lighten text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline5">
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Developer Approval</a>
                                                         <p>Application Completion</p>
 
                                                     </div>
                                                 </div>
-                                                <div class="timeline-item">
-                                                    <i class="fe-circle bg-primary-lighten text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline6">
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Pag-IBIG Approval</a>
                                                         <p>Application Completion</p>
 
                                                     </div>
                                                 </div>
-                                                <div class="fe-circle timeline-item">
-                                                    <i class="fe-circle bg-primary-lighten text-info timeline-icon"></i>
+
+                                                <div class="timeline-item" id="timeline7">
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
-                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Post-Approval Processing</a>
+                                                        <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Post-Approval Processing</a>
                                                         <p>Post-Approval</p>
 
                                                     </div>
                                                 </div>
 
-
-
-                                                <div class="fe-circle timeline-item">
-                                                    <i class="fe-circle bg-primary-lighten text-info timeline-icon"></i>
+                                                <div class="timeline-item" id="timeline8">
+                                                    <i class="far fa-circle text-info timeline-icon"></i>
                                                     <div class="timeline-item-info">
                                                         <a href="javascript:void(0);" class="text-info fw-bold mb-0 d-block">Loan Disbursement</a>
 
@@ -207,12 +222,13 @@
                                                 </div>
 
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div><div class="simplebar-placeholder" style="width: auto; height: 533px;"></div>
                         </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 434px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div>
+                    
+                    
                     </div>
                 </div>
             </div> <!-- end col-->
