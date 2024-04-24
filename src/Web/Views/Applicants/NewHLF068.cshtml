@@ -23,6 +23,7 @@
 </div>
 <!-- end page title -->
 
+
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
@@ -58,6 +59,10 @@
 
 
                 <form id="frm_hlf068" method="post" asp-action="SaveHLF068" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+
+
+
+
 
 
 
@@ -101,12 +106,12 @@
 
                             <div id="beneficiary-propInfo" class="row" @(string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "" : "hidden")>
 
-                                <div class="col-md-12" hidden>
+                                <div class="col-md-12">
                                     <h3 class="text-dark float-start">
                                         <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BENEFICIARY PROPERTY INFO</span>
                                     </h3>
                                 </div>
-                                <div class="col-md-4" hidden>
+                                <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyDeveloperName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyDeveloperName">
@@ -114,14 +119,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4" hidden>
+                                <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyUnitLevelName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyUnitLevelName">
                                         <span asp-validation-for="BarrowersInformationModel.PropertyUnitLevelName" class="text-danger"> </span>
                                     </div>
                                 </div>
-                                <div class="col-md-4" hidden>
+                                <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyLocation"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyLocation">
@@ -2328,9 +2333,12 @@
 
                                             </th>
                                             <td>
+                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus" />
+
+
                                                 <div>
 
-                                                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedStatus" class="rounded-4 selectize" data-value="@Model.ApplicantsPersonalInformationModel.EncodedStatus">
+                                                    <select readonly asp-for="ApplicantsPersonalInformationModel.EncodedPartialStatus" class="rounded-4 selectize" data-value="@Model.ApplicantsPersonalInformationModel.ApprovalStatus">
                                                         <option value="">Select First Stage.... </option>
                                                         <option value="0">Application in Draft</option>
                                                         <option value="1">Submitted</option>
@@ -2375,7 +2383,7 @@
         </div> <!-- end #rootwizard-->
     </div>
 </div>
-
+ 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
 @* <script src="~/js/Setup/Applicants/NEWHLF068Testing.js" asp-append-version="true"></script>

@@ -1,5 +1,7 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId =  $("#txt_roleId").val();
+
 const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
 
 const currentStatusVal = $(`[name='ApplicantsPersonalInformationModel.EncodedPartialStatus']`).attr('data-value');
@@ -1066,8 +1068,8 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }
-            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+            }                                                            //Developer                                                                    //Pag-ibig                                                                      //LGU                           
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -1161,8 +1163,8 @@ $(function () {
                 $("#ApplicantsPersonalInformationModel_EncodedStage").val(2);
 
                 encodedStatusdropDown.clearOptions();
-
-                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+                      // Developer   //LGU
+                if (roleId ==  5 || roleId == 2) {
                     $("#div_stageapprovalsettings").removeClass('d-none');
 
                     var optionsToAdd = [
@@ -1188,7 +1190,8 @@ $(function () {
 
                 encodedStatusdropDown.clearOptions();
 
-                if (roleName == 'Developer' || roleName == 'Local Government Unit (LGU)') {
+                     // Developer   //LGU
+                if (roleId == 5 || roleId == 2) {
                     $("#div_stageapprovalsettings").removeClass('d-none');
 
                     var optionsToAdd = [
@@ -1404,7 +1407,7 @@ $(function () {
 
                     if (applicantInfoIdVal == 0) {
                         //less than or not developer verified
-                        if (roleName == "Pag-ibig" < 4) {
+                        if (roleId == 3 < 4) {
                             setTimeout(function () {
                                 $("#beneficiary-overlay").addClass('d-none');
                                 window.location.href = "/Applicants/ApplicantRequests/" + response;
@@ -1428,7 +1431,8 @@ $(function () {
 
                     else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+                        // Beneficiary
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {
