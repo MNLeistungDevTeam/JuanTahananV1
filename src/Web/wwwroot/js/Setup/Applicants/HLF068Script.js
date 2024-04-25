@@ -39,7 +39,7 @@ $(function () {
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999-99999",
+        mask: "999-999-999[-9999]",
         placeholder: "X",
         //clearIncomplete: true
     });
@@ -702,7 +702,7 @@ $(function () {
     setDateValue('#BarrowersInformationModel_BirthDate');
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[999]-99",
+        mask: "99-99999[9][9]-99",
         placeholder: 'X',
         //clearIncomplete: true
     });
