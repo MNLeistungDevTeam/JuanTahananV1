@@ -35,13 +35,13 @@ $(function () {
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.tinInputMask').inputmask({
         mask: "999-999-999-99999",
         placeholder: "X",
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     //// Disable 'e', '+', retain '-'
@@ -682,7 +682,7 @@ $(function () {
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
         mask: "99-9999999-99",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
