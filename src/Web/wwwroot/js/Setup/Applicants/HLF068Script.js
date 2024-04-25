@@ -47,7 +47,25 @@ $(function () {
     //// Disable 'e', '+', retain '-'
     //$('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
 
-    $('.codeInputMask').inputmask({ regex: "^[A-Za-df-zA-DF-Z0-9-]*$" });
+    $('.codeInputMask').inputmask({
+        mask: "*{1,10}",
+        regex: "^[A-Za-df-zA-DF-Z0-9]*-?[A-Za-df-zA-DF-Z0-9]*$",
+        definitions: {
+            '*': {
+                validator: function (chrs, buffer, pos, strict, opts) {
+                    // Disallow '-' if it's the first character
+                    if (pos === 0 && chrs === '-') {
+                        return false;
+                    }
+                    else if (pos > 0 && chrs === '-') {
+                        return !(buffer.buffer.includes('-'));
+                    }
+
+                    return true;
+                }
+            }
+        }
+    });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
@@ -70,6 +88,10 @@ $(function () {
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
     encodedStatusdropDown.lock();
+
+    $('.codeInputMask').on('input', function (e) {
+        
+    });
 
     $('#ApplicantsPersonalInformationModel_EncodedPartialStatus').on('change', function () {
         // Your onchange event handling logic here
@@ -680,7 +702,7 @@ $(function () {
     setDateValue('#BarrowersInformationModel_BirthDate');
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-9999999-99",
+        mask: "99-99999[999]-99",
         placeholder: 'X',
         //clearIncomplete: true
     });
