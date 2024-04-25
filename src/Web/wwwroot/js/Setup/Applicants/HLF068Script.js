@@ -44,8 +44,10 @@ $(function () {
         clearIncomplete: true
     });
 
-    // Disable 'e', '+', retain '-'
-    $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
+    //// Disable 'e', '+', retain '-'
+    //$('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
+
+    $('.codeInputMask').inputmask({ regex: "^[A-Za-df-zA-DF-Z0-9-]*$" });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
@@ -898,11 +900,27 @@ $(function () {
     });
 
     $('#BarrowersInformationModel_NumberOfDependent').on('keydown', function (e) {
-        // Reject inputs
-        //let rejectCodes = ['KeyE', 'NumpadAdd'];
-        let rejectCodes = ['e', 'E', '+'];
+        // Get the key code of the pressed key
+        var keyCode = e.keyCode || e.which;
 
-        if ($.inArray(e.key, rejectCodes) > -1) {
+        // Allow numbers and specific keys like backspace, delete, arrows, etc.
+        if ((keyCode < 48 || keyCode > 57) && // Not a number key
+            keyCode != 8 && keyCode != 9 && keyCode != 13 && // Backspace, Tab, Enter
+            keyCode != 37 && keyCode != 39 && // Left and right arrows
+            keyCode != 46) { // Delete
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $('#BarrowersInformationModel_DirectLineNumber').on('keydown', function (e) {
+        // Get the key code of the pressed key
+        var keyCode = e.keyCode || e.which;
+
+        // Allow numbers and specific keys like backspace, delete, arrows, etc.
+        if ((keyCode < 48 || keyCode > 57) && // Not a number key
+            keyCode != 8 && keyCode != 9 && keyCode != 13 && // Backspace, Tab, Enter
+            keyCode != 37 && keyCode != 39 && // Left and right arrows
+            keyCode != 46) { // Delete
             e.preventDefault(); // Prevent the character from being entered
         }
     });
