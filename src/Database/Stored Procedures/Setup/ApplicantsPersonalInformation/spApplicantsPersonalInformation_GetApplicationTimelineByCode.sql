@@ -84,7 +84,7 @@ AS
 
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
     WHERE
-        apl.Code = COALESCE(@code, apl.Code)
+        apl.Code = @code
 		AND appLog.ReferenceId IS NOT NULL -- No data will show if application status is on draft
 		AND apl.CompanyId = @companyId
 RETURN 0

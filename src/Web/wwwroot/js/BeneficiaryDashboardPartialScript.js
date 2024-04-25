@@ -1,5 +1,5 @@
 $(() => {
-    var classColors = [
+    var backgroundClassColors = [
         {
             approvalStatusNumbers: [1, 6],
             classColor: 'bg-primary',
@@ -30,6 +30,39 @@ $(() => {
         },
     ];
 
+    //var classColors = [
+    //    {
+    //        approvalStatusNumbers: [0],
+    //        classColor: 'text-secondary',
+    //        classTextColor: ''
+    //    },
+    //    {
+    //        approvalStatusNumbers: [1, 6],
+    //        classColor: 'text-primary',
+    //        classTextColor: 'text-muted'
+    //    },
+    //    {
+    //        approvalStatusNumbers: [2, 9],
+    //        classColor: 'text-danger',
+    //        classTextColor: 'text-danger'
+    //    },
+    //    {
+    //        approvalStatusNumbers: [3, 4, 7, 8],
+    //        classColor: 'text-success',
+    //        classTextColor: 'text-muted'
+    //    },
+    //    {
+    //        approvalStatusNumbers: [5, 10],
+    //        classColor: 'text-warning',
+    //        classTextColor: 'text-muted'
+    //    },
+    //    {
+    //        approvalStatusNumbers: [11],
+    //        classColor: 'text-info',
+    //        classTextColor: 'text-muted'
+    //    },
+    //];
+
     loadData();
 
     function loadData() {
@@ -44,17 +77,13 @@ $(() => {
             success: function (data) {
                 if (data.ApplicationStatus === null) {
                     $(`[id="custom_ribbon"]`).addClass('d-none');
-                    //$(`[id="with_application"]`)
-                    //return;
                 }
 
-                let color = classColors.find(a => a.approvalStatusNumbers.includes(data.ApprovalStatus));
+                let color = backgroundClassColors.find(a => a.approvalStatusNumbers.includes(data.ApprovalStatus));
                 let selectedColor = color ? color.classColor : "bg-primary"
                 //console.log(color);
 
-                // Greeting
-                // $(`[id="user_first_name"]`).html(data.ApplicantFirstName);
-                //  
+                // Status below the greeting
 
                 $(`[id="status_contract"]`).addClass(selectedColor);
                 $(`[id="status_contract"]`).html(data.ApplicationStatus || "No Application");
@@ -64,6 +93,7 @@ $(() => {
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
                 $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
+                // Side card text and Lower left side card (Application Status)
                 let appStatus = data.Stage || "No Application";
                 let appStatusRemarks = "Kindly proceed submitting an application";
                 let statusColor = `secondary`;
@@ -94,30 +124,146 @@ $(() => {
                 $(`[id="application_status"]`).html(appStatus);
                 $(`[id="application_status_remarks"]`).html(appStatusRemarks);
 
+                // Lower Right small card
                 // Credit History
                 $(`[id="credit_history_status"]`).removeClass('text-success');
                 $(`[id="credit_history_remarks"]`).removeClass('text-muted');
 
-                if ([3, 5].includes(data.ApproverRoleId) && [2, 9].includes(data.ApprovalStatus)) {
+                if ([2, 9].includes(data.ApprovalStatus) && [2, 3, 5].includes(data.ApproverRoleId)) {
+                    // Deferred by either Developer or Pag-IBIG (First Stage)
                     $(`[id="credit_history_status"]`).addClass('text-danger');
                     $(`[id="credit_history_remarks"]`).addClass('text-danger');
 
                     let roleMessage = {
+                        2: "Deferred by Developer",
                         3: "Deferred by Pag-IBIG",
                         5: "Deferred by Developer"
                     };
 
                     $(`[id="credit_history_status"]`).html(roleMessage[data.ApproverRoleId]);
                     $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
+
+                    $(`[id="text_status"]`).html(`
+                        Your application has been <span class="text-danger">${roleMessage[data.ApproverRoleId]}</span>. 
+                        <span class="text-warning">Review Remarks</span> to see what updates are needed.
+                    `);
+
                 }
-                else if (!data.ApproverRoleId && data.ApprovalStatus === 0) {
+                else if (data.ApprovalStatus === null) {
+                    // No Record
+                    $(`[id="credit_history_status"]`).addClass('text-secondary');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+
+                    $(`[id="credit_history_label"]`).html(`Your credit history has`);
+                    $(`[id="credit_history_status"]`).html("No Record");
+                    $(`[id="credit_history_remarks"]`).html("Kindly submit an application first");
+
+                    $(`[id="text_status"]`).html(`
+                        You have no records submitted yet, 
+                        kindly submit an initial application first.
+                    `);
+                }
+                else if (data.ApprovalStatus === 0) {
+                    // Application in Draft
                     $(`[id="credit_history_status"]`).addClass('text-secondary');
                     $(`[id="credit_history_remarks"]`).addClass('text-secondary');
 
-
                     $(`[id="credit_history_status"]`).html("In Draft");
                     $(`[id="credit_history_remarks"]`).html("Kindly complete and submit requirements");
+
+                    $(`[id="text_status"]`).html(`
+                        Your application is <span class="fw-bolder text-secondary">in draft</span>. 
+                        Kindly <span class="text-warning">submit requirements</span> to proceed.
+                    `);
                 }
+                else if (data.ApprovalStatus === 1) {
+                    $(`[id="credit_history_status"]`).addClass('text-primary');
+                    $(`[id="credit_history_remarks"]`).addClass('text-secondary');
+
+                    //$(`[id="process_status"]`).html(`recently submitted.`);
+                    //$(`[id="process_name"]`).html(`Kindly wait for a developer to verify your application.`);
+
+                    //$(`[id="credit_history_label"]`).html(`Your credit history has`);
+                    $(`[id="credit_history_status"]`).html("Recently Submitted");
+                    $(`[id="credit_history_remarks"]`).html("Kindly wait for a developer to verify your application");
+
+                    $(`[id="text_status"]`).html(`
+                        Your application is <span class="fw-bolder text-primary">recently submitted</span>. 
+                        Kindly <span class="text-warning">wait for a developer to verify</span> your application.
+                    `);
+                }
+                else if ([3, 4].includes(data.ApprovalStatus)) {
+                    $(`[id="credit_history_status"]`).addClass('text-success');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+
+                    let roleMessage = {
+                        3: "Developer",
+                        4: "Pag-IBIG"
+                    };
+
+                    let roleMessage2 = {
+                        3: "A Pag-IBIG Officer will review your application shortly",
+                        4: "Kindly proceed to submit required documents"
+                    }
+
+                    //$(`[id="credit_history_label"]`).html(`Your credit history has`);
+                    $(`[id="credit_history_status"]`).html(`${roleMessage[data.ApprovalStatus]} Verified`);
+                    $(`[id="credit_history_remarks"]`).html(roleMessage2[data.ApprovalStatus]);
+
+                    //$(`[id="process_status"]`).html(`recently verified by ${roleMessage[data.ApprovalStatus]}.`);
+                    //$(`[id="process_name"]`).html(`${roleMessage2[data.ApprovalStatus]}.`);
+                    $(`[id="text_status"]`).html(`
+                        Your application has been <span class="fw-bolder text-success">recently verified by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        Kindly <span class="text-warning">wait for a developer to verify</span> your application.
+                    `);
+                }
+                else if (data.ApprovalStatus === 6) {
+                    // Application Submitted for Second Stage
+                    $(`[id="credit_history_status"]`).addClass('text-success');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+
+                    //$(`[id="process_status"]`).html(`recently submitted.`);
+                    //$(`[id="process_name"]`).html(`Kindly wait for a developer to verify your application.`);
+
+                    $(`[id="credit_history_status"]`).html("Recently Submitted");
+                    $(`[id="credit_history_remarks"]`).html("Kindly wait for a developer to review your application");
+
+                    $(`[id="text_status"]`).html(`
+                        Your application is <span class="fw-bolder text-primary">recently submitted</span>. 
+                        Kindly <span class="text-warning">wait for a developer to assess</span> your second application.
+                    `);
+                }
+                else if ([7, 8].includes(data.ApprovalStatus)) {
+                    $(`[id="credit_history_status"]`).addClass('text-success');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+                    $(`[id="credit_history_label"]`).html(`Your application is now`);
+
+                    let roleMessage = {
+                        7: "Developer",
+                        8: "Pag-IBIG"
+                    };
+
+                    let roleMessage2 = {
+                        7: "A Pag-IBIG Officer will review your second application shortly",
+                        8: "Kindly wait for post-approval process"
+                    }
+
+                    //let roleMessageTextStatus = {
+                    //    7: "A Pag-IBIG Officer will review your application shortly",
+                    //    8: "Kindly wait for post-approval process"
+                    //}
+
+                    //$(`[id="credit_history_label"]`).html(`Your credit history has`);
+                    $(`[id="credit_history_status"]`).html(`${roleMessage[data.ApprovalStatus]} Approved`);
+                    $(`[id="credit_history_remarks"]`).html(roleMessage2[data.ApprovalStatus]);
+
+                    $(`[id="text_status"]`).html(`
+                        Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        <span class="text-warning">${roleMessage2[data.ApprovalStatus]}</span>.
+                    `);
+                }
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
