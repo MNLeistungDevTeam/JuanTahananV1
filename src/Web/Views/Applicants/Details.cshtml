@@ -492,16 +492,16 @@
 
                                             @if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified))
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
-                                                    Remarks:
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                <h3 class="badge bg-success ms-auto font-14" id="header_remarks">
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                    <span id="span_remarks">Remarks: @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
                                             else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Deferred)
                                             {
                                                 <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
-                                                    Remarks:
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole, @Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole
+                                                    <span id="span_remarks">Remarks: @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
 
@@ -516,16 +516,16 @@
                                             @if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed))
 
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
-                                                    Remarks:
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                <h3 class="badge bg-success ms-auto font-14" id="header_remarks">
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                    <span id="span_remarks">Remarks: @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
                                             else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                             {
-                                                <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
-                                                    Remarks:
-                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole ,@Model.ApplicantsPersonalInformationModel.Remarks</span>
+                                                <h3 class="badge bg-danger ms-auto font-14" id="header_remarks">
+                                                    @Model.ApplicantsPersonalInformationModel.ApproverRole 
+                                                    <span id="span_remarks">Remarks: @Model.ApplicantsPersonalInformationModel.Remarks</span>
                                                 </h3>
                                             }
 
