@@ -30,6 +30,9 @@ namespace DMS.Domain.Dto.DocumentDto
         [Display(Name = "File Type", Prompt = "Select File Type")]
         public int? FileType { get; set; }
 
+        [Display(Name = "File Parent", Prompt = "Select File Parent")]
+        public int? ParentId { get; set; }
+
         #region Display Properties
 
         public int? TotalDocumentCount { get; set; }
@@ -37,6 +40,7 @@ namespace DMS.Domain.Dto.DocumentDto
         public int? VerificationType { get; set; }
         public int? DocumentVerificationId { get; set; }
         public string? FileFormat { get; set; }
+        public string? ParentDocumentName { get; set; }
 
         #endregion Display Properties
     }

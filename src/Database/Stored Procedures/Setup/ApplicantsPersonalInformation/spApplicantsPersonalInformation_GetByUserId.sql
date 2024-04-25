@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetByUserId]
-	@userId INT
+	@userId INT,
+	@companyId INT
 AS
 	SELECT TOP 1 
 		apl.*,
@@ -33,7 +34,8 @@ AS
 		END StageNo,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
-		aps.Remarks 
+		aps.Remarks,
+		aps.ApproverId
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId
@@ -53,6 +55,6 @@ AS
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON aps.ApproverId = u2.Id
 	LEFT JOIN [User] u1 ON apl.UserId = u1.Id
-	WHERE apl.UserId = @userId
+	WHERE apl.UserId = @userId AND apl.CompanyId = @companyId
 	ORDER BY DateCreated DESC
 RETURN 0

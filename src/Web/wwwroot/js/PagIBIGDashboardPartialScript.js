@@ -389,7 +389,7 @@ $(async function () {
                 info_for_gov_approval.html(`<span data-plugin="counterup">${response.NeedsPagibigApproval}</span>`);
                 info_for_credit_verification.html(`<span data-plugin="counterup">${response.CreditVerifStage}</span>`);
                 info_for_new_applications.html(`<span data-plugin="counterup">${response.NewApplication}</span>`);
-                info_for_post_approval.html(`<span data-plugin="counterup">${response.PostApproval}</span>`);
+                info_for_post_approval.html(`<span data-plugin="counterup">${response.ReadyPostApp}</span>`);
 
                 $("[data-plugin='counterup']").counterUp();
             },
@@ -468,8 +468,8 @@ $(async function () {
                             result.Submitted,
                             result.DeveloperVerified,
                             result.PagibigVerified,
-                            result.PagibigDeferred,
                             result.DeveloperDeferred,
+                            result.PagibigDeferred,
                             result.Withdrawn
                         ]
                 }],
@@ -574,8 +574,8 @@ $(async function () {
                             result.Submitted,
                             result.DeveloperVerified,
                             result.PagibigVerified,
-                            result.PagibigDeferred,
                             result.DeveloperDeferred,
+                            result.PagibigDeferred,
                             result.Withdrawn
                         ]
                 }],
@@ -630,9 +630,9 @@ $(async function () {
             var options = {
                 series:
                     [
-                        result.CreditVerifStage,
-                        result.AppCompletionStage,
-                        result.PostApprovalStage
+                        result.CreditVerification,
+                        result.ApplicationCompletion,
+                        result.ReadyPostApp
                     ],
                 chart: {
                     width: '100%',
@@ -776,7 +776,7 @@ $(async function () {
 
     async function GetApplicationStatusAndStages() {
         const response = $.ajax({
-            url: baseUrl + "Applicants/GetTotalAppStatusAndStage",
+            url: baseUrl + "Applicants/GetTotalApplicants",
             method: 'get',
             dataType: 'json'
         });

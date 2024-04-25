@@ -190,6 +190,19 @@ public class DocumentController : Controller
     public async Task<IActionResult> GetAllDocumentType() =>
         Ok(await _documentTypeRepo.GetInquiryAsync());
 
+
+
+
+    public async Task<IActionResult> GetAllParentDocuments()
+    {
+        var parentDocuments = await _documentTypeRepo.GetInquiryAsync();
+        var filteredDocuments = parentDocuments.Where(x => x.ParentId == null);
+
+        return Ok(filteredDocuments);
+    }
+
+
+
     #endregion API Getters
 
     #region API Operation

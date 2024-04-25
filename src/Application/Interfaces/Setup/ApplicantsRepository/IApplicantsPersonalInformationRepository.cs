@@ -15,7 +15,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<string> GenerateApplicationCode();
 
-        Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId);
+        Task<IEnumerable<ApprovalInfoModel>> GetApprovalTotalInfo(int? userId, int companyId);
 
         Task<ApplicantsPersonalInformation?> GetByIdAsync(int id);
 
@@ -37,7 +37,7 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<ApplicantsPersonalInformation> UpdateAsync(ApplicantsPersonalInformation applicantPersonalInfo, int userId);
 
-        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId);
+        Task<IEnumerable<ApplicantsPersonalInformationModel?>> GetApplicantsAsync(int? roleId, int? companyId);
 
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetEligibilityVerificationDocuments(string applicantCode);
 
@@ -45,12 +45,12 @@ namespace DMS.Application.Interfaces.Setup.ApplicantsRepository
 
         Task<IEnumerable<ApplicantsPersonalInformationModel>> GetApplicationVerificationDocuments(string applicantCode);
 
-        Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId);
+        Task<ApplicantsPersonalInformationModel?> GetCurrentApplicationByUser(int userId, int companyId);
 
         Task<ApplicationInfoModel?> GetApplicationInfo(int roleId, string pagibigNumber);
-        Task<ApplicationInfoModel?> GetTotalApplication(int roleId);
-        Task<ApplicationInfoModel?> GetTotalCreditVerif();
-        Task<ApplicationInfoModel?> GetTotalAppVerif();
-        Task<ApplicationInfoModel?> GetTotalAppStatusAndStage();
+        Task<ApplicationInfoModel?> GetTotalApplication(int roleId, int companyId);
+        Task<ApplicationInfoModel?> GetTotalCreditVerif(int companyId);
+        Task<ApplicationInfoModel?> GetTotalAppVerif(int companyId);
+        Task<IEnumerable<ApplicationTimelineModel>?> GetApplicationTimelineByCode(string? code, int companyId);
     }
 }

@@ -35,6 +35,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? EncodedStage { get; set; }
         public int? EncodedStatus { get; set; }
+        public int? EncodedPartialStatus { get; set; }
 
         #region Display Properties
 
@@ -83,6 +84,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? LastUpdated { get; set; }
 
         public int? DocumentSequence { get; set; }
+        public int? ApproverId { get; set; }
 
         #endregion Display Properties
     }

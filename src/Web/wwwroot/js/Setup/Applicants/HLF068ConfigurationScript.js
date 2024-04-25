@@ -1,5 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+const roleId = $("#txt_roleId").val();
 
 let purposeofloanVal = $(`[name='LoanParticularsInformationModel.PurposeOfLoanId']`).attr('data-value');
 let modeofpaymentVal = $(`[name='LoanParticularsInformationModel.ModeOfPaymentId']`).attr('data-value');
@@ -310,8 +311,8 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Developer' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Pag-ibig' || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleName === 'Local Government Unit (LGU)') {
+            }                                                                  //developer                                                                   //pagibig                                                                   //lgu
+            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId ==  3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -935,6 +936,33 @@ $(function () {
 
             $('#BarrowersInformationModel_BusinessTruckLineNumber').trigger('invalid');
         }
+    });
+
+    $('#BarrowersInformationModel_MaritalStatus').on('change', function () {
+        var value = $(this).val();
+
+        $('#SpouseModel_FirstName').prop('required', false);
+        $('#SpouseModel_LastName').prop('required', false);
+        $('#SpouseModel_Citizenship').prop('required', false);
+        $('#SpouseModel_BirthDate').prop('required', false);
+        $('#SpouseModel_PagibigMidNumber').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', false);
+        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', false);
+
+        if (value !== 'Married')
+            return;
+
+        $('#SpouseModel_FirstName').prop('required', true);
+        $('#SpouseModel_LastName').prop('required', true);
+        $('#SpouseModel_Citizenship').prop('required', true);
+        $('#SpouseModel_BirthDate').prop('required', true);
+        $('#SpouseModel_PagibigMidNumber').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
+        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
     });
 
     //#endregion Barrowers

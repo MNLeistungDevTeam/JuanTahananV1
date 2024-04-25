@@ -1,4 +1,7 @@
 ﻿$(function () {
+
+    const roleId = $("#txt_roleId").val();
+
     setFormViewOnly();
     rebindValidators();
 
@@ -108,7 +111,8 @@
                         }, 2000);
                     } else {
                         var link = "Applicants/Beneficiary";
-                        if (roleName != 'Beneficiary') {
+                        //beneficiary
+                        if (roleId != 4) {
                             link = "Applicants/ApplicantRequests";
                         }
                         setTimeout(function () {

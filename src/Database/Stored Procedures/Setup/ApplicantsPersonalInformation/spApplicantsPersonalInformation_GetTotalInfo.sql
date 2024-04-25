@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalInfo]
 
-@userId INT
+	@userId INT,
+	@companyId INT
 
 AS
  SELECT
@@ -21,6 +22,6 @@ FROM
 			WHEN @userId = 0 THEN 1
 			WHEN @userId IS NOT NULL AND @userId = UserId THEN 1
 		END
-	)
+	) AND CompanyId  = @companyId
 
 RETURN 0

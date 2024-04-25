@@ -136,7 +136,7 @@ $(function () {
                         returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
                     }
 
-                    else if (row.ApprovalStatusNumber == 11) { // Discontinued
+                    else if (row.ApprovalStatusNumber == 11) { // return
                         returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
                     }
 

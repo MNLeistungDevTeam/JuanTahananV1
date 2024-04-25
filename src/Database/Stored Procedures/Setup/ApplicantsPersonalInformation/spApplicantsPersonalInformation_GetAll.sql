@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
-	@roleId INT 
+	@roleId INT,
+	@companyId INT
 AS
 	 SELECT 
 		apl.*,
@@ -90,7 +91,8 @@ AS
 				WHEN @roleId = 3 THEN --Pagibig 
                 CASE WHEN apl.ApprovalStatus IN (3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
         END
-    )
+    ) 
+	AND apl.CompanyId = @companyId
 	--ORDER BY apl.DateModified DESC;
 	--ORDER BY apl.Id DESC, apl.DateModified DESC;
 	ORDER BY

@@ -26,4 +26,6 @@ public partial class DocumentType
     public int? DeletedById { get; set; }
 
     public int? FileType { get; set; }
+
+    public int? ParentId { get; set; }
 }

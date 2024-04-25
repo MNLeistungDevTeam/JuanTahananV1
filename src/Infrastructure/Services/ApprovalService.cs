@@ -106,7 +106,6 @@ namespace DMS.Infrastructure.Services
                     userInfo.UserRoleId = 5;
                 }
 
-
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
 
                 int[] statusExclusions = { (int)AppStatusType.Submitted, (int)AppStatusType.Withdrawn, (int)AppStatusType.PostSubmitted, (int)AppStatusType.Discontinued };
@@ -147,7 +146,7 @@ namespace DMS.Infrastructure.Services
                     {
                         var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
 
-                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId);
+                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatus(activeapplication, activeapplication.ApplicantEmail));
                     }

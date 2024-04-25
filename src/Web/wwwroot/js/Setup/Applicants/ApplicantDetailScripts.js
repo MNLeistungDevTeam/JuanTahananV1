@@ -37,12 +37,9 @@ $(async function () {
     loadApplicationAttachments(CONST_APPLICANTCODE);
 
     $(document).ready(function () {
-         
         // Add click event listener to the tab
- 
 
         if (stageNo == 1) {
-             
             //$('a[href="#tab4"]').on('click', function (event) {
             //    event.preventDefault(); // Prevent default click behavior
             //    messageBox('Navigation to this tab is disabled at this stage!', 'danger');
@@ -50,10 +47,7 @@ $(async function () {
 
             // Optionally, you can also add a disabled look to the tab to indicate visually that it's not clickable
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
-
         }
-
-     
     });
 
     //#region Events
@@ -82,7 +76,8 @@ $(async function () {
         }
     });
 
-    $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function () {
+    $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function (e) {
+        e.preventDefault();
         let action = $(this).attr("data-value");
 
         await openApprovalModal(action);
@@ -219,7 +214,6 @@ $(async function () {
         }
     }
 
-
     function appendVerificationAttachmentsV2(items) {
         const groupedItems = {};
 
@@ -275,8 +269,6 @@ $(async function () {
             $("#btnSubmitApplication").prop('disabled', !(flag));
         }
     }
-
-
 
     function loadApplicationAttachments(applicantCode) {
         $.ajax({
@@ -406,7 +398,6 @@ $(async function () {
         }
     }
 
-
     function appendApplicationAttachmentsV2(items) {
         const groupedItems = {};
 
@@ -463,7 +454,6 @@ $(async function () {
         }
     }
 
-
     //function GetApprovalStatus(groupedItems) {
     //    const Items = {};
 
@@ -485,7 +475,10 @@ $(async function () {
         let remarksInput = $('[name="ApprovalLevel.Remarks"]');
         let roleName = $("#txt_role_code").val();
 
-        $btnSave.removeClass()
+        $btnSave.removeClass();
+        $('.text-danger.validation-summary-errors').removeClass('validation-summary-errors').addClass('validation-summary-valid')
+            .find('li').css('display', 'none');
+        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
 
         if (action == 1) {      //submitted
             modalLabel.html('<span class="fe-send"></span> Submit Application');
@@ -505,7 +498,8 @@ $(async function () {
             modalLabel.html('<span class="fe-x-circle"></span> Defer Application');
             $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
 
-            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            //remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            remarksInput.attr("required", true);
         }
 
         else if (action == 5) {       // withdraw
@@ -525,17 +519,19 @@ $(async function () {
         else if (action == 9) {        // disapproved
             modalLabel.html('<span class="fe-x-circle"></span> Defer Application');
             $btnSave.addClass("btn btn-danger").html('<span class="fe-x-circle"></span> Defer')
-            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            /*remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");*/
+            remarksInput.attr("required", true);
         }
         else if (action == 11) {
             modalLabel.html('<span class="fe-repeat"></span> Return for Revision');
             $btnSave.addClass("btn btn-warning").html('<span class="fe-repeat"></span> Return for Revision')
-            remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            //remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            remarksInput.attr("required", true);
         }
         else {
             modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
-            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+            remarksInput.removeAttr("data-val-required").attr("required", false).removeClass("input-validation-error").addClass("valid");
         }
 
         $("#author_txt").html(`Author: ${roleName}`);
@@ -625,8 +621,6 @@ $(async function () {
                 text = "Are you sure you wish to proceed with for-resubmission this application?";
                 confirmButtonText = " for-resubmission";
             }
-
-
 
             // Use SweetAlert for confirmation
             Swal.fire({
