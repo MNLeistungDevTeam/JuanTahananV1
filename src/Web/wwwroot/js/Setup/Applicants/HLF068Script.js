@@ -635,7 +635,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -646,7 +645,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -657,7 +655,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -668,7 +665,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -1718,6 +1714,9 @@ $(function () {
         let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
+
+        let code = $('#ApplicantsPersonalInformationModel_Code').val() || null;
+        console.log(code);
 
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
