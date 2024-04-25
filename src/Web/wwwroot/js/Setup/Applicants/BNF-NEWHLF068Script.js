@@ -3,13 +3,11 @@ const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
 $(function () {
-
     //test
     var telNoArray = [];
     var itiFlag = false;
 
     //change
-
 
     $(".selectize").selectize({
         search: false
@@ -1560,25 +1558,31 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
+        let code = $('#ApplicantsPersonalInformationModel_Code').val() || null;
+        console.log(code);
+
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
         $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
 
         // Set checked status for PastDue radio buttons
         $("#pdRbtn1").prop("checked", !!pastDueValue);
-        $("#pdRbtn2").prop("checked", !pastDueValue);
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
 
         // Set checked status for BouncingChecks radio buttons
         $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-        $("#bcRbtn2").prop("checked", !bouncingChecksValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
 
         // Set checked status for MedicalAdvice radio buttons
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-        $("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        if (code !== null) {
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        }
     }
 
     //#endregion

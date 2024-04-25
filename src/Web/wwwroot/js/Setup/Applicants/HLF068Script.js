@@ -1426,6 +1426,15 @@ $(function () {
                 formData.set(itiElement.a.name, itiElement.getNumber());
             }
 
+            var miscElem = ["PendingCase", "PastDue", "BouncingChecks", "MedicalAdvice"];
+
+            for (let misc of miscElem) {
+                var fieldName = $(`[name="Form2PageModel.${misc}"]`);
+                if (fieldName.prop('disabled')) {
+                    formData.set(fieldName.attr('name'), "");
+                }
+            }
+
             $.ajax({
                 url: $(this).attr("action"),
                 method: $(this).attr("method"),
@@ -1729,6 +1738,13 @@ $(function () {
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
         //$("#maRbtn2").prop("checked", !medicalAdviceValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        if (code !== null) {
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        }
 
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);
