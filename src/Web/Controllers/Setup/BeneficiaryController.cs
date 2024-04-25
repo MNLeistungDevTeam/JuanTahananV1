@@ -147,7 +147,7 @@ public class BeneficiaryController : Controller
                 UserModel userModel = new()
                 {
                     Email = model.Email,
-                    Password = _authenticationService.GenerateTemporaryPasswordAsync(model.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                    Password = _authenticationService.GenerateRandomPassword(), /*_authenticationService.GenerateTemporaryPasswordAsync(model.FirstName),*/ //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
                     UserName = await _authenticationService.GenerateTemporaryUsernameAsync(),
                     FirstName = model.FirstName,
                     LastName = model.LastName,

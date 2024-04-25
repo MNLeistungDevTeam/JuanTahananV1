@@ -314,6 +314,53 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
+    public string GenerateRandomPassword()
+    {
+        const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+        Random rand = new Random();
+
+        // Generate random password length between 10 and 12 characters
+        int passwordLength = rand.Next(10, 13); // Returns a value between 10 and 12 (exclusive)
+
+        // Hash the current time to introduce some randomness
+        string timeStamp = DateTime.Now.Ticks.ToString();
+
+        // Concatenate the GUID with the current time
+        string combinedString = Guid.NewGuid().ToString("N").Substring(0, 16) + timeStamp;
+
+        // Use SHA-256 to hash the combined string
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(combinedString);
+            byte[] hash = sha256.ComputeHash(bytes);
+
+            // Convert the byte array to a hexadecimal string
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            // Ensure the password is within the desired length range
+            string hashedString = sb.ToString();
+            if (hashedString.Length < passwordLength)
+            {
+                // If the hashed string is shorter than the desired length, pad it with additional characters
+                while (hashedString.Length < passwordLength)
+                {
+                    hashedString += allowedChars[rand.Next(allowedChars.Length)];
+                }
+            }
+            else if (hashedString.Length > passwordLength)
+            {
+                // If the hashed string is longer than the desired length, truncate it
+                hashedString = hashedString.Substring(0, passwordLength);
+            }
+
+            return hashedString;
+        }
+    }
+
     public async Task<string> GenerateTemporaryUsernameAsync()
     {
         string temporaryUsername;

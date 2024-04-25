@@ -55,7 +55,7 @@ namespace DMS.Infrastructure.Services
             UserModel userModel = new()
             {
                 Email = model.Email,
-                Password = _authService.GenerateTemporaryPasswordAsync(model.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                Password = _authService.GenerateRandomPassword(),  // _authService.GenerateTemporaryPasswordAsync(model.FirstName) sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
                 UserName = await _authService.GenerateTemporaryUsernameAsync(),
                 FirstName = model.FirstName,
                 LastName = model.LastName,

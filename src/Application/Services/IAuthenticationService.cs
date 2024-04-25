@@ -30,4 +30,5 @@ public interface IAuthenticationService
     Task<bool> ChangePassword(ChangePasswordModel changePassword);
     string HashPassword(string password, string salt);
     Task<User> ResetCredential(UserModel user);
+    string GenerateRandomPassword();
 }
