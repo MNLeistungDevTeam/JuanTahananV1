@@ -5,9 +5,58 @@ const $form = $("#document_form");
 var tbl_verificationDocument;
 var tbl_applicationDocument;
 var tbl_Document;
+
+const parentDocumentVal = $(`[name='DocumentType.ParentId']`).attr('data-value');
 $(function () {
     rebindValidators();
-    $(".selectize").selectize();
+
+    $(".custom_selectize").selectize();
+
+    var $parentDocumentdropDown, parentDocumentdropDown;
+
+    $parentDocumentdropDown = $(`[name='DocumentType.ParentId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Document/GetAllParentDocuments',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+    parentDocumentdropDown = $parentDocumentdropDown[0].selectize;
+
+
+    
+
+
     tbl_Document = $("#tbl_document").DataTable({
         ajax: {
             url: baseUrl + "Document/GetAllDocumentType",
@@ -47,6 +96,14 @@ $(function () {
 
             {
                 data: "FileFormat",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data
+                }
+            },
+
+            {
+                data: "ParentDocumentName",
                 class: "text-center",
                 render: function (data, type, row) {
                     return data
@@ -130,6 +187,7 @@ $(function () {
         var verificationType = tbl_Document.rows({ selected: true }).data().pluck("VerificationType").toArray().toString();
         var verificationDocumentId = tbl_Document.rows({ selected: true }).data().pluck("DocumentVerificationId").toArray().toString();
         var fileType = tbl_Document.rows({ selected: true }).data().pluck("FileType").toArray().toString();
+        var fileParentId = tbl_Document.rows({ selected: true }).data().pluck("ParentId").toArray().toString();
 
         // Tick select-all based on row count;
         $("#select-all-document").prop("checked", (all == selectedRows && all > 0));
@@ -145,7 +203,8 @@ $(function () {
             "data-verificationdocument-id": verificationDocumentId,
             "data-id": id,
             "data-code": documentTypeCode,
-            "data-fileType": fileType
+            "data-fileType": fileType,
+            "data-parentId": fileParentId
         });
 
         $("#btn_delete").attr({
@@ -497,6 +556,9 @@ $(function () {
         let verificationdocumentId = $(this).attr('data-verificationdocument-id');
         let documentTypecode = $(this).attr('data-code');
         let documentFileType = $(this).attr('data-fileType');
+        let documentParentId = $(this).attr('data-parentId');
+
+        parentDocumentdropDown.setValue(documentParentId || '');
 
         if (verificationdocumentId == "") {
             verificationdocumentId = 0;
