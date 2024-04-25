@@ -1,45 +1,32 @@
-$(async function () {
+$(() => {
     var classColors = [
         {
             approvalStatusNumbers: [1, 6],
             classColor: 'bg-primary',
-            textColor: 'text-primary',
-            appCreditRemarks: `A Developer will review your eligibility shortly`,
         },
         {
             approvalStatusNumbers: [0],
             classColor: 'bg-secondary',
-            textColor: 'text-secondary',
-            appCreditRemarks: `Please submit the requirements for verification`,
         },
         {
             approvalStatusNumbers: [2, 9],
             classColor: 'bg-danger',
-            textColor: 'text-danger',
         },
         {
             approvalStatusNumbers: [3, 7],
             classColor: 'bg-lightgreen',
-            textColor: 'text-success',
-            appCreditRemarks: `A Pag-IBIG officer will review your eligibility shortly`,
         },
         {
             approvalStatusNumbers: [4, 8],
             classColor: 'bg-darkgreen',
-            textColor: 'text-success',
-            appCreditRemarks: `Credit application is validated; proceed with completion`,
         },
         {
             approvalStatusNumbers: [5, 10],
             classColor: 'bg-warning',
-            textColor: 'text-warning',
-            appCreditRemarks: `Application is withdrawn`,
         },
         {
             approvalStatusNumbers: [11],
             classColor: 'bg-teal',
-            textColor: 'text-success',
-            appCreditRemarks: `Resubmit your application`,
         },
     ];
 
@@ -67,7 +54,7 @@ $(async function () {
 
                 // Greeting
                 // $(`[id="user_first_name"]`).html(data.ApplicantFirstName);
-                //
+                //  
 
                 $(`[id="status_contract"]`).addClass(selectedColor);
                 $(`[id="status_contract"]`).html(data.ApplicationStatus || "No Application");
@@ -77,10 +64,6 @@ $(async function () {
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
                 $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
-                $('#timeline_refNo').prop("hidden", data.Code !== "------");
-                $('#simplebarWrapper').prop("hidden", data.Code === "------");
-
-                console.log(data.Code);
                 let appStatus = data.Stage || "No Application";
                 let appStatusRemarks = "Kindly proceed submitting an application";
                 let statusColor = `secondary`;
@@ -108,8 +91,6 @@ $(async function () {
                 $(`[id="beneficiary_sidecard"]`).addClass(`bg-${statusColor}`);
                 $(`[id="application_status"]`).addClass(`text-${statusColor}`);
                 $(`[id="beneficiary_sidecard"] [id="beneficiary_sidecard_text"]`).html(appStatus);
-
-                $(`[id="application_status_label"]`).html(data.Stage ? "Your application is currently at" : "Your application status is");
                 $(`[id="application_status"]`).html(appStatus);
                 $(`[id="application_status_remarks"]`).html(appStatusRemarks);
 
@@ -117,42 +98,31 @@ $(async function () {
                 $(`[id="credit_history_status"]`).removeClass('text-success');
                 $(`[id="credit_history_remarks"]`).removeClass('text-muted');
 
-                if ([2, 9].includes(data.ApprovalStatus)) {
+                if ([3, 5].includes(data.ApproverRoleId) && [2, 9].includes(data.ApprovalStatus)) {
                     $(`[id="credit_history_status"]`).addClass('text-danger');
-                    //$(`[id="credit_history_remarks"]`).addClass('text-danger');
+                    $(`[id="credit_history_remarks"]`).addClass('text-danger');
 
                     let roleMessage = {
                         3: "Deferred by Pag-IBIG",
                         5: "Deferred by Developer"
                     };
 
-                    console.log(data.ApproverId);
-
-                    $(`[id="credit_history_status"]`).html(roleMessage[data.ApproverId]);
+                    $(`[id="credit_history_status"]`).html(roleMessage[data.ApproverRoleId]);
                     $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
                 }
                 else if (!data.ApproverRoleId && data.ApprovalStatus === 0) {
                     $(`[id="credit_history_status"]`).addClass('text-secondary');
                     $(`[id="credit_history_remarks"]`).addClass('text-secondary');
 
+
                     $(`[id="credit_history_status"]`).html("In Draft");
                     $(`[id="credit_history_remarks"]`).html("Kindly complete and submit requirements");
-                } else if (!data.ApproverRoleId && data.ApprovalStatus === null) {
-                    $('[id="credit_history_label"]').html("Your credit history has not been processed yet");
-                    $('[id="credit_history_status"]').html("No Application found");
-                    $('[id="credit_history_remarks"]').html("Kindly proceed submitting an application");
-                } else if (!data.ApproverRoleId && data.ApprovalStatus === 1) {
-                    $('[id="credit_history_label"]').html("Your credit history is waiting for approval");
-                    $('[id="credit_history_status"]').html("Application Submitted");
-                    $('[id="credit_history_remarks"]').html("A Developer will review your eligibilty shortly");
-                } else if (!data.ApproverRoleId && data.ApprovalStatus === 5 || 10) {
-                    $('[id="credit_history_label"]').html("Your credit history has just been");
-                    $('[id="credit_history_status"]').html("Withdrawn");
-                    $('[id="credit_history_remarks"]').html("You have Withdrawn your application");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
+
+
             },
             complete: function (e) {
                 // remove dark overlay
@@ -165,32 +135,33 @@ $(async function () {
             url: baseUrl + 'Applicants/GetTimelineStatus',
             method: "GET",
             beforeSend: function (e) {
+
             },
             success: function (data) {
                 /*
                     // bg-primary
                     // Submitted (1), Post Submitted (6)
-
+            
                     // bg-secondary
                     // Draft (0)
-
+            
                     // bg-danger
                     // Withdrawn (2), Disqualified (9)
-
+            
                     // bg-lightgreen
                     // Developer Verified (3), Developer Confirmed (7)
-
+            
                     // bg-darkgreen
                     // Pag-IBIG Verified (4), Pag-IBIG Confirmed (8)
-
+            
                     // bg-warning
                     // Withdrawn (5), Discontinued (10)
-
+            
                     // bg-teal
                     // Discontinued (11)
                 */
                 /*
-
+                
                      1: `[id="timeline1"]`, // submitted
                      2: `[id="timeline1"]`, // withdrawn
                      3: `[id="timeline2"]`, // developer verified
@@ -198,19 +169,22 @@ $(async function () {
                      5: `[id="timeline4"]`, // submitted (2nd stage)
                      6: `[id="timeline4"]`, // submitted (2nd stage)
                      7: `[id="timeline5"]`, // developer approval
-                     8: `[id="timeline6"]`, //
+                     8: `[id="timeline6"]`, // 
                      7: `[id="timeline7"]`,
                      8: `[id="timeline8"]`,
                 */
 
                 let classColorList = ["text-info", "text-warning", "text-danger"];
 
+
                 for (var index in data) {
                     let selectedData = data[index];
+
+                    console.log(selectedData);
                     //console.log(selectedData);
                     //let color = classColors.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
 
-                    if (selectedData.ApprovalStatusNumber == 1) {
+                    if (selectedData.ApprovalStatusNumber === 1) {
                         // Submitted, Stage 1
                         $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
                         $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
@@ -331,76 +305,28 @@ $(async function () {
 
                     // Withdrawn by Beneficiary, Stage 1
                     if (selectedData.ApprovalStatusNumber === 5) {
+
                     }
 
                     // Withdrawn by Beneficiary, Stage 2
                     if (selectedData.ApprovalStatusNumber === 10) {
+
                     }
+
+
+
                 }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
+
+
             },
             complete: function (e) {
                 // remove dark overlay
+
             }
         });
     }
-
-    var timeline = await getBeneficiaryTimeline();
-
-    for (var item of timeline) {
-        loadApplicationTimeline(item);
-    }
 });
-
-function loadApplicationTimeline(itemObj = {}) {
-    let count = $('.timeline-item').length;
-
-    let applicationStatus = [
-        {
-            approvalStatusNumbers: [5, 10],
-            color: 'warning',
-            iconStatus: 'minus-circle',
-        },
-        {
-            approvalStatusNumbers: [2, 9],
-            color: 'danger',
-            iconStatus: 'times-circle',
-        },
-        {
-            approvalStatusNumbers: [0, 1, 3, 4, 6, 7, 8, 11],
-            color: 'info',
-            iconStatus: 'check-circle',
-        },
-    ];
-
-    let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
-
-    let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
-
-    let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
-                        <div>
-                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
-                        </div>
-                        <div class="timeline-item-info">
-                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
-                            <p class="mb-0">${itemObj.Stage}</p>
-                            <p>
-                                <small class="text-muted timeline-date">${formattedDate}</small>
-                            </p>
-                        </div>
-                    </div>`;
-
-    $('.timeline-alt').append(itemToAdd);
-}
-
-async function getBeneficiaryTimeline() {
-    const response = await $.ajax({
-        url: baseUrl + "Applicants/GetTimelineStatus",
-        method: 'get',
-        dataType: 'json'
-    });
-
-    return response;
-}
