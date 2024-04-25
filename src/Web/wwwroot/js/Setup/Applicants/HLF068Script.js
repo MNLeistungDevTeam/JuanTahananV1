@@ -527,6 +527,7 @@ $(function () {
         valueField: 'Id',
         labelField: 'Description',
         searchField: 'Description',
+        placeholder: "Select Property Type...",
         preload: true,
         search: false,
         load: function (query, callback) {
@@ -544,7 +545,6 @@ $(function () {
                 }
             });
         },
-
         render: {
             item: function (item, escape) {
                 return ("<div>" +

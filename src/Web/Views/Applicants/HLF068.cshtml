@@ -9,7 +9,6 @@
 
 
 }
-
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -265,7 +264,7 @@
                                 <div class="position-relative">
                                     <label asp-for="CollateralInformationModel.PropertyTypeId" class="form-label fw-normal"></label>
                                     <select asp-for="CollateralInformationModel.PropertyTypeId" class="rounded-4" data-value="@Model.CollateralInformationModel.PropertyTypeId">
-                                        <option value="">Select Property Type ...</option>
+                                        <option></option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
                                 </div>
