@@ -87,19 +87,18 @@ BEGIN
 	SET IDENTITY_INSERT [dbo].SubDocument ON
 INSERT INTO [dbo].[SubDocument] ([Id], DocumentTypeId, [Type], ParentId, DateCreated, DateModified)
 VALUES 
-    (1, 26, 1, 2, GETDATE(), NULL),
-    (2, 27, 2, 2, GETDATE(), NULL), 
-    (3, 28, 2, 2, GETDATE(), NULL), 
-    (4, 29, 2, 2, GETDATE(), NULL), 
-    (5, 30, 2, 2, GETDATE(), NULL), 
-    (6, 31, 2, 2, GETDATE(), NULL), 
-    (7, 32, 2, 2, GETDATE(), NULL), 
-    (8, 33, 2, 2, GETDATE(), NULL), 
-    (9, 34, 2, 2, GETDATE(), NULL,), 
-    (10, 35, 3, 2, GETDATE(), NULL,); 
+    (1, 27, 1, 2, GETDATE(), NULL), 
+    (2, 28, 2, 2, GETDATE(), NULL), 
+    (3, 29, 2, 2, GETDATE(), NULL), 
+    (4, 30, 2, 2, GETDATE(), NULL), 
+    (5, 31, 2, 2, GETDATE(), NULL), 
+    (6, 32, 2, 2, GETDATE(), NULL), 
+    (7, 33, 2, 2, GETDATE(), NULL), 
+    (8, 34, 2, 2, GETDATE(), NULL), 
+    (9, 35, 3, 2, GETDATE(), NULL); 
 
  
-SET IDENTITY_INSERT [dbo].DocumentVerification OFF
+SET IDENTITY_INSERT [dbo].SubDocument OFF
 
 END
 GO 
