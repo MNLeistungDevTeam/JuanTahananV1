@@ -1497,11 +1497,12 @@ $(function () {
                     }
 
                     else {
-                        var link = "Applicants/Beneficiary";
-                        // Beneficiary
-                        if (roleId != 4) {
-                            link = "Applicants/ApplicantRequests";
-                        }
+                        var link = "Applicants/Details/" + response;
+
+                        //// Beneficiary
+                        //if (roleId != 4) {
+                        //    link = "Applicants/ApplicantRequests";
+                        //}
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
                             // Redirect to the specified location
@@ -1751,7 +1752,7 @@ $(function () {
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
 
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-        s
+
         if (applicantInfoIdVal != 0) {
             $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
 
