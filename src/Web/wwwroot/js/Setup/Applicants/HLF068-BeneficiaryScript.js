@@ -1667,7 +1667,7 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
-        if (applicantInfoIdVal !== 0) {
+        if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
             $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
