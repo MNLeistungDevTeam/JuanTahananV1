@@ -214,9 +214,21 @@ $(() => {
                         txtStatus += `Kindly proceed to<span class="text-warning"> submit required documents.</span>`;
                     }
 
+                    let roleMessage3 = {
+                        3: `Kindly <span class="text-warning">wait for a Pag-IBIG officer to verify</span> your application.`,
+                        4: `You may now submit required documents for your application.`
+                    };
+
+                    //$(`[id="credit_history_label"]`).html(`Your credit history has`);
                     $(`[id="credit_history_status"]`).html(`${roleMessage[data.ApprovalStatus]} Verified`);
                     $(`[id="credit_history_remarks"]`).html(roleMessage2[data.ApprovalStatus]);
-                    $(`[id="text_status"]`).html(txtStatus);
+
+                    //$(`[id="process_status"]`).html(`recently verified by ${roleMessage[data.ApprovalStatus]}.`);
+                    //$(`[id="process_name"]`).html(`${roleMessage2[data.ApprovalStatus]}.`);
+                    $(`[id="text_status"]`).html(`
+                        Your application has been <span class="fw-bolder text-success">recently verified by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        ${roleMessage3[data.ApprovalStatus]}
+                    `);
                 }
 
                 else if (data.ApprovalStatus === 6) {
@@ -250,18 +262,18 @@ $(() => {
                         8: "Kindly wait for post-approval process"
                     }
 
-                    //let roleMessageTextStatus = {
-                    //    7: "A Pag-IBIG Officer will review your application shortly",
-                    //    8: "Kindly wait for post-approval process"
-                    //}
+                    let roleMessage3 = {
+                        7: `Kindly <span class="text-warning">wait for a Pag-IBIG officer to assess</span> your application.`,
+                        8: `Kindly wait for a <span class="text-success">post-approval process</span>.`
+                    };
 
                     //$(`[id="credit_history_label"]`).html(`Your credit history has`);
                     $(`[id="credit_history_status"]`).html(`${roleMessage[data.ApprovalStatus]} Approved`);
                     $(`[id="credit_history_remarks"]`).html(roleMessage2[data.ApprovalStatus]);
 
                     $(`[id="text_status"]`).html(`
-                        Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>.
-                        <span class="text-warning">${roleMessage2[data.ApprovalStatus]}</span>.
+                        Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        ${roleMessage3[data.ApprovalStatus]}
                     `);
                 } else if ([5, 10].includes(data.ApprovalStatus)) {
                     $(`[id="credit_history_status"]`).addClass('text-warning');
@@ -338,7 +350,7 @@ $(() => {
                     if (selectedData.ApprovalStatusNumber === 1) {
                         // Submitted, Stage 1
                         $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
+                        $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
                         $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
 
                         $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
@@ -456,28 +468,52 @@ $(() => {
 
                     // Withdrawn by Beneficiary, Stage 1
                     if (selectedData.ApprovalStatusNumber === 5) {
-                        // Withdrawn
-                        let timelineId = `timeline${data.length - 1}`;
-                        let timelineItem = $(`#${timelineId}`);
-                        let timelineIcon = timelineItem.find('.timeline-icon');
-                        let timelineItemInfo = timelineItem.find('.timeline-item-info');
+                        if (data[index - 1].ApprovalStatusNumber === 0) {
+                            $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
+                            $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
+                            $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
 
-                        // Update timeline icon
-                        timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
+                            $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
 
-                        // Update timeline item text
-                        timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
+                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                        }
+                        else if (data[index - 1].ApprovalStatusNumber === 1) {
 
-                        // Update timeline item date
-                        timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
+                            console.log('aaaa');
+                            $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
+                            $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
+                            $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                            $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+
+                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                        }
+                        else if (data[index - 1].ApprovalStatusNumber === 3) {
+                            $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle`);
+                            $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
+                            $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                            $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+
+                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                        }
                     }
 
                     // Withdrawn by Beneficiary, Stage 2
                     if (selectedData.ApprovalStatusNumber === 10) {
-                        let timelineId = `timeline${data.length - 1}`;
-                        let timelineItem = $(`#${timelineId}`);
-                        let timelineIcon = timelineItem.find('.timeline-icon');
-                        let timelineItemInfo = timelineItem.find('.timeline-item-info');
+                        // Submitted, Stage 2
+                        $(`[id="timeline4"] .timeline-icon`).removeClass(`far fa-circle`);
+                        $(`[id="timeline4"] .timeline-icon`).removeClass(classColorList);
+                        $(`[id="timeline4"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                        $(`[id="timeline4"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (Second Stage)`);
+
+                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                    }
 
                         // Update timeline icon
                         timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');

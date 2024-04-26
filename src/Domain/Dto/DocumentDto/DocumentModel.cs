@@ -47,7 +47,7 @@ namespace DMS.Domain.Dto.DocumentDto
         #region Display Properties
 
         public string? DocuTypeDesc { get; set; }
-
+     
         #endregion Display Properties
     }
 }

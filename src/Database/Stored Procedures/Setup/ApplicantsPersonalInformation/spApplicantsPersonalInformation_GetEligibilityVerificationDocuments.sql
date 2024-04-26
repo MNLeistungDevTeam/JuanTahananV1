@@ -23,6 +23,7 @@ WITH DocumentDetails AS (
         d.[Name] AS DocumentName,
         d.Size AS DocumentSize,
         d.FileType AS DocumentFileType,
+        dt.ParentId AS DocumentParentId,
         ROW_NUMBER() OVER (PARTITION BY dt.Id ORDER BY d.DateCreated) AS DocumentSequence,
         COUNT(*) OVER (PARTITION BY dt.Id) AS DocumentCount
     FROM 
@@ -34,16 +35,22 @@ WITH DocumentDetails AS (
 )
 
 SELECT 
-    DocumentTypeId,
-    DocumentId,
-    DocumentTypeName,
-    DocumentLocation,
-    DocumentName,
-    DocumentSize,
-    DocumentFileType,
-    CASE WHEN DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY DocumentTypeId ORDER BY DocumentId) END AS DocumentSequence
+    dd.DocumentTypeId,
+    dd.DocumentParentId,
+    dd.DocumentId,
+    dd.DocumentTypeName,
+    dd.DocumentLocation,
+    dd.DocumentName,
+    dd.DocumentSize,
+    dd.DocumentFileType,
+    CASE WHEN dd.DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY dd.DocumentTypeId ORDER BY dd.DocumentId) END AS DocumentSequence,
+    CASE 
+        WHEN dd.DocumentParentId IS NOT NULL THEN 'Yes' 
+        ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END
+    END AS HasParentId,
+    CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END AS HasSubdocument
 FROM 
-    DocumentDetails;
+    DocumentDetails dd;
 
 
 
