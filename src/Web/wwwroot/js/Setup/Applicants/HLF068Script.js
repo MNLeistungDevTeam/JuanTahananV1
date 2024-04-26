@@ -1134,8 +1134,14 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }                                                            //Developer                                                                    //Pag-ibig                                                                      //LGU
-            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
+            }
+
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || //Developer
+                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || //Pag-ibig
+                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2 || //LGU
+                currentFormName == "form3" && applicantInfoIdVal == 0 // Approval Setup
+                )
+            {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -1145,6 +1151,7 @@ $(function () {
                 console.log('trigger');
                 return;
             }
+
 
             //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
             //}
@@ -1393,6 +1400,21 @@ $(function () {
             } else {
                 $(this).removeClass('is-invalid');
                 $(this).addClass('was-validated');
+            }
+        });
+
+        // Checks the radio button if valid class exists
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
+
+                isValid = false;
+            } else {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
             }
         });
 
@@ -1773,7 +1795,7 @@ $(function () {
         else if (encodedStageVal == 2) {
             $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true);
 
-            $('#rdo_aplCompletion').trigger("click");
+            $('#rdo_aplCompletion').click();
         }
     }
     //#endregion
