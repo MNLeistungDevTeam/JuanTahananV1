@@ -63,10 +63,6 @@
 
 
 
-
-
-
-
                     <div class="tab-pane" id="loanparticulars">
 
                         <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.EncodedStage" value="@Model.ApplicantsPersonalInformationModel.EncodedStage">
@@ -652,7 +648,7 @@
                                         <div class="position-relative">
                                             <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                             <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                <option value="">Select HomeOwnership ... </option>
+                                                <option value="">Select Home Ownership ... </option>
                                                 <option value="Company">Company</option>
                                                 <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
                                                 <option value="Rented">Rented</option>

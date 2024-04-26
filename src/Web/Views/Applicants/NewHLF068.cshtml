@@ -24,6 +24,7 @@
 <!-- end page title -->
 
 
+
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
@@ -59,10 +60,6 @@
 
 
                 <form id="frm_hlf068" method="post" asp-action="SaveHLF068" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-
-
-
-
 
 
 
@@ -263,7 +260,7 @@
                                 <div class="position-relative">
                                     <label asp-for="CollateralInformationModel.PropertyTypeId" class="form-label fw-normal"></label>
                                     <select asp-for="CollateralInformationModel.PropertyTypeId" class="rounded-4" data-value="@Model.CollateralInformationModel.PropertyTypeId">
-                                        <option value="">Select Property Type ...</option>
+                                        <option></option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
                                 </div>
@@ -651,7 +648,7 @@
                                         <div class="position-relative">
                                             <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                             <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                <option value="">Select HomeOwnership ... </option>
+                                                <option value="">Select Home Ownership ... </option>
                                                 <option value="Company">Company</option>
                                                 <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
                                                 <option value="Rented">Rented</option>
@@ -1909,19 +1906,19 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3 text-center decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3  decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
+                                                        <input type="number" class="form-control rounded-3 text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
                                                         <span asp-validation-for="Form2PageModel.DateObtained2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
