@@ -86,6 +86,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? DocumentSequence { get; set; }
         public int? ApproverId { get; set; }
         public int? DocumentParentId { get; set; }
+        public int? HasParentId { get; set; }
+        public int? HasSubdocument { get; set; }
 
         #endregion Display Properties
     }

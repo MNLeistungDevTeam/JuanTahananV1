@@ -144,10 +144,9 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html("Review remarks and update your application");
 
                     $(`[id="text_status"]`).html(`
-                        Your application has been <span class="text-danger">${roleMessage[data.ApproverRoleId]}</span>. 
+                        Your application has been <span class="text-danger">${roleMessage[data.ApproverRoleId]}</span>.
                         <span class="text-warning">Review Remarks</span> to see what updates are needed.
                     `);
-
                 }
                 else if (data.ApprovalStatus === null) {
                     // No Record
@@ -159,7 +158,7 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html("Kindly submit an application first");
 
                     $(`[id="text_status"]`).html(`
-                        You have no records submitted yet, 
+                        You have no records submitted yet,
                         kindly submit an initial application first.
                     `);
                 }
@@ -172,7 +171,7 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html("Kindly complete and submit requirements");
 
                     $(`[id="text_status"]`).html(`
-                        Your application is <span class="fw-bolder text-secondary">in draft</span>. 
+                        Your application is <span class="fw-bolder text-secondary">in draft</span>.
                         Kindly <span class="text-warning">submit requirements</span> to proceed.
                     `);
                 }
@@ -188,7 +187,7 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html("Kindly wait for a developer to verify your application");
 
                     $(`[id="text_status"]`).html(`
-                        Your application is <span class="fw-bolder text-primary">recently submitted</span>. 
+                        Your application is <span class="fw-bolder text-primary">recently submitted</span>.
                         Kindly <span class="text-warning">wait for a developer to verify</span> your application.
                     `);
                 }
@@ -198,12 +197,21 @@ $(() => {
 
                     let roleMessage = {
                         3: "Developer",
-                        4: "Pag-IBIG"
+                        4: "Pag-IBIG "
                     };
 
                     let roleMessage2 = {
                         3: "A Pag-IBIG Officer will review your application shortly",
                         4: "Kindly proceed to submit required documents"
+                    };
+
+                    let txtStatus = `Your application has been <span class="fw-bolder text-success">
+                    recently verified by ${roleMessage[data.ApprovalStatus]}${data.ApprovalStatus !== 3 ? " Officer" : ""}</span>. `;
+
+                    if (data.ApprovalStatus === 3) {
+                        txtStatus += `Kindly <span class="text-warning">wait for a ${roleMessage[4]} Officer to verify</span> your application.`;
+                    } else if (data.ApprovalStatus === 4) {
+                        txtStatus += `Kindly proceed to<span class="text-warning"> submit required documents.</span>`;
                     }
 
                     let roleMessage3 = {
@@ -222,6 +230,7 @@ $(() => {
                         ${roleMessage3[data.ApprovalStatus]}
                     `);
                 }
+
                 else if (data.ApprovalStatus === 6) {
                     // Application Submitted for Second Stage
                     $(`[id="credit_history_status"]`).addClass('text-success');
@@ -234,7 +243,7 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html("Kindly wait for a developer to review your application");
 
                     $(`[id="text_status"]`).html(`
-                        Your application is <span class="fw-bolder text-primary">recently submitted</span>. 
+                        Your application is <span class="fw-bolder text-primary">recently submitted</span>.
                         Kindly <span class="text-warning">wait for a developer to assess</span> your second application.
                     `);
                 }
@@ -266,14 +275,19 @@ $(() => {
                         Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>. 
                         ${roleMessage3[data.ApprovalStatus]}
                     `);
+                } else if ([5, 10].includes(data.ApprovalStatus)) {
+                    $(`[id="credit_history_status"]`).addClass('text-warning');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+                    $(`[id="credit_history_label"]`).html(`Your application is now`);
+
+                    $(`[id="credit_history_status"]`).html(`Withdrawn`);
+                    $(`[id="credit_history_remarks"]`).html(`Submit a new application`);
+
+                    $(`[id="text_status"]`).html(`Your application is <span class='fw-bolder text-warning'> withdrawn </span>. Kindly submit an new application.`);
                 }
-
-
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
-
-
             },
             complete: function (e) {
                 // remove dark overlay
@@ -286,33 +300,32 @@ $(() => {
             url: baseUrl + 'Applicants/GetTimelineStatus',
             method: "GET",
             beforeSend: function (e) {
-
             },
             success: function (data) {
                 /*
                     // bg-primary
                     // Submitted (1), Post Submitted (6)
-            
+
                     // bg-secondary
                     // Draft (0)
-            
+
                     // bg-danger
                     // Withdrawn (2), Disqualified (9)
-            
+
                     // bg-lightgreen
                     // Developer Verified (3), Developer Confirmed (7)
-            
+
                     // bg-darkgreen
                     // Pag-IBIG Verified (4), Pag-IBIG Confirmed (8)
-            
+
                     // bg-warning
                     // Withdrawn (5), Discontinued (10)
-            
+
                     // bg-teal
                     // Discontinued (11)
                 */
                 /*
-                
+
                      1: `[id="timeline1"]`, // submitted
                      2: `[id="timeline1"]`, // withdrawn
                      3: `[id="timeline2"]`, // developer verified
@@ -320,13 +333,12 @@ $(() => {
                      5: `[id="timeline4"]`, // submitted (2nd stage)
                      6: `[id="timeline4"]`, // submitted (2nd stage)
                      7: `[id="timeline5"]`, // developer approval
-                     8: `[id="timeline6"]`, // 
+                     8: `[id="timeline6"]`, //
                      7: `[id="timeline7"]`,
                      8: `[id="timeline8"]`,
                 */
 
                 let classColorList = ["text-info", "text-warning", "text-danger"];
-
 
                 for (var index in data) {
                     let selectedData = data[index];
@@ -456,7 +468,6 @@ $(() => {
 
                     // Withdrawn by Beneficiary, Stage 1
                     if (selectedData.ApprovalStatusNumber === 5) {
-                        console.log('aaaa');
                         if (data[index - 1].ApprovalStatusNumber === 0) {
                             $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
                             $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
@@ -504,19 +515,22 @@ $(() => {
                         $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
                     }
 
+                        // Update timeline icon
+                        timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
 
+                        // Update timeline item text
+                        timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
 
+                        // Update timeline item date
+                        timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
+                    }
                 }
-
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
-
-
             },
             complete: function (e) {
                 // remove dark overlay
-
             }
         });
     }

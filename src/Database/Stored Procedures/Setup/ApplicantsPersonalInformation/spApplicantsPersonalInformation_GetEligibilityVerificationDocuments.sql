@@ -43,12 +43,18 @@ SELECT
     dd.DocumentName,
     dd.DocumentSize,
     dd.DocumentFileType,
+    --CASE WHEN dd.DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY dd.DocumentTypeId ORDER BY dd.DocumentId) END AS DocumentSequence,
+    --CASE 
+    --    WHEN dd.DocumentParentId IS NOT NULL THEN 'Yes' 
+    --    ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END
+    --END AS HasParentId,
+    --CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END AS HasSubdocument
     CASE WHEN dd.DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY dd.DocumentTypeId ORDER BY dd.DocumentId) END AS DocumentSequence,
     CASE 
-        WHEN dd.DocumentParentId IS NOT NULL THEN 'Yes' 
-        ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END
+        WHEN dd.DocumentParentId IS NOT NULL THEN '1' 
+        ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN '1' ELSE '0' END 
     END AS HasParentId,
-    CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END AS HasSubdocument
+    CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN '1' ELSE '0' END AS HasSubdocument
 FROM 
     DocumentDetails dd;
 
