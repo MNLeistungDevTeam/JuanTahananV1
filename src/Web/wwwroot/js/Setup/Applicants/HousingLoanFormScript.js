@@ -28,12 +28,6 @@ $(function () {
         time_24hr: true
     });
 
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-9999999-99",
-        placeholder: 'X',
-        clearIncomplete: true
-    });
-
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
@@ -41,9 +35,11 @@ $(function () {
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999-99999",
+        mask: "999-999-999[-9999]",
+
         placeholder: "X",
-        clearIncomplete: true
+
+        //clearIncomplete: true
     });
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
@@ -52,9 +48,6 @@ $(function () {
 
     // Disable 'e', '+', retain '-'
     $('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
-    $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
-    $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
-    $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
 
     // Disable 'e', retain '-', '+'
     //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -253,23 +246,8 @@ $(function () {
     //#region Set Selectize to readonly
     $('#LoanParticularsInformationModel_PurposeOfLoanId-selectized').prop('readonly', true);
     $('#LoanParticularsInformationModel_ModeOfPaymentId-selectized').prop('readonly', true);
-    $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
-    $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_HomeOwnerShip-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_OccupationStatus-selectized').prop('readonly', true);
-    $('#BarrowersInformationModel_PreparedMailingAddress-selectized').prop('readonly', true);
     $('#SpouseModel_OccupationStatus-selectized').prop('readonly', true);
     //#endregion Set Selectize to readonly
-
-    $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
-        if ($(this).val() == 'Rented') {
-            $('#rentalForm').show();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
-        } else {
-            $('#rentalForm').hide();
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
-        }
-    });
 
     $('#LoanParticularsInformationModel_DesiredLoanAmount').on('keydown', function (e) {
         // Reject inputs 'e', '+', '-'
@@ -371,50 +349,6 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     })
-
-    $('.radio-pcRadio input[type="radio"]').on('change', function () {
-        let $inputField = $("[name='Form2PageModel.PendingCase']");
-
-        if ($("#pcRadioBtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
-        }
-    });
-
-    $(".radio-pdRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.PastDue']");
-
-        if ($("#pdRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
-        }
-    });
-
-    $(".radio-bcRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
-
-        if ($("#bcRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
-        }
-    });
-
-    $(".radio-maRbtn input[type='radio']").on('change', function () {
-        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
-
-        if ($("#maRbtn1").is(":checked")) {
-            $inputField.prop('disabled', false).prop('required', true);
-        } else {
-            $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
-        }
-    });
 
     //#endregion
 
@@ -647,9 +581,11 @@ $(function () {
 
     //#region Form2Page
 
+    $(`[name^="Form2PageModel.AccountNumber"]`).inputmask({ regex: "^[A-Z0-9-]*$" });
+
     var sourcePagibigFundVal = $(`[name='Form2PageModel.SourcePagibigFundId']`).attr('data-value');
 
-    var sourePagibigFundDropdown, $sourePagibigFundDropdown;
+    var sourcePagibigFundDropdown, $sourePagibigFundDropdown;
 
     $sourePagibigFundDropdown = $(`[name='Form2PageModel.SourcePagibigFundId']`).selectize({
         valueField: 'Id',
@@ -689,12 +625,12 @@ $(function () {
         },
     });
 
-    sourePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
+    sourcePagibigFundDropdown = $sourePagibigFundDropdown[0].selectize;
 
-    sourePagibigFundDropdown.on('load', function (options) {
-        sourePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
+    sourcePagibigFundDropdown.on('load', function (options) {
+        sourcePagibigFundDropdown.setValue(sourcePagibigFundVal || '');
         //resourceCounter("purposeofloan");
-        sourePagibigFundDropdown.off('load');
+        sourcePagibigFundDropdown.off('load');
     });
 
     // Set values for Form2PageModel_DateOpened fields
@@ -721,9 +657,86 @@ $(function () {
     setDateValue('#Form2PageModel_MaturityDateTime2');
     setDateValue('#Form2PageModel_MaturityDateTime3');
 
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val(null);
+        }
+    });
+
+    $(".radio-pdRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PastDue']");
+
+        if ($("#pdRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val(null);
+        }
+    });
+
+    $(".radio-bcRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.BouncingChecks']");
+
+        if ($("#bcRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val(null);
+        }
+    });
+
+    $(".radio-maRbtn input[type='radio']").on('change', function () {
+        let $inputField = $("[name='Form2PageModel.MedicalAdvice']");
+
+        if ($("#maRbtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.val(null);
+        }
+    });
+
+    $(`[id^="Form2PageModel_TradeTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
+    $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
+        // Reject inputs 'e', '-', '+'
+        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
+        let rejectCodes = ['e', 'E'];
+
+        if ($.inArray(e.key, rejectCodes) > -1) {
+            e.preventDefault(); // Prevent the character from being entered
+        }
+    });
+
     //#endregion
 
     //#region Barrower
+
+    //set selectize to readonly
+    $(`#BarrowersInformationModel_Sex-selectized`).prop('readonly', true);
+    $('#BarrowersInformationModel_MaritalStatus-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_HomeOwnerShip-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_OccupationStatus-selectized').prop('readonly', true);
+    $('#BarrowersInformationModel_PreparedMailingAddress-selectized').prop('readonly', true);
+
+    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+        mask: "99-9999999-99",
+        placeholder: 'X',
+        clearIncomplete: true
+    });
 
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
@@ -747,6 +760,7 @@ $(function () {
     });
 
     var homeOwnershipVal = $("#BarrowersInformationModel_HomeOwnerShip").attr('data-value');
+
     if (homeOwnershipVal == 'Rented') {
         // Adding d-none class if condition is true
         $('#rentalForm').removeClass('d-none');
@@ -754,11 +768,11 @@ $(function () {
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
-            $('#rentalForm').removeClass('d-none');
+            $('#rentalForm').show();
             $('[name="BarrowersInformationModel.MonthlyRent"]').attr('required', true);
         } else {
-            $('#rentalForm').addClass('d-none');
-            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(0);
+            $('#rentalForm').hide();
+            $('[name="BarrowersInformationModel.MonthlyRent"]').removeAttr('required').val(null);
         }
     });
 
@@ -1084,95 +1098,60 @@ $(function () {
         }
     });
 
-    $(`[id^="Form2PageModel_TradeTellNo"]`).on('keydown', function (e) {
-        // Reject inputs 'e', '-', '+'
-        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
-        let rejectCodes = ['e', 'E'];
-
-        if ($.inArray(e.key, rejectCodes) > -1) {
-            e.preventDefault(); // Prevent the character from being entered
-        }
-    });
-
-    $(`[id^="Form2PageModel_CharacterTellNo"]`).on('keydown', function (e) {
-        // Reject inputs 'e', '-', '+'
-        //let rejectCodes = ['KeyE', 'NumpadAdd', 'NumpadSubtract'];
-        let rejectCodes = ['e', 'E'];
-
-        if ($.inArray(e.key, rejectCodes) > -1) {
-            e.preventDefault(); // Prevent the character from being entered
-        }
-    });
-
     //#endregion
 
-    //$('#form2').on('submit', async function (e) {
-    //    e.preventDefault();
-    //    let $loanparticulars = $('#loanparticulars');
-    //    let $collateraldata = $('#collateraldata');
-    //    let $spousedata = $('#spousedata');
-    //    if (!$(this).valid() || !$loanparticulars.valid() || !$collateraldata.valid() || !$spousedata.valid()) {
-    //        return;
-    //    }
-    //    let loanparticulars = $loanparticulars.serializeArray();
-    //    let collateraldata = $collateraldata.serializeArray();
-    //    let spousedata = $spousedata.serializeArray();
-    //    let form2 = $(this).serializeArray();
-    //    let combinedData = {};
-    //    $(loanparticulars.concat(collateraldata, spousedata, form2)).each(function (index, obj) {
-    //        combinedData[obj.name] = obj.value;
-    //    });
+    $(function () {
+        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true).addClass("disabled");
 
-    //    // Use await before the AJAX call
-    //    try {
-    //        await $.ajax({
-    //            type: 'POST',
-    //            url: '/Applicants/SaveHLF068',
-    //            data: combinedData,
-    //            beforeSend: function () {
-    //                loading("Saving Changes...");
-    //            },
-    //            success: async function (response) {
-    //                messageBox("Successfully", "success", true);
+        $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
+        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', true);
+        $('input[type="radio"]').prop('disabled', true);
 
-    //                if (applicantInfoIdVal == 0) {
-    //                    loader.close();
-    //                    setTimeout(function () {
-    //                        window.location.href = "/Applicants/HLF068/" + response;
-    //                    }, 2000);
-    //                }
-    //                else {
-    //                    loader.close();
+        $('#frm_hlf068').find('.selectized').each(function (i, e) {
+            e.selectize.lock();
+        });
 
-    //                    setTimeout(function () {
-    //                        // Redirect to the specified location
-    //                        window.location.href = "/Applicants/ApplicantRequests";
-    //                    }, 2000); // 2000 milliseconds = 2 seconds
-    //                }
-    //            },
-    //            error: async function (jqXHR, textStatus, errorThrown) {
-    //                console.log(jqXHR.responseText);
-    //                messageBox(jqXHR.responseText, "danger", true);
-    //                loader.close();
-    //            }
-    //        });
-    //    } catch (error) {
-    //        // Handle any errors from the AJAX request
-    //        console.log(error);
-    //        // Optionally display an error message
-    //        messageBox("An error occurred during the submission.", "danger", true);
-    //    }
-    //});
+        /*
+        $('.calendarpicker')
+        $('.present-calendar-picker')
+        $(".timepicker")
+        */
 
-    //#region Methods
+        //loadloanParticularInformation(applicantInfoIdVal);
+        //loadSpouseInformation(applicantInfoIdVal);
+        //loadBorrowerInformation(applicantInfoIdVal);
+        //loadCollateralInformation(applicantInfoIdVal);
+        //loadForm2PageInformation(applicantInfoIdVal);
 
+        initializeRadioBtnMisc();
+
+        //disabled the flatpicker
+        //$.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
+        //    elem._flatpickr.set("allowInput", false);
+        //    elem._flatpickr.set("clickOpens", false);
+        //    //elem._flatpickr.set("wrap", true);
+        //});
+
+        // initialize first the selectize before lock
+    });
+
+    //#region Events
     $("#btn_edit").on('click', function () {
         editableFlag = true;
         $(this).addClass("active");
-
+        //$("#frm_hlf068 .selectize").each(function () {
+        //    var selectize = $(this)[0].selectize;
+        //    selectize.lock();
+        //});
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
         $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
+
+        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
+        $('input[type="radio"]').prop('disabled', false);
+
+        //reinitialize miscellaneous radio buttons
+        initializeRadioBtnMisc();
 
         if ($(`[name="BarrowersInformationModel.PresentAddressIsPermanentAddress"]`).prop('checked')) {
             $(`input[name^="BarrowersInformationModel.Present"][type="text"]`).prop('readonly', true);
@@ -1198,38 +1177,9 @@ $(function () {
         window.open(link, '_blank');
     });
 
-    $(function () {
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true);
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").addClass("disabled");
-        $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
-        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', true);
-        $('input[type="radio"]').prop('disabled', true);
+    //#endregion
 
-        /*
-        $('.calendarpicker')
-        $('.present-calendar-picker')
-        $(".timepicker")
-        */
-
-        loadloanParticularInformation(applicantInfoIdVal);
-        loadSpouseInformation(applicantInfoIdVal);
-        loadBorrowerInformation(applicantInfoIdVal);
-        loadCollateralInformation(applicantInfoIdVal);
-        loadForm2PageInformation(applicantInfoIdVal);
-        initializeRadioBtnMisc();
-
-        //disabled the flatpicker
-        //$.each($('.calendarpicker, .timepicker, .present-calendar-picker'), function (i, elem) {
-        //    elem._flatpickr.set("allowInput", false);
-        //    elem._flatpickr.set("clickOpens", false);
-        //    //elem._flatpickr.set("wrap", true);
-        //});
-
-        // initialize first the selectize before lock
-        $('#frm_hlf068').find('.selectized').each(function (i, e) {
-            e.selectize.lock();
-        });
-    });
+    //#region Methods
 
     function loadloanParticularInformation(id) {
         $.ajax({
@@ -1641,46 +1591,46 @@ $(function () {
 
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+
         $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
-        $("[name='Form2PageModel.PendingCase']").prop("disabled",);
 
         // Set checked status for PastDue radio buttons
         $("#pdRbtn1").prop("checked", !!pastDueValue);
-        $("#pdRbtn2").prop("checked", !pastDueValue);
+
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
 
         // Set checked status for BouncingChecks radio buttons
         $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-        $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
 
         // Set checked status for MedicalAdvice radio buttons
         $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-        $("#maRbtn2").prop("checked", !medicalAdviceValue);
+
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+      
+        if (applicantInfoIdVal != 0) {
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+
+            $("#pdRbtn2").prop("checked", !pastDueValue);
+
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+
+            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+        }
+
+        if (encodedStageVal == 1) {
+            $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);
+
+            $('#rdo_creditVerification').prop('checked', true);
+        }
+
+        else if (encodedStageVal == 2) {
+            $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true);
+
+            $('#rdo_aplCompletion').click();
+        }
     }
-
-    $("#btn_edit").on('click', function () {
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
-        $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
-        $('input[type="radio"]').prop('disabled', false);
-
-        $("#frm_hlf068 .selectize").each(function () {
-            var selectize = $(this)[0].selectize;
-            selectize.lock();
-        });
-
-        //reinitialize miscellaneous radio buttons
-        initializeRadioBtnMisc();
-    });
-
-    $("#btn_pdf").on('click', function () {
-        let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
-        let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
-
-        window.open(link, '_blank');
-    });
 
     //#endregion
 });

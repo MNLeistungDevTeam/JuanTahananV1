@@ -1021,18 +1021,19 @@ $(function () {
         $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', false);
         $('#SpouseModel_SpouseEmploymentZipCode').prop('required', false);
 
-        if (value !== 'Married')
+        if (value !== 'Married') {
             return;
-
-        $('#SpouseModel_FirstName').prop('required', true);
-        $('#SpouseModel_LastName').prop('required', true);
-        $('#SpouseModel_Citizenship').prop('required', true);
-        $('#SpouseModel_BirthDate').prop('required', true);
-        $('#SpouseModel_PagibigMidNumber').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
+        }
+        else {
+            $('#SpouseModel_FirstName').prop('required', true);
+            $('#SpouseModel_LastName').prop('required', true);
+            $('#SpouseModel_Citizenship').prop('required', true);
+            $('#SpouseModel_BirthDate').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
+        }
     });
 
     //#region Set Selectize to readonly
