@@ -226,7 +226,7 @@ $(() => {
                     //$(`[id="process_status"]`).html(`recently verified by ${roleMessage[data.ApprovalStatus]}.`);
                     //$(`[id="process_name"]`).html(`${roleMessage2[data.ApprovalStatus]}.`);
                     $(`[id="text_status"]`).html(`
-                        Your application has been <span class="fw-bolder text-success">recently verified by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        Your application has been <span class="fw-bolder text-success">recently verified by ${roleMessage[data.ApprovalStatus]}</span>.
                         ${roleMessage3[data.ApprovalStatus]}
                     `);
                 }
@@ -272,7 +272,7 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html(roleMessage2[data.ApprovalStatus]);
 
                     $(`[id="text_status"]`).html(`
-                        Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>. 
+                        Your application has been <span class="fw-bolder text-success">recently approved by ${roleMessage[data.ApprovalStatus]}</span>.
                         ${roleMessage3[data.ApprovalStatus]}
                     `);
                 } else if ([5, 10].includes(data.ApprovalStatus)) {
@@ -479,7 +479,6 @@ $(() => {
                             $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
                         }
                         else if (data[index - 1].ApprovalStatusNumber === 1) {
-
                             console.log('aaaa');
                             $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
                             $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
@@ -515,17 +514,17 @@ $(() => {
                         $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
                     }
 
-                        // Update timeline icon
-                        timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
+                    // Update timeline icon
+                    timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
 
-                        // Update timeline item text
-                        timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
+                    // Update timeline item text
+                    timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
 
-                        // Update timeline item date
-                        timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
-                    }
+                    // Update timeline item date
+                    timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
                 }
             },
+
             error: function (jqXHR, textStatus, errorThrown) {
                 // Error loading first row
             },
