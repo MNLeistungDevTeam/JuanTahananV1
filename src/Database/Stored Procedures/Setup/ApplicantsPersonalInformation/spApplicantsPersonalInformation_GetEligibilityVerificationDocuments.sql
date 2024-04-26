@@ -14,6 +14,7 @@ AS
  --WHERE dt.Id IN (SELECT DocumentTypeId FROM  DocumentVerification WHERE [Type] = 1) --verification type documents
 
  
+ 
 WITH DocumentDetails AS (
     SELECT 
         dt.Id AS DocumentTypeId,
@@ -24,16 +25,27 @@ WITH DocumentDetails AS (
         d.Size AS DocumentSize,
         d.FileType AS DocumentFileType,
         dt.ParentId AS DocumentParentId,
+        CASE WHEN bi.OccupationStatus = 'Employed' THEN 1 
+             WHEN bi.OccupationStatus = 'Self-Employed' THEN 2 
+             WHEN bi.OccupationStatus = 'Others' THEN 3 
+        END OccupationType,
         ROW_NUMBER() OVER (PARTITION BY dt.Id ORDER BY d.DateCreated) AS DocumentSequence,
         COUNT(*) OVER (PARTITION BY dt.Id) AS DocumentCount
     FROM 
         DocumentType dt
     LEFT JOIN 
         Document d ON d.DocumentTypeId = dt.Id AND d.ReferenceNo = @applicantCode
+    LEFT JOIN ApplicantsPersonalInformation apl on apl.Code = @applicantCode
+    LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
+
+
     WHERE 
         dt.Id IN (SELECT DocumentTypeId FROM DocumentVerification WHERE [Type] = 1) --verification type documents
+
 )
 
+
+SELECT * FROM (
 SELECT 
     dd.DocumentTypeId,
     dd.DocumentParentId,
@@ -43,20 +55,23 @@ SELECT
     dd.DocumentName,
     dd.DocumentSize,
     dd.DocumentFileType,
-    --CASE WHEN dd.DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY dd.DocumentTypeId ORDER BY dd.DocumentId) END AS DocumentSequence,
-    --CASE 
-    --    WHEN dd.DocumentParentId IS NOT NULL THEN 'Yes' 
-    --    ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END
-    --END AS HasParentId,
-    --CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN 'Yes' ELSE 'No' END AS HasSubdocument
+	dd.OccupationType,
+	CASE WHEN  sd.[Type] is null THEN dd.OccupationType
+	ELSE sd.[Type]
+	END [Type],
+ 
     CASE WHEN dd.DocumentId IS NULL THEN NULL ELSE ROW_NUMBER() OVER (PARTITION BY dd.DocumentTypeId ORDER BY dd.DocumentId) END AS DocumentSequence,
     CASE 
         WHEN dd.DocumentParentId IS NOT NULL THEN '1' 
-        ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId) THEN '1' ELSE '0' END 
+        ELSE CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.DocumentTypeId = dd.DocumentTypeId And dd.OccupationType = sd.[Type]) THEN '1' ELSE '0' END 
     END AS HasParentId,
     CASE WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN '1' ELSE '0' END AS HasSubdocument
 FROM 
-    DocumentDetails dd;
+    DocumentDetails dd
+	LEFT JOIN SubDocument sd ON sd.DocumentTypeId = dd.DocumentTypeId 
+	) main
+ 
+ WHERE main.[Type] = main.OccupationType
 
 
 
