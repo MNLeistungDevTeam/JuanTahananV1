@@ -5,7 +5,7 @@ const roleId = $("#txt_roleId").val();
 $(function () {
     var telNoArray = [];
     var itiFlag = false;
- 
+
     //#region Initialization
 
     $(".selectize").selectize({
@@ -324,15 +324,21 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').prop('disabled', true);
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
+    })
+
+    $('.radio-pcRadio input[type="radio"]').on('change', function () {
+        let $inputField = $("[name='Form2PageModel.PendingCase']");
+
+        if ($("#pcRadioBtn1").is(":checked")) {
+            $inputField.prop('disabled', false).prop('required', true);
+        } else {
+            $inputField.prop('disabled', true).prop('required', false);
+        }
     });
 
     //#endregion
 
-    //#endregion
-
     //#region Collateral
-
-    // Disable 'e', '+', and '-' - not yet
 
     $(`#CollateralInformationModel_TctOctCctNumber`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
     $(`[name="CollateralInformationModel.TaxDeclrationNumber"]`).inputmask({ regex: `^\\d(?:-?\\d+)*$` });
@@ -641,6 +647,7 @@ $(function () {
     setDateValue('#Form2PageModel_MaturityDateTime2');
     setDateValue('#Form2PageModel_MaturityDateTime3');
 
+    //#region miscellaneous Rbtn Events
     $('.radio-pcRadio input[type="radio"]').on('change', function () {
         let $inputField = $("[name='Form2PageModel.PendingCase']");
 
@@ -648,7 +655,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -659,7 +665,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -670,7 +675,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -681,9 +685,9 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
+    //#endregion miscellaneous Rbtn Events
 
     //#endregion
 
@@ -1392,6 +1396,15 @@ $(function () {
                 formData.set(itiElement.a.name, itiElement.getNumber());
             }
 
+            var miscElem = ["PendingCase", "PastDue", "BouncingChecks", "MedicalAdvice"];
+
+            for (let misc of miscElem) {
+                var fieldName = $(`[name="Form2PageModel.${misc}"]`);
+                if (fieldName.prop('disabled')) {
+                    formData.set(fieldName.attr('name'), "");
+                }
+            }
+
             $.ajax({
                 url: $(this).attr("action"),
                 method: $(this).attr("method"),
@@ -1654,35 +1667,30 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-
-        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
-
-        // Set checked status for PastDue radio buttons
-        $("#pdRbtn1").prop("checked", !!pastDueValue);
-
-        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
-
-        // Set checked status for BouncingChecks radio buttons
-        $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-
-        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
-
-        // Set checked status for MedicalAdvice radio buttons
-        $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-
-        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-
-        if (applicantInfoIdVal != 0) {
+        if (applicantInfoIdVal !== 0) {
+            // Set checked status for PendingCase radio buttons
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
             $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
 
+            // Set checked status for PastDue radio buttons
+            $("#pdRbtn1").prop("checked", !!pastDueValue);
             $("#pdRbtn2").prop("checked", !pastDueValue);
 
+            // Set checked status for BouncingChecks radio buttons
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
             $("#bcRbtn2").prop("checked", !bouncingChecksValue);
 
+            // Set checked status for MedicalAdvice radio buttons
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
         }
+
+        // Set miscellanous input to disable
+        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
+
     //#endregion
 });
