@@ -29,6 +29,15 @@ INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedBy
 INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES  (24, N'HLF1046', N'Authority to Deduct 4PH', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
 INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES  (25, N'HLF1069', N'Conformity Non-relatives 4PH', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL)
 INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById]) VALUES  (26, N'WLF252', N'Buyer Confirmation Form', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (27, N'PYSL', N'Payslip', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (28, N'COE', N'Certificate Of Employment', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (29, N'ITR', N'Latest Income Tax Return', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (30, N'COM-VCHER', N'Commision Voucher', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (31, N'BS', N'Bank Statement for the last 12 Months', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (32, N'CLC-TD', N'Copy of Lease Contact and Tax Declaration', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (33, N'CTC-TF', N'Certified True Copy of Transport Franchise', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (34, N'COENGMNT', N'Certificate of Engagement', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
+INSERT [dbo].[DocumentType] ([Id],Code, [Description], [DateCreated], [CreatedById], [DateModified], [ModifiedById], [DateDeleted], [DeletedById],[ParentId]) VALUES  (35, N'', N'Statement of pressumed income to be certified by the barangay', CAST(N'2024-02-24T08:35:48.1374701' AS DateTime2), 1, NULL, NULL, NULL, NULL,2);
 SET IDENTITY_INSERT [dbo].[DocumentType] OFF
 END
 GO
@@ -53,7 +62,41 @@ VALUES
     (10, 23, 2, 1, GETDATE(), NULL, NULL),
     (11, 24, 2, 1, GETDATE(), NULL, NULL), 
     (12, 25, 2, 1, GETDATE(), NULL, NULL), 
-    (13, 26, 2, 1, GETDATE(), NULL, NULL);
+    (13, 26, 2, 1, GETDATE(), NULL, NULL),
+    (14, 27, 1, 1, GETDATE(), NULL, NULL), 
+    (15, 28, 1, 1, GETDATE(), NULL, NULL), 
+    (16, 29, 1, 1, GETDATE(), NULL, NULL), 
+    (17, 30, 1, 1, GETDATE(), NULL, NULL), 
+    (18, 31, 1, 1, GETDATE(), NULL, NULL), 
+    (19, 32, 1, 1, GETDATE(), NULL, NULL), 
+    (20, 33, 1, 1, GETDATE(), NULL, NULL), 
+    (21, 34, 1, 1, GETDATE(), NULL, NULL), 
+    (22, 35, 1, 1, GETDATE(), NULL, NULL); 
+
+ 
+SET IDENTITY_INSERT [dbo].DocumentVerification OFF
+
+END
+GO 
+
+
+
+
+IF NOT EXISTS (SELECT 1 FROM [dbo].SubDocument)
+BEGIN
+	SET IDENTITY_INSERT [dbo].SubDocument ON
+INSERT INTO [dbo].[SubDocument] ([Id], DocumentTypeId, [Type], ParentId, DateCreated, DateModified)
+VALUES 
+    (1, 26, 1, 2, GETDATE(), NULL),
+    (2, 27, 2, 2, GETDATE(), NULL), 
+    (3, 28, 2, 2, GETDATE(), NULL), 
+    (4, 29, 2, 2, GETDATE(), NULL), 
+    (5, 30, 2, 2, GETDATE(), NULL), 
+    (6, 31, 2, 2, GETDATE(), NULL), 
+    (7, 32, 2, 2, GETDATE(), NULL), 
+    (8, 33, 2, 2, GETDATE(), NULL), 
+    (9, 34, 2, 2, GETDATE(), NULL,), 
+    (10, 35, 3, 2, GETDATE(), NULL,); 
 
  
 SET IDENTITY_INSERT [dbo].DocumentVerification OFF
