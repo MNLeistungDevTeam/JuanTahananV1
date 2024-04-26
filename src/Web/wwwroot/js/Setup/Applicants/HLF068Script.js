@@ -35,19 +35,37 @@ $(function () {
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999-99999",
+        mask: "999-999-999[-9999]",
         placeholder: "X",
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     //// Disable 'e', '+', retain '-'
     //$('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
 
-    $('.codeInputMask').inputmask({ regex: "^[A-Za-df-zA-DF-Z0-9-]*$" });
+    $('.codeInputMask').inputmask({
+        mask: "*{1,10}",
+        regex: "^[A-Za-df-zA-DF-Z0-9]*-?[A-Za-df-zA-DF-Z0-9]*$",
+        definitions: {
+            '*': {
+                validator: function (chrs, buffer, pos, strict, opts) {
+                    // Disallow '-' if it's the first character
+                    if (pos === 0 && chrs === '-') {
+                        return false;
+                    }
+                    else if (pos > 0 && chrs === '-') {
+                        return !(buffer.buffer.includes('-'));
+                    }
+
+                    return true;
+                }
+            }
+        }
+    });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
@@ -70,6 +88,10 @@ $(function () {
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
     encodedStatusdropDown.lock();
+
+    $('.codeInputMask').on('input', function (e) {
+        
+    });
 
     $('#ApplicantsPersonalInformationModel_EncodedPartialStatus').on('change', function () {
         // Your onchange event handling logic here
@@ -505,6 +527,7 @@ $(function () {
         valueField: 'Id',
         labelField: 'Description',
         searchField: 'Description',
+        placeholder: "Select Property Type...",
         preload: true,
         search: false,
         load: function (query, callback) {
@@ -522,7 +545,6 @@ $(function () {
                 }
             });
         },
-
         render: {
             item: function (item, escape) {
                 return ("<div>" +
@@ -680,9 +702,9 @@ $(function () {
     setDateValue('#BarrowersInformationModel_BirthDate');
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-9999999-99",
+        mask: "99-99999[9][9]-99",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
