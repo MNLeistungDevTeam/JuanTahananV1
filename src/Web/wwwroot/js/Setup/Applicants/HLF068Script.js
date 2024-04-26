@@ -35,19 +35,37 @@ $(function () {
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999-99999",
+        mask: "999-999-999[-9999]",
         placeholder: "X",
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     //// Disable 'e', '+', retain '-'
     //$('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
 
-    $('.codeInputMask').inputmask({ regex: "^[A-Za-df-zA-DF-Z0-9-]*$" });
+    $('.codeInputMask').inputmask({
+        mask: "*{1,10}",
+        regex: "^[A-Za-df-zA-DF-Z0-9]*-?[A-Za-df-zA-DF-Z0-9]*$",
+        definitions: {
+            '*': {
+                validator: function (chrs, buffer, pos, strict, opts) {
+                    // Disallow '-' if it's the first character
+                    if (pos === 0 && chrs === '-') {
+                        return false;
+                    }
+                    else if (pos > 0 && chrs === '-') {
+                        return !(buffer.buffer.includes('-'));
+                    }
+
+                    return true;
+                }
+            }
+        }
+    });
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
@@ -70,6 +88,9 @@ $(function () {
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
     encodedStatusdropDown.lock();
+
+    $('.codeInputMask').on('input', function (e) {
+    });
 
     $('#ApplicantsPersonalInformationModel_EncodedPartialStatus').on('change', function () {
         // Your onchange event handling logic here
@@ -505,6 +526,7 @@ $(function () {
         valueField: 'Id',
         labelField: 'Description',
         searchField: 'Description',
+        placeholder: "Select Property Type...",
         preload: true,
         search: false,
         load: function (query, callback) {
@@ -522,7 +544,6 @@ $(function () {
                 }
             });
         },
-
         render: {
             item: function (item, escape) {
                 return ("<div>" +
@@ -628,6 +649,8 @@ $(function () {
     setDateValue('#Form2PageModel_MaturityDateTime2');
     setDateValue('#Form2PageModel_MaturityDateTime3');
 
+    //#region miscellaneous Rbtn Events
+
     $('.radio-pcRadio input[type="radio"]').on('change', function () {
         let $inputField = $("[name='Form2PageModel.PendingCase']");
 
@@ -667,6 +690,7 @@ $(function () {
             $inputField.prop('disabled', true).prop('required', false);
         }
     });
+    //#endregion miscellaneous Rbtn Events
 
     //#endregion
 
@@ -676,9 +700,9 @@ $(function () {
     setDateValue('#BarrowersInformationModel_BirthDate');
 
     $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-9999999-99",
+        mask: "99-99999[9][9]-99",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
@@ -996,18 +1020,19 @@ $(function () {
         $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', false);
         $('#SpouseModel_SpouseEmploymentZipCode').prop('required', false);
 
-        if (value !== 'Married')
+        if (value !== 'Married') {
             return;
-
-        $('#SpouseModel_FirstName').prop('required', true);
-        $('#SpouseModel_LastName').prop('required', true);
-        $('#SpouseModel_Citizenship').prop('required', true);
-        $('#SpouseModel_BirthDate').prop('required', true);
-        $('#SpouseModel_PagibigMidNumber').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
-        $('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
+        }
+        else {
+            $('#SpouseModel_FirstName').prop('required', true);
+            $('#SpouseModel_LastName').prop('required', true);
+            $('#SpouseModel_Citizenship').prop('required', true);
+            $('#SpouseModel_BirthDate').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
+            //$('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
+        }
     });
 
     //#region Set Selectize to readonly
@@ -1480,11 +1505,12 @@ $(function () {
                     }
 
                     else {
-                        var link = "Applicants/Beneficiary";
-                        // Beneficiary
-                        if (roleId != 4) {
-                            link = "Applicants/ApplicantRequests";
-                        }
+                        var link = "Applicants/Details/" + response;
+
+                        //// Beneficiary
+                        //if (roleId != 4) {
+                        //    link = "Applicants/ApplicantRequests";
+                        //}
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
                             // Redirect to the specified location
@@ -1715,35 +1741,29 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
-        let code = $('#ApplicantsPersonalInformationModel_Code').val() || null;
-        console.log(code);
-
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        //$("#pcRadioBtn2").prop("checked", !pendingCaseValue);
-        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
-
-        // Set checked status for PastDue radio buttons
-        $("#pdRbtn1").prop("checked", !!pastDueValue);
-        // $("#pdRbtn2").prop("checked", !pastDueValue);
-        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
-
-        // Set checked status for BouncingChecks radio buttons
-        $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-        // $("#bcRbtn2").prop("checked", !bouncingChecksValue);
-        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
-
-        // Set checked status for MedicalAdvice radio buttons
-        $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-        //$("#maRbtn2").prop("checked", !medicalAdviceValue);
-        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-
-        if (code !== null) {
+        if (applicantInfoIdVal !== 0) {
+            // Set checked status for PendingCase radio buttons
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
             $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+
+            // Set checked status for PastDue radio buttons
+            $("#pdRbtn1").prop("checked", !!pastDueValue);
             $("#pdRbtn2").prop("checked", !pastDueValue);
+
+            // Set checked status for BouncingChecks radio buttons
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
             $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+
+            // Set checked status for MedicalAdvice radio buttons
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
         }
+
+        // Set miscellanous input to disable
+        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
 
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);
@@ -1754,7 +1774,7 @@ $(function () {
         else if (encodedStageVal == 2) {
             $('input[name="customRadio1"][data-name="Credit Verification"]').prop('checked', true);
 
-            $('#rdo_aplCompletion').click();
+            $('#rdo_aplCompletion').trigger("click");
         }
     }
     //#endregion

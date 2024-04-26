@@ -74,7 +74,7 @@
                             <div class="mx-auto d-none" style="width: 140px; height: 140px; font-size: 50px;"><span class="auth-initial-avatar avatar-title fw-bold text-white rounded-circle" style="background-color: #000;">A</span></div>
                         </div>
                         <h4 class="mt-3 mb-0 text-dark fw-bold text-center">@ViewData["Name"]</h4>
-                        <small class="d-block text-truncate text-center text-dark fw-semibold">@ViewData["Position"]</small>
+                        <small class="d-block text-truncate text-center text-dark fw-semibold" id="container_RoleName">@userInfo.UserRoleName</small>
                     </div>
                 </li>
                 @if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)

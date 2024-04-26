@@ -4,6 +4,7 @@
     const $modal = $('#modal-role');
     const $form = $("#role_form");
     const $role_add = $('#tbl-role-add');
+    const currentRoleId = $('#txt_roleId').val();
 
     if ($tbl_role) {
         var tbl_role = $("#tbl_role").DataTable({
@@ -375,6 +376,7 @@
         console.log("Form Data:", formData);
 
         var roleId = $('[name="Role.Id"]').val();
+        var roleDesc = $('[name="Role.Description"]').val();
 
         $.ajax({
             url: $(this).attr('action'),
@@ -390,6 +392,11 @@
                 button.html('Save').attr('disabled', false);
                 tbl_role.ajax.reload();
                 $modal.modal('hide');
+
+                if (currentRoleId == roleId) {
+                    $("#container_RoleName").text(roleDesc);
+                }
+
                 clearForm($form);
             },
             error: async function (jqXHR, textStatus, errorThrown) {

@@ -79,7 +79,7 @@ $(function () {
                 render: function (data, type, row) {
                     var returndata = "";
 
-                    if ([0, 1, 2, 3, 5,11].includes(row.ApprovalStatusNumber)) {
+                    if ([0, 1, 2, 3, 5, 11].includes(row.ApprovalStatusNumber)) {
                         // `Credit Verification`
                         returndata = `<span class="text-orange">${data}</span>`;
                     }
@@ -92,8 +92,6 @@ $(function () {
                         returndata = `<span class="text-success">${data}</span>`;
                     }
 
-                   
-
                     return returndata;
                 }
             },
@@ -103,8 +101,6 @@ $(function () {
                 className: 'align-middle',
                 render: function (data, type, row) {
                     var returndata = "";
-
-                    console.log(row.ApprovalStatusNumber);
 
                     if (row.ApprovalStatusNumber == 0) { // draft
                         returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
@@ -260,7 +256,7 @@ $(function () {
     $("#btn_add").on('click', function () {
         let pagibigNumber = $(this).attr("data-pagibignumber");
 
-        location.href = baseUrl + "Applicants/NewHLF068/" + pagibigNumber;
+        location.href = baseUrl + "Applicants/HousingLoanForm/" + pagibigNumber;
     });
 
     $("#btn_upload_document").on('click', function () {
