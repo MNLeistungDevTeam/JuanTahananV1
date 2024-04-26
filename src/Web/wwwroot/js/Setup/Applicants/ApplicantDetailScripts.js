@@ -230,14 +230,14 @@ $(async function () {
             groupedItems[groupName].push(item);
         });
 
-        // Append grouped items
+        // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
                 const groupItems = groupedItems[groupName];
                 const firstItem = groupItems[0];
-                let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
-                        <h4 class="header-title text-muted">${groupName}</h4>
-                        <div class="list-group">`;
+
+                let groupHtml = ``;
+            
 
                 groupItems.forEach((item, index) => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
@@ -245,7 +245,13 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
-                    groupHtml += `<div class="file-upload-wrapper">
+                    if (item.HasParentId === 0 && item.HasSubdocument === 0) {
+
+                        groupHtml += `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
+                        <h4 class="header-title text-muted">${groupName}</h4>
+                        <div class="list-group">`;
+
+                        groupHtml += `<div class="file-upload-wrapper">
                             <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
                             <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -255,6 +261,55 @@ $(async function () {
                                 </div>
                             </a>
                           </div>`;
+                    }
+                });
+
+                groupHtml += `</div></div>`;
+                $("#div_verification").append(groupHtml);
+            }
+        }
+
+        // Append grouped items with parentId and subdocument
+        for (const groupName in groupedItems) {
+            if (groupedItems.hasOwnProperty(groupName)) {
+                const groupItems = groupedItems[groupName];
+                const firstItem = groupItems[0];
+
+                let groupHtml = ``;
+
+
+                groupItems.forEach((item, index) => {
+
+                    const itemLink = item.DocumentLocation + item.DocumentName;
+                    const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
+                    const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
+                    const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+
+                    if (item.HasSubdocument === 1) {
+
+                        groupHtml += `<div class="col-md-12 mb-2 mt-2" id="${firstItem.DocumentTypeId}">
+                            <h1 class="header-title text-muted">${groupName}</h4>
+                        <div>`;
+
+                    } else if (item.HasParentId === 1) {
+
+                        groupHtml += `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
+                        <h4 class="header-title text-muted">${groupName}</h4>
+                        <div class="list-group">`;
+
+                        groupHtml += `<div class="file-upload-wrapper">
+                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                    </div>
+                                </div>
+                            </a>
+                          </div>`;
+                    }
+
+
                 });
 
                 groupHtml += `</div></div>`;
