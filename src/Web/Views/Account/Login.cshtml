@@ -24,14 +24,14 @@
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="mb-2">
                     <label asp-for="UserName" class="form-label"></label>
-                    <input class="form-control " type="text" asp-for="UserName" placeholder="Enter your User Name">
+                    <input class="form-control " type="text" asp-for="UserName" placeholder="Enter your username">
                     <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
+                </div>  
 
                 <div class="mb-2">
                     <label asp-for="Password" class="form-label"></label>
                     <div class="input-group input-group-merge">
-                        <input class="form-control " asp-for="Password" placeholder="Enter your Password">
+                        <input class="form-control " asp-for="Password" placeholder="Enter your password">
                         <div class="input-group-text " data-password="false">
                             <span class="password-eye"></span>
                         </div>
