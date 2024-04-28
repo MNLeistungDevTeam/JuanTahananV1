@@ -48,10 +48,6 @@
                     <a href="#fourth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
-                <li class="nav-item" data-target-div="#form3">
-                    <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
-                    </a>
-                </li>
             </ul>
 
 
@@ -100,7 +96,7 @@
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.Id" value="@Model.SpouseModel.Id">
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.ApplicantsPersonalInformationId" value="@Model.ApplicantsPersonalInformationModel.Id">
 
-                    
+
 
 
                         <div class="row gy-2">
@@ -137,7 +133,7 @@
 
                             </div>
 
-                            
+
 
 
                             <div class="col-md-12">
@@ -1232,7 +1228,7 @@
                                         <option value="23">
                                             Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
                                         </option>
-                                    </select> 
+                                    </select>
                                     <span asp-validation-for="SpouseModel.IndustryId" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -1738,15 +1734,15 @@
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PendingCase"></label>
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" id="pcRadioBtn1" name="pendingCaseRbtn" value="true" class="form-check-input" required>
+                                                                <input type="radio" id="pcRadioBtn1" name="pendingCaseRbtn" class="form-check-input" required>
                                                                 <label class="form-check-label" for="pcRadioBtn1">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" id="pcRadioBtn2" name="pendingCaseRbtn" value="true" class="form-check-input" required>
+                                                                <input type="radio" id="pcRadioBtn2" name="pendingCaseRbtn" class="form-check-input" required>
                                                                 <label class="form-check-label" for="pcRadioBtn2">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
                                                         <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1757,15 +1753,15 @@
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.PastDue"></label>
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="pastDueRbtn" id="pdRbtn1" required />
+                                                                <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="pastDueRbtn" id="pdRbtn2" required />
+                                                                <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
                                                         <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1776,11 +1772,11 @@
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.BouncingChecks"></label>
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="bouncingChecksRbtn" id="bcRbtn1" required />
+                                                                <input type="radio" class="form-check-input" name="bouncingChecksRbtn" id="bcRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="bouncingChecksRbtn" id="bcRbtn2" required />
+                                                                <input type="radio" class="form-check-input" name="bouncingChecksRbtn" id="bcRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
@@ -1795,15 +1791,15 @@
                                                         <label class="form-label fw-bold text-dark" asp-for="Form2PageModel.MedicalAdvice"></label>
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="medicalAdviceRbtn" id="maRbtn1" required />
+                                                                <input type="radio" class="form-check-input" name="medicalAdviceRbtn" id="maRbtn1" required />
                                                                 <label class="form-check-label">Yes</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="radio" class="form-check-input" value="true" name="medicalAdviceRbtn" id="maRbtn2" required />
+                                                                <input type="radio" class="form-check-input" name="medicalAdviceRbtn" id="maRbtn2" required />
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
                                                         <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -2287,7 +2283,7 @@
                             <li class="next list-inline-item float-end">
                                 <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
                             </li>
-                            
+
                         </ul>
                     </div>
 
@@ -2334,8 +2330,8 @@
 
                                             </th>
                                             <td>
-                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus"  />
-                                                 
+                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus" />
+
 
                                                 <div>
 
@@ -2387,7 +2383,7 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-   @*  <script src="~/js/Setup/Applicants/HLF068Testing.js" asp-append-version="true"></script>
+    @*  <script src="~/js/Setup/Applicants/HLF068Testing.js" asp-append-version="true"></script>
     <script src="~/js/Setup/Applicants/HLF068ConfigurationScript.js" asp-append-version="true"></script> *@
     <script src="~/js/Setup/Applicants/HLF068Script.js" asp-append-version="true"></script>
 }
