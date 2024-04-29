@@ -523,8 +523,6 @@ $(() => {
                     //    // Update timeline item date
                     //    timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
 
-                    //$(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-                    //$(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
 
                     // Withdrawn by Beneficiary, Stage 1
                     if (selectedData.ApprovalStatusNumber === 5) {
