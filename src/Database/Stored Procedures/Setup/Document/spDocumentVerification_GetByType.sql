@@ -3,10 +3,14 @@
 	@applicantCode NVARCHAR(255)
 	 
 AS
+
+
+if @applicantCode is not null 
     SELECT main.* FROM (
         SELECT 
             dv.*,
             dt.[Description],
+            dt2.[Description] DocumentTypeParentDescription,
             CONCAT(u1.FirstName, ' ', u1.LastName) AS CreatedBy,
             CONCAT(u2.FirstName, ' ', u2.LastName) AS ModifiedBy, 
             CASE 
@@ -41,7 +45,25 @@ AS
         LEFT JOIN [User] u2 ON u2.Id = dv.ModifiedById
         LEFT JOIN ApplicantsPersonalInformation api ON api.Code = @applicantCode
         LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = api.Id
+        LEFT JOIN DocumentType dt2 ON dt2.Id = dt.ParentId
         WHERE dv.[Type] = @type
     ) main
     WHERE main.SubDocumentType = main.OccupationType;
+
+    else 
+    SELECT dv.*,
+	dt.[Description],
+	CONCAT(u1.FirstName, ' ',u1.LastName) CreatedBy,
+	CONCAT(u2.FirstName, ' ',u2.LastName) ModifiedBy, 
+	dt.[Description] DocumentTypeDescription,
+	dt2.[Description] DocumentTypeParentDescription
+	FROM DocumentVerification dv
+	LEFT JOIN DocumentType dt ON dt.Id = dv.DocumentTypeId
+    LEFT JOIN DocumentType dt2 ON dt2.Id = dt.ParentId
+	LEFT JOIN [User] u1 ON u1.Id = dv.CreatedById
+	LEFT JOIN [User] u2 ON u2.Id = dv.ModifiedById
+	WHERE dv.[Type] = @type
+
+
+
 RETURN 0
