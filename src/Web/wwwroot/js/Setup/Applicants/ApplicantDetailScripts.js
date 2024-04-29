@@ -50,11 +50,12 @@ $(async function () {
     });
 
     //#region Events
-    $(document).on('click', '.upload-link', async function () {
+    $(document).on('click', '.upload-link', async function (e) {
+        e.preventDefault();
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
-
+        console.log("triiger");
         let fileFormats = FileFormats[documentType.FileType];
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
             fileInput.prop('accept', '*/*');
@@ -75,6 +76,24 @@ $(async function () {
         }
     });
 
+    $(document).on('click', '.re-upload', async function (e) {
+        e.preventDefault();
+
+        DocumentTypeId = $(this).closest('.file-upload-wrapper').find('a').data("document-type-id");
+        const fileInput = $(`#fileInput_${DocumentTypeId}`);
+        var documentType = await GetDocumentType(DocumentTypeId);
+
+        let fileFormats = FileFormats[documentType.FileType];
+        if (fileFormats === undefined || !Array.isArray(fileFormats)) {
+            fileInput.prop('accept', '*/*');
+        } else {
+            let formated = fileFormats.join(',');
+            fileInput.prop('accept', formated);
+        }
+
+        fileInput.trigger('click');
+    });
+
     $("#btnSubmitApplication, #btnWithdraw, #btnApprove, #btnDefer").on('click', async function (e) {
         e.preventDefault();
         let action = $(this).attr("data-value");
@@ -88,6 +107,8 @@ $(async function () {
 
     async function loadVerificationAttachments(applicantCode) {
         let verifAttach = await getVerificationDocuments(applicantCode);
+
+        console.log(verifAttach);
 
         if (!verifAttach) { return; }
 
@@ -128,13 +149,17 @@ $(async function () {
 
                         groupHtml += `<div class="file-upload-wrapper">
                             <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                        </div>
+                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                                            <i class="fe-upload"></i>
+                                        </button>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                           </div>`;
                     }
                 });
@@ -543,11 +568,12 @@ $(async function () {
         return response;
     }
 
-    async function getVerificationDocuments(applicantCode) {
+    async function getVerificationDocuments(applicantCode, type = '1') {
         const response = $.ajax({
             url: baseUrl + "Applicants/GetEligibilityVerificationDocuments",
             data: {
-                applicantCode: applicantCode
+                applicantCode: applicantCode,
+                type: type
             },
             method: 'get',
             dataType: 'json'
