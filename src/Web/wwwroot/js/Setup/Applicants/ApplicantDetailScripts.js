@@ -142,7 +142,7 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
-                    if (item.HasParentId === 0 && item.HasSubdocument === 0) {
+                    if (item.HasParentId === 0 && item.HasSubdocument === 0 ) {
                         groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
                         <div class="list-group">`;
