@@ -649,6 +649,7 @@ $(function () {
     setDateValue('#Form2PageModel_MaturityDateTime2');
     setDateValue('#Form2PageModel_MaturityDateTime3');
 
+    //Miscellaneous Rbtn Events
     $('.radio-pcRadio input[type="radio"]').on('change', function () {
         let $inputField = $("[name='Form2PageModel.PendingCase']");
 
@@ -656,7 +657,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -667,7 +667,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -678,7 +677,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -689,7 +687,6 @@ $(function () {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
             $inputField.prop('disabled', true).prop('required', false);
-            $inputField.val(null);
         }
     });
 
@@ -1135,8 +1132,13 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
-            }                                                            //Developer                                                                    //Pag-ibig                                                                      //LGU
-            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
+            }
+
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || //Developer
+                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || //Pag-ibig
+                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2 || //LGU
+                currentFormName == "form3" && applicantInfoIdVal == 0 // Approval Setup
+            ) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 
@@ -1397,6 +1399,21 @@ $(function () {
             }
         });
 
+        // Checks the radio button if valid class exists
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
+
+                isValid = false;
+            } else {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('was-validated');
+            }
+        });
+
         return isValid;
     }
 
@@ -1430,14 +1447,11 @@ $(function () {
 
             if (!(telNoArray.filter(iti => iti.a.hasAttribute('required') || iti.a.value).every(iti => iti.isValidNumberPrecise()))) {
                 let arrayOfInvalidTels = telNoArray.filter(iti => (iti.a.hasAttribute('required') || iti.a.value) && !iti.isValidNumberPrecise());
-                //let listOfInvalids = ``;
 
                 for (var index in arrayOfInvalidTels) {
                     let itiElement = arrayOfInvalidTels[index];
                     $(`span[name="${itiElement.a.name}.Error"]`).html(intlTelErrors[itiElement.getValidationError()]);
                 }
-
-                //console.log(arrayOfInvalidTels);
 
                 messageBox("Some contact numbers entered are invalid, please double check or re-enter them!", "danger", true);
                 return;
@@ -1733,35 +1747,29 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-
-        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
-
-        // Set checked status for PastDue radio buttons
-        $("#pdRbtn1").prop("checked", !!pastDueValue);
-
-        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
-
-        // Set checked status for BouncingChecks radio buttons
-        $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-
-        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
-
-        // Set checked status for MedicalAdvice radio buttons
-        $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-
-        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
-
-        if (applicantInfoIdVal != 0) {
+        if (applicantInfoIdVal !== '0') {
+            // Set checked status for PendingCase radio buttons
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
             $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
 
+            // Set checked status for PastDue radio buttons
+            $("#pdRbtn1").prop("checked", !!pastDueValue);
             $("#pdRbtn2").prop("checked", !pastDueValue);
 
+            // Set checked status for BouncingChecks radio buttons
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
             $("#bcRbtn2").prop("checked", !bouncingChecksValue);
 
+            // Set checked status for MedicalAdvice radio buttons
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
         }
+
+        // Set miscellanous input to disable
+        $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
+        $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
+        $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
+        $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
 
         if (encodedStageVal == 1) {
             $('input[name="customRadio1"][data-name="Application Completion"]').prop('checked', true);

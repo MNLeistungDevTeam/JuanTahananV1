@@ -19,12 +19,8 @@ $(async function () {
     var documentypeid = 0;
     var DocumentId = 0;
 
-
-
-
     if (stage == 1) {
         $('a[href="#module-type-list"]').addClass('disabled'); // Add a disabled class to visual
-
     }
 
     var tbl_files = $("#tbl_files").DataTable({
@@ -88,6 +84,16 @@ $(async function () {
         searchHighlight: true,
         stateSave: false,
         processing: true
+    });
+
+    tbl_files.on('draw.dt', function () {
+        // Check if there is at least one row of data
+        if (tbl_files.rows().count() > 0) {
+            $(".upload").hide();
+        } else {
+            // If no rows, show the element
+            $(".upload").show();
+        }
     });
 
     $('.upload').on('click', async function (e) {
