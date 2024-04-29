@@ -1,5 +1,6 @@
+"use strict"
+
 $(async function () {
-    "strict";
     const FileFormats = {
         1: ['.pdf'],
         2: '.docx',
@@ -11,10 +12,16 @@ $(async function () {
     const $modal = $('#modal-file');
     const $form = $("#document_form");
 
+    const stage = $("#txt_stageNo").val();
+
     var applicationinfoCode = $("#txt_applicationCode").val() ? $("#txt_applicationCode").val() : null;
 
     var documentypeid = 0;
     var DocumentId = 0;
+
+    if (stage == 1) {
+        $('a[href="#module-type-list"]').addClass('disabled'); // Add a disabled class to visual
+    }
 
     var tbl_files = $("#tbl_files").DataTable({
         ajax: {
@@ -30,17 +37,17 @@ $(async function () {
             {
                 data: 'Name',
                 orderable: true,
-                className: 'align-middle text-center'
+                className: 'align-middle text-left'
             },
             {
                 data: 'Size',
                 orderable: true,
-                className: 'align-middle text-center',
+                className: 'align-middle text-left',
             },
             {
                 data: 'DateCreated',
                 orderable: !0,
-                className: 'align-middle text-center',
+                className: 'align-middle text-left',
                 render: function (data) {
                     if (data && data.trim() !== "") {
                         return moment(data).format('YYYY-MM-DD');
@@ -52,7 +59,7 @@ $(async function () {
             {
                 data: null,
                 orderable: true,
-                className: 'text-center',
+                className: 'text-left',
                 render: function () {
                     return `<button class="btn btn-primary btn-sm waves-effect ms-1 replace">Replace</button> <button class="btn btn-danger btn-sm waves-effect ms-1 delete">Delete</button>`;
                 }
@@ -79,6 +86,16 @@ $(async function () {
         processing: true
     });
 
+    tbl_files.on('draw.dt', function () {
+        // Check if there is at least one row of data
+        if (tbl_files.rows().count() > 0) {
+            $(".upload").hide();
+        } else {
+            // If no rows, show the element
+            $(".upload").show();
+        }
+    });
+
     $('.upload').on('click', async function (e) {
         e.preventDefault();
         DocumentId = 0;
@@ -95,17 +112,13 @@ $(async function () {
         else if (Array.isArray(fileFormats)) {
             fileFormats = fileFormats.join(',');
 
-            $('#file-input').attr('accept', fileFormats);        
+            $('#file-input').attr('accept', fileFormats);
         }
         else {
-
             $('#file-input').attr('accept', fileFormats);
 
-     /*       console.log(fileFormats);*/
-
+            /*       console.log(fileFormats);*/
         }
- 
-
 
         $('#file-input').trigger('click');
     });
@@ -223,7 +236,7 @@ $(async function () {
             dataSrc: ''
         },
         language: {
-            processing: "<div class='text-center'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
+            processing: "<div class='text-left'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
             previous: "<i class='mdi mdi-chevron-left'>",
             next: "<i class='mdi mdi-chevron-right'>"
         },
@@ -234,7 +247,7 @@ $(async function () {
 
             {
                 data: "DocumentTypeDescription",
-                class: "text-center",
+                class: "text-left",
                 render: function (data, type, row) {
                     return data;
                 }
@@ -245,11 +258,11 @@ $(async function () {
             },
             {
                 data: "DocumentFileType",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "TotalDocumentCount",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
 
         ],
@@ -324,7 +337,7 @@ $(async function () {
             dataSrc: ''
         },
         language: {
-            processing: "<div class='text-center'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
+            processing: "<div class='text-left'><span class='spinner-border spinner-border-sm'></span> Loading...</div>",
             previous: "<i class='mdi mdi-chevron-left'>",
             next: "<i class='mdi mdi-chevron-right'>"
         },
@@ -335,7 +348,15 @@ $(async function () {
 
             {
                 data: "DocumentTypeDescription",
-                class: "text-center",
+                class: "text-left",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+
+            {
+                data: "DocumentTypeParentDescription",
+                class: "text-left",
                 render: function (data, type, row) {
                     return data;
                 }
@@ -348,12 +369,12 @@ $(async function () {
 
             {
                 data: "DocumentFileType",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
 
             {
                 data: "TotalDocumentCount",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
 
         ],

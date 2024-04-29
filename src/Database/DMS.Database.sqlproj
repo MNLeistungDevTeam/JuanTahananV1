@@ -109,6 +109,7 @@
     <Folder Include="Stored Procedures\Setup\BeneficiaryInformation" />
     <Folder Include="Stored Procedures\Others" />
     <Folder Include="Stored Procedures\Others\AuditTrail" />
+    <Folder Include="Tables\Setup\EmailSetup" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -230,6 +231,8 @@
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalCreditVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationTimelineByCode.sql" />
+    <Build Include="Tables\Setup\Document\SubDocument.sql" />
+    <Build Include="Tables\Setup\EmailSetup\EmailSetup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

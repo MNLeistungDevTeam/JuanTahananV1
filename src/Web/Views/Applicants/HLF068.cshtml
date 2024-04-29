@@ -9,7 +9,6 @@
 
 
 }
-
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -49,6 +48,10 @@
                     <a href="#fourth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
+                <li class="nav-item" data-target-div="#form3">
+                    <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
             </ul>
 
 
@@ -61,10 +64,6 @@
 
 
                 <form id="frm_hlf068" method="post" asp-action="SaveHLF068" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-
-
-
-
 
 
 
@@ -101,7 +100,7 @@
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.Id" value="@Model.SpouseModel.Id">
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.ApplicantsPersonalInformationId" value="@Model.ApplicantsPersonalInformationModel.Id">
 
-                    
+
 
 
                         <div class="row gy-2">
@@ -138,7 +137,7 @@
 
                             </div>
 
-                            
+
 
 
                             <div class="col-md-12">
@@ -180,14 +179,14 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" required></label>
-                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" title="@Html.DescriptionFor(m => m.LoanParticularsInformationModel.DesiredLoanAmount)" required>
+                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" title="@Html.DescriptionFor(m => m.LoanParticularsInformationModel.DesiredLoanAmount)">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
@@ -211,7 +210,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="form-label fw-normal" required></label>
-                                    <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId" required>
+                                    <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId">
                                         <option value="">Select Mode of Payment ...</option>
                                     </select>
                                     <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
@@ -265,7 +264,7 @@
                                 <div class="position-relative">
                                     <label asp-for="CollateralInformationModel.PropertyTypeId" class="form-label fw-normal"></label>
                                     <select asp-for="CollateralInformationModel.PropertyTypeId" class="rounded-4" data-value="@Model.CollateralInformationModel.PropertyTypeId">
-                                        <option value="">Select Property Type ...</option>
+                                        <option></option>
                                     </select>
                                     <span asp-validation-for="CollateralInformationModel.PropertyTypeId" class="text-danger"></span>
                                 </div>
@@ -653,7 +652,7 @@
                                         <div class="position-relative">
                                             <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                             <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                <option value="">Select HomeOwnership ... </option>
+                                                <option value="">Select Home Ownership ... </option>
                                                 <option value="Company">Company</option>
                                                 <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
                                                 <option value="Rented">Rented</option>
@@ -1233,7 +1232,7 @@
                                         <option value="23">
                                             Wholesale & Retail Trade; Repair of Motor Vehicles, Motorcycles, Personal & Household Goods
                                         </option>
-                                    </select> 
+                                    </select>
                                     <span asp-validation-for="SpouseModel.IndustryId" class="text-danger"> </span>
                                 </div>
                             </div>
@@ -1747,7 +1746,7 @@
                                                                 <label class="form-check-label" for="pcRadioBtn2">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PendingCase">
                                                         <span asp-validation-for="Form2PageModel.PendingCase" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1766,7 +1765,7 @@
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.PastDue">
                                                         <span asp-validation-for="Form2PageModel.PastDue" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1804,7 +1803,7 @@
                                                                 <label class="form-check-label">No</label>
                                                             </div>
                                                         </div>
-                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice" >
+                                                        <input type="text" class="form-control rounded-3 text-center" asp-for="Form2PageModel.MedicalAdvice">
                                                         <span asp-validation-for="Form2PageModel.MedicalAdvice" class="text-danger"> </span>
                                                     </div>
                                                 </th>
@@ -1911,19 +1910,19 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3 text-center decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3  decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
+                                                        <input type="number" class="form-control rounded-3 text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
                                                         <span asp-validation-for="Form2PageModel.DateObtained2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
@@ -2288,7 +2287,7 @@
                             <li class="next list-inline-item float-end">
                                 <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
                             </li>
-                            
+
                         </ul>
                     </div>
 
@@ -2335,8 +2334,8 @@
 
                                             </th>
                                             <td>
-                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus"  />
-                                                 
+                                                <input type="hidden" asp-for="ApplicantsPersonalInformationModel.EncodedStatus" />
+
 
                                                 <div>
 
@@ -2353,17 +2352,11 @@
 
                                                 </div>
                                             </td>
-
                                         </tr>
-
-
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
-
 
                         <ul class="pager wizard mb-0 list-inline mt-1">
                             <li class="previous list-inline-item">
@@ -2388,7 +2381,7 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-   @*  <script src="~/js/Setup/Applicants/HLF068Testing.js" asp-append-version="true"></script>
+    @*  <script src="~/js/Setup/Applicants/HLF068Testing.js" asp-append-version="true"></script>
     <script src="~/js/Setup/Applicants/HLF068ConfigurationScript.js" asp-append-version="true"></script> *@
     <script src="~/js/Setup/Applicants/HLF068Script.js" asp-append-version="true"></script>
 }

@@ -178,14 +178,12 @@ namespace Template.Web.Controllers.Transaction
 
                 var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
                 if (applicantinfo == null)
                 {
-                    return BadRequest($"{applicantCode}: no record Found!");
+                    throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
 
                 //if the application is not access by beneficiary
@@ -193,6 +191,8 @@ namespace Template.Web.Controllers.Transaction
                 {
                     return View("AccessDenied");
                 }
+
+                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
                 ////if the application approvalStatus is not greater than 4 on pagibig viewer
                 //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)

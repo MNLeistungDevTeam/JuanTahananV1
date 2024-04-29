@@ -156,14 +156,14 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" required></label>
-                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" title="@Html.DescriptionFor(m => m.LoanParticularsInformationModel.DesiredLoanAmount)" required>
+                                    <input class="form-control rounded-3 decimalInputMask5" asp-for="LoanParticularsInformationModel.DesiredLoanAmount" value="@Model.LoanParticularsInformationModel.DesiredLoanAmount" title="@Html.DescriptionFor(m => m.LoanParticularsInformationModel.DesiredLoanAmount)">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanAmount" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" required></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start" required>
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="form-label fw-normal" required></label>
-                                    <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId" required>
+                                    <select asp-for="LoanParticularsInformationModel.ModeOfPaymentId" class="rounded-4" data-value="@Model.LoanParticularsInformationModel.ModeOfPaymentId">
                                         <option value="">Select Mode of Payment ...</option>
                                     </select>
                                     <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
@@ -629,7 +629,7 @@
                                         <div class="position-relative">
                                             <label asp-for="BarrowersInformationModel.HomeOwnerShip" class="form-label fw-normal" required></label>
                                             <select asp-for="BarrowersInformationModel.HomeOwnerShip" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.HomeOwnerShip" readonly required>
-                                                <option value="">Select HomeOwnership ... </option>
+                                                <option value="">Select Home Ownership ... </option>
                                                 <option value="Company">Company</option>
                                                 <option value="Living w/ relatives/parents">Living w/ relatives/parents</option>
                                                 <option value="Rented">Rented</option>
@@ -1887,7 +1887,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3 text-center decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
+                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.HighestAmount2">
                                                         <span asp-validation-for="Form2PageModel.HighestAmount2" class="text-danger"> </span>
                                                     </div>
                                                 </td>

@@ -5,12 +5,14 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
+
 using DMS.Domain.Enums;
+using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -61,7 +63,7 @@ public class BeneficiaryController : Controller
 
     #region Views
 
-    public async Task <IActionResult> Index()
+    public async Task<IActionResult> Index()
     {
         var roleAccess = await _roleAccessRepo.GetCurrentUserRoleAccessByModuleAsync(ModuleCodes2.CONST_BENEFICIARY_MGMT);
 
@@ -74,31 +76,35 @@ public class BeneficiaryController : Controller
     [Route("[controller]/Details/{pagibigNumber?}")]
     public async Task<IActionResult> Details(string? pagibigNumber = null)
     {
-        var vwModel = new BeneficiaryInformationModel();
-
-        var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
-        var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
-
-
-        int userId = int.Parse(User.Identity.Name);
-
-        var userInfo = await _userRepo.GetUserAsync(userId);
-
-        //if the application is not access by beneficiary
-        if (beneficiaryData.UserId != userId && userInfo.UserRoleId == 4)
+        try
         {
+            var vwModel = new BeneficiaryInformationModel();
 
-            return View("AccessDenied");
-        }
+            //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
 
-        //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
+            int userId = int.Parse(User.Identity.Name);
+            var userInfo = await _userRepo.GetUserAsync(userId);
 
-        if (beneficiaryData != null)
-        {
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            if (beneficiaryData == null)
+            {
+                throw new Exception($"Transaction No: { pagibigNumber}: no record Found!");
+            }
+
+            //if the application is not access by beneficiary
+            if (beneficiaryData.UserId != userId && userInfo.UserRoleId == 4)
+            {
+                return View("AccessDenied");
+            }
+
+            //beneficiaryData.ProfilePicture = beneficiaryData.ProfilePicture ?? string.Empty;
+
             vwModel = beneficiaryData;
-        }
 
-        return View(vwModel);
+            return View(vwModel);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
@@ -168,8 +174,6 @@ public class BeneficiaryController : Controller
                 userModel.Action = "created";
                 //// make the usage of hangfire
                 _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
-
-
 
                 #endregion Create Beneficiary User
             }
