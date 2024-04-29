@@ -7,12 +7,10 @@ AS
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-		CASE WHEN 	bi.PropertyDeveloperName IS NULL THEN  bf.PropertyDeveloperName
-		END  Developer,
-		CASE WHEN bi.PropertyLocation IS NULL THEN  bf.PropertyLocation
-		END  ProjectLocation,
+        bf.PropertyDeveloperName Developer,
+		bf.PropertyLocation ProjectLocation,
 		'' Project,
-		bi.PropertyUnitLevelName Unit,
+		bf.PropertyUnitLevelName Unit,
 		lpi.DesiredLoanAmount As LoanAmount,
 		lpi.DesiredLoanTermYears As LoanYears,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
