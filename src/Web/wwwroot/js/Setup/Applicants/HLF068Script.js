@@ -1123,6 +1123,8 @@ $(function () {
             // Validate the current form
             var isValid = validateForm(currentForm);
 
+            console.log("role Id: " + roleId);
+
             if (!isValid) {
                 // If validation fails, prevent navigation to the next step
                 return false;
@@ -1134,10 +1136,10 @@ $(function () {
                 prevForm.removeClass('fade').prop('hidden', false);
             }
 
-            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || //Developer
+            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || //Developer or Admin
                 currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || //Pag-ibig
-                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2 || //LGU
-                currentFormName == "form3" && applicantInfoIdVal == 0 // Approval Setup
+                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2 //LGU
+                /*currentFormName == "form3" && applicantInfoIdVal == 0// Approval Setup*/
             ) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
@@ -1405,12 +1407,13 @@ $(function () {
 
             if (!hasClass) {
                 $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
+                $(this).removeClass('valid');
 
                 isValid = false;
             } else {
-                $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
+
             }
         });
 
@@ -1749,20 +1752,20 @@ $(function () {
 
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
-            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass('valid');
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue).addClass('valid');
 
             // Set checked status for PastDue radio buttons
-            $("#pdRbtn1").prop("checked", !!pastDueValue);
-            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#pdRbtn1").prop("checked", !!pastDueValue).addClass('valid');
+            $("#pdRbtn2").prop("checked", !pastDueValue).addClass('valid');
 
             // Set checked status for BouncingChecks radio buttons
-            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue).addClass('valid');
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue).addClass('valid');
 
             // Set checked status for MedicalAdvice radio buttons
-            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
         }
 
         // Set miscellanous input to disable
