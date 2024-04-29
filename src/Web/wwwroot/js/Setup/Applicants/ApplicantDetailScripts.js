@@ -32,6 +32,8 @@ $(async function () {
     //loadApproversData();
     loadApprovalData();
 
+    console.log(approvalStatus);
+
     await loadVerificationAttachments(CONST_APPLICANTCODE);
     await loadApplicationAttachments(CONST_APPLICANTCODE);
 
@@ -46,6 +48,11 @@ $(async function () {
 
             // Optionally, you can also add a disabled look to the tab to indicate visually that it's not clickable
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
+        }
+
+        //Hides the re-upload button if status is Deferred or Withdrawn
+        if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
+            $(".re-upload").hide();
         }
     });
 

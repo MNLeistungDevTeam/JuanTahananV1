@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetEligibilityVerificationDocuments]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetApplicationVerificationDocuments]
 	@applicantCode NVARCHAR(150)
 AS
  --SELECT 
@@ -41,7 +41,6 @@ AS
         WHERE 
             dt.Id IN (SELECT DocumentTypeId FROM DocumentVerification WHERE [Type] = 1) --verification type documents
     )
-
 
     SELECT * FROM (
         SELECT 
