@@ -32,5 +32,7 @@ namespace DMS.Domain.Dto.DocumentVerificationDto
 
 
         public string? DocumentFileType { get; set; }
+        public string? DocumentTypeParentDescription { get; set; }
+        
     }
 }

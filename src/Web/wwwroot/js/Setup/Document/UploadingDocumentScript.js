@@ -355,6 +355,14 @@ $(async function () {
             },
 
             {
+                data: "DocumentTypeParentDescription",
+                class: "text-left",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+
+            {
                 data: "DocumentTypeId",
                 visible: false
             },

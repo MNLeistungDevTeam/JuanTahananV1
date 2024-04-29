@@ -54,7 +54,7 @@ $(function () {
     parentDocumentdropDown = $parentDocumentdropDown[0].selectize;
 
 
-    
+
 
 
     tbl_Document = $("#tbl_document").DataTable({
@@ -74,21 +74,21 @@ $(function () {
             },
             {
                 data: "Code",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data;
                 }
             },
             {
                 data: "Description",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data;
                 }
             },
             {
                 data: "VerificationTypeDescription",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data;
                 }
@@ -96,7 +96,7 @@ $(function () {
 
             {
                 data: "FileFormat",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data
                 }
@@ -104,7 +104,7 @@ $(function () {
 
             {
                 data: "ParentDocumentName",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data
                 }
@@ -112,7 +112,7 @@ $(function () {
 
             {
                 data: "CreatedBy",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "DateCreated",
@@ -123,7 +123,7 @@ $(function () {
             },
             {
                 data: "ModifiedBy",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "DateModified",
@@ -244,7 +244,14 @@ $(function () {
             },
             {
                 data: "DocumentTypeDescription",
-                class: "text-center",
+                class: "text-left align-middle",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
+            {
+                data: "DocumentTypeParentDescription",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data;
                 }
@@ -252,7 +259,7 @@ $(function () {
 
             {
                 data: "CreatedBy",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "DateCreated",
@@ -263,7 +270,7 @@ $(function () {
             },
             {
                 data: "ModifiedBy",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "DateModified",
@@ -371,7 +378,7 @@ $(function () {
             },
             {
                 data: "DocumentTypeDescription",
-                class: "text-center",
+                class: "text-left align-middle",
                 render: function (data, type, row) {
                     return data;
                 }
@@ -379,7 +386,7 @@ $(function () {
 
             {
                 data: "CreatedBy",
-                class: "text-center align-middle"
+                class: "text-left align-middle"
             },
             {
                 data: "DateCreated",
@@ -390,7 +397,7 @@ $(function () {
             },
             {
                 data: "ModifiedBy",
-                class: "text-center align-middle"
+                class: "text-left  align-middle"
             },
             {
                 data: "DateModified",
