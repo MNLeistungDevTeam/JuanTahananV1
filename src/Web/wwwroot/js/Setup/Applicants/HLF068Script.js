@@ -1136,10 +1136,10 @@ $(function () {
                 prevForm.removeClass('fade').prop('hidden', false);
             }
 
-            if (currentFormName == "form2" && applicantInfoIdVal == 0 && roleId == 5 || //Developer or Admin
-                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || //Pag-ibig
-                currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2 //LGU
-                /*currentFormName == "form3" && applicantInfoIdVal == 0// Approval Setup*/
+            if (currentFormName == "form2" && roleId == 5 || //Developer or Admin
+                currentFormName == "spousedata" && roleId == 3 || //Pag-ibig
+                currentFormName == "spousedata" && roleId == 2 || //LGU
+                currentFormName == "form3" // Approval Setup
             ) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
@@ -1413,7 +1413,6 @@ $(function () {
             } else {
                 $(this).addClass('valid');
                 $(this).removeClass('is-invalid');
-
             }
         });
 
