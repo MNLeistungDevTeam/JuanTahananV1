@@ -44,14 +44,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AuditTrailHeader]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AuditTrailRef]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[BarrowersInformation]",
          "ObjectType": 0
       },

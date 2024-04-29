@@ -122,7 +122,7 @@ $(async function () {
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
                     if (item.HasParentId === 0 && item.HasSubdocument === 0) {
-                        groupHtml += `<div class="col-md-4 mb-3" id="${firstItem.DocumentTypeId}">
+                        groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
                         <div class="list-group">`;
 
