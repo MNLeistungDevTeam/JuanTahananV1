@@ -249,6 +249,13 @@ $(function () {
                     return data;
                 }
             },
+            {
+                data: "DocumentTypeParentDescription",
+                class: "text-center",
+                render: function (data, type, row) {
+                    return data;
+                }
+            },
 
             {
                 data: "CreatedBy",
