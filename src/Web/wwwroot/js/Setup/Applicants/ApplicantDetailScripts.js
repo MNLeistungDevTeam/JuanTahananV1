@@ -198,13 +198,17 @@ $(async function () {
 
                         groupHtml += `<div class="file-upload-wrapper">
                             <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                        </div>
+                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                                                <i class="fe-upload"></i>
+                                        </button>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                           </div>`;
                     }
                 });
@@ -260,13 +264,17 @@ $(async function () {
 
                     groupHtml += `<div class="file-upload-wrapper">
                             <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                                        </div>
+                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                                                <i class="fe-upload"></i>
+                                        </button>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                           </div>`;
                 });
 
