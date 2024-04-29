@@ -70,6 +70,7 @@ namespace DMS.Infrastructure.Services
             var userData = await _authService.RegisterUser(userModel);
 
             userModel.Id = userData.Id;
+            userModel.SenderId = 1;
 
             //save as benificiary
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);

@@ -173,6 +173,11 @@ public class BeneficiaryController : Controller
                 await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
                 userModel.Action = "created";
+
+
+                userModel.SenderId = userId;
+            
+          
                 //// make the usage of hangfire
                 _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 

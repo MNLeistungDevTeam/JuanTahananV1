@@ -1,9 +1,8 @@
 ﻿@using  DMS.Domain.Dto.EmailSetupDto
  @using DMS.Domain.Dto.RoleDto
 @using DMS.Web.Models
-@model EmailSetupModel
- 
 
+@model EmailSetupModel
  
 @{
     ViewData["Title"] = "Email Setup";
@@ -29,13 +28,13 @@
 
 <div class="row">
     <div class="col-md-9">
-        <div class="card">
+        <div class="card card-outline rounded-4">
             @*      <div class="card-header bg-transparent">
             <h4 class="card-title text-muted">
             Currency List
             </h4>
             </div> *@
-            <div class="card-body border-top">
+            <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
                 <div class="row">
                     <div class="col-md-6 mb-2 align-items-center">
                         @if (roleAccess is not null && roleAccess.CanModify)
@@ -151,5 +150,5 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-    <script src="~/js/Setup/emailsetup/emailsetupscript.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/EmailSetup/EmailSetupScript.js" asp-append-version="true"></script> 
 }

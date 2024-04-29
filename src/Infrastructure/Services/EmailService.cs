@@ -1,22 +1,14 @@
-﻿using DevExpress.XtraPrinting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DMS.Application.Interfaces.Setup.EmailLogRepo;
+using DMS.Application.Interfaces.Setup.EmailSetupRepo;
+using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.EmailSettingsDto;
+using DMS.Domain.Dto.ReferenceDto;
+using DMS.Domain.Dto.UserDto;
+using DMS.Domain.Entities;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using MailKit.Security;
-using DMS.Application.Services;
-using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Dto.EmailSettingsDto;
-using DMS.Domain.Dto.ApplicantsDto;
-using DMS.Domain.Dto.ModuleDto;
-using DMS.Domain.Dto.TemporaryLinkDto;
-using DMS.Domain.Entities;
-using DMS.Application.Interfaces.Setup.EmailSetupRepo;
 
 namespace DMS.Infrastructure.Services
 {
@@ -24,17 +16,27 @@ namespace DMS.Infrastructure.Services
     {
         private EmailSettingsModel _emailSettings;
         private IEmailSetupRepository _emailSetupRepo;
+        private IEmailLogRepository _emailLogRepo;
 
-
-        public EmailService(IOptions<EmailSettingsModel> emailSettings,IEmailSetupRepository emailSetupRepo)
+        public EmailService(IOptions<EmailSettingsModel> emailSettings, IEmailSetupRepository emailSetupRepo, IEmailLogRepository emailLogRepo)
         {
             _emailSettings = emailSettings.Value;
             _emailSetupRepo = emailSetupRepo;
+            _emailLogRepo = emailLogRepo;
         }
 
-        public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId)
+        public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId, ReferenceModel refModel)
         {
-            EmailLog emailLog = new();
+            EmailLog emaillog = new()
+            {
+                ReferenceId = refModel.Id,
+                ReferenceNo = refModel.TransactionNo,
+                Description = refModel.Description,
+                //"Email link for quotation delivered"
+                SenderId = refModel.SenderId,
+                ReceiverId = refModel.ReceiverId,
+                Status = "Sent"
+            };
 
             try
             {
@@ -78,9 +80,11 @@ namespace DMS.Infrastructure.Services
             }
             catch (Exception ex)
             {
-                emailLog.Description = ex.Message;
-                emailLog.Status = "Failed";
+                emaillog.Description = ex.Message;
+                emaillog.Status = "Failed";
             }
+
+            await _emailLogRepo.SaveAsync(emaillog, refModel.SenderId);
         }
 
         //public async Task SendEmailAsync(string sendToEmail, string subject, MimeEntity body, int companyId, EmailLog logs)
@@ -203,7 +207,18 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { receiverEmail };
             var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
-            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value);
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.Code,
+                Description = "Application Status for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
 
         public async Task SendUserCredential(UserModel model)
@@ -298,7 +313,18 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.PagibigNumber,
+                Description = "User Credential for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
 
         public async Task SendUserCredential2(UserModel? model, string? rootFolder)
@@ -325,7 +351,18 @@ namespace DMS.Infrastructure.Services
 
             //Sending of Email
             MimeEntity generatedbody = builder.ToMessageBody();
-            await SendEmailAsync(emails, subject, generatedbody,model.CompanyId.Value);
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.PagibigNumber,
+                Description = "User Credential for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
         }
 
         public async Task SendUserConfirmationMessage(UserModel model)
@@ -429,7 +466,18 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.PagibigNumber,
+                Description = "User Confirmation for Reset Password has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.Id,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
 
         public async Task SendApplicationStatusToBeneficiary(UserModel model)
@@ -532,7 +580,18 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
+
+            ReferenceModel refModel = new()
+            {
+                Id = 0,
+                TransactionNo = model.ApplicantCode,
+                Description = "User Credential for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
     }
 }

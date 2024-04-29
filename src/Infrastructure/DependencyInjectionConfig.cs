@@ -66,6 +66,8 @@ using DMS.Infrastructure.Persistence.Repositories.Setup.TemporaryLinkRepo;
 using DMS.Application.Interfaces.Setup.TemporaryLinkRepo;
 using DMS.Application.Interfaces.Setup.EmailSetupRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.EmailSetupRepo;
+using DMS.Application.Interfaces.Setup.EmailLogRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.EmailLogRepo;
 
 namespace Template.Infrastructure;
 
@@ -170,6 +172,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IApprovalService, ApprovalService>();
         services.AddScoped<IEmailSetupRepository, EmailSetupRepository>();
+        services.AddScoped<IEmailLogRepository, EmailLogRepository>();
         return services;
     }
 }
