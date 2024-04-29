@@ -812,7 +812,8 @@ namespace Template.Web.Controllers.Transaction
                             LastName = vwModel.BarrowersInformationModel.LastName,
                             MiddleName = vwModel.BarrowersInformationModel.MiddleName,
                             Gender = vwModel.BarrowersInformationModel.Sex,
-                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber
+                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber,
+                            CompanyId = companyId
                         };
 
                         //save beneficiary user

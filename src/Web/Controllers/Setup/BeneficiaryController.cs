@@ -159,7 +159,8 @@ public class BeneficiaryController : Controller
                     LastName = model.LastName,
                     Gender = model.Sex,
                     Position = "Beneficiary",
-                    PagibigNumber = model.PagibigNumber
+                    PagibigNumber = model.PagibigNumber,
+                    CompanyId = companyId,
                 };
 
                 // validate and  register user

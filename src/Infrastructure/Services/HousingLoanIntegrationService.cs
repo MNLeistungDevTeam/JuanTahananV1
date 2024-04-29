@@ -62,7 +62,8 @@ namespace DMS.Infrastructure.Services
                 MiddleName = model.MiddleName,
                 Gender = model.Gender,
                 Position = "Beneficiary",
-                PagibigNumber = model.PagibigMidNumber
+                PagibigNumber = model.PagibigMidNumber,
+                CompanyId = model.CompanyId
             };
 
             // validate and  register user
@@ -74,6 +75,7 @@ namespace DMS.Infrastructure.Services
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
             userModel.Action = "created";
+
             //// make the usage of hangfire
             _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, rootFolder));
 

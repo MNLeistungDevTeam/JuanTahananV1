@@ -16,47 +16,91 @@ using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Entities;
+using DMS.Application.Interfaces.Setup.EmailSetupRepo;
 
 namespace DMS.Infrastructure.Services
 {
     public class EmailService : IEmailService
     {
         private EmailSettingsModel _emailSettings;
+        private IEmailSetupRepository _emailSetupRepo;
 
-        public EmailService(IOptions<EmailSettingsModel> emailSettings)
+
+        public EmailService(IOptions<EmailSettingsModel> emailSettings,IEmailSetupRepository emailSetupRepo)
         {
             _emailSettings = emailSettings.Value;
+            _emailSetupRepo = emailSetupRepo;
         }
 
-        public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body)
+        public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId)
         {
+            EmailLog emailLog = new();
+
             try
             {
+                //MimeMessage emailMessage = new();
+                //List<MailboxAddress> emailList = sendToEmails.Select(email => MailboxAddress.Parse(email)).ToList();
+
+                //emailMessage.Sender = MailboxAddress.Parse(_emailSettings.Email);
+                //emailMessage.To.AddRange(emailList);
+                //emailMessage.Subject = subject;
+                //emailMessage.Body = body;
+
+                //using MailKit.Net.Smtp.SmtpClient smtp = new();
+                //smtp.Connect(_emailSettings.Host, _emailSettings.Port, SecureSocketOptions.Auto);
+                //smtp.Authenticate(_emailSettings.Email, _emailSettings.Password);
+                //await smtp.SendAsync(emailMessage);
+                //smtp.Disconnect(true);
+
+                var setup = await _emailSetupRepo.GetByCompany(companyId);
                 MimeMessage emailMessage = new();
                 List<MailboxAddress> emailList = sendToEmails.Select(email => MailboxAddress.Parse(email)).ToList();
+                var emailAddress = new List<MailboxAddress>();
 
-                emailMessage.Sender = MailboxAddress.Parse(_emailSettings.Email);
+                emailAddress.Add(MailboxAddress.Parse(setup.Email.Trim()));
+                emailMessage.From.AddRange(emailAddress);
+                emailMessage.Sender = MailboxAddress.Parse(setup.Email.Trim());
                 emailMessage.To.AddRange(emailList);
                 emailMessage.Subject = subject;
                 emailMessage.Body = body;
+                emailMessage.Date = DateTime.Now;
+                //emailMessage.ReplyTo.Add(new MailboxAddress("Jericho ", "jericho.mosqueda@mnleistung.de"));
 
                 using MailKit.Net.Smtp.SmtpClient smtp = new();
-                smtp.Connect(_emailSettings.Host, _emailSettings.Port, SecureSocketOptions.Auto);
-                smtp.Authenticate(_emailSettings.Email, _emailSettings.Password);
+                smtp.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true; // Bypass certificate validation (for testing only)
+                var forGmailTLS = SecureSocketOptions.StartTls;
+                var forSSL = SecureSocketOptions.SslOnConnect;
+                var forAuto = SecureSocketOptions.Auto;
+                smtp.Connect(setup.Host, setup.Port, forAuto);
+                smtp.Authenticate(setup.Email.Trim(), setup.Password);
                 await smtp.SendAsync(emailMessage);
                 smtp.Disconnect(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                emailLog.Description = ex.Message;
+                emailLog.Status = "Failed";
             }
         }
 
+        //public async Task SendEmailAsync(string sendToEmail, string subject, MimeEntity body, int companyId, EmailLog logs)
+        //{
+        //    try
+        //    {
+        //        MimeMessage emailMessage = new();
 
+        //        List<string> sendToEmails = new();
+        //        sendToEmails.Add(sendToEmail);
 
+        //        await SendEmailAsync(sendToEmails, subject, body, companyId, logs);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
-
-        public async Task SendApplicationStatus(ApplicantsPersonalInformationModel model,string receiverEmail) 
+        public async Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail)
         {
             string body = @"
             <!doctype html>
@@ -159,7 +203,7 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { receiverEmail };
             var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
-            await SendEmailAsync(emails, subject, emailBody);
+            await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value);
         }
 
         public async Task SendUserCredential(UserModel model)
@@ -218,7 +262,6 @@ namespace DMS.Infrastructure.Services
                                             <strong style=""display: block;font-size: 16px; margin: 0 0 4px; color:#1e1e2d; font-weight:bold;"">{2}</strong>
                                         </p>
 
-
                                         <a href=""https://testjuantahanan.mnleistung.ph/"" style=""background:#FEC10E;text-decoration:none !important; display:inline-block; font-weight:500; margin-top:20px; margin-bottom: 30px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"">Login to your Account</a>
 
                                     </td>
@@ -229,7 +272,7 @@ namespace DMS.Infrastructure.Services
                     </tr>
                     <tr>
                         <td style=""height:20px;"">&nbsp;</td>
-                    </tr> 
+                    </tr>
                     <tr>
                         <td style=""text-align: center;"">
                             <p style=""font-size: 14px; color: rgba(69, 80, 86, 0.7411764705882353); line-height: 18px; margin: 0 0 0;"">
@@ -255,10 +298,10 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody);
+            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
         }
 
-        public async Task SendUserCredential2(UserModel? model,string? rootFolder)
+        public async Task SendUserCredential2(UserModel? model, string? rootFolder)
         {
             //HTML Body
             string body = string.Empty;
@@ -272,7 +315,6 @@ namespace DMS.Infrastructure.Services
             //string rootDirectory = AppDomain.CurrentDomain.BaseDirectory;
             //string fullPath = Path.Combine(rootDirectory, filePath);
 
-           
             body = body.Replace("{name}", model.Name).Replace("{userName}", model.UserName).Replace("{password}", model.Password).Replace("{actiontype}", model.Action);
 
             var emails = new List<string> { model.Email };
@@ -283,7 +325,7 @@ namespace DMS.Infrastructure.Services
 
             //Sending of Email
             MimeEntity generatedbody = builder.ToMessageBody();
-            await SendEmailAsync(emails, subject, generatedbody);
+            await SendEmailAsync(emails, subject, generatedbody,model.CompanyId.Value);
         }
 
         public async Task SendUserConfirmationMessage(UserModel model)
@@ -387,7 +429,7 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody);
+            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
         }
 
         public async Task SendApplicationStatusToBeneficiary(UserModel model)
@@ -490,7 +532,7 @@ namespace DMS.Infrastructure.Services
             };
             var emails = new List<string> { model.Email };
             var subject = $"Welcome {model.Name} to project JuanTahanan!";
-            await SendEmailAsync(emails, subject, emailBody);
+            await SendEmailAsync(emails, subject, emailBody,model.CompanyId.Value);
         }
     }
 }
