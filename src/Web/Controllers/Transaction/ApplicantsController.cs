@@ -178,8 +178,6 @@ namespace Template.Web.Controllers.Transaction
 
                 var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
@@ -193,6 +191,8 @@ namespace Template.Web.Controllers.Transaction
                 {
                     return View("AccessDenied");
                 }
+
+                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 
                 ////if the application approvalStatus is not greater than 4 on pagibig viewer
                 //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
