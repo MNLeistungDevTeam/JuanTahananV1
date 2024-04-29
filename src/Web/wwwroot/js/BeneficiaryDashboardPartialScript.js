@@ -466,54 +466,89 @@ $(() => {
                         }
                     }
 
+                    //// Withdrawn by Beneficiary, Stage 1
+                    //if (selectedData.ApprovalStatusNumber === 5) {
+                    //    if (data[index - 1].ApprovalStatusNumber === 0) {
+                    //        $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
+                    //        $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
+                    //        $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                    //        $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+
+                    //        $(`[id="timeline1"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                    //        $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                    //    }
+                    //    else if (data[index - 1].ApprovalStatusNumber === 1) {
+
+                    //        console.log('aaaa');
+                    //        $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
+                    //        $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
+                    //        $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                    //        $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+
+                    //        $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                    //        $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                    //    }
+                    //    else if (data[index - 1].ApprovalStatusNumber === 3) {
+                    //        $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle`);
+                    //        $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
+                    //        $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                    //        $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+
+                    //        $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                    //        $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                    //    }
+                    //}
+
+                    //// Withdrawn by Beneficiary, Stage 2
+                    //if (selectedData.ApprovalStatusNumber === 10) {
+                    //    // Submitted, Stage 2
+                    //    $(`[id="timeline4"] .timeline-icon`).removeClass(`far fa-circle`);
+                    //    $(`[id="timeline4"] .timeline-icon`).removeClass(classColorList);
+                    //    $(`[id="timeline4"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+
+                    //    $(`[id="timeline4"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (Second Stage)`);
+
+                    //    $(`[id="timeline4"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
+                    //    $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                    //}
+
+                    //    // Update timeline icon
+                    //    timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
+
+                    //    // Update timeline item text
+                    //    timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
+
+                    //    // Update timeline item date
+                    //    timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
+
+
                     // Withdrawn by Beneficiary, Stage 1
                     if (selectedData.ApprovalStatusNumber === 5) {
-                        if (data[index - 1].ApprovalStatusNumber === 0) {
-                            $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
+                        // Withdrawn
+                        let timelineId = `timeline${data.length - 1}`;
+                        let timelineItem = $(`#${timelineId}`);
+                        let timelineIcon = timelineItem.find('.timeline-icon');
+                        let timelineItemInfo = timelineItem.find('.timeline-item-info');
 
-                            $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+                        // Update timeline icon
+                        timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
 
-                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
-                        else if (data[index - 1].ApprovalStatusNumber === 1) {
+                        // Update timeline item text
+                        timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
 
-                            console.log('aaaa');
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                            $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
-
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
-                        else if (data[index - 1].ApprovalStatusNumber === 3) {
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                            $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
-
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
+                        // Update timeline item date
+                        timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
                     }
 
                     // Withdrawn by Beneficiary, Stage 2
                     if (selectedData.ApprovalStatusNumber === 10) {
-                        // Submitted, Stage 2
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline4"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                        $(`[id="timeline4"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (Second Stage)`);
-
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
+                        let timelineId = `timeline${data.length - 1}`;
+                        let timelineItem = $(`#${timelineId}`);
+                        let timelineIcon = timelineItem.find('.timeline-icon');
+                        let timelineItemInfo = timelineItem.find('.timeline-item-info');
 
                         // Update timeline icon
                         timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
