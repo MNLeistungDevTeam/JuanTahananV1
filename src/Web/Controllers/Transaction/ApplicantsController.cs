@@ -183,7 +183,7 @@ namespace Template.Web.Controllers.Transaction
 
                 if (applicantinfo == null)
                 {
-                    return BadRequest($"{applicantCode}: no record Found!");
+                    throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
 
                 //if the application is not access by beneficiary
