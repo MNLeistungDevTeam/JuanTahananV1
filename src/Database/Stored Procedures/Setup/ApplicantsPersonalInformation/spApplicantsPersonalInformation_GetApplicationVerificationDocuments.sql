@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetEligibilityVerificationDocuments]
+﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetApplicationVerificationDocuments]
 	@applicantCode NVARCHAR(150)
 AS
  --SELECT 
