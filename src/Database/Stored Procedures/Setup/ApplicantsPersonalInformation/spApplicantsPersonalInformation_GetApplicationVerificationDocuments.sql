@@ -42,7 +42,6 @@ AS
             dt.Id IN (SELECT DocumentTypeId FROM DocumentVerification WHERE [Type] = 1) --verification type documents
     )
 
-
     SELECT * FROM (
         SELECT 
             dd.DocumentTypeId,

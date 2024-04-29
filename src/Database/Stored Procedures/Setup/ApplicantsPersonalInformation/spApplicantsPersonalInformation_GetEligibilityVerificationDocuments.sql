@@ -76,5 +76,4 @@ AS
     WHERE 
         main.[Type] = main.OccupationType;
 
-
 RETURN 0
