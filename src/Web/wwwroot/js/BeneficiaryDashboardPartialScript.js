@@ -479,6 +479,7 @@ $(() => {
                     //        $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
                     //    }
                     //    else if (data[index - 1].ApprovalStatusNumber === 1) {
+
                     //        console.log('aaaa');
                     //        $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
                     //        $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);

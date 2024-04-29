@@ -237,7 +237,6 @@ $(async function () {
                 const firstItem = groupItems[0];
 
                 let groupHtml = ``;
-            
 
                 groupItems.forEach((item, index) => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
@@ -246,7 +245,6 @@ $(async function () {
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
                     if (item.HasParentId === 0 && item.HasSubdocument === 0) {
-
                         groupHtml += `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
                         <div class="list-group">`;
@@ -277,22 +275,19 @@ $(async function () {
 
                 let groupHtml = ``;
 
-
                 groupItems.forEach((item, index) => {
-
                     const itemLink = item.DocumentLocation + item.DocumentName;
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
                     if (item.HasSubdocument === 1) {
-
                         groupHtml += `<div class="col-md-12 mb-2 mt-2" id="${firstItem.DocumentTypeId}">
                             <h1 class="header-title text-muted">${groupName}</h4>
                         <div>`;
-
+                        //Removed the object on the array
+                        groupItems.splice(index, 1);
                     } else if (item.HasParentId === 1) {
-
                         groupHtml += `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
                         <div class="list-group">`;
@@ -308,8 +303,6 @@ $(async function () {
                             </a>
                           </div>`;
                     }
-
-
                 });
 
                 groupHtml += `</div></div>`;
@@ -320,6 +313,7 @@ $(async function () {
         // Count all the uploaded files
         if (approvalStatus === '0') //Draft
         {
+            console.log(groupedItems);
             var flag = allItemsHaveFiles(groupedItems);
             $("#btnSubmitApplication").prop('disabled', !(flag));
         }
@@ -773,6 +767,7 @@ $(async function () {
             if (groupedItems.hasOwnProperty(groupName)) {
                 const groupItems = groupedItems[groupName];
                 for (const item of groupItems) {
+                    console.log(item.DocumentName);
                     if (!item.DocumentName) {
                         return false; // Return false if any item does not have a file attached
                     }
