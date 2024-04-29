@@ -88,20 +88,26 @@ public class DocumentController : Controller
     [Route("[controller]/DocumentUpload/{applicantCode?}")]
     public async Task<IActionResult> DocumentUpload(string applicantCode = null)
     {
-        int currentUserId = int.Parse(User.Identity.Name);
-
-        int userId = 0;
-        int applicantId = 0;
-        if (applicantCode != null)
+        try
         {
+            int currentUserId = int.Parse(User.Identity.Name);
+
+            //int userId = 0;
+            //int applicantId = 0;
+
+            var userInfo = await _userRepository.GetUserAsync(currentUserId);
+
+            if (applicantCode == null)
+            {
+                return BadRequest($"Restricted Access");
+            }
+
             var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
             if (applicantinfo == null)
             {
                 return BadRequest($"{applicantCode}: no record Found!");
             }
-
-            var userInfo = await _userRepository.GetUserAsync(currentUserId);
 
             //if the application is not access by beneficiary
             if (applicantinfo.UserId != currentUserId && userInfo.UserRoleId == 4)
@@ -110,16 +116,17 @@ public class DocumentController : Controller
             }
 
             //var user = await _userRepository.GetByIdAsync(applicantinfo.UserId);
-            userId = applicantinfo.UserId;
-            applicantCode = applicantinfo?.Code;
-            applicantId = applicantinfo.Id;
+            //userId = applicantinfo.UserId;
+            //applicantCode = applicantinfo?.Code;
+            //applicantId = applicantinfo.Id;
+
+            //ViewBag.Id = userId;
+            //ViewBag.AppplicationId = applicantId;
+            //ViewBag.ApplicationCode = applicantCode != null ? applicantCode : string.Empty;
+
+            return View("DocumentUpload", applicantinfo);
         }
-
-        ViewBag.Id = userId;
-        ViewBag.AppplicationId = applicantId;
-        ViewBag.ApplicationCode = applicantCode != null ? applicantCode : string.Empty;
-
-        return View();
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
     #endregion Views
@@ -190,9 +197,6 @@ public class DocumentController : Controller
     public async Task<IActionResult> GetAllDocumentType() =>
         Ok(await _documentTypeRepo.GetInquiryAsync());
 
-
-
-
     public async Task<IActionResult> GetAllParentDocuments()
     {
         var parentDocuments = await _documentTypeRepo.GetInquiryAsync();
@@ -200,8 +204,6 @@ public class DocumentController : Controller
 
         return Ok(filteredDocuments);
     }
-
-
 
     #endregion API Getters
 
