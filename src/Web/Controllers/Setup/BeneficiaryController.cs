@@ -159,7 +159,8 @@ public class BeneficiaryController : Controller
                     LastName = model.LastName,
                     Gender = model.Sex,
                     Position = "Beneficiary",
-                    PagibigNumber = model.PagibigNumber
+                    PagibigNumber = model.PagibigNumber,
+                    CompanyId = companyId,
                 };
 
                 // validate and  register user
@@ -172,6 +173,11 @@ public class BeneficiaryController : Controller
                 await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
                 userModel.Action = "created";
+
+
+                userModel.SenderId = userId;
+            
+          
                 //// make the usage of hangfire
                 _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 
