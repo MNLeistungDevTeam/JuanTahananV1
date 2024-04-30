@@ -66,6 +66,11 @@ $(() => {
     loadData();
 
     function loadData() {
+        loadRecentBeneficiaryApplication();
+        loadTimeline();
+    }
+
+    function loadRecentBeneficiaryApplication() {
         $.ajax({
             url: baseUrl + 'Applicants/GetBeneficiaryActiveApplication',
             method: "GET",
@@ -78,17 +83,19 @@ $(() => {
                 if (data.ApplicationStatus === null) {
                     $(`[id="custom_ribbon"]`).addClass('d-none');
                 }
+                if (data.Code === "------") {
+                    $(`[id="simplebarWrapper2"] .timeline-alt .process_display`).removeAttr(`hidden`);
+                }
 
                 let color = backgroundClassColors.find(a => a.approvalStatusNumbers.includes(data.ApprovalStatus));
                 let selectedColor = color ? color.classColor : "bg-primary"
-                //console.log(color);
 
                 // Status below the greeting
-
                 $(`[id="status_contract"]`).addClass(selectedColor);
                 $(`[id="status_contract"]`).html(data.ApplicationStatus || "No Application");
 
                 $(`[id="reference_number"]`).html(data.Code || "-----");
+                $(`[id="application_code"]`).html(data.Code === "------" ? "No Application found" : data.Code);
                 $(`[id="requested_loan_amount"]`).html(data.LoanAmount !== 0 ? numeral(data.LoanAmount).format('0, 0.00') : "------"); // use numeral
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
                 $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
@@ -295,7 +302,9 @@ $(() => {
                 //$(`[id="application-tracker-overlay"]`).addClass('d-none');
             }
         });
+    }
 
+    function loadTimeline() {
         $.ajax({
             url: baseUrl + 'Applicants/GetTimelineStatus',
             method: "GET",
@@ -323,205 +332,244 @@ $(() => {
 
                     // bg-teal
                     // Discontinued (11)
-                */
-                /*
-
-                     1: `[id="timeline1"]`, // submitted
-                     2: `[id="timeline1"]`, // withdrawn
-                     3: `[id="timeline2"]`, // developer verified
-                     4: `[id="timeline3"]`, // pag-IBIG verified
-                     5: `[id="timeline4"]`, // submitted (2nd stage)
-                     6: `[id="timeline4"]`, // submitted (2nd stage)
-                     7: `[id="timeline5"]`, // developer approval
-                     8: `[id="timeline6"]`, //
-                     7: `[id="timeline7"]`,
-                     8: `[id="timeline8"]`,
+                
+                     
                 */
 
-                let classColorList = ["text-info", "text-warning", "text-danger"];
 
-                for (var index in data) {
-                    let selectedData = data[index];
+                let timelineStyle = "default";
+                //let timelineStyle = "append";
+                let classColorList = ["text-primary", "text-warning", "text-danger"];
+                let classIconList = [`far fa-circle`, `fas fa-check-circle`, `fas fa-times-circle`];
 
-                    console.log(selectedData);
-                    //console.log(selectedData);
-                    //let color = classColors.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
+                if (timelineStyle === "default") {
+                    $(`[id="simplebarWrapper1"]`).removeAttr('hidden');
 
-                    if (selectedData.ApprovalStatusNumber === 1) {
-                        // Submitted, Stage 1
-                        $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
+                    let failFlag = false;
+                    let completedFlag = false;
+                    let timeline = $(`[id="simplebarWrapper1"]`);
+                    let recentTimelineIndex = 0;
 
-                        $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
+                    let timelineSelector = [
+                        {
+                            approvalStatusNumber: 1,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 4,
+                                    timeline: 1
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 3,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 5,
+                                    timeline: 2
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 4,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 3,
+                                    timeline: 3
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 6,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 4,
+                                    timeline: 4
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 7,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 5,
+                                    timeline: 5
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 8,
+                            successFlag: true,
+                            timelines: [
+                                {
+                                    approverRoleId: 3,
+                                    timeline: 6
+                                }
+                            ]
+                        },
+                        {
+                            approvalStatusNumber: 2,
+                            successFlag: false,
+                            timelines: [
+                                {
+                                    approverRoleId: 5,
+                                    timeline: 2
+                                },
+                                {
+                                    approverRoleId: 3,
+                                    timeline: 3
+                                }
+                            ],
+                        },
+                        {
+                            approvalStatusNumber: 9,
+                            successFlag: false,
+                            timelines: [
+                                {
+                                    approverRoleId: 5,
+                                    timeline: 5
+                                },
+                                {
+                                    approverRoleId: 3,
+                                    timeline: 6
+                                }
+                            ],
+                        },
+                        {
+                            approvalStatusNumber: 5,
+                            successFlag: false,
+                            timelines: [
+                                {
+                                    approverRoleId: 4,
+                                    timeline: null
+                                }
+                            ],
+                        },
+                        {
+                            approvalStatusNumber: 10,
+                            successFlag: false,
+                            timelines: [
+                                {
+                                    approverRoleId: 4,
+                                    timeline: null
+                                }
+                            ],
+                        },
+                        {
+                            approvalStatusNumber: 11,
+                            successFlag: false,
+                            timelines: [
+                                {
+                                    approverRoleId: 5,
+                                    timeline: null
+                                },
+                                {
+                                    approverRoleId: 3,
+                                    timeline: null
+                                }
+                            ],
+                        },
+                        //{
+                        //    ApprovalStatusNumbers: [4],
+                        //    Timeline: 7
+                        //},
+                        //{
+                        //    ApprovalStatusNumbers: [4],
+                        //    Timeline: 8
+                        //},
+                    ];
 
-                        $(`[id="timeline1"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-                    else if (selectedData.ApprovalStatusNumber === 3) {
-                        // Developer Verified, Stage 1
-                        $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
+                    let applicationStatus = [
+                        {
+                            approvalStatusNumbers: [5, 10],
+                            color: 'warning',
+                            iconStatus: 'minus-circle',
+                        },
+                        {
+                            approvalStatusNumbers: [2, 9],
+                            color: 'danger',
+                            iconStatus: 'times-circle',
+                        },
+                        {
+                            approvalStatusNumbers: [1, 3, 4, 6, 7, 8],
+                            color: 'info',
+                            iconStatus: 'check-circle',
+                        },
+                        {
+                            approvalStatusNumbers: [11],
+                            color: 'warning',
+                            iconStatus: 'exclamation-circle',
+                        },
+                    ];
 
-                        $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
+                    let currentTimelineId;
 
-                        $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-                    else if (selectedData.ApprovalStatusNumber === 4) {
-                        // Pag-IBIG Verified, Stage 1
-                        $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
+                    for (var index in data) {
+                        let selectedData = data[index];
+                        let stageText = "";
 
-                        $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                        $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-                    else if (selectedData.ApprovalStatusNumber === 6) {
-                        // Submitted, Stage 2
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline4"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
-
-                        $(`[id="timeline4"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (Second Stage)`);
-
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-                    else if (selectedData.ApprovalStatusNumber === 7) {
-                        // Developer Approved, Stage 2
-                        $(`[id="timeline5"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline5"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline5"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
-
-                        $(`[id="timeline5"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                        $(`[id="timeline5"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline5"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-                    else if (selectedData.ApprovalStatusNumber === 8) {
-                        // Pag-IBIG Approved, Stage 2
-                        $(`[id="timeline6"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline6"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline6"] .timeline-icon`).addClass(`fas fa-check-circle text-info`);
-
-                        $(`[id="timeline6"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                        $(`[id="timeline6"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline6"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-
-                    // Deferred by Pag-IBIG or Developer, Stage 1
-                    if (selectedData.ApprovalStatusNumber === 2 && [3, 5].includes(selectedData.ApproverRoleId)) {
-                        if (selectedData.ApproverRoleId === 5) {
-                            // Deferred by Developer
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-times-circle text-danger`);
-
-                            $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                        if (selectedData.ApprovalStatusNumber === 0) {
+                            continue;
                         }
-                        if (selectedData.ApproverRoleId === 3) {
-                            // Deferred by Pag-IBIG
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle text-info`);
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-times-circle text-danger`);
 
-                            $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
+                        //let color = classColors.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
+                        let applicationData = applicationStatus.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
+                        let timelineData = timelineSelector.find(a => a.approvalStatusNumber === selectedData.ApprovalStatusNumber);
+                        let timelineIndex = timelineData.timelines.find(a => a.approverRoleId === selectedData.ApproverRoleId).timeline ?? recentTimelineIndex + 1;
+                        
+                        failFlag = !timelineData.successFlag;
+                        recentTimelineIndex = timelineIndex;
+                        currentTimelineId = `[id="timeline${timelineIndex}"]`;
+                        let $selectedTimeline = timeline.find(currentTimelineId);
 
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
+                        if ([5, 10].includes(timelineData.approvalStatusNumber)) {
+                            // Withdrawn
+                            let stage = $selectedTimeline.find('.timeline-item-info [id="timeline-item-text"]').html();
+                            stageText = `Withdrawn on ${stage}`;
                         }
+                        else {
+                            // Not withdrawn
+                            stageText = selectedData.ApplicationStatus;
+                        }
+
+                        if (!failFlag) {
+                            $selectedTimeline.addClass(`timeline-item-completed`);
+                        }
+
+                        $selectedTimeline.find('.timeline-icon')
+                            .removeClass(`far fa-circle text-muted`)
+                            .addClass(`fas fa-${applicationData.iconStatus} text-${applicationData.color}`);
+
+                        $selectedTimeline.find('.timeline-item-info [id="timeline-item-text"]')
+                            .removeClass(`text-muted`)
+                            .html(`${stageText}`);
+
+                        $selectedTimeline.find('.timeline-item-info .timeline-date')
+                            .removeClass(`text-muted`)
+                            .html(moment(selectedData.DateCreated).format('LL'))
+                            .attr('hidden', false);
+
+                        $selectedTimeline.find('.timeline-item-info, #timeline-item-text')
+                            .addClass(`text-${applicationData.color}`);
                     }
 
-                    // Deferred by Pag-IBIG or Developer, Stage 2
-                    if (selectedData.ApprovalStatusNumber === 9 && [3, 5].includes(selectedData.ApproverRoleId)) {
-                        if (selectedData.ApproverRoleId === 5) {
-                            // Deferred by Developer
-                            $(`[id="timeline5"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline5"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline5"] .timeline-icon`).addClass(`fas fa-times-circle text-danger`);
+                    if (!failFlag && !completedFlag) {
+                        let $currentTimeline = timeline.find(`div[id="timeline${recentTimelineIndex + 1}"]`);
+                        $currentTimeline.find(`.timeline-icon, .timeline-date, #timeline-item-text`).removeClass(`text-muted`);
+                        //$currentTimeline.find(``).removeClass(`text-muted`);
+                        $currentTimeline.find(`.timeline-icon, .timeline-item-info`).addClass(`text-info`);
 
-                            $(`[id="timeline5"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                            $(`[id="timeline5"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline5"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
-                        if (selectedData.ApproverRoleId === 3) {
-                            // Deferred by Pag-IBIG
-                            $(`[id="timeline6"] .timeline-icon`).removeClass(`far fa-circle text-info`);
-                            $(`[id="timeline6"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline6"] .timeline-icon`).addClass(`fas fa-times-circle text-danger`);
-
-                            $(`[id="timeline6"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus}`);
-
-                            $(`[id="timeline6"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline6"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
                     }
-
-                    // Withdrawn by Beneficiary, Stage 1
-                    if (selectedData.ApprovalStatusNumber === 5) {
-                        if (data[index - 1].ApprovalStatusNumber === 0) {
-                            $(`[id="timeline1"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline1"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline1"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                            $(`[id="timeline1"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
-
-                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline1"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
-                        else if (data[index - 1].ApprovalStatusNumber === 1) {
-                            console.log('aaaa');
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline2"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline2"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                            $(`[id="timeline2"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
-
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline2"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
-                        else if (data[index - 1].ApprovalStatusNumber === 3) {
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(`far fa-circle`);
-                            $(`[id="timeline3"] .timeline-icon`).removeClass(classColorList);
-                            $(`[id="timeline3"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                            $(`[id="timeline3"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (First Stage)`);
-
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                            $(`[id="timeline3"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                        }
+                }
+                else if (timelineStyle === "append") {
+                    $(`[id="simplebarWrapper2"]`).removeAttr('hidden');
+                    for (var index in data) {
+                        loadApplicationTimeline(data[index]);
                     }
-
-                    // Withdrawn by Beneficiary, Stage 2
-                    if (selectedData.ApprovalStatusNumber === 10) {
-                        // Submitted, Stage 2
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(`far fa-circle`);
-                        $(`[id="timeline4"] .timeline-icon`).removeClass(classColorList);
-                        $(`[id="timeline4"] .timeline-icon`).addClass(`fas fa-check-circle text-warning`);
-
-                        $(`[id="timeline4"] .timeline-item-info [id="timeline-item-text"]`).html(`${selectedData.ApplicationStatus} (Second Stage)`);
-
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).html(moment(selectedData.DateCreated).format('LL'));
-                        $(`[id="timeline4"] .timeline-item-info .timeline-date`).attr('hidden', false);
-                    }
-
-                    //// Update timeline icon
-                    //timelineIcon.removeClass('far fa-circle').removeClass(classColorList).addClass('fas fa-minus-circle text-warning');
-
-                    //// Update timeline item text
-                    //timelineItemInfo.find('[id="timeline-item-text"]').html(selectedData.ApplicationStatus);
-
-                    //// Update timeline item date
-                    //timelineItemInfo.find('.timeline-date').html(moment(selectedData.DateCreated).format('LL')).attr('hidden', false);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -533,3 +581,92 @@ $(() => {
         });
     }
 });
+
+function loadApplicationTimeline(itemObj = {}) {
+    let count = $('[id="simplebarWrapper2"] .timeline-item').length;
+
+    let applicationStatus = [
+        {
+            approvalStatusNumbers: [5, 10],
+            color: 'warning',
+            iconStatus: 'minus-circle',
+        },
+        {
+            approvalStatusNumbers: [2, 9],
+            color: 'danger',
+            iconStatus: 'times-circle',
+        },
+        {
+            approvalStatusNumbers: [1, 3, 4, 6, 7, 8, 11],
+            color: 'info',
+            iconStatus: 'check-circle',
+        },
+    ];
+
+    let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
+
+    let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
+
+    let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
+                        <div>
+                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
+                        </div>
+                        <div class="timeline-item-info">
+                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
+                            <p class="mb-0">${itemObj.Stage}</p>
+                            <p>
+                                <small class="text-muted timeline-date">${formattedDate}</small>
+                            </p>
+                        </div>
+                    </div>`;
+
+    $('[id="simplebarWrapper2"] .timeline-alt').append(itemToAdd);
+}
+
+function loadApplicationTimeline2(itemObj = {}) {
+    let count = $('[id="simplebarWrapper1"] .timeline-item').length;
+
+    let applicationStatus = [
+        {
+            // Withdrawn (Stage 1, Stage 2)
+            approvalStatusNumbers: [5, 10],
+            color: 'warning',
+            iconStatus: 'minus-circle',
+        },
+        {
+            // Defer (Stage 1, Stage 2)
+            approvalStatusNumbers: [2, 9],
+            color: 'danger',
+            iconStatus: 'times-circle',
+        },
+        {
+            // Approved (Stage 1, Stage 2)
+            approvalStatusNumbers: [1, 3, 4, 6, 7, 8],
+            color: 'info',
+            iconStatus: 'check-circle',
+        },
+    ];
+
+    let time = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
+
+
+    let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
+
+    let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
+
+    let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
+                        <div>
+                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
+                        </div>
+                        <div class="timeline-item-info">
+                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
+                            <p class="mb-0">${itemObj.Stage}</p>
+                            <p>
+                                <small class="text-muted timeline-date">${formattedDate}</small>
+                            </p>
+                        </div>
+                    </div>`;
+
+    $('[id="simplebarWrapper2"] .timeline-alt').append(itemToAdd);
+}
+

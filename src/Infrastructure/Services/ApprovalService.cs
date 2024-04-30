@@ -17,6 +17,7 @@ using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 
 namespace DMS.Infrastructure.Services
 {
@@ -101,8 +102,8 @@ namespace DMS.Infrastructure.Services
                 var userInfo = await _userRepo.GetUserAsync(approverId);
 
                 //usage for developer and lgu can be approver
-                if (userInfo.UserRoleId == 2) {
-
+                if (userInfo.UserRoleId == 2)
+                {
                     userInfo.UserRoleId = 5;
                 }
 
@@ -147,6 +148,8 @@ namespace DMS.Infrastructure.Services
                         var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
 
                         var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
+
+                        activeapplication.SenderId = approverId;
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatus(activeapplication, activeapplication.ApplicantEmail));
                     }

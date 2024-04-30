@@ -28,7 +28,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? DesiredLoanTermYears { get; set; }
 
         [Display(Name = "Mode of Payment (MOP)", Prompt = "Select mode of payment")]
-        public int ModeOfPaymentId { get; set; }
+        public int? ModeOfPaymentId { get; set; }
 
         [DisplayName("With Existing Housing Application")]
         public bool ExistingChecker

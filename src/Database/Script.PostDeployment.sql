@@ -27,3 +27,4 @@ Post-Deployment Script Template
 :r .\PostDeploymentScript\Script.PostDeployment_SourcePagibigFund.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Industry.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Applicant.sql
+:r .\PostDeploymentScript\Script.PostDeployment_EmailSetup.sql

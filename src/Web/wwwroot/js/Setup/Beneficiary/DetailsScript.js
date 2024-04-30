@@ -58,7 +58,13 @@ $(function () {
             {
                 data: 'LoanAmount',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                render: function (data, type, row) {
+                    // Parse LoanAmount as float and format it with commas and two decimal places
+                    var formattedAmount = parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    // Add peso sign before the formatted value
+                    return '₱' + formattedAmount;
+                }
             },
 
             {
@@ -77,16 +83,71 @@ $(function () {
                 data: 'ApplicationStatus',
                 orderable: !0,
                 className: 'align-middle text-center',
-                render: function (data) {
-                    return `
-                        <span class="badge fs-6 border bg-secondary">${data}</span>
-                        `;
+                render: function (data, type, row) {
+                    var returndata = "";
+
+                    if (row.ApprovalStatusNumber == 0) { // draft
+                        returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 1) { // submitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 2) { // withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 3) { // DeveloperVerified
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 4) { // PagibigVerified
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 5) { // Withdrawn
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 6) { // PostSubmitted
+                        returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 7) { // DeveloperConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 8) { // PagibigConfirmed
+                        returndata = ` <span class="badge fs-6 border bg-darkgreen">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 9) { // Disqualified
+                        returndata = ` <span class="badge fs-6 border bg-danger">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 10) { // Discontinued
+                        returndata = ` <span class="badge fs-6 border bg-warning">${data}</span> `;
+                    }
+                    else if (row.ApprovalStatusNumber == 11) { // return
+                        returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                    }
+
+                    return returndata;
                 }
             },
             {
                 data: 'Stage',
                 orderable: !0,
-                className: 'align-middle text-center'
+                className: 'align-middle text-center',
+                render: function (data, type, row) {
+                    var returndata = "";
+
+                    if ([0, 1, 2, 3, 5, 11].includes(row.ApprovalStatusNumber)) {
+                        // `Credit Verification`
+                        returndata = `<span class="text-orange">${data}</span>`;
+                    }
+                    else if ([4, 6, 7, 9, 10].includes(row.ApprovalStatusNumber)) {
+                        // `Application Completion`
+                        returndata = `<span class="text-primary">${data}</span>`;
+                    }
+                    else if (row.ApprovalStatusNumber === 8) {
+                        // `Post-Approval`
+                        returndata = `<span class="text-success">${data}</span>`;
+                    }
+
+                    return returndata;
+                }
             },
 
         ],
