@@ -142,8 +142,8 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).addClass('text-danger');
 
                     let roleMessage = {
-                        2: "Deferred by Developer",
                         3: "Deferred by Pag-IBIG",
+                        2: "Deferred by Developer",
                         5: "Deferred by Developer"
                     };
 
@@ -291,6 +291,21 @@ $(() => {
                     $(`[id="credit_history_remarks"]`).html(`Submit a new application`);
 
                     $(`[id="text_status"]`).html(`Your application is <span class='fw-bolder text-warning'> withdrawn </span>. Kindly submit an new application.`);
+                } else if (data.ApprovalStatus === 11) {
+                    // Application Submitted for Second Stage
+                    $(`[id="credit_history_status"]`).addClass('text-primary');
+                    $(`[id="credit_history_remarks"]`).addClass('text-muted');
+
+                    //$(`[id="process_status"]`).html(`recently submitted.`);
+                    //$(`[id="process_name"]`).html(`Kindly wait for a developer to verify your application.`);
+
+                    $(`[id="credit_history_status"]`).html("Marked For Resubmission");
+                    $(`[id="credit_history_remarks"]`).html("Double-check your requirements again to proceed");
+
+                    $(`[id="text_status"]`).html(`
+                        Your application is <span class="fw-bolder text-primary">recently marked for resubmission</span>.
+                        Kindly <span class="text-warning">double-check remarks and re-upload documents</span> to continue.
+                    `);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
