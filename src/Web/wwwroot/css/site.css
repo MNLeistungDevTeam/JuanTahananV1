@@ -1342,19 +1342,110 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 
 
 .timeline-item::before {
-    color: #0dcaf0 !important;
-    background-color: #0dcaf0 !important;
-    border-radius: 12px;
+    color: rgba(101,108,133,0.5) !important;
+    background-color: rgba(255,255,255,0) !important;
+    border-radius: 0px;
     height: auto;
-    margin-top: -1px;
-    margin-bottom: -1px;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    width: 4px !important;
+    /*font-size: 60em;*/
+    left: 9px !important;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-left-width: 1px !important;
+    border-right-width: 1px !important;
+    z-index: -1;
+}
+
+.timeline-item-completed::before {
+    background-color: #0dcaf0 !important;
+    color: #0dcaf0 !important;
+}
+
+.timeline-item-current {
+    color: #0dcaf0 !important;
 }
 
 [id$="-selectized"]::placeholder {
     color: rgba(0,0,0,.35) !important
 }
 
-
-.timeline-icon {
-    /*font-size: 24px !important;*/
+.custom-circle.timeline-placeholder-icon {
+    background-color: #fff !important;
+    z-index: 1;
 }
+
+/* Steps */
+/*.custom-step {
+    position: relative;
+    min-height: 1em;
+    color: gray;
+}
+
+    .custom-step + .custom-step {
+        margin-top: 1.5em
+    }
+
+    .custom-step > div:first-child {
+        position: static;
+        height: 0;
+    }
+
+    .custom-step > div:not(:first-child) {
+        margin-left: 1.5em;
+        padding-left: 1em;
+    }
+
+    .custom-step.step-active {
+        color: #4285f4
+    }
+
+        .custom-step.step-active .circle {
+            background-color: #4285f4;
+        }*/
+
+/* Circle */
+/*.custom-circle {
+    background: #0dcaf0;
+    position: relative;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    border-radius: 100%;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 0 0 1px #0dcaf0;
+}*/
+
+    /* Vertical Line */
+    /*.custom-circle:before {
+        content: ' ';
+        position: absolute;
+        display: block;
+        top: 0px;
+        right: 50%;*/
+        /*bottom: 1px;*/
+        /*left: 30%;
+        height: 100%;
+        width: 8px;
+        border-radius: 2px;
+        transform: scale(1, 2);
+        transform-origin: 50% -100%;
+        background-color: rgba(0, 0, 0, 0.25);
+        z-index: -1;
+    }
+
+.custom-step:last-child .circle:after {
+    display: none
+}*/
+
+/* Stepper Titles */
+/*.custom-title {
+    line-height: 1.5em;
+    font-weight: bold;
+}
+
+.custom-caption {
+    font-size: 0.8em;
+}*/
