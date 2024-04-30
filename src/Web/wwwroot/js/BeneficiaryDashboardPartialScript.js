@@ -510,25 +510,31 @@ $(() => {
 
                     for (var index in data) {
                         let selectedData = data[index];
+                        let stageText = "";
 
                         if (selectedData.ApprovalStatusNumber === 0) {
                             continue;
                         }
 
                         //let color = classColors.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
-
                         let applicationData = applicationStatus.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
                         let timelineData = timelineSelector.find(a => a.approvalStatusNumber === selectedData.ApprovalStatusNumber);
-                        console.log(selectedData.ApprovalStatusNumber);
                         let timelineIndex = timelineData.timelines.find(a => a.approverRoleId === selectedData.ApproverRoleId).timeline ?? recentTimelineIndex + 1;
-
-                        //if (timelineIndex === null) {
-                        //    timelineIndex = recentTimelineIndex + 1;
-                        //}
+                        
                         failFlag = !timelineData.successFlag;
                         recentTimelineIndex = timelineIndex;
                         currentTimelineId = `[id="timeline${timelineIndex}"]`;
                         let $selectedTimeline = timeline.find(currentTimelineId);
+
+                        if ([5, 10].includes(timelineData.approvalStatusNumber)) {
+                            // Withdrawn
+                            let stage = $selectedTimeline.find('.timeline-item-info [id="timeline-item-text"]').html();
+                            stageText = `Withdrawn on ${stage}`;
+                        }
+                        else {
+                            // Not withdrawn
+                            stageText = selectedData.ApplicationStatus;
+                        }
 
                         if (!failFlag) {
                             $selectedTimeline.addClass(`timeline-item-completed`);
@@ -540,7 +546,7 @@ $(() => {
 
                         $selectedTimeline.find('.timeline-item-info [id="timeline-item-text"]')
                             .removeClass(`text-muted`)
-                            .html(`${selectedData.ApplicationStatus}`);
+                            .html(`${stageText}`);
 
                         $selectedTimeline.find('.timeline-item-info .timeline-date')
                             .removeClass(`text-muted`)
