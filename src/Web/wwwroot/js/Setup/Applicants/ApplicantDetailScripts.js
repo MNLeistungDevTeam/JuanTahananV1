@@ -50,10 +50,17 @@ $(async function () {
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
         }
 
+
+        $(".re-upload").hide();
+
         //Hides the re-upload button if status is Deferred or Withdrawn
         if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
             $(".re-upload").hide();
         }
+
+     
+
+
     });
 
     //#region Events
@@ -149,6 +156,7 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
+
                     if (item.HasParentId === 0 && item.HasSubdocument === 0) {
                         groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
@@ -161,15 +169,44 @@ $(async function () {
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
-                                            <i class="fe-upload"></i>
-                                        </button>
+                                        
                                     </div>
                                 </a>
                             </div>
                           </div>`;
                     }
+
+                    //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
+                    //    groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
+                    //    <h4 class="header-title text-muted">${groupName}</h4>
+                    //    <div class="list-group">`;
+
+                    //    groupHtml += `<div class="file-upload-wrapper">
+                    //        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                    //            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                    //                <div class="d-flex justify-content-between align-items-center">
+                    //                    <div>
+                    //                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                    //                    </div>
+                    //                    <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                    //                        <i class="fe-upload"></i>
+                    //                    </button>
+                    //                </div>
+                    //            </a>
+                    //        </div>
+                    //      </div>`;
+                    //}
                 });
+
+
+
+
+
+
+
+
+
+
 
                 groupHtml += `</div></div>`;
                 $("#div_verification").append(groupHtml);
