@@ -44,14 +44,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AuditTrailHeader]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AuditTrailRef]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[BarrowersInformation]",
          "ObjectType": 0
       },
@@ -89,6 +81,14 @@
       },
       {
          "Name": "[dbo].[DocumentVerification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailSetup]",
          "ObjectType": 0
       },
       {
@@ -176,6 +176,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[SubDocument]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[TemporaryLink]",
          "ObjectType": 0
       },
@@ -212,7 +216,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "phmnl012127.eiDOCRS2023.dbo",
+   "UiHint": "mnl.eiDOCRS2023.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,

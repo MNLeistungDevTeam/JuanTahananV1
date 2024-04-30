@@ -1,0 +1,113 @@
+﻿@using DMS.Domain.Dto.EmailLogDto
+@using DMS.Domain.Dto.RoleDto
+@model EmailLogModel
+
+@{
+    ViewData["Title"] = "Email Logs";
+    var roleAccess = (RoleAccessModel)ViewData["RoleAccess"];
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item active"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline rounded-4">
+            <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <div class="row">
+                    <div class="col-md-9 mb-2 align-items-md-center">
+                        <button @((roleAccess.CanCreate == true) ? "" : "disabled") class="btn btn-light btn-sm waves-effect" id="btn_send" type="button" hidden><span class="fe-send"></span> Resend</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_refresh"><span class="mdi mdi-refresh"></span> Refresh</button>
+                        @*<button @(roles.Any(x => x.CanCreate == true && x.ModuleId == module.Id) ? "" : "hidden") type="button" class="btn btn-light btn-sm waves-effect" data-bs-toggle="dropdown" aria-expanded="false" id="btn_add"><span class="fe-plus"></span> Add </button>*@
+                        @*<button @(roles.Any(x => x.CanCreate == true && x.ModuleId == module.Id) ? "" : "hidden") class="btn btn-light btn-sm waves-effect" id="btn_edit"><span class="fe-edit"></span> Edit</button>*@
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="input-group float-end">
+                            <input id="txtsearch" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-sm table-bordered nowrap w-100 mt-2" id="tblEmailLogs">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th></th>
+                            <th>Status</th>
+                            <th>Reference No.</th>
+                            <th>Beneficiary</th>
+                            <th>Description</th>
+                            <th>Sender</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    </tbody>
+                </table>
+                <form asp-action="ResendEmails" asp-controller="EmailLog" asp-antiforgery="true" method="post" id="frmResend" role="form">
+                    <input asp-for="ReferenceNos" hidden />
+                    <input asp-for="ReferenceIds" hidden />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" hidden>
+        <form asp-action="SaveEmailLogs" asp-antiforgery="true" method="post" id="frmEmail" role="form">
+            <div class="card">
+                <div class="card-header bg-transparent">
+                    <h4 class="mb-1 text-muted" id="cardTitle">Email Logs </h4>
+                </div>
+                <div class="card-body border-top">
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <p class="m-0 mb-1 text-bold">Reference No.</p>
+                            <input type="text" asp-for="ReferenceNo" class="form-control" />
+                            <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+                            <input type="text" asp-for="ReferenceId" class="form-control" hidden />
+                            <input type="number" asp-for="Id" hidden />
+                            <input asp-for="Status" hidden />
+                            <input asp-for="SenderId" hidden />
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <p class="m-0 mb-1 text-bold">Description</p>
+                            <input type="text" asp-for="Description" maxlength="150" class="form-control MaxLength" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <p class="m-0 mb-1 text-bold">Receiver</p>
+                            <select type="text" asp-for="ReceiverId"></select>
+                            <span asp-validation-for="ReceiverId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer bg-transparent border-top">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary" id="btnSave"><i class="fe-save"></i>&nbsp; Save</button>
+                        <button type="button" class="btn btn-danger" id="btnReset"><i class="fe-repeat"></i>&nbsp; Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/EmailLog/EmailLogScript.js" asp-append-version="true"></script>
+}

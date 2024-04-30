@@ -386,8 +386,6 @@
                                         <div class="tab-pane active show" id="home-b1" role="tabpanel">
                                             <div class="row">
 
-
-
                                                 <div class="col-md-6">
 
                                                     <div class="row">
@@ -397,9 +395,6 @@
                                                         </div>
                                                     </div>
 
-
-
-
                                                     <div class="row">
                                                         <label class="col-md-3 text-md-end">Middle Name:</label>
                                                         <div class="col-md-9">
@@ -407,16 +402,12 @@
                                                         </div>
                                                     </div>
 
-
-
                                                     <div class="row">
                                                         <label class="col-md-3 text-md-end">First Name:</label>
                                                         <div class="col-md-9">
                                                             <p>@Model.BarrowersInformationModel.FirstName</p>
                                                         </div>
                                                     </div>
-
-
 
                                                     <div class="row">
                                                         <label class="col-md-3 text-md-end">Email:</label>
@@ -477,12 +468,7 @@
                                                             <p></p>
                                                         </div>
                                                     </div>
-
-
-
-
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="profile-b1" role="tabpanel">
@@ -504,13 +490,13 @@
                                                 </h3>
                                             }
 
-                                            <div id="div_verification" class="row">
+                                            <div class="col-md-12">
+                                                <div class="row" id="div_verification"></div>
                                             </div>
 
                                         </div>
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
-
 
                                             @if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed || Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed))
 
@@ -526,7 +512,8 @@
                                                 </h3>
                                             }
 
-                                            <div id="div_application" class="row">
+                                            <div class="col-md-12">
+                                                <div class="row" id="div_application"></div>
                                             </div>
 
                                         </div>

@@ -5,7 +5,7 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
+
 using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Hangfire;
@@ -89,7 +89,7 @@ public class BeneficiaryController : Controller
 
             if (beneficiaryData == null)
             {
-                return BadRequest($"{pagibigNumber}: no record Found!");
+                throw new Exception($"Transaction No: { pagibigNumber}: no record Found!");
             }
 
             //if the application is not access by beneficiary
@@ -159,7 +159,8 @@ public class BeneficiaryController : Controller
                     LastName = model.LastName,
                     Gender = model.Sex,
                     Position = "Beneficiary",
-                    PagibigNumber = model.PagibigNumber
+                    PagibigNumber = model.PagibigNumber,
+                    CompanyId = companyId,
                 };
 
                 // validate and  register user
@@ -172,6 +173,11 @@ public class BeneficiaryController : Controller
                 await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
                 userModel.Action = "created";
+
+
+                userModel.SenderId = userId;
+            
+          
                 //// make the usage of hangfire
                 _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 

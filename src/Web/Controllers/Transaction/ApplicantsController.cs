@@ -183,7 +183,7 @@ namespace Template.Web.Controllers.Transaction
 
                 if (applicantinfo == null)
                 {
-                    return BadRequest($"{applicantCode}: no record Found!");
+                    throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
 
                 //if the application is not access by beneficiary
@@ -812,7 +812,8 @@ namespace Template.Web.Controllers.Transaction
                             LastName = vwModel.BarrowersInformationModel.LastName,
                             MiddleName = vwModel.BarrowersInformationModel.MiddleName,
                             Gender = vwModel.BarrowersInformationModel.Sex,
-                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber
+                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber,
+                            CompanyId = companyId
                         };
 
                         //save beneficiary user

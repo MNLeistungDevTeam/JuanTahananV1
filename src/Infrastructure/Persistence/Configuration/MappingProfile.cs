@@ -8,6 +8,8 @@ using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.DocumentVerificationDto;
+using DMS.Domain.Dto.EmailLogDto;
+using DMS.Domain.Dto.EmailSetupDto;
 using DMS.Domain.Dto.EntityDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageApproverDto;
@@ -65,5 +67,7 @@ public class MappingProfile : Profile
         CreateMap<DocumentVerification, DocumentVerificationModel>().ReverseMap();
         CreateMap<BeneficiaryInformation, BeneficiaryInformationModel>().ReverseMap();
         CreateMap<TemporaryLink, TemporaryLinkModel>().ReverseMap();
+        CreateMap<EmailSetup, EmailSetupModel>().ReverseMap();
+        CreateMap<EmailLog, EmailLogModel>().ReverseMap();
     }
 }

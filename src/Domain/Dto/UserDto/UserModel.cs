@@ -118,7 +118,7 @@ public class UserModel
     public string? UserRoleCode { get; set; }  // Name basis
 
     public string? Action { get; set; }  // Action Reset,Updated,Created
-    public string? ActiveApplicationCode { get; set; } 
-
-
+    public string? ActiveApplicationCode { get; set; }
+    public int? CompanyId { get; set; }
+    public int? SenderId { get; set; }
 }
