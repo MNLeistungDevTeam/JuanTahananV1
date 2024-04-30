@@ -11,7 +11,7 @@ namespace DMS.Application.Services
 {
     public interface IApprovalService
     {
-        Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, ApprovalStatusType? status = ApprovalStatusType.PendingReview);
+        Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, AppStatusType? status = AppStatusType.Draft);
 
         Task SaveApprovalLevel(ApprovalLevelModel model, int approverId, int companyId);
     }

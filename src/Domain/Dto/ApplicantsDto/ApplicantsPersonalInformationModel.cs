@@ -31,6 +31,12 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? CompanyId { get; set; }
         public int? ApprovalStatus { get; set; }
 
+        public int? ApproverRoleId { get; set; }
+
+        public int? EncodedStage { get; set; }
+        public int? EncodedStatus { get; set; }
+        public int? EncodedPartialStatus { get; set; }
+
         #region Display Properties
 
         public string? ApplicantFullName { get; set; }
@@ -47,6 +53,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? ProjectLocation { get; set; }
         public string? Unit { get; set; }
         public decimal? LoanAmount { get; set; }
+        public int? LoanYears { get; set; }
 
         //Documents
 
@@ -75,6 +82,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public DateTime? DateSubmitted { get; set; }
         public DateTime? LastUpdated { get; set; }
+
+        public int? DocumentSequence { get; set; }
+        public int? ApproverId { get; set; }
+        public int? DocumentParentId { get; set; }
+        public int? HasParentId { get; set; }
+        public int? HasSubdocument { get; set; }
+        public int? SenderId { get; set; }
 
         #endregion Display Properties
     }

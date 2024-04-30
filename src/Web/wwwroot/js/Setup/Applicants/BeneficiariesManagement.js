@@ -1,4 +1,6 @@
 $(() => {
+    var defaultUserPic = "/images/user/default.png";
+
     var tbl_beneficiaries = $("#tbl_beneficiaries").DataTable({
         ajax: {
             url: '/Applicants/GetUsersByRoleName',
@@ -16,10 +18,10 @@ $(() => {
                 render: function (data) {
                     return `
                                     <div class="d-flex align-items-center">
-                                        <img src="${data.ProfilePicture == '' ? '/images/user/default.png' : "/images/user/" + data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
+                                        <img src="${data.ProfilePicture == '' ? defaultUserPic : data.ProfilePicture}" class="rounded-circle avatar-sm img-thumbnail me-3" alt="profile">
                                         <div>
                                             <div>${data.Name}</div>
-                                            <a href="${data.Email}" class="text-decoration-none">${data.Email}</a>
+                                      <a href="mailto:${data.Email}" class="text-decoration-none">${data.Email}</a>
                                         </div>
                                     </div>
                                 `;
@@ -35,11 +37,16 @@ $(() => {
                 orderable: !0,
                 className: 'align-middle text-center',
                 render: function (data) {
+                    var dateApplied = "";
+
                     if (data && data.trim() !== "") {
-                        return moment(data).format('YYYY-MM-DD');
-                    } else {
-                        return "";
+                        let submDate = moment(data).format('MMM. D, YYYY'); // Format date as "Aug. 15, 2024"
+                        let submTime = moment(data).format('HH:mm'); // Format time in 24-hour format without AM/PM
+
+                        dateApplied = `${submDate}, at ${submTime}`; // Concatenate date and time
                     }
+
+                    return dateApplied;
                 }
             },
             {

@@ -39,6 +39,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentRepository
         public async Task<IEnumerable<DocumentTypeModel?>> GetInquiryAsync() =>
             await _db.LoadDataAsync<DocumentTypeModel, dynamic>("spDocumentType_GetInquiry", new { });
 
+
+       
+
         public async Task<DocumentTypeModel?> GetDocumentTypeById(int id) =>
             await _db.LoadSingleAsync<DocumentTypeModel, dynamic>("spDocumentType_GetById", new { id });
 

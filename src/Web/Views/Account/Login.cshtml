@@ -16,7 +16,7 @@
                 </a>
             </div>
 
-            <h3 class="text-dark mt-3 mb-1 ">Admin Portal</h3>
+            <h3 class="text-dark mt-3 mb-1 "></h3>
             <p class="m-0">Welcome back! Login to your account.</p>
             <p class="text-muted mb-4">Enter your Username and Password to start your session.</p>
             
@@ -24,14 +24,14 @@
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="mb-2">
                     <label asp-for="UserName" class="form-label"></label>
-                    <input class="form-control " type="text" asp-for="UserName" placeholder="Enter your User Name">
+                    <input class="form-control " type="text" asp-for="UserName" placeholder="Enter your username">
                     <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
+                </div>  
 
                 <div class="mb-2">
                     <label asp-for="Password" class="form-label"></label>
                     <div class="input-group input-group-merge">
-                        <input class="form-control " asp-for="Password" placeholder="Enter your Password">
+                        <input class="form-control " asp-for="Password" placeholder="Enter your password">
                         <div class="input-group-text " data-password="false">
                             <span class="password-eye"></span>
                         </div>
@@ -41,7 +41,7 @@
 
 
 
-
+                 
                 <div class="form-floating mb-1" hidden>
                     <select class="form-select" asp-for="CompanyId" asp-items="@(new SelectList(Model.Company, "Id", "Name"))" style="width:100%;">
                         <option value="">Select Company...</option>

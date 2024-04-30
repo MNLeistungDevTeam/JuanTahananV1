@@ -2,6 +2,7 @@
 const tbl_user_tbody = "#tbl_user tbody";
 const changePassModal = $("#change-pass-modal");
 const frmChangePass = $("#frm_change_pass");
+const currentUserId = $("#txt_userId").val();
 
 var predefinedRoles = [];
 var tbl_user;
@@ -440,7 +441,12 @@ $(function () {
                     let type = (recordId == 0 ? "Added!" : "Updated!");
                     let successMessage = `User Successfully ${type}`;
                     messageBox(successMessage, "success", true);
-                    updateUserProfile()
+
+                    if (recordId == currentUserId) {
+                        updateUserProfile();
+                    }
+
+                      
 
                     loadUsers();
                     button.attr({ disabled: false });

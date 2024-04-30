@@ -55,24 +55,28 @@ namespace DMS.Infrastructure.Services
             UserModel userModel = new()
             {
                 Email = model.Email,
-                Password = _authService.GenerateTemporaryPasswordAsync(model.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                Password = _authService.GenerateRandomPassword(),  // _authService.GenerateTemporaryPasswordAsync(model.FirstName) sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
                 UserName = await _authService.GenerateTemporaryUsernameAsync(),
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                MiddleName = model.MiddleName,
                 Gender = model.Gender,
                 Position = "Beneficiary",
-                PagibigNumber = model.PagibigMidNumber
+                PagibigNumber = model.PagibigMidNumber,
+                CompanyId = model.CompanyId
             };
 
             // validate and  register user
             var userData = await _authService.RegisterUser(userModel);
 
             userModel.Id = userData.Id;
+            userModel.SenderId = 1;
 
             //save as benificiary
             await _userRoleRepo.SaveBenificiaryAsync(userData.Id);
 
             userModel.Action = "created";
+
             //// make the usage of hangfire
             _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, rootFolder));
 
@@ -94,6 +98,7 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PresentUnitName = model.PresentUnitName;
             beneficiaryModel.PresentBuildingName = model.PresentBuildingName;
             beneficiaryModel.PresentLotName = model.PresentLotName;
+            beneficiaryModel.PresentStreetName = model.PresentStreetName;
             beneficiaryModel.PresentSubdivisionName = model.PresentSubdivisionName;
             beneficiaryModel.PresentBaranggayName = model.PresentBarangayName;
             beneficiaryModel.PresentMunicipalityName = model.PresentMunicipalityName;
@@ -103,6 +108,7 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PermanentUnitName = model.PermanentUnitName;
             beneficiaryModel.PermanentBuildingName = model.PermanentBuildingName;
             beneficiaryModel.PermanentLotName = model.PermanentLotName;
+            beneficiaryModel.PermanentStreetName = model.PermanentStreetName;
             beneficiaryModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
             beneficiaryModel.PermanentBaranggayName = model.PermanentBarangayName;
             beneficiaryModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
@@ -113,8 +119,8 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PropertyLocation = model.PropertyLocation;
             beneficiaryModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
 
-            beneficiaryModel.IsPermanentAddressAbroad = true; // no condition because all address is required
-            beneficiaryModel.IsPresentAddressAbroad = true; // no condition because all address is required
+            beneficiaryModel.IsPermanentAddressAbroad = false; // no condition because all address is required
+            beneficiaryModel.IsPresentAddressAbroad = false; // no condition because all address is required
 
             await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
 

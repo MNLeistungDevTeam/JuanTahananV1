@@ -113,7 +113,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
             }
         }
 
-        public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, ApprovalStatusType? status = ApprovalStatusType.PendingReview)
+        public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, AppStatusType? status = AppStatusType.Draft)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
                     UserId = userId,
                     ReferenceId = transactionId,
                     ReferenceType = module.Id,
-                    Status = (int)(status ?? ApprovalStatusType.PendingReview),
+                    Status = (int)(status ?? AppStatusType.Draft),
                     LastUpdate = DateTime.Now
                 };
                 var approvalStatus = await SaveAsync(approvalStatusToSave);

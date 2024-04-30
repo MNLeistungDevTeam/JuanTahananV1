@@ -17,31 +17,31 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Is Spouse Address Abroad", Prompt = "Address Abroad")]
         public bool IsSpouseAddressAbroad { get; set; }
 
-        [Display(Name = "Employment Unit Name", Prompt = "Unit Name")]
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit/Room No., Floor")]
         public string? SpouseEmploymentUnitName { get; set; }
 
-        [Display(Name = "Employment Building Name", Prompt = "Building Name")]
+        [Display(Name = "Building Name", Prompt = "Building Name")]
         public string? SpouseEmploymentBuildingName { get; set; }
 
-        [Display(Name = "Employment Lot Name", Prompt = "Lot Name")]
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot No., Blk No., Phase No., House No.")]
         public string? SpouseEmploymentLotName { get; set; }
 
-        [Display(Name = "Employment Street Name", Prompt = "Street Name")]
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? SpouseEmploymentStreetName { get; set; }
 
-        [Display(Name = "Employment Subdivision Name", Prompt = "Subdivision Name")]
+        [Display(Name = "Subdivision", Prompt = "Subdivision")]
         public string? SpouseEmploymentSubdivisionName { get; set; }
 
-        [Display(Name = "Employment Baranggay Name", Prompt = "Baranggay Name")]
+        [Display(Name = "Barangay", Prompt = "Barangay")]
         public string? SpouseEmploymentBaranggayName { get; set; }
 
-        [Display(Name = "Employment Municipality Name", Prompt = "Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality/City")]
         public string? SpouseEmploymentMunicipalityName { get; set; }
 
-        [Display(Name = "Employment Province Name", Prompt = "Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province and State Country (if abroad)")]
         public string? SpouseEmploymentProvinceName { get; set; }
 
-        [Display(Name = "Employment Zip Code", Prompt = "Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "ZIP Code")]
         public string? SpouseEmploymentZipCode { get; set; }
 
         [Display(Name = "Prepared Mailing Address", Prompt = "Mailing Address")]
@@ -51,28 +51,28 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? PreferredTimeToContact { get; set; }
 
         [Display(Name = "Last Name", Prompt = "Last Name")]
-        public string? LastName { get; set; }
+        public string? LastName { get; set; } = string.Empty;   
 
-        [Display(Name = "First Name", Prompt = "First Name")]
-        public string? FirstName { get; set; }
+        [Display(Name = "First Name", Prompt = "First Name")] 
+        public string? FirstName { get; set; } = string.Empty;
 
         [Display(Name = "Middle Name", Prompt = "Middle Name")]
         public string? MiddleName { get; set; }
 
-        [Display(Name = "Suffix", Prompt = "Suffix")]
+        [Display(Name = "Name Extension", Prompt = "Name Extension")]
         public string? Suffix { get; set; }
 
-        [Display(Name = "Pagibig Mid Number", Prompt = "XXXX-XXXX-XXXX")]
+        [Display(Name = "Pag-IBIG MID NO./RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigMidNumber { get; set; }
 
-        [Display(Name = "Tin Number", Prompt = "XXX-XXX-XXX-XXXX")]
+        [Display(Name = "TIN", Prompt = "XXX-XXX-XXX-XXXX")]
         public string? TinNumber { get; set; }
 
         [Display(Name = "Citizenship", Prompt = "Citizenship")]
         public string? Citizenship { get; set; }
 
-        [Display(Name = "Birth Date", Prompt = "Birth Date")]
-        [DisplayName("Birth Date")]
+        [Display(Name = "Date of Birth", Prompt = "Date of Birth", Description = "(mm/dd/yyyy)")]
+        [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
 
         public DateTime? BirthDate { get; set; }
@@ -101,7 +101,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Industry", Prompt = "Industry")]
         public int? IndustryId { get; set; } = 0;
 
-        [Display(Name = "Employer/Business Name(if self Employed)", Prompt = "Name (if self Employed)")]
+        [Display(Name = "Employer/Business Name (if self-employed)", Prompt = "Name (if self Employed)")]
         public string? BusinessName { get; set; }
 
         [Display(Name = "Occupation", Prompt = "Occupation")]
@@ -110,10 +110,10 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Years in Employment/Business", Prompt = "Years")]
         public int? YearsInEmployment { get; set; }
 
-        [Display(Name = "Position & Department", Prompt = "Position & Department")]
+        [Display(Name = "Position and Department", Prompt = "Position & Department")]
         public string? EmploymentPosition { get; set; }
 
-        [Display(Name = "Business Tel No", Prompt = "Tel No")]
+        [Display(Name = "Business Tel. No.", Prompt = "Business Tel. No.")]
         public string? BusinessTelNo { get; set; }
     }
 }

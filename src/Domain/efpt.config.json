@@ -84,6 +84,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[EmailLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailSetup]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Form2Page]",
          "ObjectType": 0
       },
@@ -165,6 +173,10 @@
       },
       {
          "Name": "[dbo].[SqlDataConnections]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SubDocument]",
          "ObjectType": 0
       },
       {

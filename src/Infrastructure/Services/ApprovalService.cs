@@ -17,6 +17,7 @@ using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 
 namespace DMS.Infrastructure.Services
 {
@@ -59,7 +60,7 @@ namespace DMS.Infrastructure.Services
             _backgroundJobClient = backgroundJobClient;
         }
 
-        public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, ApprovalStatusType? status = ApprovalStatusType.PendingReview)
+        public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, AppStatusType? status = AppStatusType.Draft)
         {
             try
             {
@@ -71,7 +72,7 @@ namespace DMS.Infrastructure.Services
                     UserId = userId,
                     ReferenceId = transactionId,
                     ReferenceType = module.Id,
-                    Status = (int)(status ?? ApprovalStatusType.PendingReview),
+                    Status = (int)(status ?? AppStatusType.Draft),
                     LastUpdate = DateTime.Now
                 };
                 var approvalStatus = await _approvalStatusRepo.SaveAsync(approvalStatusToSave);
@@ -101,11 +102,10 @@ namespace DMS.Infrastructure.Services
                 var userInfo = await _userRepo.GetUserAsync(approverId);
 
                 //usage for developer and lgu can be approver
-                if (userInfo.UserRoleId == 2) {
-
+                if (userInfo.UserRoleId == 2)
+                {
                     userInfo.UserRoleId = 5;
                 }
-
 
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
 
@@ -147,7 +147,9 @@ namespace DMS.Infrastructure.Services
                     {
                         var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
 
-                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId);
+                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
+
+                        activeapplication.SenderId = approverId;
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatus(activeapplication, activeapplication.ApplicantEmail));
                     }

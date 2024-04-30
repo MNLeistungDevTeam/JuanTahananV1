@@ -1,5 +1,6 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
+var developerDropdown, $developerDropdown;
 $(function () {
     var developerInput;
 
@@ -16,7 +17,94 @@ $(function () {
 
     initializeDecimalInputMask(".decimalInputMask5", 2);
 
-    initializeSelectizeDev();
+/*    initializeSelectizeDev();*/
+
+    var developerVal = $('[name="PropertyDeveloperName"]').attr('data-value'),
+
+
+
+    $developerDropdown = $(`[name='PropertyDeveloperName']`).selectize({
+        valueField: 'PropertyDeveloperName',
+        labelField: 'PropertyDeveloperName',
+        searchField: 'PropertyDeveloperName',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetPropertyDevelopers',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.PropertyDeveloperName) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.PropertyDeveloperName) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+    developerDropdown = $developerDropdown[0].selectize;
+
+    developerDropdown.on('load', function (options) {
+        developerDropdown.setValue(developerVal || '');
+
+        developerDropdown.off('load');
+    });
+
+    //function initializeSelectizeDev() {
+    //    developerInput = $(`[id="PropertyDeveloperName"]`).selectize({
+    //        valueField: 'PropertyDeveloperName',
+    //        labelField: 'PropertyDeveloperName',
+    //        searchField: ['PropertyDeveloperName'],
+    //        placeholder: '(Select here)',
+    //        preload: true,
+    //        load: function (query, callback) {
+    //            $.ajax({
+    //                //url: baseUrl + "Budget/GetBudget/created",
+    //                url: baseUrl + "",
+    //                success: function (results) {Beneficiary/GetPropertyDevelopers
+    //                    try {
+    //                        callback(results);
+    //                    } catch (e) {
+    //                        callback();
+    //                    }
+    //                }
+    //            });
+    //        },
+    //        render: {
+    //            item: function (item, escape) {
+    //                return ("<div>" +
+    //                    escape(item.PropertyDeveloperName) +
+    //                    "</div>"
+    //                );
+    //            },
+    //            option: function (item, escape) {
+    //                return ("<div class='py-1 px-2'>" +
+    //                    escape(item.PropertyDeveloperName) +
+    //                    "</div>"
+    //                );
+    //            }
+    //        }
+    //    });
+    //}
 
     rebindValidators();
 
@@ -128,13 +216,13 @@ $(function () {
                             }
                             // Reset button state
                             button.attr({ disabled: false });
-                            button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                            button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                         },
                         error: function (response) {
                             // Error message handling
                             messageBox(response.responseText, "danger");
                             $("#beneficiary-overlay").addClass('d-none');
-                            button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
+                            button.html("<span class='mdi mdi-content-save-outline'></span> Save");
                             button.attr({ disabled: false });
                         }
                     });

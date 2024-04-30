@@ -38,12 +38,12 @@
 
             <li class="nav-item">
                 <a href="#module-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
-                    <i data-feather="list" class="icon-dual"></i> Eligibility Verification Attachments
+                    <i data-feather="list" class="icon-dual"></i> Credit Verification Attachments
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#module-type-list" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
-                    <i data-feather="list" class="icon-dual"></i> Application Attachments
+                    <i data-feather="list" class="icon-dual"></i> Application Completion Attachments
                 </a>
             </li>
 
@@ -118,6 +118,7 @@
                                 <th>Name</th>
                                 <th>Verification Type</th>
                                 <th>File Type</th>
+                                <th>Parent Type</th>
                                 <th>Created By</th>
                                 <th>Date Created</th>
                                 <th>Modified By</th>
@@ -164,6 +165,7 @@
                                     <input class="form-check-input" type="checkbox" id="select-all-verification" />
                                 </th>
                                 <th>Name</th>
+                                <th>Parent Document</th>
                                 <th>Created By</th>
                                 <th>Date Created</th>
                                 <th>Modified By</th>
@@ -249,8 +251,8 @@
             <div class="modal-body">
                 <form id="document_form" asp-action="SaveDocumentType" method="post" role="form">
 
-                    <input hidden class="form-control rounded-3" asp-for="DocumentType.Id"/>
-                    <input hidden class="form-control rounded-3" asp-for="DocumentVerification.Id"/>
+                    <input hidden class="form-control rounded-3" asp-for="DocumentType.Id" />
+                    <input hidden class="form-control rounded-3" asp-for="DocumentVerification.Id" />
                     <div class="position-relative mb-3">
                         <label class="form-label fw-normal" asp-for="DocumentType.Code" required></label>
                         <input type="text" class="form-control rounded-3" asp-for="DocumentType.Code" placeholder="Input Code" required>
@@ -265,7 +267,7 @@
 
                     <div class="position-relative mb-3">
                         <label class="form-label fw-normal" asp-for="DocumentVerification.Type"></label>
-                        <select asp-for="DocumentVerification.Type" class="rounded-3 selectize">
+                        <select asp-for="DocumentVerification.Type" class="rounded-3 custom_selectize">
                             <option value="">Select Verification Type</option>
                             <option value="1">Eligibility Attachment</option>
                             <option value="2">Application Attachment</option>
@@ -276,16 +278,28 @@
 
                     <div class="position-relative mb-3">
                         <label class="from-label fw-normal" asp-for="DocumentType.FileType"></label>
-                        <select asp-for="DocumentType.FileType" class="rounded-3 selectize">
+                        <select asp-for="DocumentType.FileType" class="rounded-3 custom_selectize">
                             <option value="">Select File Type</option>
                             <option value="1">pdf</option>
                             <option value="2">docx</option>
                             <option value="3">txt</option>
                             <option value="4">xlsx</option>
                             <option value="5">image*</option>
-                           
+
                         </select>
                     </div>
+
+
+                    <div class="position-relative mb-3">
+                        <label class="from-label fw-normal" asp-for="DocumentType.ParentId"></label>
+                        <select asp-for="DocumentType.ParentId" class="rounded-3 selectize">
+                            <option value="">Select Parent Document Type</option>
+
+
+                        </select>
+                    </div>
+
+
 
                     <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_save">Save</button>
                     <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect" data-bs-dismiss="modal">Close</button>

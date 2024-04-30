@@ -9,10 +9,11 @@ public class LoginViewModel
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "User name is Required!")]
+    [DisplayName("Username")]
+    [Required(ErrorMessage = "Username is required!")]
     public string UserName { get; set; } = null!;
 
-    [Required(ErrorMessage = "Password is Required!")]
+    [Required(ErrorMessage = "Password is required!")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
 

@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_GetByRoleName]
-	@roleName NVARCHAR(50)
+	@roleName NVARCHAR(50),
+    @companyId INT
 AS
  BEGIN
        
@@ -11,7 +12,7 @@ AS
     FROM 
         ApplicantsPersonalInformation 
     WHERE 
-        ApprovalStatus IN (0,1,3,4,6,7,8)
+        ApprovalStatus IN (0,1,3,4,6,7,8,11)
 )
 
 SELECT
@@ -37,6 +38,7 @@ LEFT JOIN
 LEFT JOIN (
     SELECT UserId, COUNT(Id) AS TotalLoanCounts
     FROM ApplicantsPersonalInformation
+    WHERE CompanyId = @companyId
     GROUP BY UserId
 ) ap ON ap.UserId = usr.Id
 LEFT JOIN RankedCodes ON RankedCodes.UserId = usr.Id AND RankedCodes.CodeRank = 1

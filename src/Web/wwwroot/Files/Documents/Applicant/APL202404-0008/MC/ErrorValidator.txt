@@ -1,0 +1,48 @@
+ 
+
+
+ if (!string.IsNullOrEmpty(user.PagibigNumber))
+  {
+      if (user.PagibigNumber.Length < 12)
+      {
+          throw new Exception("Pagibig Number minimum length must 12");
+      }
+
+      var existingPagibigNumber = await _userRepository.GetByPagibigNumberAsync(user.PagibigNumber);
+
+      if (existingPagibigNumber != null)
+      {
+          throw new Exception("User with the same Pag-Ibig Number already exists");
+      }
+  }
+
+  await _userRepository.ValidateEmailAsync(user);
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  _userRepository
+  
+     public async Task ValidateEmailAsync(UserModel model)
+   {
+       try
+       {
+           var users = await GetUsersAsync();
+
+           if (model.Id == 0)
+           {
+               if (users.FirstOrDefault(m => m.Email == model.Email) != null) throw new Exception("Email already taken!");
+           }
+           else
+           {
+               if (users.FirstOrDefault(m => m.Id != model.Id && m.Email == model.Email) != null) throw new Exception("Email already taken!");
+           }
+       }
+       catch (Exception) { throw; }
+   }

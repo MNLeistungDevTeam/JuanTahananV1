@@ -13,31 +13,31 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public int? ApplicantsPersonalInformationId { get; set; }
 
-        [Display(Prompt = "Province Name")]
+        [Display(Name = "Province", Prompt = "Province Name")]
         public string? Province { get; set; }
 
-        [Display(Prompt = "Municipality Name")]
+        [Display(Name = "Municipality", Prompt = "Municipality Name")]
         public string? Municipality { get; set; }
 
-        [Display(Prompt = "Street Name")]
+        [Display(Name = "Street", Prompt = "Street Name")]
         public string? Street { get; set; }
 
-        [Display(Name = "Name of Developer / Registered Title Holder", Prompt = "Developer Name")]
+        [Display(Name = "Name of Project Proponent / Registered Title Holder", Prompt = "Developer Name")]
         public string? DeveloperName { get; set; }
 
-        [Display(Name = "Property Type", Prompt = "Select Property Type")]
+        [Display(Name = "Type of Property", Prompt = "Select Property Type")]
         public int? PropertyTypeId { get; set; }
 
-        [Display(Name = "TCT/OCT/CCT Number", Prompt = "Input number")]
+        [Display(Name = "TCT/OCT/CCT No.", Prompt = "Input number")]
         public string? TctOctCctNumber { get; set; }
 
-        [Display(Name = "Tax Declaration Number", Prompt = "Input number")]
+        [Display(Name = "Tax Declaration No.", Prompt = "Input number")]
         public string? TaxDeclrationNumber { get; set; }
 
-        [Display(Name = "Lot Unit Number", Prompt = "Input number")]
+        [Display(Name = "Lot/Unit No.", Prompt = "Input number")]
         public int? LotUnitNumber { get; set; }
 
-        [Display(Name = "Block Building Number", Prompt = "Input number")]
+        [Display(Name = "Block/Building No.", Prompt = "Input number")]
         public int? BlockBuildingNumber { get; set; }
 
         [Display(Name = "Is the property presently mortgaged?")]
@@ -55,7 +55,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Reason for use of offsite collateral", Prompt = "Input reason")]
         public string? CollateralReason { get; set; }
 
-        [Display(Name = "Land Area / Floor Area", Prompt = "Input sqm")]
+        [Display(Name = "Land Area / Floor Area (SQM)", Prompt = "Input sqm")]
         public decimal? LandArea { get; set; }
 
         [Display(Name = "Age of House (for purchase of residential unit)", Prompt = "Input Number")]

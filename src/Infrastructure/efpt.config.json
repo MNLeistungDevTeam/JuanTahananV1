@@ -84,6 +84,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[EmailLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmailSetup]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Form2Page]",
          "ObjectType": 0
       },
@@ -168,6 +176,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[SubDocument]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[TemporaryLink]",
          "ObjectType": 0
       },
@@ -204,7 +216,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "mnl.eiDOCRS2023.dbo",
+   "UiHint": "win-0nl07aifc04.dbDOCRSDEV.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,

@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -149,11 +150,16 @@ namespace Template.Web.Controllers.Transaction
 
                 //var latestRecord = applicationRecord.OrderByDescending(m => m.Code).ThenBy(m => m.DateModified).FirstOrDefault();
 
+                //make it reverse
                 if (latestRecord != null && ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Deferred) || ((int)latestRecord.ApprovalStatus == (int)AppStatusType.Withdrawn))
 
                 {
                     applicantInfoModel.isCanAppliedNewApplication = true;
                 }
+            }
+            else
+            { // if had no record yet means it can applied new application
+                applicantInfoModel.isCanAppliedNewApplication = true;
             }
 
             applicantInfoModel.PagibigNumber = userData.PagibigNumber;
@@ -172,14 +178,12 @@ namespace Template.Web.Controllers.Transaction
 
                 var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
                 if (applicantinfo == null)
                 {
-                    return BadRequest($"{applicantCode}: no record Found!");
+                    throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
 
                 //if the application is not access by beneficiary
@@ -188,11 +192,13 @@ namespace Template.Web.Controllers.Transaction
                     return View("AccessDenied");
                 }
 
-                //if the application approvalStatus is not greater than 4 on pagibig viewer
-                if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
-                {
-                    return View("AccessDenied");
-                }
+                var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
+
+                ////if the application approvalStatus is not greater than 4 on pagibig viewer
+                //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
+                //{
+                //    return View("AccessDenied");
+                //}
 
                 var eligibilityPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(1, applicantCode);
                 var applicationPhaseDocument = await _documentVerificationRepo.GetByTypeAsync(2, applicantCode);
@@ -231,14 +237,19 @@ namespace Template.Web.Controllers.Transaction
 
                 var userInfo = await _userRepo.GetUserAsync(userId);
 
+                string returnViewPage = "HLF068";
+
+                if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
+                {
+                    returnViewPage = "Beneficiary_HLF068";
+                }
+
                 //check if applicant code not null go to edit form
                 if (applicantCode != null)
                 {
                     var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-                    List<int> inActiveStatuses = new List<int> { 0,2, 5, 9, 10 };
-
-
+                    List<int> inActiveStatuses = new List<int> { 0, 2, 5, 9, 10, 11 };
 
                     if (applicantinfo == null)
                     {
@@ -250,7 +261,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " cant be accessible!");
                     }
-                    else if (!inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
+                    else if (userId == applicantinfo.UserId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary && !inActiveStatuses.Contains(applicantinfo.ApprovalStatus.Value))
                     {
                         throw new Exception($"Transaction ({applicantCode})" + " is currently in active status, cant be accessible!");
                     }
@@ -302,7 +313,7 @@ namespace Template.Web.Controllers.Transaction
                     }
                 }
 
-                return View(vwModel);
+                return View(returnViewPage, vwModel);
             }
             catch (Exception)
             {
@@ -405,11 +416,13 @@ namespace Template.Web.Controllers.Transaction
         [Route("[controller]/HousingLoanForm/{pagibigNumber?}")]
         public async Task<IActionResult> HousingLoanForm(string? pagibigNumber = null)
         {
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
             var vwModel = new ApplicantViewModel();
 
             var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
 
-            var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(beneficiaryData.UserId);
+            var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(beneficiaryData.UserId, companyId);
 
             List<int> activeStatus = new List<int> { 2, 5, 9, 10 };
 
@@ -514,7 +527,7 @@ namespace Template.Web.Controllers.Transaction
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
                 }
 
-                return View("NewHLF068", vwModel);
+                return View("Beneficiary_HLF068", vwModel);
             }
         }
 
@@ -522,8 +535,21 @@ namespace Template.Web.Controllers.Transaction
 
         #region API Getters
 
-        public async Task<IActionResult> GetUsersByRoleName(string roleName) =>
-            Ok(await _userRepo.spGetByRoleName(roleName));
+        public async Task<IActionResult> GetUsersByRoleName(string roleName)
+        {
+            try
+            {
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+
+                var result = await _userRepo.spGetByRoleName(roleName, companyId);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         public async Task<IActionResult> GetPurposeOfLoan() =>
             Ok(await _purposeOfLoanRepo.GetAllAsync());
@@ -538,11 +564,12 @@ namespace Template.Web.Controllers.Transaction
 
         {
             int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
 
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
 
-            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId, companyId);
 
             return Ok(data);
         }
@@ -550,11 +577,12 @@ namespace Template.Web.Controllers.Transaction
         public async Task<IActionResult> GetMyApplications()
         {
             int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
 
             var userdata = await _userRepo.GetUserAsync(userId);
             int roleId = userdata.UserRoleId.Value;
 
-            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId);
+            var applicationData = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId, companyId);
 
             var beneficiaryApplicationData = applicationData.Where(item => item.UserId == userId);
 
@@ -599,18 +627,18 @@ namespace Template.Web.Controllers.Transaction
 
         public async Task<IActionResult> GetApprovalTotalInfo()
         {
-            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            int companyId = int.Parse(User.FindFirstValue("Company"));
             //int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId));
         }
 
         public async Task<IActionResult> GetBeneficiaryApprovalTotalInfo()
         {
-            //int companyId = int.Parse(User.FindFirstValue("Company"));
+            int companyId = int.Parse(User.FindFirstValue("Company"));
             int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId));
         }
 
         public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
@@ -638,6 +666,88 @@ namespace Template.Web.Controllers.Transaction
             return Ok(result);
         }
 
+        public async Task<IActionResult> GetTotalApplicants()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId);
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalCreditVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId);
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetTotalAppVerif()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
+            var userdata = await _userRepo.GetUserAsync(userId);
+            int roleId = userdata.UserRoleId.Value;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId);
+            return Ok(result);
+        }
+
+        public async Task<IActionResult> GetBeneficiaryActiveApplication()
+        {
+            int userId = int.Parse(User.Identity.Name);
+            int companyId = int.Parse(User.FindFirstValue("Company"));
+
+            dynamic applicantInfo;
+            var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
+
+            if (data is null)
+            {
+                applicantInfo = new ApplicantsPersonalInformationModel()
+                {
+                    ApplicationStatus = null,
+                    Code = "------",
+                    LoanAmount = 0,
+                    LoanYears = 0,
+                    ProjectLocation = "----------"
+                };
+            }
+            else
+            {
+                applicantInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(data.Code);
+            }
+
+            return Ok(applicantInfo);
+        }
+
+        public async Task<IActionResult> GetTimelineStatus()
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+
+                var application = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
+
+                var timeline = await _applicantsPersonalInformationRepo.GetApplicationTimelineByCode(application?.Code, companyId);
+
+                return Ok(timeline);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         #endregion API Getters
 
         #region API Operations
@@ -655,7 +765,6 @@ namespace Template.Web.Controllers.Transaction
                 var user = new User();
                 var beneficiaryModel = new BeneficiaryInformationModel();
                 var barrowerModel = new BarrowersInformation();
-                // var applicationData = new ApplicantsPersonalInformationModel();
                 int userId = int.Parse(User.Identity.Name);
 
                 var userinfo = await _userRepo.GetUserAsync(userId);
@@ -664,25 +773,23 @@ namespace Template.Web.Controllers.Transaction
                 //current user is beneficiary
 
                 int companyId = int.Parse(User.FindFirstValue("Company"));
-                var applicantCode = "";
+                var applicantCode = string.Empty;
 
-                //Formatted
-                string pagibigNum = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
-                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = pagibigNum;
+                //Unmasked
+                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
 
-                //create  new beneficiary
+                //create  new beneficiary and housingloan application
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
-
                 {
                     //current user is beneficiary
-                    if (currentuserRoleId == 4)
+                    if (currentuserRoleId == (int)PredefinedRoleType.Beneficiary)
                     {
-                        var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId);
+                        var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
                         if (applicationDetail != null)
                         {
-                            if (applicationDetail.ApprovalStatus != 2 && applicationDetail.ApprovalStatus != 5 && applicationDetail.ApprovalStatus != 9 && applicationDetail.ApprovalStatus != 10)
+                            if (applicationDetail.ApprovalStatus != (int)AppStatusType.Deferred && applicationDetail.ApprovalStatus != (int)AppStatusType.Withdrawn && applicationDetail.ApprovalStatus != (int)AppStatusType.Disqualified && applicationDetail.ApprovalStatus != (int)AppStatusType.Discontinued)
                             {
                                 return BadRequest("Can't be processed. You have a pending application!");
                             }
@@ -703,8 +810,10 @@ namespace Template.Web.Controllers.Transaction
                             UserName = await GenerateTemporaryUsernameAsync(),
                             FirstName = vwModel.BarrowersInformationModel.FirstName,
                             LastName = vwModel.BarrowersInformationModel.LastName,
+                            MiddleName = vwModel.BarrowersInformationModel.MiddleName,
                             Gender = vwModel.BarrowersInformationModel.Sex,
-                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber
+                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber,
+                            CompanyId = companyId
                         };
 
                         //save beneficiary user
@@ -731,8 +840,15 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
 
+                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+
+                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                        beneficiaryModel.PermanentStreetName = vwModel.BarrowersInformationModel.PermanentStreetName;
                         beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
                         beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
                         beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
@@ -742,6 +858,7 @@ namespace Template.Web.Controllers.Transaction
 
                         if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress)
                         {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
                             beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
@@ -753,6 +870,7 @@ namespace Template.Web.Controllers.Transaction
                         }
                         else
                         {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
                             beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
                             beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
                             beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
@@ -773,9 +891,13 @@ namespace Template.Web.Controllers.Transaction
                         await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
 
                         #endregion Create BeneficiaryInformation
+
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
                     }
                     else
                     {
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+
                         user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
 
                         vwModel.BarrowersInformationModel.FirstName = user.FirstName ?? string.Empty;
@@ -792,7 +914,6 @@ namespace Template.Web.Controllers.Transaction
                     #endregion Register User and Send Email
 
                     vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
-                    //vwModel.ApplicantsPersonalInformationModel.Code = $"{DateTime.Now.ToString("MMddyyyy")}-{user.Id}";
 
                     vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
@@ -825,8 +946,8 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
 
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }
@@ -908,8 +1029,8 @@ namespace Template.Web.Controllers.Transaction
 
                     if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
                     {
-                        //vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
-                        //vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
 
                         await _spouseRepo.SaveAsync(vwModel.SpouseModel);
                     }

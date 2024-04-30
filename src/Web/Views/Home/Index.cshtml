@@ -1,5 +1,6 @@
 ﻿@using DMS.Application.Interfaces.Setup.ModuleRepository
 @using DMS.Application.Interfaces.Setup.UserRepository
+@using DMS.Domain.Enums
 @inject IStringLocalizer<SharedResources> localizer
 
 @inject IUserRepository _userRepo;
@@ -8,208 +9,43 @@
 @{
     // Layout = "_SidebarLayout";
     ViewData["Title"] = "Home Page";
+    int userId = int.Parse(User.Identity.Name);
+    var userInfo = await _userRepo.GetUserAsync(userId);
 }
 
-<div class="row">
-    <div class="col-xl-8 row">
-        <div class="col-xl-12">
-            <div class="card rounded-4">
-                <div class="card-header">
-                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row gy-2 gx-0">
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <input id="submitted_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Submitted</h6>
-                            </div> <!-- end .text-center -->
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <input id="approved_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Approved</h6>
-                            </div> <!-- end .text-center -->
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <input id="disapprove_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Disapprove</h6>
-                            </div> <!-- end .text-center -->
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <input id="withdrawn_info" data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-fgColor="#FEC10E" value="80" data-skin="tron" data-angleOffset="180" data-bgColor="rgba(150, 150, 150, 0.1)" data-readOnly=true data-thickness=".2" />
-                                <h6 class="text-muted mt-2">Withdrawn</h6>
-                            </div> <!-- end .text-center -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-7">
-            <div class="card d-block card-h-100 rounded-4">
-                <!-- project-thumbnail -->
+@if (userInfo.UserRoleId is (int)PredefinedRoleType.Developer or (int)PredefinedRoleType.Admin)
+{
+    @* @await Html.PartialAsync("_ProductPartial", product); *@
 
-                <div class="card-header">
-                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
-                </div>
-                <div class="card-body position-relative">
-                    <div data-provide="datepicker-inline" data-date-today-highlight="true" class="calendar-widget"></div>
-                    <!-- project title-->
-                    <h4 class="mt-2">
-                        <a href="apps-projects-details.html" class="text-title">Zeta World</a>
-                    </h4>
-                    <!-- project detail-->
-                    <p class="mb-3">
-                        <span class="pe-2 text-nowrap">
-                            <i class="mdi mdi-format-list-bulleted-type"></i>
-                            <b>3</b> Tasks
-                        </span>
-                        <span class="text-nowrap">
-                            <i class="mdi mdi-comment-multiple-outline"></i>
-                            <b>104</b> Comments
-                        </span>
-                    </p>
-                </div> <!-- end card-body-->
-            </div> <!-- end card-->
-        </div>
-        <div class="col-xl-5">
-            <div class="card rounded-4">
-                <div class="card-header rounded-4 rounded-bottom d-flex justify-content-start">
-                    <h4 class="header-title mb-0 me-1">
-                        Timeline
-                    </h4>
-                    <span class="badge bg-warning text-theme-primary">BCF-08121</span>
-                </div>
-                <div class="card-header">
-                    <h3 class="badge bg-darkorange ms-auto font-18" id="header_remarks"> On Development</h3>
-                </div>
-                <div class="card-body py-0 mb-3" data-simplebar style="max-height: 50vh;">
-                    <div class="timeline-alt py-0">
-                        <div class="timeline-item">
-                            <i class="mdi mdi-folder-information text-info timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Buyer Confirmation form was added</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">5 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-close-box bg-primary-lighten text-danger timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-danger fw-bold mb-1 d-block">Application form was denied</a>
-                                <small>
-                                    Your Document was not <span class="fw-bold">correctly</span> Submitted
-                                </small>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <i class="mdi mdi-check-all bg-primary-lighten text-success timeline-icon"></i>
-                            <div class="timeline-item-info">
-                                <a href="javascript:void(0);" class="text-success fw-bold mb-1 d-block">Application form approved!</a>
-                                <p class="mb-0 pb-2">
-                                    <small class="text-muted">30 minutes ago</small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4">
-        <div class="card card-header-theme rounded-4">
-            <div class="card-body">
-                <div class="row gy-2 mb-2 mt-1">
-                    <div class="col-12">
-                        <h2 class="m-0 text-black fw-semibold text-center">Total Application</h2>
-                    </div>
-                    <div class="col-12">
-                        <h1 id="totalApplications" class="m-0 text-theme-primary fw-bold text-center display-2 text-truncate">0</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card rounded-4">
-            <div class="card-header card-header-theme p-2 rounded-4 rounded-bottom">
-                <h2 class="m-0 text-theme-primary fw-semibold text-center">News and Updates</h2>
-            </div>
-            <div class="card-body p-2">
-                <img class="card-img-top rounded-3" src="~/lib/CodeFox/images/projects/project-1.jpg" alt="project image cap">
-                <p class="text-dark font-15 my-3">
-                    Welcome to the newest phase of modern living. Discover your dream home in our freshly built community. Elevate your lifestyle in our newly constructed homes. Experience sophistication and comfort in every detail.
-                    <br />
-                    <br />
-                    <a href="javascript:void(0);" class="fw-normal text-danger text-">
-                        <u>Read More</u>
-                    </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script src="~/js/HomeScript.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_DeveloperDashboardPartial");
+    @section Scripts {
+        <script src="~/js/DevDashboardPartialScript.js" asp-append-version="true"></script>
+    }
 }
+else if (userInfo.UserRoleId is (int)PredefinedRoleType.Pagibig)
+{
+    @await Html.PartialAsync("_PagIBIGDashboardPartial");
+    @section Scripts {
+        <script src="~/js/PagIBIGDashboardPartialScript.js" asp-append-version="true"></script>
+    }
+}
+
+
+else if (userInfo.UserRoleId is (int)PredefinedRoleType.Lgu)
+{
+    @await Html.PartialAsync("_DeveloperDashboardPartial");
+    @section Scripts {
+    <script src="~/js/DevDashboardPartialScript.js" asp-append-version="true"></script>
+    }
+}
+
+
+else if (userInfo.UserRoleId is (int)PredefinedRoleType.Beneficiary)
+{
+    @await Html.PartialAsync("_BeneficiaryDashboardPartial");
+    @section Scripts {
+    <script src="~/js/BeneficiaryDashboardPartialScript.js" asp-append-version="true"></script>
+    }
+}
+
+

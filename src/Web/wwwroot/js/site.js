@@ -15,6 +15,17 @@ const intlTelConfig = {
     utilsScript: "/lib/intl-tel-input/build/js/utils.js"
 };
 
+// Bootstrap Color to Hex translator:
+const bs5ColorDictionary = {
+    danger: "#dc3545",
+    warning: "#ffc107",
+    success: "#28a745",
+    primary: "#007bff",
+    purple: "#6f42c1",
+    info: "#17a2b8",
+    secondary: "#6c757d"
+};
+
 const intlTelErrors = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
 function loadLocalizedStrings() {
@@ -1036,4 +1047,13 @@ function updateUserProfile() {
             $('#notifProfile').attr("src", defaultProfile);
         }
     });
+}
+
+function assessCheckbox(checkbox, target) {
+    if (checkbox.prop('checked')) {
+        target.prop('readonly', true);
+        return;
+    }
+
+    target.prop('readonly', false);
 }

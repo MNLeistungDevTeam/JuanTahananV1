@@ -12,5 +12,7 @@
     [DateDeleted] DATETIME2 NULL, 
     [DeletedById] INT NULL,
     CompanyId INT NULL,
-    [ApprovalStatus] INT NULL DEFAULT(1)
+    [ApprovalStatus] INT NULL DEFAULT(1),
+    [EncodedStage] INT  NULL,
+    [EncodedStatus] INT NULL
 )
