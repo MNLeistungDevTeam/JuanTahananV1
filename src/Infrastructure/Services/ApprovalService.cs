@@ -87,6 +87,15 @@ namespace DMS.Infrastructure.Services
         {
             try
             {
+                // Get the base directory where the executable is located
+                string baseDirectory = Directory.GetCurrentDirectory();
+
+                // Navigate to the project's root directory
+                //string projectRoot = Path.Combine(baseDirectory, "..", ".."); // Adjust based on your project structure
+
+                // Combine the root directory with "wwwroot"
+                string contentRootPath = Path.Combine(baseDirectory, "wwwroot");
+
                 //checker if exist in records
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(null, null, model.ApprovalStatusId);
                 if (approvalStatus is null) { throw new Exception("Approval status not found!"); }
@@ -151,8 +160,18 @@ namespace DMS.Infrastructure.Services
 
                         activeapplication.SenderId = approverId;
 
-                        _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatus(activeapplication, activeapplication.ApplicantEmail));
+                        _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
                     }
+                }
+                else if (model.Status == (int)AppStatusType.Submitted || model.Status == (int)AppStatusType.PostSubmitted || model.Status == (int)AppStatusType.ForResubmition)
+                {
+                    var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
+
+                    var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
+
+                    activeapplication.SenderId = approverId;
+
+                    _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
                 }
             }
             catch (Exception)

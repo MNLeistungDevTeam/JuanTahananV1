@@ -1344,18 +1344,43 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 .timeline-item::before {
     color: rgba(101,108,133,0.5) !important;
     background-color: rgba(255,255,255,0) !important;
-    border-radius: 0px;
+    border-radius: 2px;
     height: auto;
-    margin-top: -2px;
-    margin-bottom: -2px;
-    width: 4px !important;
+    width: 8px !important;
     /*font-size: 60em;*/
-    left: 9px !important;
+    left: 15px !important;
+    margin-top: 12px;
+    margin-bottom: -3px;
     border-left-style: solid;
     border-right-style: solid;
     border-left-width: 1px !important;
     border-right-width: 1px !important;
     z-index: -1;
+}
+
+@media (max-width: 1080px) and (min-width: 960px) {
+    .timeline-item::before {
+        left: 14px !important;
+    }
+}
+
+@media (max-width: 960px) and (min-width: 840px) {
+    .timeline-item::before {
+        left: 13px !important;
+    }
+}
+
+@media (max-width: 840px) and (min-width: 768px) {
+    .timeline-item::before {
+        left: 13.5px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline-item::before {
+        left: 13.35px !important;
+        height: 85%;
+    }
 }
 
 .timeline-item-completed::before {
@@ -1371,9 +1396,12 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     color: rgba(0,0,0,.35) !important
 }
 
-.custom-circle.timeline-placeholder-icon {
-    background-color: #fff !important;
+.timeline-placeholder-icon {
     z-index: 1;
+}
+
+.timeline-icon {
+    background-color: #fff;
 }
 
 /* Steps */
