@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
+﻿ CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetAll]
 	@roleId INT,
 	@companyId INT
 AS
@@ -109,7 +109,10 @@ AS
 
 
   
- SELECT main.*,aplog2.DateCreated DateSubmitted FROM (
+  SELECT * FROM (
+  
+ SELECT main.*,aplog2.DateCreated DateSubmitted ,  ROW_NUMBER() OVER (PARTITION BY aps2.ReferenceId ORDER BY aplog2.DateCreated ASC) AS rn
+FROM (
 
 	 SELECT 
 		apl.*,
@@ -203,30 +206,34 @@ AS
 	
 	) MAIN
 	LEFT JOIN ApprovalStatus aps2 ON main.Id = aps2.ReferenceId
-	left JOIN ApprovalLog aplog2 ON aplog2.ReferenceId = aps2.ReferenceId and aplog2.[Action] = 1
+	LEFT JOIN ApprovalLog aplog2 ON aplog2.ReferenceId = aps2.ReferenceId and aplog2.[Action] = 1 and aplog2.CreatedById = aps2.UserId
+	) MAIN2
+	WHERE MAIN2.rn = 1
+
 
  ORDER BY
     CASE
-        WHEN @roleId IN (1, 2, 5, 3) THEN MAIN.Id
+        WHEN @roleId IN (1, 2, 5, 3) THEN MAIN2.Id
         WHEN @roleId = 4 THEN 
             CASE 
-                WHEN MAIN.ApprovalStatus = 0 THEN 1 
+                WHEN MAIN2.ApprovalStatus = 0 THEN 1 
                 ELSE 0 
             END
         ELSE 0
     END DESC,
     CASE
-        WHEN @roleId IN (1, 2, 5, 3) THEN MAIN.DateModified
+        WHEN @roleId IN (1, 2, 5, 3) THEN MAIN2.DateModified
         ELSE NULL
     END DESC,
     CASE
         WHEN @roleId IN (1, 2, 5, 3) THEN NULL
-        ELSE MAIN.datecreated
+        ELSE MAIN2.datecreated
     END ASC,
     CASE
         WHEN @roleId IN (1, 2, 5, 3) THEN NULL
-        ELSE MAIN.datemodified
+        ELSE MAIN2.datemodified
     END ASC;
+
 
 
 RETURN 0
