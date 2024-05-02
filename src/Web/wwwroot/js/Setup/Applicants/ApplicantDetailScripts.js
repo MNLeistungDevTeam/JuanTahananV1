@@ -1,5 +1,9 @@
 ﻿"use strict"
 
+
+//updated
+
+
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
