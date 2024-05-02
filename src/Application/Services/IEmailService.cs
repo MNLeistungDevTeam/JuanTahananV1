@@ -21,5 +21,6 @@ namespace DMS.Application.Services
         Task SendUserConfirmationMessage(UserModel model);
 
         Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail);
+        Task SendApplicationStatusToBeneficiary(ApplicantsPersonalInformationModel model, string receiverEmail, string? rootFolder);
     }
 }
