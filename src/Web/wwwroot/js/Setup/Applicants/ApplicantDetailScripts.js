@@ -1,8 +1,6 @@
 ﻿"use strict"
 
-
 //updated
-
 
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
@@ -235,13 +233,25 @@ $(async function () {
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload d-none" ${item.DocumentName ? '' : 'hidden'}>
-                                                <i class="fe-upload"></i>
-                                        </button>
                                     </div>
                                 </a>
                             </div>
                           </div>`;
+
+                        //groupHtml += `<div class="file-upload-wrapper">
+                        //    <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                        //        <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                        //            <div class="d-flex justify-content-between align-items-center">
+                        //                <div>
+                        //                    <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                        //                </div>
+                        //                <button type="button" class="btn btn-info waves-effect waves-light re-upload d-none" ${item.DocumentName ? '' : 'hidden'}>
+                        //                        <i class="fe-upload"></i>
+                        //                </button>
+                        //            </div>
+                        //        </a>
+                        //    </div>
+                        //  </div>`;
                     }
                 });
 
@@ -544,7 +554,7 @@ $(async function () {
             data: formData,
             processData: false,
             contentType: false,
-            beforeSend: function () {
+            beforeSend: function () {xx
                 loading('Uploading...', true);
             },
             success: async function (response) {
