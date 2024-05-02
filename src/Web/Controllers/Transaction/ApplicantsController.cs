@@ -923,7 +923,7 @@ namespace Template.Web.Controllers.Transaction
                     if (vwModel.BarrowersInformationModel != null)
                     {
                         vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
-
+    
                         await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
 
