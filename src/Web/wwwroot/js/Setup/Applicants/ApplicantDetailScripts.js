@@ -311,9 +311,6 @@ $(async function () {
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
-                                                <i class="fe-upload"></i>
-                                        </button>
                                     </div>
                                 </a>
                             </div>
@@ -326,6 +323,9 @@ $(async function () {
                     //                    <div>
                     //                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                     //                    </div>
+                    //                    <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                    //                            <i class="fe-upload"></i>
+                    //                    </button>
                     //                </div>
                     //            </a>
                     //        </div>
