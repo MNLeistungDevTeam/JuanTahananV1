@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Creation</title>
+    <title>Post-Submitted</title>
     <style>
         .email-sec {
             max-width: 980px;
@@ -91,34 +91,33 @@
         </div>
         <div class="email-body">
 
-            <div class="email-header">
-                Get started
-            </div>
-
-            <p>  Welcome to Juan Tahanan! </p>
+            <p>Update on your housing loan application.</p>
+            <p>Thank you for submitting your loan request for loan application completion with Juan Tahanan!</p>
 
             <p>
-                We're thrilled to have you onboard. Your account has been automatically created.
-                Please log in now to kickstart the journey toward your dream home with our hassle-free housing loan application process.
-                We highly suggest changing your password immediately for added security.
+                Your application has been successfully received and is now pending approval by the developer. We'll keep you updated on the progress.
             </p>
 
-            <p> Below are your account credentials.<p>
+            <p>Below are the details of your application.<p>
 
             <p>
-                Username:
-
-                <strong style="font-family: Consolas, Courier, monospace; font-weight: bold;">{userName}</strong>
+                Reference ID:
+                <strong style="font-family: Consolas, Courier, monospace; font-weight: bold; font-size: 16px;">{applicationCode}</strong>
             </p>
             <p style="margin-bottom: 1em;"></p> <!-- Add 1 line spacing -->
             <p>
-                Password:
-                <strong style="font-family: Consolas, Courier, monospace; font-weight: bold;">{password}</strong>
+                Current Stage:
+                <strong>{applicationStage}</strong>
             </p>
-
-            <div class="div_login">
-                <a href="https://testjuantahanan.mnleistung.ph/" style="background:#FEC10E;text-decoration:none !important; display:inline-block; font-weight:500; margin-top:20px; margin-bottom: 30px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Login to your Account</a>
-            </div>
+            <p>
+                Status:
+                <strong>{applicationStatus}</strong>
+            </p>
+            <p style="margin-bottom: 1em;"></p> <!-- Add 1 line spacing -->
+            <p>
+                Remarks:
+                <strong>{applicationRemarks}</strong>
+            </p>
         </div>
         <div class="email-footer">
             <div class="email-footer-container">

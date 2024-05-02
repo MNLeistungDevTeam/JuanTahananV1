@@ -1,5 +1,9 @@
 ﻿"use strict"
 
+
+//updated
+
+
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
@@ -50,17 +54,12 @@ $(async function () {
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
         }
 
-
         $(".re-upload").hide();
 
         //Hides the re-upload button if status is Deferred or Withdrawn
         if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
             $(".re-upload").hide();
         }
-
-     
-
-
     });
 
     //#region Events
@@ -156,7 +155,6 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
 
-
                     if (item.HasParentId === 0 && item.HasSubdocument === 0) {
                         groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
                         <h4 class="header-title text-muted">${groupName}</h4>
@@ -169,7 +167,7 @@ $(async function () {
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                                         </div>
-                                        
+
                                     </div>
                                 </a>
                             </div>
@@ -197,16 +195,6 @@ $(async function () {
                     //      </div>`;
                     //}
                 });
-
-
-
-
-
-
-
-
-
-
 
                 groupHtml += `</div></div>`;
                 $("#div_verification").append(groupHtml);
@@ -247,7 +235,7 @@ $(async function () {
                                         <div>
                                             <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
+                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload d-none" ${item.DocumentName ? '' : 'hidden'}>
                                                 <i class="fe-upload"></i>
                                         </button>
                                     </div>
@@ -508,11 +496,12 @@ $(async function () {
                         method: $form.attr("method"),
                         data: formData,
                         beforeSend: function () {
-                            $("#applicant-overlay").removeClass('d-none');
+                            $("#beneficiary-overlay").removeClass('d-none');
+
                             $btnSave.attr({ disabled: true });
                         },
                         success: function (response) {
-                            $("#applicant-overlay").addClass('d-none');
+                            $("#beneficiary-overlay").addClass('d-none');
 
                             messageBox("Successfully saved.", "success");
 
