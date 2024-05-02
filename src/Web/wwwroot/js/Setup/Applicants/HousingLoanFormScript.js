@@ -12,7 +12,7 @@ $(function () {
 
     $("#btn_savehlf068").prop('disabled', true);
 
-    $("#btn_edit").prop('disabled', applicantInfoApprovalStatus === '1' ? true : false);
+    $("#btn_edit").prop('disabled', applicantInfoApprovalStatus !== '0' ? true : false);
 
     $(".selectize").selectize({
         search: false
