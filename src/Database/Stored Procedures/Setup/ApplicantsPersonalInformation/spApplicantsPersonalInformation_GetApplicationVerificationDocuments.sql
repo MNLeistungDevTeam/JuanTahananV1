@@ -39,7 +39,7 @@ AS
         LEFT JOIN 
             BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
         WHERE 
-            dt.Id IN (SELECT DocumentTypeId FROM DocumentVerification WHERE [Type] = 1) --verification type documents
+            dt.Id IN (SELECT DocumentTypeId FROM DocumentVerification WHERE [Type] = 2) --application verification type documents
     )
 
     SELECT * FROM (
