@@ -508,11 +508,13 @@ $(async function () {
                         method: $form.attr("method"),
                         data: formData,
                         beforeSend: function () {
-                            $("#applicant-overlay").removeClass('d-none');
+                            $("#beneficiary-overlay").removeClass('d-none');
+
+
                             $btnSave.attr({ disabled: true });
                         },
                         success: function (response) {
-                            $("#applicant-overlay").addClass('d-none');
+                            $("#beneficiary-overlay").addClass('d-none');
 
                             messageBox("Successfully saved.", "success");
 
