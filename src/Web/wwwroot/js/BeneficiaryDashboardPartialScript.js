@@ -555,7 +555,7 @@ $(() => {
                             $selectedTimeline.addClass(`timeline-item-completed`);
                         }
 
-                        $selectedTimeline.find('.timeline-icon')
+                        $selectedTimeline.find('.timeline-placeholder-icon')
                             .removeClass(`far fa-circle text-muted`)
                             .addClass(`fas fa-${applicationData.iconStatus} text-${applicationData.color}`);
 
@@ -574,9 +574,9 @@ $(() => {
 
                     if (!failFlag && !completedFlag) {
                         let $currentTimeline = timeline.find(`div[id="timeline${recentTimelineIndex + 1}"]`);
-                        $currentTimeline.find(`.timeline-icon, .timeline-date, #timeline-item-text`).removeClass(`text-muted`);
+                        $currentTimeline.find(`.timeline-placeholder-icon, .timeline-date, #timeline-item-text`).removeClass(`text-muted`);
                         //$currentTimeline.find(``).removeClass(`text-muted`);
-                        $currentTimeline.find(`.timeline-icon, .timeline-item-info`).addClass(`text-info`);
+                        $currentTimeline.find(`.timeline-placeholder-icon, .timeline-item-info`).addClass(`text-info`);
 
                     }
                 }
