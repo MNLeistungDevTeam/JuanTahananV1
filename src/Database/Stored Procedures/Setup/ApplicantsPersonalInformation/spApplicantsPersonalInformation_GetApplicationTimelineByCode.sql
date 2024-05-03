@@ -121,7 +121,7 @@ AS
 			ELSE 
 				CASE
 					WHEN ur2.RoleId = 3 THEN 'Deferred by Pag-IBIG'
-					WHEN ur2.RoleId = 5 THEN 'Deferred by Developer'
+					WHEN ur2.RoleId IN (5,2) THEN 'Deferred by Developer'
 				END 
 		END AS ApplicationStatus,
 		CASE

@@ -541,7 +541,7 @@ $(() => {
                         //let color = classColors.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
                         let applicationData = applicationStatus.find(a => a.approvalStatusNumbers.includes(selectedData.ApprovalStatusNumber));
                         let timelineData = timelineSelector.find(a => a.approvalStatusNumber === selectedData.ApprovalStatusNumber);
-                        let timelineIndex = timelineData.timelines.find(a => a.approverRoleId === selectedData.ApproverRoleId).timeline ?? recentTimelineIndex + 1;
+                        let timelineIndex = timelineData.timelines.find(a => a.approverRoleId === selectedData.ApproverRoleId)?.timeline ?? recentTimelineIndex + 1;
 
                         failFlag = !timelineData.successFlag;
                         recentTimelineIndex = timelineIndex;
