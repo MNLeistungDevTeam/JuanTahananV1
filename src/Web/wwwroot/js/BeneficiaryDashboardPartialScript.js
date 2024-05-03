@@ -290,7 +290,7 @@ $(() => {
                     $(`[id="credit_history_status"]`).html(`Withdrawn`);
                     $(`[id="credit_history_remarks"]`).html(`Submit a new application`);
 
-                    $(`[id="text_status"]`).html(`Your application is <span class='fw-bolder text-warning'> withdrawn </span>. Kindly submit an new application.`);
+                    $(`[id="text_status"]`).html(`Your application is <span class='fw-bolder text-warning'> withdrawn</span>. Kindly submit an new application.`);
                 } else if (data.ApprovalStatus === 11) {
                     // Application Submitted for Second Stage
                     $(`[id="credit_history_status"]`).addClass('text-primary');
@@ -502,22 +502,26 @@ $(() => {
                         {
                             approvalStatusNumbers: [5, 10],
                             color: 'warning',
-                            iconStatus: 'minus-circle',
+                            //iconStatus: 'minus-circle',
+                            iconStatus: 'fe-minus-circle',
                         },
                         {
                             approvalStatusNumbers: [2, 9],
                             color: 'danger',
-                            iconStatus: 'times-circle',
+                            //iconStatus: 'times-circle',
+                            iconStatus: 'fe-x-circle',
                         },
                         {
                             approvalStatusNumbers: [1, 3, 4, 6, 7, 8],
                             color: 'info',
-                            iconStatus: 'check-circle',
+                            //iconStatus: 'check-circle',
+                            iconStatus: 'fe-check-circle',
                         },
                         {
                             approvalStatusNumbers: [11],
                             color: 'warning',
-                            iconStatus: 'exclamation-circle',
+                            //iconStatus: 'exclamation-circle',
+                            iconStatus: 'fe-alert-circle',
                         },
                     ];
 
@@ -555,9 +559,12 @@ $(() => {
                             $selectedTimeline.addClass(`timeline-item-completed`);
                         }
 
+                        $selectedTimeline.find('.timeline-icon').addClass(`bg-${applicationData.color} text-${applicationData.color}`);
+
                         $selectedTimeline.find('.timeline-placeholder-icon')
-                            .removeClass(`far fa-circle text-muted`)
-                            .addClass(`fas fa-${applicationData.iconStatus} text-${applicationData.color}`);
+                            .removeClass(`fas fa-circle fs-1 text-muted`)
+                            //.addClass(`fas fa-${applicationData.iconStatus} text-${applicationData.color}`);
+                            .attr('class', `${applicationData.iconStatus} fs-2 text-white ` + $selectedTimeline.find('.timeline-placeholder-icon').attr('class'));
 
                         $selectedTimeline.find('.timeline-item-info [id="timeline-item-text"]')
                             .removeClass(`text-muted`)
@@ -576,7 +583,8 @@ $(() => {
                         let $currentTimeline = timeline.find(`div[id="timeline${recentTimelineIndex + 1}"]`);
                         $currentTimeline.find(`.timeline-placeholder-icon, .timeline-date, #timeline-item-text`).removeClass(`text-muted`);
                         //$currentTimeline.find(``).removeClass(`text-muted`);
-                        $currentTimeline.find(`.timeline-placeholder-icon, .timeline-item-info`).addClass(`text-info`);
+                        //$currentTimeline.find(`.timeline-placeholder-icon, .timeline-item-info`).addClass(`text-info`);
+                        $currentTimeline.find(`.timeline-placeholder-icon, .timeline-icon, .timeline-item-info`).addClass(`text-info`);
 
                     }
                 }
