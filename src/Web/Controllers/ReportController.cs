@@ -8,6 +8,7 @@ using DevExpress.XtraReports.Web.WebDocumentViewer;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Infrastructure.PredefinedReports;
 using DMS.Web.Models;
@@ -77,11 +78,16 @@ public class ReportController : Controller
         {
             var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-            int userId = 0;
+            int userId = int.Parse(User.Identity.Name);
+            var userInfo = await _userRepo.GetUserAsync(userId);
 
-            if (applicationInfo != null)
+            if (applicationInfo is null)
+                throw new Exception($"Transaction: {applicantCode}: no record Found!");
+
+            //if the application is not access by beneficiary
+            if (applicationInfo.UserId != userId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
             {
-                userId = applicationInfo.UserId;
+                return View("AccessDenied");
             }
 
             var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
@@ -98,11 +104,16 @@ public class ReportController : Controller
         {
             var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
-            int userId = 0;
+            int userId = int.Parse(User.Identity.Name);
+            var userInfo = await _userRepo.GetUserAsync(userId);
 
-            if (applicationInfo != null)
+            if (applicationInfo is null)
+                throw new Exception($"Transaction: {applicantCode}: no record Found!");
+
+            //if the application is not access by beneficiary
+            if (applicationInfo.UserId != userId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
             {
-                userId = applicationInfo.UserId;
+                return View("AccessDenied");
             }
 
             var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
