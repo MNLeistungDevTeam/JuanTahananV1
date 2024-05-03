@@ -5,6 +5,7 @@ using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.ReportDto;
+using DMS.Infrastructure.PredefinedReports;
 using System.Reflection;
 
 namespace DMS.Infrastructure.Services
@@ -126,7 +127,6 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
-             
                 List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
                 List<string> excludedSpouse = new List<string> { "OccupationStatus" };
 
@@ -158,6 +158,101 @@ namespace DMS.Infrastructure.Services
                 housingFormDetail.DataSource = dataSource;
 
                 return housingFormDetail;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<BuyerConfirmationForm> GenerateBuyerConfirmationForm(string? applicationCode, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmationForm();
+
+                ApplicantsPersonalInformationModel applicantInfoModel = new();
+                BarrowersInformationModel barrowerInfoModel = new();
+                SpouseModel spouseInfoModel = new();
+                LoanParticularsInformationModel loanParticularsInfoModel = new();
+                Form2PageModel form2InfoModel = new();
+                CollateralInformationModel collateralInfoModel = new();
+
+                //byte[] formalPicture = new byte[0];
+
+                if (applicationCode != null)
+                {
+                    var applicantData = await _applicantpersonalInfoRepo.GetByCodeAsync(applicationCode);
+
+                    if (applicantData != null)
+                    {
+                        applicantInfoModel = applicantData;
+                    }
+
+                    var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);
+
+                    if (loanParticularsData != null)
+                    {
+                        loanParticularsInfoModel = loanParticularsData;
+                    }
+
+                    var collateralData = await _collateralInfoRepo.GetByApplicantIdAsync(applicantData.Id);
+
+                    if (collateralData != null)
+                    {
+                        collateralInfoModel = collateralData;
+                    }
+
+                    var barrowerData = await _barrowersInfoRepo.GetByApplicantIdAsync(applicantData.Id);
+
+                    if (barrowerData != null)
+                    {
+                        barrowerInfoModel = barrowerData;
+                    }
+
+                    var spouseData = await _spouseRepo.GetByApplicantIdAsync(applicantData.Id);
+
+                    if (spouseData != null)
+                    {
+                        spouseInfoModel = spouseData;
+                    }
+
+                    var form2Data = await _form2PageRepo.GetByApplicantIdAsync(applicantData.Id);
+
+                    if (form2Data != null)
+                    {
+                        form2InfoModel = form2Data;
+                    }
+                }
+
+                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+                List<string> excludedSpouse = new List<string> { "OccupationStatus" };
+
+                applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);
+                barrowerInfoModel = ConvertStringPropertiesToUppercase(barrowerInfoModel, excludedBarrower);
+                spouseInfoModel = ConvertStringPropertiesToUppercase(spouseInfoModel, excludedSpouse);
+                loanParticularsInfoModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel);
+                form2InfoModel = ConvertStringPropertiesToUppercase(form2InfoModel);
+                collateralInfoModel = ConvertStringPropertiesToUppercase(collateralInfoModel);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                    //FormalPicture =  formalPicture,
+
+                      ApplicantsPersonalInformationModel =   applicantInfoModel,
+                        SpouseModel = spouseInfoModel,
+                        BarrowersInformationModel =  barrowerInfoModel,
+                        LoanParticularsInformationModel = loanParticularsInfoModel,
+                        Form2PageModel = form2InfoModel,
+                        CollateralInformationModel = collateralInfoModel,
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                return buyerConfirmationFormDetail;
             }
             catch (Exception)
             {

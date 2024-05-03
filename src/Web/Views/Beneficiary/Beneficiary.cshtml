@@ -40,7 +40,7 @@
 
 
                 <form id="frm_beneficiary" method="post" asp-action="SaveBeneficiary" asp-controller="Beneficiary" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-                  @*   <div asp-validation-summary="All"></div> *@
+                    @*   <div asp-validation-summary="All"></div> *@
                     <div class="tab-pane" id="collateraldata">
 
 
@@ -85,7 +85,7 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="BirthDate" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center calendarpicker" asp-for="BirthDate" data-value="@Model.BirthDate" required>
+                                                <input type="text" class="form-control rounded-3 mb-2   calendarpicker" asp-for="BirthDate" data-value="@Model.BirthDate" required>
                                                 <span asp-validation-for="BirthDate" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -104,14 +104,14 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="MobileNumber" required></label>
-                                                <input type="number" class="form-control rounded-3 mb-2 text-center" asp-for="MobileNumber" required>
+                                                <input type="number" class="form-control rounded-3 mb-2" asp-for="MobileNumber" required>
                                                 <span asp-validation-for="MobileNumber" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label asp-for="PagibigNumber" class="form-label fw-normal" required></label>
-                                                <input class="form-control text-center rounded-3 mb-2 pagibigInputMask" asp-for="PagibigNumber" required>
+                                                <input class="form-control rounded-3 mb-2 pagibigInputMask" asp-for="PagibigNumber" required>
                                                 <span asp-validation-for="PagibigNumber" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -122,45 +122,55 @@
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PropertyLocation"></label>
-                                                <input class="form-control rounded-3 mb-2 text-center" asp-for="PropertyLocation">
+                                                <input class="form-control rounded-3 mb-2" asp-for="PropertyLocation">
                                                 <span asp-validation-for="PropertyLocation" class="text-danger"> </span>
                                             </div>
                                         </div>
 
+                                        
+                             
+
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
-                                                <label class="form-label fw-normal" asp-for="PropertyDeveloperName" required></label>
-                                                <select class="form-select rounded-3 mb-2 text-center" asp-for="PropertyDeveloperName" required data-value="@Model.PropertyDeveloperName">
-                                                    <option value="">Select</option>
+                                                <label asp-for="PropertyDeveloperName" class="form-label fw-normal" required></label>
+                                                <select asp-for="PropertyDeveloperName" class="rounded-4 mb-2" data-value="@Model.PropertyDeveloperName" required>
+                                                    <option value="">Select Developer ...</option>
+                                             
                                                 </select>
-                                                <span asp-validation-for="PropertyDeveloperName" class="text-danger"> </span>
+                                                <span asp-validation-for="PropertyDeveloperName" class="text-danger"></span>
                                             </div>
                                         </div>
+
 
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PropertyUnitLevelName"></label>
-                                                <input class="form-control rounded-3 mb-2 text-center" asp-for="PropertyUnitLevelName">
+                                                <input class="form-control rounded-3 mb-2" asp-for="PropertyUnitLevelName">
                                                 <span asp-validation-for="PropertyUnitLevelName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="Email" required></label>
-                                                <input type="email" class="form-control rounded-3 mb-2 text-center" asp-for="Email" required>
+                                                <input type="email" class="form-control rounded-3 mb-2" asp-for="Email" required>
                                                 <span asp-validation-for="Email" class="text-danger"> </span>
                                             </div>
                                         </div>
 
 
 
+
+
                                         <div class="col-md-12">
-                                            <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
-                                                Address & Contact Information
-                                            </h3>
+                                            <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16"> Address & Contact Information</span>
                                         </div>
 
 
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                                Present Home Address
+                                            </h3>
+                                        </div>
 
 
                                         <div class="col-md-12">
@@ -172,68 +182,72 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentUnitName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentUnitName">
                                                 <span asp-validation-for="PresentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentBuildingName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentBuildingName">
                                                 <span asp-validation-for="PresentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentLotName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentLotName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentLotName">
                                                 <span asp-validation-for="PresentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentStreetName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentStreetName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentStreetName">
                                                 <span asp-validation-for="PresentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentSubdivisionName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentSubdivisionName">
                                                 <span asp-validation-for="PresentSubdivisionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentBaranggayName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentBaranggayName" required>
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentBaranggayName" required>
                                                 <span asp-validation-for="PresentBaranggayName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentMunicipalityName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentMunicipalityName" required>
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentMunicipalityName" required>
                                                 <span asp-validation-for="PresentMunicipalityName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentProvinceName" required></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PresentProvinceName" required>
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PresentProvinceName" required>
                                                 <span asp-validation-for="PresentProvinceName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PresentZipCode" required></label>
-                                                <input class="form-control rounded-3 mb-2 text-center codeInputMask" asp-for="PresentZipCode" required>
+                                                <input class="form-control rounded-3 mb-2 codeInputMask" asp-for="PresentZipCode" required>
                                                 <span asp-validation-for="PresentZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
 
-
+                                        <div class="col-md-12">
+                                            <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                                Permanent Home Address
+                                            </h3>
+                                        </div>
 
                                         <div class="col-md-12">
                                             <div class="form-check form-check-inline">
@@ -244,63 +258,63 @@
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentUnitName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentUnitName">
+                                                <input type="text" class="form-control rounded-3 mb-2" asp-for="PermanentUnitName">
                                                 <span asp-validation-for="PermanentUnitName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentBuildingName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentBuildingName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentBuildingName">
                                                 <span asp-validation-for="PermanentBuildingName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentLotName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="  PermanentLotName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="  PermanentLotName">
                                                 <span asp-validation-for="PermanentLotName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentStreetName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentStreetName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentStreetName">
                                                 <span asp-validation-for="PermanentStreetName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentSubdivisionName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentSubdivisionName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentSubdivisionName">
                                                 <span asp-validation-for="PermanentSubdivisionName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentBaranggayName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentBaranggayName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentBaranggayName">
                                                 <span asp-validation-for="PermanentBaranggayName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentMunicipalityName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentMunicipalityName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentMunicipalityName">
                                                 <span asp-validation-for="PermanentMunicipalityName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentProvinceName"></label>
-                                                <input type="text" class="form-control rounded-3 mb-2 text-center" asp-for="PermanentProvinceName">
+                                                <input type="text" class="form-control rounded-3 mb-2  " asp-for="PermanentProvinceName">
                                                 <span asp-validation-for="PermanentProvinceName" class="text-danger"> </span>
                                             </div>
                                         </div>
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PermanentZipCode"></label>
-                                                <input class="form-control rounded-3 mb-2 text-center codeInputMask" asp-for="PermanentZipCode">
+                                                <input class="form-control rounded-3 mb-2   codeInputMask" asp-for="PermanentZipCode">
                                                 <span asp-validation-for="PermanentZipCode" class="text-danger"> </span>
                                             </div>
                                         </div>
@@ -329,7 +343,7 @@
 
                 </form>
             </div>
-       
+
         </div> <!-- end #rootwizard-->
     </div>
 </div>
