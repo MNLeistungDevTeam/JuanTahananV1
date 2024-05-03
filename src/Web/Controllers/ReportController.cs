@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +26,8 @@ namespace DMS.Web.Controllers;
 [Authorize]
 public class ReportController : Controller
 {
+    #region Fields
+
     private readonly ReportDbContext _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IUserRepository _userRepo;
@@ -65,6 +66,10 @@ public class ReportController : Controller
         _reportService = reportService;
     }
 
+    #endregion Fields
+
+    #region Views
+
     [Route("[controller]/LatestHousingForm/{applicantCode?}")]
     public async Task<IActionResult> LatestHousingForm(string? applicantCode = null)
     {
@@ -86,7 +91,7 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    [Route("[controller]/LatestHousingForm/{applicantCode?}")]
+    [Route("[controller]/LatestBuyerConfirmationForm/{applicantCode?}")]
     public async Task<IActionResult> LatestBuyerConfirmationForm(string? applicantCode = null)
     {
         try
@@ -107,63 +112,13 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-
-
-
-
-
-
-
-
-    public List<ReportListViewModel> GetReportList()
-    {
-        List<ReportListViewModel> reportsList = new();
-        List<ReportListViewModel> predefinedReports = ReportsFactory.Reports.Select(m => new ReportListViewModel { Name = m.Key, DisplayName = m.Key, IsCustomReport = false }).ToList();
-        List<ReportListViewModel> savedReports = _context.Reports.Select(m => new ReportListViewModel { Name = m.Name, DisplayName = m.DisplayName, IsCustomReport = true }).ToList();
-
-        reportsList.AddRange(predefinedReports);
-        reportsList.AddRange(savedReports);
-
-        return reportsList;
-    }
-
-    [HttpDelete]
-    public async Task<IActionResult> DeleteReportAsync(string reportName, CancellationToken cancellationToken)
-    {
-        var toDelete = _context.Reports.FirstOrDefault(m => m.Name == reportName);
-        if (toDelete is null)
-            return Conflict("Report not found!");
-
-        _context.Remove(toDelete);
-        await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(true);
-
-        return Ok();
-    }
-
     public async Task<IActionResult> Designer(
-            [FromServices] IReportDesignerClientSideModelGenerator clientSideModelGenerator,
-            [FromQuery] string reportName)
+        [FromServices] IReportDesignerClientSideModelGenerator clientSideModelGenerator,
+        [FromQuery] string reportName)
     {
         ReportDesignerCustomModel model = new ReportDesignerCustomModel();
         model.ReportDesignerModel = await CreateDefaultReportDesignerModel(clientSideModelGenerator, reportName, null);
         return View(model);
-    }
-
-    public static Dictionary<string, object> GetAvailableDataSources()
-    {
-        var dataSources = new Dictionary<string, object>();
-        return dataSources;
-    }
-
-    public static async Task<ReportDesignerModel> CreateDefaultReportDesignerModel(IReportDesignerClientSideModelGenerator clientSideModelGenerator, string reportName, XtraReport report)
-    {
-        reportName = string.IsNullOrEmpty(reportName) ? "TestReport" : reportName;
-        var dataSources = GetAvailableDataSources();
-        if (report != null)
-        {
-            return await clientSideModelGenerator.GetModelAsync(report, dataSources, ReportDesignerController.DefaultUri, WebDocumentViewerController.DefaultUri, QueryBuilderController.DefaultUri);
-        }
-        return await clientSideModelGenerator.GetModelAsync(reportName, dataSources, ReportDesignerController.DefaultUri, WebDocumentViewerController.DefaultUri, QueryBuilderController.DefaultUri);
     }
 
     public async Task<IActionResult> Viewer(
@@ -199,4 +154,56 @@ public class ReportController : Controller
         model.ViewerModelToBind.ReportInfo.ParametersInfo.Parameters[1].Value = "dawda";
         return View("Viewer", model);
     }
+
+    #endregion Views
+
+    #region API Getters
+
+    public List<ReportListViewModel> GetReportList()
+    {
+        List<ReportListViewModel> reportsList = new();
+        List<ReportListViewModel> predefinedReports = ReportsFactory.Reports.Select(m => new ReportListViewModel { Name = m.Key, DisplayName = m.Key, IsCustomReport = false }).ToList();
+        List<ReportListViewModel> savedReports = _context.Reports.Select(m => new ReportListViewModel { Name = m.Name, DisplayName = m.DisplayName, IsCustomReport = true }).ToList();
+
+        reportsList.AddRange(predefinedReports);
+        reportsList.AddRange(savedReports);
+
+        return reportsList;
+    }
+
+    public static Dictionary<string, object> GetAvailableDataSources()
+    {
+        var dataSources = new Dictionary<string, object>();
+        return dataSources;
+    }
+
+    public static async Task<ReportDesignerModel> CreateDefaultReportDesignerModel(IReportDesignerClientSideModelGenerator clientSideModelGenerator, string reportName, XtraReport report)
+    {
+        reportName = string.IsNullOrEmpty(reportName) ? "TestReport" : reportName;
+        var dataSources = GetAvailableDataSources();
+        if (report != null)
+        {
+            return await clientSideModelGenerator.GetModelAsync(report, dataSources, ReportDesignerController.DefaultUri, WebDocumentViewerController.DefaultUri, QueryBuilderController.DefaultUri);
+        }
+        return await clientSideModelGenerator.GetModelAsync(reportName, dataSources, ReportDesignerController.DefaultUri, WebDocumentViewerController.DefaultUri, QueryBuilderController.DefaultUri);
+    }
+
+    #endregion API Getters
+
+    #region API Operations
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteReportAsync(string reportName, CancellationToken cancellationToken)
+    {
+        var toDelete = _context.Reports.FirstOrDefault(m => m.Name == reportName);
+        if (toDelete is null)
+            return Conflict("Report not found!");
+
+        _context.Remove(toDelete);
+        await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(true);
+
+        return Ok();
+    }
+
+    #endregion API Operations
 }
