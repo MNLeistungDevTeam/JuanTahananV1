@@ -10,56 +10,54 @@ $(function () {
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
     initializeDecimalInputMask(".decimalInputMask5", 2);
 
-/*    initializeSelectizeDev();*/
+    /*    initializeSelectizeDev();*/
 
     var developerVal = $('[name="PropertyDeveloperName"]').attr('data-value'),
 
-
-
-    $developerDropdown = $(`[name='PropertyDeveloperName']`).selectize({
-        valueField: 'PropertyDeveloperName',
-        labelField: 'PropertyDeveloperName',
-        searchField: 'PropertyDeveloperName',
-        preload: true,
-        search: false,
-        load: function (query, callback) {
-            $.ajax({
-                url: baseUrl + 'Beneficiary/GetPropertyDevelopers',
-                success: function (results) {
-                    try {
-                        callback(results);
-                    } catch (e) {
+        $developerDropdown = $(`[name='PropertyDeveloperName']`).selectize({
+            valueField: 'PropertyDeveloperName',
+            labelField: 'PropertyDeveloperName',
+            searchField: 'PropertyDeveloperName',
+            preload: true,
+            search: false,
+            load: function (query, callback) {
+                $.ajax({
+                    url: baseUrl + 'Beneficiary/GetPropertyDevelopers',
+                    success: function (results) {
+                        try {
+                            callback(results);
+                        } catch (e) {
+                            callback();
+                        }
+                    },
+                    error: function () {
                         callback();
                     }
-                },
-                error: function () {
-                    callback();
-                }
-            });
-        },
-
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.PropertyDeveloperName) +
-                    "</div>"
-                );
+                });
             },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.PropertyDeveloperName) +
-                    "</div>"
-                );
-            }
-        },
-    });
+
+            render: {
+                item: function (item, escape) {
+                    return ("<div>" +
+                        escape(item.PropertyDeveloperName) +
+                        "</div>"
+                    );
+                },
+                option: function (item, escape) {
+                    return ("<div class='py-1 px-2'>" +
+                        escape(item.PropertyDeveloperName) +
+                        "</div>"
+                    );
+                }
+            },
+        });
 
     developerDropdown = $developerDropdown[0].selectize;
 
