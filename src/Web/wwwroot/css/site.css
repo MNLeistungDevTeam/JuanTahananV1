@@ -1359,13 +1359,13 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     z-index: -1 !important;
 }
 
-@media (max-width: 1080px) and (min-width: 960px) {
+@media (max-width: 1080px) /*and (min-width: 960px)*/ {
     .timeline-item::before {
         left: 13.75px !important;
     }
 }
 
-@media (max-width: 960px) and (min-width: 840px) {
+/*@media (max-width: 960px) and (min-width: 840px) {
     .timeline-item::before {
         left: 13.5px !important;
     }
@@ -1373,13 +1373,13 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 
 @media (max-width: 840px) and (min-width: 768px) {
     .timeline-item::before {
-        left: 13.5px !important;
+        left: 13.375px !important;
     }
-}
+}*/
 
 @media (max-width: 768px) {
     .timeline-item::before {
-        left: 13.25px !important;
+        /*left: 13.25px !important;*/
         height: 77.5%;
     }
 }
