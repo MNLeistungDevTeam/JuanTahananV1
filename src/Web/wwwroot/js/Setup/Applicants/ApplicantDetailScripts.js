@@ -152,25 +152,26 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+                    const convertedSize = ((item.DocumentSize % 1000) / 100).toFixed(1); //document Size
 
-                    if (item.HasParentId === 0 && item.HasSubdocument === 0) {
-                        groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
-                        <h4 class="header-title text-muted">${groupName}</h4>
-                        <div class="list-group">`;
+                    //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
+                    //    groupHtml += `<div class="col-md-4 mb-2" id="${firstItem.DocumentTypeId}">
+                    //    <h4 class="header-title text-muted">${groupName}</h4>
+                    //    <div class="list-group">`;
 
-                        groupHtml += `<div class="file-upload-wrapper">
-                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
-                                        </div>
+                    //    groupHtml += `<div class="file-upload-wrapper">
+                    //        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                    //            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                    //                <div class="d-flex justify-content-between align-items-center">
+                    //                    <div>
+                    //                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                    //                    </div>
 
-                                    </div>
-                                </a>
-                            </div>
-                          </div>`;
-                    }
+                    //                </div>
+                    //            </a>
+                    //        </div>
+                    //      </div>`;
+                    //}
 
                     //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
                     //    groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
@@ -184,14 +185,52 @@ $(async function () {
                     //                    <div>
                     //                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
                     //                    </div>
-                    //                    <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
-                    //                        <i class="fe-upload"></i>
+                    //                    <button type="button" class="btn btn-link btn-lg text-muted" ${item.DocumentName ? '' : 'hidden'}>
+                    //                        <i class="dripicons-download"></i>
                     //                    </button>
                     //                </div>
                     //            </a>
                     //        </div>
                     //      </div>`;
                     //}
+
+
+                    //New Design (Pending)
+                    //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
+                    //    groupHtml += `
+                    //        <div class="col-md-4" id="${firstItem.DocumentTypeId}">
+                    //            <h4 class="header-title text-muted">${groupName}</h4>
+                    //            <div class="col-md-12">
+                    //                <div class="card mb-1 shadow-none border border-1">
+                    //                    <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                    //                    <div class="p-2 file-upload-wrapper">
+                    //                        <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                //                <div class="col-auto">
+					               //                 <div class="avatar-sm" hidden>
+						              //                  <span class="avatar-title bg-soft-primary text-primary rounded">
+						              //                      .Pdf
+                    //                                    </span>
+					               //                 </div>
+				                //                </div>
+				                //                <div class="col ps-0">
+					               //                 <a href="javascript:void(0);" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					               //                 <p class="mb-0">${convertedSize} MB</p>
+				                //                </div>
+				                //                <div class="col-auto">
+					               //                 <!-- Button -->
+					               //                 <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted re-upload">
+						              //                  <i class="dripicons-download"></i>
+					               //                 </a>
+				                //                </div>
+			                 //               </div>
+                    //                    </div>
+                    //                </div>
+                    //            </div>
+                    //        </div>
+                    //    `;
+                    //}
+
+
                 });
 
                 groupHtml += `</div></div>`;

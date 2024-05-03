@@ -65,7 +65,8 @@ AS
             CASE 
                 WHEN EXISTS (SELECT 1 FROM SubDocument sd WHERE sd.ParentId = dd.DocumentTypeId) THEN '1' 
                 ELSE '0' 
-            END AS HasSubdocument
+            END AS HasSubdocument,
+            RIGHT(dd.DocumentName, CHARINDEX('.', REVERSE(dd.DocumentName)) - 1) AS FileExtension
         FROM 
             DocumentDetails dd
         LEFT JOIN 

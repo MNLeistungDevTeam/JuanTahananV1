@@ -89,6 +89,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? HasParentId { get; set; }
         public int? HasSubdocument { get; set; }
         public int? SenderId { get; set; }
+        public string? FileExtension { get; set; }
 
         #endregion Display Properties
     }
