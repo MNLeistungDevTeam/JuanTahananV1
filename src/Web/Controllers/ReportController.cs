@@ -86,6 +86,35 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
+    [Route("[controller]/LatestHousingForm/{applicantCode?}")]
+    public async Task<IActionResult> LatestBuyerConfirmationForm(string? applicantCode = null)
+    {
+        try
+        {
+            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+
+            int userId = 0;
+
+            if (applicationInfo != null)
+            {
+                userId = applicationInfo.UserId;
+            }
+
+            var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
+
+            return View("RptBuyerConfirmation", report);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+
+
+
+
+
+
+
+
     public List<ReportListViewModel> GetReportList()
     {
         List<ReportListViewModel> reportsList = new();
