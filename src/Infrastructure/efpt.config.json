@@ -144,7 +144,27 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[PropertyLocation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyProject]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyProjectLocation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PropertyType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyUnit]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyUnitProject]",
          "ObjectType": 0
       },
       {
@@ -216,7 +236,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "mnl.eiDOCRS2023.dbo",
+   "UiHint": "phmnl012127.eiDOCRS2023.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
