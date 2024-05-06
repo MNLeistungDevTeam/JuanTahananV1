@@ -312,7 +312,7 @@ $(function () {
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
             }                                                                  //developer                                                                   //pagibig                                                                   //lgu
-            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId ==  3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
+            if (currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 5 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 3 || currentFormName == "spousedata" && applicantInfoIdVal == 0 && roleId == 2) {
                 $("#liform2_next").removeClass("d-none").prop('disabled', false);
                 $("#liform2_submit").addClass("d-none").prop('disabled', true);
 

@@ -1,4 +1,5 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const applicantInfoApprovalStatus = $(`[name='ApplicantsPersonalInformationModel.ApprovalStatus']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
@@ -10,6 +11,8 @@ $(function () {
     //#region Initialization
 
     $("#btn_savehlf068").prop('disabled', true);
+
+    $("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus === '0' || applicantInfoApprovalStatus === '11'));
 
     $(".selectize").selectize({
         search: false

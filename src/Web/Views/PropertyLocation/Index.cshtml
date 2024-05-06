@@ -1,0 +1,88 @@
+﻿@model PropertyManagementViewModel
+@{
+
+    ViewData["Title"] = "Property Location";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <div class="row gy-2">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 mb-2 align-items-md-center">
+                        <button id="btn_add_PropLocModel" class="btn btn-light btn-sm waves-effect btn_add"><span class="mdi mdi-plus"></span> Add</button>
+                        <button id="btn_edit_PropLocModel" class="btn btn-light btn-sm waves-effect btn_edit" disabled><span class="mdi mdi-square-edit-outline"></span> Edit</button>
+                        <button id="btn_delete_PropLocModel" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
+                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_PropUnit"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="input-group float-end" style="width:250px;">
+                            <input bound="tbl_PropLocModel" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <span class="input-group-text"><i class="fe-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 table-responsive">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_propLoc">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Date Created</th>
+                            <th>Date Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Standard modal content -->
+<div id="modal-PropLoc" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content rounded-4">
+            <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <h3 class="text-dark float-start fw-semibold">Property Location</h3>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SavePropertyLocation" asp-antiforgery="true" method="post" role="form" id="propLocation_form" enctype="multipart/form-data">
+                    <input hidden type="text" asp-for="PropLocModel.Id" class="form-control form-control-sm">
+
+                    <div class="position-relative mb-3">
+                        <label class="form-label fw-normal" asp-for="PropLocModel.Name" required></label>
+                        <input type="text" class="form-control rounded-3" asp-for="PropLocModel.Name" placeholder="Name" required>
+                        <span asp-validation-for="PropLocModel.Name" class="invalid-tooltip"> </span>
+                    </div>
+
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+                    <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect mb-2" data-bs-dismiss="modal">Close</button>
+                </form>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section Scripts {
+    <script src="~/js/validation.bundle.js" asp-append-version="true"> </script>
+    <script src="~/js/Setup/PropertyManagement/PropertyLocationScript.js" asp-append-version="true"></script>
+}

@@ -18,6 +18,7 @@ using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Dto.ModuleTypeDto;
 using DMS.Domain.Dto.NotificationDto;
 using DMS.Domain.Dto.NotificationReceiverDto;
+using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
@@ -70,6 +71,12 @@ public class MappingProfile : Profile
         CreateMap<TemporaryLink, TemporaryLinkModel>().ReverseMap();
         CreateMap<EmailSetup, EmailSetupModel>().ReverseMap();
         CreateMap<EmailLog, EmailLogModel>().ReverseMap();
+
+        CreateMap<PropertyProject, PropertyProjectModel>().ReverseMap();
+        CreateMap<PropertyLocation, PropertyLocationModel>().ReverseMap();
+        CreateMap<PropertyProjectLocation, PropertyProjectLocationModel>().ReverseMap();
+        CreateMap<PropertyUnit, PropertyUnitModel>().ReverseMap();
+        CreateMap<PropertyUnitProjectModel, PropertyUnitProjectModel>().ReverseMap();
         CreateMap<BuyerConfirmation, BuyerConfirmationModel>().ReverseMap();
     }
 }

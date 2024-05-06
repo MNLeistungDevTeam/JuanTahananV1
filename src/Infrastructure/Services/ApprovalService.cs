@@ -130,8 +130,13 @@ namespace DMS.Infrastructure.Services
 
                 //ApprovalLevel approvalLevel = new();
                 int approvalLevelId = 0;
-                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified
-                    || model.Status == (int)AppStatusType.Deferred || model.Status == (int)AppStatusType.PagibigConfirmed || model.Status == (int)AppStatusType.DeveloperConfirmed || model.Status == (int)AppStatusType.Disqualified)
+                if (model.Status == (int)AppStatusType.DeveloperVerified ||
+                    model.Status == (int)AppStatusType.PagibigVerified ||
+                    model.Status == (int)AppStatusType.Deferred || 
+                    model.Status == (int)AppStatusType.PagibigConfirmed || 
+                    model.Status == (int)AppStatusType.DeveloperConfirmed || 
+                    model.Status == (int)AppStatusType.Disqualified ||
+                    model.Status == (int)AppStatusType.ForResubmition)
                 {
                     var approvalLevelData = await _approvalLevelRepo.SaveAsync(model);
                     approvalLevelId = approvalLevelData.Id;
@@ -149,8 +154,13 @@ namespace DMS.Infrastructure.Services
 
                 await UpdateApprovalStatus(approvalStatus, model);
 
-                if (model.Status == (int)AppStatusType.DeveloperVerified || model.Status == (int)AppStatusType.PagibigVerified
-                  || model.Status == (int)AppStatusType.Deferred || model.Status == (int)AppStatusType.PagibigConfirmed || model.Status == (int)AppStatusType.DeveloperConfirmed || model.Status == (int)AppStatusType.Disqualified)
+                if (model.Status == (int)AppStatusType.DeveloperVerified ||
+                    model.Status == (int)AppStatusType.PagibigVerified ||
+                    model.Status == (int)AppStatusType.Deferred ||
+                    model.Status == (int)AppStatusType.PagibigConfirmed ||
+                    model.Status == (int)AppStatusType.DeveloperConfirmed ||
+                    model.Status == (int)AppStatusType.Disqualified ||
+                    model.Status == (int)AppStatusType.ForResubmition)
                 {
                     if (approvalStatus.ModuleCode == ModuleCodes2.CONST_APPLICANTSREQUESTS)
                     {

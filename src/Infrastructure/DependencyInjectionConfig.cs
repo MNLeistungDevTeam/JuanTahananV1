@@ -70,6 +70,9 @@ using DMS.Application.Interfaces.Setup.EmailLogRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.EmailLogRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.PropertyManagementRepo;
+using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.PropertyProjectRepo;
 
 namespace Template.Infrastructure;
 
@@ -175,7 +178,6 @@ public static class DependencyInjectionConfig
         services.AddScoped<IApprovalService, ApprovalService>();
         services.AddScoped<IEmailSetupRepository, EmailSetupRepository>();
         services.AddScoped<IEmailLogRepository, EmailLogRepository>();
-        services.AddScoped<IBuyerConfirmationRepository, BuyerConfirmationRepository>();
         return services;
     }
 }

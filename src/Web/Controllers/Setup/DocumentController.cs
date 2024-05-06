@@ -99,14 +99,14 @@ public class DocumentController : Controller
 
             if (applicantCode == null)
             {
-                return BadRequest($"Restricted Access");
+                throw new Exception($"Restricted Access");
             }
 
             var applicantinfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
 
             if (applicantinfo == null)
             {
-                return BadRequest($"{applicantCode}: no record Found!");
+                throw new Exception($"{applicantCode}: no record Found!");
             }
 
             //if the application is not access by beneficiary

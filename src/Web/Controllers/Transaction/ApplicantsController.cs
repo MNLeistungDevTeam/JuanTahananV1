@@ -25,7 +25,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -963,7 +962,7 @@ namespace Template.Web.Controllers.Transaction
                     if (vwModel.BarrowersInformationModel != null)
                     {
                         vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
-
+    
                         await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
 

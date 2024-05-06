@@ -106,10 +106,8 @@ AS
 	--		WHEN @roleId IN (1, 2, 5, 3) THEN apl.DateModified
 	--		ELSE NULL
  --   END DESC;
-
-
   
-    SELECT * FROM (
+ SELECT * FROM (
   
  SELECT main.*,aplog2.DateCreated DateSubmitted ,  ROW_NUMBER() OVER (PARTITION BY aps2.ReferenceId ORDER BY aplog2.DateCreated ASC) AS rn
 FROM (
@@ -217,8 +215,6 @@ FROM (
     END,
     -- Add additional sorting criteria as needed
     MAIN2.LastUpdated DESC; -- For example, sorting by DateCreated in descending order
- 
-
 
 
 RETURN 0

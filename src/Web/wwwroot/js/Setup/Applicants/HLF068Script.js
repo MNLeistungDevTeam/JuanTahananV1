@@ -1405,6 +1405,12 @@ $(function () {
         form.find('input[type="radio"][required]').each(function () {
             let hasClass = $(this).hasClass('valid');
 
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
+
             if (!hasClass) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('valid');
