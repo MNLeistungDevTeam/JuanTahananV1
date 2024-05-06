@@ -22,12 +22,11 @@ public class PropertyProjectLocationRepository : IPropertyProjectLocationReposit
 
     public PropertyProjectLocationRepository(
         DMSDBContext context,
-        EfCoreHelper<PropertyProjectLocation> contextHelper,
         ISQLDatabaseService db,
         IMapper mapper)
     {
         _context = context;
-        _contextHelper = contextHelper;
+        _contextHelper = new EfCoreHelper<PropertyProjectLocation>(context);
         _db = db;
         _mapper = mapper;
     }

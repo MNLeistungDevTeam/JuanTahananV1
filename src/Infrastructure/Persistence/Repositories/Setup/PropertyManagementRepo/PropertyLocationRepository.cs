@@ -3,11 +3,6 @@ using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.PropertyManagementRepo;
 
@@ -22,12 +17,11 @@ public class PropertyLocationRepository : IPropertyLocationRepository
 
     public PropertyLocationRepository(
         DMSDBContext context,
-        EfCoreHelper<PropertyLocation> contextHelper,
         ISQLDatabaseService db,
         IMapper mapper)
     {
         _context = context;
-        _contextHelper = contextHelper;
+        _contextHelper = new EfCoreHelper<PropertyLocation>(context);
         _db = db;
         _mapper = mapper;
     }

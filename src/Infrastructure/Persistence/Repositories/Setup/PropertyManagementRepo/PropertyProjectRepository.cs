@@ -17,12 +17,11 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     public PropertyProjectRepository(
         DMSDBContext context,
-        EfCoreHelper<PropertyProject> contextHelper,
         ISQLDatabaseService db,
         IMapper mapper)
     {
         _context = context;
-        _contextHelper = contextHelper;
+        _contextHelper = new EfCoreHelper<PropertyProject>(context);
         _db = db;
         _mapper = mapper;
     }
