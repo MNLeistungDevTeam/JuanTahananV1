@@ -30,40 +30,11 @@ $(() => {
         },
     ];
 
-    //var classColors = [
-    //    {
-    //        approvalStatusNumbers: [0],
-    //        classColor: 'text-secondary',
-    //        classTextColor: ''
-    //    },
-    //    {
-    //        approvalStatusNumbers: [1, 6],
-    //        classColor: 'text-primary',
-    //        classTextColor: 'text-muted'
-    //    },
-    //    {
-    //        approvalStatusNumbers: [2, 9],
-    //        classColor: 'text-danger',
-    //        classTextColor: 'text-danger'
-    //    },
-    //    {
-    //        approvalStatusNumbers: [3, 4, 7, 8],
-    //        classColor: 'text-success',
-    //        classTextColor: 'text-muted'
-    //    },
-    //    {
-    //        approvalStatusNumbers: [5, 10],
-    //        classColor: 'text-warning',
-    //        classTextColor: 'text-muted'
-    //    },
-    //    {
-    //        approvalStatusNumbers: [11],
-    //        classColor: 'text-info',
-    //        classTextColor: 'text-muted'
-    //    },
-    //];
-
     loadData();
+
+    $(`.btn-application-bcf`).on('click', function (e) {
+        loadBcfPrompt();
+    });
 
     function loadData() {
         loadRecentBeneficiaryApplication();
@@ -605,91 +576,45 @@ $(() => {
             }
         });
     }
+
+    function loadApplicationTimeline(itemObj = {}) {
+        let count = $('[id="simplebarWrapper2"] .timeline-item').length;
+
+        let applicationStatus = [
+            {
+                approvalStatusNumbers: [5, 10],
+                color: 'warning',
+                iconStatus: 'minus-circle',
+            },
+            {
+                approvalStatusNumbers: [2, 9],
+                color: 'danger',
+                iconStatus: 'times-circle',
+            },
+            {
+                approvalStatusNumbers: [1, 3, 4, 6, 7, 8, 11],
+                color: 'info',
+                iconStatus: 'check-circle',
+            },
+        ];
+
+        let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
+
+        let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
+
+        let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
+                        <div>
+                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
+                        </div>
+                        <div class="timeline-item-info">
+                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
+                            <p class="mb-0">${itemObj.Stage}</p>
+                            <p>
+                                <small class="text-muted timeline-date">${formattedDate}</small>
+                            </p>
+                        </div>
+                    </div>`;
+
+        $('[id="simplebarWrapper2"] .timeline-alt').append(itemToAdd);
+    }
 });
-
-function loadApplicationTimeline(itemObj = {}) {
-    let count = $('[id="simplebarWrapper2"] .timeline-item').length;
-
-    let applicationStatus = [
-        {
-            approvalStatusNumbers: [5, 10],
-            color: 'warning',
-            iconStatus: 'minus-circle',
-        },
-        {
-            approvalStatusNumbers: [2, 9],
-            color: 'danger',
-            iconStatus: 'times-circle',
-        },
-        {
-            approvalStatusNumbers: [1, 3, 4, 6, 7, 8, 11],
-            color: 'info',
-            iconStatus: 'check-circle',
-        },
-    ];
-
-    let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
-
-    let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
-
-    let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
-                        <div>
-                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
-                        </div>
-                        <div class="timeline-item-info">
-                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
-                            <p class="mb-0">${itemObj.Stage}</p>
-                            <p>
-                                <small class="text-muted timeline-date">${formattedDate}</small>
-                            </p>
-                        </div>
-                    </div>`;
-
-    $('[id="simplebarWrapper2"] .timeline-alt').append(itemToAdd);
-}
-
-function loadApplicationTimeline2(itemObj = {}) {
-    let count = $('[id="simplebarWrapper1"] .timeline-item').length;
-
-    let applicationStatus = [
-        {
-            // Withdrawn (Stage 1, Stage 2)
-            approvalStatusNumbers: [5, 10],
-            color: 'warning',
-            iconStatus: 'minus-circle',
-        },
-        {
-            // Defer (Stage 1, Stage 2)
-            approvalStatusNumbers: [2, 9],
-            color: 'danger',
-            iconStatus: 'times-circle',
-        },
-        {
-            // Approved (Stage 1, Stage 2)
-            approvalStatusNumbers: [1, 3, 4, 6, 7, 8],
-            color: 'info',
-            iconStatus: 'check-circle',
-        },
-    ];
-
-    let time = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
-
-    let status = applicationStatus.find(a => a.approvalStatusNumbers.includes(itemObj.ApprovalStatusNumber));
-
-    let formattedDate = new Date(itemObj.DateCreated).toLocaleString();
-
-    let itemToAdd = `<div class="timeline-item" id="timeline_${count}">
-                        <div>
-                            <i class="fa fa-${status.iconStatus} text-${status.color} timeline-icon"></i>
-                        </div>
-                        <div class="timeline-item-info">
-                            <a href="javascript:void(0);" class="text-${status.color} fw-bold mb-0 d-block">${itemObj.ApplicationStatus}</a>
-                            <p class="mb-0">${itemObj.Stage}</p>
-                            <p>
-                                <small class="text-muted timeline-date">${formattedDate}</small>
-                            </p>
-                        </div>
-                    </div>`;
-
-    $('[id="simplebarWrapper2"] .timeline-alt').append(itemToAdd);
-}

@@ -1057,3 +1057,108 @@ function assessCheckbox(checkbox, target) {
 
     target.prop('readonly', false);
 }
+
+
+function loadBcfPrompt() {
+    if ($(`[id="UserFlag_IsBcfCreated"]`).data('flag') === true) {
+        location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
+        return;
+    }
+
+    Swal.fire({
+        //width: `60%`,
+        customClass: {
+            popup: `rounded-5`,
+            confirmButton: "btn btn-primary btn-lg rounded-4",
+        },
+        title: `<span class="text-info fw-medium">Important Question</span>`,
+        html: `
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="text-secondary text-wrap">Do you have a completely filled-up 4PH Buyer Confirmation Form (BCF)?</p>
+                </div>
+                <div class="d-flex flex-column align-items-start">
+                    <div class="mt-2 mb-1 form-check form-check-inline">
+                        <input type="radio" name="4PH_Confirmation" id="4PH_Confirm_True" data-val="1" />
+                        <label class="fs-4 text-muted form-check-label" for="4PH_Confirm_True">Yes, I do have a completely filled-up one.</label>
+                    </div>
+                    <div class="mb-2 form-check form-check-inline">
+                        <input type="radio" name="4PH_Confirmation" id="4PH_Confirm_False" data-val="0" />
+                        <label class="fs-4 text-muted form-check-label" for="4PH_Confirm_False">No, I do not have that yet.</label>
+                    </div>
+                </div>
+            `,
+        allowOutsideClick: false,
+        confirmButtonText: `<span class="fs-4">Confirm Selection</span>`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Check one of two Radio buttons
+            let filledUpForm = ($('input[name="4PH_Confirmation"]:checked').data("val") === 1);
+            let filledUpTitle = filledUpForm ? `You have a BCF` : `You do not have a BCF`;
+            let filledUpString = filledUpForm ? `you have` : `you do not have`;
+
+            loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm);
+        }
+    });
+
+    $('input[name="4PH_Confirmation"]').on('change', function () {
+        $(Swal.getConfirmButton()).prop('disabled', false);
+    });
+
+    $(Swal.getConfirmButton()).prop('disabled', true);
+}
+
+function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
+    Swal.fire({
+        customClass: {
+            popup: `rounded-4`,
+            confirmButton: "rounded-4",
+            cancelButton: "rounded-4",
+            htmlContainer: 'd-flex justify-content-center',
+        },
+        title: `<span class="text-info fw-medium">${filledUpTitle}</span>`,
+        html: `
+                <div class="align-items-center justify-content-center" style="width: 75%;">
+                    Do you confirm that <span class="fw-bolder">${filledUpString}</span> a completely filled-up 4PH BCF?
+                </div>
+            `,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: `<span class="fs-4">Confirm</span>`,
+        cancelButtonText: `<span class="fs-4">Cancel</span>`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Check one of two radio buttons
+            //if (filledUpForm) {
+            //    // Code block of user selecting "I do have a completely filled-up one"
+            //    console.log("Execute 4PH - TRUE Code block");
+
+            //    // redirect to housing loan form
+            //    updateBcfFlag(true, () => { location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val()); });
+            //}
+            //else {
+            //    // Code block of user selecting "No, I do not have that yet"
+            //    console.log("Execute 4PH - FALSE Code block");
+            //    updateBcfFlag(false, () => { return; });
+            //}
+
+            updateBcfFlag(filledUpForm, () => { location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val()); });
+        }
+        else {
+            $('input[name="4PH_Confirmation"]').off('change');
+            loadBcfPrompt();
+        }
+    });
+}
+
+function updateBcfFlag(flag, callback) {
+    $.ajax({
+        url: baseUrl + 'Applicants/UpdateBcfFlag',
+        method: "POST",
+        data: {
+            flag: flag
+        },
+        success: callback
+    });
+
+}

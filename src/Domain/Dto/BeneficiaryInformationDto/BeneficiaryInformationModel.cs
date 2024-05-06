@@ -157,5 +157,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
                 Age = age;
             }
         }
+
+        public bool IsBcfCreated { get; set; }
     }
 }

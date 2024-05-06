@@ -12,12 +12,7 @@
 
     int userId = int.Parse(User.Identity.Name);
     var user = await _userRepo.GetByIdNoTrackingAsync(userId);
-
 }
-
-<div class="row" id="no_application">
-
-</div>
 
 <div class="row" id="with_application">
     <div class="col-xl-8">

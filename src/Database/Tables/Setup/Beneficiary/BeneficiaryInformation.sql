@@ -38,5 +38,6 @@
     DateCreated DATETIME2(7) NOT NULL DEFAULT(GETDATE()),
     ModifiedById INT NULL,
     DateModified DATETIME2(7) NULL,
-    Email NVARCHAR(255) NULL
+    Email NVARCHAR(255) NULL, 
+    [IsBcfCreated] BIT NOT NULL DEFAULT 0
 )

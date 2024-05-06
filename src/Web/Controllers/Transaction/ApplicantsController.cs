@@ -753,6 +753,27 @@ namespace Template.Web.Controllers.Transaction
         #region API Operations
 
         [HttpPost]
+        public async Task<IActionResult> UpdateBcfFlag(bool flag)
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                var currentUser = await _userRepo.GetUserAsync(userId);
+                var bnfInfo = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(currentUser.PagibigNumber);
+
+                bnfInfo.IsBcfCreated = flag;
+
+                await _beneficiaryInformationRepo.SaveAsync(bnfInfo, userId);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
         {
             try
