@@ -12,10 +12,12 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
     {
         public int Id { get; set; }
 
-        public int ApplicantsPersonalInformationId { get; set; }
+        public int? ApplicantsPersonalInformationId { get; set; }
+        public int? UserId { get; set; }
 
         [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }
+        public string? Code { get; set; }
 
         [Display(Name = "Name Of Project Proponent")]
         public string? ProjectProponentName { get; set; }
@@ -166,7 +168,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "House/Unit Model")]
         public string? HouseUnitModel { get; set; }
 
-        [Display(Name = "Monthly")]
+        [Display(Name = "Selling Price")]
         public decimal? SellingPrice { get; set; }
 
         [Display(Name = "Monthly Amortization")]

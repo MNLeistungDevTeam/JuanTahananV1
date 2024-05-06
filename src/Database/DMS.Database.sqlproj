@@ -113,6 +113,7 @@
     <Folder Include="Stored Procedures\Setup\EmailSetup" />
     <Folder Include="Stored Procedures\Setup\EmailLog" />
     <Folder Include="Tables\Setup\BuyerConfirmation" />
+    <Folder Include="Stored Procedures\Setup\BuyerConfirmation" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -240,6 +241,9 @@
     <Build Include="Stored Procedures\Setup\EmailSetup\spEmailSetup_GetByCompany.sql" />
     <Build Include="Stored Procedures\Setup\EmailLog\spEmailLog_GetList.sql" />
     <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmation.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GenerateCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByUserId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

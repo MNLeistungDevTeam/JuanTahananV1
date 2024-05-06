@@ -1,10 +1,13 @@
 ﻿@using DMS.Web.Controllers.Services
+
 @inject IStringLocalizer<SharedResources> localizer
 
 @model ApplicantViewModel
 @{
-    string title = "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
+    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Application" : "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
+
+
 }
 
 <!-- start page title -->
@@ -23,7 +26,6 @@
 </div>
 <!-- end page title -->
 
-
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
@@ -31,28 +33,20 @@
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
-
-
-                <li class="nav-item" data-target-div="#bcfdata">
+                <li class="nav-item" data-target-div="#loanparticulars">
                     <a href="#first" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
-
-
-                <li class="nav-item" data-target-div="#loanparticulars">
+                <li class="nav-item" data-target-div="#collateraldata">
                     <a href="#second" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
-                <li class="nav-item" data-target-div="#collateraldata">
+                <li class="nav-item" data-target-div="#spousedata">
                     <a href="#third" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
-                <li class="nav-item" data-target-div="#spousedata">
-                    <a href="#fourth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
-                    </a>
-                </li>
                 <li class="nav-item" data-target-div="#form2">
-                    <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    <a href="#fourth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
             </ul>
@@ -61,40 +55,12 @@
             <div class="tab-content mb-0 b-0">
 
 
-                <div class="row">
-                    <div class="col-md- mb-2 align-items-center d-flex justify-content-end">
-                        <!-- Updated class -->
 
-                         <button class="btn btn-light btn-sm waves-effect mx-2" id="btn_bcfpdf">
-                            <!-- Added mx-2 for margin -->
-                            <div class="d-flex flex-row align-items-center gap-1">
-                                <span class="far fa-file-pdf"></span>
-                                <span class="d-none d-lg-block">View BCF Pdf Version</span>
-                            </div>
-                        </button>
-
-
-                        <button class="btn btn-light btn-sm waves-effect mx-2" id="btn_hlafpdf">
-                            <!-- Added mx-2 for margin -->
-                            <div class="d-flex flex-row align-items-center gap-1">
-                                <span class="far fa-file-pdf"></span>
-                                <span class="d-none d-lg-block">View HLAF Pdf Version</span>
-                            </div>
-                        </button>
-                        <button class="btn btn-light btn-sm waves-effect" id="btn_edit">
-                            <div class="d-flex flex-row align-items-center gap-1">
-                                <span class="mdi mdi-square-edit-outline"></span>
-                                <span class="d-none d-lg-block">Edit HLAF</span>
-                            </div>
-                        </button>
-                    </div>
-                </div>
 
 
 
 
                 <form id="frm_hlf068" method="post" asp-action="SaveBCFHLAF" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-
 
 
 
@@ -107,11 +73,6 @@
                         <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Code">
 
                         <div class="row gy-2">
-                            <div class="col-md-12">
-                                <h3 class="text-dark float-start">
-                                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Buyer Confirmation Form</span>
-                                </h3>
-                            </div>
 
                             <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed"></h3>
 
@@ -658,20 +619,19 @@
 
                         </div>
 
-                        <div class="col-md-12 mt-3">
-                            <ul class="pager wizard mb-0 list-inline">
 
-                                <li class="next list-inline-item float-end">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                                </li>
-                            </ul>
-                        </div>
 
 
                     </div>
 
-                    <div class="tab-pane fade" id="loanparticulars" hidden>
 
+
+
+
+
+                    <div class="tab-pane" id="loanparticulars">
+
+                        <input hidden type="text" class="form-control rounded-3" asp-for="ApplicantsPersonalInformationModel.EncodedStage" value="@Model.ApplicantsPersonalInformationModel.EncodedStage">
 
 
                         @*   <form id="loanparticulars" method="post" action="#" class="form-horizontal needs-validation" novalidate>
@@ -944,10 +904,6 @@
                         </div>
 
                         <ul class="list-inline wizard mb-0 mt-2">
-
-                            <li class="previous list-inline-item">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
-                            </li>
                             <li class="next list-inline-item float-end">
                                 <a href="javascript:void(0);" class="btn btn-light waves-effect waves-light">Next</a>
                             </li>
@@ -2445,7 +2401,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt1" asp-for="Form2PageModel.DateObtained1" data-value="@Model.Form2PageModel.DateObtained1">
+                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained1" data-value="@Model.Form2PageModel.DateObtained1">
                                                         <span asp-validation-for="Form2PageModel.DateObtained1" class="text-danger"> </span>
                                                     </div>
                                                 </td>
@@ -2489,13 +2445,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input class="form-control rounded-3 decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
+                                                        <input class="form-control rounded-3  decimalInputMask5" asp-for="Form2PageModel.PresentBalance2">
                                                         <span asp-validation-for="Form2PageModel.PresentBalance2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt2" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
+                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained2" data-value="@Model.Form2PageModel.DateObtained2">
                                                         <span asp-validation-for="Form2PageModel.DateObtained2" class="text-danger"> </span>
                                                     </div>
                                                 </td>
@@ -2545,13 +2501,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center present-calendar-picker form2-date-obt3" asp-for="Form2PageModel.DateObtained3" data-value="@Model.Form2PageModel.DateObtained3">
+                                                        <input type="number" class="form-control rounded-3  text-center present-calendar-picker form2-date-obt" asp-for="Form2PageModel.DateObtained3" data-value="@Model.Form2PageModel.DateObtained3">
                                                         <span asp-validation-for="Form2PageModel.DateObtained3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="position-relative">
-                                                        <input type="number" class="form-control rounded-3 text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid3" data-value="@Model.Form2PageModel.DateFullyPaid3">
+                                                        <input type="number" class="form-control rounded-3  text-center calendarpicker" asp-for="Form2PageModel.DateFullyPaid3" data-value="@Model.Form2PageModel.DateFullyPaid3">
                                                         <span asp-validation-for="Form2PageModel.DateFullyPaid3" class="text-danger"> </span>
                                                     </div>
                                                 </td>
@@ -2857,11 +2813,16 @@
                             <li class="previous list-inline-item">
                                 <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
                             </li>
+
                             <li class="next list-inline-item float-end">
                                 <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
                             </li>
                         </ul>
                     </div>
+
+
+
+
 
 
                 </form>
@@ -2870,10 +2831,9 @@
     </div>
 </div>
 
-
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
-    @* <script src="~/js/Setup/Applicants/HousingLoanFormScript.js" asp-append-version="true"></script> *@
-    <script src="~/js/Setup/Applicants/HousingLoanFormScript.js" asp-append-version="true"></script>
-    @*    <script src="~/js/Setup/Applicants/HLF068ConfigurationScript.js" asp-append-version="true"></script> *@
+    <script src="~/js/Setup/Applicants/HLF068-BeneficiaryScript.js" asp-append-version="true"></script>
+    @*  <script src="~/js/Setup/Applicants/HLF068-BeneficiaryTesting.js" asp-append-version="true"></script>
+    <script src="~/js/Setup/Applicants/HLF068ConfigurationScript.js" asp-append-version="true"></script> *@
 }

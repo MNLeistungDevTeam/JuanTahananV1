@@ -2,6 +2,7 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	UserId INT NOT NULL,
+	Code NVARCHAR(255) NOT NULL,
 	PagibigNumber NVARCHAR(50) NULL,
 	ProjectProponentName NVARCHAR(150) NULL,
 	JuridicalPersonalityId INT NULL,
@@ -38,6 +39,9 @@
 	SpouseCompanyEmployerAddress  NVARCHAR(255) NULL,
 
 	SpouseMonthlySalary Decimal(7,2) NULL,
+	 MonthlySalary Decimal(7,2) NULL,
+
+
 	OtherSourceofIncome Decimal(7,2) NULL,
 	AdditionalSourceIncome Decimal(7,2) NULL,
 
@@ -45,13 +49,22 @@
 	AffordMonthlyAmortization Decimal(7,2) NULL,
 	
 	IsPagibigMember  bit default(0),
-	isPagibigCoBorrower  bit default(0),
-	ispursueProjectProponent  bit default(0),
-	isInformedTermsConditions  bit default(0),
+	IsPagibigCoBorrower  bit default(0),
+	IsPursueProjectProponent  bit default(0),
+	IsInformedTermsConditions  bit default(0),
+	 IsPagibigAvailedLoan  bit default(0),
+
+	
 
 	 
 	HouseUnitModel  NVARCHAR(255) NULL,
 	SellingPrice Decimal(7,2) NULL,
 	MonthlyAmortization Decimal(7,2) NULL,
+
+	DateCreated DATETIME2(7) DEFAULT(GETDATE()),
+	CreatedById INT NULL,
+	DateModified DATETIME2(7) NULL,
+	ModifiedById INT NULL
+
 
 )

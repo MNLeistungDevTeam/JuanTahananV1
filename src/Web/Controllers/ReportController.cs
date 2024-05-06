@@ -6,6 +6,7 @@ using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.ReportDesigner;
 using DevExpress.XtraReports.Web.WebDocumentViewer;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Infrastructure.Persistence;
@@ -39,6 +40,7 @@ public class ReportController : Controller
     private readonly IForm2PageRepository _form2PageRepo;
     private DMSDBContext _tmpcontext;
     private readonly IReportsService _reportService;
+    private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
     public ReportController(ReportDbContext context,
         IWebHostEnvironment hostingEnvironment,
@@ -49,7 +51,8 @@ public class ReportController : Controller
         IBarrowersInformationRepository barrowersInformationRepo,
         ISpouseRepository spouseRepo, IMapper mapper,
         IForm2PageRepository form2PageRepo, DMSDBContext tmpcontext,
-        IReportsService reportService)
+        IReportsService reportService,
+        IBuyerConfirmationRepository buyerConfirmationRepo)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
@@ -63,6 +66,7 @@ public class ReportController : Controller
         _form2PageRepo = form2PageRepo;
         _tmpcontext = tmpcontext;
         _reportService = reportService;
+        _buyerConfirmationRepo = buyerConfirmationRepo;
     }
 
     [Route("[controller]/LatestHousingForm/{applicantCode?}")]
@@ -86,34 +90,26 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    [Route("[controller]/LatestHousingForm/{applicantCode?}")]
-    public async Task<IActionResult> LatestBuyerConfirmationForm(string? applicantCode = null)
+    [Route("[controller]/LatestBuyerConfirmationForm/{buyerConfirmationCode?}")]
+    public async Task<IActionResult> LatestBuyerConfirmationForm(string? buyerConfirmationCode = null)
     {
         try
         {
-            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+            var bcfInfo = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
 
             int userId = 0;
 
-            if (applicationInfo != null)
+            if (buyerConfirmationCode != null)
             {
-                userId = applicationInfo.UserId;
+                userId = bcfInfo.UserId.Value;
             }
 
-            var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
+            var report = await _reportService.GenerateBuyerConfirmationForm(bcfInfo.Code, _hostingEnvironment.WebRootPath);
 
             return View("RptBuyerConfirmation", report);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
-
-
-
-
-
-
-
-
 
     public List<ReportListViewModel> GetReportList()
     {

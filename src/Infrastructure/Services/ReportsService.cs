@@ -1,9 +1,12 @@
 ﻿using DevExpress.XtraReports.UI;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.PredefinedReports.BuyerConfirmation;
 using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.ReportDto;
 using DMS.Infrastructure.PredefinedReports;
 using System.Reflection;
@@ -20,6 +23,7 @@ namespace DMS.Infrastructure.Services
         private readonly ICollateralInformationRepository _collateralInfoRepo;
 
         private readonly IDocumentRepository _documentRepo;
+        private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
         public ReportsService(IApplicantsPersonalInformationRepository applicantpersonalInfoRepo,
             IBarrowersInformationRepository barrowersInfoRepo,
@@ -27,7 +31,8 @@ namespace DMS.Infrastructure.Services
             ILoanParticularsInformationRepository loanParticularsInfoRepo,
             IForm2PageRepository form2PageRepo,
             ICollateralInformationRepository collateralInfoRepo,
-            IDocumentRepository documentRepo)
+            IDocumentRepository documentRepo,
+            IBuyerConfirmationRepository buyerConfirmationRepo)
         {
             _applicantpersonalInfoRepo = applicantpersonalInfoRepo;
             _barrowersInfoRepo = barrowersInfoRepo;
@@ -37,6 +42,7 @@ namespace DMS.Infrastructure.Services
             _collateralInfoRepo = collateralInfoRepo;
             _loanParticularsInfoRepo = loanParticularsInfoRepo;
             _documentRepo = documentRepo;
+            _buyerConfirmationRepo = buyerConfirmationRepo;
         }
 
         public async Task<LoanApplicationForm> GenerateHousingLoanForm(string? applicationCode, string? rootFolder)
@@ -165,11 +171,11 @@ namespace DMS.Infrastructure.Services
             }
         }
 
-        public async Task<BuyerConfirmationForm> GenerateBuyerConfirmationForm(string? applicationCode, string? rootFolder)
+        public async Task<BuyerConfirmation> GenerateBuyerConfirmationForm(string? buyerConfirmationCode, string? rootFolder)
         {
             try
             {
-                var buyerConfirmationFormDetail = new BuyerConfirmationForm();
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
 
                 ApplicantsPersonalInformationModel applicantInfoModel = new();
                 BarrowersInformationModel barrowerInfoModel = new();
@@ -177,63 +183,34 @@ namespace DMS.Infrastructure.Services
                 LoanParticularsInformationModel loanParticularsInfoModel = new();
                 Form2PageModel form2InfoModel = new();
                 CollateralInformationModel collateralInfoModel = new();
+                BuyerConfirmationModel bcfInforModel = new();
 
                 //byte[] formalPicture = new byte[0];
 
-                if (applicationCode != null)
+                if (buyerConfirmationCode != null)
                 {
-                    var applicantData = await _applicantpersonalInfoRepo.GetByCodeAsync(applicationCode);
 
-                    if (applicantData != null)
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+
+                 
+                    if (bcfData != null)
                     {
-                        applicantInfoModel = applicantData;
-                    }
 
-                    var loanParticularsData = await _loanParticularsInfoRepo.GetByApplicantIdAsync(applicantData.Id);
+                        bcfInforModel = bcfData;
 
-                    if (loanParticularsData != null)
-                    {
-                        loanParticularsInfoModel = loanParticularsData;
-                    }
-
-                    var collateralData = await _collateralInfoRepo.GetByApplicantIdAsync(applicantData.Id);
-
-                    if (collateralData != null)
-                    {
-                        collateralInfoModel = collateralData;
-                    }
-
-                    var barrowerData = await _barrowersInfoRepo.GetByApplicantIdAsync(applicantData.Id);
-
-                    if (barrowerData != null)
-                    {
-                        barrowerInfoModel = barrowerData;
-                    }
-
-                    var spouseData = await _spouseRepo.GetByApplicantIdAsync(applicantData.Id);
-
-                    if (spouseData != null)
-                    {
-                        spouseInfoModel = spouseData;
-                    }
-
-                    var form2Data = await _form2PageRepo.GetByApplicantIdAsync(applicantData.Id);
-
-                    if (form2Data != null)
-                    {
-                        form2InfoModel = form2Data;
                     }
                 }
 
-                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
-                List<string> excludedSpouse = new List<string> { "OccupationStatus" };
+                //List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+                //List<string> excludedSpouse = new List<string> { "OccupationStatus" };
 
-                applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);
-                barrowerInfoModel = ConvertStringPropertiesToUppercase(barrowerInfoModel, excludedBarrower);
-                spouseInfoModel = ConvertStringPropertiesToUppercase(spouseInfoModel, excludedSpouse);
-                loanParticularsInfoModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel);
-                form2InfoModel = ConvertStringPropertiesToUppercase(form2InfoModel);
-                collateralInfoModel = ConvertStringPropertiesToUppercase(collateralInfoModel);
+                //applicantInfoModel = ConvertStringPropertiesToUppercase(applicantInfoModel);
+                //barrowerInfoModel = ConvertStringPropertiesToUppercase(barrowerInfoModel, excludedBarrower);
+                //spouseInfoModel = ConvertStringPropertiesToUppercase(spouseInfoModel, excludedSpouse);
+                //loanParticularsInfoModel = ConvertStringPropertiesToUppercase(loanParticularsInfoModel);
+                //form2InfoModel = ConvertStringPropertiesToUppercase(form2InfoModel);
+                //collateralInfoModel = ConvertStringPropertiesToUppercase(collateralInfoModel);
 
                 List<ApplicantInformationReportModel> dataSource = new()
 
@@ -248,6 +225,7 @@ namespace DMS.Infrastructure.Services
                         LoanParticularsInformationModel = loanParticularsInfoModel,
                         Form2PageModel = form2InfoModel,
                         CollateralInformationModel = collateralInfoModel,
+                        BuyerConfirmationModel = bcfInforModel
                     }
                 };
                 buyerConfirmationFormDetail.DataSource = dataSource;

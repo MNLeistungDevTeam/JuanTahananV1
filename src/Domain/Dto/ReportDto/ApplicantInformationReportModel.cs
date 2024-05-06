@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.DocumentDto;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace DMS.Domain.Dto.ReportDto
         public SpouseModel SpouseModel { get; set; } = new();
         public List<ApplicationSubmittedDocumentModel> ApplicationSubmittedDocumentModels { get; set; } = new();
         public Form2PageModel Form2PageModel { get; set; } = new();
+        public BuyerConfirmationModel BuyerConfirmationModel { get; set; } = new();
     }
 }

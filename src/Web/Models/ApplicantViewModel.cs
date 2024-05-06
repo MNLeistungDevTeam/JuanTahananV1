@@ -19,6 +19,6 @@ namespace DMS.Web.Models
         public List<ApplicationSubmittedDocumentModel> ApplicationSubmittedDocumentModels { get; set; } = new();
         public Form2PageModel?  Form2PageModel { get; set; } = new();
         public ApprovalLevelModel? ApprovalLevel { get; set; }
-        public BuyerConfirmationModel? BuyerConfirmationModel { get; set; }
-    }
+        public BuyerConfirmationModel? BuyerConfirmationModel { get; set; } = new();
+    } 
 }

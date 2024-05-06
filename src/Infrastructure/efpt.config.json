@@ -52,6 +52,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[BuyerConfirmation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[CollateralInformation]",
          "ObjectType": 0
       },

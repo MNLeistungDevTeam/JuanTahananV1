@@ -1197,12 +1197,22 @@ $(function () {
         $("#btn_savehlf068").prop('disabled', false);
     });
 
-    $("#btn_pdf").on('click', function () {
+    $("#btn_hlafpdf").on('click', function () {
         let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
         let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
 
         window.open(link, '_blank');
     });
+
+
+    $("#btn_bcfpdf").on('click', function () {
+        let buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
+        let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + buyerconfirmationCode;
+
+        window.open(link, '_blank');
+    });
+
+
 
     //#endregion
 
