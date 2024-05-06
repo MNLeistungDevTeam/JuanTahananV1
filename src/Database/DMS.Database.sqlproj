@@ -112,6 +112,7 @@
     <Folder Include="Tables\Setup\EmailSetup" />
     <Folder Include="Stored Procedures\Setup\EmailSetup" />
     <Folder Include="Stored Procedures\Setup\EmailLog" />
+    <Folder Include="Tables\Setup\ProperyManagement" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -238,6 +239,11 @@
     <Build Include="Tables\Setup\EmailSetup\EmailLog.sql" />
     <Build Include="Stored Procedures\Setup\EmailSetup\spEmailSetup_GetByCompany.sql" />
     <Build Include="Stored Procedures\Setup\EmailLog\spEmailLog_GetList.sql" />
+    <Build Include="Tables\Setup\ProperyManagement\PropertyProject.sql" />
+    <Build Include="Tables\Setup\ProperyManagement\PropertyLocation.sql" />
+    <Build Include="Tables\Setup\ProperyManagement\PropertyProjectLocation.sql" />
+    <Build Include="Tables\Setup\ProperyManagement\PropertyUnit.sql" />
+    <Build Include="Tables\Setup\ProperyManagement\PropertyUnitProject.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
