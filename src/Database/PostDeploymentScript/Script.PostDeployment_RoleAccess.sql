@@ -14,6 +14,11 @@ INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify],
 INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (36, 1, 14, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
 --INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (11, 1, 11, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
 
+INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (37, 1, 15, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
+INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (38, 1, 16, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
+INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (39, 1, 17, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
+INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (40, 1, 18, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:48.9999855' AS DateTime2), 1, CAST(N'2024-02-24T07:08:10.3118043' AS DateTime2))
+
 
 
 INSERT [dbo].[RoleAccess] ([Id], [RoleId], [ModuleId], [CanCreate], [CanModify], [CanDelete], [CanRead], [FullAccess], [CreatedById], [DateCreated], [ModifiedById], [DateModified]) VALUES (12, 2, 1, 1, 1, 1, 1, 1, 1, CAST(N'2024-02-22T08:40:10.7174337' AS DateTime2), 1, CAST(N'2024-02-25T07:40:09.9445278' AS DateTime2))
