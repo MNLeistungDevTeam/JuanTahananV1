@@ -3,6 +3,7 @@ using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,12 @@ public class PropertyProjectLocationRepository : IPropertyProjectLocationReposit
 
     public async Task<List<PropertyProjectLocation>> GetAll() =>
         await _contextHelper.GetAllAsync();
+
+    public async Task<List<PropertyProjectLocation>> GetbyProjectId(int id)
+    {
+        var projectLocation = await _context.PropertyProjectLocations.Where(m => m.ProjectId == id).ToListAsync();
+        return projectLocation;
+    }
 
     #endregion Getters
 

@@ -19,7 +19,6 @@ public class PropertyLocationController : Controller
         _propertyLocationRepo = propertyLocationRepo;
     }
 
-
     #endregion Fields
 
     #region Views
@@ -51,8 +50,7 @@ public class PropertyLocationController : Controller
     #region API Actions
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SavePropertyLocation(PropertyLocationModel model)
+    public async Task<IActionResult> SavePropertyLocation(PropertyManagementViewModel model)
     {
         try
         {
@@ -61,7 +59,7 @@ public class PropertyLocationController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-            var result = await _propertyLocationRepo.SaveAsync(model, userId);
+            var result = await _propertyLocationRepo.SaveAsync(model.PropLocModel, userId);
 
             return Ok(result);
         }
@@ -72,12 +70,11 @@ public class PropertyLocationController : Controller
     }
 
     [HttpDelete]
-    [Route("[controller]/DeletePropertyLocation/{propertyProjectIds}")]
-    public async Task<IActionResult> DeletePropertyLocation(string propertyLocationIds)
+    public async Task<IActionResult> DeletePropertyLocation(string ids)
     {
         try
         {
-            int[] Ids = Array.ConvertAll(propertyLocationIds.Split(','), int.Parse);
+            int[] Ids = Array.ConvertAll(ids.Split(','), int.Parse);
 
             await _propertyLocationRepo.BatchDeleteAsync(Ids);
 

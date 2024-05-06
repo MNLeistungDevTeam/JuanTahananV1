@@ -58,11 +58,19 @@ public class PropertyUnitRepository : IPropertyUnitRepository
 
     public async Task<PropertyUnit> CreateAsync(PropertyUnit model, int userId)
     {
-        model.CreatedById = userId;
-        model.DateCreated = DateTime.UtcNow;
-        var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
+        try
+        {
+            model.CreatedById = userId;
+            model.DateCreated = DateTime.UtcNow;
+            var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
 
-        return result;
+            return result;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 
     public async Task<PropertyUnit> UpdateAsync(PropertyUnit model, int userId)

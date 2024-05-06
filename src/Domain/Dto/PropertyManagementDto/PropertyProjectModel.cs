@@ -14,7 +14,7 @@ public class PropertyProjectModel
 
     public string Description { get; set; }
 
-    public string Logo { get; set; }
+    public string? Logo { get; set; } = string.Empty;
 
     public int? CompanyId { get; set; }
 

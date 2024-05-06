@@ -13,10 +13,17 @@ public class PropertyProjectController : Controller
     #region Fields
 
     private readonly IPropertyProjectRepository _propertyProjectRepo;
+    private readonly IPropertyLocationRepository _propertyLocationRepo;
+    private readonly IPropertyProjectLocationRepository _propertyProjectLocationRepo;
 
-    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo)
+    public PropertyProjectController(
+        IPropertyProjectRepository propertyProjectRepo,
+        IPropertyLocationRepository propertyLocationRepo,
+        IPropertyProjectLocationRepository propertyProjectLocationRepo)
     {
         _propertyProjectRepo = propertyProjectRepo;
+        _propertyLocationRepo = propertyLocationRepo;
+        _propertyProjectLocationRepo = propertyProjectLocationRepo;
     }
 
     #endregion Fields
@@ -45,13 +52,26 @@ public class PropertyProjectController : Controller
     public async Task<IActionResult> GetPropertyProjectById(int id) =>
         Ok(await _propertyProjectRepo.GetById(id));
 
+    public async Task<IActionResult> GetProjectLocationByProjectId(int id)
+    {
+        try
+        {
+            var projectLocation = await _propertyProjectLocationRepo.GetbyProjectId(id);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     #endregion API GETTERS
 
     #region API Actions
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SavePropertyProject(PropertyProjectModel model)
+    public async Task<IActionResult> SavePropertyProject(PropertyManagementViewModel model)
     {
         try
         {
@@ -60,7 +80,7 @@ public class PropertyProjectController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-            var result = await _propertyProjectRepo.SaveAsync(model, userId);
+            var result = await _propertyProjectRepo.SaveAsync(model.PropProjModel, userId);
 
             return Ok(result);
         }
@@ -71,12 +91,11 @@ public class PropertyProjectController : Controller
     }
 
     [HttpDelete]
-    [Route("[controller]/DeletePropertyProject/{propertyProjectIds}")]
-    public async Task<IActionResult> DeletePropertyProject(string propertyProjectIds)
+    public async Task<IActionResult> DeletePropertyProject(string ids)
     {
         try
         {
-            int[] Ids = Array.ConvertAll(propertyProjectIds.Split(','), int.Parse);
+            int[] Ids = Array.ConvertAll(ids.Split(','), int.Parse);
 
             await _propertyProjectRepo.BatchDeleteAsync(Ids);
 

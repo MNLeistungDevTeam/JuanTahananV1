@@ -1,10 +1,9 @@
 ﻿using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
-using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace DMS.Web.Controllers.Setup;
 
@@ -50,8 +49,8 @@ public class PropertyUnitController : Controller
     #region API Actions
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SavePropertyUnit(PropertyUnitModel model)
+    //[ValidateAntiForgeryToken]
+    public async Task<IActionResult> SavePropertyUnit(PropertyManagementViewModel model)
     {
         try
         {
@@ -60,7 +59,7 @@ public class PropertyUnitController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-            var result = await _propertyUnitRepo.SaveAsync(model, userId);
+            var result = await _propertyUnitRepo.SaveAsync(model.PropUnitModel, userId);
 
             return Ok(result);
         }
@@ -71,12 +70,11 @@ public class PropertyUnitController : Controller
     }
 
     [HttpDelete]
-    [Route("[controller]/DeletePropertyUnit/{propertyProjectIds}")]
-    public async Task<IActionResult> DeletePropertyUnit(string propertyUnitIds)
+    public async Task<IActionResult> DeletePropertyUnit(string ids)
     {
         try
         {
-            int[] Ids = Array.ConvertAll(propertyUnitIds.Split(','), int.Parse);
+            int[] Ids = Array.ConvertAll(ids.Split(','), int.Parse);
 
             await _propertyUnitRepo.BatchDeleteAsync(Ids);
 
