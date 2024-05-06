@@ -3,21 +3,26 @@ using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DMS.Infrastructure.Persistence.Repositories.Setup.PropertyProjectRepo;
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.PropertyManagementRepo;
 
-public class PropertyProjectRepository : IPropertyProjectRepository
+public class PropertyProjectLocationRepository : IPropertyProjectLocationRepository
 {
     #region Fields
 
     private readonly DMSDBContext _context;
-    private readonly EfCoreHelper<PropertyProject> _contextHelper;
+    private readonly EfCoreHelper<PropertyProjectLocation> _contextHelper;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
 
-    public PropertyProjectRepository(
+    public PropertyProjectLocationRepository(
         DMSDBContext context,
-        EfCoreHelper<PropertyProject> contextHelper,
+        EfCoreHelper<PropertyProjectLocation> contextHelper,
         ISQLDatabaseService db,
         IMapper mapper)
     {
@@ -31,19 +36,19 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     #region Getters
 
-    public async Task<PropertyProject?> GetById(int id) =>
+    public async Task<PropertyProjectLocation?> GetById(int id) =>
         await _contextHelper.GetByIdAsync(id);
 
-    public async Task<List<PropertyProject>> GetAll() =>
+    public async Task<List<PropertyProjectLocation>> GetAll() =>
         await _contextHelper.GetAllAsync();
 
     #endregion Getters
 
     #region Operation
 
-    public async Task<PropertyProject> SaveAsync(PropertyProjectModel model, int userId)
+    public async Task<PropertyProjectLocation> SaveAsync(PropertyProjectLocationModel model, int userId)
     {
-        var _model = _mapper.Map<PropertyProject>(model);
+        var _model = _mapper.Map<PropertyProjectLocation>(model);
 
         if (_model.Id == 0)
         {
@@ -57,7 +62,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         return _model;
     }
 
-    public async Task<PropertyProject> CreateAsync(PropertyProject model, int userId)
+    public async Task<PropertyProjectLocation> CreateAsync(PropertyProjectLocation model, int userId)
     {
         model.CreatedById = userId;
         model.DateCreated = DateTime.UtcNow;
@@ -66,7 +71,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         return result;
     }
 
-    public async Task<PropertyProject> UpdateAsync(PropertyProject model, int userId)
+    public async Task<PropertyProjectLocation> UpdateAsync(PropertyProjectLocation model, int userId)
     {
         model.ModifiedById = userId;
         model.DateModified = DateTime.UtcNow;
@@ -77,7 +82,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     public async Task BatchDeleteAsync(int[] ids)
     {
-        var entities = _context.PropertyProjects.Where(m => ids.Contains(m.Id));
+        var entities = _context.PropertyProjectLocations.Where(m => ids.Contains(m.Id));
 
         if (entities is not null)
             await _contextHelper.BatchDeleteAsync(entities);
