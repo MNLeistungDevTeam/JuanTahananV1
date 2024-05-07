@@ -49,12 +49,6 @@ public class PropertyProjectController : Controller
     public async Task<IActionResult> GetAllPropertyProject() =>
         Ok(await _propertyProjectRepo.GetAllAsync());
 
-
-
-    
-
-
-
     public async Task<IActionResult> GetPropertyProjectById(int id) =>
         Ok(await _propertyProjectRepo.GetById(id));
 

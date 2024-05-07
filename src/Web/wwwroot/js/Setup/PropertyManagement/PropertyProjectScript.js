@@ -231,6 +231,7 @@ $(async function () {
     $("#tbl-location-add_filter").hide();
     var btn_location_PropProjModel = $('#btn_location_PropProjModel').on('click', async function (e) {
         e.preventDefault();
+
         applyLocation();
     });
 

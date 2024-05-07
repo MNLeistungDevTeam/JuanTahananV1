@@ -113,7 +113,8 @@
                     <div class="col-12 mb-2">
                         <div class="position-relative mb-3">
                             <label class="form-label fw-normal" asp-for="PropProjLocModel.ProjectId"></label>
-                            <input type="text" class="form-control rounded-3" asp-for="PropProjLocModel.ProjectId">
+                            <input type="text" class="form-control rounded-3" asp-for="PropProjLocModel.ProjectId" hidden>
+                            <input type="text" class="form-control rounded-3" asp-for="PropProjLocModel.ProjectName" readonly>
                             <span asp-validation-for="PropProjLocModel.ProjectId" class="invalid-tooltip"> </span>
                         </div>
                     </div>
