@@ -3,6 +3,8 @@ const applicantInfoApprovalStatus = $(`[name='ApplicantsPersonalInformationModel
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
+const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
+
 $(function () {
     var telNoArray = [];
     var itiFlag = false;
@@ -13,6 +15,8 @@ $(function () {
     $("#btn_savehlf068").prop('disabled', true);
 
     $("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus === '0' || applicantInfoApprovalStatus === '11'));
+
+    $("#btn_bcfpdf").prop('disabled', (buyerconfirmationCode === null || buyerconfirmationCode.trim() === ''));
 
     $(".selectize").selectize({
         search: false
@@ -1207,15 +1211,12 @@ $(function () {
         window.open(link, '_blank');
     });
 
-
     $("#btn_bcfpdf").on('click', function () {
-        let buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
         let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + buyerconfirmationCode;
 
+        // If buyerconfirmationCode is not null or empty, open the link in a new tab
         window.open(link, '_blank');
     });
-
-
 
     //#endregion
 
