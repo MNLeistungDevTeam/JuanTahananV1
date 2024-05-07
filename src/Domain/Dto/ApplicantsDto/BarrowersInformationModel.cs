@@ -53,7 +53,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Email Address", Prompt = "Email")]
         public string? Email { get; set; }
 
-
         // Present
 
         [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
@@ -87,8 +86,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PresentZipCode { get; set; }
 
-
-
         // Permanent
 
         [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
@@ -118,8 +115,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
 
-
-
         [Display(Name = "Home Ownership", Prompt = "Home Ownership")]
         public string HomeOwnerShip { get; set; }
 
@@ -138,7 +133,6 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Required]
         [DisplayName("Occupation")]
         public string? OccupationStatus { get; set; }
-
 
         [Display(Name = "Employer/Business Name (if self-employed)", Prompt = "Employer Name", Description = "Employer/Business Name (if self-employed)")]
         public string? EmployerName { get; set; }
@@ -229,7 +223,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
-        
+
         [DisplayName("My Present Address is same as my Permanent Address")]
         public bool PresentAddressIsPermanentAddress { get; set; }
 
@@ -246,9 +240,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? PropertyUnitLevelName { get; set; }
 
         public bool IsPresentAddressPermanentAddress
-        { 
-            get 
-            { 
+        {
+            get
+            {
                 return (
                     PresentBuildingName == PermanentBuildingName
                     && PresentLotName == PermanentLotName
@@ -258,7 +252,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
                     && PresentProvinceName == PermanentProvinceName
                     && PresentZipCode == PermanentZipCode
                 );
-            } 
+            }
         }
+
+        public bool IsBcfCreated { get; set; }
     }
 }

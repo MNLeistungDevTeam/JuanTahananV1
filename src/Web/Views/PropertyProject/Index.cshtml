@@ -31,7 +31,7 @@
                         <button id="btn_delete_PropProjModel" class="btn btn-light btn-sm waves-effect btn_delete" disabled><span class="mdi mdi-delete-outline"></span> Delete</button>
                         <button id="btn_location_PropProjModel" class="btn btn-light btn-sm waves-effect btn_location" disabled><span class="mdi mdi-map-marker-outline"></span> Manage Location</button>
                         <button id="btn_unit_PropProjModel" class="btn btn-light btn-sm waves-effect btn_unit" disabled><span class="mdi mdi-map-marker-outline"></span> Manage Unit</button>
-                        <button class="btn btn-light btn-sm waves-effect btn_refresh" bound="tbl_PropUnit"><span class="mdi mdi-refresh"></span> Refresh</button>
+                        <button class="btn btn-light btn-sm waves-effect" id="btn_projectrefresh"><span class="mdi mdi-refresh"></span> Refresh</button>
 
                     </div>
                     <div class="col-md-6 mb-2">
@@ -103,12 +103,21 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content rounded-4">
             <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-                <h3 class="text-dark float-start fw-semibold">Property Unit</h3>
+                <h3 class="text-dark float-start fw-semibold">Property Location</h3>
             </div>
             <div class="modal-body">
-                <form asp-action="SavePropertyProject" asp-antiforgery="true" method="post" role="form" id="PropProjModel_form" enctype="multipart/form-data">
-                    <input hidden type="text" asp-for="PropLocModel.Id" class="form-control form-control-sm">
-                    <input hidden type="text" asp-for="PropProjLocModel.Id" class="form-control form-control-sm">
+                <form asp-action="SaveProjectLocation" asp-antiforgery="true" method="post" role="form" id="frm_projectLocation" enctype="multipart/form-data">
+                    <input asp-for="PropProjLocModel.Id" hidden />
+                    <input asp-for="PropProjLocModel.ProjectId" hidden />
+                    <input asp-for="PropProjLocModel.LocationId" hidden />
+                    <input hidden type="text" asp-for="PropertyLocationIds" class="form-control form-control-sm">
+                    <input hidden type="text" asp-for="PropProjModel.Id" class="form-control form-control-sm">
+                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" placeholder="Name" hidden>
+                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Description" placeholder="Description" hidden>
+
+
+
+
 
                     <div class="col-12 mb-2">
                         <div class="position-relative mb-3">
@@ -155,7 +164,7 @@
 
 
 
-                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light">Save</button>
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_saveprojectlocation">Save</button>
                     <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect mb-2" data-bs-dismiss="modal">Close</button>
                 </form>
 

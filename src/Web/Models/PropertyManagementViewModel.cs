@@ -13,4 +13,7 @@ public class PropertyManagementViewModel
     public PropertyUnitModel? PropUnitModel { get; set; }
 
     public PropertyUnitProjectModel? PropUnitProjModel { get; set; }
+
+    public string PropertyLocationIds { get; set; }    
+
 }

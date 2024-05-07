@@ -3,7 +3,9 @@ using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup;
@@ -52,6 +54,14 @@ public class PropertyProjectController : Controller
     public async Task<IActionResult> GetPropertyProjectById(int id) =>
         Ok(await _propertyProjectRepo.GetById(id));
 
+
+
+    public async Task<IActionResult> GetPropertyLocationByProject(int id) =>
+       Ok(await _propertyProjectRepo.GetPropertyLocationByProjectAsync(id));
+
+
+    
+
     public async Task<IActionResult> GetProjectLocationByProjectId(int id)
     {
         try
@@ -89,6 +99,53 @@ public class PropertyProjectController : Controller
             return BadRequest(ex.Message);
         }
     }
+
+
+
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SaveProjectLocation(PropertyManagementViewModel vwModel)
+    {
+        try
+        {
+            //if (!ModelState.IsValid)
+            //    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+
+            var userId = int.Parse(User.Identity.Name);
+            var companyId = int.Parse(User.FindFirstValue("Company"));
+
+            List<PropertyProjectLocationModel> dcModel = new();
+
+            if (vwModel.PropertyLocationIds != null)
+            {
+                string[] tempIds = vwModel.PropertyLocationIds.Split(',');
+                int[] coaIds = Array.ConvertAll(tempIds, s => int.Parse(s));
+
+                foreach (var item in coaIds)
+                {
+                    PropertyProjectLocationModel dCoa = new()
+                    {
+                        ProjectId = vwModel.PropProjLocModel.ProjectId,
+                        LocationId = item
+                    };
+
+                    dcModel.Add(dCoa);
+                }
+            }
+
+            await _propertyProjectRepo.SaveProjectLocations(vwModel.PropProjModel, dcModel, userId);
+
+            return Ok();
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
+
+
+
+
+
 
     [HttpDelete]
     public async Task<IActionResult> DeletePropertyProject(string ids)

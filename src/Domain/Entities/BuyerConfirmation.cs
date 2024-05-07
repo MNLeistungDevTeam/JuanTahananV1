@@ -81,7 +81,7 @@ public partial class BuyerConfirmation
 
     public decimal? MonthlySalary { get; set; }
 
-    public decimal? OtherSourceofIncome { get; set; }
+    public bool IsOtherSourceOfIncome { get; set; }
 
     public decimal? AdditionalSourceIncome { get; set; }
 
@@ -89,15 +89,15 @@ public partial class BuyerConfirmation
 
     public decimal? AffordMonthlyAmortization { get; set; }
 
-    public bool? IsPagibigMember { get; set; }
+    public bool IsPagibigMember { get; set; }
 
-    public bool? IsPagibigCoBorrower { get; set; }
+    public bool IsPagibigCoBorrower { get; set; }
 
-    public bool? IsPursueProjectProponent { get; set; }
+    public bool IsPursueProjectProponent { get; set; }
 
-    public bool? IsInformedTermsConditions { get; set; }
+    public bool IsInformedTermsConditions { get; set; }
 
-    public bool? IsPagibigAvailedLoan { get; set; }
+    public bool IsPagibigAvailedLoan { get; set; }
 
     public string HouseUnitModel { get; set; }
 

@@ -483,6 +483,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
                 }
+
                 return View("HousingLoanForm", vwModel);
             }
             else
@@ -532,6 +533,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
                     vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
 
                     var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(beneficiaryData.UserId);
 
@@ -1126,8 +1128,8 @@ namespace Template.Web.Controllers.Transaction
                 //Unmasked
                 vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
 
-                //create  new beneficiary and housingloan application
-
+                //create new beneficiary and housingloan application
+                vwModel.BuyerConfirmationModel.UserId ??= userId;
                 var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)

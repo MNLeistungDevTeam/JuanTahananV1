@@ -77,6 +77,8 @@ $(function () {
         $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
     );
 
+    assessRadioBtn($(`.radio-pagibigRbtn input[name="pagibigRbtn"]:checked`));
+
     rebindValidators();
 
     //#endregion
@@ -118,6 +120,50 @@ $(function () {
             $('#ApplicantsPersonalInformationModel_HousingAccountNumber').trigger('invalid');
         }
     });
+
+    // #region BCF
+
+    $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
+        $(`[id="bcf-incomeFields"]`).attr({
+            hidden: $(this).attr('id') === 'isRbtn2',
+        });
+
+        $(`[id="bcf-incomeFields"] input[type="text"]`).attr({
+            required: $(this).attr('id') === 'isRbtn1',
+        });
+
+        $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
+    });
+
+    $(`.radio-pagibigRbtn input[name="pagibigRbtn"]`).on(`change`, function (e) {
+        $(`[id="bcf-pagIbigNumField"]`).attr({
+            hidden: $(this).attr('id') === 'pagibigRbtn2',
+        });
+
+        $(`[id="bcf-pagIbigNumField"] [id="BuyerConfirmationModel_PagibigNumber"]`).attr({
+            required: $(this).attr('id') === 'pagibigRbtn1',
+        });
+
+        $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
+    });
+    
+    $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+    });
+
+    $(`.radio-cbwrRbtn input[name="coBorrowerRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPagibigCoBorrower"]`).attr('value', $(this).attr('id') === 'cbwrRbtn1');
+    });
+
+    $(`.radio-prpRbtn input[name="projectPropRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPursueProjectProponent"]`).attr('value', $(this).attr('id') === 'prpRbtn1');
+    });
+
+    $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
+    });
+
+    // #endregion
 
     //#region Loan Particulars
 
@@ -1674,5 +1720,29 @@ $(function () {
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
+
+    function initializeBcfCheck() {
+        if ($(`[name="BarrowersInformationModel.IsBcfCreated"]`).val().toLowerCase() === 'true') {
+            let firstPage = $(`#bcfdata`);
+            let secondPage = $(`#loanparticulars`);
+
+            /** // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false); */
+
+            // Hide the current form
+            $(firstPage).addClass('fade').prop('hidden', true);
+
+            // Show the previous form
+            $(secondPage).removeClass('fade').prop('hidden', false);
+        }
+    }
+
+    function assessRadioBtn(radioBtn) {
+        radioBtn.trigger('change');
+    }
+
     //#endregion
 });

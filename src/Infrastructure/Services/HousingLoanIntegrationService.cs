@@ -28,6 +28,7 @@ namespace DMS.Infrastructure.Services
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
         private readonly ICompanyRepository _companyRepo;
         private readonly IPropertyProjectRepository _propertyProjectRepo;
+        private readonly IPropertyLocationRepository _propertyLocationRepo;
 
         public HousingLoanIntegrationService(IBarrowersInformationRepository barrowersInformationRepo,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
@@ -38,7 +39,8 @@ namespace DMS.Infrastructure.Services
             IBackgroundJobClient backgroundJobClient,
             IBeneficiaryInformationRepository beneficiaryInformationRepo,
             ICompanyRepository companyRepo,
-            IPropertyProjectRepository propertyProjectRepo)
+            IPropertyProjectRepository propertyProjectRepo,
+            IPropertyLocationRepository propertyLocationRepo)
         {
             _barrowersInformationRepo = barrowersInformationRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -50,6 +52,7 @@ namespace DMS.Infrastructure.Services
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
             _companyRepo = companyRepo;
             _propertyProjectRepo = propertyProjectRepo;
+            _propertyLocationRepo = propertyLocationRepo;
         }
 
         public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder)
@@ -211,26 +214,18 @@ namespace DMS.Infrastructure.Services
             return filteredCompanies;
         }
 
-
-
-
-
-        public async Task<PropertyProjectModel> GetProjectsByCompany(int companyId)
+        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId)
         {
             var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId);
-             
 
             return projects;
         }
 
+        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int projectId)
+        {
+            var projects = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId);
 
-
-
-
-
-        
-
-
-
+            return projects;
+        }
     }
 }

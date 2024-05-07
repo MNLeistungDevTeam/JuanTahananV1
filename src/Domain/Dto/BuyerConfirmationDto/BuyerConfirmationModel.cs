@@ -98,7 +98,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
-        [Required]
+ 
         [Display(Name = "Business", Prompt = "indicate local,if any", Description = "Cell Phone / Mobile Number")]
         public string? BusinessTelNo { get; set; }
 
@@ -114,22 +114,22 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         //Spouse
 
-        [Display(Name = "Last Name", Prompt = "Last Name")]
+        [Display(Name = "Spouse Last Name", Prompt = "Last Name")]
         public string? SpouseLastName { get; set; }
 
-        [Display(Name = "First Name", Prompt = "First Name")]
+        [Display(Name = "Spouse First Name", Prompt = "First Name")]
         public string? SpouseFirstName { get; set; }
 
-        [Display(Name = "Middle Name", Prompt = "Middle Name")]
+        [Display(Name = "Spouse Middle Name", Prompt = "Middle Name")]
         public string? SpouseMiddleName { get; set; }
 
-        [Display(Name = "Extension Name", Prompt = "Extension Name")]
+        [Display(Name = "Spouse Extension Name", Prompt = "Extension Name")]
         public string? SpouseSuffix { get; set; }
 
-        [Display(Name = "Company/Employer/Business Name", Prompt = "Name")]
+        [Display(Name = "Spouse Company/Employer/Business Name", Prompt = "Name")]
         public string? SpouseCompanyEmployerName { get; set; }
 
-        [Display(Name = "Company/Employer/Business Address", Prompt = "Address")]
+        [Display(Name = "Spouse Company/Employer/Business Address", Prompt = "Address")]
         public string? SpouseCompanyEmployerAddress { get; set; }
 
         [Display(Name = "Monthly Salary", Prompt = "(Basic + Allowances)")]
@@ -139,7 +139,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public decimal? SpouseMonthlySalary { get; set; }
 
         [Display(Name = "Do you have other sources of income aside from salary?")]
-        public decimal isOtherSourceofIncome { get; set; }
+        public bool IsOtherSourceOfIncome { get; set; }
 
         [Display(Name = "Source of Additional Income")]
         public decimal AdditionalSourceIncome { get; set; }
@@ -151,19 +151,19 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public decimal AffordMonthlyAmortization { get; set; }
 
         [Display(Name = "Are you a Pag-IBIG member?")]
-        public bool isPagibigMember { get; set; }
+        public bool IsPagibigMember { get; set; }
 
         [Display(Name = "Have you availed a Pag-IBIG Housing Loan?")]
-        public bool isPagibigAvailedLoan { get; set; }
+        public bool IsPagibigAvailedLoan { get; set; }
 
         [Display(Name = "Have you been a co-borrower of a Pag-IBIG housing loan?")]
-        public bool isPagibigCoBorrower { get; set; }
+        public bool IsPagibigCoBorrower { get; set; }
 
         [Display(Name = "Do you wish to pursue your housing loan application with the Project Proponent?")]
-        public bool ispursueProjectProponent { get; set; }
+        public bool IsPursueProjectProponent { get; set; }
 
         [Display(Name = "Have you been informed of the terms and conditions of your loan")]
-        public bool isInformedTermsConditions { get; set; }
+        public bool IsInformedTermsConditions { get; set; }
 
         [Display(Name = "House/Unit Model")]
         public string? HouseUnitModel { get; set; }
