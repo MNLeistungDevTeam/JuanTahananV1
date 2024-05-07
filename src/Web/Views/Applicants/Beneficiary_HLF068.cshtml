@@ -38,7 +38,6 @@
                     </a>
                 </li>
 
-
                 <li class="nav-item" data-target-div="#loanparticulars">
                     <a href="#second" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
@@ -57,24 +56,12 @@
                 </li>
             </ul>
 
-
             <div class="tab-content mb-0 b-0">
-
-
-
-
-
-
+                <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
 
                 <form id="frm_hlf068" method="post" asp-action="SaveBCFHLAF" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-
-
-
-
-
-
+                    
                     <div id="bcfdata" class="tab-pane">
-
 
                         <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.UserId">
                         <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
@@ -598,9 +585,6 @@
 
 
 
-
-
-
                             <div class="col-md-12">
                                 <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
                                     Details of Preferred House/Unit Model
@@ -644,7 +628,6 @@
 
 
                     </div>
-
 
                     <div class="tab-pane fade" id="loanparticulars" hidden>
 

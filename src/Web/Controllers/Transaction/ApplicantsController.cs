@@ -532,6 +532,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
                     vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
 
                     var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(beneficiaryData.UserId);
 
