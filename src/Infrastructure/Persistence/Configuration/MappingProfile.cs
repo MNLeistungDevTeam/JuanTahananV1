@@ -76,7 +76,7 @@ public class MappingProfile : Profile
         CreateMap<PropertyLocation, PropertyLocationModel>().ReverseMap();
         CreateMap<PropertyProjectLocation, PropertyProjectLocationModel>().ReverseMap();
         CreateMap<PropertyUnit, PropertyUnitModel>().ReverseMap();
-        CreateMap<PropertyUnitProjectModel, PropertyUnitProjectModel>().ReverseMap();
+        CreateMap<PropertyUnitProject, PropertyUnitProjectModel>().ReverseMap();
         CreateMap<BuyerConfirmation, BuyerConfirmationModel>().ReverseMap();
     }
 }

@@ -178,6 +178,14 @@ public static class DependencyInjectionConfig
         services.AddScoped<IApprovalService, ApprovalService>();
         services.AddScoped<IEmailSetupRepository, EmailSetupRepository>();
         services.AddScoped<IEmailLogRepository, EmailLogRepository>();
+        services.AddScoped<IBuyerConfirmationRepository, BuyerConfirmationRepository>();
+
+
+        services.AddScoped<IPropertyLocationRepository, PropertyLocationRepository>();
+        services.AddScoped<IPropertyProjectLocationRepository, PropertyProjectLocationRepository>();
+        services.AddScoped<IPropertyProjectRepository, PropertyProjectRepository>();
+        services.AddScoped<IPropertyUnitProjectRepository, PropertyUnitProjectRepository>();
+        services.AddScoped<IPropertyUnitRepository, PropertyUnitRepository>();
         return services;
     }
 }
