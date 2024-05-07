@@ -236,6 +236,9 @@
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalCreditVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationTimelineByCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GenerateCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByUserId.sql" />
     <Build Include="Tables\Setup\Document\SubDocument.sql" />
     <Build Include="Tables\Setup\EmailSetup\EmailSetup.sql" />
     <Build Include="Tables\Setup\EmailSetup\EmailLog.sql" />
@@ -246,6 +249,7 @@
     <Build Include="Tables\Setup\PropertyManagement\PropertyUnit.sql" />
     <Build Include="Tables\Setup\PropertyManagement\PropertyUnitProject.sql" />
     <Build Include="Tables\Setup\PropertyManagement\PropertProjectLocation.sql" />
+    <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmation.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
