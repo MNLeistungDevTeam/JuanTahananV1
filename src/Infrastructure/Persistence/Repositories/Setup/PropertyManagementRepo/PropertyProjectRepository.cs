@@ -17,18 +17,21 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
     private readonly IPropertyProjectLocationRepository _propertyprojectLocationRepo;
+    private readonly IPropertyUnitProjectRepository _propertyunitProjectRepository;
 
     public PropertyProjectRepository(
         DMSDBContext context,
         ISQLDatabaseService db,
         IMapper mapper,
-        IPropertyProjectLocationRepository propertyprojectLocationRepo)
+        IPropertyProjectLocationRepository propertyprojectLocationRepo,
+        IPropertyUnitProjectRepository propertyunitProjectRepository)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<PropertyProject>(context);
         _db = db;
         _mapper = mapper;
         _propertyprojectLocationRepo = propertyprojectLocationRepo;
+        _propertyunitProjectRepository = propertyunitProjectRepository;
     }
 
     #endregion Fields
@@ -47,12 +50,11 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId) =>
            await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId });
 
-
     public async Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id) =>
        await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetPropertyLocationByProjectId", new { id });
 
-
-
+    public async Task<IEnumerable<PropertyProjectModel?>> GetPropertyUnitByProjectAsync(int id) =>
+        await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetPropertyUnitByProjectId", new { id });
 
     #endregion Getters
 
@@ -104,6 +106,43 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
             if (toDelete is not null && toDelete.Any())
                 await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task SaveProjectUnits(PropertyProjectModel project, List<PropertyUnitProjectModel> userUnitList, int userId)
+    {
+        try
+        {
+            if (project == null) return;
+
+            var userCounter = 1;
+
+            var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
+
+            foreach (var unit in _userUnitList)
+            {
+                if (unit.Id == 0)
+                    await _propertyunitProjectRepository.CreateAsync(unit, userId);
+                else
+                    await _propertyunitProjectRepository.UpdateAsync(unit, userId);
+
+                userCounter++;
+            }
+
+            // clean up for unused stages
+            var userIds = _userUnitList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+
+            var toDelete = await _context.PropertyUnitProjects
+                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+                .Select(m => m.Id)
+                .ToArrayAsync();
+
+            if (toDelete is not null && toDelete.Any())
+                await _propertyunitProjectRepository.BatchDeleteAsync(toDelete);
         }
         catch (Exception)
         {

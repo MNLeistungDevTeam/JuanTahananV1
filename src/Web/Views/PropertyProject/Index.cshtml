@@ -98,12 +98,13 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 <!-- Location modal content -->
 <div id="modal-location" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content rounded-4">
             <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
-                <h3 class="text-dark float-start fw-semibold">Property Location</h3>
+                <h3 class="text-dark float-start fw-semibold">Project Location</h3>
             </div>
             <div class="modal-body">
                 <form asp-action="SaveProjectLocation" asp-antiforgery="true" method="post" role="form" id="frm_projectLocation" enctype="multipart/form-data">
@@ -115,10 +116,6 @@
                     <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" placeholder="Name" hidden>
                     <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Description" placeholder="Description" hidden>
 
-
-
-
-
                     <div class="col-12 mb-2">
                         <div class="position-relative mb-3">
                             <label class="form-label fw-normal" asp-for="PropProjLocModel.ProjectId"></label>
@@ -127,7 +124,6 @@
                             <span asp-validation-for="PropProjLocModel.ProjectId" class="invalid-tooltip"> </span>
                         </div>
                     </div>
-
 
                     <div class="col-12">
                         <hr class="my-2" />
@@ -154,15 +150,15 @@
                         <table class="table table-sm table-bordered nowrap w-100" id="tbl-location-add">
                             <thead class="table-light">
                                 <tr>
-                                    <th></th>
+                                    <th class="text-center" style="width: 12px;">
+                                        <input type="checkbox" class="form-check-input" id="selectAllLocation" />
+                                    </th>
                                     <th class="text-start">Name</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
                     </div>
-
-
 
                     <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_saveprojectlocation">Save</button>
                     <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect mb-2" data-bs-dismiss="modal">Close</button>
@@ -172,6 +168,77 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<!-- Unit modal content -->
+<div id="modal-unit" data-bs-backdrop="static" data-bs-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content rounded-4">
+            <div class="modal-header modal-header-color p-2 rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+                <h3 class="text-dark float-start fw-semibold">Project Unit</h3>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SavePropertyUnitProject" asp-antiforgery="true" method="post" role="form" id="frm_projectUnit" enctype="multipart/form-data">
+                    <input asp-for="PropUnitProjModel.Id" hidden />
+                    <input asp-for="PropUnitProjModel.ProjectId" hidden/>
+                    <input asp-for="PropUnitProjModel.UnitId" hidden />
+                    <input hidden type="text" asp-for="PropertyUnitIds" class="form-control form-control-sm">
+                    <input hidden type="text" asp-for="PropProjModel.Id" class="form-control form-control-sm">
+                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" placeholder="Name" hidden>
+                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Description" placeholder="Description" hidden>
+
+                    <div class="col-12 mb-2">
+                        <div class="position-relative mb-3">
+                            <label class="form-label fw-normal" asp-for="PropProjLocModel.Id"></label>
+                            <input type="text" class="form-control rounded-3" asp-for="PropUnitProjModel.ProjectId" hidden>
+                            <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" readonly>
+                            <span asp-validation-for="PropUnitProjModel.ProjectId" class="invalid-tooltip"> </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="my-2" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-2 align-items-md-center">
+                                <div class="input-group form-check form-switch">
+                                    <label for="filterUnit">
+                                        <input type="checkbox" class="form-check-input" id="filterUnit">
+                                        Filter Selected Units
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="input-group float-end" style="width:250px;">
+                                    <input bound="tbl-unit-add" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                                    <span class="input-group-text"><i class="fe-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <table class="table table-sm table-bordered nowrap w-100" id="tbl-unit-add">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 12px;">
+                                        <input type="checkbox" class="form-check-input" id="selectAllUnit" />
+                                    </th>
+                                    <th class="text-start">Name</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <button type="submit" class=" btn float-end btn-primary btn-sm ms-1 mt-0 mb-0 waves-effect waves-light" id="btn_saveprojectUnit">Save</button>
+                    <button type="button" class="btn float-end btn-sm mt-0 mb-0 btn-light waves-effect mb-2" data-bs-dismiss="modal">Close</button>
+                </form>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"> </script>
     <script src="~/js/Setup/PropertyManagement/PropertyProjectScript.js"></script>

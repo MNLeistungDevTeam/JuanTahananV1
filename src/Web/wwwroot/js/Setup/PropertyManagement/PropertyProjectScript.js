@@ -1,12 +1,19 @@
 ﻿const $tbl_propProj = $("#tbl_PropProj");
 const $tbl_location = $("#tbl-location-add");
+const $tbl_unit = $("#tbl-unit-add");
 const $modal_PropProj = $('#modal-PropProjModel');
 const $modal_PropLoc = $('#modal-location');
+const $modal_Unit = $('#modal-unit');
 const $form = $("#PropProjModel_form");
 
 var btn_delete_PropProjModel = $('#btn_delete_PropProjModel');
 var btn_edit_PropProjModel = $('#btn_edit_PropProjModel');
 var btn_add_PropProjModel = $('#btn_add_PropProjModel');
+var btn_location_PropProjModel = $("#btn_location_PropProjModel");
+var btn_projectrefresh = $('#btn_projectrefresh');
+var btn_saveprojectlocation = $('#btn_saveprojectlocation');
+var btn_unit_PropProjModel = $("#btn_unit_PropProjModel");
+var btn_saveprojectUnit = $("#btn_saveprojectUnit");
 $(async function () {
     let $companyDropdown, companyDropdown;
 
@@ -155,58 +162,18 @@ $(async function () {
             "data-id": id
         });
 
-        $("#btn_location_PropProjModel").attr({
+        btn_location_PropProjModel.attr({
+            "disabled": !(selectedRows >= 1),
+            "data-id": id
+        });
+
+        btn_unit_PropProjModel.attr({
             "disabled": !(selectedRows >= 1),
             "data-id": id
         });
     });
 
-    if ($tbl_location) {
-        var tbl_projectLocation = $("#tbl-location-add").DataTable({
-            ajax: {
-                url: '/PropertyLocation/GetAllPropertyLocation',
-                method: 'GET',
-                dataSrc: ""
-            },
-            columns: [
-                {
-                    data: 'Id',
-                },
-                {
-                    data: 'Name',
-                }
-            ],
-            columnDefs: [
-                {
-                    targets: [0],
-                    orderable: false,
-                    className: "select-checkbox",
-                    render: function () {
-                        return "";
-                    }
-                }
-
-            ],
-            select: {
-                style: 'multi',
-                selector: 'tr'
-            },
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-            rowId: "Id",
-            processing: true,
-            scrollX: true,
-            scrollY: '35vh',
-            scrollCollapse: true,
-            searchHighlight: true,
-            info: false,
-            paging: false,
-            order: [[1, "asc"]]
-        });
-
-        $("#tbl-location-add_filter, #tbl-location-add_length").hide();
-    }
+    //#region Project Table
 
     btn_add_PropProjModel.on('click', async function () {
         await openProjectModal();
@@ -258,15 +225,270 @@ $(async function () {
         })
     })
 
-    $("#btn_projectrefresh").on('click', function () {
+    btn_projectrefresh.on('click', function () {
         tbl_propProj.ajax.reload();
     });
 
-    $("#btn_location_PropProjModel").on('click', function () {
+    btn_location_PropProjModel.on('click', function () {
         let id = $(this).attr('data-id');
         openProjectLocationModal(id);
     });
 
+    btn_unit_PropProjModel.on('click', function () {
+        let id = $(this).attr('data-id');
+        openUnitProjectModal(id);
+    });
+
+    //#endregion Project Table
+
+    //#region Project Location Table
+
+    if ($tbl_location) {
+        var tbl_projectLocation = $("#tbl-location-add").DataTable({
+            ajax: {
+                url: '/PropertyLocation/GetAllPropertyLocation',
+                method: 'GET',
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: 'Id',
+                },
+                {
+                    data: 'Name',
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    orderable: false,
+                    className: "select-checkbox",
+                    render: function () {
+                        return "";
+                    }
+                }
+
+            ],
+            select: {
+                style: 'multi',
+                selector: 'tr'
+            },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+            rowId: "Id",
+            processing: true,
+            scrollX: true,
+            scrollY: '35vh',
+            scrollCollapse: true,
+            searchHighlight: true,
+            info: false,
+            paging: false,
+            order: [[1, "asc"]]
+        });
+
+        $("#tbl-location-add_filter, #tbl-location-add_length").hide();
+    }
+
+    tbl_projectLocation.on('select deselect draw', function () {
+        var all = tbl_projectLocation.rows({ search: 'applied' }).count();
+        let userSelectedRows = tbl_projectLocation.rows({ selected: true, search: 'applied' }).count();
+        var id = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
+
+        $("#selectAllLocation").prop("checked", (all == userSelectedRows && all > 0));
+    });
+
+    $.fn.dataTable.ext.search.push(
+        function (settings, searchData, index, rowData, counter) {
+            var tableId = settings.nTable.id;
+
+            if (tableId === "tbl-location-add") {
+                var checked = $('input[id="filterLocation"]').is(':checked');
+
+                if (checked) {
+                    var api = new $.fn.dataTable.Api(settings);
+                    var node = api.row(index).node();
+
+                    if ($(node).hasClass('selected')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    );
+
+    $('input[id="filterLocation"]').on('change', function () {
+        tbl_projectLocation.draw();
+    });
+
+    $("#selectAllLocation").on("change", function () {
+        if ($(this).prop("checked")) {
+            tbl_projectLocation.rows({ search: 'applied' }).select();
+        } else {
+            tbl_projectLocation.rows({ search: 'applied' }).deselect();
+        }
+    });
+
+    btn_saveprojectlocation.on("click", function (e) {
+        let selected = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
+        $("[name='PropertyLocationIds']").val(selected);
+
+        let $form = $("#frm_projectLocation");
+        let formData = $form.serialize();
+
+        $form.on("submit", function (e) {
+            e.preventDefault();
+
+            if (!$(this).valid()) {
+                messageBox("Fill all required fields!", "danger", true);
+                return;
+            }
+
+            $.ajax({
+                url: baseUrl + `PropertyProject/SaveProjectLocation`,
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                    messageBox("Save project Successfuly!", "success");
+                    $("#modal-location").modal("hide");
+                    tbl_propProj.ajax.reload();
+                },
+                error: async function (jqXHR, textStatus, errorThrown) {
+                    messageBox(jqXHR.responseText, "danger", true);
+                }
+            });
+        });
+    });
+
+    //#endregion Project Location Table
+
+    //#region Project Unit Table
+
+    if ($tbl_unit) {
+        var tbl_unit = $("#tbl-unit-add").DataTable({
+            ajax: {
+                url: '/PropertyUnit/GetAllPropertyUnit',
+                method: 'GET',
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: 'Id',
+                },
+                {
+                    data: 'Name',
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    orderable: false,
+                    className: "select-checkbox",
+                    render: function () {
+                        return "";
+                    }
+                }
+
+            ],
+            select: {
+                style: 'multi',
+                selector: 'tr'
+            },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+            rowId: "Id",
+            processing: true,
+            scrollX: true,
+            scrollY: '35vh',
+            scrollCollapse: true,
+            searchHighlight: true,
+            info: false,
+            paging: false,
+            order: [[1, "asc"]]
+        });
+
+        $("#tbl-unit-add_filter, #tbl-unit-add_length").hide();
+    }
+
+    tbl_unit.on('select deselect draw', function () {
+        var all = tbl_unit.rows({ search: 'applied' }).count();
+        let userSelectedRows = tbl_unit.rows({ selected: true, search: 'applied' }).count();
+        var id = tbl_unit.rows({ selected: true }).data().pluck("Id").toArray().toString();
+
+        $("#selectAllUnit").prop("checked", (all == userSelectedRows && all > 0));
+    });
+
+    $.fn.dataTable.ext.search.push(
+        function (settings, searchData, index, rowData, counter) {
+            var tableId = settings.nTable.id;
+
+            if (tableId === "tbl-unit-add") {
+                var checked = $('input[id="filterUnit"]').is(':checked');
+
+                if (checked) {
+                    var api = new $.fn.dataTable.Api(settings);
+                    var node = api.row(index).node();
+
+                    if ($(node).hasClass('selected')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    );
+
+    $('input[id="filterUnit"]').on('change', function () {
+        tbl_unit.draw();
+    });
+
+    $("#selectAllUnit").on("change", function () {
+        if ($(this).prop("checked")) {
+            tbl_unit.rows({ search: 'applied' }).select();
+        } else {
+            tbl_unit.rows({ search: 'applied' }).deselect();
+        }
+    });
+
+    btn_saveprojectUnit.on("click", function (e) {
+        let selected = tbl_unit.rows({ selected: true }).data().pluck("Id").toArray().toString();
+        $("[name='PropertyUnitIds']").val(selected);
+
+        let $form = $("#frm_projectUnit");
+        let formData = $form.serialize();
+
+        $form.on("submit", function (e) {
+            e.preventDefault();
+
+            if (!$(this).valid()) {
+                messageBox("Fill all required fields!", "danger", true);
+                return;
+            }
+
+            $.ajax({
+                url: baseUrl + `PropertyProject/SaveProjectUnit`,
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                    messageBox("Save unit Successfuly!", "success");
+                    $("#modal-unit").modal("hide");
+                    tbl_propProj.ajax.reload();
+                },
+                error: async function (jqXHR, textStatus, errorThrown) {
+                    messageBox(jqXHR.responseText, "danger", true);
+                }
+            });
+        });
+    });
+    //#endregion Project Unit Table
     function openProjectModal(id) {
         clearForm($form);
 
@@ -319,7 +541,6 @@ $(async function () {
                     id: id
                 },
                 success: function (dt) {
-
                     console.log(dt)
 
                     let locationIds = [];
@@ -327,10 +548,11 @@ $(async function () {
                         let id = `#${item.LocationId}`;
                         locationIds.push(id);
                     });
+
                     tbl_projectLocation.rows(locationIds).select();
 
-                    $("#filter_user").prop("checked", (locationIds.length > 0));
-                    $("#filter_user").trigger('change');
+                    $("#filterLocation").prop("checked", (locationIds.length > 0));
+                    $("#filterLocation").trigger('change');
                 }
             });
         }
@@ -338,9 +560,52 @@ $(async function () {
         $modal_PropLoc.modal('show')
     }
 
- 
+    function openUnitProjectModal(id) {
+        if (id != 0) {
+            $.ajax({
+                url: `/PropertyProject/GetPropertyProjectById`,
+                method: 'GET',
+                data: {
+                    id: id
+                },
+                success: function (propProject) {
+                    $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
+                    $('[name="PropUnitProjModel.ProjectId"]').val(propProject ? propProject.Id : 0);
 
- 
+                    $('[name="PropProjModel.Id"]').val(propProject ? propProject.Id : 0);
+
+                    $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
+                    $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
+                    companyDropdown.setValue(propProject.CompanyId);
+                }
+            });
+
+            tbl_unit.rows().deselect();
+
+            $.ajax({
+                url: baseUrl + "PropertyProject/GetPropertyUnitByProject",
+                data: {
+                    id: id
+                },
+                success: function (dt) {
+                    console.log(dt)
+
+                    let unitIds = [];
+                    dt.forEach((item) => {
+                        let id = `#${item.UnitId}`;
+                        unitIds.push(id);
+                    });
+
+                    tbl_unit.rows(unitIds).select();
+
+                    $("#filterUnit").prop("checked", (unitIds.length > 0));
+                    $("#filterUnit").trigger('change');
+                }
+            });
+        }
+
+        $modal_Unit.modal('show');
+    }
     function rebindValidator() {
         $form.on('submit', async function (e) {
             e.preventDefault();
@@ -381,36 +646,4 @@ $(async function () {
             });
         })
     }
-
-
-
-    $("#btn_saveprojectlocation").click(function (e) {
-
-
-        let selected = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
-        $("[name='PropertyLocationIds']").val(selected);
-
-        let $form = $("#frm_projectLocation");
-        let formData = $form.serialize();
-
-        $form.on("submit", function (e) {
-            e.preventDefault();
-
-            if (!$(this).valid()) {
-                messageBox("Fill all required fields!", "danger", true);
-                return;
-            }
-
-            $.ajax({
-                url: baseUrl + `PropertyProject/SaveProjectLocation`,
-                method: "POST",
-                data: formData,
-                success: function (response) {
-                    messageBox("Save UserProject Successfuly!", "success");
-                    $("#projectuser-modal").modal("hide");
-                    tbl_project.ajax.reload();
-                }
-            });
-        });
-    });
 });
