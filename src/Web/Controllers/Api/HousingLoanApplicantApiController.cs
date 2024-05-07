@@ -77,6 +77,24 @@ namespace DMS.Web.Controllers.Api
         }
 
 
+        [HttpGet("GetLocationsByProject/{projectId}")]
+        public async Task<IActionResult> GetLocationsByProject(int projectId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
 
 
 

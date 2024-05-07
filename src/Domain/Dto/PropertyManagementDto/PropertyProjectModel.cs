@@ -29,4 +29,10 @@ public class PropertyProjectModel
     public DateTime? DateModified { get; set; }
 
     public string? CompanyName { get; set; }
+
+
+    public int LocationId { get; set; }
 }
+
+
+

@@ -4,10 +4,13 @@ const $modal_PropProj = $('#modal-PropProjModel');
 const $modal_PropLoc = $('#modal-location');
 const $form = $("#PropProjModel_form");
 
+var btn_delete_PropProjModel = $('#btn_delete_PropProjModel');
+var btn_edit_PropProjModel = $('#btn_edit_PropProjModel');
+var btn_add_PropProjModel = $('#btn_add_PropProjModel');
 $(async function () {
-    let $companyIdDropdown, companyIdDropdown;
+    let $companyDropdown, companyDropdown;
 
-    $companyIdDropdown = $(`[name='PropProjModel.CompanyId']`).selectize({
+    $companyDropdown = $(`[name='PropProjModel.CompanyId']`).selectize({
         valueField: 'Id',
         labelField: 'Name',
         searchField: 'Name',
@@ -44,7 +47,9 @@ $(async function () {
         },
     });
 
-    companyIdDropdown = $companyIdDropdown[0].selectize;
+    companyDropdown = $companyDropdown[0].selectize;
+
+    rebindValidator();
 
     if ($tbl_propProj) {
         var tbl_propProj = $("#tbl_PropProj").DataTable({
@@ -136,32 +141,28 @@ $(async function () {
         var selectedRows = tbl_propProj.rows({ selected: true, search: 'applied' }).count();
         var id = tbl_propProj.rows({ selected: true }).data().pluck("Id").toArray().toString();
 
-        // Tick select-all based on row count;
-        $("#select-all-document").prop("checked", (all == selectedRows && all > 0));
-
         btn_add_PropProjModel.attr({
-            "disabled": (selectedRows >= 1),
+            "disabled": (selectedRows >= 1)
         });
 
         btn_edit_PropProjModel.attr({
             "disabled": !(selectedRows === 1),
+            "data-id": id
         });
 
         btn_delete_PropProjModel.attr({
             "disabled": !(selectedRows >= 1),
+            "data-id": id
         });
 
-        btn_location_PropProjModel.attr({
+        $("#btn_location_PropProjModel").attr({
             "disabled": !(selectedRows >= 1),
-        });
-
-        btn_unit_PropProjModel.attr({
-            "disabled": !(selectedRows >= 1),
+            "data-id": id
         });
     });
 
     if ($tbl_location) {
-        var location_add = $("#tbl-location-add").DataTable({
+        var tbl_projectLocation = $("#tbl-location-add").DataTable({
             ajax: {
                 url: '/PropertyLocation/GetAllPropertyLocation',
                 method: 'GET',
@@ -203,56 +204,23 @@ $(async function () {
             paging: false,
             order: [[1, "asc"]]
         });
+
+        $("#tbl-location-add_filter, #tbl-location-add_length").hide();
     }
 
-    $.fn.dataTable.ext.search.push(
-        function (settings, searchData, index, rowData, counter) {
-            var tableId = settings.nTable.id;
-
-            if (tableId === "location_add") {
-                var checked = $('input[id="filterUser"]').is(':checked');
-
-                if (checked) {
-                    var api = new $.fn.dataTable.Api(settings);
-                    var node = api.row(index).node();
-
-                    if ($(node).hasClass('selected')) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-    );
-
-    $("#tbl-location-add_filter").hide();
-    var btn_location_PropProjModel = $('#btn_location_PropProjModel').on('click', async function (e) {
-        e.preventDefault();
-
-        applyLocation();
+    btn_add_PropProjModel.on('click', async function () {
+        await openProjectModal();
     });
-
-    var btn_unit_PropProjModel = $('#btn_unit_PropProjModel').on('click', async function (e) {
-        e.preventDefault();
-        applyLocation();
-    });
-
-    var btn_add_PropProjModel = $('#btn_add_PropProjModel').on('click', async function (e) {
-        e.preventDefault();
-        await applyPropProj();
-    });
-    var btn_edit_PropProjModel = $('#btn_edit_PropProjModel').on('click', async function (e) {
-        e.preventDefault();
+    btn_edit_PropProjModel.on('click', async function () {
         var id = tbl_propProj.rows('.selected').data().pluck('Id').toArray()[0];
-        await applyPropProj(id);
+        await openProjectModal(id);
     });
-    var btn_delete_PropProjModel = $('#btn_delete_PropProjModel').on('click', function (e) {
-        e.preventDefault();
+
+    btn_delete_PropProjModel.on('click', function () {
         var ids = tbl_propProj.rows('.selected').data().pluck('Id').toArray();
-        var name = tbl_propProj.rows('.selected').data().pluck('Name').toArray();
+        // var name = tbl_propProj.rows('.selected').data().pluck('Name').toArray();
+        var name = tbl_propProj.rows({ selected: true }).data().pluck("Name").toArray().toString();
+
         Swal.fire({
             title: 'Are you sure?',
             text: `The following Role/s will be deleted: ${name}`,
@@ -290,73 +258,159 @@ $(async function () {
         })
     })
 
-    async function applyPropProj(id) {
+    $("#btn_projectrefresh").on('click', function () {
+        tbl_propProj.ajax.reload();
+    });
+
+    $("#btn_location_PropProjModel").on('click', function () {
+        let id = $(this).attr('data-id');
+        openProjectLocationModal(id);
+    });
+
+    function openProjectModal(id) {
         clearForm($form);
 
-        console.log(id);
-
-        let propProject = await getPropProject(id);
-
-        $('[name="PropProjModel.Id"]').val(propProject ? propProject.Id : 0);
-        $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
-        $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
-        $('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
+        if (id != 0) {
+            $.ajax({
+                url: `/PropertyProject/GetPropertyProjectById`,
+                method: 'GET',
+                data: {
+                    id: id
+                },
+                success: function (propProject) {
+                    $('[name="PropProjModel.Id"]').val(propProject ? propProject.Id : 0);
+                    $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
+                    $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
+                    //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
+                    companyDropdown.setValue(propProject.CompanyId);
+                }
+            });
+        }
 
         $modal_PropProj.modal('show')
     }
 
-    async function applyLocation() {
+    function openProjectLocationModal(id) {
+        if (id != 0) {
+            $.ajax({
+                url: `/PropertyProject/GetPropertyProjectById`,
+                method: 'GET',
+                data: {
+                    id: id
+                },
+                success: function (propProject) {
+                    $('[name="PropProjLocModel.ProjectName"]').val(propProject ? propProject.Name : "");
+                    $('[name="PropProjLocModel.ProjectId"]').val(propProject ? propProject.Id : 0);
+
+                    $('[name="PropProjModel.Id"]').val(propProject ? propProject.Id : 0);
+
+                    $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
+                    $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
+                    //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
+                    companyDropdown.setValue(propProject.CompanyId);
+                }
+            });
+
+            tbl_projectLocation.rows().deselect();
+
+            $.ajax({
+                url: baseUrl + "PropertyProject/GetPropertyLocationByProject",
+                data: {
+                    id: id
+                },
+                success: function (dt) {
+
+                    console.log(dt)
+
+                    let locationIds = [];
+                    dt.forEach((item) => {
+                        let id = `#${item.LocationId}`;
+                        locationIds.push(id);
+                    });
+                    tbl_projectLocation.rows(locationIds).select();
+
+                    $("#filter_user").prop("checked", (locationIds.length > 0));
+                    $("#filter_user").trigger('change');
+                }
+            });
+        }
+
         $modal_PropLoc.modal('show')
     }
 
-    async function getPropProject(id) {
-        const response = $.ajax({
-            url: `/PropertyProject/GetPropertyProjectById`,
-            method: 'GET',
-            data: {
-                id: id
-            }
-        });
+ 
 
-        return response;
+ 
+    function rebindValidator() {
+        $form.on('submit', async function (e) {
+            e.preventDefault();
+            var button = $(this).find('button[type="submit"]');
+            var formData = new FormData(e.target);
+
+            if (!$(this).valid())
+                return;
+
+            // Log serialized form data
+            console.log("Form Data:", formData);
+
+            var propUnitId = $('[name="PropProjModel.Id"]').val();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
+                },
+                success: function (response) {
+                    let successMessage = "";
+                    successMessage = `Project Successfully ${propUnitId == 0 ? 'Added' : 'Updated'}!`;
+                    messageBox(successMessage, "success", true);
+                    button.html('Save').attr('disabled', false);
+                    tbl_propProj.ajax.reload();
+                    $modal_PropProj.modal('hide');
+                    clearForm($form);
+                },
+                error: async function (jqXHR, textStatus, errorThrown) {
+                    button.html('Save').attr('disabled', false);
+                    messageBox(jqXHR.responseText, "danger", true);
+                }
+            });
+        })
     }
 
-    $form.on('submit', async function (e) {
-        e.preventDefault();
-        var button = $(this).find('button[type="submit"]');
-        var formData = new FormData(e.target);
 
-        if (!$(this).valid())
-            return;
 
-        // Log serialized form data
-        console.log("Form Data:", formData);
+    $("#btn_saveprojectlocation").click(function (e) {
 
-        var propUnitId = $('[name="PropProjModel.Id"]').val();
 
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function () {
-                button.html(`<i class="mdi mdi-spin mdi-loading"></i> Saving..`).attr('disabled', true);
-            },
-            success: function (response) {
-                let successMessage = "";
-                successMessage = `Project Successfully ${propUnitId == 0 ? 'Added' : 'Updated'}!`;
-                messageBox(successMessage, "success", true);
-                button.html('Save').attr('disabled', false);
-                tbl_propProj.ajax.reload();
-                $modal_PropProj.modal('hide');
-                clearForm($form);
-            },
-            error: async function (jqXHR, textStatus, errorThrown) {
-                button.html('Save').attr('disabled', false);
-                messageBox(jqXHR.responseText, "danger", true);
+        let selected = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
+        $("[name='PropertyLocationIds']").val(selected);
+
+        let $form = $("#frm_projectLocation");
+        let formData = $form.serialize();
+
+        $form.on("submit", function (e) {
+            e.preventDefault();
+
+            if (!$(this).valid()) {
+                messageBox("Fill all required fields!", "danger", true);
+                return;
             }
+
+            $.ajax({
+                url: baseUrl + `PropertyProject/SaveProjectLocation`,
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                    messageBox("Save UserProject Successfuly!", "success");
+                    $("#projectuser-modal").modal("hide");
+                    tbl_project.ajax.reload();
+                }
+            });
         });
-    })
+    });
 });
