@@ -14,7 +14,7 @@ $(async function () {
         preload: true,
         load: function (query, callback) {
             $.ajax({
-                url: baseUrl + 'Company/GetCompanies',
+                url: baseUrl + 'Company/GetDevelopers',
                 success: function (results) {
                     try {
                         callback(results);
@@ -73,6 +73,12 @@ $(async function () {
                     orderable: !0,
                     className: 'text-center'
                 },
+
+                {
+                    data: 'CompanyName',
+                    orderable: !0,
+                    className: 'text-center'
+                },
                 {
                     data: 'DateCreated',
                     orderable: !0,
@@ -115,7 +121,7 @@ $(async function () {
             },
             scrollY: '24rem',
             scrollX: true,
-            order: [[4, "asc"]],
+            /*order: [[5, "asc"]],*/
             pageLength: 10,
             searchHighlight: true,
             stateSave: false,
@@ -146,6 +152,10 @@ $(async function () {
         });
 
         btn_location_PropProjModel.attr({
+            "disabled": !(selectedRows >= 1),
+        });
+
+        btn_unit_PropProjModel.attr({
             "disabled": !(selectedRows >= 1),
         });
     });
@@ -224,6 +234,11 @@ $(async function () {
         applyLocation();
     });
 
+    var btn_unit_PropProjModel = $('#btn_unit_PropProjModel').on('click', async function (e) {
+        e.preventDefault();
+        applyLocation();
+    });
+
     var btn_add_PropProjModel = $('#btn_add_PropProjModel').on('click', async function (e) {
         e.preventDefault();
         await applyPropProj();
@@ -236,9 +251,10 @@ $(async function () {
     var btn_delete_PropProjModel = $('#btn_delete_PropProjModel').on('click', function (e) {
         e.preventDefault();
         var ids = tbl_propProj.rows('.selected').data().pluck('Id').toArray();
+        var name = tbl_propProj.rows('.selected').data().pluck('Name').toArray();
         Swal.fire({
             title: 'Are you sure?',
-            text: `The following Role/s will be deleted: ${ids.length}`,
+            text: `The following Role/s will be deleted: ${name}`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

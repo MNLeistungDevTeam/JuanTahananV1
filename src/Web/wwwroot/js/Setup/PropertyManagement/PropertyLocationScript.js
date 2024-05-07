@@ -107,9 +107,10 @@ $(async function () {
     var btn_delete_PropProjModel = $('#btn_delete_PropLocModel').on('click', function (e) {
         e.preventDefault();
         var ids = tbl_propLoc.rows('.selected').data().pluck('Id').toArray();
+        var names = tbl_propLoc.rows('.selected').data().pluck('Name').toArray();
         Swal.fire({
             title: 'Are you sure?',
-            text: `The following Role/s will be deleted: ${ids.length}`,
+            text: `The following Role/s will be deleted: ${names}`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
