@@ -322,4 +322,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Code" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e2751c10-7ffc-4aa4-9f19-ffef3e75af9b" ChangeDateTime="05/07/2024 06:34:17">
+    <Property Name="ElementName" Value="[dbo].[BuyerConfirmation].[OtherSourceofIncome]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BuyerConfirmation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsOtherSourceOfIncome" />
+  </Operation>
 </Operations>

@@ -475,21 +475,20 @@
                             </div>
 
 
-
-                            <div class="position-relative radio-pdRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.isOtherSourceofIncome"></label>
+                            <div class="position-relative radio-otherRbtn">
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsOtherSourceOfIncome"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn1" required />
+                                        <input type="radio" class="form-check-input" name="otherRbtn" id="otherRbtn1" required />
                                         <label class="form-check-label">Yes</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="pastDueRbtn" id="pdRbtn2" required />
+                                        <input type="radio" class="form-check-input" name="otherRbtn" id="otherRbtn2" required />
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.isOtherSourceofIncome" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.isOtherSourceofIncome" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsOtherSourceOfIncome" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsOtherSourceOfIncome" class="text-danger"> </span>
                             </div>
 
 
@@ -521,7 +520,7 @@
 
 
                             <div class="position-relative radio-pagibigRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.isPagibigMember"></label>
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigMember"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" class="form-check-input" name="pagibigRbtn" id="pagibigRbtn1" required />
@@ -532,8 +531,8 @@
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.isPagibigMember" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.isPagibigMember" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsPagibigMember" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsPagibigMember" class="text-danger"> </span>
                             </div>
 
 
@@ -551,7 +550,7 @@
 
 
                             <div class="position-relative radio-availedLoanRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.isPagibigAvailedLoan"></label>
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigAvailedLoan"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" class="form-check-input" name="availedLoanRbtn" id="availedLoanRbtn1" required />
@@ -562,12 +561,12 @@
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.isPagibigAvailedLoan" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.isPagibigAvailedLoan" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsPagibigAvailedLoan" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsPagibigAvailedLoan" class="text-danger"> </span>
                             </div>
 
                             <div class="position-relative radio-cbwrRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.isPagibigCoBorrower"></label>
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigCoBorrower"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" class="form-check-input" name="coBorrowerRbtn" id="cbwrRbtn1" required />
@@ -578,13 +577,13 @@
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.isPagibigCoBorrower" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.isPagibigCoBorrower" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsPagibigCoBorrower" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsPagibigCoBorrower" class="text-danger"> </span>
                             </div>
 
 
                             <div class="position-relative radio-prpRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.ispursueProjectProponent"></label>
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPursueProjectProponent"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" class="form-check-input" name="projectPropRbtn" id="prpRbtn1" required />
@@ -595,13 +594,13 @@
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.ispursueProjectProponent" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.ispursueProjectProponent" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsPursueProjectProponent" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsPursueProjectProponent" class="text-danger"> </span>
                             </div>
 
 
                             <div class="position-relative radio-itcRbtn">
-                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.isInformedTermsConditions"></label>
+                                <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsInformedTermsConditions"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" class="form-check-input" name="informedTermsRbtn" id="itcRbtn1" required />
@@ -612,12 +611,9 @@
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.isInformedTermsConditions" hidden>
-                                <span asp-validation-for="BuyerConfirmationModel.isInformedTermsConditions" class="text-danger"> </span>
+                                <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsInformedTermsConditions" hidden>
+                                <span asp-validation-for="BuyerConfirmationModel.IsInformedTermsConditions" class="text-danger"> </span>
                             </div>
-
-
-
 
 
 

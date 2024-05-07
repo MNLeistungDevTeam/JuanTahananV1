@@ -139,7 +139,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public decimal? SpouseMonthlySalary { get; set; }
 
         [Display(Name = "Do you have other sources of income aside from salary?")]
-        public decimal isOtherSourceofIncome { get; set; }
+        public bool IsOtherSourceOfIncome { get; set; }
 
         [Display(Name = "Source of Additional Income")]
         public decimal AdditionalSourceIncome { get; set; }
@@ -151,19 +151,19 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public decimal AffordMonthlyAmortization { get; set; }
 
         [Display(Name = "Are you a Pag-IBIG member?")]
-        public bool isPagibigMember { get; set; }
+        public bool IsPagibigMember { get; set; }
 
         [Display(Name = "Have you availed a Pag-IBIG Housing Loan?")]
-        public bool isPagibigAvailedLoan { get; set; }
+        public bool IsPagibigAvailedLoan { get; set; }
 
         [Display(Name = "Have you been a co-borrower of a Pag-IBIG housing loan?")]
-        public bool isPagibigCoBorrower { get; set; }
+        public bool IsPagibigCoBorrower { get; set; }
 
         [Display(Name = "Do you wish to pursue your housing loan application with the Project Proponent?")]
-        public bool ispursueProjectProponent { get; set; }
+        public bool IsPursueProjectProponent { get; set; }
 
         [Display(Name = "Have you been informed of the terms and conditions of your loan")]
-        public bool isInformedTermsConditions { get; set; }
+        public bool IsInformedTermsConditions { get; set; }
 
         [Display(Name = "House/Unit Model")]
         public string? HouseUnitModel { get; set; }
