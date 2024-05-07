@@ -38,9 +38,6 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRep
             {
 
                 buyerConfirm.Code = await GenerateBuyerConfirmationCode();
-
-                 
-
                 buyerConfirm = await CreateAsync(buyerConfirm, userId);
             }
             else

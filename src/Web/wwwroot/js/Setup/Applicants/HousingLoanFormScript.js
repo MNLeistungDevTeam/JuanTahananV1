@@ -1641,6 +1641,61 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
+        let pagibigAvailedLoan = $("[name='BuyerConfirmationModel.isPagibigAvailedLoan']").val();
+
+        let coborrower = $("[name='BuyerConfirmationModel.isPagibigCoBorrower']").val();
+
+        let projectProponent = $("[name='BuyerConfirmationModel.ispursueProjectProponent']").val();
+        let termConditions = $("[name='BuyerConfirmationModel.isInformedTermsConditions']").val();
+
+        let isPagibigMember = $("[name='BuyerConfirmationModel.isPagibigMember']").val();
+        let isOtherSourceIncome = $("[name='BuyerConfirmationModel.isOtherSourceofIncome']").val();
+
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        if (pagibigAvailedLoan === "True") {
+            $("#availedLoanRbtn1").prop("checked", true);
+        } else {
+            $("#availedLoanRbtn2").prop("checked", true);
+        }
+
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        if (coborrower === "True") {
+            $("#cbwrRbtn1").prop("checked", true);
+        } else {
+            $("#cbwrRbtn2").prop("checked", true);
+        }
+
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        if (projectProponent === "True") {
+            $("#prpRbtn1").prop("checked", true);
+        } else {
+            $("#prpRbtn2").prop("checked", true);
+        }
+
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        if (termConditions === "True") {
+            $("#itcRbtn1").prop("checked", true);
+        } else {
+            $("#itcRbtn2").prop("checked", true);
+        }
+
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        if (isPagibigMember === "True") {
+            $("#pagibigRbtn1").prop("checked", true);
+        } else {
+            $("#pagibigRbtn2").prop("checked", true);
+        }
+
+        if (isOtherSourceIncome === "True") {
+            $("#otherRbtn1").prop("checked", true);
+        } else {
+            $("#otherRbtn2").prop("checked", true);
+        }
+
+        // Set checked status for PendingCase radio buttons
+        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
+        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
@@ -1665,5 +1720,6 @@ $(function () {
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
+
     //#endregion
 });

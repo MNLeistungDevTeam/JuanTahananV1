@@ -42,17 +42,17 @@
 	 MonthlySalary Decimal(7,2) NULL,
 
 
-	OtherSourceofIncome Decimal(7,2) NULL,
+	[IsOtherSourceOfIncome] BIT NOT NULL DEFAULT 0,
 	AdditionalSourceIncome Decimal(7,2) NULL,
 
 	AverageMonthlyAdditionalIncome Decimal(7,2) NULL,
 	AffordMonthlyAmortization Decimal(7,2) NULL,
 	
-	IsPagibigMember  bit default(0),
-	IsPagibigCoBorrower  bit default(0),
-	IsPursueProjectProponent  bit default(0),
-	IsInformedTermsConditions  bit default(0),
-	 IsPagibigAvailedLoan  bit default(0),
+	IsPagibigMember  bit default(0) NOT NULL,
+	IsPagibigCoBorrower  bit default(0) NOT NULL,
+	IsPursueProjectProponent  bit default(0) NOT NULL,
+	IsInformedTermsConditions  bit default(0) NOT NULL,
+	 IsPagibigAvailedLoan  bit default(0) NOT NULL,
 
 	
 

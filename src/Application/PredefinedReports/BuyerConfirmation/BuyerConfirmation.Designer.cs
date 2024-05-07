@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuyerConfirmation));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrTable25 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow25 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell36 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -146,6 +146,7 @@
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel53 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.xrPictureBox2 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.objectDataSource2 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.objectDataSource3 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
@@ -249,15 +250,6 @@
             this.xrPictureBox2});
             this.Detail.HeightF = 1300.67F;
             this.Detail.Name = "Detail";
-            // 
-            // xrPictureBox2
-            // 
-            this.xrPictureBox2.ImageUrl = "C:\\Users\\Christian Concepcion\\source\\repos\\JuanTahananV1\\src\\Web\\wwwroot\\images\\D" +
-    "ocuments\\BCF.jpg";
-            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0.6700777F);
-            this.xrPictureBox2.Name = "xrPictureBox2";
-            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(850F, 1300F);
-            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.AutoSize;
             // 
             // xrTable25
             // 
@@ -1497,12 +1489,19 @@
             // 
             // xrPictureBox1
             // 
-            this.xrPictureBox1.ImageUrl = "C:\\Users\\Christian Concepcion\\source\\repos\\JuanTahananV1\\src\\Web\\wwwroot\\images\\D" +
-    "ocuments\\BCF.jpg";
+            this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
             this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(850F, 1300F);
             this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.AutoSize;
+            // 
+            // xrPictureBox2
+            // 
+            this.xrPictureBox2.ImageUrl = "/wwwroot/images/Documents/BCF.jpg";
+            this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0.6700777F);
+            this.xrPictureBox2.Name = "xrPictureBox2";
+            this.xrPictureBox2.SizeF = new System.Drawing.SizeF(850F, 1300F);
+            this.xrPictureBox2.Sizing = DevExpress.XtraPrinting.ImageSizeMode.AutoSize;
             // 
             // objectDataSource1
             // 
