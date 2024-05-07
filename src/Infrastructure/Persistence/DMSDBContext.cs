@@ -81,7 +81,17 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<NotificationReceiver> NotificationReceivers { get; set; }
 
+    public virtual DbSet<PropertyLocation> PropertyLocations { get; set; }
+
+    public virtual DbSet<PropertyProject> PropertyProjects { get; set; }
+
+    public virtual DbSet<PropertyProjectLocation> PropertyProjectLocations { get; set; }
+
     public virtual DbSet<PropertyType> PropertyTypes { get; set; }
+
+    public virtual DbSet<PropertyUnit> PropertyUnits { get; set; }
+
+    public virtual DbSet<PropertyUnitProject> PropertyUnitProjects { get; set; }
 
     public virtual DbSet<PurposeOfLoan> PurposeOfLoans { get; set; }
 
@@ -859,6 +869,40 @@ public partial class DMSDBContext : DbContext
                 .HasConstraintName("FK__Notificat__Notif__55009F39");
         });
 
+        modelBuilder.Entity<PropertyLocation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07BFB8FE4E");
+
+            entity.ToTable("PropertyLocation");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Name).HasMaxLength(244);
+        });
+
+        modelBuilder.Entity<PropertyProject>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07829A46B7");
+
+            entity.ToTable("PropertyProject");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description).HasMaxLength(244);
+            entity.Property(e => e.Logo).HasMaxLength(244);
+            entity.Property(e => e.Name).HasMaxLength(244);
+        });
+
+        modelBuilder.Entity<PropertyProjectLocation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07EB31BBF1");
+
+            entity.ToTable("PropertyProjectLocation");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+        });
+
         modelBuilder.Entity<PropertyType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07C7618F7C");
@@ -867,6 +911,28 @@ public partial class DMSDBContext : DbContext
 
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).IsRequired();
+        });
+
+        modelBuilder.Entity<PropertyUnit>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07BAB0CD56");
+
+            entity.ToTable("PropertyUnit");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description).HasMaxLength(244);
+            entity.Property(e => e.Name).HasMaxLength(244);
+        });
+
+        modelBuilder.Entity<PropertyUnitProject>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC074259FC39");
+
+            entity.ToTable("PropertyUnitProject");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.DateModified).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<PurposeOfLoan>(entity =>
