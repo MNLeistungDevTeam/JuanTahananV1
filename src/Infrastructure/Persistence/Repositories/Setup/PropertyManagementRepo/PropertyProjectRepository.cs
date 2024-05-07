@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
 
@@ -35,6 +36,14 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     public async Task<List<PropertyProject>> GetAll() =>
         await _contextHelper.GetAllAsync();
+
+    public async Task<IEnumerable<PropertyProjectModel?>> GetAllAsync() =>
+           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spPropertyProject_GetAll", new { });
+
+
+
+    public async Task<PropertyProjectModel?> GetByCompanyAsync(int companyId) =>
+           await _db.LoadSingleAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId });
 
     #endregion Getters
 

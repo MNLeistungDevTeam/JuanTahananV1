@@ -13,6 +13,8 @@ public interface IPropertyProjectRepository
     Task BatchDeleteAsync(int[] ids);
     Task<PropertyProject> CreateAsync(PropertyProject model, int userId);
     Task<List<PropertyProject>> GetAll();
+    Task<IEnumerable<PropertyProjectModel?>> GetAllAsync();
+    Task<PropertyProjectModel?> GetByCompanyAsync(int companyId);
     Task<PropertyProject?> GetById(int id);
     Task<PropertyProject> SaveAsync(PropertyProjectModel model, int userId);
     Task<PropertyProject> UpdateAsync(PropertyProject model, int userId);

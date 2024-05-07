@@ -47,7 +47,13 @@ public class PropertyProjectController : Controller
     #region API GETTERS
 
     public async Task<IActionResult> GetAllPropertyProject() =>
-        Ok(await _propertyProjectRepo.GetAll());
+        Ok(await _propertyProjectRepo.GetAllAsync());
+
+
+
+    
+
+
 
     public async Task<IActionResult> GetPropertyProjectById(int id) =>
         Ok(await _propertyProjectRepo.GetById(id));

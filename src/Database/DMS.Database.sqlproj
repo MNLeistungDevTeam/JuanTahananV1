@@ -115,6 +115,7 @@
     <Folder Include="Tables\Setup\BuyerConfirmation" />
     <Folder Include="Stored Procedures\Setup\BuyerConfirmation" />
     <Folder Include="Tables\Setup\PropertyManagement" />
+    <Folder Include="Stored Procedures\Setup\PropertyProject" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -246,6 +247,8 @@
     <Build Include="Tables\Setup\PropertyManagement\PropertyUnit.sql" />
     <Build Include="Tables\Setup\PropertyManagement\PropertyUnitProject.sql" />
     <Build Include="Tables\Setup\PropertyManagement\PropertProjectLocation.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyProject\spPropertyProject_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetByCompanyId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
