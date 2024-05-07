@@ -245,6 +245,13 @@ namespace Template.Web.Controllers.Transaction
 
                 if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                 {
+                    var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(userInfo.Id);
+
+                    if (buyerConfirmationInfo != null)
+                    {
+                        vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+                    }
+
                     returnViewPage = "Beneficiary_HLF068";
                 }
 
@@ -964,7 +971,7 @@ namespace Template.Web.Controllers.Transaction
                     if (vwModel.BarrowersInformationModel != null)
                     {
                         vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
-    
+
                         await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
                     }
 
