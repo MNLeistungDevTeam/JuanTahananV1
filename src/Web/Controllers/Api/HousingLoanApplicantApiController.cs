@@ -3,7 +3,6 @@ using DMS.Domain.Dto.BasicBeneficiaryDto;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Api
@@ -45,5 +44,42 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetDevelopers")]
+        public async Task<IActionResult> GetDevelopers()
+        {
+            try
+            {
+                var developers = await _zetaHousingLoanIntegrationService.GetDevelopers();
+
+                return Ok(developers);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetProjectsByCompany/{companyId}")]
+        public async Task<IActionResult> GetProjectsByCompany(int companyId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
     }
 }

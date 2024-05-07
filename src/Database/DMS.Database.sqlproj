@@ -112,6 +112,10 @@
     <Folder Include="Tables\Setup\EmailSetup" />
     <Folder Include="Stored Procedures\Setup\EmailSetup" />
     <Folder Include="Stored Procedures\Setup\EmailLog" />
+    <Folder Include="Tables\Setup\BuyerConfirmation" />
+    <Folder Include="Stored Procedures\Setup\BuyerConfirmation" />
+    <Folder Include="Tables\Setup\PropertyManagement" />
+    <Folder Include="Stored Procedures\Setup\PropertyProject" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -233,11 +237,22 @@
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalCreditVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetTotalAppVerif.sql" />
     <Build Include="Stored Procedures\Setup\ApplicantsPersonalInformation\spApplicantsPersonalInformation_GetApplicationTimelineByCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GenerateCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByCode.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetByUserId.sql" />
     <Build Include="Tables\Setup\Document\SubDocument.sql" />
     <Build Include="Tables\Setup\EmailSetup\EmailSetup.sql" />
     <Build Include="Tables\Setup\EmailSetup\EmailLog.sql" />
     <Build Include="Stored Procedures\Setup\EmailSetup\spEmailSetup_GetByCompany.sql" />
     <Build Include="Stored Procedures\Setup\EmailLog\spEmailLog_GetList.sql" />
+    <Build Include="Tables\Setup\PropertyManagement\PropertyLocation.sql" />
+    <Build Include="Tables\Setup\PropertyManagement\PropertyProject.sql" />
+    <Build Include="Tables\Setup\PropertyManagement\PropertyUnit.sql" />
+    <Build Include="Tables\Setup\PropertyManagement\PropertyUnitProject.sql" />
+    <Build Include="Tables\Setup\PropertyManagement\PropertProjectLocation.sql" />
+    <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmation.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyProject\spPropertyProject_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetByCompanyId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

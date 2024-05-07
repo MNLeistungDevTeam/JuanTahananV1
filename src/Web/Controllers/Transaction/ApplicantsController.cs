@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.ModeOfPaymentRepo;
@@ -21,9 +22,9 @@ using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -60,6 +61,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IRoleAccessRepository _roleAccessRepo;
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
         private DMSDBContext _context;
 
@@ -87,7 +89,8 @@ namespace Template.Web.Controllers.Transaction
             IBackgroundJobClient backgroundJobClient,
             IRoleAccessRepository roleAccessRepo,
             IBeneficiaryInformationRepository beneficiaryInformationRepo,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IBuyerConfirmationRepository buyerConfirmationRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -114,6 +117,7 @@ namespace Template.Web.Controllers.Transaction
             _roleAccessRepo = roleAccessRepo;
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
             _webHostEnvironment = webHostEnvironment;
+            _buyerConfirmationRepo = buyerConfirmationRepo;
         }
 
         #endregion Fields
@@ -473,6 +477,12 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.Form2PageModel = form2PageInfo;
                 }
 
+                var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(beneficiaryData.UserId);
+
+                if (buyerConfirmationInfo != null)
+                {
+                    vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+                }
                 return View("HousingLoanForm", vwModel);
             }
             else
@@ -522,6 +532,13 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
                     vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                    var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(beneficiaryData.UserId);
+
+                    if (buyerConfirmationInfo != null)
+                    {
+                        vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+                    }
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
@@ -753,6 +770,27 @@ namespace Template.Web.Controllers.Transaction
         #region API Operations
 
         [HttpPost]
+        public async Task<IActionResult> UpdateBcfFlag(bool flag)
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                var currentUser = await _userRepo.GetUserAsync(userId);
+                var bnfInfo = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(currentUser.PagibigNumber);
+
+                bnfInfo.IsBcfCreated = flag;
+
+                await _beneficiaryInformationRepo.SaveAsync(bnfInfo, userId);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SaveHLF068(ApplicantViewModel vwModel)
         {
             try
@@ -779,6 +817,318 @@ namespace Template.Web.Controllers.Transaction
                 vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
 
                 //create  new beneficiary and housingloan application
+
+                if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
+                {
+                    //current user is beneficiary
+                    if (currentuserRoleId == (int)PredefinedRoleType.Beneficiary)
+                    {
+                        var applicationDetail = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
+
+                        if (applicationDetail != null)
+                        {
+                            if (applicationDetail.ApprovalStatus != (int)AppStatusType.Deferred && applicationDetail.ApprovalStatus != (int)AppStatusType.Withdrawn && applicationDetail.ApprovalStatus != (int)AppStatusType.Disqualified && applicationDetail.ApprovalStatus != (int)AppStatusType.Discontinued)
+                            {
+                                return BadRequest("Can't be processed. You have a pending application!");
+                            }
+                        }
+                    }
+
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+                    #region Register User and Send Email
+
+                    if (vwModel.ApplicantsPersonalInformationModel.UserId == 0)
+                    {
+                        UserModel userModel = new()
+                        {
+                            Email = vwModel.BarrowersInformationModel.Email,
+                            //Password = GeneratePassword(vwModel.BarrowersInformationModel.FirstName), //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                            Password = GenerateRandomPassword(), //sample output aDf!23@4kLp
+                            UserName = await GenerateTemporaryUsernameAsync(),
+                            FirstName = vwModel.BarrowersInformationModel.FirstName,
+                            LastName = vwModel.BarrowersInformationModel.LastName,
+                            MiddleName = vwModel.BarrowersInformationModel.MiddleName,
+                            Gender = vwModel.BarrowersInformationModel.Sex,
+                            PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber,
+                            CompanyId = companyId
+                        };
+
+                        //save beneficiary user
+                        user = await RegisterBenefeciary(userModel);
+
+                        //// reverse map parameter need for email sending
+                        //var userdata = _mapper.Map<UserModel>(user);
+
+                        // make the usage of hangfire
+                        userModel.Action = "created";
+                        _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
+
+                        #region Create BeneficiaryInformation
+
+                        beneficiaryModel.UserId = user.Id;
+                        beneficiaryModel.CompanyId = 1;
+                        beneficiaryModel.PagibigNumber = user.PagibigNumber;
+                        beneficiaryModel.LastName = vwModel.BarrowersInformationModel.LastName;
+                        beneficiaryModel.FirstName = vwModel.BarrowersInformationModel.FirstName;
+                        beneficiaryModel.MiddleName = vwModel.BarrowersInformationModel.MiddleName;
+                        beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                        beneficiaryModel.BirthDate = vwModel.BarrowersInformationModel.BirthDate;
+                        beneficiaryModel.MobileNumber = vwModel.BarrowersInformationModel.MobileNumber;
+                        beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
+                        beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
+
+                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+
+                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+
+                        beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                        beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                        beneficiaryModel.PermanentStreetName = vwModel.BarrowersInformationModel.PermanentStreetName;
+                        beneficiaryModel.PermanentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                        beneficiaryModel.PermanentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                        beneficiaryModel.PermanentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                        beneficiaryModel.PermanentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                        beneficiaryModel.PermanentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                        beneficiaryModel.PermanentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+
+                        if (vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress)
+                        {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PermanentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PermanentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PermanentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PermanentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PermanentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PermanentZipCode;
+                        }
+                        else
+                        {
+                            beneficiaryModel.PresentStreetName = vwModel.BarrowersInformationModel.PresentStreetName;
+                            beneficiaryModel.PresentUnitName = vwModel.BarrowersInformationModel.PresentUnitName;
+                            beneficiaryModel.PresentBuildingName = vwModel.BarrowersInformationModel.PresentBuildingName;
+                            beneficiaryModel.PresentLotName = vwModel.BarrowersInformationModel.PresentLotName;
+                            beneficiaryModel.PresentSubdivisionName = vwModel.BarrowersInformationModel.PresentSubdivisionName;
+                            beneficiaryModel.PresentBaranggayName = vwModel.BarrowersInformationModel.PresentBaranggayName;
+                            beneficiaryModel.PresentMunicipalityName = vwModel.BarrowersInformationModel.PresentMunicipalityName;
+                            beneficiaryModel.PresentProvinceName = vwModel.BarrowersInformationModel.PresentProvinceName;
+                            beneficiaryModel.PresentZipCode = vwModel.BarrowersInformationModel.PresentZipCode;
+                        }
+
+                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+
+                        beneficiaryModel.IsPermanentAddressAbroad = vwModel.BarrowersInformationModel.IsPermanentAddressAbroad;  // no condition because all address is required
+                        beneficiaryModel.IsPresentAddressAbroad = vwModel.BarrowersInformationModel.IsPresentAddressAbroad; // no condition because all address is required
+
+                        await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, userId);
+
+                        #endregion Create BeneficiaryInformation
+
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+                    }
+                    else
+                    {
+                        vwModel.ApplicantsPersonalInformationModel.ApprovalStatus = vwModel.ApplicantsPersonalInformationModel.EncodedStatus;
+
+                        user = await _userRepo.GetByIdAsync(vwModel.ApplicantsPersonalInformationModel.UserId);
+
+                        vwModel.BarrowersInformationModel.FirstName = user.FirstName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.MiddleName = user.MiddleName ?? string.Empty;
+                        vwModel.BarrowersInformationModel.LastName = user.LastName ?? string.Empty;
+
+                        vwModel.BarrowersInformationModel.Email = user.Email;
+
+                        vwModel.ApplicantsPersonalInformationModel.PagibigNumber = user.PagibigNumber;
+                        vwModel.BarrowersInformationModel.Sex = user.Gender;
+                        vwModel.BarrowersInformationModel.Suffix = user.Suffix;
+                    }
+
+                    #endregion Register User and Send Email
+
+                    vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
+
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+                    var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+                    applicantCode = newApplicantData.Code;
+
+                    if (vwModel.BarrowersInformationModel != null)
+                    {
+                        vwModel.BarrowersInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+    
+                        await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
+                    }
+
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
+                    {
+                        vwModel.CollateralInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+
+                        await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
+                    }
+
+                    if (vwModel.LoanParticularsInformationModel != null)
+                    {
+                        vwModel.LoanParticularsInformationModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
+                    }
+
+                    if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
+                    {
+                        vwModel.SpouseModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+
+                        await _spouseRepo.SaveAsync(vwModel.SpouseModel);
+                    }
+
+                    if (vwModel.Form2PageModel != null)
+                    {
+                        vwModel.Form2PageModel.ApplicantsPersonalInformationId = newApplicantData.Id;
+
+                        await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
+                    }
+                }
+
+                //edit saving all data
+                else
+                {
+                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+
+                    var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
+
+                    applicantCode = applicationData.Code;
+
+                    user.Id = vwModel.ApplicantsPersonalInformationModel.UserId;
+
+                    if (vwModel.BarrowersInformationModel != null)
+                    {
+                        var barrowerData = await _barrowersInformationRepo.SaveAsync(vwModel.BarrowersInformationModel);
+
+                        #region Create BeneficiaryInformation
+
+                        //beneficiaryModel.UserId = user.Id;
+                        //beneficiaryModel.CompanyId = 1;
+                        //beneficiaryModel.PagibigNumber = user.PagibigNumber;
+                        //beneficiaryModel.LastName = barrowerData.LastName;
+                        //beneficiaryModel.FirstName = barrowerData.FirstName;
+                        //beneficiaryModel.MiddleName = barrowerData.MiddleName;
+                        //beneficiaryModel.MobileNumber = barrowerData.MobileNumber;
+                        //beneficiaryModel.BirthDate = barrowerData.BirthDate;
+                        //beneficiaryModel.Sex = barrowerData.Sex;
+                        //beneficiaryModel.Email = barrowerData.Email;
+                        //beneficiaryModel.PresentUnitName = barrowerData.PresentUnitName;
+                        //beneficiaryModel.PresentBuildingName = barrowerData.PresentBuildingName;
+                        //beneficiaryModel.PresentLotName = barrowerData.PresentLotName;
+                        //beneficiaryModel.PresentSubdivisionName = barrowerData.PresentSubdivisionName;
+                        //beneficiaryModel.PresentBaranggayName = barrowerData.PresentBaranggayName;
+                        //beneficiaryModel.PresentMunicipalityName = barrowerData.PresentMunicipalityName;
+                        //beneficiaryModel.PresentProvinceName = barrowerData.PresentProvinceName;
+                        //beneficiaryModel.PresentZipCode = barrowerData.PresentZipCode;
+
+                        //beneficiaryModel.PermanentUnitName = barrowerData.PermanentUnitName;
+                        //beneficiaryModel.PermanentBuildingName = barrowerData.PermanentBuildingName;
+                        //beneficiaryModel.PermanentLotName = barrowerData.PermanentLotName;
+                        //beneficiaryModel.PermanentSubdivisionName = barrowerData.PermanentSubdivisionName;
+                        //beneficiaryModel.PermanentBaranggayName = barrowerData.PermanentBaranggayName;
+                        //beneficiaryModel.PermanentMunicipalityName = barrowerData.PermanentMunicipalityName;
+                        //beneficiaryModel.PermanentProvinceName = barrowerData.PermanentProvinceName;
+                        //beneficiaryModel.PermanentZipCode = barrowerData.PermanentZipCode;
+
+                        //beneficiaryModel.PropertyDeveloperName = barrowerData.PropertyDeveloperName;
+                        //beneficiaryModel.PropertyLocation = barrowerData.PropertyLocation;
+                        //beneficiaryModel.PropertyUnitLevelName = barrowerData.PropertyUnitLevelName;
+
+                        //beneficiaryModel.IsPermanentAddressAbroad = barrowerData.IsPermanentAddressAbroad.Value;  // no condition because all address is required
+                        //beneficiaryModel.IsPresentAddressAbroad = barrowerData.IsPresentAddressAbroad.Value; // no condition because all address is required
+
+                        //await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
+
+                        #endregion Create BeneficiaryInformation
+                    }
+
+                    if (vwModel.CollateralInformationModel != null && vwModel.CollateralInformationModel.PropertyTypeId != null)
+                    {
+                        await _collateralInformationRepo.SaveAsync(vwModel.CollateralInformationModel);
+                    }
+
+                    if (vwModel.LoanParticularsInformationModel != null)
+                    {
+                        await _loanParticularsInformationRepo.SaveAsync(vwModel.LoanParticularsInformationModel, userId);
+                    }
+
+                    if (vwModel.SpouseModel != null && vwModel.SpouseModel.FirstName != null)
+                    {
+                        vwModel.SpouseModel.LastName = vwModel.SpouseModel.LastName != null ? vwModel.SpouseModel.LastName : string.Empty;
+                        vwModel.SpouseModel.FirstName = vwModel.SpouseModel.FirstName != null ? vwModel.SpouseModel.FirstName : string.Empty;
+
+                        await _spouseRepo.SaveAsync(vwModel.SpouseModel);
+                    }
+
+                    if (vwModel.Form2PageModel != null)
+                    {
+                        await _form2PageRepo.SaveAsync(vwModel.Form2PageModel);
+                    }
+                }
+
+                // last stage pass parameter code
+
+                #region Notification
+
+                var type = vwModel.ApplicantsPersonalInformationModel.Id == 0 ? "Added" : "Updated";
+                var actiontype = type;
+
+                var actionlink = $"Applicants/Details/{applicantCode}";
+
+                await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_APPLICANTSREQUESTS, actionlink, actiontype, applicantCode, userId, companyId);
+
+                #endregion Notification
+
+                return Ok(applicantCode);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveBCFHLAF(ApplicantViewModel vwModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+                }
+
+                var user = new User();
+                var beneficiaryModel = new BeneficiaryInformationModel();
+                var barrowerModel = new BarrowersInformation();
+                int userId = int.Parse(User.Identity.Name);
+
+                var userinfo = await _userRepo.GetUserAsync(userId);
+                var currentuserRoleId = userinfo.UserRoleId;
+
+                //current user is beneficiary
+
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+                var applicantCode = string.Empty;
+
+                //Unmasked
+                vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
+
+                //create  new beneficiary and housingloan application
+
+                var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
                 {

@@ -16,7 +16,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         public int UserId { get; set; }
 
         [Required]
-        [Display(Name = "Pagibig Number", Prompt = "Pagibig Number")]
+        [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }
 
         public int? CompanyId { get; set; }
@@ -47,7 +47,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         public int? Age { get; set; }
 
         [Required]
-        [Display(Name = "Mobile Number", Prompt = "Mobile Number")]
+        [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
         [Required]
@@ -60,65 +60,66 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
 
-         
-        [Display(Name = "Present Unit Name", Prompt = "Present Unit Name")]
+
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PresentUnitName { get; set; }
 
-        [Display(Name = "Present Building Name", Prompt = "Present Building Name")]
+
+        [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
-  
-        [Display(Name = "Present Lot Name", Prompt = "Present Lot Name")]
+
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? PresentLotName { get; set; }
 
-      
-        [Display(Name = "Present Street Name", Prompt = "Present Street Name")]
+
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
-        [Display(Name = "Present Subdivision Name", Prompt = "Present Subdivision Name")]
+        [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string?  PresentSubdivisionName { get; set; }
 
         [Required]
-        [Display(Name = "Present Barangay Name", Prompt = "Present Barangay Name")]
+        [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
         public string? PresentBaranggayName { get; set; }
 
         [Required]
-        [Display(Name = "Present Municipality Name", Prompt = "Present Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PresentMunicipalityName { get; set; }
 
         [Required]
-        [Display(Name = "Present Province Name", Prompt = "Present Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PresentProvinceName { get; set; }
 
         [Required]
-        [Display(Name = "Present Zip Code", Prompt = "Present Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PresentZipCode { get; set; }
 
-        [Display(Name = "Permanent Unit Name", Prompt = "Permanent Unit Name")]
+        [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PermanentUnitName { get; set; }
-
-        [Display(Name = "Permanent Building Name", Prompt = "Permanent Building Name")]
+        [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PermanentBuildingName { get; set; }
 
-        [Display(Name = "Permanent Lot Name", Prompt = "Permanent Lot Name")]
+        [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? PermanentLotName { get; set; }
 
-        [Display(Name = "Permanent Street Name", Prompt = "Permanent Street Name")]
+        [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PermanentStreetName { get; set; }
 
-        [Display(Name = "Permanent Subdivision Name", Prompt = "Permanent Subdivision Name")]
+
+        [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
 
-        [Display(Name = "Permanent Baranggay Name", Prompt = "Permanent Baranggay Name")]
+        [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
         public string? PermanentBaranggayName { get; set; }
 
-        [Display(Name = "Permanent Municipality Name", Prompt = "Permanent Municipality Name")]
+        [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PermanentMunicipalityName { get; set; }
 
-        [Display(Name = "Permanent Province Name", Prompt = "Permanent Province Name")]
+        [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PermanentProvinceName { get; set; }
 
-        [Display(Name = "Permanent Zip Code", Prompt = "Permanent Zip Code")]
+        [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
 
         [Required]
@@ -139,7 +140,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         public DateTime? DateModified { get; set; }
 
-        [Display(Name = "Email", Prompt = "Email")]
+        [Display(Name = "Email Address", Prompt = "Email")]
         public string? Email { get; set; }
 
         public string? ProfilePicture { get; set; } = string.Empty;
@@ -157,5 +158,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
                 Age = age;
             }
         }
+
+        public bool IsBcfCreated { get; set; }
     }
 }

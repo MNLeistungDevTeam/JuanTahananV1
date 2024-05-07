@@ -60,12 +60,14 @@ namespace DMS.Infrastructure.Services
                 var emailAddress = new List<MailboxAddress>();
 
                 emailAddress.Add(MailboxAddress.Parse(setup.Email.Trim()));
-                emailMessage.From.AddRange(emailAddress);
+
+                emailMessage.From.Add(new MailboxAddress(setup.DisplayName, setup.Email));
                 emailMessage.Sender = MailboxAddress.Parse(setup.Email.Trim());
                 emailMessage.To.AddRange(emailList);
                 emailMessage.Subject = subject;
                 emailMessage.Body = body;
                 emailMessage.Date = DateTime.Now;
+
                 //emailMessage.ReplyTo.Add(new MailboxAddress("Jericho ", "jericho.mosqueda@mnleistung.de"));
 
                 using MailKit.Net.Smtp.SmtpClient smtp = new();
@@ -74,7 +76,9 @@ namespace DMS.Infrastructure.Services
                 var forSSL = SecureSocketOptions.SslOnConnect;
                 var forAuto = SecureSocketOptions.Auto;
                 smtp.Connect(setup.Host, setup.Port, forAuto);
+
                 smtp.Authenticate(setup.Email.Trim(), setup.Password);
+
                 await smtp.SendAsync(emailMessage);
                 smtp.Disconnect(true);
             }

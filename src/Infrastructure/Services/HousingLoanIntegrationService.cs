@@ -1,13 +1,18 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.CompanyRepo;
+using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BasicBeneficiaryDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
+using DMS.Domain.Dto.CompanyDto;
+using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Enums;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DMS.Infrastructure.Services
 {
@@ -21,6 +26,8 @@ namespace DMS.Infrastructure.Services
         private readonly INotificationService _notificationService;
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
+        private readonly ICompanyRepository _companyRepo;
+        private readonly IPropertyProjectRepository _propertyProjectRepo;
 
         public HousingLoanIntegrationService(IBarrowersInformationRepository barrowersInformationRepo,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
@@ -29,7 +36,9 @@ namespace DMS.Infrastructure.Services
             IEmailService emailService,
             INotificationService notificationService,
             IBackgroundJobClient backgroundJobClient,
-            IBeneficiaryInformationRepository beneficiaryInformationRepo)
+            IBeneficiaryInformationRepository beneficiaryInformationRepo,
+            ICompanyRepository companyRepo,
+            IPropertyProjectRepository propertyProjectRepo)
         {
             _barrowersInformationRepo = barrowersInformationRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -39,6 +48,8 @@ namespace DMS.Infrastructure.Services
             _notificationService = notificationService;
             _backgroundJobClient = backgroundJobClient;
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
+            _companyRepo = companyRepo;
+            _propertyProjectRepo = propertyProjectRepo;
         }
 
         public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder)
@@ -189,5 +200,37 @@ namespace DMS.Infrastructure.Services
 
             #endregion Notification
         }
+
+        public async Task<IEnumerable<CompanyModel>> GetDevelopers()
+        {
+            var companies = await _companyRepo.GetCompanies();
+            var filteredCompanies = companies
+                .Where(company => company.Id != 1 && company.Code != "JTH-PH")
+                .ToList();
+
+            return filteredCompanies;
+        }
+
+
+
+
+
+        public async Task<PropertyProjectModel> GetProjectsByCompany(int companyId)
+        {
+            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId);
+             
+
+            return projects;
+        }
+
+
+
+
+
+
+        
+
+
+
     }
 }

@@ -155,6 +155,16 @@ public class CompanyController : Controller
     public async Task<IActionResult> GetCompanies() =>
        Ok(await _companyRepo.GetCompanies());
 
+    public async Task<IActionResult> GetDevelopers()
+    {
+        var companies = await _companyRepo.GetCompanies();
+        var filteredCompanies = companies
+      .Where(company => company.Id != 1 && company.Code != "JTH-PH")
+      .ToList();
+
+        return Ok(filteredCompanies);
+    }
+
     public async Task<IActionResult> GetCompany(int id)
     {
         var data = await _companyRepo.GetCompany(id);
@@ -279,5 +289,4 @@ public class CompanyController : Controller
     }
 
     #endregion Operation Methods
-
 }

@@ -52,6 +52,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[BuyerConfirmation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[CollateralInformation]",
          "ObjectType": 0
       },
@@ -144,7 +148,27 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[PropertyLocation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyProject]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyProjectLocation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PropertyType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyUnit]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyUnitProject]",
          "ObjectType": 0
       },
       {

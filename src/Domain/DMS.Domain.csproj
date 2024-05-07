@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Dto\PropertyUnitDto\" />
+    <Folder Include="Dto\PropertyDeveloperDto\" />
+    <Folder Include="Dto\PropertyLocationDto\" />
   </ItemGroup>
 
   <ItemGroup>

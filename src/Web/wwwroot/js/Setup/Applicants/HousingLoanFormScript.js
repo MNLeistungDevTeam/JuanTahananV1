@@ -1,6 +1,9 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const applicantInfoApprovalStatus = $(`[name='ApplicantsPersonalInformationModel.ApprovalStatus']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
+
+const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
 
 $(function () {
     var telNoArray = [];
@@ -10,6 +13,10 @@ $(function () {
     //#region Initialization
 
     $("#btn_savehlf068").prop('disabled', true);
+
+    $("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus === '0' || applicantInfoApprovalStatus === '11'));
+
+    $("#btn_bcfpdf").prop('disabled', (buyerconfirmationCode === null || buyerconfirmationCode.trim() === ''));
 
     $(".selectize").selectize({
         search: false
@@ -1197,10 +1204,17 @@ $(function () {
         $("#btn_savehlf068").prop('disabled', false);
     });
 
-    $("#btn_pdf").on('click', function () {
+    $("#btn_hlafpdf").on('click', function () {
         let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
         let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
 
+        window.open(link, '_blank');
+    });
+
+    $("#btn_bcfpdf").on('click', function () {
+        let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + buyerconfirmationCode;
+
+        // If buyerconfirmationCode is not null or empty, open the link in a new tab
         window.open(link, '_blank');
     });
 

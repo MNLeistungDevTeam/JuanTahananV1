@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
     var defaultUserPic = "/images/user/default.png";
 
     var tbl_beneficiaries = $("#tbl_beneficiaries").DataTable({
