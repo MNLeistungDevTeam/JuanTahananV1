@@ -98,7 +98,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
-        [Required]
+ 
         [Display(Name = "Business", Prompt = "indicate local,if any", Description = "Cell Phone / Mobile Number")]
         public string? BusinessTelNo { get; set; }
 
@@ -114,22 +114,22 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         //Spouse
 
-        [Display(Name = "Last Name", Prompt = "Last Name")]
+        [Display(Name = "Spouse Last Name", Prompt = "Last Name")]
         public string? SpouseLastName { get; set; }
 
-        [Display(Name = "First Name", Prompt = "First Name")]
+        [Display(Name = "Spouse First Name", Prompt = "First Name")]
         public string? SpouseFirstName { get; set; }
 
-        [Display(Name = "Middle Name", Prompt = "Middle Name")]
+        [Display(Name = "Spouse Middle Name", Prompt = "Middle Name")]
         public string? SpouseMiddleName { get; set; }
 
-        [Display(Name = "Extension Name", Prompt = "Extension Name")]
+        [Display(Name = "Spouse Extension Name", Prompt = "Extension Name")]
         public string? SpouseSuffix { get; set; }
 
-        [Display(Name = "Company/Employer/Business Name", Prompt = "Name")]
+        [Display(Name = "Spouse Company/Employer/Business Name", Prompt = "Name")]
         public string? SpouseCompanyEmployerName { get; set; }
 
-        [Display(Name = "Company/Employer/Business Address", Prompt = "Address")]
+        [Display(Name = "Spouse Company/Employer/Business Address", Prompt = "Address")]
         public string? SpouseCompanyEmployerAddress { get; set; }
 
         [Display(Name = "Monthly Salary", Prompt = "(Basic + Allowances)")]
