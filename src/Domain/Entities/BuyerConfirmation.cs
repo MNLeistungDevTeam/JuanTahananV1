@@ -63,7 +63,23 @@ public partial class BuyerConfirmation
 
     public string CompanyEmployerName { get; set; }
 
-    public string CompanyEmployerAddress { get; set; }
+    public string CompanyUnitName { get; set; }
+
+    public string CompanyBuildingName { get; set; }
+
+    public string CompanyLotName { get; set; }
+
+    public string CompanyStreetName { get; set; }
+
+    public string CompanySubdivisionName { get; set; }
+
+    public string CompanyBaranggayName { get; set; }
+
+    public string CompanyMunicipalityName { get; set; }
+
+    public string CompanyProvinceName { get; set; }
+
+    public string CompanyZipCode { get; set; }
 
     public string SpouseLastName { get; set; }
 
@@ -75,7 +91,23 @@ public partial class BuyerConfirmation
 
     public string SpouseCompanyEmployerName { get; set; }
 
-    public string SpouseCompanyEmployerAddress { get; set; }
+    public string SpouseCompanyUnitName { get; set; }
+
+    public string SpouseCompanyBuildingName { get; set; }
+
+    public string SpouseCompanyLotName { get; set; }
+
+    public string SpouseCompanyStreetName { get; set; }
+
+    public string SpouseCompanySubdivisionName { get; set; }
+
+    public string SpouseCompanyBaranggayName { get; set; }
+
+    public string SpouseCompanyMunicipalityName { get; set; }
+
+    public string SpouseCompanyProvinceName { get; set; }
+
+    public string SpouseCompanyZipCode { get; set; }
 
     public decimal? SpouseMonthlySalary { get; set; }
 

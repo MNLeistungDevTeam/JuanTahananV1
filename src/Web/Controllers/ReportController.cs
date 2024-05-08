@@ -9,6 +9,9 @@ using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ReportDto;
+using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence;
 using DMS.Infrastructure.PredefinedReports;
 using DMS.Web.Models;
@@ -84,6 +87,32 @@ public class ReportController : Controller
             }
 
             var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
+
+            return View("RptHousingLoanApplication", report);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+
+
+    [HttpPost]
+
+    [Route("[controller]/LatestHousingForm2")]
+    public async Task<IActionResult> LatestHousingForm2([FromBody]ApplicantViewModel vwModel)
+    {
+        try
+        {
+            ApplicantInformationReportModel reportModel = new()
+            {
+                ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
+                LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
+                CollateralInformationModel = vwModel.CollateralInformationModel,
+                BarrowersInformationModel = vwModel.BarrowersInformationModel,
+                SpouseModel = vwModel.SpouseModel,
+                Form2PageModel = vwModel.Form2PageModel
+            };
+
+            var report = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
 
             return View("RptHousingLoanApplication", report);
         }
