@@ -4,7 +4,7 @@
 
 @model ApplicantViewModel
 @{
-    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "Add Application" : "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
+    string title = string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "BCF & HLAF" : "BCF & HLAF - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 
 
@@ -31,9 +31,11 @@
         <span class='spinner-border spinner-border-lg'></span>
     </div>
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div id="responseContainer"></div>
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
-                @if (!Model.BarrowersInformationModel.IsBcfCreated) 
+                @if (!Model.BarrowersInformationModel.IsBcfCreated)
                 {
                     <li class="nav-item" data-target-div="#bcfdata">
                         <a href="#first" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
@@ -62,10 +64,11 @@
             <div class="tab-content mb-0 b-0">
                 <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
 
-                <form id="frm_hlf068" method="post" asp-action="SaveBCFHLAF" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-                    @if (!Model.BarrowersInformationModel.IsBcfCreated) 
+                <form id="frm_hlf068" method="post" asp-action="@(!Model.BarrowersInformationModel.IsBcfCreated ? "SaveBCFHLAF" : "SaveHLF068")" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+                    @if (!Model.BarrowersInformationModel.IsBcfCreated)
                     {
                         <div id="bcfdata" class="tab-pane">
+
 
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.UserId">
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
@@ -79,7 +82,7 @@
                                     </h3>
                                 </div>
 
-                                <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed"></h3>
+
 
                                 <div class="col-xxl-12">
                                     <h4 class="header-title pb-2 mb-2 border-bottom-dashed">Personal Information</h4>
@@ -261,13 +264,6 @@
 
 
 
-                                <div class="col-md-12">
-                                    <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
-                                        Present Home Address
-                                    </h3>
-                                </div>
-
-
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.PresentUnitName"></label>
@@ -292,7 +288,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.PresentStreetName" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentStreetName">
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentStreetName" required>
                                         <span asp-validation-for="BuyerConfirmationModel.PresentStreetName" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -355,13 +351,79 @@
                                 </div>
 
 
+                                <div class="col-md-12">
+                                    <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                        Company Address Information
+                                    </h3>
+                                </div>
+
+
+
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal">Company Employer/Business Name Address</label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentUnitName">
-                                        <span asp-validation-for="BuyerConfirmationModel.PresentUnitName" class="text-danger"> </span>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyUnitName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyUnitName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyUnitName" class="text-danger"> </span>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyBuildingName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyBuildingName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyBuildingName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyLotName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyLotName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyLotName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyStreetName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyStreetName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyStreetName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanySubdivisionName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanySubdivisionName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanySubdivisionName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyBaranggayName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyBaranggayName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyBaranggayName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyMunicipalityName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyMunicipalityName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyMunicipalityName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyProvinceName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyProvinceName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyProvinceName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" col="9">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.CompanyZipCode"></label>
+                                        <input class="form-control rounded-3 mb-2 codeInputMask" asp-for="BuyerConfirmationModel.CompanyZipCode">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyZipCode" class="text-danger"> </span>
+                                    </div>
+                                </div>
+
+
 
 
 
@@ -430,6 +492,106 @@
                                         <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
+
+
+
+
+                                <div class="col-md-12">
+                                    <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                        Spouse Company Information
+                                    </h3>
+                                </div>
+
+
+
+
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal">Spouse Company Employer/Business Name</label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyEmployerName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyEmployerName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <div class="col-md-12">
+                                    <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                        Spouse Company Address
+                                    </h3>
+                                </div>
+
+
+
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyUnitName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyUnitName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyUnitName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyBuildingName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyBuildingName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyBuildingName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyLotName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyLotName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyLotName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyStreetName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyStreetName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyStreetName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanySubdivisionName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanySubdivisionName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanySubdivisionName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyBaranggayName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyBaranggayName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyBaranggayName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyMunicipalityName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyMunicipalityName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyMunicipalityName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyProvinceName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseCompanyProvinceName">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyProvinceName" class="text-danger"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" col="9">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseCompanyZipCode"></label>
+                                        <input class="form-control rounded-3 mb-2 codeInputMask" asp-for="BuyerConfirmationModel.SpouseCompanyZipCode">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseCompanyZipCode" class="text-danger"> </span>
+                                    </div>
+                                </div>
+
 
 
 
@@ -588,7 +750,6 @@
 
 
 
-
                                 <div class="col-md-12">
                                     <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
                                         Details of Preferred House/Unit Model
@@ -632,6 +793,10 @@
 
 
                         </div>
+
+
+
+
                     }
 
 
@@ -910,7 +1075,7 @@
                         </div>
 
                         <ul class="list-inline wizard mb-0 mt-2">
-                            @if (!Model.BarrowersInformationModel.IsBcfCreated) 
+                            @if (!Model.BarrowersInformationModel.IsBcfCreated)
                             {
                                 <li class="previous list-inline-item">
                                     <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
@@ -2838,6 +3003,8 @@
 
 
                 </form>
+
+
             </div> <!-- tab-content -->
         </div> <!-- end #rootwizard-->
     </div>

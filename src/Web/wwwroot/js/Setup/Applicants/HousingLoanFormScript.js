@@ -4,6 +4,7 @@ const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
 const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
+const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
 $(function () {
     var telNoArray = [];
@@ -14,9 +15,9 @@ $(function () {
 
     $("#btn_savehlf068").prop('disabled', true);
 
-    $("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus === '0' || applicantInfoApprovalStatus === '11'));
+    //$("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus == '0' || applicantInfoApprovalStatus == '11'));
 
-    $("#btn_bcfpdf").prop('disabled', (buyerconfirmationCode === null || buyerconfirmationCode.trim() === ''));
+    $("#btn_bcfpdf").prop('disabled', (buyerconfirmationCode == null || buyerconfirmationCode == ''));
 
     $(".selectize").selectize({
         search: false
@@ -1118,11 +1119,20 @@ $(function () {
                 return;
             }
 
+         
+
             if (editableFlag) {
                 console.log("editableFlag is true");
 
                 currentForm.addClass('was-validated');
                 var isValid = validateForm(currentForm);
+
+
+                if (currentFormName == "bcfdata") {
+                    bcfToHLafConnectedFieldMap();
+                }
+
+
 
                 if (!isValid) {
                     // If validation fails, prevent navigation to the next step
@@ -1146,10 +1156,20 @@ $(function () {
             }
         },
         onPrevious: function (tab, navigation, index) {
+
+
+           
+
+
             console.log("Previous button clicked");
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
+
+
+            if (currentFormName == "loanparticulars") {
+                HLafTobcfConnectedFieldMap();
+            }
 
             // Find the current tab pane
             var currentTabPane = $('.tab-pane').eq(index);
@@ -1499,6 +1519,39 @@ $(function () {
         });
     }
 
+    function rebindValidators2() {
+        var form1 = $("#frm_hlf068");
+
+        form1.on("submit", function (e) {
+            e.preventDefault();
+            let formData = form1.serialize();
+
+            if ($(this).valid() == false) {
+                messageBox("Please fill out all required fields!", "danger", true);
+                return;
+            }
+
+            $.ajax({
+                method: 'POST',
+                url: '/Report/LatestHousingForm2',
+                data: formData,
+                contentType: 'application/json', // Set content type to JSON
+                success: function (response) {
+                    console.log(formData);
+
+                    // Handle success response
+                    console.log(response);
+                    // Do something with the response, like displaying a success message
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    // Show error message to the user
+                }
+            });
+        });
+    }
+
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');
         if (dataValue && dataValue.trim() !== '') {
@@ -1642,15 +1695,15 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
-        let pagibigAvailedLoan = $("[name='BuyerConfirmationModel.isPagibigAvailedLoan']").val();
+        let pagibigAvailedLoan = $("[name='BuyerConfirmationModel.IsPagibigAvailedLoan']").val();
 
-        let coborrower = $("[name='BuyerConfirmationModel.isPagibigCoBorrower']").val();
+        let coborrower = $("[name='BuyerConfirmationModel.IsPagibigCoBorrower']").val();
 
-        let projectProponent = $("[name='BuyerConfirmationModel.ispursueProjectProponent']").val();
-        let termConditions = $("[name='BuyerConfirmationModel.isInformedTermsConditions']").val();
+        let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
+        let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
 
-        let isPagibigMember = $("[name='BuyerConfirmationModel.isPagibigMember']").val();
-        let isOtherSourceIncome = $("[name='BuyerConfirmationModel.isOtherSourceofIncome']").val();
+        let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
+        let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
         if (pagibigAvailedLoan === "True") {
@@ -1721,6 +1774,128 @@ $(function () {
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
     }
+
+    function bcfToHLafConnectedFieldMap() {
+
+        if (hasBcf == "True") {
+
+            return;
+        }
+
+        var lastName = $("#BuyerConfirmationModel_LastName").val();
+        var FirstName = $("#BuyerConfirmationModel_FirstName").val();
+        var MiddleName = $("#BuyerConfirmationModel_MiddleName").val();
+        var Suffix = $("#BuyerConfirmationModel_Suffix").val();
+        var BirthDate = $("#BuyerConfirmationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BarrowersInformationModel_LastName").val(lastName);
+        $("#BarrowersInformationModel_FirstName").val(FirstName);
+        $("#BarrowersInformationModel_MiddleName").val(MiddleName);
+        $("#BarrowersInformationModel_Suffix").val(Suffix);
+        $("#BarrowersInformationModel_BirthDate").val(BirthDate);
+        $('#BarrowersInformationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+
+        var homeNumber = $("#BuyerConfirmationModel_HomeNumber").val();
+        var mobileNumber = $("#BuyerConfirmationModel_MobileNumber").val();
+        var email = $("#BuyerConfirmationModel_Email").val();
+
+        $("#BarrowersInformationModel_HomeNumber").val(homeNumber);
+        $("#BarrowersInformationModel_MobileNumber").val(mobileNumber);
+
+        $("#BarrowersInformationModel_Email").val(email);
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BuyerConfirmationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BuyerConfirmationModel_PresentBuildingName").val();
+        var presentLotName = $("#BuyerConfirmationModel_PresentLotName").val();
+        var presentStreetName = $("#BuyerConfirmationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BuyerConfirmationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BuyerConfirmationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BuyerConfirmationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BuyerConfirmationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BuyerConfirmationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BarrowersInformationModel_PresentUnitName").val(presentUnitName);
+        $("#BarrowersInformationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BarrowersInformationModel_PresentLotName").val(presentLotName);
+        $("#BarrowersInformationModel_PresentStreetName").val(presentStreetName);
+        $("#BarrowersInformationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BarrowersInformationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BarrowersInformationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BarrowersInformationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BarrowersInformationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BuyerConfirmationModel_EmployerName").val();
+
+        $("#BarrowersInformationModel_EmployerName").val(employername);
+    }
+
+
+
+
+    function HLafTobcfConnectedFieldMap() {
+
+        if (hasBcf == "True") {
+
+            return;
+        }
+
+        var lastName = $("#BarrowersInformationModel_LastName").val();
+        var FirstName = $("#BarrowersInformationModel_FirstName").val();
+        var MiddleName = $("#BarrowersInformationModel_MiddleName").val();
+        var Suffix = $("#BarrowersInformationModel_Suffix").val();
+        var BirthDate = $("#BarrowersInformationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BarrowersInformationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BuyerConfirmationModel_LastName").val(lastName);
+        $("#BuyerConfirmationModel_FirstName").val(FirstName);
+        $("#BuyerConfirmationModel_MiddleName").val(MiddleName);
+        $("#BuyerConfirmationModel_Suffix").val(Suffix);
+        $("#BuyerConfirmationModel_BirthDate").val(BirthDate);
+        $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+
+        var homeNumber = $("#BarrowersInformationModel_HomeNumber").val();
+        var mobileNumber = $("#BarrowersInformationModel_MobileNumber").val();
+        var email = $("#BarrowersInformationModel_Email").val();
+
+        $("#BuyerConfirmationModel_HomeNumber").val(homeNumber);
+        $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
+        $("#BuyerConfirmationModel_Email").val(email);
+
+
+
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BarrowersInformationModel_PresentBuildingName").val();
+        var presentLotName = $("#BarrowersInformationModel_PresentLotName").val();
+        var presentStreetName = $("#BarrowersInformationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BarrowersInformationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BarrowersInformationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BarrowersInformationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BarrowersInformationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BarrowersInformationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BuyerConfirmationModel_PresentUnitName").val(presentUnitName);
+        $("#BuyerConfirmationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BuyerConfirmationModel_PresentLotName").val(presentLotName);
+        $("#BuyerConfirmationModel_PresentStreetName").val(presentStreetName);
+        $("#BuyerConfirmationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BuyerConfirmationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BuyerConfirmationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BuyerConfirmationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BuyerConfirmationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BarrowersInformationModel_EmployerName").val();
+
+        $("#BuyerConfirmationModel_EmployerName").val(employername);
+    }
+
 
     //#endregion
 });

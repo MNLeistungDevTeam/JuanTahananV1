@@ -28,19 +28,36 @@
     BusinessTelNo NVARCHAR(50) NULL,
     Email NVARCHAR(255) NULL,
 	CompanyEmployerName  NVARCHAR(255) NULL,
-	CompanyEmployerAddress  NVARCHAR(255) NULL,
+	[CompanyUnitName] NVARCHAR(255) NULL,
+	[CompanyBuildingName] NVARCHAR(255) NULL,
+	[CompanyLotName] NVARCHAR(255) NULL,
+	[CompanyStreetName] NVARCHAR(255) NULL,
+	[CompanySubdivisionName] NVARCHAR(255) NULL,
+	[CompanyBaranggayName] NVARCHAR(255) NULL,
+	[CompanyMunicipalityName] NVARCHAR(255) NULL,
+	[CompanyProvinceName] NVARCHAR(255) NULL,
+	[CompanyZipCode] NVARCHAR(255) NULL,
 
+
+ 
 
 	SpouseLastName  NVARCHAR(100) NULL,
 	SpouseFirstName  NVARCHAR(100) NULL,
 	SpouseMiddleName  NVARCHAR(100) NULL,
 	SpouseSuffix  NVARCHAR(50) NULL,
 	SpouseCompanyEmployerName  NVARCHAR(255) NULL,
-	SpouseCompanyEmployerAddress  NVARCHAR(255) NULL,
+	[SpouseCompanyUnitName] NVARCHAR(255) NULL,
+	[SpouseCompanyBuildingName] NVARCHAR(255) NULL,
+	[SpouseCompanyLotName] NVARCHAR(255) NULL,
+	[SpouseCompanyStreetName] NVARCHAR(255) NULL,
+	[SpouseCompanySubdivisionName] NVARCHAR(255) NULL,
+	[SpouseCompanyBaranggayName] NVARCHAR(255) NULL,
+	[SpouseCompanyMunicipalityName] NVARCHAR(255) NULL,
+	[SpouseCompanyProvinceName] NVARCHAR(255) NULL,
+	[SpouseCompanyZipCode] NVARCHAR(255) NULL,
 
 	SpouseMonthlySalary Decimal(7,2) NULL,
 	 MonthlySalary Decimal(7,2) NULL,
-
 
 	[IsOtherSourceOfIncome] BIT NOT NULL DEFAULT 0,
 	AdditionalSourceIncome Decimal(7,2) NULL,
