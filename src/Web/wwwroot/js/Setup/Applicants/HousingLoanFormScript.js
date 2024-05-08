@@ -1119,20 +1119,15 @@ $(function () {
                 return;
             }
 
-         
-
             if (editableFlag) {
                 console.log("editableFlag is true");
 
                 currentForm.addClass('was-validated');
                 var isValid = validateForm(currentForm);
 
-
                 if (currentFormName == "bcfdata") {
                     bcfToHLafConnectedFieldMap();
                 }
-
-
 
                 if (!isValid) {
                     // If validation fails, prevent navigation to the next step
@@ -1156,16 +1151,10 @@ $(function () {
             }
         },
         onPrevious: function (tab, navigation, index) {
-
-
-           
-
-
             console.log("Previous button clicked");
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
-
 
             if (currentFormName == "loanparticulars") {
                 HLafTobcfConnectedFieldMap();
@@ -1251,6 +1240,56 @@ $(function () {
             e.selectize.lock();
         });
         initializeRadioBtnMisc();
+
+        if (hasBcf == "False") {
+            $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
+                $(`[id="bcf-incomeFields"]`).attr({
+                    hidden: $(this).attr('id') === 'isRbtn2',
+                });
+
+                $(`[id="bcf-incomeFields"] input[type="text"]`).attr({
+                    required: $(this).attr('id') === 'isRbtn1',
+                });
+
+                if ($(this).attr('id') === 'isRbtn2') {
+                    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
+                }
+
+                $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
+            });
+
+            $(`.radio-pagibigRbtn input[name="pagibigRbtn"]`).on(`change`, function (e) {
+                $(`[id="bcf-pagIbigNumField"]`).attr({
+                    hidden: $(this).attr('id') === 'pagibigRbtn2',
+                });
+
+                $(`[id="bcf-pagIbigNumField"] [id="BuyerConfirmationModel_PagibigNumber"]`).attr({
+                    required: $(this).attr('id') === 'pagibigRbtn1',
+                });
+
+                if ($(this).attr('id') === 'pagibigRbtn2') {
+                    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+                }
+
+                $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
+            });
+
+            $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+            });
+
+            $(`.radio-cbwrRbtn input[name="coBorrowerRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigCoBorrower"]`).attr('value', $(this).attr('id') === 'cbwrRbtn1');
+            });
+
+            $(`.radio-prpRbtn input[name="projectPropRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPursueProjectProponent"]`).attr('value', $(this).attr('id') === 'prpRbtn1');
+            });
+
+            $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
+            });
+        }
     });
 
     //#region Methods
@@ -1741,9 +1780,9 @@ $(function () {
         }
 
         if (isOtherSourceIncome === "True") {
-            $("#otherRbtn1").prop("checked", true);
+            $("#isRbtn1").prop("checked", true);
         } else {
-            $("#otherRbtn2").prop("checked", true);
+            $("#isRbtn2").prop("checked", true);
         }
 
         // Set checked status for PendingCase radio buttons
@@ -1776,9 +1815,7 @@ $(function () {
     }
 
     function bcfToHLafConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1833,13 +1870,8 @@ $(function () {
         $("#BarrowersInformationModel_EmployerName").val(employername);
     }
 
-
-
-
     function HLafTobcfConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1865,9 +1897,6 @@ $(function () {
         $("#BuyerConfirmationModel_HomeNumber").val(homeNumber);
         $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
         $("#BuyerConfirmationModel_Email").val(email);
-
-
-
 
         // Accessing values of all fields in the model
         var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
@@ -1895,7 +1924,6 @@ $(function () {
 
         $("#BuyerConfirmationModel_EmployerName").val(employername);
     }
-
 
     //#endregion
 });

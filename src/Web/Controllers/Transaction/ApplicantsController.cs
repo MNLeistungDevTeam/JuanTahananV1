@@ -560,7 +560,6 @@ namespace Template.Web.Controllers.Transaction
                     }
                     vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
 
-
                     vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
                     vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
                     vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
@@ -1176,10 +1175,7 @@ namespace Template.Web.Controllers.Transaction
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
 
-                if (vwModel.BarrowersInformationModel.IsBcfCreated == true)
-                {
-                    var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
-                }
+                var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
                 {
