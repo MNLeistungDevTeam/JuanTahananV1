@@ -60,6 +60,11 @@ $(() => {
 
                 let statusList = [
                     {
+                        approvalStatus: [null],
+                        remarks: `Kindly submit an application first to proceed`,
+                        color: "secondary"
+                    },
+                    {
                         approvalStatus: [0, 1, 2, 3, 5, 11],
                         remarks: `Stage ends after Pag-IBIG credit verification`,
                         color: "warning"
@@ -328,8 +333,6 @@ $(() => {
 
                 let timelineStyle = "default";
                 //let timelineStyle = "append";
-                let classColorList = ["text-primary", "text-warning", "text-danger"];
-                let classIconList = [`far fa-circle`, `fas fa-check-circle`, `fas fa-times-circle`];
 
                 if (timelineStyle === "default") {
                     $(`[id="simplebarWrapper1"]`).removeAttr('hidden');
@@ -553,7 +556,7 @@ $(() => {
                             .addClass(`text-${applicationData.color}`);
                     }
 
-                    if (!failFlag && !completedFlag) {
+                    if (!failFlag && !completedFlag && data.length > 0) {
                         let $currentTimeline = timeline.find(`div[id="timeline${recentTimelineIndex + 1}"]`);
                         $currentTimeline.find(`.timeline-placeholder-icon, .timeline-date, #timeline-item-text`).removeClass(`text-muted`);
                         //$currentTimeline.find(``).removeClass(`text-muted`);
