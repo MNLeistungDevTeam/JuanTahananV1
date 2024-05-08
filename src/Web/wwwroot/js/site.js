@@ -1088,6 +1088,7 @@ function loadBcfPrompt() {
                 </div>
             `,
         allowOutsideClick: false,
+        allowEscapeKey: false,
         confirmButtonText: `<span class="fs-4">Confirm Selection</span>`
     }).then((result) => {
         if (result.isConfirmed) {
@@ -1124,6 +1125,7 @@ function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
         icon: "question",
         showCancelButton: true,
         allowOutsideClick: false,
+        allowEscapeKey: false,
         confirmButtonText: `<span class="fs-4">Confirm</span>`,
         cancelButtonText: `<span class="fs-4">Cancel</span>`,
     }).then((result) => {
