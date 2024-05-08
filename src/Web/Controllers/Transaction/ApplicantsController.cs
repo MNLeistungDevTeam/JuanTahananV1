@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.Charts.Native;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -13,6 +14,7 @@ using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
@@ -243,9 +245,15 @@ namespace Template.Web.Controllers.Transaction
 
                 string returnViewPage = "HLF068";
 
+                bool hasBcf = false;
+
                 if (userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                 {
                     var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(userInfo.Id);
+
+                    var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(userInfo.PagibigNumber);
+
+                    hasBcf = beneficiaryData.IsBcfCreated;
 
                     if (buyerConfirmationInfo != null)
                     {
@@ -302,6 +310,7 @@ namespace Template.Web.Controllers.Transaction
                     if (borrowerInfo != null)
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
+                        vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;
                     }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -464,6 +473,8 @@ namespace Template.Web.Controllers.Transaction
                 if (borrowerInfo != null)
                 {
                     vwModel.BarrowersInformationModel = borrowerInfo;
+
+                    vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
                 }
                 if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
                 {
@@ -516,7 +527,6 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.LastName = beneficiaryData.LastName ?? string.Empty;
                     vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
                     vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
-                    vwModel.BarrowersInformationModel.MobileNumber = beneficiaryData.MobileNumber;
                     vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
                     vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
                     vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
@@ -548,6 +558,24 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
                     }
+                    vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
+
+                    vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    vwModel.BuyerConfirmationModel.BirthDate = beneficiaryData.BirthDate;
+                    vwModel.BuyerConfirmationModel.Email = beneficiaryData.Email;
+                    vwModel.BuyerConfirmationModel.Suffix = userData.Suffix;
+
+                    vwModel.BuyerConfirmationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                    vwModel.BuyerConfirmationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                    vwModel.BuyerConfirmationModel.PresentLotName = beneficiaryData.PresentLotName;
+                    vwModel.BuyerConfirmationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                    vwModel.BuyerConfirmationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                    vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                    vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                    vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
@@ -804,6 +832,15 @@ namespace Template.Web.Controllers.Transaction
         {
             try
             {
+                // Manually remove validation errors for properties of BuyerConfirmationModel
+                var buyerConfirmationProperties = typeof(BuyerConfirmationModel).GetProperties()
+                    .SelectMany(prop => ModelState.Keys.Where(key => key.StartsWith($"BuyerConfirmationModel.{prop.Name}")));
+
+                foreach (var propertyKey in buyerConfirmationProperties)
+                {
+                    ModelState.Remove(propertyKey);
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
@@ -1137,6 +1174,7 @@ namespace Template.Web.Controllers.Transaction
 
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
+
                 var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
