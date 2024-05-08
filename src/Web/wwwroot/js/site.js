@@ -1059,6 +1059,25 @@ function assessCheckbox(checkbox, target) {
 }
 
 
+hlafBcfNav();
+function hlafBcfNav() {
+    // Get all <a> elements in the side navigation menu
+    var sideNavLinks = document.querySelectorAll('.side-nav-item a');
+
+    // Iterate through each <a> element
+    sideNavLinks.forEach(function (link) {
+        // Check if the href attribute starts with '/Applicants/HousingLoanForm'
+        if (link.getAttribute('href').startsWith('/Applicants/HousingLoanForm')) {
+            // Add a click event listener to the link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (navigation)
+                event.preventDefault();
+                loadBcfPrompt();
+            });
+        }
+    });
+}
+
 function loadBcfPrompt() {
     if ($(`[id="UserFlag_IsBcfCreated"]`).data('flag') === true) {
         location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
@@ -1162,5 +1181,4 @@ function updateBcfFlag(flag, callback) {
         },
         success: callback
     });
-
 }
