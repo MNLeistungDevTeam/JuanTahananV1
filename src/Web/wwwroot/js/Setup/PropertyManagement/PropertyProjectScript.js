@@ -133,7 +133,7 @@ $(async function () {
             },
             scrollY: '24rem',
             scrollX: true,
-            /*order: [[5, "asc"]],*/
+            order: [[2, "asc"]],
             pageLength: 10,
             searchHighlight: true,
             stateSave: false,
@@ -147,6 +147,8 @@ $(async function () {
         var all = tbl_propProj.rows({ search: 'applied' }).count();
         var selectedRows = tbl_propProj.rows({ selected: true, search: 'applied' }).count();
         var id = tbl_propProj.rows({ selected: true }).data().pluck("Id").toArray().toString();
+
+        $("#select-all-document").prop("checked", (all == selectedRows && all > 0));
 
         btn_add_PropProjModel.attr({
             "disabled": (selectedRows >= 1)
@@ -163,12 +165,12 @@ $(async function () {
         });
 
         btn_location_PropProjModel.attr({
-            "disabled": !(selectedRows >= 1),
+            "disabled": !(selectedRows === 1),
             "data-id": id
         });
 
         btn_unit_PropProjModel.attr({
-            "disabled": !(selectedRows >= 1),
+            "disabled": !(selectedRows === 1),
             "data-id": id
         });
     });

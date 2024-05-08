@@ -32,11 +32,10 @@
                         <button id="btn_location_PropProjModel" class="btn btn-light btn-sm waves-effect btn_location" disabled><span class="mdi mdi-map-marker-outline"></span> Manage Location</button>
                         <button id="btn_unit_PropProjModel" class="btn btn-light btn-sm waves-effect btn_unit" disabled><span class="mdi mdi-map-marker-outline"></span> Manage Unit</button>
                         <button class="btn btn-light btn-sm waves-effect" id="btn_projectrefresh"><span class="mdi mdi-refresh"></span> Refresh</button>
-
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="input-group float-end" style="width:250px;">
-                            <input bound="tbl_PropProjModel" type="search" class="form-control form-control-sm" placeholder="Search..." />
+                            <input bound="tbl_PropProj" type="search" class="form-control form-control-sm" placeholder="Search..." />
                             <span class="input-group-text"><i class="fe-search"></i></span>
                         </div>
                     </div>
@@ -241,5 +240,5 @@
 
 @section Scripts {
     <script src="~/js/validation.bundle.js" asp-append-version="true"> </script>
-    <script src="~/js/Setup/PropertyManagement/PropertyProjectScript.js"></script>
+    <script src="~/js/Setup/PropertyManagement/PropertyProjectScript.js" asp-append-version="true"></script>
 }
