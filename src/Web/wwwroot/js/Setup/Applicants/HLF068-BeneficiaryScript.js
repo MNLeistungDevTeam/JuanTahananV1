@@ -1,5 +1,4 @@
-﻿
-const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
@@ -1198,7 +1197,7 @@ $(function () {
     $(`[id="form2"] .next button`).on('click', function (e) {
         loadBcfPreview();
     });
-    
+
     $(`[id="previewBcf"] .next button`).on('click', function (e) {
         loadHlafPreview();
     });
@@ -1208,7 +1207,6 @@ $(function () {
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
-
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
@@ -1627,40 +1625,6 @@ $(function () {
             //        });
             //    }
             //});
-        });
-    }
-
-    function rebindValidators2() {
-        var form1 = $("#frm_hlf068");
-
-        form1.on("submit", function (e) {
-            e.preventDefault();
-            let formData = new FormData(e.target);
-
-            if ($(this).valid() == false) {
-                messageBox("Please fill out all required fields!", "danger", true);
-                return;
-            }
-
-            $.ajax({
-                method: 'POST',
-                url: '/Report/LatestHousingForm2',
-                data: JSON.stringify(formData), // Convert to JSON string
-                contentType: 'application/json', // Set content type to JSON
-                success: function (response) {
-                    // Redirect to another URL based on the response
-                    window.location.href = '/Report/LatestHousingForm2';
-
-                    // Handle success response
-                    console.log(response);
-                    // Do something with the response, like displaying a success message
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                    // Show error message to the user
-                }
-            });
         });
     }
 
@@ -2180,13 +2144,19 @@ $(function () {
 
     function loadBcfPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = form1.serialize();
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
             method: 'POST',
-            url: '/Report/LatestBuyerConfirmationForm2',
+            url: '/Report/LatestBCFB64',
             data: formData, // Convert to JSON string
-            contentType: 'application/json', // Set content type to JSON
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
             success: function (response) {
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
@@ -2225,7 +2195,6 @@ $(function () {
                             console.error(error);
                         })
                     }
-
                 }).catch(function (reason) {
                     // PDF loading error
                     console.error(reason);
@@ -2235,19 +2204,32 @@ $(function () {
                 // Handle error
                 console.error(xhr.responseText);
                 // Show error message to the user
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
             }
         });
     }
 
     function loadHlafPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = form1.serialize();
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        // var formData = form1.serialize();
 
         $.ajax({
             method: 'POST',
             url: '/Report/LatestHousingFormB64',
             data: formData, // Convert to JSON string
-            contentType: 'application/json', // Set content type to JSON
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
             success: function (response) {
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
@@ -2287,11 +2269,19 @@ $(function () {
                         })
                     }
 
+                    //  $("#beneficiary-overlay").addClass('d-none');
                 }).catch(function (reason) {
                     // PDF loading error
                     console.error(reason);
                 });
             },
+
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            },
+
             error: function (xhr, status, error) {
                 // Handle error
                 console.error(xhr.responseText);

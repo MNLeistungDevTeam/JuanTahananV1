@@ -133,7 +133,7 @@ public class ReportController : Controller
             };
 
             // Generate the report as a MemoryStream
-            var reportStream = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+            var reportStream = await _reportService.GenerateHousingLoanPDF(reportModel, _hostingEnvironment.WebRootPath);
 
 
             // Return the byte array as a FileStreamResult with the appropriate content type and file name
@@ -161,7 +161,7 @@ public class ReportController : Controller
             };
 
             // Generate the report as a MemoryStream
-            var reportStream = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+            var reportStream = await _reportService.GenerateHousingLoanPDF(reportModel, _hostingEnvironment.WebRootPath);
 
             // Return the byte array as a FileStreamResult with the appropriate content type and file name
             //return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
@@ -176,7 +176,7 @@ public class ReportController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> LatestBuyerConfirmationForm2(ApplicantViewModel vwModel)
+    public async Task<IActionResult> LatestBCFB64(ApplicantViewModel vwModel)
     {
         try
         {
@@ -186,7 +186,7 @@ public class ReportController : Controller
             };
 
             // Generate the report as a MemoryStream
-            var reportStream = await _reportService.GenerateBuyerConfirmationFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+            var reportStream = await _reportService.GenerateBuyerConfirmationPDF(reportModel, _hostingEnvironment.WebRootPath);
 
 
             var b64 = Convert.ToBase64String(reportStream);

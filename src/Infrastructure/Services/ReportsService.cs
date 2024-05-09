@@ -170,11 +170,12 @@ namespace DMS.Infrastructure.Services
             }
         }
 
-        public async Task<byte[]> GenerateHousingLoanFormNoCode(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
+        public async Task<byte[]> GenerateHousingLoanPDF(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
         {
             try
             {
                 var housingFormDetail = new LoanApplicationForm();
+
                 XRSubreport formPage1 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage1", true) as XRSubreport;
                 XRSubreport formPage2 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage2", true) as XRSubreport;
 
@@ -238,35 +239,35 @@ namespace DMS.Infrastructure.Services
             }
         }
 
-        public async Task<byte[]> GenerateBuyerConfirmationFormNoCode(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
+        public async Task<byte[]> GenerateBuyerConfirmationPDF(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
         {
             try
             {
-                var housingFormDetail = new BuyerConfirmation();
+                var bcfDetail = new BuyerConfirmation();
 
-                BuyerConfirmationModel applicantInfoModel = new();
+                BuyerConfirmationModel buyerconfirmModel = new();
 
-                applicantInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BuyerConfirmationModel);
+                buyerconfirmModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BuyerConfirmationModel);
 
                 List<ApplicantInformationReportModel> dataSource = new()
 
                 {
                     new ApplicantInformationReportModel()
                     {
-                  BuyerConfirmationModel = applicantInfoModel,
+                          BuyerConfirmationModel = buyerconfirmModel,
                     }
                 };
 
-                housingFormDetail.DataSource = dataSource;
+                bcfDetail.DataSource = dataSource;
 
-                housingFormDetail.CreateDocument(); // Ensure document creation
+                bcfDetail.CreateDocument(); // Ensure document creation
 
                 //Generate a unique file name for the temporary PDF file
 
                 string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
 
                 //Save the document to a file
-                housingFormDetail.ExportToPdf(filePath);
+                bcfDetail.ExportToPdf(filePath);
 
                 //Read the saved file into a byte array
                 byte[] fileBytes = await File.ReadAllBytesAsync(filePath);

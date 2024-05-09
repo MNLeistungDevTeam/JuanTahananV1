@@ -81,6 +81,8 @@ $(function () {
     //initializeIntlTelInput();
     initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
+    initializePdfJs();
+
     //assessPresentPermanentCheckbox();
 
     assessCheckbox(
@@ -1098,6 +1100,14 @@ $(function () {
 
     //#endregion
 
+    $(`[id="form2"] .next button`).on('click', function (e) {
+        loadBcfPreview();
+    });
+
+    $(`[id="previewBcf"] .next button`).on('click', function (e) {
+        loadHlafPreview();
+    });
+
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
@@ -1112,12 +1122,10 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            // Validate the current form
+            currentForm.addClass('was-validated');
 
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                return;
-            }
+            // Validate the current form
+            var isValid = validateForm(currentForm);
 
             if (editableFlag) {
                 console.log("editableFlag is true");
@@ -1140,6 +1148,10 @@ $(function () {
 
                     // Show the previous form
                     prevForm.removeClass('fade').prop('hidden', false);
+
+                    if (currentFormName == "bcfdata") {
+                        bcfToHLafConnectedFieldMap();
+                    }
                 }
             } else {
                 console.log('fade executed');
@@ -1149,6 +1161,14 @@ $(function () {
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
             }
+
+            // If current form is "form2", return without proceeding to next step
+            if (currentFormName == "previewHlaf") {
+                $("#previewHlaf").removeClass('fade').prop('hidden', false);
+                return;
+            }
+
+            progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
@@ -1167,11 +1187,15 @@ $(function () {
             var nextForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
+            //$("#form3").addClass('was-validated').prop('hidden', true);
+
             // Hide the current form
             currentForm.addClass('fade').prop('hidden', true);
 
             // Show the next form
             nextForm.removeClass('fade').prop('hidden', false);
+
+            progressCheck(nextForm.attr('id'));
 
             // Always return true to allow navigation to the previous step
             return true;
@@ -1426,9 +1450,6 @@ $(function () {
             }
         });
 
-
-        return;
-
         $form.on("submit", function (e) {
             e.preventDefault();
 
@@ -1558,68 +1579,6 @@ $(function () {
             //        });
             //    }
             //});
-        });
-    }
-
-
-    reviewHLAF();
-    function reviewHLAF() {
-        var form = $("#frm_hlf068");
-
-        form.on("submit", function (e) {
-            e.preventDefault();
-            let formData = new FormData(e.target);
-
-            console.log(formData);
-
-            if ($(this).valid() == false) {
-                messageBox("Please fill out all required fields!", "danger", true);
-                return;
-            }
-
-            $.ajax({
-                url: baseUrl + "Report/LatestHousingForm2",
-                method: $(this).attr("method"),
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data, textstatus, request) {
-                    if (typeof (data) != "string") {
-                        let a = document.createElement('a');
-                        let url = window.URL.createObjectURL(data);
-                        let filename = "";
-
-                        var disposition = request.getResponseHeader('Content-Disposition');
-                        if (disposition && disposition.indexOf('attachment') !== -1) {
-                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                            var matches = filenameRegex.exec(disposition);
-                            if (matches != null && matches[1]) {
-                                filename = matches[1].replace(/['"]/g, '');
-                            }
-                        }
-
-                        a.href = url;
-                        a.download = filename;
-                        document.body.append(a);
-                        a.click();
-                        a.remove();
-                        window.URL.revokeObjectURL(url);
-                    } else {
-                        toastr.error("No Record Found!");
-                    }
-
-                    
-                },
-                error: function (xhr, response, error) {
-                    console.log(xhr, response, error);
-                    toastr.error("No Record Found!", "Error Occurred!");
-                 
-                }
-            });
         });
     }
 
@@ -2064,6 +2023,209 @@ $(function () {
 
         //var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
         //$("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+    }
+
+    function progressCheck(targetForm = "bcfdata") {
+        console.log("execute");
+        if ($(`#bcfdata`).length === 0) {
+            targetForm = "loanparticulars";
+        }
+
+        var steps = $(".progressbar .progress-step");
+        let stepIndex = [
+            {
+                formId: ["bcfdata"],
+                progress: 0
+            },
+            {
+                formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                progress: 1
+            },
+            {
+                formId: ["previewBcf"],
+                progress: 2
+            },
+            {
+                formId: ["previewHlaf"],
+                progress: 3
+            }
+        ];
+
+        currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
+
+        steps.each((index, step) => {
+            if (index === currentStep) {
+                step.classList.remove("completed");
+                step.classList.add("current");
+            }
+            else if (index < currentStep) {
+                step.classList.add("completed");
+            }
+            else {
+                step.classList.remove("current");
+                step.classList.remove("completed");
+            }
+        });
+
+        const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
+
+        let width = ((allCurrentClasses.length / (steps.length - 1)) * 100) + allCurrentClasses.length;
+
+        if (width > 100) width = 100;
+
+        $(`.progressbar #progress`).css('width', `${width}%`);
+    }
+
+    function initializePdfJs() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
+    }
+
+    function loadBcfPreview() {
+        var form1 = $("#frm_hlf068");
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestBCFB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="bcfPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="bcfPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            }
+        });
+    }
+
+    function loadHlafPreview() {
+        var form1 = $("#frm_hlf068");
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        // var formData = form1.serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestHousingFormB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="hlafPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="hlafPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+
+                    //  $("#beneficiary-overlay").addClass('d-none');
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            },
+
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            }
+        });
     }
 
     //#endregion
