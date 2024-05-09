@@ -135,8 +135,39 @@ public class ReportController : Controller
             // Generate the report as a MemoryStream
             var reportStream = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
 
+
             // Return the byte array as a FileStreamResult with the appropriate content type and file name
             return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> LatestHousingFormB64(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            ApplicantInformationReportModel reportModel = new()
+            {
+                ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
+                LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
+                CollateralInformationModel = vwModel.CollateralInformationModel,
+                BarrowersInformationModel = vwModel.BarrowersInformationModel,
+                SpouseModel = vwModel.SpouseModel,
+                Form2PageModel = vwModel.Form2PageModel
+            };
+
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+
+            // Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
         }
         catch (Exception ex)
         {
@@ -157,8 +188,13 @@ public class ReportController : Controller
             // Generate the report as a MemoryStream
             var reportStream = await _reportService.GenerateBuyerConfirmationFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
 
-            // Return the byte array as a FileStreamResult with the appropriate content type and file name
-            return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+
+
+            //// Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
         }
         catch (Exception ex)
         {

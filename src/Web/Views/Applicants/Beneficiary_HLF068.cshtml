@@ -59,6 +59,14 @@
                     <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
+                <li class="nav-item" data-target-div="#previewBcf">
+                    <a href="#sixth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
+                <li class="nav-item" data-target-div="#previewHlaf">
+                    <a href="#seventh" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
             </ul>
 
             <div class="row">
@@ -89,7 +97,7 @@
                     <ul>
                         <li class="text-primary mb-2">
                             These are <span class="fw-bold">not</span> the final application forms, but they will auto-fill the 
-                            Buyer's Confirmation Form (BCF) and Housing Loan Application Form (HLAF) PDFs you need for your application.
+                            Buyer Confirmation Form (BCF) and Housing Loan Application Form (HLAF) PDFs you need for your application.
                             These PDFs will need to be printed, signed, scanned, and uploaded as part of your application.
                         </li>
                         <li class="text-primary">
@@ -831,12 +839,7 @@
 
 
                         </div>
-
-
-
-
                     }
-
 
                     <div class="tab-pane @(!Model.BarrowersInformationModel.IsBcfCreated ? "fade" : "")" id="loanparticulars" @(!Model.BarrowersInformationModel.IsBcfCreated ? "hidden" : "")>
 
@@ -1124,7 +1127,6 @@
                             </li>
                         </ul>
                     </div>
-
 
                     <div class="tab-pane fade" id="collateraldata" hidden>
 
@@ -1697,7 +1699,6 @@
                         </div>
                     </div>
 
-
                     <div class="tab-pane fade" id="spousedata" hidden>
 
                         @*     <form id="spousedata" method="post" action="#" class="form-horizontal needs-validation" novalidate>   </form> *@
@@ -1993,7 +1994,6 @@
                             </ul>
                         </div>
                     </div>
-
 
                     <div class="tab-pane fade" id="form2" hidden>
 
@@ -3030,15 +3030,54 @@
                             </li>
 
                             <li class="next list-inline-item float-end">
-                                <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
+                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
                             </li>
                         </ul>
                     </div>
 
+                    <div class="tab-pane fade" id="previewBcf" hidden>
 
+                        <div class="row">
+                            <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                                
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <ul class="pager wizard mb-0 list-inline mt-1">
+                                    <li class="previous list-inline-item">
+                                        <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    </li>
+                                    <li class="next list-inline-item float-end">
+                                        <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="tab-pane fade" id="previewHlaf" hidden>
 
+                        <div class="row">
+                            <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="hlafPreview">
+                                
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <ul class="pager wizard mb-0 list-inline mt-1">
+                                    <li class="previous list-inline-item">
+                                        <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    </li>
+                            <li class="next list-inline-item float-end">
+                                <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
+                            </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
                 </form>
 
