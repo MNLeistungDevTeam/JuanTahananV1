@@ -30,9 +30,6 @@ public class PropertyProjectModel
 
     public string? CompanyName { get; set; }
 
-
     public int LocationId { get; set; }
+    public int UnitId { get; set; }
 }
-
-
-

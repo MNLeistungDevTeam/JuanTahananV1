@@ -15,17 +15,10 @@ public class PropertyProjectController : Controller
     #region Fields
 
     private readonly IPropertyProjectRepository _propertyProjectRepo;
-    private readonly IPropertyLocationRepository _propertyLocationRepo;
-    private readonly IPropertyProjectLocationRepository _propertyProjectLocationRepo;
 
-    public PropertyProjectController(
-        IPropertyProjectRepository propertyProjectRepo,
-        IPropertyLocationRepository propertyLocationRepo,
-        IPropertyProjectLocationRepository propertyProjectLocationRepo)
+    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo)
     {
         _propertyProjectRepo = propertyProjectRepo;
-        _propertyLocationRepo = propertyLocationRepo;
-        _propertyProjectLocationRepo = propertyProjectLocationRepo;
     }
 
     #endregion Fields
@@ -54,27 +47,11 @@ public class PropertyProjectController : Controller
     public async Task<IActionResult> GetPropertyProjectById(int id) =>
         Ok(await _propertyProjectRepo.GetById(id));
 
-
-
     public async Task<IActionResult> GetPropertyLocationByProject(int id) =>
        Ok(await _propertyProjectRepo.GetPropertyLocationByProjectAsync(id));
 
-
-    
-
-    public async Task<IActionResult> GetProjectLocationByProjectId(int id)
-    {
-        try
-        {
-            var projectLocation = await _propertyProjectLocationRepo.GetbyProjectId(id);
-
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
+    public async Task<IActionResult> GetPropertyUnitByProject(int id) =>
+        Ok(await _propertyProjectRepo.GetPropertyUnitByProjectAsync(id));
 
     #endregion API GETTERS
 
@@ -99,10 +76,6 @@ public class PropertyProjectController : Controller
             return BadRequest(ex.Message);
         }
     }
-
-
-
-
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -142,10 +115,43 @@ public class PropertyProjectController : Controller
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SaveProjectUnit(PropertyManagementViewModel vwModel)
+    {
+        try
+        {
+            //if (!ModelState.IsValid)
+            //    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
 
+            var userId = int.Parse(User.Identity.Name);
+            var companyId = int.Parse(User.FindFirstValue("Company"));
 
+            List<PropertyUnitProjectModel> dcModel = new();
 
+            if (vwModel.PropertyUnitIds != null)
+            {
+                string[] tempIds = vwModel.PropertyUnitIds.Split(',');
+                int[] coaIds = Array.ConvertAll(tempIds, s => int.Parse(s));
 
+                foreach (var item in coaIds)
+                {
+                    PropertyUnitProjectModel dCoa = new()
+                    {
+                        ProjectId = vwModel.PropUnitProjModel.ProjectId,
+                        UnitId = item
+                    };
+
+                    dcModel.Add(dCoa);
+                }
+            }
+
+            await _propertyProjectRepo.SaveProjectUnits(vwModel.PropProjModel, dcModel, userId);
+
+            return Ok();
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
 
     [HttpDelete]
     public async Task<IActionResult> DeletePropertyProject(string ids)

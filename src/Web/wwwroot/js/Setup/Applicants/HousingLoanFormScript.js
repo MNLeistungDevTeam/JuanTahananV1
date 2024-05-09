@@ -1426,6 +1426,9 @@ $(function () {
             }
         });
 
+
+        return;
+
         $form.on("submit", function (e) {
             e.preventDefault();
 
@@ -1558,12 +1561,16 @@ $(function () {
         });
     }
 
-    function rebindValidators2() {
-        var form1 = $("#frm_hlf068");
 
-        form1.on("submit", function (e) {
+    reviewHLAF();
+    function reviewHLAF() {
+        var form = $("#frm_hlf068");
+
+        form.on("submit", function (e) {
             e.preventDefault();
-            let formData = form1.serialize();
+            let formData = new FormData(e.target);
+
+            console.log(formData);
 
             if ($(this).valid() == false) {
                 messageBox("Please fill out all required fields!", "danger", true);
@@ -1571,21 +1578,46 @@ $(function () {
             }
 
             $.ajax({
-                method: 'POST',
-                url: '/Report/LatestHousingForm2',
-                data: formData,
-                contentType: 'application/json', // Set content type to JSON
-                success: function (response) {
-                    console.log(formData);
-
-                    // Handle success response
-                    console.log(response);
-                    // Do something with the response, like displaying a success message
+                url: baseUrl + "Report/LatestHousingForm2",
+                method: $(this).attr("method"),
+                xhrFields: {
+                    responseType: 'blob'
                 },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                    // Show error message to the user
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data, textstatus, request) {
+                    if (typeof (data) != "string") {
+                        let a = document.createElement('a');
+                        let url = window.URL.createObjectURL(data);
+                        let filename = "";
+
+                        var disposition = request.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            var matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        a.href = url;
+                        a.download = filename;
+                        document.body.append(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    } else {
+                        toastr.error("No Record Found!");
+                    }
+
+                    
+                },
+                error: function (xhr, response, error) {
+                    console.log(xhr, response, error);
+                    toastr.error("No Record Found!", "Error Occurred!");
+                 
                 }
             });
         });
@@ -1805,6 +1837,9 @@ $(function () {
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
+
+            $("#bcf-incomeFields").prop("hidden", !$("#isRbtn1").is(":checked"));
+            $("#bcf-pagIbigNumField").prop("hidden", !$("#pagibigRbtn1").is(":checked"));
         }
 
         // Set miscellanous input to disable
@@ -1868,6 +1903,59 @@ $(function () {
         var employername = $("#BuyerConfirmationModel_EmployerName").val();
 
         $("#BarrowersInformationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseLastName').val();
+
+        $('#SpouseModel_LastName').val(spouseLastName);
+        $('#SpouseModel_FirstName').val(spouseFirstName);
+        $('#SpouseModel_Suffix').val(spouseExtensionName);
+        $('#SpouseModel_MiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#BuyerConfirmationModel_SpouseCompanyUnitName').val();
+        var spouseCompanyBuilding = $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val();
+        var spouseCompanyLot = $('#BuyerConfirmationModel_SpouseCompanyLotName').val();
+        var spouseCompanyStreet = $('#BuyerConfirmationModel_SpouseCompanyStreetName').val();
+        var spouseCompanySubdivision = $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val();
+        var spouseCompanyBaranggay = $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val();
+        var spouseCompanyMunicipality = $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val();
+        var spouseCompanyProvince = $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val();
+        var spouseCompanyZipcode = $('#BuyerConfirmationModel_SpouseCompanyZipCode').val();
+
+        $('#SpouseModel_SpouseEmploymentUnitName').val(spouseEmploymentUnit);
+        $('#SpouseModel_SpouseEmploymentBuildingName').val(spouseCompanyBuilding);
+        $('#SpouseModel_SpouseEmploymentLotName').val(spouseCompanyLot);
+        $('#SpouseModel_SpouseEmploymentStreetName').val(spouseCompanyStreet);
+        $('#SpouseModel_SpouseEmploymentSubdivisionName').val(spouseCompanySubdivision);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').val(spouseCompanyBaranggay);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').val(spouseCompanyMunicipality);
+        $('#SpouseModel_SpouseEmploymentProvinceName').val(spouseCompanyProvince);
+        $('#SpouseModel_SpouseEmploymentZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BuyerConfirmationModel_CompanyUnitName').val();
+        var companyBldgName = $('#BuyerConfirmationModel_CompanyBuildingName').val();
+        var companyLotNo = $('#BuyerConfirmationModel_CompanyLotName').val();
+        var companySreetName = $('#BuyerConfirmationModel_CompanyStreetName').val();
+        var companySubd = $('#BuyerConfirmationModel_CompanySubdivisionName').val();
+        var companyBrgy = $('#BuyerConfirmationModel_CompanyBaranggayName').val();
+        var companyMuni = $('#BuyerConfirmationModel_CompanyMunicipalityName').val();
+        var companyProv = $('#BuyerConfirmationModel_CompanyProvinceName').val();
+        var companyZipcode = $('#BuyerConfirmationModel_CompanyZipCode').val();
+
+        $('#BarrowersInformationModel_BusinessUnitName').val(companyUnit);
+        $('#BarrowersInformationModel_BusinessBuildingName').val(companyBldgName);
+        $('#BarrowersInformationModel_BusinessLotName').val(companyLotNo);
+        $('#BarrowersInformationModel_BusinessStreetName').val(companySreetName);
+        $('#BarrowersInformationModel_BusinessSubdivisionName').val(companySubd);
+        $('#BarrowersInformationModel_BusinessBaranggayName').val(companyBrgy);
+        $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
+        $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
+        $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
+
+        //var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
+        //$("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
     }
 
     function HLafTobcfConnectedFieldMap() {
@@ -1923,6 +2011,59 @@ $(function () {
         var employername = $("#BarrowersInformationModel_EmployerName").val();
 
         $("#BuyerConfirmationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#SpouseModel_LastName').val();
+        var spouseFirstName = $('#SpouseModel_FirstName').val();
+        var spouseExtensionName = $('#SpouseModel_Suffix').val();
+        var spouseMiddleName = $('#SpouseModel_MiddleName').val();
+
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
+        var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
+        var spouseCompanyLot = $('#SpouseModel_SpouseEmploymentLotName').val();
+        var spouseCompanyStreet = $('#SpouseModel_SpouseEmploymentStreetName').val();
+        var spouseCompanySubdivision = $('#SpouseModel_SpouseEmploymentSubdivisionName').val();
+        var spouseCompanyBaranggay = $('#SpouseModel_SpouseEmploymentBaranggayName').val();
+        var spouseCompanyMunicipality = $('#SpouseModel_SpouseEmploymentMunicipalityName').val();
+        var spouseCompanyProvince = $('#SpouseModel_SpouseEmploymentProvinceName').val();
+        var spouseCompanyZipcode = $('#SpouseModel_SpouseEmploymentZipCode').val();
+
+        $('#BuyerConfirmationModel_SpouseCompanyUnitName').val(spouseEmploymentUnit);
+        $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val(spouseCompanyBuilding);
+        $('#BuyerConfirmationModel_SpouseCompanyLotName').val(spouseCompanyLot);
+        $('#BuyerConfirmationModel_SpouseCompanyStreetName').val(spouseCompanyStreet);
+        $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val(spouseCompanySubdivision);
+        $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val(spouseCompanyBaranggay);
+        $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val(spouseCompanyMunicipality);
+        $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val(spouseCompanyProvince);
+        $('#BuyerConfirmationModel_SpouseCompanyZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BarrowersInformationModel_BusinessUnitName').val();
+        var companyBldgName = $('#BarrowersInformationModel_BusinessBuildingName').val();
+        var companyLotNo = $('#BarrowersInformationModel_BusinessLotName').val();
+        var companySreetName = $('#BarrowersInformationModel_BusinessStreetName').val();
+        var companySubd = $('#BarrowersInformationModel_BusinessSubdivisionName').val();
+        var companyBrgy = $('#BarrowersInformationModel_BusinessBaranggayName').val();
+        var companyMuni = $('#BarrowersInformationModel_BusinessMunicipalityName').val();
+        var companyProv = $('#BarrowersInformationModel_BusinessProvinceName').val();
+        var companyZipcode = $('#BarrowersInformationModel_BusinessZipCode').val();
+
+        $('#BuyerConfirmationModel_CompanyUnitName').val(companyUnit);
+        $('#BuyerConfirmationModel_CompanyBuildingName').val(companyBldgName);
+        $('#BuyerConfirmationModel_CompanyLotName').val(companyLotNo);
+        $('#BuyerConfirmationModel_CompanyStreetName').val(companySreetName);
+        $('#BuyerConfirmationModel_CompanySubdivisionName').val(companySubd);
+        $('#BuyerConfirmationModel_CompanyBaranggayName').val(companyBrgy);
+        $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
+        $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
+        $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
+
+        //var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
+        //$("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
     }
 
     //#endregion

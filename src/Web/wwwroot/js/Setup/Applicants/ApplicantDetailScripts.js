@@ -150,7 +150,6 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
-                    const convertedSize = (item.DocumentSize / (1024 * 1024)).toFixed(1); //document Size
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
                     //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
@@ -212,7 +211,7 @@ $(async function () {
 				                                </div>
 				                                <div class="col ps-0">
 					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                                <p class="mb-0">${convertedSize} MB</p>
+					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                                </div>
 				                                <div class="col-auto">
 					                                <!-- Button -->
@@ -247,7 +246,6 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
-                    const convertedSize = (item.DocumentSize / (1024 * 1024)).toFixed(1); //document Size
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
                     if (item.HasSubdocument === 1) {
@@ -308,7 +306,7 @@ $(async function () {
 				                            </div>
 				                            <div class="col ps-0">
 					                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                            <p class="mb-0">${convertedSize} MB</p>
+					                            <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                            </div>
 				                            <div class="col-auto">
 					                            <!-- Button -->
@@ -375,7 +373,6 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
-                    const convertedSize = (item.DocumentSize / (1024 * 1024)).toFixed(1); //document Size
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
                     //groupHtml += `<div class="file-upload-wrapper">
@@ -420,9 +417,9 @@ $(async function () {
                                                     </span>
 					                            </div>
 				                            </div>
-				                            <div class="col ps-0">
+				                            <div class="col ps-0" >
 					                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                            <p class="mb-0">${convertedSize} MB</p>
+					                            <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                            </div>
 				                            <div class="col-auto">
 					                            <!-- Button -->
@@ -436,7 +433,6 @@ $(async function () {
                             </div>
                         </div>
                     `;
-
                 });
 
                 groupHtml += `</div></div>`;
@@ -712,6 +708,12 @@ $(async function () {
         }
         return true; // Return true if all items have files attached
     }
+
+    function formatSize(documentSizeInBytes) {
+        const sizeInMB = documentSizeInBytes / (1024 * 1024);
+        const sizeInKB = documentSizeInBytes / 1024;
+        return documentSizeInBytes ? (sizeInMB >= 1 ? sizeInMB.toFixed(1) + ' MB' : sizeInKB.toFixed(1) + ' KB') : "";
+    };
 
     //#endregion Function
 

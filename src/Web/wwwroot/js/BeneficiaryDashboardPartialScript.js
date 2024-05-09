@@ -187,6 +187,7 @@ $(() => {
                 }
                 else if (data.ApprovalStatus === 0) {
                     // Application in Draft
+                    creditHistoryLabel = `Your application currently`;
                     creditHistoryStatus = "In Draft";
                     creditHistoryRemarks = "Kindly complete and submit requirements";
 

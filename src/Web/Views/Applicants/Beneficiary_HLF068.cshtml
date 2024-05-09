@@ -110,7 +110,7 @@
 
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.UserId">
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
-                            <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber">
+                            @* <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber"> *@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Code">
 
                             <div class="row gy-2">
@@ -518,7 +518,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlySalary" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.MonthlySalary" required>
+                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -526,7 +526,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseMonthlySalary"></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
+                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
                                         <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
