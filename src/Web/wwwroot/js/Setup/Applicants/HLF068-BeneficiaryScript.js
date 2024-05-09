@@ -4,7 +4,9 @@ const roleId = $("#txt_roleId").val();
 
 $(function () {
     var telNoArray = [];
-    var itiFlag = false;
+    //var itiFlag = false;
+
+    var currentStep = 0;
 
     //#region Initialization
 
@@ -80,6 +82,8 @@ $(function () {
     assessRadioBtn($(`.radio-pagibigRbtn input[name="pagibigRbtn"]:checked`));
 
     rebindValidators();
+
+    progressCheck();
 
     //#endregion
 
@@ -162,6 +166,9 @@ $(function () {
     $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
         $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
     });
+
+    //$(`[id="bcfdata"] .next button`).on('click', function (e) {
+    //});
 
     // #endregion
 
@@ -1176,6 +1183,8 @@ $(function () {
                 $("#form2").removeClass('fade').prop('hidden', false);
                 return;
             }
+
+            progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
@@ -1197,6 +1206,8 @@ $(function () {
 
             // Show the next form
             nextForm.removeClass('fade').prop('hidden', false);
+
+            progressCheck(nextForm.attr('id'));
 
             // Always return true to allow navigation to the previous step
             return true;
@@ -1742,6 +1753,47 @@ $(function () {
 
     function assessRadioBtn(radioBtn) {
         radioBtn.trigger('change');
+    }
+
+    function progressCheck(targetForm = "bcfdata") {
+        console.log("execute");
+        if ($(`#bcfdata`).length === 0) {
+            targetForm = "loanparticulars";
+        }
+
+        var steps = $(".progressbar .progress-step");
+        let stepIndex = [
+            {
+                formId: ["bcfdata"],
+                progress: 0
+            },
+            {
+                formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                progress: 1
+            }
+        ];
+
+        currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
+
+        steps.each((index, step) => {
+            if (index === currentStep) {
+                step.classList.remove("completed");
+                step.classList.add("current");
+            }
+            else if (index < currentStep) {
+                step.classList.add("completed");
+            }
+            else {
+                step.classList.remove("current");
+                step.classList.remove("completed");
+            }
+        });
+
+        const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
+
+        let width = (allCurrentClasses.length / (steps.length - 1)) * 100;
+
+        $(`.progressbar #progress`).css('width', `${width + allCurrentClasses.length}%`);
     }
 
     //#endregion
