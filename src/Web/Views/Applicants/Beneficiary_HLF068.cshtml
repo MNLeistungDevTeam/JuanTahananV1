@@ -32,7 +32,7 @@
     </div>
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
 
-        <div id="responseContainer"></div>
+   
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
                 @if (!Model.BarrowersInformationModel.IsBcfCreated)
@@ -59,7 +59,62 @@
                     <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
+                @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                {
+                    <li class="nav-item" data-target-div="#previewBcf">
+                        <a href="#sixth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                        </a>
+                    </li>
+                }
+                <li class="nav-item" data-target-div="#previewHlaf">
+                    <a href="#seventh" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                    </a>
+                </li>
             </ul>
+
+            <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <!-- Content for step progress -->
+                    <div class="progressbar">
+                        <div id="progress" class="progress"></div>
+                        @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                        {
+                            <div class="progress-step" data-title="BCF">
+                                <i class="mdi mdi-thumb-up fs-2"></i>
+                            </div>
+                        }
+                        <div class="progress-step" data-title="HLAF">
+                            <i class="fas fa-house-user fs-2"></i>
+                        </div>
+                        @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                        {
+                            <div class="progress-step" data-title="Review BCF">
+                                <i class="mdi mdi-thumb-up fs-2"></i>
+                            </div>
+                        }
+                        <div class="progress-step" data-title="Review HLAF">
+                            <i class="fas fa-house-user fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Content for important info card -->
+                <div class="alert alert-info" role="alert">
+                    <h4 class="text-primary fw-bolder">Important note:</h4>
+                    <ul>
+                        <li class="text-primary mb-2">
+                            These are <span class="fw-bold">not</span> the final application forms, but they will auto-fill the 
+                            Buyer Confirmation Form (BCF) and Housing Loan Application Form (HLAF) PDFs you need for your application.
+                            These PDFs will need to be printed, signed, scanned, and uploaded as part of your application.
+                        </li>
+                        <li class="text-primary">
+                            The information you enter here will also be used on various modules within Juan Tahanan Portal to streamline your application process.
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="tab-content mb-0 b-0">
                 <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
@@ -72,7 +127,7 @@
 
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.UserId">
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
-                            <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber">
+                            @* <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber"> *@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Code">
 
                             <div class="row gy-2">
@@ -480,7 +535,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlySalary" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.MonthlySalary" required>
+                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -488,7 +543,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseMonthlySalary"></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
+                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
                                         <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -793,12 +848,7 @@
 
 
                         </div>
-
-
-
-
                     }
-
 
                     <div class="tab-pane @(!Model.BarrowersInformationModel.IsBcfCreated ? "fade" : "")" id="loanparticulars" @(!Model.BarrowersInformationModel.IsBcfCreated ? "hidden" : "")>
 
@@ -1086,7 +1136,6 @@
                             </li>
                         </ul>
                     </div>
-
 
                     <div class="tab-pane fade" id="collateraldata" hidden>
 
@@ -1659,7 +1708,6 @@
                         </div>
                     </div>
 
-
                     <div class="tab-pane fade" id="spousedata" hidden>
 
                         @*     <form id="spousedata" method="post" action="#" class="form-horizontal needs-validation" novalidate>   </form> *@
@@ -1955,7 +2003,6 @@
                             </ul>
                         </div>
                     </div>
-
 
                     <div class="tab-pane fade" id="form2" hidden>
 
@@ -2992,15 +3039,56 @@
                             </li>
 
                             <li class="next list-inline-item float-end">
-                                <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
+                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
                             </li>
                         </ul>
                     </div>
 
+                    @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                    {
+                        <div class="tab-pane fade" id="previewBcf" hidden>
 
+                            <div class="row">
+                                <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <ul class="pager wizard mb-0 list-inline mt-1">
+                                        <li class="previous list-inline-item">
+                                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                        </li>
+                                        <li class="next list-inline-item float-end">
+                                            <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
+                    <div class="tab-pane fade" id="previewHlaf" hidden>
 
+                        <div class="row">
+                            <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="hlafPreview">
+                                
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <ul class="pager wizard mb-0 list-inline mt-1">
+                                    <li class="previous list-inline-item">
+                                        <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    </li>
+                            <li class="next list-inline-item float-end">
+                                <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
+                            </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
                 </form>
 

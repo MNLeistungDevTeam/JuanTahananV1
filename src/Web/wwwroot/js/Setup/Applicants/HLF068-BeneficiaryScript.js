@@ -1,13 +1,13 @@
-﻿ 
-
-const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
 $(function () {
+    const { pdfjsLib } = globalThis;
+
     var telNoArray = [];
-    var itiFlag = false;
+    var currentStep = 0;
 
     //#region Initialization
 
@@ -73,6 +73,8 @@ $(function () {
     //initializeIntlTelInput();
     initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
+    initializePdfJs();
+
     //assessPresentPermanentCheckbox();
 
     assessCheckbox(
@@ -83,6 +85,8 @@ $(function () {
     assessRadioBtn($(`.radio-pagibigRbtn input[name="pagibigRbtn"]:checked`));
 
     rebindValidators();
+
+    progressCheck();
 
     //#endregion
 
@@ -173,6 +177,9 @@ $(function () {
     $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
         $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
     });
+
+    //$(`[id="bcfdata"] .next button`).on('click', function (e) {
+    //});
 
     // #endregion
 
@@ -1173,6 +1180,36 @@ $(function () {
         }
     });
 
+    $('#BuyerConfirmationModel_MaritalStatus').on('change', function () {
+        let value = $(this).val()
+        $('#BuyerConfirmationModel_SpouseFirstName').prop('required', false);
+        $('#BuyerConfirmationModel_SpouseLastName').prop('required', false);
+
+        if (value !== 'Married') {
+            return;
+        }
+        else {
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', true);
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', true);
+        }
+    });
+
+    $(`[id="form2"] .next button`).on('click', function (e) {
+        if (hasBcf === "True") {
+
+            loadHlafPreview();
+        }
+
+        else {
+            loadBcfPreview();
+        }
+
+    });
+
+    $(`[id="previewBcf"] .next button`).on('click', function (e) {
+        loadHlafPreview();
+    });
+
     //#endregion
 
     $('#rootwizard').bootstrapWizard({
@@ -1207,15 +1244,15 @@ $(function () {
                 if (currentFormName == "bcfdata") {
                     bcfToHLafConnectedFieldMap();
                 }
-
-                 
             }
 
             // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                $("#form2").removeClass('fade').prop('hidden', false);
+            if (currentFormName == "previewHlaf") {
+                $("#previewHlaf").removeClass('fade').prop('hidden', false);
                 return;
             }
+
+            progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
@@ -1241,6 +1278,8 @@ $(function () {
 
             // Show the next form
             nextForm.removeClass('fade').prop('hidden', false);
+
+            progressCheck(nextForm.attr('id'));
 
             // Always return true to allow navigation to the previous step
             return true;
@@ -1597,40 +1636,6 @@ $(function () {
         });
     }
 
-    function rebindValidators2() {
-        var form1 = $("#frm_hlf068");
-
-        form1.on("submit", function (e) {
-            e.preventDefault();
-            let formData = new FormData(e.target);
-
-            if ($(this).valid() == false) {
-                messageBox("Please fill out all required fields!", "danger", true);
-                return;
-            }
-
-            $.ajax({
-                method: 'POST',
-                url: '/Report/LatestHousingForm2',
-                data: JSON.stringify(formData), // Convert to JSON string
-                contentType: 'application/json', // Set content type to JSON
-                success: function (response) {
-                    // Redirect to another URL based on the response
-                    window.location.href = '/Report/LatestHousingForm2';
-
-                    // Handle success response
-                    console.log(response);
-                    // Do something with the response, like displaying a success message
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                    // Show error message to the user
-                }
-            });
-        });
-    }
-
     function setDateValue(selector) {
         let dataValue = $(selector).attr('data-value');
         if (dataValue && dataValue.trim() !== '') {
@@ -1828,10 +1833,6 @@ $(function () {
             $("#isRbtn2").prop("checked", true);
         }
 
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
-
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
@@ -1848,6 +1849,9 @@ $(function () {
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
+
+            $("#bcf-incomeFields").prop("hidden", !$("#isRbtn1").is(":checked"));
+            $("#bcf-pagIbigNumField").prop("hidden", !$("#pagibigRbtn1").is(":checked"));
         }
 
         // Set miscellanous input to disable
@@ -1881,9 +1885,7 @@ $(function () {
     }
 
     function bcfToHLafConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1936,15 +1938,60 @@ $(function () {
         var employername = $("#BuyerConfirmationModel_EmployerName").val();
 
         $("#BarrowersInformationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseLastName').val();
+
+        $('#SpouseModel_LastName').val(spouseLastName);
+        $('#SpouseModel_FirstName').val(spouseFirstName);
+        $('#SpouseModel_Suffix').val(spouseExtensionName);
+        $('#SpouseModel_MiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#BuyerConfirmationModel_SpouseCompanyUnitName').val();
+        var spouseCompanyBuilding = $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val();
+        var spouseCompanyLot = $('#BuyerConfirmationModel_SpouseCompanyLotName').val();
+        var spouseCompanyStreet = $('#BuyerConfirmationModel_SpouseCompanyStreetName').val();
+        var spouseCompanySubdivision = $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val();
+        var spouseCompanyBaranggay = $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val();
+        var spouseCompanyMunicipality = $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val();
+        var spouseCompanyProvince = $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val();
+        var spouseCompanyZipcode = $('#BuyerConfirmationModel_SpouseCompanyZipCode').val();
+
+        $('#SpouseModel_SpouseEmploymentUnitName').val(spouseEmploymentUnit);
+        $('#SpouseModel_SpouseEmploymentBuildingName').val(spouseCompanyBuilding);
+        $('#SpouseModel_SpouseEmploymentLotName').val(spouseCompanyLot);
+        $('#SpouseModel_SpouseEmploymentStreetName').val(spouseCompanyStreet);
+        $('#SpouseModel_SpouseEmploymentSubdivisionName').val(spouseCompanySubdivision);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').val(spouseCompanyBaranggay);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').val(spouseCompanyMunicipality);
+        $('#SpouseModel_SpouseEmploymentProvinceName').val(spouseCompanyProvince);
+        $('#SpouseModel_SpouseEmploymentZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BuyerConfirmationModel_CompanyUnitName').val();
+        var companyBldgName = $('#BuyerConfirmationModel_CompanyBuildingName').val();
+        var companyLotNo = $('#BuyerConfirmationModel_CompanyLotName').val();
+        var companySreetName = $('#BuyerConfirmationModel_CompanyStreetName').val();
+        var companySubd = $('#BuyerConfirmationModel_CompanySubdivisionName').val();
+        var companyBrgy = $('#BuyerConfirmationModel_CompanyBaranggayName').val();
+        var companyMuni = $('#BuyerConfirmationModel_CompanyMunicipalityName').val();
+        var companyProv = $('#BuyerConfirmationModel_CompanyProvinceName').val();
+        var companyZipcode = $('#BuyerConfirmationModel_CompanyZipCode').val();
+
+        $('#BarrowersInformationModel_BusinessUnitName').val(companyUnit);
+        $('#BarrowersInformationModel_BusinessBuildingName').val(companyBldgName);
+        $('#BarrowersInformationModel_BusinessLotName').val(companyLotNo);
+        $('#BarrowersInformationModel_BusinessStreetName').val(companySreetName);
+        $('#BarrowersInformationModel_BusinessSubdivisionName').val(companySubd);
+        $('#BarrowersInformationModel_BusinessBaranggayName').val(companyBrgy);
+        $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
+        $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
+        $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
     }
 
-
-
-
     function HLafTobcfConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1971,9 +2018,6 @@ $(function () {
         $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
         $("#BuyerConfirmationModel_Email").val(email);
 
-
-
-
         // Accessing values of all fields in the model
         var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
         var presentBuildingName = $("#BarrowersInformationModel_PresentBuildingName").val();
@@ -1999,6 +2043,275 @@ $(function () {
         var employername = $("#BarrowersInformationModel_EmployerName").val();
 
         $("#BuyerConfirmationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#SpouseModel_LastName').val();
+        var spouseFirstName = $('#SpouseModel_FirstName').val();
+        var spouseExtensionName = $('#SpouseModel_Suffix').val();
+        var spouseMiddleName = $('#SpouseModel_MiddleName').val();
+
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
+        var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
+        var spouseCompanyLot = $('#SpouseModel_SpouseEmploymentLotName').val();
+        var spouseCompanyStreet = $('#SpouseModel_SpouseEmploymentStreetName').val();
+        var spouseCompanySubdivision = $('#SpouseModel_SpouseEmploymentSubdivisionName').val();
+        var spouseCompanyBaranggay = $('#SpouseModel_SpouseEmploymentBaranggayName').val();
+        var spouseCompanyMunicipality = $('#SpouseModel_SpouseEmploymentMunicipalityName').val();
+        var spouseCompanyProvince = $('#SpouseModel_SpouseEmploymentProvinceName').val();
+        var spouseCompanyZipcode = $('#SpouseModel_SpouseEmploymentZipCode').val();
+
+        $('#BuyerConfirmationModel_SpouseCompanyUnitName').val(spouseEmploymentUnit);
+        $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val(spouseCompanyBuilding);
+        $('#BuyerConfirmationModel_SpouseCompanyLotName').val(spouseCompanyLot);
+        $('#BuyerConfirmationModel_SpouseCompanyStreetName').val(spouseCompanyStreet);
+        $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val(spouseCompanySubdivision);
+        $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val(spouseCompanyBaranggay);
+        $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val(spouseCompanyMunicipality);
+        $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val(spouseCompanyProvince);
+        $('#BuyerConfirmationModel_SpouseCompanyZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BarrowersInformationModel_BusinessUnitName').val();
+        var companyBldgName = $('#BarrowersInformationModel_BusinessBuildingName').val();
+        var companyLotNo = $('#BarrowersInformationModel_BusinessLotName').val();
+        var companySreetName = $('#BarrowersInformationModel_BusinessStreetName').val();
+        var companySubd = $('#BarrowersInformationModel_BusinessSubdivisionName').val();
+        var companyBrgy = $('#BarrowersInformationModel_BusinessBaranggayName').val();
+        var companyMuni = $('#BarrowersInformationModel_BusinessMunicipalityName').val();
+        var companyProv = $('#BarrowersInformationModel_BusinessProvinceName').val();
+        var companyZipcode = $('#BarrowersInformationModel_BusinessZipCode').val();
+
+        $('#BuyerConfirmationModel_CompanyUnitName').val(companyUnit);
+        $('#BuyerConfirmationModel_CompanyBuildingName').val(companyBldgName);
+        $('#BuyerConfirmationModel_CompanyLotName').val(companyLotNo);
+        $('#BuyerConfirmationModel_CompanyStreetName').val(companySreetName);
+        $('#BuyerConfirmationModel_CompanySubdivisionName').val(companySubd);
+        $('#BuyerConfirmationModel_CompanyBaranggayName').val(companyBrgy);
+        $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
+        $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
+        $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
     }
+
+    function progressCheck(targetForm = "bcfdata") {
+        console.log("execute");
+        if (targetForm === "bcfdata" && $(`#bcfdata`).length === 0) {
+            targetForm = "loanparticulars";
+        }
+
+        var steps = $(".progressbar .progress-step");
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
+
+        currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
+
+        steps.each((index, step) => {
+            if (index === currentStep) {
+                step.classList.remove("completed");
+                step.classList.add("current");
+            }
+            else if (index < currentStep) {
+                step.classList.add("completed");
+            }
+            else {
+                step.classList.remove("current");
+                step.classList.remove("completed");
+            }
+        });
+
+        const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
+
+        let width = ((allCurrentClasses.length / (steps.length - 1)) * 100) + allCurrentClasses.length;
+
+        if (width > 100) width = 100;
+
+        $(`.progressbar #progress`).css('width', `${width}%`);
+    }
+
+    function initializePdfJs() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
+    }
+
+    function loadBcfPreview() {
+        var form1 = $("#frm_hlf068");
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestBCFB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="bcfPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="bcfPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            }
+        });
+    }
+
+    function loadHlafPreview() {
+        var form1 = $("#frm_hlf068");
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        // var formData = form1.serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestHousingFormB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="hlafPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="hlafPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+
+                    //  $("#beneficiary-overlay").addClass('d-none');
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            },
+
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            }
+        });
+    }
+
     //#endregion
 });

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -93,12 +94,31 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
+    //[HttpPost]
+    //public async Task<IActionResult> LatestHousingForm2(ApplicantViewModel vwModel)
+    //{
+    //    try
+    //    {
+    //        ApplicantInformationReportModel reportModel = new()
+    //        {
+    //            ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
+    //            LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
+    //            CollateralInformationModel = vwModel.CollateralInformationModel,
+    //            BarrowersInformationModel = vwModel.BarrowersInformationModel,
+    //            SpouseModel = vwModel.SpouseModel,
+    //            Form2PageModel = vwModel.Form2PageModel
+    //        };
 
+    //        var report = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+    //        byte[] file = report.ToArray();
 
+    //        // Return the file as a FileStreamResult
+    //        return File(file, "application/octet-stream", "HousingLoanForm.pdf");
+    //    }
+    //    catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    //}
     [HttpPost]
-
-    [Route("[controller]/LatestHousingForm2")]
-    public async Task<IActionResult> LatestHousingForm2([FromBody]ApplicantViewModel vwModel)
+    public async Task<IActionResult> LatestHousingForm2(ApplicantViewModel vwModel)
     {
         try
         {
@@ -112,32 +132,74 @@ public class ReportController : Controller
                 Form2PageModel = vwModel.Form2PageModel
             };
 
-            var report = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateHousingLoanPDF(reportModel, _hostingEnvironment.WebRootPath);
 
-            return View("RptHousingLoanApplication", report);
+
+            // Return the byte array as a FileStreamResult with the appropriate content type and file name
+            return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
         }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
     }
-
-    [Route("[controller]/LatestBuyerConfirmationForm/{buyerConfirmationCode?}")]
-    public async Task<IActionResult> LatestBuyerConfirmationForm(string? buyerConfirmationCode = null)
+    
+    [HttpPost]
+    public async Task<IActionResult> LatestHousingFormB64(ApplicantViewModel vwModel)
     {
         try
         {
-            var bcfInfo = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
-
-            int userId = 0;
-
-            if (buyerConfirmationCode != null)
+            ApplicantInformationReportModel reportModel = new()
             {
-                userId = bcfInfo.UserId.Value;
-            }
+                ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
+                LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
+                CollateralInformationModel = vwModel.CollateralInformationModel,
+                BarrowersInformationModel = vwModel.BarrowersInformationModel,
+                SpouseModel = vwModel.SpouseModel,
+                Form2PageModel = vwModel.Form2PageModel
+            };
 
-            var report = await _reportService.GenerateBuyerConfirmationForm(bcfInfo.Code, _hostingEnvironment.WebRootPath);
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateHousingLoanPDF(reportModel, _hostingEnvironment.WebRootPath);
 
-            return View("RptBuyerConfirmation", report);
+            // Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
         }
-        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LatestBCFB64(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            ApplicantInformationReportModel reportModel = new()
+            {
+                BuyerConfirmationModel = vwModel.BuyerConfirmationModel
+            };
+
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateBuyerConfirmationPDF(reportModel, _hostingEnvironment.WebRootPath);
+
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+
+
+            //// Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
     }
 
     public List<ReportListViewModel> GetReportList()

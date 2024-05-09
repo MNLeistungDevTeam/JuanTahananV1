@@ -256,6 +256,8 @@
     <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetByCompanyId.sql" />
     <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetPropertyLocationByProjectId.sql" />
     <Build Include="Stored Procedures\Setup\PropertyLocation\spPropertyLocation_GetByProjectId.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetPropertyUnitByProjectId.sql" />
+    <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiarylnformation_GenerateCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

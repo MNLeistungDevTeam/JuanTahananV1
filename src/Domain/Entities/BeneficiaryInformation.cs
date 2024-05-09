@@ -13,6 +13,8 @@ public partial class BeneficiaryInformation
 
     public string PagibigNumber { get; set; }
 
+    public string Code { get; set; }
+
     public int? CompanyId { get; set; }
 
     public string LastName { get; set; }

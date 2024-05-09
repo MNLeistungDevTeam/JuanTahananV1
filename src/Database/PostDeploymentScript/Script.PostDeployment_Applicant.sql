@@ -40,9 +40,9 @@ SET IDENTITY_INSERT BeneficiaryInformation ON;
 
 -- Insert dummy data into BarrowersInformation
 INSERT INTO BeneficiaryInformation
-    (Id, UserId,PagibigNumber, LastName, FirstName, MiddleName, Sex, Email,CreatedById)
+    (Id,Code, UserId,PagibigNumber, LastName, FirstName, MiddleName, Sex, Email,CreatedById)
 VALUES
-    (1, 4,'324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', 'beneficiary@email.com',1);
+    (1,'BNF202405-0001', 4,'324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', 'beneficiary@email.com',1);
     
 
 -- Disable identity insert for BarrowersInformation

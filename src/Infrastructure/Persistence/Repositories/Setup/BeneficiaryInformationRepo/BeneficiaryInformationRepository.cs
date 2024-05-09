@@ -56,6 +56,9 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformati
 
             if (_beneficiaryInformation.Id == 0)
             {
+
+              _beneficiaryInformation.Code = await GenerateBeneficiaryCode();
+
                 _beneficiaryInformation = await CreateAsync(_beneficiaryInformation, userId);
             }
             else
@@ -96,6 +99,25 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformati
             {
                 await _contextHelper.BatchDeleteAsync(beneficiaryInformations);
             }
+        }
+
+
+
+        public async Task<string> GenerateBeneficiaryCode()
+        {
+            try
+            {
+                string newref = $"BNF{DateTime.Now:yyyyMM}-{"1".ToString().PadLeft(4, '0')}";
+                var result = await _db.LoadSingleAsync<string, dynamic>("spBeneficiarylnformation_GenerateCode", new { });
+
+                if (result != null)
+                {
+                    newref = $"BNF{DateTime.Now:yyyyMM}-{(Convert.ToInt32(result.Remove(0, result.Length - 4)) + 1).ToString().PadLeft(4, '0')}";
+                }
+
+                return newref;
+            }
+            catch (Exception) { throw; }
         }
 
         #endregion Action Methods

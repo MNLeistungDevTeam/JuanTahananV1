@@ -10,6 +10,7 @@ namespace DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo
 {
     public interface IBeneficiaryInformationRepository
     {
+        Task<string> GenerateBeneficiaryCode();
         Task BachDeleteAsync(int[] ids);
         Task<BeneficiaryInformation> CreateAsync(BeneficiaryInformation beneficiaryInformation, int userId);
         Task<List<BeneficiaryInformation>> GetAllAsync();

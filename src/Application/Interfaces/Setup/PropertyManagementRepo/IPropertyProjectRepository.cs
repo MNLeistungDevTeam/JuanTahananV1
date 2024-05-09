@@ -17,7 +17,9 @@ public interface IPropertyProjectRepository
     Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId);
     Task<PropertyProject?> GetById(int id);
     Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id);
+    Task<IEnumerable<PropertyProjectModel?>> GetPropertyUnitByProjectAsync(int id);
     Task<PropertyProject> SaveAsync(PropertyProjectModel model, int userId);
     Task SaveProjectLocations(PropertyProjectModel project, List<PropertyProjectLocationModel> userProjectList, int userId);
+    Task SaveProjectUnits(PropertyProjectModel project, List<PropertyUnitProjectModel> userUnitList, int userId);
     Task<PropertyProject> UpdateAsync(PropertyProject model, int userId);
 }

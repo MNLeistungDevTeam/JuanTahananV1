@@ -40,10 +40,10 @@ public class PropertyUnitProjectController : Controller
 
     #region API GETTERS
 
-    public async Task<IActionResult> GetAllPropertyProjectLocation() =>
+    public async Task<IActionResult> GetAllUnitProject() =>
         Ok(await _propertyUnitProjectRepo.GetAll());
 
-    public async Task<IActionResult> GetPropertyProjectLocationById(int id) =>
+    public async Task<IActionResult> GetUnitProjectById(int id) =>
         Ok(await _propertyUnitProjectRepo.GetById(id));
 
     #endregion API GETTERS
@@ -52,7 +52,7 @@ public class PropertyUnitProjectController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SavePropertyUnitProject(PropertyUnitProjectModel model)
+    public async Task<IActionResult> SavePropertyUnitProject(PropertyManagementViewModel model)
     {
         try
         {
@@ -61,7 +61,7 @@ public class PropertyUnitProjectController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-            var result = await _propertyUnitProjectRepo.SaveAsync(model, userId);
+            var result = await _propertyUnitProjectRepo.SaveAsync(model.PropUnitProjModel, userId);
 
             return Ok(result);
         }

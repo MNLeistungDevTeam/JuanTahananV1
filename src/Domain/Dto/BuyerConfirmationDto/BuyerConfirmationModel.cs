@@ -20,9 +20,10 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public string? Code { get; set; }
 
-        [Display(Name = "Name Of Project Proponent")]
+        [Display(Name = "Name of Project Proponent", Prompt = "Name of Project Proponent")]
         public string? ProjectProponentName { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [Display(Name = "Juridical Personality")]
         public int? JuridicalPersonalityId { get; set; }
 
@@ -46,16 +47,19 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Extension Name", Prompt = "Name Extension")]
         public string? Suffix { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth", Prompt = "Birth Date", Description = "(mm/dd/yyyy)")]
         public DateTime? BirthDate { get; set; }
 
-        [Display(Name = "Mothers Maiden Name")]
+        [Display(Name = "Mothers Maiden Name", Prompt = "Mothers Maiden Name")]
         public string? MothersMaidenName { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [DisplayName("Marital Status")]
         public string? MaritalStatus { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [DisplayName("Employment Status")]
         public string? OccupationStatus { get; set; }
 
@@ -215,13 +219,13 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Have you been informed of the terms and conditions of your loan")]
         public bool IsInformedTermsConditions { get; set; }
 
-        [Display(Name = "House/Unit Model")]
+        [Display(Name = "House/Unit Model", Prompt = "House/Unit Model")]
         public string? HouseUnitModel { get; set; }
 
-        [Display(Name = "Selling Price")]
+        [Display(Name = "Selling Price", Prompt = "0.00")]
         public decimal? SellingPrice { get; set; }
 
-        [Display(Name = "Monthly Amortization")]
+        [Display(Name = "Monthly Amortization", Prompt = "0.00")]
         public decimal? MonthlyAmortization { get; set; }
     }
 }
