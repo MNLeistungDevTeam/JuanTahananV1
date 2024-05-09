@@ -2094,24 +2094,39 @@ $(function () {
         }
 
         var steps = $(".progressbar .progress-step");
-        let stepIndex = [
-            {
-                formId: ["bcfdata"],
-                progress: 0
-            },
-            {
-                formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
-                progress: 1
-            },
-            {
-                formId: ["previewBcf"],
-                progress: 2
-            },
-            {
-                formId: ["previewHlaf"],
-                progress: 3
-            }
-        ];
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
 
         currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
 
@@ -2144,7 +2159,7 @@ $(function () {
 
     function loadBcfPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        var formData = form1.serialize();
 
         $.ajax({
             method: 'POST',
