@@ -1,6 +1,4 @@
-﻿ 
-
-const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
@@ -1173,6 +1171,20 @@ $(function () {
         }
     });
 
+    $('#BuyerConfirmationModel_MaritalStatus').on('change', function () {
+        let value = $(this).val()
+        $('#BuyerConfirmationModel_SpouseFirstName').prop('required', false);
+        $('#BuyerConfirmationModel_SpouseLastName').prop('required', false);
+
+        if (value !== 'Married') {
+            return;
+        }
+        else {
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', true);
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', true);
+        }
+    });
+
     //#endregion
 
     $('#rootwizard').bootstrapWizard({
@@ -1207,8 +1219,6 @@ $(function () {
                 if (currentFormName == "bcfdata") {
                     bcfToHLafConnectedFieldMap();
                 }
-
-                 
             }
 
             // If current form is "form2", return without proceeding to next step
@@ -1828,10 +1838,6 @@ $(function () {
             $("#isRbtn2").prop("checked", true);
         }
 
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
-
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
@@ -1848,6 +1854,9 @@ $(function () {
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
+
+            $("#bcf-incomeFields").prop("hidden", !$("#isRbtn1").is(":checked"));
+            $("#bcf-pagIbigNumField").prop("hidden", !$("#pagibigRbtn1").is(":checked"));
         }
 
         // Set miscellanous input to disable
@@ -1881,9 +1890,7 @@ $(function () {
     }
 
     function bcfToHLafConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1936,15 +1943,60 @@ $(function () {
         var employername = $("#BuyerConfirmationModel_EmployerName").val();
 
         $("#BarrowersInformationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseLastName').val();
+
+        $('#SpouseModel_LastName').val(spouseLastName);
+        $('#SpouseModel_FirstName').val(spouseFirstName);
+        $('#SpouseModel_Suffix').val(spouseExtensionName);
+        $('#SpouseModel_MiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#BuyerConfirmationModel_SpouseCompanyUnitName').val();
+        var spouseCompanyBuilding = $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val();
+        var spouseCompanyLot = $('#BuyerConfirmationModel_SpouseCompanyLotName').val();
+        var spouseCompanyStreet = $('#BuyerConfirmationModel_SpouseCompanyStreetName').val();
+        var spouseCompanySubdivision = $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val();
+        var spouseCompanyBaranggay = $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val();
+        var spouseCompanyMunicipality = $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val();
+        var spouseCompanyProvince = $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val();
+        var spouseCompanyZipcode = $('#BuyerConfirmationModel_SpouseCompanyZipCode').val();
+
+        $('#SpouseModel_SpouseEmploymentUnitName').val(spouseEmploymentUnit);
+        $('#SpouseModel_SpouseEmploymentBuildingName').val(spouseCompanyBuilding);
+        $('#SpouseModel_SpouseEmploymentLotName').val(spouseCompanyLot);
+        $('#SpouseModel_SpouseEmploymentStreetName').val(spouseCompanyStreet);
+        $('#SpouseModel_SpouseEmploymentSubdivisionName').val(spouseCompanySubdivision);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').val(spouseCompanyBaranggay);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').val(spouseCompanyMunicipality);
+        $('#SpouseModel_SpouseEmploymentProvinceName').val(spouseCompanyProvince);
+        $('#SpouseModel_SpouseEmploymentZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BuyerConfirmationModel_CompanyUnitName').val();
+        var companyBldgName = $('#BuyerConfirmationModel_CompanyBuildingName').val();
+        var companyLotNo = $('#BuyerConfirmationModel_CompanyLotName').val();
+        var companySreetName = $('#BuyerConfirmationModel_CompanyStreetName').val();
+        var companySubd = $('#BuyerConfirmationModel_CompanySubdivisionName').val();
+        var companyBrgy = $('#BuyerConfirmationModel_CompanyBaranggayName').val();
+        var companyMuni = $('#BuyerConfirmationModel_CompanyMunicipalityName').val();
+        var companyProv = $('#BuyerConfirmationModel_CompanyProvinceName').val();
+        var companyZipcode = $('#BuyerConfirmationModel_CompanyZipCode').val();
+
+        $('#BarrowersInformationModel_BusinessUnitName').val(companyUnit);
+        $('#BarrowersInformationModel_BusinessBuildingName').val(companyBldgName);
+        $('#BarrowersInformationModel_BusinessLotName').val(companyLotNo);
+        $('#BarrowersInformationModel_BusinessStreetName').val(companySreetName);
+        $('#BarrowersInformationModel_BusinessSubdivisionName').val(companySubd);
+        $('#BarrowersInformationModel_BusinessBaranggayName').val(companyBrgy);
+        $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
+        $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
+        $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
     }
 
-
-
-
     function HLafTobcfConnectedFieldMap() {
-
         if (hasBcf == "True") {
-
             return;
         }
 
@@ -1971,9 +2023,6 @@ $(function () {
         $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
         $("#BuyerConfirmationModel_Email").val(email);
 
-
-
-
         // Accessing values of all fields in the model
         var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
         var presentBuildingName = $("#BarrowersInformationModel_PresentBuildingName").val();
@@ -1999,6 +2048,56 @@ $(function () {
         var employername = $("#BarrowersInformationModel_EmployerName").val();
 
         $("#BuyerConfirmationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#SpouseModel_LastName').val();
+        var spouseFirstName = $('#SpouseModel_FirstName').val();
+        var spouseExtensionName = $('#SpouseModel_Suffix').val();
+        var spouseMiddleName = $('#SpouseModel_MiddleName').val();
+
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
+        var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
+        var spouseCompanyLot = $('#SpouseModel_SpouseEmploymentLotName').val();
+        var spouseCompanyStreet = $('#SpouseModel_SpouseEmploymentStreetName').val();
+        var spouseCompanySubdivision = $('#SpouseModel_SpouseEmploymentSubdivisionName').val();
+        var spouseCompanyBaranggay = $('#SpouseModel_SpouseEmploymentBaranggayName').val();
+        var spouseCompanyMunicipality = $('#SpouseModel_SpouseEmploymentMunicipalityName').val();
+        var spouseCompanyProvince = $('#SpouseModel_SpouseEmploymentProvinceName').val();
+        var spouseCompanyZipcode = $('#SpouseModel_SpouseEmploymentZipCode').val();
+
+        $('#BuyerConfirmationModel_SpouseCompanyUnitName').val(spouseEmploymentUnit);
+        $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val(spouseCompanyBuilding);
+        $('#BuyerConfirmationModel_SpouseCompanyLotName').val(spouseCompanyLot);
+        $('#BuyerConfirmationModel_SpouseCompanyStreetName').val(spouseCompanyStreet);
+        $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val(spouseCompanySubdivision);
+        $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val(spouseCompanyBaranggay);
+        $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val(spouseCompanyMunicipality);
+        $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val(spouseCompanyProvince);
+        $('#BuyerConfirmationModel_SpouseCompanyZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BarrowersInformationModel_BusinessUnitName').val();
+        var companyBldgName = $('#BarrowersInformationModel_BusinessBuildingName').val();
+        var companyLotNo = $('#BarrowersInformationModel_BusinessLotName').val();
+        var companySreetName = $('#BarrowersInformationModel_BusinessStreetName').val();
+        var companySubd = $('#BarrowersInformationModel_BusinessSubdivisionName').val();
+        var companyBrgy = $('#BarrowersInformationModel_BusinessBaranggayName').val();
+        var companyMuni = $('#BarrowersInformationModel_BusinessMunicipalityName').val();
+        var companyProv = $('#BarrowersInformationModel_BusinessProvinceName').val();
+        var companyZipcode = $('#BarrowersInformationModel_BusinessZipCode').val();
+
+        $('#BuyerConfirmationModel_CompanyUnitName').val(companyUnit);
+        $('#BuyerConfirmationModel_CompanyBuildingName').val(companyBldgName);
+        $('#BuyerConfirmationModel_CompanyLotName').val(companyLotNo);
+        $('#BuyerConfirmationModel_CompanyStreetName').val(companySreetName);
+        $('#BuyerConfirmationModel_CompanySubdivisionName').val(companySubd);
+        $('#BuyerConfirmationModel_CompanyBaranggayName').val(companyBrgy);
+        $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
+        $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
+        $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
     }
     //#endregion
 });
