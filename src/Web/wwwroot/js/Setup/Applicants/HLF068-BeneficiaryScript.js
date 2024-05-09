@@ -2130,24 +2130,39 @@ $(function () {
         }
 
         var steps = $(".progressbar .progress-step");
-        let stepIndex = [
-            {
-                formId: ["bcfdata"],
-                progress: 0
-            },
-            {
-                formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
-                progress: 1
-            },
-            {
-                formId: ["previewBcf"],
-                progress: 2
-            },
-            {
-                formId: ["previewHlaf"],
-                progress: 3
-            }
-        ];
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
 
         currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
 
@@ -2180,12 +2195,12 @@ $(function () {
 
     function loadBcfPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = form1.serialize();
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
             method: 'POST',
             url: '/Report/LatestBuyerConfirmationForm2',
-            data: formData, // Convert to JSON string
+            data: JSON.stringify(formData), // Convert to JSON string
             contentType: 'application/json', // Set content type to JSON
             success: function (response) {
                 // Redirect to another URL based on the response
@@ -2241,12 +2256,12 @@ $(function () {
 
     function loadHlafPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = form1.serialize();
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
             method: 'POST',
             url: '/Report/LatestHousingFormB64',
-            data: formData, // Convert to JSON string
+            data: JSON.stringify(formData), // Convert to JSON string
             contentType: 'application/json', // Set content type to JSON
             success: function (response) {
                 // Redirect to another URL based on the response
