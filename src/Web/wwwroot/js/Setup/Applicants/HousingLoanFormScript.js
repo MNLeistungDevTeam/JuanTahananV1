@@ -9,7 +9,14 @@ const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 $(function () {
     var telNoArray = [];
     var itiFlag = false;
+
+
     var editableFlag = false;
+
+    const { pdfjsLib } = globalThis;
+
+    var telNoArray = [];
+    var currentStep = 0;
 
     //#region Initialization
 
@@ -1101,7 +1108,18 @@ $(function () {
     //#endregion
 
     $(`[id="form2"] .next button`).on('click', function (e) {
-        loadBcfPreview();
+
+        if (hasBcf === "True") {
+
+            loadHlafPreview();
+        }
+
+        else {
+            loadBcfPreview();
+        }
+        
+
+   
     });
 
     $(`[id="previewBcf"] .next button`).on('click', function (e) {
@@ -2027,29 +2045,44 @@ $(function () {
 
     function progressCheck(targetForm = "bcfdata") {
         console.log("execute");
-        if ($(`#bcfdata`).length === 0) {
+        if (targetForm === "bcfdata" && $(`#bcfdata`).length === 0) {
             targetForm = "loanparticulars";
         }
 
         var steps = $(".progressbar .progress-step");
-        let stepIndex = [
-            {
-                formId: ["bcfdata"],
-                progress: 0
-            },
-            {
-                formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
-                progress: 1
-            },
-            {
-                formId: ["previewBcf"],
-                progress: 2
-            },
-            {
-                formId: ["previewHlaf"],
-                progress: 3
-            }
-        ];
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
 
         currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
 
@@ -2075,6 +2108,7 @@ $(function () {
 
         $(`.progressbar #progress`).css('width', `${width}%`);
     }
+
 
     function initializePdfJs() {
         pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';

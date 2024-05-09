@@ -15,6 +15,8 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         public int UserId { get; set; }
 
+        public string? Code { get; set; }
+
         [Required]
         [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }

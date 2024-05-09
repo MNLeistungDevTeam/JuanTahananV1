@@ -55,10 +55,13 @@
                     <a href="#fifth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
                 </li>
-                <li class="nav-item" data-target-div="#previewBcf">
-                    <a href="#sixth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
-                    </a>
-                </li>
+                @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                {
+                    <li class="nav-item" data-target-div="#previewBcf">
+                        <a href="#sixth" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                        </a>
+                    </li>
+                }
                 <li class="nav-item" data-target-div="#previewHlaf">
                     <a href="#seventh" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                     </a>
@@ -70,22 +73,27 @@
                     <!-- Content for step progress -->
                     <div class="progressbar">
                         <div id="progress" class="progress"></div>
-                        <div class="progress-step" data-title="BCF">
-                            <i class="mdi mdi-thumb-up fs-2"></i>
-                        </div>
+                        @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                        {
+                            <div class="progress-step" data-title="BCF">
+                                <i class="mdi mdi-thumb-up fs-2"></i>
+                            </div>
+                        }
                         <div class="progress-step" data-title="HLAF">
                             <i class="fas fa-house-user fs-2"></i>
                         </div>
-                        <div class="progress-step" data-title="Review BCF">
-                            <i class="mdi mdi-thumb-up fs-2"></i>
-                        </div>
+                        @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                        {
+                            <div class="progress-step" data-title="Review BCF">
+                                <i class="mdi mdi-thumb-up fs-2"></i>
+                            </div>
+                        }
                         <div class="progress-step" data-title="Review HLAF">
                             <i class="fas fa-house-user fs-2"></i>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <!-- Content for important info card -->
                 <div class="alert alert-info" role="alert">
@@ -3063,27 +3071,29 @@
                             </li>
                         </ul>
                     </div>
+                    @if (!Model.BarrowersInformationModel.IsBcfCreated)
+                    {
+                        <div class="tab-pane fade" id="previewBcf" hidden>
 
-                    <div class="tab-pane fade" id="previewBcf" hidden>
+                            <div class="row">
+                                <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                                </div>
+                            </div>
 
-                        <div class="row">
-                            <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <ul class="pager wizard mb-0 list-inline mt-1">
+                                        <li class="previous list-inline-item">
+                                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                        </li>
+                                        <li class="next list-inline-item float-end">
+                                            <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12 mt-3">
-                                <ul class="pager wizard mb-0 list-inline mt-1">
-                                    <li class="previous list-inline-item">
-                                        <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
-                                    </li>
-                                    <li class="next list-inline-item float-end">
-                                        <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    }
 
                     <div class="tab-pane fade" id="previewHlaf" hidden>
 

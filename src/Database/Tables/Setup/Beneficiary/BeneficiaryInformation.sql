@@ -3,6 +3,7 @@
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	UserId INT NOT NULL,
 	PagibigNumber NVARCHAR(255),
+    Code NVARCHAR(255),
 	CompanyId INT NULL,
 	LastName NVARCHAR(150),
 	FirstName NVARCHAR(150),

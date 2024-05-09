@@ -1195,7 +1195,15 @@ $(function () {
     });
 
     $(`[id="form2"] .next button`).on('click', function (e) {
-        loadBcfPreview();
+        if (hasBcf === "True") {
+
+            loadHlafPreview();
+        }
+
+        else {
+            loadBcfPreview();
+        }
+
     });
 
     $(`[id="previewBcf"] .next button`).on('click', function (e) {
@@ -2089,7 +2097,7 @@ $(function () {
 
     function progressCheck(targetForm = "bcfdata") {
         console.log("execute");
-        if ($(`#bcfdata`).length === 0) {
+        if (targetForm === "bcfdata" && $(`#bcfdata`).length === 0) {
             targetForm = "loanparticulars";
         }
 
@@ -2159,7 +2167,7 @@ $(function () {
 
     function loadBcfPreview() {
         var form1 = $("#frm_hlf068");
-        var formData = form1.serialize();
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
             method: 'POST',
