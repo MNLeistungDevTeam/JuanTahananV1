@@ -1426,6 +1426,9 @@ $(function () {
             }
         });
 
+
+        return;
+
         $form.on("submit", function (e) {
             e.preventDefault();
 
@@ -1558,12 +1561,16 @@ $(function () {
         });
     }
 
-    function rebindValidators2() {
-        var form1 = $("#frm_hlf068");
 
-        form1.on("submit", function (e) {
+    reviewHLAF();
+    function reviewHLAF() {
+        var form = $("#frm_hlf068");
+
+        form.on("submit", function (e) {
             e.preventDefault();
-            let formData = form1.serialize();
+            let formData = new FormData(e.target);
+
+            console.log(formData);
 
             if ($(this).valid() == false) {
                 messageBox("Please fill out all required fields!", "danger", true);
@@ -1571,21 +1578,46 @@ $(function () {
             }
 
             $.ajax({
-                method: 'POST',
-                url: '/Report/LatestHousingForm2',
-                data: formData,
-                contentType: 'application/json', // Set content type to JSON
-                success: function (response) {
-                    console.log(formData);
-
-                    // Handle success response
-                    console.log(response);
-                    // Do something with the response, like displaying a success message
+                url: baseUrl + "Report/LatestHousingForm2",
+                method: $(this).attr("method"),
+                xhrFields: {
+                    responseType: 'blob'
                 },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                    // Show error message to the user
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data, textstatus, request) {
+                    if (typeof (data) != "string") {
+                        let a = document.createElement('a');
+                        let url = window.URL.createObjectURL(data);
+                        let filename = "";
+
+                        var disposition = request.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            var matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        a.href = url;
+                        a.download = filename;
+                        document.body.append(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    } else {
+                        toastr.error("No Record Found!");
+                    }
+
+                    
+                },
+                error: function (xhr, response, error) {
+                    console.log(xhr, response, error);
+                    toastr.error("No Record Found!", "Error Occurred!");
+                 
                 }
             });
         });
