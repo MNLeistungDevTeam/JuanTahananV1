@@ -258,6 +258,11 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+
+
                     }
 
                     returnViewPage = "Beneficiary_HLF068";
@@ -502,6 +507,10 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
                 }
 
+                vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+
+
                 return View("HousingLoanForm", vwModel);
             }
             else
@@ -576,6 +585,12 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
                     vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
                     vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+            
+
+
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
