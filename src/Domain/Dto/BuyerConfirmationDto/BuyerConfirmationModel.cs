@@ -222,6 +222,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "House/Unit Model", Prompt = "House/Unit Model")]
         public string? HouseUnitModel { get; set; }
 
+
         [Display(Name = "Selling Price", Prompt = "0.00")]
         public decimal? SellingPrice { get; set; }
 

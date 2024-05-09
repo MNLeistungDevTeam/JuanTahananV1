@@ -56,7 +56,7 @@
 	[SpouseCompanyProvinceName] NVARCHAR(255) NULL,
 	[SpouseCompanyZipCode] NVARCHAR(255) NULL,
 
-	SpouseMonthlySalary Decimal(7,2) NULL,
+	SpouseMonthlySalary Decimal(18,2) NULL,
 	 MonthlySalary Decimal(18,2) NULL,
 
 	[IsOtherSourceOfIncome] BIT NOT NULL DEFAULT 0,

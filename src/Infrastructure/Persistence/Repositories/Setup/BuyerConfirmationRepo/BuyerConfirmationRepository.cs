@@ -50,21 +50,36 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRep
 
         public async Task<BuyerConfirmation> CreateAsync(BuyerConfirmation buyerConfirm, int userId)
         {
-            buyerConfirm.CreatedById = userId;
-            buyerConfirm.DateCreated = DateTime.Now;
+            try
+            {
+                buyerConfirm.CreatedById = userId;
+                buyerConfirm.DateCreated = DateTime.Now;
 
-            var result = await _contextHelper.CreateAsync(buyerConfirm, "DateModified", "ModifiedById");
+                var result = await _contextHelper.CreateAsync(buyerConfirm, "DateModified", "ModifiedById");
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<BuyerConfirmation> UpdateAsync(BuyerConfirmation buyerConfirm, int userId)
         {
-            buyerConfirm.ModifiedById = userId;
-            buyerConfirm.DateModified = DateTime.Now;
+            try
+            {
+                buyerConfirm.ModifiedById = userId;
+                buyerConfirm.DateModified = DateTime.Now;
 
-            var result = await _contextHelper.UpdateAsync(buyerConfirm, "DateCreated", "CreatedById");
-            return result;
+                var result = await _contextHelper.UpdateAsync(buyerConfirm, "DateCreated", "CreatedById");
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task DeleteAsync(BuyerConfirmation buyerConfirm)

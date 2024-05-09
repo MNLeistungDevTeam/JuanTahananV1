@@ -563,7 +563,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlySalary" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -571,7 +571,7 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseMonthlySalary"></label>
-                                        <input type="text" class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
                                         <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -708,7 +708,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AdditionalSourceIncome"></label>
-                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.AdditionalSourceIncome">
+                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AdditionalSourceIncome">
                                             <span asp-validation-for="BuyerConfirmationModel.AdditionalSourceIncome" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -717,7 +717,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AverageMonthlyAdditionalIncome"></label>
-                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.AverageMonthlyAdditionalIncome">
+                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AverageMonthlyAdditionalIncome">
                                             <span asp-validation-for="BuyerConfirmationModel.AverageMonthlyAdditionalIncome" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -725,7 +725,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization"></label>
-                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization">
+                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization">
                                             <span asp-validation-for="BuyerConfirmationModel.AffordMonthlyAmortization" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -754,7 +754,7 @@
                                 <div class="col-md-3" id="bcf-pagIbigNumField" hidden>
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.PagibigNumber"></label>
-                                        <input type="text" class="form-control rounded-3 mb-2 pagibigInputMask" asp-for="BuyerConfirmationModel.PagibigNumber">
+                                        <input class="form-control rounded-3 mb-2 pagibigInputMask" asp-for="BuyerConfirmationModel.PagibigNumber">
                                         <span asp-validation-for="BuyerConfirmationModel.PagibigNumber" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -848,14 +848,14 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.SellingPrice" required>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" required>
                                         <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"> </span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.MonthlyAmortization" required>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" required>
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -964,7 +964,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal"></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start">
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="0" max="30" class="form-control rounded-3 text-start">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
