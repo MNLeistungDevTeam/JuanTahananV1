@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.PropertyProjectRepo;
 
@@ -14,16 +16,19 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     private readonly EfCoreHelper<PropertyProject> _contextHelper;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
+    private readonly IPropertyProjectLocationRepository _propertyprojectLocationRepo;
 
     public PropertyProjectRepository(
         DMSDBContext context,
         ISQLDatabaseService db,
-        IMapper mapper)
+        IMapper mapper,
+        IPropertyProjectLocationRepository propertyprojectLocationRepo)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<PropertyProject>(context);
         _db = db;
         _mapper = mapper;
+        _propertyprojectLocationRepo = propertyprojectLocationRepo;
     }
 
     #endregion Fields
@@ -35,6 +40,19 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     public async Task<List<PropertyProject>> GetAll() =>
         await _contextHelper.GetAllAsync();
+
+    public async Task<IEnumerable<PropertyProjectModel?>> GetAllAsync() =>
+           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spPropertyProject_GetAll", new { });
+
+    public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId) =>
+           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId });
+
+
+    public async Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id) =>
+       await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetPropertyLocationByProjectId", new { id });
+
+
+
 
     #endregion Getters
 
@@ -54,6 +72,43 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         }
 
         return _model;
+    }
+
+    public async Task SaveProjectLocations(PropertyProjectModel project, List<PropertyProjectLocationModel> userProjectList, int userId)
+    {
+        try
+        {
+            if (project == null) return;
+
+            var userCounter = 1;
+
+            var _userProjectList = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
+
+            foreach (var address in _userProjectList)
+            {
+                if (address.Id == 0)
+                    await _propertyprojectLocationRepo.CreateAsync(address, userId);
+                else
+                    await _propertyprojectLocationRepo.UpdateAsync(address, userId);
+
+                userCounter++;
+            }
+
+            // clean up for unused stages
+            var userIds = _userProjectList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+
+            var toDelete = await _context.PropertyProjectLocations
+                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+                .Select(m => m.Id)
+                .ToArrayAsync();
+
+            if (toDelete is not null && toDelete.Any())
+                await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task<PropertyProject> CreateAsync(PropertyProject model, int userId)

@@ -17,6 +17,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         [Display(Name = "Pag-IBIG MID Number/RTN", Prompt = "XXXX-XXXX-XXXX")]
         public string? PagibigNumber { get; set; }
+
         public string? Code { get; set; }
 
         [Display(Name = "Name Of Project Proponent")]
@@ -53,7 +54,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public string? MothersMaidenName { get; set; }
 
         [DisplayName("Marital Status")]
-        public string MaritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }
 
         [DisplayName("Employment Status")]
         public string? OccupationStatus { get; set; }
@@ -98,7 +99,6 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
-        [Required]
         [Display(Name = "Business", Prompt = "indicate local,if any", Description = "Cell Phone / Mobile Number")]
         public string? BusinessTelNo { get; set; }
 
@@ -109,28 +109,78 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Company/Employer/Business Name", Prompt = "Name")]
         public string? CompanyEmployerName { get; set; }
 
-        [Display(Name = "Company/Employer/Business Address", Prompt = "Address")]
-        public string? CompanyEmployerAddress { get; set; }
+        //CompanyAddress
+
+        [Display(Name = "Company Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
+        public string? CompanyUnitName { get; set; }
+
+        [Display(Name = "Company Building Name", Prompt = "Building Name", Description = "Building Name")]
+        public string? CompanyBuildingName { get; set; }
+
+        [Display(Name = "Company Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
+        public string? CompanyLotName { get; set; }
+
+        [Display(Name = "Company Street Name", Prompt = "Street Name")]
+        public string? CompanyStreetName { get; set; }
+
+        [Display(Name = "Company Subdivision Name", Prompt = "Subdivision Name", Description = "Subdivision")]
+        public string? CompanySubdivisionName { get; set; }
+
+        [Display(Name = "Company Barangay Name", Prompt = "Barangay Name", Description = "Barangay")]
+        public string? CompanyBaranggayName { get; set; }
+
+        [Display(Name = "Company Municipality/City Name", Prompt = "Municipality/City Name", Description = "Municipality/City")]
+        public string? CompanyMunicipalityName { get; set; }
+
+        [Display(Name = "Company Province Name", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
+        public string? CompanyProvinceName { get; set; }
+
+        [Display(Name = "Company ZIP Code", Prompt = "Zip Code")]
+        public string? CompanyZipCode { get; set; }
 
         //Spouse
 
-        [Display(Name = "Last Name", Prompt = "Last Name")]
+        [Display(Name = "Spouse Last Name", Prompt = "Last Name")]
         public string? SpouseLastName { get; set; }
 
-        [Display(Name = "First Name", Prompt = "First Name")]
+        [Display(Name = "Spouse First Name", Prompt = "First Name")]
         public string? SpouseFirstName { get; set; }
 
-        [Display(Name = "Middle Name", Prompt = "Middle Name")]
+        [Display(Name = "Spouse Middle Name", Prompt = "Middle Name")]
         public string? SpouseMiddleName { get; set; }
 
-        [Display(Name = "Extension Name", Prompt = "Extension Name")]
+        [Display(Name = "Spouse Extension Name", Prompt = "Extension Name")]
         public string? SpouseSuffix { get; set; }
 
-        [Display(Name = "Company/Employer/Business Name", Prompt = "Name")]
+        [Display(Name = "Spouse Company/Employer/Business Name", Prompt = "Name")]
         public string? SpouseCompanyEmployerName { get; set; }
 
-        [Display(Name = "Company/Employer/Business Address", Prompt = "Address")]
-        public string? SpouseCompanyEmployerAddress { get; set; }
+        [Display(Name = "Spouse Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
+        public string? SpouseCompanyUnitName { get; set; }
+
+        [Display(Name = "Spouse Building Name", Prompt = "Building Name", Description = "Building Name")]
+        public string? SpouseCompanyBuildingName { get; set; }
+
+        [Display(Name = "Spouse Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
+        public string? SpouseCompanyLotName { get; set; }
+
+        [Display(Name = "Spouse SpouseStreet Name", Prompt = "Street Name")]
+        public string? SpouseCompanyStreetName { get; set; }
+
+        [Display(Name = "Spouse Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
+        public string? SpouseCompanySubdivisionName { get; set; }
+
+        [Display(Name = "Spouse Barangay", Prompt = "Barangay Name", Description = "Barangay")]
+        public string? SpouseCompanyBaranggayName { get; set; }
+
+        [Display(Name = "Spouse Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
+        public string? SpouseCompanyMunicipalityName { get; set; }
+
+        [Display(Name = "Spouse Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
+        public string? SpouseCompanyProvinceName { get; set; }
+
+        [Display(Name = "Spouse ZIP Code", Prompt = "Zip Code")]
+        public string? SpouseCompanyZipCode { get; set; }
 
         [Display(Name = "Monthly Salary", Prompt = "(Basic + Allowances)")]
         public decimal? MonthlySalary { get; set; }

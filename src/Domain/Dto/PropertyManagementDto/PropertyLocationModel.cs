@@ -19,4 +19,6 @@ public class PropertyLocationModel
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public int ProjectId { get; set; }
 }

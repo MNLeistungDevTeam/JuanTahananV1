@@ -20,6 +20,13 @@
     var companyInfo = await _companyRepo.GetByIdAsync(companyId);
     var userInfo = await _userRepo.GetUserAsync(userId);
     var beneficiaryData = await _bnfcRepo.GetByPagibigNumberAsync(userInfo.PagibigNumber);
+
+
+    // Check if beneficiaryData is not null before accessing its properties
+    var flagValue = (beneficiaryData != null && beneficiaryData.IsBcfCreated != null)
+        ? beneficiaryData.IsBcfCreated.ToString().ToLower()
+        : "";
+
     string userProfile = Url.Content("~/images/user/default.png");
 
     
@@ -39,7 +46,7 @@
 <input type="hidden" id="txt_userId" value="@userId" />
 <input type="hidden" id="txt_roleId" value="@userInfo.UserRoleId" />
 <input type="hidden" id="txt_userPagibigNumber" value="@userInfo.PagibigNumber" />
-<input type="hidden" data-flag="@beneficiaryData.IsBcfCreated.ToString().ToLower()" id="UserFlag_IsBcfCreated" />
+<input type="hidden" data-flag="@flagValue" id="UserFlag_IsBcfCreated" />
 
 <div class="container-fluid ps-4 pe-4">
     <div class="navbar-custom mt-2 rounded-4 bg-transparent shadow-none">

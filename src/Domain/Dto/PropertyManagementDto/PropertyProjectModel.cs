@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ public class PropertyProjectModel
 
     public string? Logo { get; set; } = string.Empty;
 
+    [Display(Name = "Company")]
     public int? CompanyId { get; set; }
 
     public int CreatedById { get; set; }
@@ -25,4 +27,12 @@ public class PropertyProjectModel
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public string? CompanyName { get; set; }
+
+
+    public int LocationId { get; set; }
 }
+
+
+
