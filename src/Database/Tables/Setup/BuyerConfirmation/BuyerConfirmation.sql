@@ -57,13 +57,13 @@
 	[SpouseCompanyZipCode] NVARCHAR(255) NULL,
 
 	SpouseMonthlySalary Decimal(7,2) NULL,
-	 MonthlySalary Decimal(7,2) NULL,
+	 MonthlySalary Decimal(18,2) NULL,
 
 	[IsOtherSourceOfIncome] BIT NOT NULL DEFAULT 0,
-	AdditionalSourceIncome Decimal(7,2) NULL,
+	AdditionalSourceIncome Decimal(18,2) NULL,
 
-	AverageMonthlyAdditionalIncome Decimal(7,2) NULL,
-	AffordMonthlyAmortization Decimal(7,2) NULL,
+	AverageMonthlyAdditionalIncome Decimal(18,2) NULL,
+	AffordMonthlyAmortization Decimal(18,2) NULL,
 	
 	IsPagibigMember  bit default(0) NOT NULL,
 	IsPagibigCoBorrower  bit default(0) NOT NULL,
@@ -75,8 +75,8 @@
 
 	 
 	HouseUnitModel  NVARCHAR(255) NULL,
-	SellingPrice Decimal(7,2) NULL,
-	MonthlyAmortization Decimal(7,2) NULL,
+	SellingPrice Decimal(18,2) NULL,
+	MonthlyAmortization Decimal(18,2) NULL,
 
 	DateCreated DATETIME2(7) DEFAULT(GETDATE()),
 	CreatedById INT NULL,
