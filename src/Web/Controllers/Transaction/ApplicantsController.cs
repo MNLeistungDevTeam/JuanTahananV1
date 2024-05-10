@@ -1185,6 +1185,7 @@ namespace Template.Web.Controllers.Transaction
                 //Unmasked
                 vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
                 vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+                vwModel.BuyerConfirmationModel.CompanyId = companyId;
 
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
