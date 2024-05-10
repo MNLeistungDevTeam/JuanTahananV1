@@ -95,7 +95,7 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    [Route("[controller]/LatestHousingForm/{applicantCode?}")]
+    [Route("[controller]/LatestBuyerConfirmationForm/{applicantCode?}")]
     public async Task<IActionResult> LatestBuyerConfirmationForm(string? applicantCode = null)
     {
         try
