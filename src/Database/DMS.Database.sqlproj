@@ -259,6 +259,7 @@
     <Build Include="Stored Procedures\Setup\PropertyProject\spProject_GetPropertyUnitByProjectId.sql" />
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiarylnformation_GenerateCode.sql" />
     <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetAll.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetInq.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

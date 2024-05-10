@@ -4,6 +4,7 @@ $(function () {
     var tblBuyerConForm;
 
     initializeTable();
+    initializeInfoCards();
 
     function initializeTable() {
         tblBuyerConForm = $(`#tbl_applicants`).DataTable({
@@ -65,7 +66,6 @@ $(function () {
                     data: 'DateCreated',
                     className: 'align-middle text-center',
                     render: function (data) {
-
                         if (data && data.trim() !== "") {
                             return moment(data).format('YYYY-MM-DD');
                         } else {
@@ -133,6 +133,40 @@ $(function () {
 
         $("#btn_view").on('click', function () {
             location.href = $(this).attr("data-url");
+        });
+    }
+
+    function initializeInfoCards() {
+        let info_for_qualification = $("#info_for_qualification");
+        let info_total_qualified = $("#info_total_qualified");
+        let info_total_returned = $("#info_total_returned");
+        let loading_text = "<span class='spinner-border spinner-border-sm'></span>";
+
+        $.ajax({
+            url: "/BuyerConfirmation/GetBCFInquiry",
+            method: "get",
+            beforeSend: function () {
+                info_for_qualification.html(loading_text);
+                info_total_qualified.html(loading_text);
+                info_total_returned.html(loading_text);
+            },
+            success: function (response) {
+                if (!response)
+                    return
+
+                console.log(response);
+
+                info_for_qualification.html(`<span data-plugin="counterup">${response.TotalSubmitted}</span>`);
+                info_total_qualified.html(`<span data-plugin="counterup">${response.TotalQualified}</span>`);
+                info_total_returned.html(`<span data-plugin="counterup">${response.TotalReturned}</span>`);
+
+                $("[data-plugin='counterup']").counterUp();
+            },
+            error: function (jqXHR) {
+                info_for_qualification.html(`<span data-plugin="counterup">${0}</span>`);
+                info_total_qualified.html(`<span data-plugin="counterup">${0}</span>`);
+                info_total_returned.html(`<span data-plugin="counterup">${0}</span>`);
+            }
         });
     }
 });

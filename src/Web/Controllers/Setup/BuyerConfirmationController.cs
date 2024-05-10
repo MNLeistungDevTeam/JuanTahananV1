@@ -1,16 +1,10 @@
 ﻿using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Domain.Dto.BeneficiaryInformationDto;
-using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
-using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,16 +13,23 @@ namespace DMS.Web.Controllers.Setup;
 [Authorize]
 public class BuyerConfirmationController : Controller
 {
+    #region Fields
+
     private readonly IUserRepository _userRepo;
     private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
     private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
-    public BuyerConfirmationController(IUserRepository userRepo, IBeneficiaryInformationRepository beneficiaryInformationRepo, IBuyerConfirmationRepository buyerConfirmationRepo)
+    public BuyerConfirmationController(
+        IUserRepository userRepo,
+        IBeneficiaryInformationRepository beneficiaryInformationRepo,
+        IBuyerConfirmationRepository buyerConfirmationRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
         _buyerConfirmationRepo = buyerConfirmationRepo;
     }
+
+    #endregion Fields
 
     #region Views
 
@@ -71,7 +72,7 @@ public class BuyerConfirmationController : Controller
     }
 
     [Route("[controller]/Details/{bcfCode}")]
-    public async Task<IActionResult> Details(string bcfCode) 
+    public async Task<IActionResult> Details(string bcfCode)
     {
         if (string.IsNullOrEmpty(bcfCode))
         {
@@ -82,12 +83,10 @@ public class BuyerConfirmationController : Controller
         {
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
-
             var viewModel = new ApplicantViewModel()
-            { 
+            {
                 BuyerConfirmationModel = buyerConfirmation
             };
-
 
             return View("Details", viewModel);
         }
@@ -96,7 +95,19 @@ public class BuyerConfirmationController : Controller
 
     #endregion Views
 
-    #region API
+    #region API Getters
+
+    public async Task<IActionResult> GetBCFInquiry()
+    {
+        int companyId = int.Parse(User.FindFirstValue("Company"));
+
+        var result = await _buyerConfirmationRepo.GetInqAsync(companyId);
+        return Ok(result);
+    }
+
+    #endregion API Getters
+
+    #region API Operation
 
     [HttpPost]
     public async Task<IActionResult> SaveBCF(ApplicantViewModel vwModel)
@@ -137,5 +148,5 @@ public class BuyerConfirmationController : Controller
         }
     }
 
-    #endregion API
+    #endregion API Operation
 }
