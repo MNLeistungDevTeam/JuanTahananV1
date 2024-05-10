@@ -82,6 +82,7 @@
 	CreatedById INT NULL,
 	DateModified DATETIME2(7) NULL,
 	ModifiedById INT NULL,
-	ApprovalStatus INT NULL
+	ApprovalStatus INT NULL,
+	CompanyId INT NULL
 
 )

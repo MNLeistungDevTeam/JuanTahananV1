@@ -178,6 +178,7 @@ FROM (
 		) aplvl ON aps1.Id = aplvl.ApprovalStatusId
 		LEFT JOIN [User] ua ON aplvl.ApproverId = ua.Id
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
+		WHERE aps1.ReferenceType =  (SELECT Id from Module WHERE Id = 8 OR Code = 'APLCNTREQ')
 	) aps ON apl.Id = aps.ReferenceId 
 	
 
@@ -198,12 +199,16 @@ FROM (
                 CASE WHEN apl.ApprovalStatus IN (3,4,5,6,7,8,9,10,11) THEN 1 ELSE 0 END
         END
     ) 
-	AND apl.CompanyId = @companyId
+	AND apl.CompanyId = @companyId 
+
+
 	--ORDER BY apl.DateModified DESC;
 	--ORDER BY apl.Id DESC, apl.DateModified DESC;
 	
 	) MAIN
-	LEFT JOIN ApprovalStatus aps2 ON main.Id = aps2.ReferenceId
+	LEFT JOIN ApprovalStatus aps2 ON main.Id = aps2.ReferenceId  and aps2.ReferenceType = (SELECT Id from Module WHERE Id = 8 OR Code = 'APLCNTREQ')
+
+
 	LEFT JOIN ApprovalLog aplog2 ON aplog2.ReferenceId = aps2.ReferenceId and aplog2.[Action] = 1 and aplog2.CreatedById = aps2.UserId
 	) MAIN2
 	WHERE MAIN2.rn = 1 

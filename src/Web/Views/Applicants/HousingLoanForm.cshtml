@@ -1,11 +1,12 @@
 ﻿@using DMS.Web.Controllers.Services
 @inject IStringLocalizer<SharedResources> localizer
 
-@model ApplicantViewModel
+ @model ApplicantViewModel
 @{
-    string title = "Update Application - " + Model.ApplicantsPersonalInformationModel.Code;
+    string title = Model.BarrowersInformationModel.IsBcfCreated ? "Update Application - " + Model.ApplicantsPersonalInformationModel.Code : "BCF & HLAF -" + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 }
+
 
 <!-- start page title -->
 <div class="row">
@@ -428,10 +429,20 @@
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal">Company Employer/Business Name</label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentUnitName">
-                                        <span asp-validation-for="BuyerConfirmationModel.PresentUnitName" class="text-danger"> </span>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.CompanyEmployerName">
+                                        <span asp-validation-for="BuyerConfirmationModel.CompanyEmployerName" class="text-danger"> </span>
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlySalary" required></label>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
+                                        <span asp-validation-for="BuyerConfirmationModel.MonthlySalary" class="text-danger"> </span>
+                                    </div>
+                                </div>
+
 
 
                                 <div class="col-md-12">
@@ -560,23 +571,8 @@
                                 </div>
 
 
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlySalary" required></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlySalary" required>
-                                        <span asp-validation-for="BuyerConfirmationModel.MonthlySalary" class="text-danger"> </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseMonthlySalary"></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
-                                        <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
-                                    </div>
-                                </div>
-
-
+                            
+                              
 
 
                                 <div class="col-md-12">
@@ -597,6 +593,14 @@
                                     </div>
                                 </div>
 
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SpouseMonthlySalary"></label>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SpouseMonthlySalary">
+                                        <span asp-validation-for="BuyerConfirmationModel.SpouseMonthlySalary" class="text-danger"> </span>
+                                    </div>
+                                </div>
 
 
 
@@ -847,15 +851,15 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice" required></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" required>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice"></label>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice">
                                         <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"> </span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization" required></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" required>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization">
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"> </span>
                                     </div>
                                 </div>

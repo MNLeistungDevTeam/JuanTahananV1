@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DevExpress.Charts.Native;
+using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -261,8 +262,29 @@ namespace Template.Web.Controllers.Transaction
 
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    }
+                    else
+                    {
+                        vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        vwModel.BuyerConfirmationModel.BirthDate = beneficiaryData.BirthDate;
+                        vwModel.BuyerConfirmationModel.Email = beneficiaryData.Email;
+                        vwModel.BuyerConfirmationModel.Suffix = userInfo.Suffix;
 
+                        vwModel.BuyerConfirmationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                        vwModel.BuyerConfirmationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                        vwModel.BuyerConfirmationModel.PresentLotName = beneficiaryData.PresentLotName;
+                        vwModel.BuyerConfirmationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                        vwModel.BuyerConfirmationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                        vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                        vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                        vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                        vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
 
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                     }
 
                     returnViewPage = "Beneficiary_HLF068";
@@ -505,11 +527,35 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                 }
+                else
+                {
+                    var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
 
-                vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    vwModel.BuyerConfirmationModel.BirthDate = beneficiaryData.BirthDate;
+                    vwModel.BuyerConfirmationModel.Email = beneficiaryData.Email;
+                    vwModel.BuyerConfirmationModel.Suffix = userData.Suffix;
 
+                    vwModel.BuyerConfirmationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                    vwModel.BuyerConfirmationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                    vwModel.BuyerConfirmationModel.PresentLotName = beneficiaryData.PresentLotName;
+                    vwModel.BuyerConfirmationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                    vwModel.BuyerConfirmationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                    vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                    vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                    vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                    vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
+
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                }
 
                 return View("HousingLoanForm", vwModel);
             }
@@ -538,6 +584,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.BirthDate = beneficiaryData.BirthDate;
                     vwModel.BarrowersInformationModel.Sex = beneficiaryData.Sex;
                     vwModel.BarrowersInformationModel.Email = beneficiaryData.Email;
+                    vwModel.BarrowersInformationModel.PresentStreetName = beneficiaryData.PresentStreetName;
                     vwModel.BarrowersInformationModel.PresentUnitName = beneficiaryData.PresentUnitName;
                     vwModel.BarrowersInformationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
                     vwModel.BarrowersInformationModel.PresentLotName = beneficiaryData.PresentLotName;
@@ -547,6 +594,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
                     vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
 
+                    vwModel.BarrowersInformationModel.PermanentStreetName = beneficiaryData.PermanentStreetName;
                     vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
                     vwModel.BarrowersInformationModel.PermanentBuildingName = beneficiaryData.PermanentBuildingName;
                     vwModel.BarrowersInformationModel.PermanentLotName = beneficiaryData.PermanentLotName;
@@ -585,12 +633,10 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
                     vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
                     vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                    vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
-            
-
-
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
@@ -1186,6 +1232,8 @@ namespace Template.Web.Controllers.Transaction
 
                 //Unmasked
                 vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
+                vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
+                vwModel.BuyerConfirmationModel.CompanyId = companyId;
 
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
@@ -1207,8 +1255,6 @@ namespace Template.Web.Controllers.Transaction
                             }
                         }
                     }
-
-                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
 
                     #region Register User and Send Email
 
@@ -1327,8 +1373,6 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.ApplicantsPersonalInformationModel.UserId = user.Id;
 
-                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
-
                     var newApplicantData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     applicantCode = newApplicantData.Code;
@@ -1375,8 +1419,6 @@ namespace Template.Web.Controllers.Transaction
                 //edit saving all data
                 else
                 {
-                    vwModel.ApplicantsPersonalInformationModel.CompanyId = companyId;
-
                     var applicationData = await _applicantsPersonalInformationRepo.SaveAsync(vwModel.ApplicantsPersonalInformationModel, userId);
 
                     applicantCode = applicationData.Code;

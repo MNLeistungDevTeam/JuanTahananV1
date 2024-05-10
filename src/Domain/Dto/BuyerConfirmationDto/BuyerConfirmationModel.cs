@@ -241,5 +241,6 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public DateTime? DateModified { get; set; }
 
         #endregion Display Prop
+        public int? CompanyId { get; set; }
     }
 }

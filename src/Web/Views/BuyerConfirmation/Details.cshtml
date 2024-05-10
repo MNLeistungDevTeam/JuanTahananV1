@@ -1,10 +1,10 @@
-﻿@using DMS.Web.Controllers.Services
+﻿@using DMS.Domain.Dto.BuyerConfirmationDto;
 
 @inject IStringLocalizer<SharedResources> localizer
 
-@model ApplicantViewModel
+@model BuyerConfirmationModel
 @{
-    ViewData["Title"] = Model.BuyerConfirmationModel.Code + " - BCF Details";
+    ViewData["Title"] = Model.Code + " - BCF Details";
     // var items = (List<ApplicantViewModel>)ViewBag.items;
 }
 
@@ -17,7 +17,7 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
                     <li class="breadcrumb-item"><a asp-controller="BuyerConfirmation" asp-action="ApplicantRequests">BCF Requests</a></li>
-                    <li class="breadcrumb-item active">@Model.BuyerConfirmationModel.Code</li>
+                    <li class="breadcrumb-item active">@Model.Code</li>
                 </ol>
             </div>
             <h4 class="page-title">BCF Details</h4>
@@ -45,22 +45,22 @@
         </div>
 
         <form id="frm_bcf" method="post" asp-action="" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-            <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
+            <input type="hidden" asp-for="Code" />
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="row mb-3" style="width: 30%;">
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
+                            <input type="text" class="form-control" asp-for="HouseUnitModel" readonly />
+                            <label class="mx-2" asp-for="HouseUnitModel"></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.SellingPrice" />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice"></label>
+                            <input type="text" class="form-control" asp-for="SellingPrice" />
+                            <label class="mx-2" asp-for="SellingPrice"></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.MonthlyAmortization" />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
+                            <input type="text" class="form-control" asp-for="MonthlyAmortization" />
+                            <label class="mx-2" asp-for="MonthlyAmortization"></label>
                         </div>
                     </div>
                 </div>
