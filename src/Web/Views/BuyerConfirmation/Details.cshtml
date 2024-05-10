@@ -35,7 +35,7 @@
                 <div class="progressbar" style="width: 50%;">
                     <div id="progress" class="progress"></div>
                     <div class="progress-step" data-title="Set pricing">
-                        <i class="mdi mdi-thumb-up fs-2"></i>
+                        <i class="mdi mdi-currency-php fs-2"></i>
                     </div>
                     <div class="progress-step" data-title="Review BCF">
                         <i class="mdi mdi-file-outline fs-2"></i>
@@ -49,7 +49,7 @@
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="row w-25 mb-3">
+                    <div class="row mb-3" style="width: 30%;">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly />
                             <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
@@ -66,11 +66,11 @@
                 </div>
 
                 <div class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="row w-25 mb-3">
+                    <div class="row mb-3" style="width: 30%;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-info btn-lg rounded-3" id="bcfSetAmount">Apply pricing</button>
                             <button class="btn btn-outline-info btn-lg rounded-3" id="bcfPreviewBtn">
-                                <span class="text-center">Review BCF</span>
+                                <span class="text-center ms-2">Review BCF</span>
                                 <span class="float-end"><i class="mdi mdi-arrow-right"></i></span>
                             </button>
                         </div>
@@ -90,12 +90,18 @@
                             <li class="list-inline-item">
                                 <button class="btn btn-outline-info btn-lg rounded-3" id="bcfBackBtn">
                                     <span class="float-start"><i class="mdi mdi-arrow-left"></i></span>
-                                    <span class="text-center">Change pricing</span>
+                                    <span class="text-center ms-2">Change pricing</span>
                                 </button>
                             </li>
                             <li class="list-inline-item float-end">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                <button type="button" class="btn btn-warning btn-lg waves-effect waves-light">
+                                    <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
+                                    <span class="text-center ms-2">Return form</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light">
+                                    <span class="text-center me-2">Save and Approve</span>
+                                    <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
+                                </button>
                             </li>
                         </ul>
                     </div>
