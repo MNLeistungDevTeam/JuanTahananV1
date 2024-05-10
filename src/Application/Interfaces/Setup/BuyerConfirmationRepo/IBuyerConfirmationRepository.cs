@@ -14,5 +14,6 @@ namespace DMS.Application.Interfaces.Setup.BuyerConfirmationRepo
         Task<BuyerConfirmationModel?> GetAsync(int id);
         Task<BuyerConfirmationModel?> GetByUserAsync(int userId);
         Task<BuyerConfirmation> SaveAsync(BuyerConfirmationModel bcModel, int userId);
+        Task<IEnumerable<BuyerConfirmationModel>> GetAllAsync();
     }
 }

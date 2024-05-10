@@ -1,0 +1,111 @@
+﻿@using DMS.Web.Controllers.Services
+
+@inject IStringLocalizer<SharedResources> localizer
+
+@model ApplicantViewModel
+@{
+    ViewData["Title"] = Model.BuyerConfirmationModel.Code + " - BCF Details";
+    // var items = (List<ApplicantViewModel>)ViewBag.items;
+}
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="BuyerConfirmation" asp-action="ApplicantRequests">BCF Requests</a></li>
+                    <li class="breadcrumb-item active">@Model.BuyerConfirmationModel.Code</li>
+                </ol>
+            </div>
+            <h4 class="page-title">BCF Details</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <!-- Content for step progress -->
+                <div class="progressbar" style="width: 50%;">
+                    <div id="progress" class="progress"></div>
+                    <div class="progress-step" data-title="Set pricing">
+                        <i class="mdi mdi-thumb-up fs-2"></i>
+                    </div>
+                    <div class="progress-step" data-title="Review BCF">
+                        <i class="mdi mdi-file-outline fs-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="frm_bcf" method="post" asp-action="" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+
+            <div class="row" id="inputBcf">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="row w-25 mb-3">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.SellingPrice" />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice"></label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.MonthlyAmortization" />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="row w-25 mb-3">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-info btn-lg rounded-3" id="bcfSetAmount">Apply Pricing</button>
+                            <button class="btn btn-outline-info btn-lg rounded-3" id="bcfPreviewBtn">
+                                <span class="text-center">Review BCF</span>
+                                <span class="float-end"><i class="mdi mdi-arrow-right"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-0 b-0" id="previewBcf" hidden>
+                <div class="row">
+                    <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <ul class="mb-0 list-inline mt-1">
+                            <li class="list-inline-item">
+                                <button class="btn btn-outline-info btn-lg rounded-3" id="bcfBackBtn">
+                                    <span class="float-start"><i class="mdi mdi-arrow-left"></i></span>
+                                    <span class="text-center">Change pricing</span>
+                                </button>
+                            </li>
+                            <li class="list-inline-item float-end">
+                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Setup/BuyerConfirmation/BuyerConfirmationDetailScript.js" asp-append-version="true"></script>
+}
