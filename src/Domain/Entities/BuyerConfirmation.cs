@@ -144,4 +144,6 @@ public partial class BuyerConfirmation
     public DateTime? DateModified { get; set; }
 
     public int? ModifiedById { get; set; }
+
+    public int? ApprovalStatus { get; set; }
 }

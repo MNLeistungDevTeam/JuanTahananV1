@@ -81,7 +81,7 @@
 	DateCreated DATETIME2(7) DEFAULT(GETDATE()),
 	CreatedById INT NULL,
 	DateModified DATETIME2(7) NULL,
-	ModifiedById INT NULL
-
+	ModifiedById INT NULL,
+	ApprovalStatus INT NULL
 
 )

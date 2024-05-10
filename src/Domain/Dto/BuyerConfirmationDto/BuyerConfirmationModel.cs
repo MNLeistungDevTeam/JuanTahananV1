@@ -228,5 +228,6 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         [Display(Name = "Monthly Amortization", Prompt = "0.00")]
         public decimal? MonthlyAmortization { get; set; }
+        public int? ApprovalStatus { get; set; }
     }
 }
