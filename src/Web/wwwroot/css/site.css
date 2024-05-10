@@ -1515,6 +1515,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 
 .progress {
     position: absolute;
+    border: 1px solid !important;
+    border-color: deepskyblue;
     background-color: deepskyblue;
     color: deepskyblue;
     width: 0%;
@@ -1550,16 +1552,19 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     .progress-step.current {
         border-color: deepskyblue;
         color: deepskyblue;
+        transition: 0.5s ease-in-out;
     }
 
     .progress-step.completed {
         background-color: deepskyblue;
         color: deepskyblue;
         border-color: deepskyblue;
+        transition: 0.5s ease-in-out;
     }
 
         .progress-step.completed i {
             color: white;
+            transition: 0.5s ease-in-out;
         }
 
 /* current, completed, .progressbar#progress */
