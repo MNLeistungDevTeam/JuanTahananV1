@@ -94,29 +94,7 @@ public class ReportController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    //[HttpPost]
-    //public async Task<IActionResult> LatestHousingForm2(ApplicantViewModel vwModel)
-    //{
-    //    try
-    //    {
-    //        ApplicantInformationReportModel reportModel = new()
-    //        {
-    //            ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
-    //            LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
-    //            CollateralInformationModel = vwModel.CollateralInformationModel,
-    //            BarrowersInformationModel = vwModel.BarrowersInformationModel,
-    //            SpouseModel = vwModel.SpouseModel,
-    //            Form2PageModel = vwModel.Form2PageModel
-    //        };
-
-    //        var report = await _reportService.GenerateHousingLoanFormNoCode(reportModel, _hostingEnvironment.WebRootPath);
-    //        byte[] file = report.ToArray();
-
-    //        // Return the file as a FileStreamResult
-    //        return File(file, "application/octet-stream", "HousingLoanForm.pdf");
-    //    }
-    //    catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
-    //}
+ 
     [HttpPost]
     public async Task<IActionResult> LatestHousingForm2(ApplicantViewModel vwModel)
     {
@@ -150,6 +128,9 @@ public class ReportController : Controller
     {
         try
         {
+
+            vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
+
             ApplicantInformationReportModel reportModel = new()
             {
                 ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
@@ -180,6 +161,8 @@ public class ReportController : Controller
     {
         try
         {
+            
+
             ApplicantInformationReportModel reportModel = new()
             {
                 BuyerConfirmationModel = vwModel.BuyerConfirmationModel

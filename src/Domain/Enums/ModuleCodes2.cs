@@ -26,6 +26,7 @@ namespace DMS.Domain.Enums
         public const string CONST_DocumentUpload = "DOCUPLOAD";
         public const string  CONST_APPROVERMNGMNT =  "APPROVER-MGMT";
         public const string  CONST_EMSTUP =  "EMAIL-STUP";
+        public const string CONST_BCFREQUESTS =  "BCF-APLRQST";
  
        
     }
