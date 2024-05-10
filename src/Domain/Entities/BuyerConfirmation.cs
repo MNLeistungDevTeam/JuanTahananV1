@@ -146,4 +146,6 @@ public partial class BuyerConfirmation
     public int? ModifiedById { get; set; }
 
     public int? ApprovalStatus { get; set; }
+
+    public int? CompanyId { get; set; }
 }
