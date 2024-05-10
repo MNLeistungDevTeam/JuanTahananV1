@@ -2102,9 +2102,9 @@ $(function () {
 
         const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
 
-        let width = ((allCurrentClasses.length / (steps.length - 1)) * 100) + allCurrentClasses.length;
+        let width = ((allCurrentClasses.length / (steps.length - 1)) * 99) + allCurrentClasses.length;
 
-        if (width > 100) width = 100;
+        if (width > 99) width = 99;
 
         $(`.progressbar #progress`).css('width', `${width}%`);
     }

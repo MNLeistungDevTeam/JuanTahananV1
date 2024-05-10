@@ -227,5 +227,20 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         [Display(Name = "Monthly Amortization", Prompt = "0.00")]
         public decimal? MonthlyAmortization { get; set; }
+
+        public int? ApprovalStatus { get; set; }
+
+        #region Display Prop
+
+        public string? ApplicantFullName { get; set; }
+
+        public string? ApplicationStatus { get; set; }
+
+        public DateTime? DateCreated { get; set; }
+
+        public DateTime? DateModified { get; set; }
+
+        #endregion Display Prop
+        public int? CompanyId { get; set; }
     }
 }

@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "BCF Application Requests";
+    // var items = (List<ApplicantViewModel>)ViewBag.items;
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<!-- Info Cards -->
+<div class="row">
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-primary shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_for_qualification"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Submitted</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-layers font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+
+                <a href="#" id="dash_link_qualification" data-val="" class="stretched-link"></a>
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-success shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_qualified"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Qualified</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-up font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_qualified" data-val="2" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-4">
+        <div class="widget-rounded-circle card bg-danger shadow zoom">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2" id="info_total_returned"><span data-plugin="counterup">0</span></h2>
+                        <p class="text-white mb-0 text-truncate">Returned</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-thumbs-down font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+            <a href="#" id="dash_link_returned" data-val="3" class="stretched-link"></a>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row gy-2">
+            <div class="row">
+                <div class="col-md-8 mb-2 align-items-md-center">
+                    <button class="btn btn-light btn-sm waves-effect" id="btn_view" disabled><span class="fe-info"></span> Review Form</button>
+                    <button class="btn btn-light btn-sm waves-effect" id="btn_refresh"><span class="mdi mdi-refresh"></span> Refresh</button>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="input-group float-end" style="width:250px;">
+                        <input type="search" class="form-control form-control-sm" placeholder="Search..." />
+                        <span class="input-group-text"><i class="fe-search"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <table class="table table-sm table-bordered nowrap w-100" id="tbl_applicants">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference No.</th>
+                            <th>Buyer</th>
+                            <th>Pag-IBIG MID no./RTN</th>
+                            <th>Monthly Income</th>
+                            <th>Project Proponent</th>
+                            <th>House Unit</th>
+                            <th>Status</th>
+                            <th>Date Applied</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Setup/BuyerConfirmation/BuyerConfirmationScript.js" asp-append-version="true"></script>
+}

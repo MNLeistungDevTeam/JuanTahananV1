@@ -283,6 +283,103 @@ namespace DMS.Infrastructure.Services
             }
         }
 
+        public async Task<BuyerConfirmation> GenerateBuyerConfirmationForm(string? buyerConfirmationCode, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (buyerConfirmationCode != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                    }
+                }
+
+                //List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                return buyerConfirmationFormDetail;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GenerateBuyerConfirmationFormB64ForDeveloper(BuyerConfirmationModel model, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (model.Code != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(model.Code);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                        bcfInforModel.SellingPrice = model.SellingPrice;
+                        bcfInforModel.MonthlyAmortization = model.MonthlyAmortization;
+                    }
+                }
+
+                //List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                buyerConfirmationFormDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
+
+                //Save the document to a file
+                buyerConfirmationFormDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public static T ConvertStringPropertiesToUppercase<T>(T obj, List<string>? excludedProperties = null)
         {
             PropertyInfo[] properties = typeof(T).GetProperties();

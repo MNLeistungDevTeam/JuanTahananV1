@@ -24,7 +24,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? RepricingPeriod { get; set; }
 
         [Display(Name = "Desired Loan Term (Years)", Prompt = "Input Year")]
-        [Range(1, 30, ErrorMessage = "Loan Term Years must between 1 - 30")]
+        [Range(0, 30, ErrorMessage = "Loan Term Years must between 0 - 30")]
         public int? DesiredLoanTermYears { get; set; }
 
         [Display(Name = "Mode of Payment (MOP)", Prompt = "Select mode of payment")]

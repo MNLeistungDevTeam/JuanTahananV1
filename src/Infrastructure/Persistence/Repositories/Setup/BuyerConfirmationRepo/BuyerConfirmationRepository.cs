@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRepo
 {
@@ -12,21 +14,26 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRep
         private readonly EfCoreHelper<BuyerConfirmation> _contextHelper;
         private readonly IMapper _mapper;
         private readonly ISQLDatabaseService _db;
+        private readonly IApprovalStatusRepository _approvalStatusRepo;
 
-        public BuyerConfirmationRepository(DMSDBContext context, IMapper mapper, ISQLDatabaseService db)
+        public BuyerConfirmationRepository(DMSDBContext context, IMapper mapper, ISQLDatabaseService db, IApprovalStatusRepository approvalStatusRepo)
         {
             _context = context;
             _contextHelper = new EfCoreHelper<BuyerConfirmation>(context);
             _mapper = mapper;
             _db = db;
+            _approvalStatusRepo = approvalStatusRepo;
         }
 
         public async Task<BuyerConfirmationModel?> GetAsync(int id) =>
             await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_Get", new { id });
 
+        public async Task<IEnumerable<BuyerConfirmationModel>> GetAllAsync() =>
+            await _db.LoadDataAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_GetAll", new { });
+
         public async Task<BuyerConfirmationModel?> GetByUserAsync(int userId) =>
             await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_GetByUserId", new { userId });
-    
+
         public async Task<BuyerConfirmationModel?> GetByCodeAsync(string code) =>
          await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_GetByCode", new { code });
 
@@ -36,9 +43,20 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRep
 
             if (buyerConfirm.Id == 0)
             {
+                if (buyerConfirm.ApprovalStatus is null)
+                {
+                    buyerConfirm.ApprovalStatus = (int)AppStatusType.Draft;
+                }
 
                 buyerConfirm.Code = await GenerateBuyerConfirmationCode();
+
+                int? intValue = buyerConfirm.ApprovalStatus;
+                AppStatusType enumValue = (AppStatusType)intValue;
+
                 buyerConfirm = await CreateAsync(buyerConfirm, userId);
+
+                // Create Initial Approval Status
+                await _approvalStatusRepo.CreateInitialApprovalStatusAsync(buyerConfirm.Id, ModuleCodes2.CONST_BCFREQUESTS, userId, bcModel.CompanyId.Value, enumValue);
             }
             else
             {
@@ -50,21 +68,35 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRep
 
         public async Task<BuyerConfirmation> CreateAsync(BuyerConfirmation buyerConfirm, int userId)
         {
-            buyerConfirm.CreatedById = userId;
-            buyerConfirm.DateCreated = DateTime.Now;
+            try
+            {
+                buyerConfirm.CreatedById = userId;
+                buyerConfirm.DateCreated = DateTime.Now;
 
-            var result = await _contextHelper.CreateAsync(buyerConfirm, "DateModified", "ModifiedById");
+                var result = await _contextHelper.CreateAsync(buyerConfirm, "DateModified", "ModifiedById");
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<BuyerConfirmation> UpdateAsync(BuyerConfirmation buyerConfirm, int userId)
         {
-            buyerConfirm.ModifiedById = userId;
-            buyerConfirm.DateModified = DateTime.Now;
+            try
+            {
+                buyerConfirm.ModifiedById = userId;
+                buyerConfirm.DateModified = DateTime.Now;
 
-            var result = await _contextHelper.UpdateAsync(buyerConfirm, "DateCreated", "CreatedById");
-            return result;
+                var result = await _contextHelper.UpdateAsync(buyerConfirm, "DateCreated", "CreatedById");
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task DeleteAsync(BuyerConfirmation buyerConfirm)
