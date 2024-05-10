@@ -83,7 +83,13 @@ public class BuyerConfirmationController : Controller
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
 
-            return View("Details", buyerConfirmation);
+            var viewModel = new ApplicantViewModel()
+            { 
+                BuyerConfirmationModel = buyerConfirmation
+            };
+
+
+            return View("Details", viewModel);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }

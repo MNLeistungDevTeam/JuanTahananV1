@@ -14,7 +14,7 @@ $(function () {
         e.preventDefault();
 
         inputLock = !inputLock;
-        $(`[name="SellingPrice"], [name="MonthlyAmortization"]`).attr('readonly', inputLock);
+        $(`[name="BuyerConfirmationModel.SellingPrice"], [name="BuyerConfirmationModel.MonthlyAmortization"]`).attr('readonly', inputLock);
 
         $(this).html(inputLock ? "Change pricing" : "Apply pricing");
 

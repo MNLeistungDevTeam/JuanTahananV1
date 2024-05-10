@@ -1,10 +1,9 @@
-﻿@using DMS.Domain.Dto.BuyerConfirmationDto;
-
+﻿ 
 @inject IStringLocalizer<SharedResources> localizer
 
-@model BuyerConfirmationModel
+@model ApplicantViewModel
 @{
-    ViewData["Title"] = Model.Code + " - BCF Details";
+    ViewData["Title"] = Model.BuyerConfirmationModel.Code + " - BCF Details";
     // var items = (List<ApplicantViewModel>)ViewBag.items;
 }
 
@@ -17,7 +16,7 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
                     <li class="breadcrumb-item"><a asp-controller="BuyerConfirmation" asp-action="ApplicantRequests">BCF Requests</a></li>
-                    <li class="breadcrumb-item active">@Model.Code</li>
+                    <li class="breadcrumb-item active">@Model.BuyerConfirmationModel.Code</li>
                 </ol>
             </div>
             <h4 class="page-title">BCF Details</h4>
@@ -45,22 +44,22 @@
         </div>
 
         <form id="frm_bcf" method="post" asp-action="" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
-            <input type="hidden" asp-for="Code" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="row mb-3" style="width: 30%;">
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="HouseUnitModel" readonly />
-                            <label class="mx-2" asp-for="HouseUnitModel"></label>
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="SellingPrice" />
-                            <label class="mx-2" asp-for="SellingPrice"></label>
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.SellingPrice" />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice"></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="MonthlyAmortization" />
-                            <label class="mx-2" asp-for="MonthlyAmortization"></label>
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.MonthlyAmortization" />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
                         </div>
                     </div>
                 </div>
@@ -111,6 +110,50 @@
 
     </div>
 </div>
+
+
+
+<div id="approver-modal" class="modal fade" ttabindex="-1" role="dialog" aria-labelledby="approver-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay" id="approver-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="approver-modalLabel"><span class="mdi mdi-plus"></span> Buyer Confirmation Approval</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveApprovalLevel" asp-controller="Approval" asp-antiforgery="true" method="post" role="form" id="frm_approver_level">
+                <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <input asp-for="ApprovalLevel.Id" type="hidden" />
+                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="hidden" />
+                    <input asp-for="ApprovalLevel.Status" type="hidden" />
+                    <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />
+                    <input asp-for="ApprovalLevel.TransactionId" type="hidden" />
+                    <div class="mb-2">
+                        <label asp-for="ApprovalLevel.TransactionNo"></label>
+                        <input asp-for="ApprovalLevel.TransactionNo" class="form-control" placeholder="Transaction No." readonly />
+                        <span asp-validation-for="ApprovalLevel.TransactionNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2" id="action-container">
+                        <label asp-for="ApprovalLevel.Remarks"></label>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-12 text-muted">Author: Developer</span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="btn_close">Close</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary"><span class="fas fa-thumbs-up"></span> Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 @section Scripts {

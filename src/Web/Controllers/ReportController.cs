@@ -176,12 +176,12 @@ public class ReportController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> LatestBCFB64ForDeveloper(BuyerConfirmationModel model)
+    public async Task<IActionResult> LatestBCFB64ForDeveloper(ApplicantViewModel vwModel)
     {
         try
         {
             // Generate the report as a MemoryStream
-            var reportStream = await _reportService.GenerateBuyerConfirmationFormB64ForDeveloper(model, _hostingEnvironment.WebRootPath);
+            var reportStream = await _reportService.GenerateBuyerConfirmationFormB64ForDeveloper(vwModel.BuyerConfirmationModel, _hostingEnvironment.WebRootPath);
 
             var b64 = Convert.ToBase64String(reportStream);
             return Ok(b64);
