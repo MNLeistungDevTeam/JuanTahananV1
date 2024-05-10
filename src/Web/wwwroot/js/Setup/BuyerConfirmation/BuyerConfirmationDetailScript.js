@@ -2,12 +2,16 @@
 
 $(function () {
     const { pdfjsLib } = globalThis;
+    const debounceError = debounce((callback) => { callback(); }, 5000);
 
     var currentStep = 0;
     var inputLock = false;
 
     initializePdfJs();
     updateProgressBar();
+
+    initializeInputMasks();
+    initializeCustomValidators();
 
     $(`[id="bcfSetAmount"]`).on('click', function (e) {
         // lock two inputs to readonly
@@ -29,11 +33,7 @@ $(function () {
         // navigate to second step
         e.preventDefault();
         updateProgressBar("previewBcf");
-
-
-
         loadBcfPreview();
-
 
         $(`#previewBcf`).attr('hidden', false);
         $(`#inputBcf`).attr('hidden', true);
@@ -51,6 +51,50 @@ $(function () {
     function initializePdfJs() {
         pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
     }
+
+    function initializeCustomValidators() {
+        initializeLeftDecimalInputMask(".decimalInputMask", 2);
+
+        $(`[name="SellingPrice"]`).on('input', function (e) {
+            let currentVal = $(this).val().replace(/,/g, '');
+            let amortVal = $(`[name="MonthlyAmortization"]`).val().replace(/,/g, '');
+            console.log(currentVal);
+            if (currentVal < amortVal) {
+                // Error: Selling Price Amount should not be lower than the amount of monthly Amortization
+
+                $(this).val(amortVal);
+                $(`[id="SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
+            }
+            else {
+                $(`[id="SellingPrice-error-custom"]`).html(``);
+            }
+        });
+
+        $(`[name="MonthlyAmortization"]`).on('input', function (e) {
+            let currentVal = $(this).val().replace(/,/g, '');
+            let sellPrcVal = $(`[name="SellingPrice"]`).val().replace(/,/g, '');
+
+            if (currentVal > sellPrcVal) {
+                // Error: Monthly Amortization should not be higher than the selling price
+
+                $(this).val(sellPrcVal);
+                $(`[id="MonthlyAmortization-error-custom"]`).html(`Monthly Amortization should not be higher than the selling price`);
+            }
+            else {
+                $(`[id="MonthlyAmortization-error-custom"]`).html(``);
+            }
+        });
+    }
+
+    function initializeInputMasks() {
+        $('[name="SellingPrice"]').inputmask({
+            regex: "^[0-9]+$"
+        });
+
+        $('[name="MonthlyAmortization"]').inputmask({
+            regex: "^[0-9]+$"
+        });
+    } 
 
     function updateProgressBar(targetForm = "inputBcf") {
         var steps = $(".progressbar .progress-step");
