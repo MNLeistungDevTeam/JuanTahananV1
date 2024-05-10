@@ -1503,12 +1503,13 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         content: "";
         position: absolute;
         top: 50%;
+        left: 0.5%;
         transform: translateY(-50%);
         border: 1px solid !important;
         border-color: #dcdcdc;
         height: 12px;
         background-color: #dcdcdc;
-        width: 100%;
+        width: 99%;
         flex-grow: 1;
     }
 
@@ -1517,7 +1518,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     background-color: deepskyblue;
     color: deepskyblue;
     width: 0%;
-    transition: 0.25s ease-in-out;
+    left: 0.5%;
+    transition: 0.5s ease-in-out;
 }
 
 .progress-step {
