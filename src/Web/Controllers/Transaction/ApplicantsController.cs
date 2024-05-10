@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DevExpress.Charts.Native;
+using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -262,6 +263,29 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                     }
+                    else
+                    {
+                        vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                        vwModel.BuyerConfirmationModel.MobileNumber = beneficiaryData.MobileNumber;
+                        vwModel.BuyerConfirmationModel.BirthDate = beneficiaryData.BirthDate;
+                        vwModel.BuyerConfirmationModel.Email = beneficiaryData.Email;
+                        vwModel.BuyerConfirmationModel.Suffix = userInfo.Suffix;
+
+                        vwModel.BuyerConfirmationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                        vwModel.BuyerConfirmationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                        vwModel.BuyerConfirmationModel.PresentLotName = beneficiaryData.PresentLotName;
+                        vwModel.BuyerConfirmationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                        vwModel.BuyerConfirmationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                        vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                        vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                        vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                        vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
+
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    }
 
                     returnViewPage = "Beneficiary_HLF068";
                 }
@@ -503,10 +527,35 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-                }
 
-                vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                }
+                else
+                {
+                    var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+                    vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MiddleName = beneficiaryData.MiddleName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.LastName = beneficiaryData.LastName ?? string.Empty;
+                    vwModel.BuyerConfirmationModel.MobileNumber = beneficiaryData.MobileNumber;
+                    vwModel.BuyerConfirmationModel.BirthDate = beneficiaryData.BirthDate;
+                    vwModel.BuyerConfirmationModel.Email = beneficiaryData.Email;
+                    vwModel.BuyerConfirmationModel.Suffix = userData.Suffix;
+
+                    vwModel.BuyerConfirmationModel.PresentUnitName = beneficiaryData.PresentUnitName;
+                    vwModel.BuyerConfirmationModel.PresentBuildingName = beneficiaryData.PresentBuildingName;
+                    vwModel.BuyerConfirmationModel.PresentLotName = beneficiaryData.PresentLotName;
+                    vwModel.BuyerConfirmationModel.PresentSubdivisionName = beneficiaryData.PresentSubdivisionName;
+                    vwModel.BuyerConfirmationModel.PresentBaranggayName = beneficiaryData.PresentBaranggayName;
+                    vwModel.BuyerConfirmationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
+                    vwModel.BuyerConfirmationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
+                    vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
+                    vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
+
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                }
 
                 return View("HousingLoanForm", vwModel);
             }
@@ -544,7 +593,6 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PresentMunicipalityName = beneficiaryData.PresentMunicipalityName;
                     vwModel.BarrowersInformationModel.PresentProvinceName = beneficiaryData.PresentProvinceName;
                     vwModel.BarrowersInformationModel.PresentZipCode = beneficiaryData.PresentZipCode;
-
 
                     vwModel.BarrowersInformationModel.PermanentStreetName = beneficiaryData.PermanentStreetName;
                     vwModel.BarrowersInformationModel.PermanentUnitName = beneficiaryData.PermanentUnitName;
