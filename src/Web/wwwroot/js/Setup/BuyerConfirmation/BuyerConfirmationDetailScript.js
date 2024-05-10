@@ -4,6 +4,7 @@ $(function () {
     const { pdfjsLib } = globalThis;
 
     var currentStep = 0;
+    var inputLock = false;
 
     initializePdfJs();
     updateProgressBar();
@@ -12,6 +13,16 @@ $(function () {
         // lock two inputs to readonly
         e.preventDefault();
 
+        inputLock = !inputLock;
+        $(`[name="BuyerConfirmationModel.SellingPrice"], [name="BuyerConfirmationModel.MonthlyAmortization"]`).attr('readonly', inputLock);
+
+        $(this).html(inputLock ? "Change pricing" : "Apply pricing");
+
+        $(this).addClass(inputLock ? "btn-outline-info" : "btn-info");
+        $(this).removeClass(!inputLock ? "btn-outline-info" : "btn-info");
+
+        $(`[id="bcfPreviewBtn"]`).addClass(!inputLock ? "btn-outline-info" : "btn-info");
+        $(`[id="bcfPreviewBtn"]`).removeClass(inputLock ? "btn-outline-info" : "btn-info");
     });
 
     $(`[id="bcfPreviewBtn"]`).on('click', function (e) {
