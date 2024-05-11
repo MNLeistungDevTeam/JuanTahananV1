@@ -3,6 +3,13 @@
 $(function () {
     const { pdfjsLib } = globalThis;
 
+
+
+    const CONST_MODULE = "BuyerConfirmation  Requests";
+    const CONST_MODULE_CODE = "BCF-APLRQST";
+    const CONST_TRANSACTIONID = $("#BuyerComfirmation_Id").val();
+
+
     var currentStep = 0;
     var inputLock = false;
 
@@ -30,10 +37,7 @@ $(function () {
         e.preventDefault();
         updateProgressBar("previewBcf");
 
-
-
         loadBcfPreview();
-
 
         $(`#previewBcf`).attr('hidden', false);
         $(`#inputBcf`).attr('hidden', true);
@@ -162,6 +166,204 @@ $(function () {
                 // Handle error
                 console.error(xhr.responseText);
                 // Show error message to the user
+            },
+            complete: function () {
+                //setTimeout(function () {
+                //    $("#beneficiary-overlay").addClass('d-none');
+                //}, 2000); // 2000 milliseconds = 2 seconds
+            }
+        });
+    }
+
+    loadApprovalData();
+
+   
+
+    async function loadApprovalData() {
+        const requestorId = $(`[name="${CONST_MODULE}.CreatedById"]`).val();
+        const currentUserId = $("#current_userId").val();
+
+        let recordId = $("#BuyerConfirmationModel_Id").val();
+        const approvalData = await getApprovalData(recordId);
+
+        if (!approvalData) { return; }
+
+        
+
+        $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
+        $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
+        $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
+        $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
+    }
+
+
+
+
+
+
+    async function getApprovalData(referenceId) {
+        const response = await $.ajax({
+            url: baseUrl + `Approval/GetByReferenceModuleCodeAsync/${referenceId}/${CONST_MODULE_CODE}`,
+            method: "get",
+            dataType: 'json'
+        });
+
+        console.log(response);
+        return response;
+    }
+
+
+
+    $("#btnApprove, #btnReturn").on('click', function (e) {
+        e.preventDefault();
+        let action = $(this).attr("data-value");
+
+        openApprovalModal(action);
+    });
+
+    function openApprovalModal(action) {
+        let $approverModal = $('#approver-modal');
+        let modalLabel = $("#approver-modalLabel");
+        let transactionNo = $(`[name="BuyerConfirmationModel.Code"]`).val();
+        let remarksInput = $('[name="ApprovalLevel.Remarks"]');
+        let roleName = $("#txt_role_code").val();
+        let $btnSave = $("#btn_save");
+
+        $btnSave.removeClass();
+        $('.text-danger.validation-summary-errors').removeClass('validation-summary-errors').addClass('validation-summary-valid')
+            .find('li').css('display', 'none');
+        remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+
+        if (action == 1) {      //submitted
+            modalLabel.html('<span class="fe-send"></span> Submit Application');
+            $btnSave.addClass("btn btn-primary").html('<span class="fe-send"></span> Submit')
+
+            remarksInput.removeAttr("data-val-required").removeClass("input-validation-error").addClass("valid");
+        }
+
+        else if (action == 11) {
+            modalLabel.html('<span class="fe-repeat"></span> Return for Revision');
+            $btnSave.addClass("btn btn-warning").html('<span class="fe-repeat"></span> Return for Revision')
+            //remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
+            remarksInput.attr("required", true);
+        }
+        else {
+            modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
+            $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
+            remarksInput.removeAttr("data-val-required").attr("required", false).removeClass("input-validation-error").addClass("valid");
+        }
+
+        $("#author_txt").html(`Author: ${roleName}`);
+        $("[name='ApprovalLevel.Status']").val(action);
+        $("[name='ApprovalLevel.TransactionNo']").val(transactionNo);
+
+        rebindValidator();
+        $approverModal.modal("show");
+    }
+
+    function rebindValidator() {
+        let $form = $("#frm_approver_level");
+        let $approverModal = $('#approver-modal');
+
+        $form.unbind();
+        $form.data("validator", null);
+        $.validator.unobtrusive.parse($form);
+        $form.validate($form.data("unobtrusiveValidation").options);
+        $form.data("validator").settings.ignore = "";
+
+        $form.submit(function (e) {
+            e.preventDefault();
+
+            if (!$form.valid()) { return; }
+
+            let formData = $form.serialize();
+            formData = formData.replace(/ApprovalLevel\./g, "");
+
+            let approvalLevelStatus = $("#ApprovalLevel_Status").val();
+
+            let action = "";
+            let text = "";
+            let confirmButtonText = "";
+
+            if (approvalLevelStatus == 3 || approvalLevelStatus == 4) {
+                action = "Approve";
+                text = "Are you sure you wish to proceed with approving this buyer confirmation application?";
+                confirmButtonText = "save and approve";
+            }
+
+            else if (approvalLevelStatus == 11) {
+                action = "Resubmission";
+                text = "Are you sure you wish to proceed with for-resubmission this buyer confirmation application?";
+                confirmButtonText = " for-resubmission";
+            }
+
+            // Use SweetAlert for confirmation
+            Swal.fire({
+                title: `${action} Application`,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: `Yes, ${confirmButtonText} it`,
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with form submission
+                    $.ajax({
+                        url: $form.attr("action"),
+                        method: $form.attr("method"),
+                        data: formData,
+                        beforeSend: function () {
+                            $("#beneficiary-overlay").removeClass('d-none');
+
+                            // $("#btnApprove").attr({ disabled: true });
+                        },
+                        success: function (response) {
+
+                            updateBCF();
+
+
+                            $("#beneficiary-overlay").addClass('d-none');
+
+                            messageBox("Successfully saved.", "success");
+
+                            $("#btnApprove").attr({ disabled: false });
+
+                            $approverModal.modal("hide");
+                        },
+                        error: function (response) {
+                            // Error message handling
+                            $("#btnApprove").attr({ disabled: false });
+
+                            messageBox(response.responseText, "danger", true);
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+
+    function updateBCF() {
+
+         
+        var formData = new FormData(document.querySelector(`#frm_bcf`));
+
+        $.ajax({
+            method: 'POST',
+            url: '/BuyerConfirmation/UpdateBCF',
+            data: formData, 
+            contentType: 'application/json', 
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                //$("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+               
+           
             },
             complete: function () {
                 //setTimeout(function () {

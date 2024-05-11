@@ -40,6 +40,21 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BeneficiaryInformati
         public async Task<BeneficiaryInformationModel?> GetByPagibigNumberAsync(string? pagibigNumber) =>
             await _db.LoadSingleAsync<BeneficiaryInformationModel, dynamic>("spBeneficiaryInformation_GetByPagibigNumber", new { pagibigNumber });
 
+        
+
+
+        public async Task<BeneficiaryInformationModel?> GetByCodeAsync(string? code) =>
+          await _db.LoadSingleAsync<BeneficiaryInformationModel, dynamic>("spBeneficiaryInformation_GetByCode", new { code });
+
+        public async Task<BeneficiaryInformationModel?> GetByUserAsync(int? userId) =>
+        await _db.LoadSingleAsync<BeneficiaryInformationModel, dynamic>("spBeneficiaryInformation_GetByUserId", new { userId });
+
+
+
+
+
+
+
         public async Task<IEnumerable<dynamic>> GetPropertyDeveloperNames() =>
             await _db.LoadDataAsync<dynamic, dynamic>("spBeneficiaryInformation_GetDistinctPropertyDeveloperName", new {});
 

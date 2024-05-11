@@ -1,8 +1,11 @@
 ﻿CREATE PROCEDURE [dbo].[spApprovalStatus_Inquiry]
-	@ReferenceId int,
-	@CompanyId int,
-	@ApprovalStatusId int
+	@referenceId int,
+	@companyId int,
+	@approvalStatusId int,
+	@referenceType int
+
 AS
+
 	;WITH cte AS (
 		SELECT ms1.*, al.Id ApprovalLevelId, aps.Id ApprovalStatusId,
 		al.[Status] ApprovalLevelStatus,
@@ -67,7 +70,7 @@ AS
 			WHERE row_num = 1
 		) ms ON ms.ApprovalStatusId = vw.Id
 		LEFT JOIN [User] ua ON ua.Id = ms.ApproverId
-		LEFT JOIN ApplicantsPersonalInformation api ON vw.ReferenceId = api.Id
+		LEFT JOIN ApplicantsPersonalInformation api ON vw.ReferenceId = api.Id And vw.ReferenceType = (Select Id from Module where Code = 'APLCNTREQ')
 		LEFT JOIN [User] up ON up.Id = vw.UserId
 		LEFT JOIN (
 			SELECT aplvl1.*
@@ -80,6 +83,7 @@ AS
 		) aplvl ON vw.Id = aplvl.ApprovalStatusId
 		WHERE
 			vw.ReferenceId = COALESCE(@ReferenceId, vw.ReferenceId)
+			AND vw.ReferenceType = COALESCE(@referenceType, vw.ReferenceType)
 			--1 = (
 			--		CASE
 			--			WHEN @ReferenceType IS NULL THEN 1
@@ -90,4 +94,6 @@ AS
 			AND vw.Id = COALESCE(@ApprovalStatusId, vw.Id)
 			--AND ua.Id = COALESCE(@ApproverId, ua.Id)
 			AND api.CompanyId = COALESCE(@CompanyId, api.CompanyId)
+		 
+
 RETURN 0

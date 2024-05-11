@@ -1,6 +1,7 @@
 ﻿using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,31 @@ public class BuyerConfirmationController : Controller
             return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateBCF(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            BuyerConfirmationModel bcfModel = new();
+
+            int userId = int.Parse(User.Identity.Name);
+
+            var bnfInfo = await _buyerConfirmationRepo.GetByCodeAsync(vwModel.BuyerConfirmationModel.Code);
+
+            bcfModel = bnfInfo;
+            bcfModel.MonthlyAmortization = vwModel.BuyerConfirmationModel.MonthlyAmortization;
+            bcfModel.SellingPrice = vwModel.BuyerConfirmationModel.SellingPrice;
+
+            await _buyerConfirmationRepo.SaveAsync(bcfModel, userId);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Route("[controller]/LatestBCF")]

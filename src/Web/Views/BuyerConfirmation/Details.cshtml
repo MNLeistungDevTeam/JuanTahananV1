@@ -43,8 +43,9 @@
             </div>
         </div>
 
-        <form id="frm_bcf" method="post" asp-action="" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+        <form id="frm_bcf" method="post" asp-action="UpdateBCF" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
             <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.Id" />
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">
@@ -93,12 +94,12 @@
                                 </button>
                             </li>
                             <li class="list-inline-item float-end">
-                                <button type="button" class="btn btn-warning btn-lg waves-effect waves-light">
+                                <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
                                     <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
-                                    <span class="text-center ms-2">Return form</span>
+                                    <span class="text-center ms-2">Return BCF</span>
                                 </button>
-                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light">
-                                    <span class="text-center me-2">Save and Approve</span>
+                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
+                                    <span class="text-center me-2">Save & Approve</span>
                                     <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
                                 </button>
                             </li>
