@@ -1568,3 +1568,36 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         }
 
 /* current, completed, .progressbar#progress */
+
+/*.file-drag-area {
+    height: 300px;
+    width: 400px;
+    border: 3px dashed #e0eafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px auto;
+}*/
+
+#fileInputArea .file-icon {
+    font-size: 60px;
+    color: #ff1f00d4;
+}
+
+/*.file-drag-area .file-header {
+    font-size: 20px;
+    font-weight: 500;
+    color: #34495e
+}
+
+.file-drag-area .file-support {
+    margin: 12px 12px;
+}
+
+.file-drag-area.active {
+    border: 2px solid #348cd4;
+    
+
+}*/

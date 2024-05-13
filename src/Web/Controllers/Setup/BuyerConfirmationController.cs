@@ -119,6 +119,11 @@ public class BuyerConfirmationController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
+    public IActionResult Upload()
+    {
+        return View();
+    }
+
     #endregion Views
 
     #region API Getters
