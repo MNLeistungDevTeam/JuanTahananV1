@@ -3,12 +3,77 @@
     // var items = (List<ApplicantViewModel>)ViewBag.items;
 }
 
-<div class="row d-flex justify-content-center">
-    <div class="col-4 card">
-        <div class="card-body">
-            Example
-            example
-            eXAMPLE
+<!-- start page title -->
+<div class="row mb-2">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Upload BCF</li>
+                </ol>
+            </div>
         </div>
     </div>
 </div>
+<!-- end page title -->
+
+<div class="row d-flex justify-content-center">
+    <div class="col-8 card">
+        <div class="card-body mx-2">
+            <div class="row">
+                <h2 class="text-primary text-center fw-bolder">
+                    Upload Buyer Confirmation Form
+                </h2>
+            </div>
+            <div class="row mt-2 mx-2">
+                <p class="fw-bold fs-4">Uploading Instructions</p>
+            </div>
+            <div class="row mx-4">
+                <ol>
+                    <li class="mb-1 fs-4">Sign the approved BCF file using a pen. We do not accept digital signing.</li>
+                    <li class="mb-1 fs-4">Ensure that you have signed the approved BCF file you downloaded from here.</li>
+                    <li class="mb-1 fs-4">Include the date when signing the document.</li>
+                    <li class="mb-1 fs-4">Do not edit the approved BCF file; Otherwise, it may be subject to return or rejection, which could cause a delay in your housing loan application.</li>
+                    <li class="mb-1 fs-4">For your reference, a signed BCF file should look similar to this: <a href="#">Example_BCF.pdf</a></li>
+                </ol>
+            </div>
+            <div class="row mt-2 mx-4">
+                <div class="mb-0 d-flex">
+                    <div class="col-3">
+                        <p class="fs-4 mb-0">Allowed file format:</p>
+                    </div>
+                    <div class="col-auto">
+                        <p class="fs-4 mb-0 fw-bold">PDF only</p>
+                    </div>
+                </div>
+                <div class="mb-0 d-flex">
+                    <div class="col-3">
+                        <p class="fs-4 mb-0">Maximum file size:</p>
+                    </div>
+                    <div class="col-auto">
+                        <p class="fs-4 mb-0 fw-bold">5 MB</p>
+                    </div>
+                </div>
+            </div>
+            <div id="fileInputArea" class="row d-flex justify-content-center align-items-center mt-2 mx-5">
+                @* <div class="file-drag-area">
+                    <div class="file-icon">
+                        <i class="mdi mdi-file-pdf"></i>
+                    </div>
+
+
+                    <span class="file-header text-info fw-bold" id="file-header-1">Drag and Drop</span>
+                    <span class="file-header" id="file-header-2">here to upload your file or</span>
+                    <span class="file-support"><button class="btn btn-info">Browse files</button></span>
+                </div> *@
+
+                <input id="bcf_PdfFile" type="file" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Setup/BuyerConfirmation/BuyerConfirmationUploadScript.js" asp-append-version="true"></script>
+}
