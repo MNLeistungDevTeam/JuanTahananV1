@@ -5,6 +5,7 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationRepo;
 
@@ -34,6 +35,8 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     #endregion Fields
 
     #region Getters
+    public async Task<BuyerConfirmation?> GetByIdAsync(int id) =>
+      await _context.BuyerConfirmations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<BuyerConfirmationModel?> GetAsync(int id) =>
         await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_Get", new { id });

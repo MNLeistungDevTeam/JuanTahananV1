@@ -1,6 +1,6 @@
 ﻿ 
 @inject IStringLocalizer<SharedResources> localizer
-
+ @using DMS.Domain.Enums
 @model ApplicantViewModel
 @{
     ViewData["Title"] = Model.BuyerConfirmationModel.Code + " - BCF Details";
@@ -51,16 +51,16 @@
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="row mb-3" style="width: 30%;">
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel" required></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.SellingPrice" />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice"></label>
+                            <input type="text" class="form-control decimalInputMask" asp-for="BuyerConfirmationModel.SellingPrice" required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice" required></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.MonthlyAmortization" />
-                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
+                            <input type="text" class="form-control decimalInputMask" asp-for="BuyerConfirmationModel.MonthlyAmortization" required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization" required></label>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                 <div class="col-12 d-flex align-items-center justify-content-center">
                     <div class="row mb-3" style="width: 30%;">
                         <div class="d-grid gap-2">
-                            <button class="btn btn-info btn-lg rounded-3" id="bcfSetAmount">Apply pricing</button>
+                            <button class="btn btn-info btn-lg rounded-3" id="bcfSetAmount" disabled>Apply pricing</button>
                             <button class="btn btn-outline-info btn-lg rounded-3" id="bcfPreviewBtn">
                                 <span class="text-center ms-2">Review BCF</span>
                                 <span class="float-end"><i class="mdi mdi-arrow-right"></i></span>
@@ -94,14 +94,45 @@
                                 </button>
                             </li>
                             <li class="list-inline-item float-end">
-                                <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
-                                    <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
-                                    <span class="text-center ms-2">Return BCF</span>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
-                                    <span class="text-center me-2">Save & Approve</span>
-                                    <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
-                                </button>
+
+                                @if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.Draft)
+                                {
+                                    //approval process
+                                    <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
+                                        <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
+                                        <span class="text-center ms-2">Return BCF</span>
+                                    </button>
+
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
+                                        <span class="text-center me-2">Save & Approve</span>
+                                        <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
+                                    </button>
+                                }
+                                else if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                {
+                                    //approved
+                                    
+
+                                    <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
+                                        <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
+                                        <span class="text-center ms-2">Return BCF</span>
+                                    </button>
+
+                                }
+
+                                else if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                {
+                                //approved
+
+                                    //return
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
+                                        <span class="text-center me-2">Save & Approve</span>
+                                        <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
+                                    </button>
+
+                                }
+                               
+                               
                             </li>
                         </ul>
                     </div>

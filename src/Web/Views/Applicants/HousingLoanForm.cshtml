@@ -143,9 +143,8 @@
                     </div>
                 </div>
 
-                <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
-
-
+   
+                          <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
  
 
                 <form id="frm_hlf068" method="post" asp-action="@(!Model.BarrowersInformationModel.IsBcfCreated ? "SaveBCFHLAF" : "SaveHLF068")" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
@@ -158,6 +157,9 @@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
                             @* <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber"> *@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Code">
+
+                            <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus">
+
 
                             <div class="row gy-2">
                                 <div class="col-md-12">

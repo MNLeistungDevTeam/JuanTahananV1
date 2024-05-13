@@ -52,7 +52,8 @@ SET IDENTITY_INSERT [dbo].[ModuleStage] ON;
 INSERT INTO [dbo].[ModuleStage] ([Id], [ModuleId], [Code], [Name], [Title], [Level], [ApproveDesc], [RejectDesc], [ReturnStage], [RequiredCount], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
 VALUES
     (1, 8, 'APLCNTREQ', 'Applicants Requests', 'Initial Stage', 1, 'Approved', 'Rejected', 0, 1 , 0, 1, '2024-03-19 09:00:00', NULL, NULL),
-    (2, 8, 'APLCNTREQ', 'Applicants Requests', 'Final Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
+    (2, 8, 'APLCNTREQ', 'Applicants Requests', 'Final Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL),
+    (3, 19, 'BCF-APLRQST', 'Buyer Confirmation', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
  SET IDENTITY_INSERT [dbo].[ModuleStage] OFF
 END
 GO
@@ -68,6 +69,13 @@ VALUES (1, 1, NULL, 5, 0, 1, GETDATE(), NULL, NULL);
 
 INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
 VALUES (2, 2, NULL, 3, 0, 1, GETDATE(), NULL, NULL);
+
+
+
+INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
+VALUES (3, 3, NULL, 5, 0, 1, GETDATE(), NULL, NULL);
+
+
 
 SET IDENTITY_INSERT [dbo].[ModuleStageApprover] OFF;
 END

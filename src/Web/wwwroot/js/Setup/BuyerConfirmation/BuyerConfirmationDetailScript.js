@@ -4,12 +4,9 @@ $(function () {
     const { pdfjsLib } = globalThis;
     const debounceError = debounce((callback) => { callback(); }, 5000);
 
-
-
     const CONST_MODULE = "BuyerConfirmation  Requests";
     const CONST_MODULE_CODE = "BCF-APLRQST";
     const CONST_TRANSACTIONID = $("#BuyerComfirmation_Id").val();
-
 
     var currentStep = 0;
     var inputLock = false;
@@ -19,6 +16,31 @@ $(function () {
 
     initializeInputMasks();
     initializeCustomValidators();
+
+    loadApprovalData();
+
+    $(function () {
+        // Add blue border on focus
+        $(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
+            $(this).addClass("focused");
+        });
+
+        // Remove blue border when focus is lost
+        $(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
+            $(this).removeClass("focused");
+        });
+    });
+
+    function PricingFieldInputChecker() {
+        var sellingPriceValue = $("#BuyerConfirmationModel_SellingPrice").val();
+        var amortizationValue = $("#BuyerConfirmationModel_MonthlyAmortization").val();
+
+        if (sellingPriceValue !== "" && amortizationValue !== "") {
+            $("#bcfSetAmount").prop('disabled', false);
+        } else {
+            $("#bcfSetAmount").prop('disabled', true);
+        }
+    }
 
     $(`[id="bcfSetAmount"]`).on('click', function (e) {
         // lock two inputs to readonly
@@ -41,8 +63,6 @@ $(function () {
         e.preventDefault();
         updateProgressBar("previewBcf");
 
-
-
         loadBcfPreview();
 
         $(`#previewBcf`).attr('hidden', false);
@@ -62,49 +82,55 @@ $(function () {
         pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
     }
 
+    initializeLeftDecimalInputMask(".decimalInputMask", 2);
     function initializeCustomValidators() {
-        initializeLeftDecimalInputMask(".decimalInputMask", 2);
 
-        $(`[name="SellingPrice"]`).on('input', function (e) {
+
+        $(`[name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
             let currentVal = $(this).val().replace(/,/g, '');
-            let amortVal = $(`[name="MonthlyAmortization"]`).val().replace(/,/g, '');
+            let amortVal = $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).val().replace(/,/g, '');
             console.log(currentVal);
-            if (currentVal < amortVal) {
+            console.log(amortVal);
+
+            if (amortVal > currentVal) {
                 // Error: Selling Price Amount should not be lower than the amount of monthly Amortization
 
-                $(this).val(amortVal);
-                $(`[id="SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
+                //$(this).val(amortVal);
+                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
             }
             else {
-                $(`[id="SellingPrice-error-custom"]`).html(``);
+                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(``);
+
+                PricingFieldInputChecker();
             }
         });
 
-        $(`[name="MonthlyAmortization"]`).on('input', function (e) {
+        $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).on('input', function (e) {
             let currentVal = $(this).val().replace(/,/g, '');
-            let sellPrcVal = $(`[name="SellingPrice"]`).val().replace(/,/g, '');
+            let sellPrcVal = $(`[name="BuyerConfirmationModel.SellingPrice"]`).val().replace(/,/g, '');
 
             if (currentVal > sellPrcVal) {
                 // Error: Monthly Amortization should not be higher than the selling price
 
-                $(this).val(sellPrcVal);
-                $(`[id="MonthlyAmortization-error-custom"]`).html(`Monthly Amortization should not be higher than the selling price`);
+                //$(this).val(sellPrcVal);
+                $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(`Monthly Amortization should not be higher than the selling price`);
             }
             else {
-                $(`[id="MonthlyAmortization-error-custom"]`).html(``);
+                $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(``);
+                PricingFieldInputChecker();
             }
         });
     }
 
     function initializeInputMasks() {
-        $('[name="SellingPrice"]').inputmask({
+        $('[name="BuyerConfirmationModel.SellingPrice"]').inputmask({
             regex: "^[0-9]+$"
         });
 
-        $('[name="MonthlyAmortization"]').inputmask({
+        $('[name="BuyerConfirmationModel.MonthlyAmortization"]').inputmask({
             regex: "^[0-9]+$"
         });
-    } 
+    }
 
     function updateProgressBar(targetForm = "inputBcf") {
         var steps = $(".progressbar .progress-step");
@@ -155,7 +181,6 @@ $(function () {
     }
 
     function loadBcfPreview() {
-        var form1 = $("#frm_bcf");
         var formData = new FormData(document.querySelector(`#frm_bcf`));
 
         $.ajax({
@@ -225,10 +250,6 @@ $(function () {
         });
     }
 
-    loadApprovalData();
-
-   
-
     async function loadApprovalData() {
         const requestorId = $(`[name="${CONST_MODULE}.CreatedById"]`).val();
         const currentUserId = $("#current_userId").val();
@@ -238,18 +259,11 @@ $(function () {
 
         if (!approvalData) { return; }
 
-        
-
         $("[name='ApprovalLevel.Id']").val(approvalData.ApprovalLevelId ?? 0);
         $("[name='ApprovalLevel.ApprovalStatusId']").val(approvalData.Id ?? 0);
         $("[name='ApprovalLevel.ModuleCode']").val(CONST_MODULE_CODE);
         $("[name='ApprovalLevel.TransactionId']").val(CONST_TRANSACTIONID);
     }
-
-
-
-
-
 
     async function getApprovalData(referenceId) {
         const response = await $.ajax({
@@ -261,8 +275,6 @@ $(function () {
         console.log(response);
         return response;
     }
-
-
 
     $("#btnApprove, #btnReturn").on('click', function (e) {
         e.preventDefault();
@@ -292,13 +304,13 @@ $(function () {
         }
 
         else if (action == 11) {
-            modalLabel.html('<span class="fe-repeat"></span> Return for Revision');
+            modalLabel.html('<span class="fe-repeat"></span> Return for Revision BCF');
             $btnSave.addClass("btn btn-warning").html('<span class="fe-repeat"></span> Return for Revision')
             //remarksInput.attr("data-val-required", "true").attr("required", true).addClass("input-validation-error").addClass("invalid");
             remarksInput.attr("required", true);
         }
         else {
-            modalLabel.html('<span class="fe-check-circle"></span> Approve Application');
+            modalLabel.html('<span class="fe-check-circle"></span> Approve BCF');
             $btnSave.addClass("btn btn-success").html('<span class="fe-check-circle"></span> Approve')
             remarksInput.removeAttr("data-val-required").attr("required", false).removeClass("input-validation-error").addClass("valid");
         }
@@ -370,13 +382,11 @@ $(function () {
                             // $("#btnApprove").attr({ disabled: true });
                         },
                         success: function (response) {
-
                             updateBCF();
 
+                            //$("#beneficiary-overlay").addClass('d-none');
 
-                            $("#beneficiary-overlay").addClass('d-none');
-
-                            messageBox("Successfully saved.", "success");
+                            //messageBox("Successfully saved.", "success");
 
                             $("#btnApprove").attr({ disabled: false });
 
@@ -394,31 +404,26 @@ $(function () {
         });
     }
 
-
     function updateBCF() {
-
-         
         var formData = new FormData(document.querySelector(`#frm_bcf`));
 
         $.ajax({
             method: 'POST',
             url: '/BuyerConfirmation/UpdateBCF',
-            data: formData, 
-            contentType: 'application/json', 
+            data: formData,
+            contentType: 'application/json',
             cache: false,
             contentType: false,
             processData: false,
             beforeSend: function () {
-                //$("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
-               
-           
+                messageBox("the BCF becomes ready to be printed", "success");
             },
             complete: function () {
-                //setTimeout(function () {
-                //    $("#beneficiary-overlay").addClass('d-none');
-                //}, 2000); // 2000 milliseconds = 2 seconds
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
             }
         });
     }

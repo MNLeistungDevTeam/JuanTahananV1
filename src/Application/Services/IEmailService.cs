@@ -1,4 +1,5 @@
 ﻿using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.ReferenceDto;
 using DMS.Domain.Dto.UserDto;
 using MimeKit;
@@ -22,5 +23,6 @@ namespace DMS.Application.Services
 
         Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail);
         Task SendApplicationStatusToBeneficiary(ApplicantsPersonalInformationModel model, string receiverEmail, string? rootFolder);
+        Task SendBuyerConfirmationStatusToBeneficiary(BuyerConfirmationModel model, string receiverEmail, string? rootFolder);
     }
 }

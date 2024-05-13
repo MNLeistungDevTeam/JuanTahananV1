@@ -5,8 +5,7 @@
 	@referenceType int
 
 AS
-
-	;WITH cte AS (
+ 	;WITH cte AS (
 		SELECT ms1.*, al.Id ApprovalLevelId, aps.Id ApprovalStatusId,
 		al.[Status] ApprovalLevelStatus,
 		ROW_NUMBER() OVER (PARTITION BY ms1.ModuleId, aps.Id ORDER BY
@@ -23,11 +22,21 @@ AS
 		up.UserName PreparedBy,
 		ua.Id CurrentApproverUserId,
 		ua.UserName CurrentApprover,
-		api.Code TransactionNo,
-		api.Id RecordId,
-		api.DateCreated TransactionDate,
-		api.DateCreated DatePrepared,
-		api.CompanyId,
+		CASE WHEN api.Code Is not null THEN api.Code
+		ELSE bc.Code
+		END TransactionNo,
+		CASE WHEN api.Id Is not null THEN api.Id
+		ELSE bc.Id
+		END RecordId,
+		CASE WHEN api.DateCreated Is not null THEN api.DateCreated
+		ELSE bc.DateCreated
+		END TransactionDate,
+		CASE WHEN api.DateCreated Is not null THEN api.DateCreated
+		ELSE bc.DateCreated
+		END DatePrepared,
+		CASE WHEN api.CompanyId Is not null THEN api.CompanyId
+		ELSE bc.CompanyId
+		END CompanyId,
 		aplvl.Remarks
 	FROM
 		(
@@ -70,7 +79,9 @@ AS
 			WHERE row_num = 1
 		) ms ON ms.ApprovalStatusId = vw.Id
 		LEFT JOIN [User] ua ON ua.Id = ms.ApproverId
+		 
 		LEFT JOIN ApplicantsPersonalInformation api ON vw.ReferenceId = api.Id And vw.ReferenceType = (Select Id from Module where Code = 'APLCNTREQ')
+	    LEFT JOIN BuyerConfirmation bc ON vw.ReferenceId = bc.Id And vw.ReferenceType = (Select Id from Module where Code = 'BCF-APLRQST')
 		LEFT JOIN [User] up ON up.Id = vw.UserId
 		LEFT JOIN (
 			SELECT aplvl1.*
@@ -82,8 +93,7 @@ AS
 			) maxApLvl ON aplvl1.Id = maxApLvl.Id
 		) aplvl ON vw.Id = aplvl.ApprovalStatusId
 		WHERE
-			vw.ReferenceId = COALESCE(@ReferenceId, vw.ReferenceId)
-			AND vw.ReferenceType = COALESCE(@referenceType, vw.ReferenceType)
+			vw.ReferenceId = COALESCE(@ReferenceId, vw.ReferenceId) AND vw.ReferenceType = COALESCE(@referenceType, vw.ReferenceType)
 			--1 = (
 			--		CASE
 			--			WHEN @ReferenceType IS NULL THEN 1
@@ -92,8 +102,7 @@ AS
 			--		END	
 			--)
 			AND vw.Id = COALESCE(@ApprovalStatusId, vw.Id)
-			--AND ua.Id = COALESCE(@ApproverId, ua.Id)
-			AND api.CompanyId = COALESCE(@CompanyId, api.CompanyId)
+ 
 		 
 
 RETURN 0
