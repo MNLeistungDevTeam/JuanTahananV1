@@ -11,15 +11,19 @@ $(function () {
     var currentStep = 0;
     var inputLock = false;
 
-    initializePdfJs();
-    updateProgressBar();
-
-    initializeInputMasks();
-    initializeCustomValidators();
-
-    loadApprovalData();
-
+    //document.ready
     $(function () {
+        initializeLeftDecimalInputMask(".decimalInputMask", 2);
+        initializePdfJs();
+        updateProgressBar();
+
+        initializeInputMasks();
+        initializeCustomValidators();
+
+        loadApprovalData();
+
+        //#region Initialization
+
         // Add blue border on focus
         $(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
             $(this).addClass("focused");
@@ -29,19 +33,13 @@ $(function () {
         $(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
             $(this).removeClass("focused");
         });
+
+        //#endregion
     });
 
-    function PricingFieldInputChecker() {
-        var sellingPriceValue = $("#BuyerConfirmationModel_SellingPrice").val();
-        var amortizationValue = $("#BuyerConfirmationModel_MonthlyAmortization").val();
 
-        if (sellingPriceValue !== "" && amortizationValue !== "") {
-            $("#bcfSetAmount").prop('disabled', false);
-        } else {
-            $("#bcfSetAmount").prop('disabled', true);
-        }
-    }
 
+    //#region Events
     $(`[id="bcfSetAmount"]`).on('click', function (e) {
         // lock two inputs to readonly
         e.preventDefault();
@@ -78,14 +76,33 @@ $(function () {
         $(`#inputBcf`).attr('hidden', false);
     });
 
+
+    $("#btnApprove, #btnReturn").on('click', function (e) {
+        e.preventDefault();
+        let action = $(this).attr("data-value");
+
+        openApprovalModal(action);
+    });
+
+    //#endregion
+
+    //#region Methods
+    function PricingFieldInputChecker() {
+        var sellingPriceValue = $("#BuyerConfirmationModel_SellingPrice").val();
+        var amortizationValue = $("#BuyerConfirmationModel_MonthlyAmortization").val();
+
+        if (sellingPriceValue !== "" && amortizationValue !== "") {
+            $("#bcfSetAmount").prop('disabled', false);
+        } else {
+            $("#bcfSetAmount").prop('disabled', true);
+        }
+    }
+
     function initializePdfJs() {
         pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
     }
 
-    initializeLeftDecimalInputMask(".decimalInputMask", 2);
     function initializeCustomValidators() {
-
-
         $(`[name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
             let currentVal = $(this).val().replace(/,/g, '');
             let amortVal = $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).val().replace(/,/g, '');
@@ -147,7 +164,7 @@ $(function () {
                 formId: ["previewBcf"],
                 progress: 1,
                 callback: function () {
-                    loadBcfPreview();
+                   // loadBcfPreview();
                 }
             }
         ];
@@ -202,8 +219,13 @@ $(function () {
                 //console.log(response);
                 // Do something with the response, like displaying a success message
 
+                console.log(response)
+
+
+                var responseData = atob(response);
+
                 $(`[id="bcfPreview"]`).html("");
-                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+                var loadingTask = pdfjsLib.getDocument({ data: responseData });
 
                 loadingTask.promise.then(function (pdf) {
                     console.log('PDF loaded');
@@ -275,13 +297,6 @@ $(function () {
         console.log(response);
         return response;
     }
-
-    $("#btnApprove, #btnReturn").on('click', function (e) {
-        e.preventDefault();
-        let action = $(this).attr("data-value");
-
-        openApprovalModal(action);
-    });
 
     function openApprovalModal(action) {
         let $approverModal = $('#approver-modal');
@@ -427,4 +442,6 @@ $(function () {
             }
         });
     }
+
+    //#endregion
 });

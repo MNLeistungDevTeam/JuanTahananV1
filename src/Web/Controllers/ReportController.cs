@@ -100,13 +100,13 @@ public class ReportController : Controller
     {
         try
         {
-            var applicationInfo = await _applicantsPersonalInformationRepo.GetByCodeAsync(applicantCode);
+            var applicationInfo = await _buyerConfirmationRepo.GetByCodeAsync(applicantCode);
 
             int userId = 0;
 
             if (applicationInfo != null)
             {
-                userId = applicationInfo.UserId;
+                userId = applicationInfo.UserId.Value;
             }
 
             var report = await _reportService.GenerateBuyerConfirmationForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
@@ -114,6 +114,33 @@ public class ReportController : Controller
             return View("RptHousingLoanApplication", report);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+    #region BCF-HLAF Review Beneficiary
+
+    [HttpPost]
+    public async Task<IActionResult> LatestBCFB64(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            ApplicantInformationReportModel reportModel = new()
+            {
+                BuyerConfirmationModel = vwModel.BuyerConfirmationModel
+            };
+
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateBuyerConfirmationPDF(reportModel, _hostingEnvironment.WebRootPath);
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+
+            //// Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
     }
 
     [HttpPost]
@@ -148,32 +175,9 @@ public class ReportController : Controller
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> LatestBCFB64(ApplicantViewModel vwModel)
-    {
-        try
-        {
-            ApplicantInformationReportModel reportModel = new()
-            {
-                BuyerConfirmationModel = vwModel.BuyerConfirmationModel
-            };
+    #endregion BCF-HLAF Review Beneficiary
 
-            // Generate the report as a MemoryStream
-            var reportStream = await _reportService.GenerateBuyerConfirmationPDF(reportModel, _hostingEnvironment.WebRootPath);
-
-            var b64 = Convert.ToBase64String(reportStream);
-            return Ok(b64);
-
-            //// Return the byte array as a FileStreamResult with the appropriate content type and file name
-            //return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
-        }
-        catch (Exception ex)
-        {
-            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
-        }
-    }
-
-
+    #region BCF Review Developer
 
     [HttpPost]
     public async Task<IActionResult> LatestBCFB64ForDeveloper(ApplicantViewModel vwModel)
@@ -190,6 +194,30 @@ public class ReportController : Controller
         {
             return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
         }
+    }
+
+    #endregion BCF Review Developer
+
+    [Route("[controller]/PrintedBCF/{buyerConfirmationCode?}")]
+    public async Task<IActionResult> PrintedBCF(string? buyerConfirmationCode = null)
+    {
+        try
+        {
+            var bcfInfo = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+            int userId = 0;
+
+            if (bcfInfo != null)
+            {
+                userId = bcfInfo.UserId.Value;
+            }
+
+            var report = await _reportService.GeneratePrintedBCF(bcfInfo.Code, _hostingEnvironment.WebRootPath);
+
+            var b64 = Convert.ToBase64String(report);
+            return Ok(b64);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
     public List<ReportListViewModel> GetReportList()

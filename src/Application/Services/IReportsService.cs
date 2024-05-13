@@ -14,5 +14,6 @@ namespace DMS.Application.Services
 
        // Task<MemoryStream> GenerateHousingLoanFormNoCode(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder);
         Task<byte[]> GenerateHousingLoanPDF(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder);
+        Task<byte[]> GeneratePrintedBCF(string? buyerConfirmationCode, string? rootFolder);
     }
 }
