@@ -24,12 +24,43 @@
 </div>
 <!-- end page title -->
 
+<div class="row" id="confirmCard" hidden>
+    <div class="col-sm-12 d-flex align-items-center justify-content-center">
+        <div class="col-sm-3">
+            <div class="card card-body rounded-2 shadow p-2">
+                <div class="row gy-2 align-items-center justify-content-center">
+                    <div class="col-sm-3">
+                        <h4 class="text-info"><b>Editing</b></h4>
+                    </div>
+                    <div class="col-sm-3 p-0">
+                        <button type="button" id="btn_discardChang" class="btn btn-outline-danger btn-sm waves-effect waves-light"><i class="mdi mdi-close"></i> Discard</button>
+                    </div>
+                    <div class="col-sm-4 p-0">
+                        <button type="button" id="btn_saveChang" class="btn btn-outline-primary btn-sm waves-effect waves-light"><i class="mdi mdi-check"></i> Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="card card-outline rounded-4">
     <div class="overlay dark d-none" id="beneficiary-overlay">
         <span class='spinner-border spinner-border-lg'></span>
     </div>
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+        <div class="col-md-12 mb-2 d-flex justify-content-end">
+            <div class="dropdown float-start">
+                <button type="button" class="btn btn-info waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a href="#" id="btn_edit" class="dropdown-item text-info"><i class="mdi mdi-pencil-outline text-info"></i> Edit</a>
+                    <a href="#" id="btn_bcfpdf" class="dropdown-item text-info"><i class="mdi mdi-thumb-up-outline"></i> View BCF File</a>
+                    <a href="#" id="btn_hlafpdf" class="dropdown-item text-info"><i class="mdi mdi-home-outline"></i> View HLAF File</a>
+                </div>
+            </div>
+        </div>
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
                 @if (!Model.BarrowersInformationModel.IsBcfCreated)
@@ -114,7 +145,7 @@
 
             <div class="tab-content mb-0 b-0">
 
-                <div class="row">
+                <div class="row" hidden>
                     <div class="col-md- mb-2 align-items-center d-flex justify-content-end">
                         <!-- Updated class -->
 
@@ -573,8 +604,8 @@
                                 </div>
 
 
-                            
-                              
+
+
 
 
                                 <div class="col-md-12">
