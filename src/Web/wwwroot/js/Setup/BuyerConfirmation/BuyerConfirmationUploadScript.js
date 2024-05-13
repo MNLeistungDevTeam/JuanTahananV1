@@ -3,6 +3,8 @@
 $(function () {
     ////////////////////////////////
 
+    let documentReferenceId = $('#Id').val();
+
     $(`[id="bcf_PdfFile"]`).fileinput({
         dropZoneTitle: `
             <div class="file-icon">
@@ -29,4 +31,42 @@ $(function () {
         showUpload: false,
     });
 
+    $('#bcf_PdfFile').on('change', function () {
+        var file = this.files[0];
+
+        console.log(file)
+
+        if (file) {
+            upload(file);
+
+        }
+    });
+
+    function upload(file) {
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('BuyerConfirmationId', documentReferenceId);
+
+        console.log(documentReferenceId)
+
+        $.ajax({
+            url: '/Document/UploadBCF',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                loading('Uploading...', true);
+            },
+            success: function (response) {
+                messageBox('Uploaded Successfully', "success", true);
+
+                loader.close();
+            },
+            error: function (xhr, status, error) {
+                messageBox(xhr.responseText, "danger", true);
+                loader.close();
+            }
+        });
+    }
 });

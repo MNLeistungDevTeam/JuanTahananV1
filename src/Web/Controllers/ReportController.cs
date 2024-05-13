@@ -111,7 +111,7 @@ public class ReportController : Controller
 
             var report = await _reportService.GenerateBuyerConfirmationForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
 
-            return View("RptHousingLoanApplication", report);
+            return View("RptBuyerConfirmation", report);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }

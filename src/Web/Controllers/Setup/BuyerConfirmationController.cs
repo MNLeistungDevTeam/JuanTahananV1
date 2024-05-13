@@ -119,9 +119,20 @@ public class BuyerConfirmationController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
-    public IActionResult Upload()
+    public async Task<IActionResult> Upload()
     {
-        return View();
+    
+
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var buyerConfirmation = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+             
+
+            return View(buyerConfirmation);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
     #endregion Views

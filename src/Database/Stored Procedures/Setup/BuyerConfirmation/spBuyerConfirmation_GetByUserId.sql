@@ -11,7 +11,7 @@ AS
 	CASE
 			WHEN bc.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN bc.ApprovalStatus = 1 THEN 'Submitted'
-			WHEN bc.ApprovalStatus = 3 THEN 'Developer Verified'
+			WHEN bc.ApprovalStatus = 3 THEN 'Ready For Printing'
 			WHEN bc.ApprovalStatus = 11 THEN 'For Resubmission'
 		END ApplicationStatus,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,

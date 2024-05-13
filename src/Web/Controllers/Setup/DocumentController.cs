@@ -1,4 +1,5 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.RoleRepository;
@@ -33,6 +34,7 @@ public class DocumentController : Controller
     private readonly IDocumentRepository _documentRepo;
     private readonly IDocumentVerificationRepository _documentVerificationRepo;
     private readonly IRoleAccessRepository _currentUserRoleAccessService;
+    private readonly IBuyerConfirmationRepository _bcfRepo;
 
     public DocumentController(IDocumentTypeRepository documentTypeRepo,
         IFileUploadService uploadService,
@@ -43,7 +45,8 @@ public class DocumentController : Controller
         IBarrowersInformationRepository barrowersInformationRepo,
         IDocumentRepository documentRepo,
         IDocumentVerificationRepository documentVerificationRepo,
-        IRoleAccessRepository currentUserRoleAccessService)
+        IRoleAccessRepository currentUserRoleAccessService,
+        IBuyerConfirmationRepository bcfRepo)
     {
         _documentTypeRepo = documentTypeRepo;
         _uploadService = uploadService;
@@ -55,6 +58,7 @@ public class DocumentController : Controller
         _documentRepo = documentRepo;
         _documentVerificationRepo = documentVerificationRepo;
         _currentUserRoleAccessService = currentUserRoleAccessService;
+        _bcfRepo = bcfRepo;
     }
 
     #endregion Fields
@@ -357,6 +361,53 @@ public class DocumentController : Controller
             List<IFormFile> fileList = new List<IFormFile> { file };
 
             await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, application.Code, referenceType, documentTypeId, userId, companyId);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    public async Task<IActionResult> UploadBCF(IFormFile file, int? BuyerConfirmationId)
+    {
+        try
+        {
+            var DocumentId = 0;
+            var DocumentTypeId = 0;
+
+            if (file == null || BuyerConfirmationId == null || DocumentTypeId == null || DocumentId == null)
+            {
+                throw new ArgumentNullException("One or more parameters is null.");
+            }
+
+            //#region Checker for FileSize maximum 3MB
+            long fileSizeInBytes = file.Length;
+            double fileSizeInMegabytes = fileSizeInBytes / (1024.0 * 1024.0); // Convert bytes to megabytes
+
+            // Check if the file size exceeds 3MB
+            if (fileSizeInMegabytes > 5)
+            {
+                throw new Exception("File size exceeds 5MB");
+            }
+
+            var buyerconfirmation = await _bcfRepo.GetByIdAsync(BuyerConfirmationId.Value);
+
+            int userId = int.Parse(User.Identity.Name);
+
+            //int userId = buyerconfirmation.UserId;
+            int companyId = buyerconfirmation.CompanyId ?? 0;
+            int documentTypeId = DocumentTypeId;
+
+            var rootFolder = _hostingEnvironment.WebRootPath;
+            var saveLocation = Path.Combine("Files", "Documents", "BuyerConfirmation", buyerconfirmation.Code);
+            var referenceType = (int)DocumentReferenceType.Buyer;
+            int referenceId = buyerconfirmation.Id;
+
+            List<IFormFile> fileList = new List<IFormFile> { file };
+
+            await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, buyerconfirmation.Code, referenceType, documentTypeId, userId, companyId);
 
             return Ok();
         }

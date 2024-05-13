@@ -35,6 +35,7 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     #endregion Fields
 
     #region Getters
+
     public async Task<BuyerConfirmation?> GetByIdAsync(int id) =>
       await _context.BuyerConfirmations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
@@ -80,6 +81,11 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
         }
         else
         {
+            if (bcModel.ApprovalStatus is (int)AppStatusType.ForResubmition)
+            {
+                buyerConfirm.ApprovalStatus = (int)AppStatusType.Draft;
+            }
+
             buyerConfirm = await UpdateAsync(buyerConfirm, userId);
         }
 
