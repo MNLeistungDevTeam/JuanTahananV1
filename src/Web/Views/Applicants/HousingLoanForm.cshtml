@@ -26,17 +26,17 @@
 
 <div class="row" id="confirmCard" hidden>
     <div class="col-sm-12 d-flex align-items-center justify-content-center">
-        <div class="col-sm-3">
+        <div class="col-md-3">
             <div class="card card-body rounded-2 shadow p-2">
                 <div class="row gy-2 align-items-center justify-content-center">
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <h4 class="text-info"><b>Editing</b></h4>
                     </div>
-                    <div class="col-sm-3 p-0">
+                    <div class="col-md-3 p-0">
                         <button type="button" id="btn_discardChang" class="btn btn-outline-danger btn-sm waves-effect waves-light"><i class="mdi mdi-close"></i> Discard</button>
                     </div>
-                    <div class="col-sm-4 p-0">
-                        <button type="button" id="btn_saveChang" class="btn btn-outline-primary btn-sm waves-effect waves-light"><i class="mdi mdi-check"></i> Save Changes</button>
+                    <div class="col-md-4 p-0">
+                        <button type="button" id="btn_saveChang" class="btn btn-primary btn-sm waves-effect waves-light"><i class="mdi mdi-check"></i> Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -188,6 +188,7 @@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
                             @* <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber"> *@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Code">
+                            <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.ApprovalStatus">
 
                             <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus">
 
