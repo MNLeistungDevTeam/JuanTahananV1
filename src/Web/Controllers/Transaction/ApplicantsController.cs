@@ -260,8 +260,7 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
 
-                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+
                     }
                     else
                     {
@@ -528,8 +527,7 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                     
                 }
                 else
                 {

@@ -1,16 +1,11 @@
 ﻿using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Domain.Dto.BeneficiaryInformationDto;
-using DMS.Domain.Dto.UserDto;
-using DMS.Domain.Entities;
-using DMS.Domain.Enums;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,16 +14,23 @@ namespace DMS.Web.Controllers.Setup;
 [Authorize]
 public class BuyerConfirmationController : Controller
 {
+    #region Fields
+
     private readonly IUserRepository _userRepo;
     private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
     private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
-    public BuyerConfirmationController(IUserRepository userRepo, IBeneficiaryInformationRepository beneficiaryInformationRepo, IBuyerConfirmationRepository buyerConfirmationRepo)
+    public BuyerConfirmationController(
+        IUserRepository userRepo,
+        IBeneficiaryInformationRepository beneficiaryInformationRepo,
+        IBuyerConfirmationRepository buyerConfirmationRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
         _buyerConfirmationRepo = buyerConfirmationRepo;
     }
+
+    #endregion Fields
 
     #region Views
 
@@ -39,6 +41,31 @@ public class BuyerConfirmationController : Controller
             return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateBCF(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            BuyerConfirmationModel bcfModel = new();
+
+            int userId = int.Parse(User.Identity.Name);
+
+            var bnfInfo = await _buyerConfirmationRepo.GetByCodeAsync(vwModel.BuyerConfirmationModel.Code);
+
+            bcfModel = bnfInfo;
+            bcfModel.MonthlyAmortization = vwModel.BuyerConfirmationModel.MonthlyAmortization;
+            bcfModel.SellingPrice = vwModel.BuyerConfirmationModel.SellingPrice;
+
+            await _buyerConfirmationRepo.SaveAsync(bcfModel, userId);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Route("[controller]/LatestBCF")]
@@ -71,7 +98,7 @@ public class BuyerConfirmationController : Controller
     }
 
     [Route("[controller]/Details/{bcfCode}")]
-    public async Task<IActionResult> Details(string bcfCode) 
+    public async Task<IActionResult> Details(string bcfCode)
     {
         if (string.IsNullOrEmpty(bcfCode))
         {
@@ -82,21 +109,54 @@ public class BuyerConfirmationController : Controller
         {
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
-
             var viewModel = new ApplicantViewModel()
-            { 
+            {
                 BuyerConfirmationModel = buyerConfirmation
             };
-
 
             return View("Details", viewModel);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
+    public async Task<IActionResult> Upload()
+    {
+    
+
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var buyerConfirmation = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+             
+
+            return View(buyerConfirmation);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
     #endregion Views
 
-    #region API
+    #region API Getters
+
+    public async Task<IActionResult> GetBCFInquiry()
+    {
+        int companyId = int.Parse(User.FindFirstValue("Company"));
+
+        var result = await _buyerConfirmationRepo.GetInqAsync(companyId);
+        return Ok(result);
+    }
+
+    public async Task<IActionResult> GetBCFapplicationByCode(string code)
+    {
+        var result = await _buyerConfirmationRepo.GetByCodeAsync(code);
+
+        return Ok(result);
+    }
+
+    #endregion API Getters
+
+    #region API Operation
 
     [HttpPost]
     public async Task<IActionResult> SaveBCF(ApplicantViewModel vwModel)
@@ -137,5 +197,5 @@ public class BuyerConfirmationController : Controller
         }
     }
 
-    #endregion API
+    #endregion API Operation
 }

@@ -228,7 +228,7 @@ namespace DMS.Infrastructure.Services
                     //File Type validation
                     var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
 
-                    if (documentType.FileType != null)
+                    if (documentType != null && documentType.FileType != null)
                     {
                         FileType fileType = (FileType)documentType.FileType;
 

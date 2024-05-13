@@ -40,6 +40,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="~/lib/intl-tel-input/build/css/intltelinput.min.css" rel="stylesheet" />
     <link href="~/css/hypertheme.css" asp-append-version="true" rel="stylesheet" />
+    @*<link href="~/css/bootstrap-fileinput.bundle.css" rel="stylesheet" />*@
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -93,7 +96,6 @@
     <partial name="_ThemeSettings" />
 
     <!-- Thirdparty js -->
-     
     <script src="~/lib/izitoast/dist/js/izitoast.min.js" asp-append-version="true"></script>
     <script src="~/js/site.thirdparty.bundle.js" asp-append-version="true"></script>
     <script src="~/js/datatables.bundle.js" asp-append-version="true"></script>
@@ -106,6 +108,8 @@
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
     <script src="~/lib/intl-tel-input/build/js/intltelinput.min.js"></script>
     <script src="~/lib/pdfjs-dist/build/pdf.mjs" type="module"></script>
+    @*<script src="~/js/bootstrap-fileinput.bundle.js"></script>*@
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
 
     @RenderSection("Scripts", false)
 

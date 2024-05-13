@@ -3,6 +3,7 @@ using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.ApprovalLevelRepo;
 using DMS.Application.Interfaces.Setup.ApprovalLogRepo;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.ModuleStageRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
@@ -34,6 +35,7 @@ namespace DMS.Infrastructure.Services
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
         public ApprovalService(IModuleRepository moduleRepo,
             IApprovalStatusRepository approvalStatusRepo,
@@ -45,7 +47,9 @@ namespace DMS.Infrastructure.Services
             IMapper mapper,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
             IEmailService emailService,
-            IBackgroundJobClient backgroundJobClient)
+            IBackgroundJobClient backgroundJobClient,
+            IBuyerConfirmationRepository buyerConfirmationRepo
+            )
         {
             _moduleRepo = moduleRepo;
             _approvalStatusRepo = approvalStatusRepo;
@@ -58,6 +62,7 @@ namespace DMS.Infrastructure.Services
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
             _emailService = emailService;
             _backgroundJobClient = backgroundJobClient;
+            _buyerConfirmationRepo = buyerConfirmationRepo;
         }
 
         public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, AppStatusType? status = AppStatusType.Draft)
@@ -132,9 +137,9 @@ namespace DMS.Infrastructure.Services
                 int approvalLevelId = 0;
                 if (model.Status == (int)AppStatusType.DeveloperVerified ||
                     model.Status == (int)AppStatusType.PagibigVerified ||
-                    model.Status == (int)AppStatusType.Deferred || 
-                    model.Status == (int)AppStatusType.PagibigConfirmed || 
-                    model.Status == (int)AppStatusType.DeveloperConfirmed || 
+                    model.Status == (int)AppStatusType.Deferred ||
+                    model.Status == (int)AppStatusType.PagibigConfirmed ||
+                    model.Status == (int)AppStatusType.DeveloperConfirmed ||
                     model.Status == (int)AppStatusType.Disqualified ||
                     model.Status == (int)AppStatusType.ForResubmition)
                 {
@@ -172,16 +177,42 @@ namespace DMS.Infrastructure.Services
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
                     }
+                    else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_BCFREQUESTS)
+                    {
+                        var bcfDetail = await _buyerConfirmationRepo.GetByUserAsync(approvalStatus.UserId);
+
+                        bcfDetail.SenderId = approverId;
+
+                        _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
+                    }
                 }
                 else if (model.Status == (int)AppStatusType.Submitted || model.Status == (int)AppStatusType.PostSubmitted || model.Status == (int)AppStatusType.ForResubmition)
                 {
-                    var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
 
-                    var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
 
-                    activeapplication.SenderId = approverId;
 
-                    _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
+                    if (approvalStatus.ModuleCode == ModuleCodes2.CONST_APPLICANTSREQUESTS)
+                    {
+                        var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
+
+                        var activeapplication = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(applicantDetail.UserId, companyId);
+
+                        activeapplication.SenderId = approverId;
+
+                        _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
+                    }
+
+                    else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_BCFREQUESTS)
+                    {
+                        var bcfDetail = await _buyerConfirmationRepo.GetByUserAsync(approvalStatus.UserId);
+
+                        bcfDetail.SenderId = approverId;
+
+                        _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
+                    }
+
+
+
                 }
             }
             catch (Exception)
@@ -281,6 +312,19 @@ namespace DMS.Infrastructure.Services
 
                     budget.ApprovalStatus = approvalStatus.Status;
                     budget = await _applicantsPersonalInformationRepo.UpdateAsync(budget, approverId);
+                }
+                else if (module.Code == ModuleCodes2.CONST_BCFREQUESTS)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByIdAsync(approvalStatus.ReferenceId);
+                    //var budgetInfo = await _applicantsPersonalInformationRepo.GetByTransactionId(budget.Id, budget.CompanyId);
+                    if (bcfData == null) { throw new Exception("Referencing record not found! Unable to proceed."); }
+                    //if (user.UserName != budgetInfo.LockedUserName && budgetInfo.IsLocked.Value)
+                    //{
+                    //    throw new Exception($"{budgetInfo.TransactionNo} is being used by {budgetInfo.LockedUserName}!");
+                    //}
+
+                    bcfData.ApprovalStatus = approvalStatus.Status;
+                    bcfData = await _buyerConfirmationRepo.UpdateAsync(bcfData, approverId);
                 }
             }
             catch (Exception)
