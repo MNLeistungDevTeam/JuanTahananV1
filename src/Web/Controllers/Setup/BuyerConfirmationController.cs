@@ -105,6 +105,13 @@ public class BuyerConfirmationController : Controller
         return Ok(result);
     }
 
+    public async Task<IActionResult> GetBCFapplicationByCode(string code)
+    {
+        var result = await _buyerConfirmationRepo.GetByCodeAsync(code);
+
+        return Ok(result);
+    }
+
     #endregion API Getters
 
     #region API Operation
