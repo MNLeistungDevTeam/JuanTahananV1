@@ -25,6 +25,11 @@
     var bcfData = await _bcfRepo.GetByUserAsync(userInfo.Id);
     int? bcfStatus = bcfData != null ? bcfData.ApprovalStatus : 0;
 
+    int bcfdocumentStatus = bcfData?.BuyerConfirmationDocumentStatus ?? 0;
+    string bcfCode = bcfData?.Code ?? "";
+
+
+
 
 
 
@@ -36,7 +41,7 @@
 
     string userProfile = Url.Content("~/images/user/default.png");
 
-    
+
     if (userInfo is not null && !string.IsNullOrWhiteSpace(userInfo.ProfilePicture))
         if (System.IO.File.Exists(System.IO.Path.Combine(WebHostEnvironment.WebRootPath, userInfo.ProfilePicture[1..].Replace("/", "\\"))))
             userProfile = Url.Content("~" + userInfo.ProfilePicture);
@@ -55,6 +60,10 @@
 <input type="hidden" id="txt_userPagibigNumber" value="@userInfo.PagibigNumber" />
 <input type="hidden" data-flag="@flagValue" id="UserFlag_IsBcfCreated" />
 <input type="hidden" id="Bcf_ApplicationStatus" value="@bcfStatus" />
+<input type="hidden" id="Bcf_DocumentStatus" value="@bcfdocumentStatus" />
+
+
+
 
 <div class="container-fluid ps-4 pe-4">
     <div class="navbar-custom mt-2 rounded-4 bg-transparent shadow-none">

@@ -2,6 +2,8 @@
     ViewData["Title"] = "BCF Application Requests";
     // var items = (List<ApplicantViewModel>)ViewBag.items;
 }
+@model ApplicantViewModel
+
 
 <!-- start page title -->
 <div class="row">
@@ -87,6 +89,7 @@
                 <div class="col-md-8 mb-2 align-items-md-center">
                     <button class="btn btn-light btn-sm waves-effect" id="btn_view" disabled><span class="fe-info"></span> Review Form</button>
                     <button class="btn btn-light btn-sm waves-effect" id="btn_refresh"><span class="mdi mdi-refresh"></span> Refresh</button>
+                    <button class="btn btn-light btn-sm waves-effect" id="btn_document" disabled><span class="fe-info"></span> View Document</button>
                 </div>
                 <div class="col-md-4 mb-2">
                     <div class="input-group float-end" style="width:250px;">
@@ -118,6 +121,92 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+<div id="document-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="document-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay d-none" id="document-modal-overlay">
+                <span class="spinner-border text-info" style="margin-top: 30px; width: 4rem; height: 4rem;"></span>
+            </div>
+
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="document-modalLabel">Signed BCF Approval</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            Download file here to review and Approve Signed BCF
+                            <br /><br />
+                            <a id="dl_bcfdocument" href="">
+                                Sample.pdf
+                            </a>
+                            <br />
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer bg-soft-light border-top">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnApprove" class="btn btn-primary" data-value="3"><span class="fas fa-file-export"></span> Approve</button>
+                <button type="button" id="btnReturn" class="btn btn-primary" data-value="11"><span class="fas fa-file-export"></span> Return</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="approver-modal" class="modal fade" ttabindex="-1" role="dialog" aria-labelledby="approver-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay" id="approver-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="approver-modalLabel"><span class="mdi mdi-plus"></span> Signed Buyer Confirmation Approval</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveApprovalLevel" asp-controller="Approval" asp-antiforgery="true" method="post" role="form" id="frm_approver_level">
+                <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <input asp-for="ApprovalLevel.Id" type="hidden" />
+                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="hidden" />
+                    <input asp-for="ApprovalLevel.Status" type="hidden" />
+                    <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />
+                    <input asp-for="ApprovalLevel.TransactionId" type="hidden" />
+                    <div class="mb-2">
+                        <label asp-for="ApprovalLevel.TransactionNo"></label>
+                        <input asp-for="ApprovalLevel.TransactionNo" class="form-control" placeholder="Transaction No." readonly />
+                        <span asp-validation-for="ApprovalLevel.TransactionNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2" id="action-container">
+                        <label asp-for="ApprovalLevel.Remarks"></label>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-12 text-muted">Author: Developer</span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="btn_close">Close</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary"><span class="fas fa-thumbs-up"></span> Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 
 @section Scripts {
     <script src="~/js/Setup/BuyerConfirmation/BuyerConfirmationScript.js" asp-append-version="true"></script>

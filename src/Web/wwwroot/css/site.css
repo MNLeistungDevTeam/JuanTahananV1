@@ -1581,9 +1581,14 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     margin: 10px auto;
 }*/
 
-#fileInputArea .file-icon {
-    font-size: 60px;
+/*#fileInputArea .file-icon {
+    font-size: 48px;
     color: #ff1f00d4;
+}*/
+
+#fileInputArea .file-icon img {
+    width: 96px;
+    padding-bottom: 24px;
 }
 
 /*.file-drag-area .file-header {

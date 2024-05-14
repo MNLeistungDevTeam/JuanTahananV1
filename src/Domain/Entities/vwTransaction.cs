@@ -15,9 +15,9 @@ public partial class vwTransaction
 
     public int? CompanyId { get; set; }
 
-    public int CreatedById { get; set; }
+    public int? CreatedById { get; set; }
 
-    public DateTime DateCreated { get; set; }
+    public DateTime? DateCreated { get; set; }
 
     public int? ModifiedById { get; set; }
 
