@@ -54,7 +54,7 @@ VALUES
     (1, 8, 'APLCNTREQ', 'Applicants Requests', 'Initial Stage', 1, 'Approved', 'Rejected', 0, 1 , 0, 1, '2024-03-19 09:00:00', NULL, NULL),
     (2, 8, 'APLCNTREQ', 'Applicants Requests', 'Final Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL),
     (3, 19, 'BCF-APLRQST', 'Buyer Confirmation', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL),
-	(3, 20, 'BCF-UPLOAD', 'BCF Uploading', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
+	(4, 20, 'BCF-UPLOAD', 'BCF Uploading', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
  SET IDENTITY_INSERT [dbo].[ModuleStage] OFF
 END
 GO
