@@ -14,7 +14,7 @@
     {
         var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
         if (System.IO.File.Exists(profile))
-        ViewData["Profile"] = profile;
+            ViewData["Profile"] = profile;
     }
 
 
@@ -52,10 +52,21 @@
     <div id="Layout-defaultProfile" hidden>@Url.Content("~/images/user/default.png")</div>
     <div id="Layout-defaultSignature" hidden>@Url.Content("~//images/user/signature.png")</div>
 
-    
+    <div class="alert text-bg-info d-flex align-items-center justify-content-center sticky-top d-none" id="div_approvebcfNote">
+        <i class="mdi mdi-information text-primary fs-1 pe-2"></i>
+        <p class="mb-0 fs-3 pe-5">
+            Your BCF has been approved and is now ready for download!
+        </p>
+
+        <button class="btn btn-lg btn-light rounded-4" id="btn_bcfdownload">
+            <span class="text-start">View Instructions</span>
+            <span class="text-end"><i class="mdi mdi-arrow-right"></i></span>
+        </button>
+    </div>
 
     <!-- Begin page -->
     <div id="wrapper">
+
 
         <!-- ========== Topbar Start ========== -->
         <partial name="_Topbar" />
@@ -69,7 +80,7 @@
         <div class="content-page">
             <div class="content">
                 <!-- Start Content-->
-                <div class="container-fluid">                    
+                <div class="container-fluid">
                     <div class="content-layer-page pt-2">
                         <!-- Pre-loader -->
                         <div id="preloader">
