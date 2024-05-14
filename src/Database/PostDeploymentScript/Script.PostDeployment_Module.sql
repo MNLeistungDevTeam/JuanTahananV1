@@ -30,7 +30,7 @@ BEGIN
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (10, N'DOCMT', N'Requirements Setup', 5, 0, N'<i class="mdi mdi-content-save-settings"></i>', N'Document',  N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (11, N'FAQS', N'FAQS', 6, 2, N'<i class="mdi mdi-format-list-text"></i>', N'FAQS',  N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (12, N'BNF-PROFILE', N'My Application', 1, 1, N'<i class="mdi mdi-folder-account-outline"></i>', N'Applicants',  N'Beneficiary', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
-	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (13, N'APLHLF-NEW', N'BCF-HLAF', 1, 2, N'<i class="mdi mdi-form-select"></i>', N'Applicants',  N'HousingLoanForm', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
+	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (13, N'APLHLF-NEW', N'Forms', 1, 2, N'<i class="mdi mdi-form-select"></i>', N'Applicants',  N'HousingLoanForm', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
  	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (14, N'EMAIL-STUP', N'Email Setup', 5, 7,  N'<i class="mdi mdi-view-dashboard"></i>', N'EmailSetup',  N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
 
  	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (15, N'PROP-MNGMT', N'Property Management', 5, 8,  N'<i class="mdi mdi-view-dashboard"></i>', N'Property',  N'Index', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
@@ -38,7 +38,7 @@ BEGIN
  	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (17, N'PROP-LCTION', N'Location', 5, 2,  N'<i class="mdi mdi-view-dashboard"></i>', N'PropertyLocation',  N'Index', 15, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
  	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (18, N'PROP-UNIT', N'Unit', 5, 3,  N'<i class="mdi mdi-view-dashboard"></i>', N'PropertyUnit',  N'Index', 15, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
 	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (19, N'BCF-APLRQST', N'BCF Requests', 3, 2,N'<i class="mdi mdi-folder-account-outline"></i>', N'BuyerConfirmation', N'ApplicantRequests', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'True'), 0, 1, GETDATE(), NULL, NULL)
-	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (20, N'BCF-UPLOAD', N'BCF Uploading', 1, 3, N'<i class="mdi mdi-form-select"></i>', N'BuyerConfirmation',  N'Upload', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'False'), 0, 1, GETDATE(), NULL, NULL)
+	INSERT [dbo].[Module](Id, Code, [Description], ModuleTypeId, Ordinal, Icon, Controller, [Action], ParentModuleId, ApprovalRouteTypeId, IsDisabled, InMaintenance, IsVisible, WithApprover, CompanyId, CreatedById, DateCreated, ModifiedById, DateModified) VALUES (20, N'BCF-UPLOAD', N'BCF Uploading', 1, 3, N'<i class="mdi mdi-form-select"></i>', N'BuyerConfirmation',  N'Upload', NULL, NULL, CONVERT(bit, 'False'), CONVERT(bit, 'False'), CONVERT(bit, 'True'), CONVERT(bit, 'True'), 0, 1, GETDATE(), NULL, NULL)
 
 
 	SET IDENTITY_INSERT [dbo].[Module] OFF
@@ -53,7 +53,8 @@ INSERT INTO [dbo].[ModuleStage] ([Id], [ModuleId], [Code], [Name], [Title], [Lev
 VALUES
     (1, 8, 'APLCNTREQ', 'Applicants Requests', 'Initial Stage', 1, 'Approved', 'Rejected', 0, 1 , 0, 1, '2024-03-19 09:00:00', NULL, NULL),
     (2, 8, 'APLCNTREQ', 'Applicants Requests', 'Final Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL),
-    (3, 19, 'BCF-APLRQST', 'Buyer Confirmation', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
+    (3, 19, 'BCF-APLRQST', 'Buyer Confirmation', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL),
+	(4, 20, 'BCF-UPLOAD', 'BCF Uploading', 'Initial Stage', 2, 'Approved', 'Rejected', 0, 1, 0, 1, '2024-03-19 09:15:00', NULL, NULL)
  SET IDENTITY_INSERT [dbo].[ModuleStage] OFF
 END
 GO
@@ -74,6 +75,11 @@ VALUES (2, 2, NULL, 3, 0, 1, GETDATE(), NULL, NULL);
 
 INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
 VALUES (3, 3, NULL, 5, 0, 1, GETDATE(), NULL, NULL);
+
+
+
+INSERT INTO [dbo].[ModuleStageApprover] ([Id], [ModuleStageId], [ApproverId], [RoleId], [IsDisabled], [CreatedById], [DateCreated], [ModifiedById], [DateModified])
+VALUES (4, 4, NULL, 5, 0, 1, GETDATE(), NULL, NULL);
 
 
 

@@ -1058,8 +1058,43 @@ function assessCheckbox(checkbox, target) {
     target.prop('readonly', false);
 }
 
-
 hlafBcfNav();
+
+bcfUploading();
+
+function bcfUploading() {
+    // Get all <a> elements in the side navigation menu
+    var sideNavLinks = document.querySelectorAll('.side-nav-item a');
+
+    // Iterate through each <a> element
+    sideNavLinks.forEach(function (link) {
+        // Check if the href attribute starts with '/Applicants/HousingLoanForm'
+        if (link.getAttribute('href').startsWith('/BuyerConfirmation/Upload')) {
+            // Add a click event listener to the link
+
+            var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
+            var bcfStatus = $("#Bcf_ApplicationStatus").val();
+
+            console.log(bcfDocumentStatus);
+            console.log(bcfStatus);
+
+            link.addEventListener('click', function (event) {
+                //if bcf not verified by dev
+                if (bcfStatus != 3) {
+     
+                    event.preventDefault();
+                }
+                    //if bcf document  is submitted && verified 
+                else if ( bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                    console.log(0);
+                    event.preventDefault();
+                }
+                else {
+                }
+            });
+        }
+    });
+}
 
 function hlafBcfNav() {
     // Get all <a> elements in the side navigation menu

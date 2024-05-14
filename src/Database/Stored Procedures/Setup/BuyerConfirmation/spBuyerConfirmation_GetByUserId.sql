@@ -1,7 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetByUserId]
 @userId INT
 AS
-	SELECT bc.*,
+	SELECT 		
+	bc.*,
+	bcd.[Status] BuyerConfirmationDocumentStatus,
 		CONCAT(u1.Firstname,' ',u1.MiddleName,' ',u1.LastName) ApplicantFullName,
 		u1.Email ApplicantEmail,
 		u1.FirstName ApplicantFirstName,
@@ -42,6 +44,8 @@ AS
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON aps.ApproverId = u2.Id
 	LEFT JOIN [User] u1 ON bc.UserId = u1.Id
-	WHERE bc.UserId = @userId  
+	LEFT JOIN Document d ON d.ReferenceNo = bc.Code  
+	LEFT JOIN BuyerConfirmationDocument bcd On bcd.ReferenceId = d.Id AND bcd.ReferenceNo = d.ReferenceNo  and bcd.[Status] != 11
+	WHERE bc.UserId = @userId
  
 RETURN 0
