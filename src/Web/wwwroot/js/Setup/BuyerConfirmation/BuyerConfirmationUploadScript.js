@@ -13,7 +13,7 @@ $(function () {
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
 
-        var selectedFile = $('#bcf_PdfFile').prop('files');
+        var selectedFile = $('#bcf_PdfFile').prop('files')[0];
         console.log(selectedFile);
 
         if (selectedFile.length !== 0) {
