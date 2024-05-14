@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetAll]
+﻿ CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetAll]
 AS
 	 
 
@@ -24,5 +24,5 @@ AS
 		bcf.Id  BuyerConfirmationDocumentId
 	FROM BuyerConfirmation bcf
 	LEFT JOIN Document d ON d.ReferenceNo = bcf.Code  And DocumentTypeId = 0
-	LEFT JOIN BuyerConfirmationDocument bcd ON bcd.ReferenceNo = d.ReferenceNo and bcd.[Status] != 11
+	LEFT JOIN BuyerConfirmationDocument bcd ON bcd.ReferenceId = d.Id and bcd.[Status] != 11
 RETURN 0

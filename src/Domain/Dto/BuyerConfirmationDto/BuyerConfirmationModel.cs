@@ -250,7 +250,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public int? CompanyId { get; set; }
         public int? BuyerConfirmationDocumentId { get; set; }
-
+        public int? BuyerConfirmationDocumentStatus { get; set; }
         public string? FileName { get; set; }
         public string? FileLocation { get; set; }
     }
