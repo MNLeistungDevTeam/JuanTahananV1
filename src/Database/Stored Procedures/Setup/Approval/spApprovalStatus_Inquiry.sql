@@ -23,18 +23,23 @@ AS
 		ua.Id CurrentApproverUserId,
 		ua.UserName CurrentApprover,
 		CASE WHEN api.Code Is not null THEN api.Code
+		WHEN d.ReferenceNo Is not null THEN d.ReferenceNo
 		ELSE bc.Code
 		END TransactionNo,
 		CASE WHEN api.Id Is not null THEN api.Id
+		WHEN bcd.Id Is not null THEN bcd.Id
 		ELSE bc.Id
 		END RecordId,
 		CASE WHEN api.DateCreated Is not null THEN api.DateCreated
+			WHEN bcd.DateCreated Is not null THEN bcd.DateCreated
 		ELSE bc.DateCreated
 		END TransactionDate,
 		CASE WHEN api.DateCreated Is not null THEN api.DateCreated
+			 WHEN bcd.DateCreated Is not null THEN bcd.DateCreated
 		ELSE bc.DateCreated
 		END DatePrepared,
 		CASE WHEN api.CompanyId Is not null THEN api.CompanyId
+		     WHEN d.CompanyId Is not null THEN d.CompanyId
 		ELSE bc.CompanyId
 		END CompanyId,
 		aplvl.Remarks
@@ -82,6 +87,8 @@ AS
 		 
 		LEFT JOIN ApplicantsPersonalInformation api ON vw.ReferenceId = api.Id And vw.ReferenceType = (Select Id from Module where Code = 'APLCNTREQ')
 	    LEFT JOIN BuyerConfirmation bc ON vw.ReferenceId = bc.Id And vw.ReferenceType = (Select Id from Module where Code = 'BCF-APLRQST')
+		 LEFT JOIN BuyerConfirmationDocument bcd ON vw.ReferenceId = bcd.Id And vw.ReferenceType = (Select Id from Module where Code = 'BCF-UPLOAD')
+		 LEFT JOIN Document d On d.Id  = bcd.ReferenceId and d.DocumentTypeId = 0 and d.ReferenceTypeId = 2
 		LEFT JOIN [User] up ON up.Id = vw.UserId
 		LEFT JOIN (
 			SELECT aplvl1.*
@@ -102,6 +109,7 @@ AS
 			--		END	
 			--)
 			AND vw.Id = COALESCE(@ApprovalStatusId, vw.Id)
+ 
  
 		 
 

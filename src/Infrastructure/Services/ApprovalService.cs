@@ -3,6 +3,7 @@ using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.ApprovalLevelRepo;
 using DMS.Application.Interfaces.Setup.ApprovalLogRepo;
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationDocumentRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.ModuleRepository;
 using DMS.Application.Interfaces.Setup.ModuleStageRepo;
@@ -36,6 +37,7 @@ namespace DMS.Infrastructure.Services
         private readonly IEmailService _emailService;
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
+        private readonly IBuyerConfirmationDocumentRepository _buyerConfirmationDocumentRepo;
 
         public ApprovalService(IModuleRepository moduleRepo,
             IApprovalStatusRepository approvalStatusRepo,
@@ -48,7 +50,8 @@ namespace DMS.Infrastructure.Services
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
             IEmailService emailService,
             IBackgroundJobClient backgroundJobClient,
-            IBuyerConfirmationRepository buyerConfirmationRepo
+            IBuyerConfirmationRepository buyerConfirmationRepo,
+            IBuyerConfirmationDocumentRepository buyerConfirmationDocumentRepo
             )
         {
             _moduleRepo = moduleRepo;
@@ -63,6 +66,7 @@ namespace DMS.Infrastructure.Services
             _emailService = emailService;
             _backgroundJobClient = backgroundJobClient;
             _buyerConfirmationRepo = buyerConfirmationRepo;
+            _buyerConfirmationDocumentRepo = buyerConfirmationDocumentRepo;
         }
 
         public async Task CreateInitialApprovalStatusAsync(int transactionId, string moduleCode, int userId, int companyId, AppStatusType? status = AppStatusType.Draft)
@@ -185,6 +189,21 @@ namespace DMS.Infrastructure.Services
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
                     }
+
+
+
+                    //else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_DocumentUpload)
+                    //{
+                    //    var bcfDetail = await _buyerConfirmationDocumentRepo.GetByReferenceIdAsync(approvalStatus.ReferenceId);
+
+                    //    //bcfDetail.SenderId = approverId;
+
+                    //  //  _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
+                    //}
+
+
+
+
                 }
                 else if (model.Status == (int)AppStatusType.Submitted || model.Status == (int)AppStatusType.PostSubmitted || model.Status == (int)AppStatusType.ForResubmition)
                 {
@@ -326,6 +345,25 @@ namespace DMS.Infrastructure.Services
                     bcfData.ApprovalStatus = approvalStatus.Status;
                     bcfData = await _buyerConfirmationRepo.UpdateAsync(bcfData, approverId);
                 }
+
+
+                else if (module.Code == ModuleCodes2.CONST_BCFUPLOAD)
+                {
+                    var bcfDocumentData = await _buyerConfirmationDocumentRepo.GetByIdAsync(approvalStatus.ReferenceId);
+                    //var budgetInfo = await _applicantsPersonalInformationRepo.GetByTransactionId(budget.Id, budget.CompanyId);
+                    if (bcfDocumentData == null) { throw new Exception("Referencing record not found! Unable to proceed."); }
+                    //if (user.UserName != budgetInfo.LockedUserName && budgetInfo.IsLocked.Value)
+                    //{
+                    //    throw new Exception($"{budgetInfo.TransactionNo} is being used by {budgetInfo.LockedUserName}!");
+                    //}
+
+                    bcfDocumentData.Status = approvalStatus.Status;
+                    bcfDocumentData = await _buyerConfirmationDocumentRepo.UpdateAsync(bcfDocumentData, approverId);
+                }
+
+
+
+
             }
             catch (Exception)
             {

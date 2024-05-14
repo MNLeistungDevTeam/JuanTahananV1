@@ -421,7 +421,8 @@ public class DocumentController : Controller
                 Id = 0,
                 ReferenceId = documentFile.Id,//document.Id
                 ReferenceNo = buyerconfirmation.Code,
-                Remarks = "Sign and Submitted"
+                Remarks = "Sign and Submitted",
+                CompanyId = companyId
             };
             await _bcfDocumentRepo.SaveAsync(bcfDocument, userId);
 
