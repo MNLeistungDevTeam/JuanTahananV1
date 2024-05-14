@@ -230,12 +230,9 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public int? ApprovalStatus { get; set; }
 
-
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateModified { get; set; }
-
-
 
         #region Display Prop
 
@@ -247,12 +244,14 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public string? ApplicationStatus { get; set; }
 
-       
-
         public int? SenderId { get; set; }
 
         #endregion Display Prop
-        public int? CompanyId { get; set; }
 
+        public int? CompanyId { get; set; }
+        public int? BuyerConfirmationDocumentId { get; set; }
+
+        public string? FileName { get; set; }
+        public string? FileLocation { get; set; }
     }
 }

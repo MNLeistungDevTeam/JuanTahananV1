@@ -6,6 +6,7 @@ using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,13 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationDoc
         }
 
         #endregion Fields
+
+        public async Task<BuyerConfirmationDocument?> GetByReferenceIdAsync(int documentId) =>
+            await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.ReferenceId == documentId);
+
+
+        public async Task<BuyerConfirmationDocument?> GetByIdAsync(int id) =>
+            await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         #region Operation Methods
 

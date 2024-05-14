@@ -33,6 +33,18 @@ WITH cte AS
 			bc.CompanyId, bc.CreatedById, bc.DateCreated, bc.ModifiedById, bc.DateModified
 		FROM
 			BuyerConfirmation bc
+
+
+						UNION ALL 
+
+				SELECT
+			bcd.Id ReferenceId, d.Code ReferenceNo, (SELECT Id FROM Module WHERE Code = 'BCF-UPLOAD') ModuleId,
+			d.CompanyId, bcd.CreatedById, bcd.DateCreated, bcd.ModifiedById, bcd.DateModified
+		FROM
+			BuyerConfirmationDocument bcd
+			LEFT JOIN Document d On d.ReferenceNo  = bcd.ReferenceNo and d.DocumentTypeId  = 0
+		 
+
 		 
 	)
 
@@ -46,4 +58,6 @@ WITH cte AS
 	LEFT JOIN [User] [created] ON [created].Id = cte.CreatedById
 	LEFT JOIN [User] [modify] ON [modify].Id = cte.ModifiedById
 	LEFT JOIN Module m ON cte.ModuleId = m.Id
+ 
+
  

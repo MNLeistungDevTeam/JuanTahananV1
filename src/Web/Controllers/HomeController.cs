@@ -81,6 +81,20 @@ public class HomeController : Controller
         }
     }
 
+
+
+
+
+
+    public IActionResult BCFDownload()
+    {
+        return View();
+    }
+
+
+
+
+
     #endregion Views
 
     public async Task<IActionResult> UpdateThemeUserColor(string color)

@@ -6,7 +6,7 @@ $(function () {
 
     const CONST_MODULE = "BuyerConfirmation  Requests";
     const CONST_MODULE_CODE = "BCF-APLRQST";
-    const CONST_TRANSACTIONID = $("#BuyerComfirmation_Id").val();
+    const CONST_TRANSACTIONID = $("#BuyerConfirmation_Id").val();
 
     var currentStep = 0;
     var inputLock = false;
