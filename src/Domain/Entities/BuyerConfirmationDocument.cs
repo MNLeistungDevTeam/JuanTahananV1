@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 namespace DMS.Domain.Entities;
 
-public partial class vwTransaction
+public partial class BuyerConfirmationDocument
 {
-    public int ReferenceId { get; set; }
+    public int Id { get; set; }
+
+    public int? ReferenceId { get; set; }
 
     public string ReferenceNo { get; set; }
 
-    public int? ModuleId { get; set; }
+    public int? Status { get; set; }
 
-    public int? CompanyId { get; set; }
+    public string Remarks { get; set; }
 
     public int? CreatedById { get; set; }
 
@@ -22,12 +24,4 @@ public partial class vwTransaction
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
-
-    public string ModuleController { get; set; }
-
-    public string ModuleAction { get; set; }
-
-    public string ModuleCode { get; set; }
-
-    public bool? WithApprover { get; set; }
 }

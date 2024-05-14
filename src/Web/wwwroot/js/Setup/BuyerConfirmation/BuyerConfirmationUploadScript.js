@@ -8,9 +8,48 @@ $(function () {
     initializeBsFileInput();
     //initializeTraditionalDrop();
 
+    let documentReferenceId = $('#Id').val();
+
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
+
+        var selectedFile = $('#bcf_PdfFile').prop('files');
+        console.log(selectedFile);
+
+        if (selectedFile.length !== 0) {
+            upload(selectedFile);
+        }
+        else {
+            messageBox("No selected files yet, please browse or drag the file in the area provided.", "danger", true);
+        }
     });
+
+    function upload(file) {
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('BuyerConfirmationId', documentReferenceId);
+
+        console.log(documentReferenceId);
+
+        $.ajax({
+            url: '/Document/UploadBCF',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                loading('Uploading...', true);
+            },
+            success: function (response) {
+                messageBox('Uploaded Successfully', "success", true);
+                loader.close();
+            },
+            error: function (xhr, status, error) {
+                messageBox(xhr.responseText, "danger", true);
+                loader.close();
+            }
+        });
+    }
 
     function initializeBsFileInput() {
         $(`[id="bcf_PdfFile"]`).fileinput({
@@ -42,47 +81,5 @@ $(function () {
             removeFromPreviewOnError: true
         });
     }
-
-    function initializeTraditionalDrop() {
-        const dropArea = document.querySelector(".file-drag-area");
-
-        dropArea.addEventListener("dragover", (event) => {
-            event.preventDefault();
-
-            // file is over dragarea
-            dropArea.classList.add("active");
-        });
-
-        dropArea.addEventListener("dragleave", () => {
-            // file is outside dragarea
-            dropArea.classList.remove("active");
-        });
-        
-        dropArea.addEventListener("drop", (event) => {
-            event.preventDefault();
-
-            // file is dropped on dragarea
-            dropArea.classList.remove("active");
-
-            selectedFile = event.dataTransfer.files[0];
-            //console.log(file.type);
-
-            let validExtensions = ["application/pdf"];
-
-            if (validExtensions.includes(selectedFile.type)) {
-                console.log("pdf");
-
-                // proceed to place file
-                let fileReader = new FileReader();
-
-                fileReader.onload = () => {
-                    let fileUrl = fileReader.result;
-
-                    
-                };
-            }
-
-        });
-
-    }
+ 
 });

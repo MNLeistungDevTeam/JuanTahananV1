@@ -1,4 +1,5 @@
-﻿@{
+﻿ @model DMS.Domain.Dto.BuyerConfirmationDto.BuyerConfirmationModel
+@{
     ViewData["Title"] = "Upload Buyer Confirmation Form";
     // var items = (List<ApplicantViewModel>)ViewBag.items;
 }
@@ -69,11 +70,12 @@
                 </div> *@
 
                 <input id="bcf_PdfFile" type="file" />
+                <input asp-for="Id" type="hidden" />
             </div>
 
-            <div class="row mt-4 mx-3">
+            <div class="row mt-4 mx-4 d-flex justify-content-center align-items-center">
                 <button class="btn btn-primary btn-lg" id="submitPdfFile">
-                    Submit Form
+                    Submit BCF
                 </button>
             </div>
             <div class="row d-flex justify-content-center align-items-center mt-1">

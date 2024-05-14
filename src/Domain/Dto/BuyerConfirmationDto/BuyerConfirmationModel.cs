@@ -230,17 +230,29 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public int? ApprovalStatus { get; set; }
 
-        #region Display Prop
-
-        public string? ApplicantFullName { get; set; }
-
-        public string? ApplicationStatus { get; set; }
 
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateModified { get; set; }
 
+
+
+        #region Display Prop
+
+        public string? ApplicantFullName { get; set; }
+        public string? ApplicantFirstName { get; set; }
+        public string? ApplicantEmail { get; set; }
+        public string? Remarks { get; set; }
+        public string? ApproverRole { get; set; }
+
+        public string? ApplicationStatus { get; set; }
+
+       
+
+        public int? SenderId { get; set; }
+
         #endregion Display Prop
         public int? CompanyId { get; set; }
+
     }
 }

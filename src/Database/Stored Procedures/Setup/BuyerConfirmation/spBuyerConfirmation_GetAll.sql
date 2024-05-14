@@ -9,7 +9,7 @@ AS
 		bcf.HouseUnitModel,
 		CASE
 			WHEN bcf.ApprovalStatus = 0 THEN 'Application in Draft'
-			WHEN bcf.ApprovalStatus = 3 THEN 'Developer Verified'
+			WHEN bcf.ApprovalStatus = 3 THEN 'Ready For Printing'
 			WHEN bcf.ApprovalStatus = 11 THEN 'For Resubmission'
 		END ApplicationStatus,
 		bcf.ApprovalStatus,

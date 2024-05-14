@@ -247,7 +247,8 @@ namespace DMS.Infrastructure.Services
 
                 BuyerConfirmationModel buyerconfirmModel = new();
 
-                buyerconfirmModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BuyerConfirmationModel);
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+                buyerconfirmModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BuyerConfirmationModel, excludedBcf);
 
                 List<ApplicantInformationReportModel> dataSource = new()
 
@@ -301,9 +302,9 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
-                //List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
 
-                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel);
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
 
                 List<ApplicantInformationReportModel> dataSource = new()
 
@@ -343,9 +344,64 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
-                //List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
 
-                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel);
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                buyerConfirmationFormDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
+
+                //Save the document to a file
+                buyerConfirmationFormDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GeneratePrintedBCF(string? buyerConfirmationCode, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (buyerConfirmationCode != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                    }
+                }
+
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
 
                 List<ApplicantInformationReportModel> dataSource = new()
 

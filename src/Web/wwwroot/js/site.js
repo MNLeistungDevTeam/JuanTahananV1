@@ -1060,6 +1060,7 @@ function assessCheckbox(checkbox, target) {
 
 
 hlafBcfNav();
+
 function hlafBcfNav() {
     // Get all <a> elements in the side navigation menu
     var sideNavLinks = document.querySelectorAll('.side-nav-item a');
