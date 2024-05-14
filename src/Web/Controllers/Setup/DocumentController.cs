@@ -1,10 +1,12 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationDocumentRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Interfaces.Setup.DocumentVerification;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +37,7 @@ public class DocumentController : Controller
     private readonly IDocumentVerificationRepository _documentVerificationRepo;
     private readonly IRoleAccessRepository _currentUserRoleAccessService;
     private readonly IBuyerConfirmationRepository _bcfRepo;
+    private readonly IBuyerConfirmationDocumentRepository _bcfDocumentRepo;
 
     public DocumentController(IDocumentTypeRepository documentTypeRepo,
         IFileUploadService uploadService,
@@ -46,7 +49,8 @@ public class DocumentController : Controller
         IDocumentRepository documentRepo,
         IDocumentVerificationRepository documentVerificationRepo,
         IRoleAccessRepository currentUserRoleAccessService,
-        IBuyerConfirmationRepository bcfRepo)
+        IBuyerConfirmationRepository bcfRepo,
+        IBuyerConfirmationDocumentRepository bcfDocumentRepo)
     {
         _documentTypeRepo = documentTypeRepo;
         _uploadService = uploadService;
@@ -59,6 +63,7 @@ public class DocumentController : Controller
         _documentVerificationRepo = documentVerificationRepo;
         _currentUserRoleAccessService = currentUserRoleAccessService;
         _bcfRepo = bcfRepo;
+        _bcfDocumentRepo = bcfDocumentRepo;
     }
 
     #endregion Fields
@@ -407,9 +412,19 @@ public class DocumentController : Controller
 
             List<IFormFile> fileList = new List<IFormFile> { file };
 
-            await _uploadService.UploadFilesAsync(fileList, saveLocation, rootFolder, referenceId, buyerconfirmation.Code, referenceType, documentTypeId, userId, companyId);
+            // must return Document
+            var documentFile = await _uploadService.UploadDocumentFilesAsync(fileList, saveLocation, rootFolder, referenceId, buyerconfirmation.Code, referenceType, documentTypeId, userId, companyId);
 
-            return Ok();
+            BuyerConfirmationDocumentModel bcfDocument = new()
+            {
+                Id = 0,
+                ReferenceId = documentFile.Id,//document.Id
+                ReferenceNo = buyerconfirmation.Code,
+                Remarks = "Sign and Submitted"
+            };
+            await _bcfDocumentRepo.SaveAsync(bcfDocument, userId);
+
+            return Ok(saveLocation);
         }
         catch (Exception ex)
         {
