@@ -1079,9 +1079,17 @@ function bcfUploading() {
             console.log(bcfStatus);
 
             link.addEventListener('click', function (event) {
-                //if has no document yet && the status of bcf is verified by dev
-                if (bcfDocumentStatus != 0 && !bcfStatus != 3) {
+                //if bcf not verified by dev
+                if (bcfStatus != 3) {
+     
                     event.preventDefault();
+                }
+                    //if bcf document  is submitted && verified 
+                else if ( bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                    console.log(0);
+                    event.preventDefault();
+                }
+                else {
                 }
             });
         }

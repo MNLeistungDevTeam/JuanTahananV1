@@ -25,8 +25,9 @@
     var bcfData = await _bcfRepo.GetByUserAsync(userInfo.Id);
     int? bcfStatus = bcfData != null ? bcfData.ApprovalStatus : 0;
 
+    int bcfdocumentStatus = bcfData?.BuyerConfirmationDocumentStatus ?? 0;
+    string bcfCode = bcfData?.Code ?? "";
 
-    int? bcfdocumentStatus = bcfData != null ? bcfData.BuyerConfirmationDocumentStatus : 0;
 
 
 
@@ -60,6 +61,7 @@
 <input type="hidden" data-flag="@flagValue" id="UserFlag_IsBcfCreated" />
 <input type="hidden" id="Bcf_ApplicationStatus" value="@bcfStatus" />
 <input type="hidden" id="Bcf_DocumentStatus" value="@bcfdocumentStatus" />
+
 
 
 
