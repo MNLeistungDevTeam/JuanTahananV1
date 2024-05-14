@@ -5,6 +5,7 @@ using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
@@ -78,5 +79,6 @@ public class MappingProfile : Profile
         CreateMap<PropertyUnit, PropertyUnitModel>().ReverseMap();
         CreateMap<PropertyUnitProject, PropertyUnitProjectModel>().ReverseMap();
         CreateMap<BuyerConfirmation, BuyerConfirmationModel>().ReverseMap();
+        CreateMap<BuyerConfirmationDocument, BuyerConfirmationDocumentModel>().ReverseMap();
     }
 }

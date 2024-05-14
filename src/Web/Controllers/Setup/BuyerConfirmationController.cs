@@ -128,8 +128,6 @@ public class BuyerConfirmationController : Controller
             int userId = int.Parse(User.Identity.Name);
             var buyerConfirmation = await _buyerConfirmationRepo.GetByUserAsync(userId);
 
-             
-
             return View(buyerConfirmation);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }

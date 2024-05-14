@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
@@ -23,19 +25,22 @@ public class HomeController : Controller
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+    private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
     public HomeController(
         ILogger<HomeController> logger,
         IUserRepository userRepo,
         ICurrentUserService currentUserService,
         IMapper mapper,
-        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo)
+        IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
+        IBuyerConfirmationRepository buyerConfirmationRepo)
     {
         _logger = logger;
         _userRepo = userRepo;
         _currentUserService = currentUserService;
         _mapper = mapper;
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
+        _buyerConfirmationRepo = buyerConfirmationRepo;
     }
 
     #endregion Fields
@@ -79,6 +84,21 @@ public class HomeController : Controller
             _logger.LogError(ex.Message);
             return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
         }
+    }
+
+    public async Task<IActionResult> BCFDownload()
+    {
+        int userId = int.Parse(User.Identity.Name);
+
+        var bcfData = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+        BuyerConfirmationModel bcModel = new();
+        if (bcfData != null)
+        {
+            bcModel = bcfData;
+        }
+
+        return View(bcfData);
     }
 
     #endregion Views
