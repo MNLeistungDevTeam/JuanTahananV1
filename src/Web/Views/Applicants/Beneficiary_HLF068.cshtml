@@ -159,7 +159,7 @@
                                     <div class="position-relative">
                                         <label asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="form-label fw-normal" required></label>
                                         <select asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="rounded-4 mb-2 selectize" data-value="@Model.BuyerConfirmationModel.JuridicalPersonalityId" required>
-                                            <option value="">Select Developer ...</option>
+                                            <option value="">Select Juridical Personality...</option>
                                             <option value="1">LGU</option>
                                             <option value="2">Cooperative</option>
                                             <option value="3">Employer</option>
@@ -252,8 +252,8 @@
 
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MothersMaidenName" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.MothersMaidenName" required>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MothersMaidenName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.MothersMaidenName">
                                         <span asp-validation-for="BuyerConfirmationModel.MothersMaidenName" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -344,8 +344,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.PresentStreetName" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentStreetName" required>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.PresentStreetName"></label>
+                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PresentStreetName">
                                         <span asp-validation-for="BuyerConfirmationModel.PresentStreetName" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -686,7 +686,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AdditionalSourceIncome"></label>
-                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AdditionalSourceIncome">
+                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.AdditionalSourceIncome">
                                             <span asp-validation-for="BuyerConfirmationModel.AdditionalSourceIncome" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -700,13 +700,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <div class="position-relative">
-                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization"></label>
-                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization">
-                                            <span asp-validation-for="BuyerConfirmationModel.AffordMonthlyAmortization" class="text-danger"> </span>
-                                        </div>
-                                    </div>
                                 </div>
 
 
@@ -818,22 +811,22 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.HouseUnitModel" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.HouseUnitModel" required>
+                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
+                                        <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.HouseUnitModel" disabled>
                                         <span asp-validation-for="BuyerConfirmationModel.HouseUnitModel" class="text-danger"> </span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice"></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice">
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" disabled>
                                         <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"> </span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization">
+                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" disabled>
                                         <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"> </span>
                                     </div>
                                 </div>
@@ -847,7 +840,7 @@
                                 <ul class="pager wizard mb-0 list-inline">
 
                                     <li class="next list-inline-item float-end">
-                                        <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                        <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
                                     </li>
                                 </ul>
                             </div>
@@ -1134,11 +1127,11 @@
                             @if (!Model.BarrowersInformationModel.IsBcfCreated)
                             {
                                 <li class="previous list-inline-item">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                 </li>
                             }
                             <li class="next list-inline-item float-end">
-                                <a href="javascript:void(0);" class="btn btn-light waves-effect waves-light">Next</a>
+                                <a href="javascript:void(0);" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -1705,10 +1698,10 @@
                         <div class="col-md-12 mt-3">
                             <ul class="pager wizard mb-0 list-inline">
                                 <li class="previous list-inline-item">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                    <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
                                 </li>
                             </ul>
                         </div>
@@ -2001,10 +1994,10 @@
                         <div class="col-md-12 mt-3">
                             <ul class="pager wizard mb-0 list-inline mt-1">
                                 <li class="previous list-inline-item">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                    <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                 </li>
                                 <li class="next list-inline-item float-end">
-                                    <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                    <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
                                 </li>
                             </ul>
                         </div>
@@ -3041,11 +3034,11 @@
 
                         <ul class="pager wizard mb-0 list-inline mt-1">
                             <li class="previous list-inline-item">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                             </li>
 
                             <li class="next list-inline-item float-end">
-                                <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
                             </li>
                         </ul>
                     </div>
@@ -3063,10 +3056,10 @@
                                 <div class="col-md-12 mt-3">
                                     <ul class="pager wizard mb-0 list-inline mt-1">
                                         <li class="previous list-inline-item">
-                                            <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                            <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                         </li>
                                         <li class="next list-inline-item float-end">
-                                            <button type="button" class="btn btn-light waves-effect waves-light">Next</button>
+                                            <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -3086,7 +3079,7 @@
                             <div class="col-md-12 mt-3">
                                 <ul class="pager wizard mb-0 list-inline mt-1">
                                     <li class="previous list-inline-item">
-                                        <button type="button" class="btn btn-light waves-effect waves-light">Previous</button>
+                                        <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                     </li>
                             <li class="next list-inline-item float-end">
                                 <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>

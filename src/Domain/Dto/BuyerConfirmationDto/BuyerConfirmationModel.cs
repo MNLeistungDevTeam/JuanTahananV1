@@ -24,7 +24,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public string? ProjectProponentName { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
-        [Display(Name = "Juridical Personality")]
+        [Display(Name = "Select Juridical Personality")]
         public int? JuridicalPersonalityId { get; set; }
 
         [Display(Name = "Last Name", Prompt = "Last Name")]
@@ -195,14 +195,11 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Do you have other sources of income aside from salary?")]
         public bool IsOtherSourceOfIncome { get; set; }
 
-        [Display(Name = "Source of Additional Income")]
-        public decimal AdditionalSourceIncome { get; set; }
+        [Display(Name = "Source of Additional Income", Prompt = "Source of Additional Income")]
+        public string? AdditionalSourceIncome { get; set; }
 
         [Display(Name = "Average Monthly Additional Income")]
         public decimal AverageMonthlyAdditionalIncome { get; set; }
-
-        [Display(Name = "Afford Monthly Amortization", Prompt = "If you will be granted a Pag-IBIG Housing Loan, how much can you afford to pay as your monthly amortization?")]
-        public decimal AffordMonthlyAmortization { get; set; }
 
         [Display(Name = "Are you a Pag-IBIG member?")]
         public bool IsPagibigMember { get; set; }
