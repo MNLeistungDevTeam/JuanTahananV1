@@ -409,6 +409,7 @@ public class DocumentController : Controller
             var saveLocation = Path.Combine("Files", "Documents", "BuyerConfirmation", buyerconfirmation.Code);
             var referenceType = (int)DocumentReferenceType.Buyer;
             int referenceId = buyerconfirmation.Id;
+            buyerconfirmation.CompanyId = companyId;
 
             List<IFormFile> fileList = new List<IFormFile> { file };
 
