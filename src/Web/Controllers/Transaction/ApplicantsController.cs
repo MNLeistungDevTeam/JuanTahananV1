@@ -259,8 +259,6 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
-
                     }
                     else
                     {
@@ -284,6 +282,7 @@ namespace Template.Web.Controllers.Transaction
 
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                        vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
                     }
 
                     returnViewPage = "Beneficiary_HLF068";
@@ -526,8 +525,6 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
-                     
                 }
                 else
                 {
@@ -553,6 +550,7 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
                 }
 
                 return View("HousingLoanForm", vwModel);
@@ -635,6 +633,7 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
@@ -864,6 +863,38 @@ namespace Template.Web.Controllers.Transaction
         #endregion API Getters
 
         #region API Operations
+
+        public async Task<IActionResult> CheckBcf()
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                var bcfData = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+                return Ok(bcfData is not null);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        public async Task<IActionResult> CheckCurrentHlaf()
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+
+                var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
+
+                return Ok(data is not null);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> UpdateBcfFlag(bool flag)
@@ -1235,6 +1266,14 @@ namespace Template.Web.Controllers.Transaction
 
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
+
+
+                if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.ForResubmition)
+                {
+                    vwModel.BuyerConfirmationModel.ApprovalStatus = (int)AppStatusType.Draft;
+                }
+
+
 
                 var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
 

@@ -4,9 +4,10 @@ const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
 const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
+const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
-$(function () {
+$(async function () {
     var telNoArray = [];
     var itiFlag = false;
 
@@ -21,9 +22,8 @@ $(function () {
 
     $("#btn_savehlf068").prop('disabled', true);
 
+    console.log(hasBcf);
     //$("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus == '0' || applicantInfoApprovalStatus == '11'));
-
-    $("#btn_bcfpdf").prop('disabled', (buyerconfirmationCode == null || buyerconfirmationCode == ''));
 
     $(".selectize").selectize({
         search: false
@@ -1130,19 +1130,19 @@ $(function () {
 
     //#endregion
 
-    $(`[id="form2"] .next button`).on('click', function (e) {
-        if (hasBcf === "True") {
-            loadHlafPreview();
-        }
+    //$(`[id="form2"] .next button`).on('click', function (e) {
+    //    if (hasBcf === "True") {
+    //        loadHlafPreview();
+    //    }
 
-        else {
-            loadBcfPreview();
-        }
-    });
+    //    else {
+    //        loadBcfPreview();
+    //    }
+    //});
 
-    $(`[id="previewBcf"] .next button`).on('click', function (e) {
-        loadHlafPreview();
-    });
+    //$(`[id="previewBcf"] .next button`).on('click', function (e) {
+    //    loadHlafPreview();
+    //});
 
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
@@ -1204,6 +1204,23 @@ $(function () {
                 return;
             }
 
+            //Will auto scroll to Top of the view
+            if (currentFormName === "bcfdata") {
+                $("html, body").animate({ scrollTop: 0 }, "fast");
+            }
+
+            if (currentFormName == "form2" && isValid) {
+                if (hasBcf === "True") {
+                    loadHlafPreview();
+                } else {
+                    loadBcfPreview();
+                }
+            }
+
+            if (currentFormName == "previewBcf") {
+                loadHlafPreview();
+            }
+
             progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
@@ -1239,7 +1256,7 @@ $(function () {
     });
 
     //#region Events
-    $("#btn_edit").on('click', function () {
+    $("#btn_edit").on('click', async function () {
         if (editableFlag) {
             preConfirmationSwal();
             return;
@@ -1282,6 +1299,44 @@ $(function () {
 
         $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
 
+        if (buyerconfirmationAppStatus === '3') {
+            $('[id^="BuyerConfirmationModel_"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
+            $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
+            $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
+
+            $('[name^="incomeSrcRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $('[name^="pagibigRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $('[name^="informedTermsRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $('[name^="availedLoanRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $('[name^="coBorrowerRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+
+            $('[name^="projectPropRbtn"]').each(function () {
+                $(this).prop('disabled', true);
+            });
+        }
+
+        //Load the possible data on others forms
+        HLafTobcfConnectedFieldMap();
+        bcfToHLafConnectedFieldMap();
+
         messageBox("Editing Mode", "info", true);
     });
 
@@ -1303,7 +1358,20 @@ $(function () {
 
     $("#btn_saveChang").on('click', function () {
         editableFlag = false;
-        $("#frm_hlf068").submit();
+        $("#frm_hlf068").trigger('submit');
+    });
+
+    $('#BuyerConfirmationModel_MaritalStatus').on('change', function () {
+        var value = $(this).val();
+
+        if (value === 'Married') {
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', true);
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', true);
+        }
+        else {
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', false);
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', false);
+        }
     });
 
     //#endregion
@@ -1330,9 +1398,9 @@ $(function () {
                     required: $(this).attr('id') === 'isRbtn1',
                 });
 
-                if ($(this).attr('id') === 'isRbtn2') {
-                    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
-                }
+                //if ($(this).attr('id') === 'isRbtn2') {
+                //    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
+                //}
 
                 $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
             });
@@ -1346,9 +1414,9 @@ $(function () {
                     required: $(this).attr('id') === 'pagibigRbtn1',
                 });
 
-                if ($(this).attr('id') === 'pagibigRbtn2') {
-                    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
-                }
+                //if ($(this).attr('id') === 'pagibigRbtn2') {
+                //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+                //}
 
                 $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
             });
@@ -1368,6 +1436,10 @@ $(function () {
             $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
                 $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
             });
+
+            //Load the possible data on others forms
+            //HLafTobcfConnectedFieldMap();
+            //bcfToHLafConnectedFieldMap();
         }
     });
 
@@ -1389,6 +1461,26 @@ $(function () {
                 $(this).addClass('was-validated');
             }
         });
+
+        //form.find('input[type="radio"][required]').each(function () {
+        //    let hasClass = $(this).hasClass('valid');
+
+        //    console.log(roleId);
+        //    if (roleId === '3') {
+        //        $(this).prop('required', false);
+        //        return;
+        //    }
+
+        //    if (!hasClass) {
+        //        $(this).addClass('is-invalid');
+        //        $(this).removeClass('valid');
+
+        //        isValid = false;
+        //    } else {
+        //        $(this).addClass('valid');
+        //        $(this).removeClass('is-invalid');
+        //    }
+        //});
 
         return isValid;
     }
@@ -1465,6 +1557,8 @@ $(function () {
                     // Reset button state
                     button.attr({ disabled: false });
                     button.html("<span class='mdi mdi-content-save-outline'></span> Save");
+
+                    editableFlag = false;
                 },
                 error: function (response) {
                     // Error message handling
@@ -1692,49 +1786,53 @@ $(function () {
         let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
         let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
 
-        let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
+        //let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (pagibigAvailedLoan === "True") {
-            $("#availedLoanRbtn1").prop("checked", true);
-        } else {
-            $("#availedLoanRbtn2").prop("checked", true);
-        }
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();;
+        let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
+        let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (coborrower === "True") {
-            $("#cbwrRbtn1").prop("checked", true);
-        } else {
-            $("#cbwrRbtn2").prop("checked", true);
-        }
+        //if (pagibigAvailedLoan === "True") {
+        //    $("#availedLoanRbtn1").prop("checked", true);
+        //} else {
+        //    $("#availedLoanRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (projectProponent === "True") {
-            $("#prpRbtn1").prop("checked", true);
-        } else {
-            $("#prpRbtn2").prop("checked", true);
-        }
+        //if (coborrower === "True") {
+        //    $("#cbwrRbtn1").prop("checked", true);
+        //} else {
+        //    $("#cbwrRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (termConditions === "True") {
-            $("#itcRbtn1").prop("checked", true);
-        } else {
-            $("#itcRbtn2").prop("checked", true);
-        }
+        //if (projectProponent === "True") {
+        //    $("#prpRbtn1").prop("checked", true);
+        //} else {
+        //    $("#prpRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (isPagibigMember === "True") {
-            $("#pagibigRbtn1").prop("checked", true);
-        } else {
-            $("#pagibigRbtn2").prop("checked", true);
-        }
+        //if (termConditions === "True") {
+        //    $("#itcRbtn1").prop("checked", true);
+        //} else {
+        //    $("#itcRbtn2").prop("checked", true);
+        //}
 
-        if (isOtherSourceIncome === "True") {
-            $("#isRbtn1").prop("checked", true);
-        } else {
-            $("#isRbtn2").prop("checked", true);
-        }
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        //if (isPagibigMember === "True") {
+        //    $("#pagibigRbtn1").prop("checked", true);
+        //} else {
+        //    $("#pagibigRbtn2").prop("checked", true);
+        //}
+
+        //if (isOtherSourceIncome === "True") {
+        //    $("#isRbtn1").prop("checked", true);
+        //} else {
+        //    $("#isRbtn2").prop("checked", true);
+        //}
 
         // Set checked status for PendingCase radio buttons
         $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
@@ -1757,8 +1855,29 @@ $(function () {
             $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
 
-            $("#bcf-incomeFields").prop("hidden", !$("#isRbtn1").is(":checked"));
-            $("#bcf-pagIbigNumField").prop("hidden", !$("#pagibigRbtn1").is(":checked"));
+            // Set checked status for BCF Additional income radio buttons
+            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome);
+            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome);
+
+            // Set checked status for BCF Pagibig Number radio buttons
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber);
+            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber);
+
+            // Set checked status for BCF availed laon radio buttons
+            $("#availedLoanRbtn1").prop("checked", !pagibigAvailedLoan);
+            $("#availedLoanRbtn2").prop("checked", pagibigAvailedLoan);
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#cbwrRbtn1").prop("checked", !coborrower);
+            $("#cbwrRbtn2").prop("checked", coborrower);
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#prpRbtn1").prop("checked", !projectProponent);
+            $("#prpRbtn2").prop("checked", projectProponent);
+
+            // Set checked status for BCF term in condition radio buttons
+            $("#itcRbtn1").prop("checked", !termConditions);
+            $("#itcRbtn2").prop("checked", termConditions);
         }
 
         // Set miscellanous input to disable
@@ -1766,10 +1885,14 @@ $(function () {
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        //BCF Particulars
+        $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
+        $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
     }
 
     function bcfToHLafConnectedFieldMap() {
-        if (hasBcf == "True") {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
             return;
         }
 
@@ -1824,9 +1947,9 @@ $(function () {
         $("#BarrowersInformationModel_EmployerName").val(employername);
 
         var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseFirstName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseFirstName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseSuffix').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseMiddleName').val();
 
         $('#SpouseModel_LastName').val(spouseLastName);
         $('#SpouseModel_FirstName').val(spouseFirstName);
@@ -1873,12 +1996,12 @@ $(function () {
         $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
         $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
 
-        //var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
-        //$("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
+        var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
+        $("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
     }
 
     function HLafTobcfConnectedFieldMap() {
-        if (hasBcf == "True") {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
             return;
         }
 
@@ -1895,7 +2018,7 @@ $(function () {
         $("#BuyerConfirmationModel_MiddleName").val(MiddleName);
         $("#BuyerConfirmationModel_Suffix").val(Suffix);
         $("#BuyerConfirmationModel_BirthDate").val(BirthDate);
-        $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+        $('#BuyerConfirmationModel_MaritalStatus').data("selectize").setValue(MaritalStatus);
 
         var homeNumber = $("#BarrowersInformationModel_HomeNumber").val();
         var mobileNumber = $("#BarrowersInformationModel_MobileNumber").val();
@@ -1937,9 +2060,9 @@ $(function () {
         var spouseMiddleName = $('#SpouseModel_MiddleName').val();
 
         $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
-        $('#BuyerConfirmationModel_SpouseLastName').val(spouseFirstName);
-        $('#BuyerConfirmationModel_SpouseLastName').val(spouseExtensionName);
-        $('#BuyerConfirmationModel_SpouseLastName').val(spouseMiddleName);
+        $('#BuyerConfirmationModel_SpouseFirstName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseSuffix').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseMiddleName').val(spouseMiddleName);
 
         var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
         var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
@@ -1981,8 +2104,13 @@ $(function () {
         $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
         $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
 
-        //var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
-        //$("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+        var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
+
+        if (pagibigNo) {
+            $("#pagibigRbtn1").prop("checked", true);
+            $("#bcf-pagIbigNumField").prop("hidden", false);
+            $("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+        }
     }
 
     function progressCheck(targetForm = "bcfdata") {
@@ -2216,7 +2344,10 @@ $(function () {
             cancelButtonColor: '#d33',
             confirmButtonText: `Continue editing`,
             cancelButtonText: 'Discard changes',
-            reverseButtons: true
+            reverseButtons: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
         }).then(async (result) => {
             if (result.isDismissed) {
                 // Discard Changes
@@ -2369,183 +2500,183 @@ $(function () {
 
         let form2Page = await getForm2PageInformation(applicantInfoIdVal);
 
-        //$("#Form2PageMode_Id").val(form2Page.Id);
-        //$("#Form2PageMode_ApplicantsPersonalInformationId").val(form2Page.ApplicantsPersonalInformationId);
+        //$("#Form2PageModel_Id").val(form2Page.Id);
+        //$("#Form2PageModel_ApplicantsPersonalInformationId").val(form2Page.ApplicantsPersonalInformationId);
 
-        $("#Form2PageMode_Bank1").val(form2Page.Bank1);
-        $("#Form2PageMode_Bank2").val(form2Page.Bank2);
-        $("#Form2PageMode_Bank3").val(form2Page.Bank3);
+        $("#Form2PageModel_Bank1").val(form2Page.Bank1 ? form2Page.Bank1 : null);
+        $("#Form2PageModel_Bank2").val(form2Page.Bank2 ? form2Page.Bank2 : null);
+        $("#Form2PageModel_Bank3").val(form2Page.Bank3 ? form2Page.Bank3 : null);
 
-        $("#Form2PageMode_BranchAddress1").val(form2Page.BranchAddress1);
-        $("#Form2PageMode_BranchAddress2").val(form2Page.BranchAddress2);
-        $("#Form2PageMode_BranchAddress3").val(form2Page.BranchAddress3);
+        $("#Form2PageModel_BranchAddress1").val(form2Page.BranchAddress1 ? form2Page.BranchAddress1 : null);
+        $("#Form2PageModel_BranchAddress2").val(form2Page.BranchAddress2 ? form2Page.BranchAddress2 : null);
+        $("#Form2PageModel_BranchAddress3").val(form2Page.BranchAddress3 ? form2Page.BranchAddress3 : null);
 
-        $("#Form2PageMode_TypeOfAccount1").val(form2Page.TypeOfAccount1);
-        $("#Form2PageMode_TypeOfAccount2").val(form2Page.TypeOfAccount2);
-        $("#Form2PageMode_TypeOfAccount3").val(form2Page.TypeOfAccount3);
+        $("#Form2PageModel_TypeOfAccount1").val(form2Page.TypeOfAccount1 ? form2Page.TypeOfAccount1 : null);
+        $("#Form2PageModel_TypeOfAccount2").val(form2Page.TypeOfAccount2 ? form2Page.TypeOfAccount2 : null);
+        $("#Form2PageModel_TypeOfAccount3").val(form2Page.TypeOfAccount3 ? form2Page.TypeOfAccount3 : null);
 
-        $("#Form2PageMode_AccountNumber1").val(form2Page.AccountNumber1);
-        $("#Form2PageMode_AccountNumber2").val(form2Page.AccountNumber2);
-        $("#Form2PageMode_AccountNumber3").val(form2Page.AccountNumber3);
+        $("#Form2PageModel_AccountNumber1").val(form2Page.AccountNumber1 ? form2Page.AccountNumber1 : null);
+        $("#Form2PageModel_AccountNumber2").val(form2Page.AccountNumber2 ? form2Page.AccountNumber2 : null);
+        $("#Form2PageModel_AccountNumber3").val(form2Page.AccountNumber3 ? form2Page.AccountNumber3 : null);
 
-        $("#Form2PageMode_DateOpened1").val(form2Page.DateOpened1);
-        $("#Form2PageMode_DateOpened2").val(form2Page.DateOpened2);
-        $("#Form2PageMode_DateOpened3").val(form2Page.DateOpened3);
+        $("#Form2PageModel_DateOpened1").val(form2Page.DateOpened1 ? form2Page.DateOpened1 : null);
+        $("#Form2PageModel_DateOpened2").val(form2Page.DateOpened2 ? form2Page.DateOpened2 : null);
+        $("#Form2PageModel_DateOpened3").val(form2Page.DateOpened3 ? form2Page.DateOpened3 : null);
 
-        $("#Form2PageMode_AverageBalance1").val(form2Page.AverageBalance1);
-        $("#Form2PageMode_AverageBalance2").val(form2Page.AverageBalance2);
-        $("#Form2PageMode_AverageBalance3").val(form2Page.AverageBalance3);
+        $("#Form2PageModel_AverageBalance1").val(form2Page.AverageBalance1 ? form2Page.AverageBalance1 : null);
+        $("#Form2PageModel_AverageBalance2").val(form2Page.AverageBalance2 ? form2Page.AverageBalance2 : null);
+        $("#Form2PageModel_AverageBalance3").val(form2Page.AverageBalance3 ? form2Page.AverageBalance3 : null);
 
-        $("#Form2PageMode_IssuerName1").val(form2Page.IssuerName1);
-        $("#Form2PageMode_IssuerName2").val(form2Page.IssuerName2);
-        $("#Form2PageMode_IssuerName3").val(form2Page.IssuerName3);
+        $("#Form2PageModel_IssuerName1").val(form2Page.IssuerName1 ? form2Page.IssuerName1 : null);
+        $("#Form2PageModel_IssuerName2").val(form2Page.IssuerName2 ? form2Page.IssuerName2 : null);
+        $("#Form2PageModel_IssuerName3").val(form2Page.IssuerName3 ? form2Page.IssuerName3 : null);
 
-        $("#Form2PageMode_CardType1").val(form2Page.CardType1);
-        $("#Form2PageMode_CardType2").val(form2Page.CardType2);
-        $("#Form2PageMode_CardType3").val(form2Page.CardType3);
+        $("#Form2PageModel_CardType1").val(form2Page.CardType1 ? form2Page.CardType1 : null);
+        $("#Form2PageModel_CardType2").val(form2Page.CardType2 ? form2Page.CardType2 : null);
+        $("#Form2PageModel_CardType3").val(form2Page.CardType3 ? form2Page.CardType3 : null);
 
-        $("#Form2PageMode_CardExpiration1").val(form2Page.CardExpiration1);
-        $("#Form2PageMode_CardExpiration2").val(form2Page.CardExpiration2);
-        $("#Form2PageMode_CardExpiration3").val(form2Page.CardExpiration3);
+        $("#Form2PageModel_CardExpiration1").val(form2Page.CardExpiration1 ? form2Page.CardExpiration1 : null);
+        $("#Form2PageModel_CardExpiration2").val(form2Page.CardExpiration2 ? form2Page.CardExpiration2 : null);
+        $("#Form2PageModel_CardExpiration3").val(form2Page.CardExpiration3 ? form2Page.CardExpiration3 : null);
 
-        $("#Form2PageMode_CreditLimit1").val(form2Page.CreditLimit1);
-        $("#Form2PageMode_CreditLimit2").val(form2Page.CreditLimit2);
-        $("#Form2PageMode_CreditLimit3").val(form2Page.CreditLimit3);
+        $("#Form2PageModel_CreditLimit1").val(form2Page.CreditLimit1 ? form2Page.CreditLimit1 : null);
+        $("#Form2PageModel_CreditLimit2").val(form2Page.CreditLimit2 ? form2Page.CreditLimit2 : null);
+        $("#Form2PageModel_CreditLimit3").val(form2Page.CreditLimit3 ? form2Page.CreditLimit3 : null);
 
-        $("#Form2PageMode_Location1").val(form2Page.Location1);
-        $("#Form2PageMode_Location2").val(form2Page.Location2);
-        $("#Form2PageMode_Location3").val(form2Page.Location3);
+        $("#Form2PageModel_Location1").val(form2Page.Location1 ? form2Page.Location1 : null);
+        $("#Form2PageModel_Location2").val(form2Page.Location2 ? form2Page.Location2 : null);
+        $("#Form2PageModel_Location3").val(form2Page.Location3 ? form2Page.Location3 : null);
 
-        $("#Form2PageMode_TypeOfProperty1").val(form2Page.TypeOfProperty1);
-        $("#Form2PageMode_TypeOfProperty2").val(form2Page.TypeOfProperty2);
-        $("#Form2PageMode_TypeOfProperty3").val(form2Page.TypeOfProperty3);
+        $("#Form2PageModel_TypeOfProperty1").val(form2Page.TypeOfProperty1 ? form2Page.TypeOfProperty1 : null);
+        $("#Form2PageModel_TypeOfProperty2").val(form2Page.TypeOfProperty2 ? form2Page.TypeOfProperty2 : null);
+        $("#Form2PageModel_TypeOfProperty3").val(form2Page.TypeOfProperty3 ? form2Page.TypeOfProperty3 : null);
 
-        $("#Form2PageMode_AquisitionCost1").val(form2Page.AquisitionCost1);
-        $("#Form2PageMode_AquisitionCost2").val(form2Page.AquisitionCost2);
-        $("#Form2PageMode_AquisitionCost3").val(form2Page.AquisitionCost3);
+        $("#Form2PageModel_AquisitionCost1").val(form2Page.AquisitionCost1 ? form2Page.AquisitionCost1 : null);
+        $("#Form2PageModel_AquisitionCost2").val(form2Page.AquisitionCost2 ? form2Page.AquisitionCost2 : null);
+        $("#Form2PageModel_AquisitionCost3").val(form2Page.AquisitionCost3 ? form2Page.AquisitionCost3 : null);
 
-        $("#Form2PageMode_MarketValue1").val(form2Page.MarketValue1);
-        $("#Form2PageMode_MarketValue2").val(form2Page.MarketValue2);
-        $("#Form2PageMode_MarketValue3").val(form2Page.MarketValue3);
+        $("#Form2PageModel_MarketValue1").val(form2Page.MarketValue1 ? form2Page.MarketValue1 : null);
+        $("#Form2PageModel_MarketValue2").val(form2Page.MarketValue2 ? form2Page.MarketValue2 : null);
+        $("#Form2PageModel_MarketValue3").val(form2Page.MarketValue3 ? form2Page.MarketValue3 : null);
 
-        $("#Form2PageMode_MortgageBalance1").val(form2Page.MortgageBalance1);
-        $("#Form2PageMode_MortgageBalance2").val(form2Page.MortgageBalance2);
-        $("#Form2PageMode_MortgageBalance3").val(form2Page.MortgageBalance3);
+        $("#Form2PageModel_MortgageBalance1").val(form2Page.MortgageBalance1 ? form2Page.MortgageBalance1 : null);
+        $("#Form2PageModel_MortgageBalance2").val(form2Page.MortgageBalance2 ? form2Page.MortgageBalance2 : null);
+        $("#Form2PageModel_MortgageBalance3").val(form2Page.MortgageBalance3 ? form2Page.MortgageBalance3 : null);
 
-        $("#Form2PageMode_RentalIncome1").val(form2Page.RentalIncome1);
-        $("#Form2PageMode_RentalIncome2").val(form2Page.RentalIncome2);
-        $("#Form2PageMode_RentalIncome3").val(form2Page.RentalIncome3);
+        $("#Form2PageModel_RentalIncome1").val(form2Page.RentalIncome1 ? form2Page.RentalIncome1 : null);
+        $("#Form2PageModel_RentalIncome2").val(form2Page.RentalIncome2 ? form2Page.RentalIncome2 : null);
+        $("#Form2PageModel_RentalIncome3").val(form2Page.RentalIncome3 ? form2Page.RentalIncome3 : null);
 
-        $("#Form2PageMode_CreditorAndAddress1").val(form2Page.CreditorAndAddress1);
-        $("#Form2PageMode_CreditorAndAddress2").val(form2Page.CreditorAndAddress2);
-        $("#Form2PageMode_CreditorAndAddress3").val(form2Page.CreditorAndAddress3);
+        $("#Form2PageModel_CreditorAndAddress1").val(form2Page.CreditorAndAddress1 ? form2Page.CreditorAndAddress1 : null);
+        $("#Form2PageModel_CreditorAndAddress2").val(form2Page.CreditorAndAddress2 ? form2Page.CreditorAndAddress2 : null);
+        $("#Form2PageModel_CreditorAndAddress3").val(form2Page.CreditorAndAddress3 ? form2Page.CreditorAndAddress3 : null);
 
-        $("#Form2PageMode_Security1").val(form2Page.Security1);
-        $("#Form2PageMode_Security2").val(form2Page.Security2);
-        $("#Form2PageMode_Security3").val(form2Page.Security3);
+        $("#Form2PageModel_Security1").val(form2Page.Security1 ? form2Page.Security1 : null);
+        $("#Form2PageModel_Security2").val(form2Page.Security2 ? form2Page.Security2 : null);
+        $("#Form2PageModel_Security3").val(form2Page.Security3 ? form2Page.Security3 : null);
 
-        $("#Form2PageMode_Type1").val(form2Page.Type1);
-        $("#Form2PageMode_Type2").val(form2Page.Type2);
-        $("#Form2PageMode_Type3").val(form2Page.Type3);
+        $("#Form2PageModel_Type1").val(form2Page.Type1 ? form2Page.Type1 : null);
+        $("#Form2PageModel_Type2").val(form2Page.Type2 ? form2Page.Type2 : null);
+        $("#Form2PageModel_Type3").val(form2Page.Type3 ? form2Page.Type3 : null);
 
-        $("#Form2PageMode_AmountBalance1").val(form2Page.AmountBalance1);
-        $("#Form2PageMode_AmountBalance2").val(form2Page.AmountBalance2);
-        $("#Form2PageMode_AmountBalance3").val(form2Page.AmountBalance3);
+        $("#Form2PageModel_AmountBalance1").val(form2Page.AmountBalance1 ? form2Page.AmountBalance1 : null);
+        $("#Form2PageModel_AmountBalance2").val(form2Page.AmountBalance2 ? form2Page.AmountBalance2 : null);
+        $("#Form2PageModel_AmountBalance3").val(form2Page.AmountBalance3 ? form2Page.AmountBalance3 : null);
 
-        $("#Form2PageMode_MaturityDateTime1").val(form2Page.MaturityDateTime1);
-        $("#Form2PageMode_MaturityDateTime2").val(form2Page.MaturityDateTime2);
-        $("#Form2PageMode_MaturityDateTime3").val(form2Page.MaturityDateTime3);
+        $("#Form2PageModel_MaturityDateTime1").val(form2Page.MaturityDateTime1 ? form2Page.MaturityDateTime1 : null);
+        $("#Form2PageModel_MaturityDateTime2").val(form2Page.MaturityDateTime2 ? form2Page.MaturityDateTime2 : null);
+        $("#Form2PageModel_MaturityDateTime3").val(form2Page.MaturityDateTime3 ? form2Page.MaturityDateTime3 : null);
 
-        $("#Form2PageMode_Amortization1").val(form2Page.Amortization1);
-        $("#Form2PageMode_Amortization2").val(form2Page.Amortization2);
-        $("#Form2PageMode_Amortization3").val(form2Page.Amortization3);
+        $("#Form2PageModel_Amortization1").val(form2Page.Amortization1 ? form2Page.Amortization1 : null);
+        $("#Form2PageModel_Amortization2").val(form2Page.Amortization2 ? form2Page.Amortization2 : null);
+        $("#Form2PageModel_Amortization3").val(form2Page.Amortization3 ? form2Page.Amortization3 : null);
 
-        $("#Form2PageMode_PendingCase").val(form2Page.PendingCase);
-        $("#Form2PageMode_PastDue").val(form2Page.PastDue);
-        $("#Form2PageMode_BouncingChecks").val(form2Page.BouncingChecks);
-        $("#Form2PageMode_MedicalAdvice").val(form2Page.MedicalAdvice);
+        $("#Form2PageModel_PendingCase").val(form2Page.PendingCase ? form2Page.PendingCase : null);
+        $("#Form2PageModel_PastDue").val(form2Page.PastDue ? form2Page.PastDue : null);
+        $("#Form2PageModel_BouncingChecks").val(form2Page.BouncingChecks ? form2Page.BouncingChecks : null);
+        $("#Form2PageModel_MedicalAdvice").val(form2Page.MedicalAdvice ? form2Page.MedicalAdvice : null);
 
-        $("#Form2PageMode_BankFinancial1").val(form2Page.BankFinancial1);
-        $("#Form2PageMode_BankFinancial2").val(form2Page.BankFinancial2);
-        $("#Form2PageMode_BankFinancial3").val(form2Page.BankFinancial3);
+        $("#Form2PageModel_BankFinancial1").val(form2Page.BankFinancial1 ? form2Page.BankFinancial1 : null);
+        $("#Form2PageModel_BankFinancial2").val(form2Page.BankFinancial2 ? form2Page.BankFinancial2 : null);
+        $("#Form2PageModel_BankFinancial3").val(form2Page.BankFinancial3 ? form2Page.BankFinancial3 : null);
 
-        $("#Form2PageMode_Address1").val(form2Page.Address1);
-        $("#Form2PageMode_Address2").val(form2Page.Address2);
-        $("#Form2PageMode_Address3").val(form2Page.Address3);
+        $("#Form2PageModel_Address1").val(form2Page.Address1 ? form2Page.Address1 : null);
+        $("#Form2PageModel_Address2").val(form2Page.Address2 ? form2Page.Address2 : null);
+        $("#Form2PageModel_Address3").val(form2Page.Address3 ? form2Page.Address3 : null);
 
-        $("#Form2PageMode_Purpose1").val(form2Page.Purpose1);
-        $("#Form2PageMode_Purpose2").val(form2Page.Purpose2);
-        $("#Form2PageMode_Purpose3").val(form2Page.Purpose3);
+        $("#Form2PageModel_Purpose1").val(form2Page.Purpose1 ? form2Page.Purpose1 : null);
+        $("#Form2PageModel_Purpose2").val(form2Page.Purpose2 ? form2Page.Purpose2 : null);
+        $("#Form2PageModel_Purpose3").val(form2Page.Purpose3 ? form2Page.Purpose3 : null);
 
-        $("#Form2PageMode_LoanSecurity1").val(form2Page.LoanSecurity1);
-        $("#Form2PageMode_LoanSecurity2").val(form2Page.LoanSecurity2);
-        $("#Form2PageMode_LoanSecurity3").val(form2Page.LoanSecurity3);
+        $("#Form2PageModel_LoanSecurity1").val(form2Page.LoanSecurity1 ? form2Page.LoanSecurity1 : null);
+        $("#Form2PageModel_LoanSecurity2").val(form2Page.LoanSecurity2 ? form2Page.LoanSecurity2 : null);
+        $("#Form2PageModel_LoanSecurity3").val(form2Page.LoanSecurity3 ? form2Page.LoanSecurity3 : null);
 
-        $("#Form2PageMode_HighestAmount1").val(form2Page.HighestAmount1);
-        $("#Form2PageMode_HighestAmount2").val(form2Page.HighestAmount2);
-        $("#Form2PageMode_HighestAmount3").val(form2Page.HighestAmount3);
+        $("#Form2PageModel_HighestAmount1").val(form2Page.HighestAmount1 ? form2Page.HighestAmount1 : null);
+        $("#Form2PageModel_HighestAmount2").val(form2Page.HighestAmount2 ? form2Page.HighestAmount2 : null);
+        $("#Form2PageModel_HighestAmount3").val(form2Page.HighestAmount3 ? form2Page.HighestAmount3 : null);
 
-        $("#Form2PageMode_PresentBalance1").val(form2Page.PresentBalance1);
-        $("#Form2PageMode_PresentBalance2").val(form2Page.PresentBalance2);
-        $("#Form2PageMode_PresentBalance3").val(form2Page.PresentBalance3);
+        $("#Form2PageModel_PresentBalance1").val(form2Page.PresentBalance1 ? form2Page.PresentBalance1 : null);
+        $("#Form2PageModel_PresentBalance2").val(form2Page.PresentBalance2 ? form2Page.PresentBalance2 : null);
+        $("#Form2PageModel_PresentBalance3").val(form2Page.PresentBalance3 ? form2Page.PresentBalance3 : null);
 
-        $("#Form2PageMode_DateObtained1").val(form2Page.DateObtained1);
-        $("#Form2PageMode_DateObtained2").val(form2Page.DateObtained2);
-        $("#Form2PageMode_DateObtained3").val(form2Page.DateObtained3);
+        $("#Form2PageModel_DateObtained1").val(form2Page.DateObtained1 ? form2Page.DateObtained1 : null);
+        $("#Form2PageModel_DateObtained2").val(form2Page.DateObtained2 ? form2Page.DateObtained2 : null);
+        $("#Form2PageModel_DateObtained3").val(form2Page.DateObtained3 ? form2Page.DateObtained3 : null);
 
-        $("#Form2PageMode_DateFullyPaid1").val(form2Page.DateFullyPaid1);
-        $("#Form2PageMode_DateFullyPaid2").val(form2Page.DateFullyPaid2);
-        $("#Form2PageMode_DateFullyPaid3").val(form2Page.DateFullyPaid3);
+        $("#Form2PageModel_DateFullyPaid1").val(form2Page.DateFullyPaid1 ? form2Page.DateFullyPaid1 : null);
+        $("#Form2PageModel_DateFullyPaid2").val(form2Page.DateFullyPaid2 ? form2Page.DateFullyPaid2 : null);
+        $("#Form2PageModel_DateFullyPaid3").val(form2Page.DateFullyPaid3 ? form2Page.DateFullyPaid3 : null);
 
-        $("#Form2PageMode_NameSupplier1").val(form2Page.NameSupplier1);
-        $("#Form2PageMode_NameSupplier2").val(form2Page.NameSupplier2);
-        $("#Form2PageMode_NameSupplier3").val(form2Page.NameSupplier3);
+        $("#Form2PageModel_NameSupplier1").val(form2Page.NameSupplier1 ? form2Page.NameSupplier1 : null);
+        $("#Form2PageModel_NameSupplier2").val(form2Page.NameSupplier2 ? form2Page.NameSupplier2 : null);
+        $("#Form2PageModel_NameSupplier3").val(form2Page.NameSupplier3 ? form2Page.NameSupplier3 : null);
 
-        $("#Form2PageMode_TradeAddress1").val(form2Page.TradeAddress1);
-        $("#Form2PageMode_TradeAddress2").val(form2Page.TradeAddress2);
-        $("#Form2PageMode_TradeAddress3").val(form2Page.TradeAddress3);
+        $("#Form2PageModel_TradeAddress1").val(form2Page.TradeAddress1 ? form2Page.TradeAddress1 : null);
+        $("#Form2PageModel_TradeAddress2").val(form2Page.TradeAddress2 ? form2Page.TradeAddress2 : null);
+        $("#Form2PageModel_TradeAddress3").val(form2Page.TradeAddress3 ? form2Page.TradeAddress3 : null);
 
-        $("#Form2PageMode_TradeTellNo1").val(form2Page.TradeTellNo1);
-        $("#Form2PageMode_TradeTellNo2").val(form2Page.TradeTellNo2);
-        $("#Form2PageMode_TradeTellNo3").val(form2Page.TradeTellNo3);
+        $("#Form2PageModel_TradeTellNo1").val(form2Page.TradeTellNo1 ? form2Page.TradeTellNo1 : null);
+        $("#Form2PageModel_TradeTellNo2").val(form2Page.TradeTellNo2 ? form2Page.TradeTellNo2 : null);
+        $("#Form2PageModel_TradeTellNo3").val(form2Page.TradeTellNo3 ? form2Page.TradeTellNo3 : null);
 
-        $("#Form2PageMode_CharacterNameSupplier1").val(form2Page.CharacterNameSupplier1);
-        $("#Form2PageMode_CharacterNameSupplier2").val(form2Page.CharacterNameSupplier2);
-        $("#Form2PageMode_CharacterNameSupplier3").val(form2Page.CharacterNameSupplier3);
+        $("#Form2PageModel_CharacterNameSupplier1").val(form2Page.CharacterNameSupplier1 ? form2Page.CharacterNameSupplier1 : null);
+        $("#Form2PageModel_CharacterNameSupplier2").val(form2Page.CharacterNameSupplier2 ? form2Page.CharacterNameSupplier2 : null);
+        $("#Form2PageModel_CharacterNameSupplier3").val(form2Page.CharacterNameSupplier3 ? form2Page.CharacterNameSupplier3 : null);
 
-        $("#Form2PageMode_CharacterAddress1").val(form2Page.CharacterAddress1);
-        $("#Form2PageMode_CharacterAddress2").val(form2Page.CharacterAddress2);
-        $("#Form2PageMode_CharacterAddress3").val(form2Page.CharacterAddress3);
+        $("#Form2PageModel_CharacterAddress1").val(form2Page.CharacterAddress1 ? form2Page.CharacterAddress1 : null);
+        $("#Form2PageModel_CharacterAddress2").val(form2Page.CharacterAddress2 ? form2Page.CharacterAddress2 : null);
+        $("#Form2PageModel_CharacterAddress3").val(form2Page.CharacterAddress3 ? form2Page.CharacterAddress3 : null);
 
-        $("#Form2PageMode_CharacterTellNo1").val(form2Page.CharacterTellNo1);
-        $("#Form2PageMode_CharacterTellNo2").val(form2Page.CharacterTellNo2);
-        $("#Form2PageMode_CharacterTellNo3").val(form2Page.CharacterTellNo3);
+        $("#Form2PageModel_CharacterTellNo1").val(form2Page.CharacterTellNo1 ? form2Page.CharacterTellNo1 : null);
+        $("#Form2PageModel_CharacterTellNo2").val(form2Page.CharacterTellNo2 ? form2Page.CharacterTellNo2 : null);
+        $("#Form2PageModel_CharacterTellNo3").val(form2Page.CharacterTellNo3 ? form2Page.CharacterTellNo3 : null);
 
-        $("#Form2PageMode_FirstName").val(form2Page.FirstName);
-        $("#Form2PageMode_MiddleName").val(form2Page.MiddleName);
-        $("#Form2PageMode_Suffix").val(form2Page.Suffix);
-        $("#Form2PageMode_LastName").val(form2Page.LastName);
-        $("#Form2PageMode_PagibigNumber").val(form2Page.PagibigNumber);
-        $("#Form2PageMode_TinNumber").val(form2Page.TinNumber);
-        $("#Form2PageMode_ContactNumber").val(form2Page.ContactNumber);
-        $("#Form2PageMode_Email").val(form2Page.Email);
-        $("#Form2PageMode_SourcePagibigFundId").val(form2Page.SourcePagibigFundId);
-        $("#Form2PageMode_DateCreated").val(form2Page.DateCreated);
-        $("#Form2PageMode_CreatedById").val(form2Page.CreatedById);
-        $("#Form2PageMode_DateModified").val(form2Page.DateModified);
-        $("#Form2PageMode_ModifiedById").val(form2Page.ModifiedById);
-        $("#Form2PageMode_DateDeleted").val(form2Page.DateDeleted);
-        $("#Form2PageMode_DeletedById").val(form2Page.DeletedById);
-        $("#Form2PageMode_Agreement").val(form2Page.Agreement);
-        $("#Form2PageMode_SellersUnitName").val(form2Page.SellersUnitName);
-        $("#Form2PageMode_SellersBuildingName").val(form2Page.SellersBuildingName);
-        $("#Form2PageMode_SellersLotName").val(form2Page.SellersLotName);
-        $("#Form2PageMode_SellersStreetName").val(form2Page.SellersStreetName);
-        $("#Form2PageMode_SellersSubdivisionName").val(form2Page.SellersSubdivisionName);
-        $("#Form2PageMode_SellersBaranggayName").val(form2Page.SellersBaranggayName);
-        $("#Form2PageMode_SellersMunicipalityName").val(form2Page.SellersMunicipalityName);
-        $("#Form2PageMode_SellersProvinceName").val(form2Page.SellersProvinceName);
-        $("#Form2PageMode_SellersZipCode").val(form2Page.SellersZipCode);
+        $("#Form2PageModel_FirstName").val(form2Page.FirstName ? form2Page.FirstName : null);
+        $("#Form2PageModel_MiddleName").val(form2Page.MiddleName ? form2Page.MiddleName : null);
+        $("#Form2PageModel_Suffix").val(form2Page.Suffix ? form2Page.Suffix : null);
+        $("#Form2PageModel_LastName").val(form2Page.LastName ? form2Page.LastName : null);
+        $("#Form2PageModel_PagibigNumber").val(form2Page.PagibigNumber ? form2Page.PagibigNumber : null);
+        $("#Form2PageModel_TinNumber").val(form2Page.TinNumber ? form2Page.TinNumber : null);
+        $("#Form2PageModel_ContactNumber").val(form2Page.ContactNumber ? form2Page.ContactNumber : null);
+        $("#Form2PageModel_Email").val(form2Page.Email ? form2Page.Email : null);
+        $("#Form2PageModel_SourcePagibigFundId").val(form2Page.SourcePagibigFundId ? form2Page.SourcePagibigFundId : null);
+        $("#Form2PageModel_DateCreated").val(form2Page.DateCreated ? form2Page.DateCreated : null);
+        $("#Form2PageModel_CreatedById").val(form2Page.CreatedById ? form2Page.CreatedById : null);
+        $("#Form2PageModel_DateModified").val(form2Page.DateModified ? form2Page.DateModified : null);
+        $("#Form2PageModel_ModifiedById").val(form2Page.ModifiedById ? form2Page.ModifiedById : null);
+        $("#Form2PageModel_DateDeleted").val(form2Page.DateDeleted ? form2Page.DateDeleted : null);
+        $("#Form2PageModel_DeletedById").val(form2Page.DeletedById ? form2Page.DeletedById : null);
+        $("#Form2PageModel_Agreement").val(form2Page.Agreement ? form2Page.Agreement : null);
+        $("#Form2PageModel_SellersUnitName").val(form2Page.SellersUnitName ? form2Page.SellersUnitName : null);
+        $("#Form2PageModel_SellersBuildingName").val(form2Page.SellersBuildingName ? form2Page.SellersBuildingName : null);
+        $("#Form2PageModel_SellersLotName").val(form2Page.SellersLotName ? form2Page.SellersLotName : null);
+        $("#Form2PageModel_SellersStreetName").val(form2Page.SellersStreetName ? form2Page.SellersStreetName : null);
+        $("#Form2PageModel_SellersSubdivisionName").val(form2Page.SellersSubdivisionName ? form2Page.SellersSubdivisionName : null);
+        $("#Form2PageModel_SellersBaranggayName").val(form2Page.SellersBaranggayName ? form2Page.SellersBaranggayName : null);
+        $("#Form2PageModel_SellersMunicipalityName").val(form2Page.SellersMunicipalityName ? form2Page.SellersMunicipalityName : null);
+        $("#Form2PageModel_SellersProvinceName").val(form2Page.SellersProvinceName ? form2Page.SellersProvinceName : null);
+        $("#Form2PageModel_SellersZipCode").val(form2Page.SellersZipCode ? form2Page.SellersZipCode : null);
 
         let collateral = await getCollateralInformation(applicantInfoIdVal);
 
@@ -2581,15 +2712,15 @@ $(function () {
         $("#BuyerConfirmationModel_PagibigNumber").val(buyerConfimarion ? buyerConfimarion.PagibigNumber : null);
         $("#BuyerConfirmationModel_Code").val(buyerConfimarion ? buyerConfimarion.Code : null);
         $("#BuyerConfirmationModel_ProjectProponentName").val(buyerConfimarion ? buyerConfimarion.ProjectProponentName : null);
-        $("#BuyerConfirmationModel_JuridicalPersonalityId").data('selectize').setValue(buyerConfimarion ? buyerConfimarion.JuridicalPersonalityId : null);
+        $("#BuyerConfirmationModel_JuridicalPersonalityId").val(buyerConfimarion ? buyerConfimarion.JuridicalPersonalityId : null);
         $("#BuyerConfirmationModel_LastName").val(buyerConfimarion ? buyerConfimarion.LastName : null);
         $("#BuyerConfirmationModel_FirstName").val(buyerConfimarion ? buyerConfimarion.FirstName : null);
         $("#BuyerConfirmationModel_MiddleName").val(buyerConfimarion ? buyerConfimarion.MiddleName : null);
         $("#BuyerConfirmationModel_Suffix").val(buyerConfimarion ? buyerConfimarion.Suffix : null);
         $("#BuyerConfirmationModel_BirthDate").val(buyerConfimarion ? buyerConfimarion.BirthDate : null);
         $("#BuyerConfirmationModel_MothersMaidenName").val(buyerConfimarion ? buyerConfimarion.MothersMaidenName : null);
-        $("#BuyerConfirmationModel_MaritalStatus").data('selectize').setValue(buyerConfimarion ? buyerConfimarion.MaritalStatus : null);
-        $("#BuyerConfirmationModel_OccupationStatus").data('selectize').setValue(buyerConfimarion ? buyerConfimarion.OccupationStatus : null);
+        $("#BuyerConfirmationModel_MaritalStatus").val(buyerConfimarion ? buyerConfimarion.MaritalStatus : null);
+        $("#BuyerConfirmationModel_OccupationStatus").val(buyerConfimarion ? buyerConfimarion.OccupationStatus : null);
         $("#BuyerConfirmationModel_PresentUnitName").val(buyerConfimarion ? buyerConfimarion.PresentUnitName : null);
         $("#BuyerConfirmationModel_PresentBuildingName").val(buyerConfimarion ? buyerConfimarion.PresentBuildingName : null);
         $("#BuyerConfirmationModel_PresentLotName").val(buyerConfimarion ? buyerConfimarion.PresentLotName : null);
@@ -2632,7 +2763,6 @@ $(function () {
         $("#BuyerConfirmationModel_IsOtherSourceOfIncome").prop('checked', buyerConfimarion ? buyerConfimarion.IsOtherSourceOfIncome : false);
         $("#BuyerConfirmationModel_AdditionalSourceIncome").val(buyerConfimarion ? buyerConfimarion.AdditionalSourceIncome : null);
         $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(buyerConfimarion ? buyerConfimarion.AverageMonthlyAdditionalIncome : null);
-        $("#BuyerConfirmationModel_AffordMonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.AffordMonthlyAmortization : null);
         $("#BuyerConfirmationModel_IsPagibigMember").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigMember : false);
         $("#BuyerConfirmationModel_IsPagibigAvailedLoan").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigAvailedLoan : false);
         $("#BuyerConfirmationModel_IsPagibigCoBorrower").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigCoBorrower : false);
@@ -2652,7 +2782,7 @@ $(function () {
     async function getBuyerConfirmation(code) {
         const response = await $.ajax({
             url: baseUrl + "BuyerConfirmation/GetBCFapplicationByCode/",
-            data: code = `${code}`,
+            data: { code: code },
             method: 'Get',
             dataType: 'json'
         });

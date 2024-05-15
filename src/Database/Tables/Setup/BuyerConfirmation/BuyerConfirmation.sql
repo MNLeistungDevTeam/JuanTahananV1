@@ -38,9 +38,7 @@
 	[CompanyProvinceName] NVARCHAR(255) NULL,
 	[CompanyZipCode] NVARCHAR(255) NULL,
 
-
- 
-
+	AffordMonthlyAmortization Decimal(18,2) NULL,
 	SpouseLastName  NVARCHAR(100) NULL,
 	SpouseFirstName  NVARCHAR(100) NULL,
 	SpouseMiddleName  NVARCHAR(100) NULL,
@@ -60,10 +58,9 @@
 	 MonthlySalary Decimal(18,2) NULL,
 
 	[IsOtherSourceOfIncome] BIT NOT NULL DEFAULT 0,
-	AdditionalSourceIncome Decimal(18,2) NULL,
+	AdditionalSourceIncome NVARCHAR(244) NULL,
 
 	AverageMonthlyAdditionalIncome Decimal(18,2) NULL,
-	AffordMonthlyAmortization Decimal(18,2) NULL,
 	
 	IsPagibigMember  bit default(0) NOT NULL,
 	IsPagibigCoBorrower  bit default(0) NOT NULL,
@@ -83,6 +80,9 @@
 	DateModified DATETIME2(7) NULL,
 	ModifiedById INT NULL,
 	ApprovalStatus INT NULL,
-	CompanyId INT NULL
-
+	CompanyId INT NULL,
+	PropertyDeveloperId INT NULL,
+	PropertyProjectId INT NULL,
+	ProjectUnitId INT NULL,
+	PropertyLocationId INT NULL
 )

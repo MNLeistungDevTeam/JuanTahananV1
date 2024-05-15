@@ -42,10 +42,23 @@ AS
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks ,
-		aps.ApproverId
+		aps.ApproverId,
+		bf.PropertyProjectId,
+		bf.PropertyUnitId,
+		bf.PropertyDeveloperId,
+		bf.PropertyLocationId,
+		pp.[Name] PropertyProjectName,
+		pl.[Name] PropertyLocationName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN BeneficiaryInformation bf ON bf.UserId = apl.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bf.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bf.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bf.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bf.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN [User] u on u.Id = apl.UserId
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id

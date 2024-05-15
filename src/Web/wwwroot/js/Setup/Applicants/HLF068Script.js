@@ -1387,8 +1387,6 @@ $(function () {
     function validateForm(form) {
         var isValid = true;
 
-        // Your validation logic here
-        // For example, check if required fields are filled
         form.find(':input[required]').each(function () {
             if (!$(this).val()) {
                 $(this).addClass('is-invalid');

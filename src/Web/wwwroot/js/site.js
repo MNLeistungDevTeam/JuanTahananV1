@@ -1062,6 +1062,8 @@ hlafBcfNav();
 
 bcfUploading();
 
+approveBcfNote();
+
 function bcfUploading() {
     // Get all <a> elements in the side navigation menu
     var sideNavLinks = document.querySelectorAll('.side-nav-item a');
@@ -1081,11 +1083,10 @@ function bcfUploading() {
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
                 if (bcfStatus != 3) {
-     
                     event.preventDefault();
                 }
-                    //if bcf document  is submitted && verified 
-                else if ( bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                //if bcf document  is submitted && verified
+                else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
                     console.log(0);
                     event.preventDefault();
                 }
@@ -1093,6 +1094,24 @@ function bcfUploading() {
                 }
             });
         }
+    });
+}
+
+
+
+function approveBcfNote() {
+    var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
+    console.log(bcfAppStatus);
+    if (bcfAppStatus == 3) {
+        console.log(bcfAppStatus);
+        $("#div_approvebcfNote").removeClass("d-none");
+        $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
+    }
+
+    $("#btn_bcfdownload").on("click", function () {
+        let dataurl = $(this).attr('data-url');
+
+        window.location.href = baseUrl + dataurl;
     });
 }
 
@@ -1114,8 +1133,12 @@ function hlafBcfNav() {
     });
 }
 
-function loadBcfPrompt() {
-    if ($(`[id="UserFlag_IsBcfCreated"]`).data('flag') === true) {
+async function loadBcfPrompt() {
+    let bcfExists = await bcfChecker();
+    let hlafExists = await hlafChecker();
+    let isBcfQAnswered = $(`[id="UserFlag_IsBcfCreated"]`).data('flag');
+
+    if ((!isBcfQAnswered && bcfExists) || (isBcfQAnswered && hlafExists)) {
         location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
         return;
     }
@@ -1183,7 +1206,7 @@ function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
         allowEscapeKey: false,
         confirmButtonText: `<span class="fs-4">Confirm</span>`,
         cancelButtonText: `<span class="fs-4">Cancel</span>`,
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
             // Check one of two radio buttons
             //if (filledUpForm) {
@@ -1203,7 +1226,7 @@ function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
         }
         else {
             $('input[name="4PH_Confirmation"]').off('change');
-            loadBcfPrompt();
+            await loadBcfPrompt();
         }
     });
 }
@@ -1217,4 +1240,46 @@ function updateBcfFlag(flag, callback) {
         },
         success: callback
     });
+}
+
+async function bcfChecker() {
+    let bcfFlag = await fetch(baseUrl + 'Applicants/CheckBcf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return bcfFlag;
+}
+
+async function hlafChecker() {
+    let hlafFlag = await fetch(baseUrl + 'Applicants/CheckCurrentHlaf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return hlafFlag;
 }

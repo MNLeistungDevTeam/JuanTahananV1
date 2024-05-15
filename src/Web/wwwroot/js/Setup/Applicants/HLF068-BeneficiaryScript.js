@@ -3,6 +3,8 @@ const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
+let isFormValid;
+
 $(function () {
     const { pdfjsLib } = globalThis;
 
@@ -139,9 +141,9 @@ $(function () {
             required: $(this).attr('id') === 'isRbtn1',
         });
 
-        if ($(this).attr('id') === 'isRbtn2') {
-            $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
-        }
+        //if ($(this).attr('id') === 'isRbtn2') {
+        //    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
+        //}
 
         $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
     });
@@ -1194,21 +1196,17 @@ $(function () {
         }
     });
 
-    $(`[id="form2"] .next button`).on('click', function (e) {
-        if (hasBcf === "True") {
+    //$(`[id="form2"] .next button`).on('click', function (e) {
+    //    if (hasBcf === "True") {
+    //        loadHlafPreview();
+    //    } else {
+    //        loadBcfPreview();
+    //    }
+    //});
 
-            loadHlafPreview();
-        }
-
-        else {
-            loadBcfPreview();
-        }
-
-    });
-
-    $(`[id="previewBcf"] .next button`).on('click', function (e) {
-        loadHlafPreview();
-    });
+    //$(`[id="previewBcf"] .next button`).on('click', function (e) {
+    //    loadHlafPreview();
+    //});
 
     //#endregion
 
@@ -1229,9 +1227,11 @@ $(function () {
             currentForm.addClass('was-validated');
 
             // Validate the current form
-            var isValid = validateForm(currentForm);
+            isFormValid = validateForm(currentForm);
 
-            if (!isValid) {
+            console.log(isFormValid);
+
+            if (!isFormValid) {
                 // If validation fails, prevent navigation to the next step
                 return false;
             } else {
@@ -1250,6 +1250,18 @@ $(function () {
             if (currentFormName == "previewHlaf") {
                 $("#previewHlaf").removeClass('fade').prop('hidden', false);
                 return;
+            }
+
+            if (currentFormName == "form2" && isFormValid) {
+                if (hasBcf === "True") {
+                    loadHlafPreview();
+                } else {
+                    loadBcfPreview();
+                }
+            }
+
+            if (currentFormName == "previewBcf") {
+                loadHlafPreview();
             }
 
             progressCheck(prevForm.attr('id'));
@@ -1353,102 +1365,6 @@ $(function () {
     });
 
     //#region Methods
-
-    //$(document).ready(function () {
-    //    loadloanParticularInformation(applicantInfoIdVal);
-    //    loadSpouseInformation(applicantInfoIdVal);
-    //    loadBorrowerInformation(applicantInfoIdVal);
-    //    loadCollateralInformation(applicantInfoIdVal);
-    //    loadForm2PageInformation(applicantInfoIdVal);
-    //    initializeRadioBtnMisc();
-    //});
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
     function validateForm(form) {
         var isValid = true;
 
@@ -1463,6 +1379,26 @@ $(function () {
             } else {
                 $(this).removeClass('is-invalid');
                 $(this).addClass('was-validated');
+            }
+        });
+
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
+
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('valid');
+
+                isValid = false;
+            } else {
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
             }
         });
 
@@ -1792,46 +1728,50 @@ $(function () {
         let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (pagibigAvailedLoan === "True") {
-            $("#availedLoanRbtn1").prop("checked", true);
-        } else {
-            $("#availedLoanRbtn2").prop("checked", true);
-        }
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();;
+        let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
+        let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (coborrower === "True") {
-            $("#cbwrRbtn1").prop("checked", true);
-        } else {
-            $("#cbwrRbtn2").prop("checked", true);
-        }
+        //if (pagibigAvailedLoan === "True") {
+        //    $("#availedLoanRbtn1").prop("checked", true);
+        //} else {
+        //    $("#availedLoanRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (projectProponent === "True") {
-            $("#prpRbtn1").prop("checked", true);
-        } else {
-            $("#prpRbtn2").prop("checked", true);
-        }
+        //if (coborrower === "True") {
+        //    $("#cbwrRbtn1").prop("checked", true);
+        //} else {
+        //    $("#cbwrRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (termConditions === "True") {
-            $("#itcRbtn1").prop("checked", true);
-        } else {
-            $("#itcRbtn2").prop("checked", true);
-        }
+        //if (projectProponent === "True") {
+        //    $("#prpRbtn1").prop("checked", true);
+        //} else {
+        //    $("#prpRbtn2").prop("checked", true);
+        //}
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        if (isPagibigMember === "True") {
-            $("#pagibigRbtn1").prop("checked", true);
-        } else {
-            $("#pagibigRbtn2").prop("checked", true);
-        }
+        //if (termConditions === "True") {
+        //    $("#itcRbtn1").prop("checked", true);
+        //} else {
+        //    $("#itcRbtn2").prop("checked", true);
+        //}
 
-        if (isOtherSourceIncome === "True") {
-            $("#isRbtn1").prop("checked", true);
-        } else {
-            $("#isRbtn2").prop("checked", true);
-        }
+        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
+        //if (isPagibigMember === "True") {
+        //    $("#pagibigRbtn1").prop("checked", true);
+        //} else {
+        //    $("#pagibigRbtn2").prop("checked", true);
+        //}
+
+        //if (isOtherSourceIncome === "True") {
+        //    $("#isRbtn1").prop("checked", true);
+        //} else {
+        //    $("#isRbtn2").prop("checked", true);
+        //}
 
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
@@ -1850,8 +1790,29 @@ $(function () {
             $("#maRbtn1").prop("checked", !!medicalAdviceValue);
             $("#maRbtn2").prop("checked", !medicalAdviceValue);
 
-            $("#bcf-incomeFields").prop("hidden", !$("#isRbtn1").is(":checked"));
-            $("#bcf-pagIbigNumField").prop("hidden", !$("#pagibigRbtn1").is(":checked"));
+            // Set checked status for BCF Additional income radio buttons
+            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome);
+            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome);
+
+            // Set checked status for BCF Pagibig Number radio buttons
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber);
+            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber);
+
+            // Set checked status for BCF availed laon radio buttons
+            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan);
+            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan);
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#cbwrRbtn1").prop("checked", !!coborrower);
+            $("#cbwrRbtn2").prop("checked", !coborrower);
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#prpRbtn1").prop("checked", !!projectProponent);
+            $("#prpRbtn2").prop("checked", !projectProponent);
+
+            // Set checked status for BCF term in condition radio buttons
+            $("#itcRbtn1").prop("checked", !!termConditions);
+            $("#itcRbtn2").prop("checked", !termConditions);
         }
 
         // Set miscellanous input to disable
@@ -1859,6 +1820,10 @@ $(function () {
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        //BCF Particulars
+        $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
+        $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
     }
 
     function initializeBcfCheck() {
@@ -1988,6 +1953,9 @@ $(function () {
         $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
         $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
         $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
+        $("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
     }
 
     function HLafTobcfConnectedFieldMap() {
@@ -2093,6 +2061,16 @@ $(function () {
         $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
         $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
         $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
+
+        if (pagibigNo) {
+            $("#pagibigRbtn1").prop("checked", true);
+            $("#bcf-pagIbigNumField").prop("hidden", false);
+            $("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+        }
+
+        console.log(pagibigNo);
     }
 
     function progressCheck(targetForm = "bcfdata") {

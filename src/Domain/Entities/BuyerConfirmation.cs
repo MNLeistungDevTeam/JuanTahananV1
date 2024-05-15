@@ -81,6 +81,8 @@ public partial class BuyerConfirmation
 
     public string CompanyZipCode { get; set; }
 
+    public decimal? AffordMonthlyAmortization { get; set; }
+
     public string SpouseLastName { get; set; }
 
     public string SpouseFirstName { get; set; }
@@ -115,11 +117,9 @@ public partial class BuyerConfirmation
 
     public bool IsOtherSourceOfIncome { get; set; }
 
-    public decimal? AdditionalSourceIncome { get; set; }
+    public string AdditionalSourceIncome { get; set; }
 
     public decimal? AverageMonthlyAdditionalIncome { get; set; }
-
-    public decimal? AffordMonthlyAmortization { get; set; }
 
     public bool IsPagibigMember { get; set; }
 
@@ -148,4 +148,12 @@ public partial class BuyerConfirmation
     public int? ApprovalStatus { get; set; }
 
     public int? CompanyId { get; set; }
+
+    public int? PropertyDeveloperId { get; set; }
+
+    public int? PropertyProjectId { get; set; }
+
+    public int? ProjectUnitId { get; set; }
+
+    public int? PropertyLocationId { get; set; }
 }

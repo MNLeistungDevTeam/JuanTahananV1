@@ -246,6 +246,10 @@ $(function () {
     function rebindValidator() {
         let $form = $("#frm_approver_level");
         let $approverModal = $('#approver-modal');
+        let $documentModal = $("#document-modal");
+     
+
+
 
         $form.unbind();
         $form.data("validator", null);
@@ -309,6 +313,8 @@ $(function () {
                             $("#btnApprove").attr({ disabled: false });
 
                             $approverModal.modal("hide");
+                            $documentModal.modal("hide");
+                            tblBuyerConForm.ajax.reload();
                         },
                         error: function (response) {
                             // Error message handling

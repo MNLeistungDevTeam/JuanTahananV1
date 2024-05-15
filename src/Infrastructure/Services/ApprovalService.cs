@@ -157,7 +157,8 @@ namespace DMS.Infrastructure.Services
                     StageId = model.ModuleStageId ?? 0,
                     Action = model.Status,
                     Comment = model.Remarks,
-                    ApprovalLevelId = approvalLevelId
+                    ApprovalLevelId = approvalLevelId,
+                    ApprovalStatusId = approvalStatus.Id
                 };
                 await _approvalLogRepo.SaveAsync(log, approverId);
 

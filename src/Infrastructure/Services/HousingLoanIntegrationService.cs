@@ -136,6 +136,12 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.IsPermanentAddressAbroad = false; // no condition because all address is required
             beneficiaryModel.IsPresentAddressAbroad = false; // no condition because all address is required
 
+            beneficiaryModel.PropertyDeveloperId = model.PropertyDeveloperId;
+            beneficiaryModel.PropertyLocationId = model.PropertyLocationId;
+            beneficiaryModel.PropertyProjectId = model.PropertyProjectId;
+            beneficiaryModel.PropertyUnitId = model.PropertyUnitId;
+
+
             await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
 
             #endregion Create BeneficiaryInformation
@@ -150,47 +156,6 @@ namespace DMS.Infrastructure.Services
             //  var applicantInfoData = await _applicantsPersonalInformationRepo.SaveAsync(applicantInfoModel, userModel.Id);
 
             #endregion Create Applicant
-
-            #region Barrow Data Transfer
-
-            //barrowerModel.LastName = model.LastName;
-            //barrowerModel.FirstName = model.FirstName;
-            //barrowerModel.MiddleName = model.MiddleName;
-            //barrowerModel.MobileNumber = model.MobileNumber;
-            //barrowerModel.BirthDate = model.BirthDate;
-            //barrowerModel.MobileNumber = model.MobileNumber;
-            //barrowerModel.Sex = model.Gender;
-            //barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
-            //barrowerModel.Email = model.Email;
-            //barrowerModel.PresentUnitName = model.PresentUnitName;
-            //barrowerModel.PresentBuildingName = model.PresentBuildingName;
-            //barrowerModel.PresentLotName = model.PresentLotName;
-            //barrowerModel.PresentSubdivisionName = model.PresentSubdivisionName;
-            //barrowerModel.PresentBaranggayName = model.PresentBarangayName;
-            //barrowerModel.PresentMunicipalityName = model.PresentMunicipalityName;
-            //barrowerModel.PresentProvinceName = model.PresentProvinceName;
-            //barrowerModel.PresentZipCode = model.PresentZipCode;
-
-            //barrowerModel.PermanentUnitName = model.PermanentUnitName;
-            //barrowerModel.PermanentBuildingName = model.PermanentBuildingName;
-            //barrowerModel.PermanentLotName = model.PermanentLotName;
-            //barrowerModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
-            //barrowerModel.PermanentBaranggayName = model.PermanentBarangayName;
-            //barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
-            //barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
-            //barrowerModel.PermanentZipCode = model.PermanentZipCode;
-
-            //barrowerModel.PropertyDeveloperName = model.PropertyDeveloperName;
-            //barrowerModel.PropertyLocation = model.PropertyLocation;
-            //barrowerModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
-
-            //barrowerModel.IsPermanentAddressAbroad = true; // no condition because all address is required
-            //barrowerModel.IsPresentAddressAbroad = true; // no condition because all address is required
-
-            #endregion Barrow Data Transfer
-
-            //save Barrower
-            // await _barrowersInformationRepo.SaveAsync(barrowerModel);
 
             #region Notification
 
