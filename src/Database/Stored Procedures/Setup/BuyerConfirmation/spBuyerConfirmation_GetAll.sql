@@ -12,9 +12,10 @@ AS
 		CASE
 			WHEN bcf.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 1  THEN 'Sign and Submitted'
+			WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 11 THEN 'Resubmission' --document resubmit
 			WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 3  THEN 'Approved'
 			WHEN bcf.ApprovalStatus = 3 THEN 'Ready For Printing'
-			WHEN bcf.ApprovalStatus = 11 THEN 'For Resubmission'
+			WHEN bcf.ApprovalStatus = 11 THEN 'For Revision'
 		END ApplicationStatus,
 		bcf.ApprovalStatus,
 		bcf.DateCreated,
