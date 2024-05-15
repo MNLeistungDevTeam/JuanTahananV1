@@ -4,26 +4,39 @@ $(function () {
     var bcfDropzone;
     let selectedFile;
 
+    let documentReferenceId = $('#Id').val();
+
+
     ////////////////////////////////
+
     initializeBsFileInput();
     //initializeTraditionalDrop();
 
-    let documentReferenceId = $('#Id').val();
+    checkInputFile();
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
 
-
-
-        var selectedFile = $('#bcf_PdfFile').prop('files')[0];
+        var selectedFile = $('#bcf_PdfFile').prop('files');
         console.log(selectedFile);
 
         if (selectedFile.length !== 0) {
-            upload(selectedFile);
+            upload(selectedFile[0]);
         }
         else {
             messageBox("No selected files yet, please browse or drag the file in the area provided.", "danger", true);
         }
+    });
+
+    $('#bcf_PdfFile').on('change', function (e) {
+        // $(this).prop('files').length === 0
+
+        checkInputFile();
+    });
+
+    $(`#fileInputArea .fileinput-remove-button`).on('click', function (e) {
+
+        checkInputFile();
     });
 
     function upload(file) {
@@ -40,6 +53,7 @@ $(function () {
             processData: false,
             contentType: false,
             beforeSend: function () {
+                $(`[id="submitPdfFile"]`).attr('disabled', true);
                 loading('Uploading...', true);
             },
             success: function (response) {
@@ -48,9 +62,16 @@ $(function () {
             },
             error: function (xhr, status, error) {
                 messageBox(xhr.responseText, "danger", true);
+                $(`[id="submitPdfFile"]`).attr('disabled', false);
                 loader.close();
+            },
+            complete: function (xhr, status) {
             }
         });
+    }
+
+    function checkInputFile() {
+        $(`[id="submitPdfFile"]`).attr('disabled', $('#bcf_PdfFile').prop('files').length === 0);
     }
 
     function initializeBsFileInput() {
