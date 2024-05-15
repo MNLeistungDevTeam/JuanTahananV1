@@ -231,6 +231,10 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public DateTime? DateModified { get; set; }
 
+
+        [Display(Name = "Afford Monthly Amortization", Prompt = "If you will be granted a Pag-IBIG Housing Loan, how much can you afford to pay as your monthly amortization?")]
+        public decimal AffordMonthlyAmortization { get; set; }
+
         #region Display Prop
 
         public string? ApplicantFullName { get; set; }

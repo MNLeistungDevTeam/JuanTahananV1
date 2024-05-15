@@ -259,8 +259,6 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
-
                     }
                     else
                     {
@@ -284,6 +282,7 @@ namespace Template.Web.Controllers.Transaction
 
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                        vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
                     }
 
                     returnViewPage = "Beneficiary_HLF068";
@@ -526,8 +525,6 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
-                     
                 }
                 else
                 {
@@ -553,6 +550,7 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
                 }
 
                 return View("HousingLoanForm", vwModel);
@@ -635,6 +633,7 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
                     //vwModel.BarrowersInformationModel.IsPresentAddressAbroad = beneficiaryData.IsPresentAddressAbroad.Value; // no condition because all address is required
