@@ -91,6 +91,18 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? SenderId { get; set; }
         public string? FileExtension { get; set; }
 
+        //BeneficiaryInformation
+
+        public int? PropertyProjectId { get; set; }
+        public int? PropertyUnitId { get; set; }
+        public int? PropertyDeveloperId { get; set; }
+        public int? PropertyLocationId { get; set; }
+
+        public string? PropertyProjectName { get; set; }
+        public string? PropertyLocationName { get; set; }
+        public string? PropertyUnitDescription { get; set; }
+        public string? PropertyDeveloperLogo { get; set; }
+
         #endregion Display Properties
     }
 }

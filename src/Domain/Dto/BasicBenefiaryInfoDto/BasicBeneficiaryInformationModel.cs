@@ -30,7 +30,7 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Required]
         [DisplayName("Gender")]
         public string? Gender { get; set; } = string.Empty;
- 
+
         [DisplayName("Age")]
         public int Age { get; set; }
 
@@ -39,7 +39,6 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Display(Name = "Date of Birth", Prompt = "Birth Date", Description = "(mm/dd/yyyy)")]
         public DateTime? BirthDate { get; set; }
 
-   
         [DisplayName("Birth Place")]
         public string? BirthPlace { get; set; } = string.Empty;
 
@@ -65,7 +64,6 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; } = string.Empty;
 
-
         [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PresentSubdivisionName { get; set; } = string.Empty;
 
@@ -76,7 +74,6 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Required]
         [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PresentMunicipalityName { get; set; } = string.Empty;
-
 
         [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PresentProvinceName { get; set; } = string.Empty;
@@ -100,17 +97,14 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
         [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PermanentSubdivisionName { get; set; } = string.Empty;
 
-
         [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
         public string? PermanentBarangayName { get; set; } = string.Empty;
-
 
         [Display(Name = "Municipality/City", Prompt = "Municipality/City Name", Description = "Municipality/City")]
         public string? PermanentMunicipalityName { get; set; } = string.Empty;
 
         [Display(Name = "Province and State Country (if abroad)", Prompt = "Province Name", Description = "Province and State Country (if abroad)")]
         public string? PermanentProvinceName { get; set; } = string.Empty;
-
 
         [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; } = string.Empty;
@@ -123,7 +117,14 @@ namespace DMS.Domain.Dto.BasicBeneficiaryDto
 
         [DisplayName("Property Unit")]
         public string? PropertyUnitLevelName { get; set; } = string.Empty;
-        public int CompanyId { get; set; } 
+
+        public int CompanyId { get; set; }
+
+        public int PropertyDeveloperId { get; set; }
+        public int PropertyLocationId { get; set; }
+        public int PropertyProjectId { get; set; }
+
+        public int PropertyUnitId { get; set; }
 
         #endregion Barrowers
     }

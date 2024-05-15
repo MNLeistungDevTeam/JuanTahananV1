@@ -58,10 +58,11 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a href="#" id="btn_edit" class="dropdown-item text-info"><i class="mdi mdi-pencil-outline text-info"></i> Edit</a>
-                    @if(Model.BuyerConfirmationModel.ApprovalStatus == 3)
+                    @if (Model.BuyerConfirmationModel.ApprovalStatus == 3)
                     {
                         <a href="#" id="btn_bcfpdf" class="dropdown-item text-info"><i class="mdi mdi-thumb-up-outline"></i> View BCF File</a>
-                    }else
+                    }
+                    else
                     {
                         <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="This module requires an approved BCF for access">
                             <a href="#" id="btn_bcfpdf" class="dropdown-item text-info disabled"><i class="mdi mdi-thumb-up-outline"></i> View BCF File</a>
@@ -72,7 +73,7 @@
             </div>
         </div>
         <div id="rootwizard">
-           
+
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
                 @if (!Model.BarrowersInformationModel.IsBcfCreated)
                 {
@@ -185,9 +186,8 @@
                     </div>
                 </div>
 
-   
-                          <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
- 
+
+                <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
 
                 <form id="frm_hlf068" method="post" asp-action="@(!Model.BarrowersInformationModel.IsBcfCreated ? "SaveBCFHLAF" : "SaveHLF068")" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
                     @if (!Model.BarrowersInformationModel.IsBcfCreated)
@@ -202,6 +202,12 @@
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.ApprovalStatus">
 
                             <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus">
+
+                            <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyUnitId" hidden>
+                            <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyProjectId" hidden>
+                            <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyDeveloperId" hidden>
+                            <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyLocationId" hidden>
+
 
 
                             <div class="row gy-2">
@@ -3146,7 +3152,7 @@
                     }
 
                     <div class="tab-pane fade" id="previewHlaf" hidden>
-     
+
                         <div class="row">
                             <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="hlafPreview">
                             </div>
