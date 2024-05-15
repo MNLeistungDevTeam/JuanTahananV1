@@ -35,4 +35,6 @@ public partial class ApprovalLog
     public DateTime? DateModified { get; set; }
 
     public int? ApprovalLevelId { get; set; }
+
+    public int? ApprovalStatusId { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DMS.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,5 +37,6 @@ namespace DMS.Domain.Dto.ApprovalLogDto
         public DateTime? DateModified { get; set; }
 
         public int? ApprovalLevelId { get; set; }
+        public int? ApprovalStatusId { get; set; }
     }
 }
