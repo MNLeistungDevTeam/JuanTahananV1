@@ -1133,8 +1133,12 @@ function hlafBcfNav() {
     });
 }
 
-function loadBcfPrompt() {
-    if ($(`[id="UserFlag_IsBcfCreated"]`).data('flag') === true) {
+async function loadBcfPrompt() {
+    let bcfExists = await bcfChecker();
+    let hlafExists = await hlafChecker();
+    let isBcfQAnswered = $(`[id="UserFlag_IsBcfCreated"]`).data('flag');
+
+    if ((!isBcfQAnswered && bcfExists) || (isBcfQAnswered && hlafExists)) {
         location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
         return;
     }
@@ -1202,7 +1206,7 @@ function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
         allowEscapeKey: false,
         confirmButtonText: `<span class="fs-4">Confirm</span>`,
         cancelButtonText: `<span class="fs-4">Cancel</span>`,
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
             // Check one of two radio buttons
             //if (filledUpForm) {
@@ -1222,7 +1226,7 @@ function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
         }
         else {
             $('input[name="4PH_Confirmation"]').off('change');
-            loadBcfPrompt();
+            await loadBcfPrompt();
         }
     });
 }
@@ -1236,4 +1240,46 @@ function updateBcfFlag(flag, callback) {
         },
         success: callback
     });
+}
+
+async function bcfChecker() {
+    let bcfFlag = await fetch(baseUrl + 'Applicants/CheckBcf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return bcfFlag;
+}
+
+async function hlafChecker() {
+    let hlafFlag = await fetch(baseUrl + 'Applicants/CheckCurrentHlaf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return hlafFlag;
 }
