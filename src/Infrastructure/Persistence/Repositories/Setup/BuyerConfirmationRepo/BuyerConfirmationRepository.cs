@@ -81,10 +81,7 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
         }
         else
         {
-            if (bcModel.ApprovalStatus is (int)AppStatusType.ForResubmition)
-            {
-                buyerConfirm.ApprovalStatus = (int)AppStatusType.Draft;
-            }
+            
 
             buyerConfirm = await UpdateAsync(buyerConfirm, userId);
         }

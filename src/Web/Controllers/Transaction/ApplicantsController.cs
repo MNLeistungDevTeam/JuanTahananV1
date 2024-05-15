@@ -1267,8 +1267,16 @@ namespace Template.Web.Controllers.Transaction
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
 
+
+                if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.ForResubmition)
+                {
+                    vwModel.BuyerConfirmationModel.ApprovalStatus = (int)AppStatusType.Draft;
+                }
+
+
+
                 var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
-                
+
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
                 {
                     //current user is beneficiary

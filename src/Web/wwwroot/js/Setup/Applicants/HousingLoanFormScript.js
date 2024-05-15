@@ -1209,7 +1209,7 @@ $(async function () {
                 $("html, body").animate({ scrollTop: 0 }, "fast");
             }
 
-            if (currentFormName == "form2" && isFormValid) {
+            if (currentFormName == "form2" && isValid) {
                 if (hasBcf === "True") {
                     loadHlafPreview();
                 } else {
