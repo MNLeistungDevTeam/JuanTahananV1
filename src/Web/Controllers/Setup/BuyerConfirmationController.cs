@@ -121,8 +121,6 @@ public class BuyerConfirmationController : Controller
 
     public async Task<IActionResult> Upload()
     {
-    
-
         try
         {
             int userId = int.Parse(User.Identity.Name);
