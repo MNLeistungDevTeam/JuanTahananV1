@@ -138,7 +138,9 @@ AS
 	FROM 
 		ApplicantsPersonalInformation apl
 	LEFT JOIN 
-		ApprovalLog appLog ON appLog.ReferenceId = apl.Id 
+	ApprovalStatus aps ON aps.ReferenceId = apl.Id AND aps.ReferenceType = 8
+	LEFT JOIN
+		ApprovalLog appLog ON appLog.ApprovalStatusId = aps.Id 
 	LEFT JOIN 
 		UserRole ur2 ON appLog.CreatedById = ur2.UserId
 	WHERE
