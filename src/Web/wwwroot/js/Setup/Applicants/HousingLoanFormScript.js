@@ -98,6 +98,8 @@ $(async function () {
 
     rebindValidators();
 
+    progressCheck();
+
     //#endregion
 
     $('.codeInputMask').on('input', function (e) {
