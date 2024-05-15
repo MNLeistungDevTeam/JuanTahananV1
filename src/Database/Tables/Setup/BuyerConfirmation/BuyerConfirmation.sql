@@ -38,9 +38,7 @@
 	[CompanyProvinceName] NVARCHAR(255) NULL,
 	[CompanyZipCode] NVARCHAR(255) NULL,
 
-
- 
-
+	AffordMonthlyAmortization Decimal(18,2) NULL,
 	SpouseLastName  NVARCHAR(100) NULL,
 	SpouseFirstName  NVARCHAR(100) NULL,
 	SpouseMiddleName  NVARCHAR(100) NULL,
