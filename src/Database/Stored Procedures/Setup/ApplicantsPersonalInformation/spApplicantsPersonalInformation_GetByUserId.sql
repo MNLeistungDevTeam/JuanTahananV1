@@ -2,6 +2,7 @@
 	@userId INT,
 	@companyId INT
 AS
+ 
 	SELECT TOP 1 
 		apl.*,
 		CONCAT(u1.Firstname,' ',u1.MiddleName,' ',u1.LastName) ApplicantFullName,
@@ -35,8 +36,22 @@ AS
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks,
-		aps.ApproverId
+		aps.ApproverId,
+		bi.PropertyProjectId,
+		bi.PropertyUnitId,
+		bi.PropertyDeveloperId,
+		bi.PropertyLocationId,
+		pp.[Name] PropertyProjectName,
+		pl.[Name] PropertyLocationName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo
 	FROM ApplicantsPersonalInformation apl
+	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = apl.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bi.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bi.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bi.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bi.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId
 		FROM ApprovalStatus aps1

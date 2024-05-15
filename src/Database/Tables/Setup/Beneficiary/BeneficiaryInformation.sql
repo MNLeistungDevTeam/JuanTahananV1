@@ -35,6 +35,12 @@
     PropertyDeveloperName NVARCHAR(255) NULL,
     PropertyLocation NVARCHAR(255) NULL,
     PropertyUnitLevelName NVARCHAR(255) NULL,
+
+    PropertyDeveloperId INT,
+    PropertyUnitId INT,
+    PropertyLocationId INT,
+    PropertyProjectId INT,
+
     CreatedById INT NULL,
     DateCreated DATETIME2(7) NOT NULL DEFAULT(GETDATE()),
     ModifiedById INT NULL,

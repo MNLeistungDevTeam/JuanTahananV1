@@ -81,6 +81,8 @@ public partial class BuyerConfirmation
 
     public string CompanyZipCode { get; set; }
 
+    public decimal? AffordMonthlyAmortization { get; set; }
+
     public string SpouseLastName { get; set; }
 
     public string SpouseFirstName { get; set; }
@@ -146,4 +148,12 @@ public partial class BuyerConfirmation
     public int? ApprovalStatus { get; set; }
 
     public int? CompanyId { get; set; }
+
+    public int? PropertyDeveloperId { get; set; }
+
+    public int? PropertyProjectId { get; set; }
+
+    public int? ProjectUnitId { get; set; }
+
+    public int? PropertyLocationId { get; set; }
 }

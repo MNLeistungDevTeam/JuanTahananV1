@@ -77,6 +77,14 @@ public partial class BeneficiaryInformation
 
     public string PropertyUnitLevelName { get; set; }
 
+    public int? PropertyDeveloperId { get; set; }
+
+    public int? PropertyUnitId { get; set; }
+
+    public int? PropertyLocationId { get; set; }
+
+    public int? PropertyProjectId { get; set; }
+
     public int? CreatedById { get; set; }
 
     public DateTime DateCreated { get; set; }

@@ -62,24 +62,20 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [DisplayName("Is Present Address on Abroad")]
         public bool IsPresentAddressAbroad { get; set; }
 
-
         [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PresentUnitName { get; set; }
-
 
         [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PresentBuildingName { get; set; }
 
-
         [Display(Name = "Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? PresentLotName { get; set; }
-
 
         [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PresentStreetName { get; set; }
 
         [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
-        public string?  PresentSubdivisionName { get; set; }
+        public string? PresentSubdivisionName { get; set; }
 
         [Required]
         [Display(Name = "Barangay", Prompt = "Barangay Name", Description = "Barangay")]
@@ -99,6 +95,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Display(Name = "Unit/Room No., Floor", Prompt = "Unit Name", Description = "Unit/Room No., Floor")]
         public string? PermanentUnitName { get; set; }
+
         [Display(Name = "Building Name", Prompt = "Building Name", Description = "Building Name")]
         public string? PermanentBuildingName { get; set; }
 
@@ -107,7 +104,6 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         [Display(Name = "Street Name", Prompt = "Street Name")]
         public string? PermanentStreetName { get; set; }
-
 
         [Display(Name = "Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
         public string? PermanentSubdivisionName { get; set; }
@@ -162,5 +158,14 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         }
 
         public bool IsBcfCreated { get; set; }
+
+        public int PropertyDeveloperId { get; set; }
+
+        public int PropertyLocationId { get; set; }
+        public int PropertyProjectId { get; set; }
+
+        public int PropertyUnitId { get; set; }
+
+     
     }
 }

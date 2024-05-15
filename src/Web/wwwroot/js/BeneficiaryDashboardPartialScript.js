@@ -131,6 +131,10 @@ $(() => {
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
                 $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
+                //let defaultDevLogo = "/images/juantahananassets/logo/zeta_landscape_logo.png";
+                //$(`[id="img_developer"]`).attr('src', data.PropertyDeveloperLogo ?? defaultDevLogo);
+                //$(`[id="project_location"]`).html(data.PropertyLocationName || "-----");
+
                 // Side card text and Lower left side card (Application Status)
                 let appStatus = data.Stage || "No Application";
                 let appStatusRemarks = status.remarks || "Kindly proceed submitting an application";

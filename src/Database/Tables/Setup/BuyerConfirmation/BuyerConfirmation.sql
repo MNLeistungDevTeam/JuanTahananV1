@@ -80,6 +80,9 @@
 	DateModified DATETIME2(7) NULL,
 	ModifiedById INT NULL,
 	ApprovalStatus INT NULL,
-	CompanyId INT NULL
-
+	CompanyId INT NULL,
+	PropertyDeveloperId INT NULL,
+	PropertyProjectId INT NULL,
+	ProjectUnitId INT NULL,
+	PropertyLocationId INT NULL
 )
