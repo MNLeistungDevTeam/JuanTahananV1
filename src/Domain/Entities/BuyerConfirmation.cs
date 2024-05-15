@@ -115,11 +115,9 @@ public partial class BuyerConfirmation
 
     public bool IsOtherSourceOfIncome { get; set; }
 
-    public decimal? AdditionalSourceIncome { get; set; }
+    public string AdditionalSourceIncome { get; set; }
 
     public decimal? AverageMonthlyAdditionalIncome { get; set; }
-
-    public decimal? AffordMonthlyAmortization { get; set; }
 
     public bool IsPagibigMember { get; set; }
 

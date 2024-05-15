@@ -1062,6 +1062,8 @@ hlafBcfNav();
 
 bcfUploading();
 
+approveBcfNote();
+
 function bcfUploading() {
     // Get all <a> elements in the side navigation menu
     var sideNavLinks = document.querySelectorAll('.side-nav-item a');
@@ -1081,11 +1083,10 @@ function bcfUploading() {
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
                 if (bcfStatus != 3) {
-     
                     event.preventDefault();
                 }
-                    //if bcf document  is submitted && verified 
-                else if ( bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                //if bcf document  is submitted && verified
+                else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
                     console.log(0);
                     event.preventDefault();
                 }
@@ -1093,6 +1094,24 @@ function bcfUploading() {
                 }
             });
         }
+    });
+}
+
+
+
+function approveBcfNote() {
+    var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
+    console.log(bcfAppStatus);
+    if (bcfAppStatus == 3) {
+        console.log(bcfAppStatus);
+        $("#div_approvebcfNote").removeClass("d-none");
+        $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
+    }
+
+    $("#btn_bcfdownload").on("click", function () {
+        let dataurl = $(this).attr('data-url');
+
+        window.location.href = baseUrl + dataurl;
     });
 }
 

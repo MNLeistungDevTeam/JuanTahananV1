@@ -14,7 +14,7 @@
     {
         var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
         if (System.IO.File.Exists(profile))
-        ViewData["Profile"] = profile;
+            ViewData["Profile"] = profile;
     }
 
 
@@ -57,7 +57,7 @@
         <p class="fw-medium mb-0 fs-3 pe-5">
             Your BCF has been approved and is now ready for download!
         </p>
-        <button class="btn btn-lg btn-light rounded-4">
+        <button class="btn btn-lg btn-light rounded-4" id="btn_bcfdownload">
             <span class="text-start fw-medium">View Instructions</span>
             <span class="text-end fw-medium"><i class="mdi mdi-arrow-right"></i></span>
         </button>
@@ -65,7 +65,7 @@
 
     <!-- Begin page -->
     <div id="wrapper">
-        
+
 
         <!-- ========== Topbar Start ========== -->
         <partial name="_Topbar" />
@@ -79,7 +79,7 @@
         <div class="content-page">
             <div class="content">
                 <!-- Start Content-->
-                <div class="container-fluid">                    
+                <div class="container-fluid">
                     <div class="content-layer-page pt-2">
                         <!-- Pre-loader -->
                         <div id="preloader">
