@@ -864,6 +864,38 @@ namespace Template.Web.Controllers.Transaction
 
         #region API Operations
 
+        public async Task<IActionResult> CheckBcf()
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                var bcfData = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+                return Ok(bcfData is not null);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        public async Task<IActionResult> CheckCurrentHlaf()
+        {
+            try
+            {
+                int userId = int.Parse(User.Identity.Name);
+                int companyId = int.Parse(User.FindFirstValue("Company"));
+
+                var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
+
+                return Ok(data is not null);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> UpdateBcfFlag(bool flag)
         {
@@ -1236,7 +1268,7 @@ namespace Template.Web.Controllers.Transaction
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
 
                 var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
-
+                
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
                 {
                     //current user is beneficiary
