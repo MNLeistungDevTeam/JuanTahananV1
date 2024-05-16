@@ -355,6 +355,7 @@
             this.xrTableCell35.StylePriority.UseTextAlignment = false;
             this.xrTableCell35.Text = "xrTableCell7";
             this.xrTableCell35.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell35.TextFormatString = "{0:N2}";
             this.xrTableCell35.Weight = 1D;
             // 
             // xrTable23
@@ -385,6 +386,7 @@
             this.xrTableCell34.StylePriority.UseTextAlignment = false;
             this.xrTableCell34.Text = "xrTableCell7";
             this.xrTableCell34.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell34.TextFormatString = "{0:N2}";
             this.xrTableCell34.Weight = 1D;
             // 
             // xrTable22
@@ -476,6 +478,7 @@
             this.xrTableCell31.StylePriority.UseTextAlignment = false;
             this.xrTableCell31.Text = "xrTableCell7";
             this.xrTableCell31.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell31.TextFormatString = "{0:N2}";
             this.xrTableCell31.Weight = 1D;
             // 
             // xrTable19
@@ -507,6 +510,7 @@
             this.xrTableCell30.StylePriority.UseTextAlignment = false;
             this.xrTableCell30.Text = "xrTableCell7";
             this.xrTableCell30.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell30.TextFormatString = "{0:N2}";
             this.xrTableCell30.Weight = 1D;
             // 
             // xrTable18
@@ -568,6 +572,7 @@
             this.xrTableCell28.StylePriority.UseTextAlignment = false;
             this.xrTableCell28.Text = "xrTableCell7";
             this.xrTableCell28.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell28.TextFormatString = "{0:N2}";
             this.xrTableCell28.Weight = 1D;
             // 
             // xrTable16
@@ -598,6 +603,7 @@
             this.xrTableCell27.StylePriority.UseTextAlignment = false;
             this.xrTableCell27.Text = "xrTableCell7";
             this.xrTableCell27.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell27.TextFormatString = "{0:N2}";
             this.xrTableCell27.Weight = 1D;
             // 
             // xrTable14
