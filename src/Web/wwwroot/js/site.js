@@ -1080,9 +1080,11 @@ function bcfUploading() {
             //console.log(bcfDocumentStatus);
             //console.log(bcfStatus);
 
-            link.classList.add('disabled-nav-link');
-            link.style.cursor = "default";
-            link.setAttribute('href', '#');
+            if (bcfStatus != 3) {
+                link.classList.add('disabled-nav-link');
+                link.style.cursor = "default";
+                link.setAttribute('href', '#');
+            }
 
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
