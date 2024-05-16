@@ -129,7 +129,7 @@ $(async function () {
         // Group items by DocumentTypeName
         verifAttach.forEach(item => {
             const groupId = item.DocumentTypeId;
-            const groupName = item.DocumentTypeName;
+            const groupName = item.DocumentTypeName.toPropper();
 
             if (!groupedItems[groupName]) {
                 groupedItems[groupName] = [];
@@ -216,7 +216,7 @@ $(async function () {
 				                                <div class="col-auto">
 					                                <!-- Button -->
 					                                <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                                <i class="dripicons-download"></i>
+						                                <i class="fe-upload"></i>
 					                                </a>
 				                                </div>
 			                                </div>
@@ -311,7 +311,7 @@ $(async function () {
 				                            <div class="col-auto">
 					                            <!-- Button -->
 					                            <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                            <i class="dripicons-download"></i>
+						                            <i class="fe-upload"></i>
 					                            </a>
 				                            </div>
 			                            </div>
