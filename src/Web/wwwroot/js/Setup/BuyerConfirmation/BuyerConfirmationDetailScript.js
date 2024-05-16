@@ -91,11 +91,15 @@ $(function () {
         var sellingPriceValue = $("#BuyerConfirmationModel_SellingPrice").val();
         var amortizationValue = $("#BuyerConfirmationModel_MonthlyAmortization").val();
 
-        if (sellingPriceValue !== "" && amortizationValue !== "") {
+        let fieldsAreNotEmpty = sellingPriceValue !== "" && amortizationValue !== "";
+
+        if (fieldsAreNotEmpty) {
             $("#bcfSetAmount").prop('disabled', false);
         } else {
             $("#bcfSetAmount").prop('disabled', true);
         }
+
+        return fieldsAreNotEmpty;
     }
 
     function initializePdfJs() {
@@ -104,29 +108,38 @@ $(function () {
 
     function initializeCustomValidators() {
         $(`[name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
+            if (!PricingFieldInputChecker()) {
+                return;
+            }
+
             let currentVal = $(this).val().replace(/,/g, '');
             let amortVal = $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).val().replace(/,/g, '');
-            console.log(currentVal);
-            console.log(amortVal);
+            //console.log(currentVal);
+            //console.log(amortVal);
 
-            if (amortVal > currentVal) {
+            if (parseFloat(amortVal) > parseFloat(currentVal)) {
                 // Error: Selling Price Amount should not be lower than the amount of monthly Amortization
 
-                //$(this).val(amortVal);
                 $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
             }
             else {
                 $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(``);
-
-                PricingFieldInputChecker();
             }
+
+            $(`[id="bcfSetAmount"]`).attr('disabled', parseFloat(amortVal) > parseFloat(currentVal));
         });
 
         $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).on('input', function (e) {
+            if (!PricingFieldInputChecker()) {
+                return;
+            }
+
             let currentVal = $(this).val().replace(/,/g, '');
             let sellPrcVal = $(`[name="BuyerConfirmationModel.SellingPrice"]`).val().replace(/,/g, '');
+            //console.log(parseFloat(currentVal));
+            //console.log(parseFloat(sellPrcVal));
 
-            if (currentVal > sellPrcVal) {
+            if (parseFloat(currentVal) > parseFloat(sellPrcVal)) {
                 // Error: Monthly Amortization should not be higher than the selling price
 
                 //$(this).val(sellPrcVal);
@@ -134,8 +147,9 @@ $(function () {
             }
             else {
                 $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(``);
-                PricingFieldInputChecker();
             }
+
+            $(`[id="bcfSetAmount"]`).attr('disabled', parseFloat(currentVal) > parseFloat(sellPrcVal));
         });
     }
 
