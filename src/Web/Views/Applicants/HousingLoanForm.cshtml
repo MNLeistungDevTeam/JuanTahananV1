@@ -3,7 +3,7 @@
 
  @model ApplicantViewModel
 @{
-    string title = Model.BarrowersInformationModel.IsBcfCreated ? "Update Application - " + Model.ApplicantsPersonalInformationModel.Code : "BCF & HLAF -" + Model.ApplicantsPersonalInformationModel.Code;
+    string title = Model.BarrowersInformationModel.IsBcfCreated ? "Update Application - " + Model.ApplicantsPersonalInformationModel.Code : "BCF & HLAF - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 }
 
