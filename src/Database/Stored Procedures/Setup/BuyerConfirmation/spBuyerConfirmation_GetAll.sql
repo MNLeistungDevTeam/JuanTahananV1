@@ -3,7 +3,7 @@ AS
 	 
 
 	  SELECT 
-	 bcd.Status,
+    bcf.Id,
     bcf.Code,
     CONCAT(bcf.LastName, ', ', bcf.FirstName, ' ', bcf.MiddleName) AS ApplicantFullName,
     bcf.PagibigNumber,
@@ -30,7 +30,8 @@ AS
     bcd.Id AS BuyerConfirmationDocumentId,
 	CASE WHEN bcd.[Status] = 11 Then
 	0 ELSE bcd.Id
-	END BuyerConfirmationDocumentId
+	END BuyerConfirmationDocumentId,
+    bcd.[Status] BuyerConfirmationDocumentStatus
 FROM BuyerConfirmation bcf
 LEFT JOIN (
     SELECT 
