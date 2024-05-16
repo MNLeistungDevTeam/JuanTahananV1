@@ -259,6 +259,9 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
+
                     }
                     else
                     {
@@ -551,6 +554,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                     vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
+              
                 }
 
                 return View("HousingLoanForm", vwModel);

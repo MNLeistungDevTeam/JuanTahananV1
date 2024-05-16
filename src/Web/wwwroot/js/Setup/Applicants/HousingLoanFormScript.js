@@ -1532,6 +1532,8 @@ $(async function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
@@ -2184,7 +2186,12 @@ $(async function () {
     }
 
     function loadBcfPreview() {
-        var form1 = $("#frm_hlf068");
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        $("#BuyerConfirmationModel_BirthDate").attr("disabled", false);
+
+        $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+        $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+
         var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
@@ -2199,6 +2206,12 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+                $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
+
+                $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
+                $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
+
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
 
@@ -2255,7 +2268,7 @@ $(async function () {
     }
 
     function loadHlafPreview() {
-        var form1 = $("#frm_hlf068");
+        $("#BarrowersInformationModel_BirthDate").attr('disabled', false);
 
         var formData = new FormData(document.querySelector(`#frm_hlf068`));
         // var formData = form1.serialize();
@@ -2272,6 +2285,7 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
+                $("#BarrowersInformationModel_BirthDate").attr('disabled', true);
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
 

@@ -1409,6 +1409,8 @@ $(function () {
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+
         $form.unbind();
         $form.data("validator", null);
         $.validator.unobtrusive.parse($form);
@@ -1466,6 +1468,8 @@ $(function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
@@ -2144,7 +2148,8 @@ $(function () {
     }
 
     function loadBcfPreview() {
-        var form1 = $("#frm_hlf068");
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+
         var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
@@ -2159,6 +2164,8 @@ $(function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
 

@@ -39,10 +39,25 @@ BEGIN
 SET IDENTITY_INSERT BeneficiaryInformation ON;
 
 -- Insert dummy data into BarrowersInformation
-INSERT INTO BeneficiaryInformation
-    (Id,Code, UserId,PagibigNumber, LastName, FirstName, MiddleName, Sex, Email,CreatedById)
-VALUES
-    (1,'BNF202405-0001', 4,'324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', 'beneficiary@email.com',1);
+--INSERT INTO BeneficiaryInformation
+--    (Id,Code, UserId,PagibigNumber, LastName, FirstName, MiddleName, Sex, Email,CreatedById)
+--VALUES
+--    (1,'BNF202405-0001', 4,'324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', 'beneficiary@email.com',1);
+
+ INSERT INTO BeneficiaryInformation
+ (Id,UserId,Code,PagibigNumber, LastName, FirstName, MiddleName, Sex, Age, BirthDate, Email, MobileNumber,
+  PresentUnitName, PresentBuildingName, PresentLotName, PresentStreetName, PresentSubdivisionName, PresentBaranggayName,
+  PresentMunicipalityName, PresentProvinceName, PresentZipCode, PermanentUnitName, PermanentBuildingName, PermanentLotName,
+  PermanentStreetName, PermanentSubdivisionName, PermanentBaranggayName, PermanentMunicipalityName, PermanentProvinceName,
+  PermanentZipCode, PropertyDeveloperName, PropertyUnitLevelName, PropertyLocation,CreatedById)
+  VALUES 
+  (1,4,'BNF202405-0001','324135645768', 'Cortel', 'Albert', 'La Vina', 'Male', '23','1990-01-01', 'beneficiary@email.com', '09458643650',
+    '123', 'Example Building', '456', 'Main Street', 'Sample Subdivision', 'Baranggay Name', 'Sample City', 'Sample Province', '12345',
+    '789', 'Permanent Building', '101', 'Permanent Street', 'Permanent Subdivision', 'Permanent Baranggay', 'Permanent City', 
+    'Permanent Province', '54321', 'RS Realty Developer Inc.', '2 BEDROOM 24 SQM', 'Bacolod',1);
+
+
+
     
 
 -- Disable identity insert for BarrowersInformation
