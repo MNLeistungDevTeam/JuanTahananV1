@@ -1077,8 +1077,12 @@ function bcfUploading() {
             var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
             var bcfStatus = $("#Bcf_ApplicationStatus").val();
 
-            console.log(bcfDocumentStatus);
-            console.log(bcfStatus);
+            //console.log(bcfDocumentStatus);
+            //console.log(bcfStatus);
+
+            link.classList.add('disabled-nav-link');
+            link.style.cursor = "default";
+            link.setAttribute('href', '#');
 
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
@@ -1089,8 +1093,6 @@ function bcfUploading() {
                 else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
                     console.log(0);
                     event.preventDefault();
-                }
-                else {
                 }
             });
         }

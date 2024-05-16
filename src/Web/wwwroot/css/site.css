@@ -1607,3 +1607,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     
 
 }*/
+
+.disabled-nav-link {
+    opacity: .25;
+    background-color: #f3ebeb38 !important;
+}
