@@ -36,9 +36,9 @@
                     <li class="mb-1 fs-4">Ensure that you have signed the approved BCF file you downloaded from here.</li>
                     <li class="mb-1 fs-4">Include the date when signing the document.</li>
                     <li class="mb-1 fs-4">Do not edit the approved BCF file; Otherwise, it may be subject to return or rejection, which could cause a delay in your housing loan application.</li>
-                    <li class="mb-1 fs-4">For your reference, a signed BCF file should look similar to this: <a href="#">Example_BCF.pdf</a></li>
+                    <li class="mb-1 fs-4">For your reference, a signed BCF file should look similar to this: <a href="/Files/PdfTemplate/Dela Cruz_Juan_Abad_BCF24982.pdf" target="_blank">Example_BCF.pdf</a></li>
                 </ol>
-            </div>
+            </div> 
             <div class="row mt-2 mx-4">
                 <div class="mb-0 d-flex">
                     <div class="col-3">
@@ -69,14 +69,20 @@
                     <span class="file-support"><button class="btn btn-info">Browse files</button></span>
                 </div> *@
 
-                <input id="bcf_PdfFile" type="file" accept=".pdf, application/pdf" />
                 <input asp-for="Id" type="hidden" />
+                <input id="bcf_PdfFile" type="file" accept=".pdf, application/pdf" />
             </div>
-
             <div class="row mt-4 mx-5 d-flex justify-content-center align-items-center">
                 <button class="btn btn-primary btn-lg" id="submitPdfFile">
                     Submit BCF
                 </button>
+            </div>
+            <div class="row mt-2 mx-5" id="uploadProgressBar" hidden>
+                <div class="container">
+                    <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
             <div class="row d-flex justify-content-center align-items-center mt-2">
                 <p class="fs-5 text-center">Haven't downloaded the <span class="fw-bold">approved</span> BCF yet? <a asp-action="BCFDownload" asp-controller="Home">Get it here</a></p>

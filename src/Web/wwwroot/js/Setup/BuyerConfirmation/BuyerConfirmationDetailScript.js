@@ -91,11 +91,15 @@ $(function () {
         var sellingPriceValue = $("#BuyerConfirmationModel_SellingPrice").val();
         var amortizationValue = $("#BuyerConfirmationModel_MonthlyAmortization").val();
 
-        if (sellingPriceValue !== "" && amortizationValue !== "") {
+        let fieldsAreNotEmpty = sellingPriceValue !== "" && amortizationValue !== "";
+
+        if (fieldsAreNotEmpty) {
             $("#bcfSetAmount").prop('disabled', false);
         } else {
             $("#bcfSetAmount").prop('disabled', true);
         }
+
+        return fieldsAreNotEmpty;
     }
 
     function initializePdfJs() {
@@ -103,50 +107,36 @@ $(function () {
     }
 
     function initializeCustomValidators() {
-        $(`[name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
-            let currentVal = $(this).val().replace(/,/g, '');
-            let amortVal = $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).val().replace(/,/g, '');
-            console.log(currentVal);
-            console.log(amortVal);
-
-            if (amortVal > currentVal) {
-                // Error: Selling Price Amount should not be lower than the amount of monthly Amortization
-
-                //$(this).val(amortVal);
-                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
+        $(`[name="BuyerConfirmationModel.MonthlyAmortization"], [name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
+            if (!PricingFieldInputChecker()) {
+                return;
             }
-            else {
-                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(``);
 
-                PricingFieldInputChecker();
-            }
-        });
+            let sellingPrice = $(`[name="BuyerConfirmationModel.SellingPrice"]`).val().replace(/,/g, '');
+            let monthlyAmort = $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).val().replace(/,/g, '');
 
-        $(`[name="BuyerConfirmationModel.MonthlyAmortization"]`).on('input', function (e) {
-            let currentVal = $(this).val().replace(/,/g, '');
-            let sellPrcVal = $(`[name="BuyerConfirmationModel.SellingPrice"]`).val().replace(/,/g, '');
+            sellingPrice = parseFloat(sellingPrice);
+            monthlyAmort = parseFloat(monthlyAmort);
 
-            if (currentVal > sellPrcVal) {
+            if (monthlyAmort > sellingPrice) {
                 // Error: Monthly Amortization should not be higher than the selling price
 
                 //$(this).val(sellPrcVal);
+                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(`Selling Price Amount should not be lower than the amount of Monthly Amortization`);
                 $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(`Monthly Amortization should not be higher than the selling price`);
             }
             else {
+                $(`[id="BuyerConfirmationModel_SellingPrice-error-custom"]`).html(``);
                 $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(``);
-                PricingFieldInputChecker();
             }
+
+            $(`[id="bcfSetAmount"]`).attr('disabled', monthlyAmort > sellingPrice);
         });
+
     }
 
     function initializeInputMasks() {
-        $('[name="BuyerConfirmationModel.SellingPrice"]').inputmask({
-            regex: "^[0-9]+$"
-        });
-
-        $('[name="BuyerConfirmationModel.MonthlyAmortization"]').inputmask({
-            regex: "^[0-9]+$"
-        });
+        initializeLeftDecimalInputMask(".decimalInputMask5", 2);
     }
 
     function updateProgressBar(targetForm = "inputBcf") {
@@ -397,21 +387,20 @@ $(function () {
                             // $("#btnApprove").attr({ disabled: true });
                         },
                         success: function (response) {
-                            updateBCF();
 
                             //$("#beneficiary-overlay").addClass('d-none');
 
                             //messageBox("Successfully saved.", "success");
 
-                            $("#btnApprove").attr({ disabled: false });
-
+                            updateBCF(approvalLevelStatus);
                             $approverModal.modal("hide");
                         },
                         error: function (response) {
                             // Error message handling
-                            $("#btnApprove").attr({ disabled: false });
-
                             messageBox(response.responseText, "danger", true);
+                        },
+                        complete: function (xhr, status) {
+                            $("#btnApprove").attr({ disabled: false });
                         }
                     });
                 }
@@ -419,8 +408,21 @@ $(function () {
         });
     }
 
-    function updateBCF() {
+    function updateBCF(approvalLevelStatus) {
         var formData = new FormData(document.querySelector(`#frm_bcf`));
+
+        let messageArray = [
+            {
+                approvalLevels: [3, 4], // Approved
+                message: "BCF has been saved and approved, and ready for printing"
+            },
+            {
+                approvalLevels: [11], // Resubmission
+                message: "BCF has been marked for resubmission"
+            }
+        ];
+
+        let selectedMessage = messageArray.find(m => m.approvalLevels.includes(Number(approvalLevelStatus))).message;
 
         $.ajax({
             method: 'POST',
@@ -430,10 +432,11 @@ $(function () {
             cache: false,
             contentType: false,
             processData: false,
-            beforeSend: function () {
-            },
             success: function (response) {
-                messageBox("the BCF becomes ready to be printed", "success");
+                messageBox(selectedMessage, "success");
+            },
+            error: function (xhr, statusText) {
+                messageBox(xhr.responseText, "error");
             },
             complete: function () {
                 setTimeout(function () {

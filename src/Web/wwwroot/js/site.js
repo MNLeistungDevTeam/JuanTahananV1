@@ -1077,8 +1077,12 @@ function bcfUploading() {
             var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
             var bcfStatus = $("#Bcf_ApplicationStatus").val();
 
-            console.log(bcfDocumentStatus);
-            console.log(bcfStatus);
+            //console.log(bcfDocumentStatus);
+            //console.log(bcfStatus);
+
+            link.classList.add('disabled-nav-link');
+            link.style.cursor = "default";
+            link.setAttribute('href', '#');
 
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
@@ -1090,14 +1094,10 @@ function bcfUploading() {
                     console.log(0);
                     event.preventDefault();
                 }
-                else {
-                }
             });
         }
     });
 }
-
-
 
 function approveBcfNote() {
     var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
@@ -1138,8 +1138,14 @@ async function loadBcfPrompt() {
     let hlafExists = await hlafChecker();
     let isBcfQAnswered = $(`[id="UserFlag_IsBcfCreated"]`).data('flag');
 
-    if ((!isBcfQAnswered && bcfExists) || (isBcfQAnswered && hlafExists)) {
-        location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
+    if (isBcfQAnswered && hlafExists) {
+        // Check if HLAF is created and active AND User selects "I have BCF"
+        hlfRedirect();
+        return;
+    }
+    else if (!isBcfQAnswered && (bcfExists && hlafExists)) {
+        // Check if both HLAF and BCF is created, HLAF is active, AND User selects "I don't have BCF yet"
+        hlfRedirect();
         return;
     }
 
@@ -1283,3 +1289,13 @@ async function hlafChecker() {
 
     return hlafFlag;
 }
+
+function hlfRedirect() {
+    location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
+}
+
+String.prototype.toPropper = function () {
+    return this.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+};

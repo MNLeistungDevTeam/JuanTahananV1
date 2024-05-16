@@ -32,7 +32,7 @@
             <div class="col-12 d-flex align-items-center justify-content-center">
                 <!-- Content for step progress -->
                 <div class="progressbar" style="width: 50%;">
-                    <div id="progress" class="progress"></div>
+                    <div id="progress" class="progresso"></div>
                     <div class="progress-step" data-title="Set pricing">
                         <i class="mdi mdi-currency-php fs-2"></i>
                     </div>
@@ -55,12 +55,16 @@
                             <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel" required></label>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control decimalInputMask" asp-for="BuyerConfirmationModel.SellingPrice" required />
+                            <input type="text" class="form-control decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" required />
                             <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice" required></label>
+                            <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"></span>
+                            <span id="BuyerConfirmationModel_SellingPrice-error-custom" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control decimalInputMask" asp-for="BuyerConfirmationModel.MonthlyAmortization" required />
+                            <input type="text" class="form-control decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" required />
                             <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization" required></label>
+                            <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"></span>
+                            <span id="BuyerConfirmationModel_MonthlyAmortization-error-custom" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -131,8 +135,6 @@
                                     </button>
 
                                 }
-                               
-                               
                             </li>
                         </ul>
                     </div>

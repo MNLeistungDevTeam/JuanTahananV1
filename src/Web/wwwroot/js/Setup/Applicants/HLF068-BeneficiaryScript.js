@@ -1382,30 +1382,31 @@ $(function () {
             }
         });
 
-        form.find('input[type="radio"][required]').each(function () {
-            let hasClass = $(this).hasClass('valid');
+        //form.find('input[type="radio"][required]').each(function () {
+        //    let hasClass = $(this).hasClass('valid');
 
-            console.log(roleId);
-            if (roleId === '3') {
-                $(this).prop('required', false);
-                return;
-            }
+        //    console.log(roleId);
+        //    if (roleId === '3') {
+        //        $(this).prop('required', false);
+        //        return;
+        //    }
 
-            if (!hasClass) {
-                $(this).addClass('is-invalid');
-                $(this).removeClass('valid');
+        //    if (!hasClass) {
+        //        $(this).addClass('is-invalid');
+        //        $(this).removeClass('valid');
 
-                isValid = false;
-            } else {
-                $(this).addClass('valid');
-                $(this).removeClass('is-invalid');
-            }
-        });
+        //        isValid = false;
+        //    } else {
+        //        $(this).addClass('valid');
+        //        $(this).removeClass('is-invalid');
+        //    }
+        //});
 
         return isValid;
     }
 
     function rebindValidators() {
+    
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
@@ -1424,6 +1425,14 @@ $(function () {
 
         $form.on("submit", function (e) {
             e.preventDefault();
+            $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+            $("#BuyerConfirmationModel_SellingPrice").attr("readonly", true);
+            $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+            $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
+            $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+            $("#BuyerConfirmationModel_MonthlyAmortization").attr("readonly", true);
+
+
             let formData = new FormData(e.target);
 
             if ($(this).valid() == false) {
@@ -1466,6 +1475,8 @@ $(function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
@@ -2144,7 +2155,10 @@ $(function () {
     }
 
     function loadBcfPreview() {
-        var form1 = $("#frm_hlf068");
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+        $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+
         var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
         $.ajax({
@@ -2159,6 +2173,10 @@ $(function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+                $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
+                $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
+
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
 

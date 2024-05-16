@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.Charts.Native;
-using DevExpress.Internal;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -25,7 +23,6 @@ using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -259,6 +256,8 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
                     }
                     else
                     {
@@ -525,6 +524,8 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
                 }
                 else
                 {
@@ -888,7 +889,11 @@ namespace Template.Web.Controllers.Transaction
 
                 var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
-                return Ok(data is not null);
+                List<int> inactiveStatus = new() { 2, 5, 9, 10 };
+
+                bool flag = data is not null && !inactiveStatus.Contains(data.ApprovalStatus.Value);
+
+                return Ok(flag);
             }
             catch (Exception e)
             {
@@ -1241,6 +1246,20 @@ namespace Template.Web.Controllers.Transaction
         {
             try
             {
+
+                if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.DeveloperVerified) {
+
+                    // Manually remove validation errors for properties of BuyerConfirmationModel
+                    var buyerConfirmationProperties = typeof(BuyerConfirmationModel).GetProperties()
+                        .SelectMany(prop => ModelState.Keys.Where(key => key.StartsWith($"BuyerConfirmationModel.{prop.Name}")));
+
+                    foreach (var propertyKey in buyerConfirmationProperties)
+                    {
+                        ModelState.Remove(propertyKey);
+                    }
+
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
@@ -1267,15 +1286,15 @@ namespace Template.Web.Controllers.Transaction
                 //create new beneficiary and housingloan application
                 vwModel.BuyerConfirmationModel.UserId ??= userId;
 
-
                 if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.ForResubmition)
                 {
                     vwModel.BuyerConfirmationModel.ApprovalStatus = (int)AppStatusType.Draft;
                 }
 
-
-
-                var bcfData = await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
+                if (vwModel.BuyerConfirmationModel.ApprovalStatus is not (int)AppStatusType.DeveloperVerified)
+                {
+                    await _buyerConfirmationRepo.SaveAsync(vwModel.BuyerConfirmationModel, userId);
+                }
 
                 if (vwModel.ApplicantsPersonalInformationModel.Id == 0)
                 {

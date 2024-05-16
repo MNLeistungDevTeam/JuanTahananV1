@@ -74,6 +74,7 @@
     <None Include="wwwroot\lib\jquery-knob\jquery.knob.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ClosedXML.Report" Version="0.2.10" />
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -97,6 +98,7 @@
     <ProjectReference Include="..\Infrastructure\DMS.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="NewFolder\" />
     <Folder Include="wwwroot\Files\Documents\Applicant\" />
     <Folder Include="wwwroot\js\Transaction\" />
   </ItemGroup>

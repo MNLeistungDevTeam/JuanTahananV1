@@ -127,6 +127,7 @@ $(function () {
             var fileName = tblBuyerConForm.rows({ selected: true }).data().pluck("FileName").toArray().toString();
             var fileLocation = tblBuyerConForm.rows({ selected: true }).data().pluck("FileLocation").toArray().toString();
             var buyerconfirmationdocumentId = tblBuyerConForm.rows({ selected: true }).data().pluck("BuyerConfirmationDocumentId").toArray().toString();
+            var bcfDocumentStatus = tblBuyerConForm.rows({ selected: true }).data().pluck("BuyerConfirmationDocumentStatus").toArray().toString();
 
             $("#btn_view").attr({
                 "disabled": !(selectedRows === 1),
@@ -139,6 +140,7 @@ $(function () {
                 "data-fileLocation": fileLocation,
                 "data-documentId": buyerconfirmationdocumentId,
                 "data-referenceNo": bcfCode,
+                "data-documentStatus": bcfDocumentStatus,
             });
         });
 
@@ -161,8 +163,13 @@ $(function () {
         let documentFileName = document.attr('data-fileName');
         let documentFileLocation = document.attr('data-fileLocation');
         let bcfCode = document.attr('data-referenceNo');
+        let bcfDocStatus = document.attr('data-documentStatus');
 
         const itemLink = documentFileLocation + documentFileName;
+
+        if (bcfDocStatus == 3) { $("#btnApprove").addClass('d-none'); }
+
+        else { $("#btnApprove").removeClass('d-none'); }
 
         $("#dl_bcfdocument").attr("href", itemLink).attr("target", "_blank").text(documentFileName);
         $("#btnApprove").attr("data-documentId", documentId);
@@ -247,9 +254,6 @@ $(function () {
         let $form = $("#frm_approver_level");
         let $approverModal = $('#approver-modal');
         let $documentModal = $("#document-modal");
-     
-
-
 
         $form.unbind();
         $form.data("validator", null);

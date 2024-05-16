@@ -1513,13 +1513,14 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         flex-grow: 1;
     }
 
-.progress {
+.progresso {
     position: absolute;
     border: 1px solid !important;
     border-color: deepskyblue;
     background-color: deepskyblue;
     color: deepskyblue;
     width: 0%;
+    height: 13px;
     left: 0.5%;
     transition: 0.5s ease-in-out;
 }
@@ -1606,3 +1607,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     
 
 }*/
+
+.disabled-nav-link {
+    opacity: .25;
+    background-color: #f3ebeb38 !important;
+}

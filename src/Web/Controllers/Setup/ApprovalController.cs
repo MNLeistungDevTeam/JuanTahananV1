@@ -86,7 +86,7 @@ public class ApprovalController : Controller
         int companyId = int.Parse(User.FindFirstValue("Company"));
 
         var module = await _moduleRepo.GetByCodeAsync(moduleCode);
-        var data = await _approvalStatusRepo.GetByReferenceIdAsync(referenceId, companyId,null, module.Id);
+        var data = await _approvalStatusRepo.GetByReferenceIdAsync(referenceId, companyId, null, module.Id);
 
         return Ok(data);
     }
@@ -150,8 +150,11 @@ public class ApprovalController : Controller
 
             var approvalStatusInfo = await _approvalStatusRepo.GetAsync(model.ApprovalStatusId);
 
-            var applicantInfo = await _applicantsPersonalInformationRepo.GetByIdAsync(approvalStatusInfo.ReferenceId);
-            await _hubContext.Clients.Group(company.Code).SendAsync("AddNotifToPage", userInfo.Name, applicantInfo.Code);
+            if (approvalStatusInfo.ReferenceType == 8) //application module
+            {
+                var applicantInfo = await _applicantsPersonalInformationRepo.GetByIdAsync(approvalStatusInfo.ReferenceId);
+                await _hubContext.Clients.Group(company.Code).SendAsync("AddNotifToPage", userInfo.Name, applicantInfo.Code);
+            }
 
             //await _notificationService.NotifyUsersByApproval(model.ApprovalLevel.ApprovalStatusId, userId, companyId);
             return Ok();

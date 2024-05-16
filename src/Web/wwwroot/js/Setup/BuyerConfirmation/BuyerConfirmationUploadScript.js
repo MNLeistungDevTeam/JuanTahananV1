@@ -1,11 +1,9 @@
 ﻿"use strict"
 
 $(function () {
-    var bcfDropzone;
-    let selectedFile;
+    var ajaxUploadCall;
 
     let documentReferenceId = $('#Id').val();
-
 
     ////////////////////////////////
 
@@ -18,13 +16,29 @@ $(function () {
         e.preventDefault();
 
         var selectedFile = $('#bcf_PdfFile').prop('files');
-        console.log(selectedFile);
+        //console.log(selectedFile);
 
         if (selectedFile.length !== 0) {
-            upload(selectedFile[0]);
+            // SweetAlert
+            Swal.fire({
+                title: `Confirm Uploading file`,
+                text: "Are you sure that the selected document (file) is correct?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: `Yes, upload it`,
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with form submission
+
+                    upload(selectedFile[0]);
+                }
+            });
         }
         else {
-            messageBox("No selected files yet, please browse or drag the file in the area provided.", "danger", true);
+            messageBox("No selected files yet, please browse using the button or drag the file in the area provided", "danger", true);
         }
     });
 
@@ -35,7 +49,6 @@ $(function () {
     });
 
     $(`#fileInputArea .fileinput-remove-button`).on('click', function (e) {
-
         checkInputFile();
     });
 
@@ -44,34 +57,64 @@ $(function () {
         formData.append('file', file);
         formData.append('BuyerConfirmationId', documentReferenceId);
 
-        console.log(documentReferenceId);
+        //console.log(documentReferenceId);
 
-        $.ajax({
+        ajaxUploadCall = $.ajax({
             url: '/Document/UploadBCF',
             type: 'POST',
             data: formData,
+            cache: false,
             processData: false,
             contentType: false,
             beforeSend: function () {
                 $(`[id="submitPdfFile"]`).attr('disabled', true);
-                loading('Uploading...', true);
+                //loading('Uploading...', true);
             },
             success: function (response) {
                 messageBox('Uploaded Successfully', "success", true);
-                loader.close();
+                //loader.close();
             },
-            error: function (xhr, status, error) {
-                messageBox(xhr.responseText, "danger", true);
+
+            xhr: function () {
+                var xhr = new XMLHttpRequest();
+
+                if (xhr.upload) {
+                    // Show progressbar
+                    $(`[id="uploadProgressBar"]`).attr('hidden', false);
+
+                    // Add event listener
+                    xhr.upload.addEventListener('progress', function (e) {
+                        if (e.lengthComputable) {
+                            var percentComplete = e.loaded / e.total;
+                            percentComplete = parseFloat(percentComplete * 100);
+                            console.log(e);
+                            if (percentComplete > 100) {
+                                percentComplete = 100;
+                            }
+
+                            $(`[id="uploadProgressBar"] [role="progressbar"]`).attr('aria-valuenow', `${percentComplete}`);
+                            $(`[id="uploadProgressBar"] [role="progressbar"] .progress-bar`).css('width', `${percentComplete}%`);
+                        }
+                    }, false);
+                }
+
+                return xhr;
+            },
+            error: function (xhr, status) {
+                //console.log(status);
+                //console.log(xhr);
+                messageBox(status, "danger", true);
                 $(`[id="submitPdfFile"]`).attr('disabled', false);
-                loader.close();
             },
             complete: function (xhr, status) {
+                $(`[id="uploadProgressBar"]`).attr('hidden', true);
             }
         });
     }
 
     function checkInputFile() {
         $(`[id="submitPdfFile"]`).attr('disabled', $('#bcf_PdfFile').prop('files').length === 0);
+        $(`[id="fileInputArea"] .d-flex .fileinput-remove-button`).attr('hidden', $('#bcf_PdfFile').prop('files').length === 0);
     }
 
     function initializeBsFileInput() {
@@ -103,5 +146,7 @@ $(function () {
             showUpload: false,
             removeFromPreviewOnError: true
         });
+
+        $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
     }
 });

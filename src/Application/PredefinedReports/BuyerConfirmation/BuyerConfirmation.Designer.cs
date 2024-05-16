@@ -394,7 +394,7 @@
             this.xrTable22.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.xrTable22.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow22});
-            this.xrTable22.SizeF = new System.Drawing.SizeF(100F, 25.00006F);
+            this.xrTable22.SizeF = new System.Drawing.SizeF(286.4088F, 25.00006F);
             // 
             // xrTableRow22
             // 
