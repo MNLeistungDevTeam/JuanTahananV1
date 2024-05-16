@@ -1513,7 +1513,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
         flex-grow: 1;
     }
 
-.progress {
+.progresso {
     position: absolute;
     border: 1px solid !important;
     border-color: deepskyblue;

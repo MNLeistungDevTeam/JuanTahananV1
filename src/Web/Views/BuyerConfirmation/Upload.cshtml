@@ -69,14 +69,20 @@
                     <span class="file-support"><button class="btn btn-info">Browse files</button></span>
                 </div> *@
 
-                <input id="bcf_PdfFile" type="file" accept=".pdf, application/pdf" />
                 <input asp-for="Id" type="hidden" />
+                <input id="bcf_PdfFile" type="file" accept=".pdf, application/pdf" />
             </div>
-
             <div class="row mt-4 mx-5 d-flex justify-content-center align-items-center">
                 <button class="btn btn-primary btn-lg" id="submitPdfFile">
                     Submit BCF
                 </button>
+            </div>
+            <div class="row mt-2 mx-5" id="uploadProgressBar">
+                <div class="container">
+                    <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
             <div class="row d-flex justify-content-center align-items-center mt-2">
                 <p class="fs-5 text-center">Haven't downloaded the <span class="fw-bold">approved</span> BCF yet? <a asp-action="BCFDownload" asp-controller="Home">Get it here</a></p>
