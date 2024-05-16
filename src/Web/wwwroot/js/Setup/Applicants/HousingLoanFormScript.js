@@ -1300,37 +1300,9 @@ $(async function () {
         $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
 
         if (buyerconfirmationAppStatus === '3') {
-            $('[id^="BuyerConfirmationModel_"]').each(function () {
-                $(this).prop('disabled', true);
-            });
+            DisableBuyerConfirmationFields();
 
-            $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
-            $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
-            $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
-
-            $('[name^="incomeSrcRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
-
-            $('[name^="pagibigRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
-
-            $('[name^="informedTermsRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
-
-            $('[name^="availedLoanRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
-
-            $('[name^="coBorrowerRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
-
-            $('[name^="projectPropRbtn"]').each(function () {
-                $(this).prop('disabled', true);
-            });
+            $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
         }
 
         //Load the possible data on others forms
@@ -1486,6 +1458,8 @@ $(async function () {
     }
 
     function rebindValidators() {
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
@@ -2186,11 +2160,15 @@ $(async function () {
     }
 
     function loadBcfPreview() {
-        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
-        $("#BuyerConfirmationModel_BirthDate").attr("disabled", false);
+        //$("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        //$("#BuyerConfirmationModel_BirthDate").attr("disabled", false);
 
-        $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
-        $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+        //$("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+        //$("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+
+
+        //enable bcf field even approve temporarily to mapped in pdf
+        enableBuyerConfirmationFields();
 
         var formData = new FormData(document.querySelector(`#frm_hlf068`));
 
@@ -2206,6 +2184,8 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
+
+                
                 $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
                 $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
 
@@ -2864,4 +2844,72 @@ $(async function () {
     }
 
     //#endregion Getters Funcions
+
+    function DisableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+    }
+
+    function enableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.unlock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.unlock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.unlock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+    }
 });
