@@ -888,7 +888,11 @@ namespace Template.Web.Controllers.Transaction
 
                 var data = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
-                return Ok(data is not null);
+                List<int> inactiveStatus = new() { 2, 5, 9, 10 };
+
+                bool flag = data is not null && !inactiveStatus.Contains(data.ApprovalStatus.Value);
+
+                return Ok(flag);
             }
             catch (Exception e)
             {

@@ -98,10 +98,10 @@ $(async function () {
 
     rebindValidators();
 
-    //#endregion
+    adjustEditCard();
+    progressCheck();
 
-    $('.codeInputMask').on('input', function (e) {
-    });
+    //#endregion
 
     // Function to handle beforeunload prompt
 
@@ -2775,6 +2775,15 @@ $(async function () {
         initializeRadioBtnMisc();
 
         //$("#frm_hlf068").clearValidation();
+    }
+
+    function adjustEditCard() {
+        if (!$(`[id="div_approvebcfNote"]`).hasClass('d-none')) {
+            $(`[id="confirmCard"]`).css('top', '6em');
+        }
+        //else {
+        //    $(`[id="confirmCard"]`).css('top', '0.5em');
+        //}
     }
 
     //#region Getters Functions

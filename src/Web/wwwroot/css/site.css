@@ -1520,6 +1520,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     background-color: deepskyblue;
     color: deepskyblue;
     width: 0%;
+    height: 13px;
     left: 0.5%;
     transition: 0.5s ease-in-out;
 }

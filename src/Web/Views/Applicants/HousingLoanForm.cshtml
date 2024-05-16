@@ -3,7 +3,7 @@
 
  @model ApplicantViewModel
 @{
-    string title = Model.BarrowersInformationModel.IsBcfCreated ? "Update Application - " + Model.ApplicantsPersonalInformationModel.Code : "BCF & HLAF -" + Model.ApplicantsPersonalInformationModel.Code;
+    string title = Model.BarrowersInformationModel.IsBcfCreated ? "Update Application - " + Model.ApplicantsPersonalInformationModel.Code : "BCF & HLAF - " + Model.ApplicantsPersonalInformationModel.Code;
     ViewData["Title"] = title;
 }
 
@@ -24,19 +24,17 @@
 </div>
 <!-- end page title -->
 
-<div class="row" id="confirmCard" hidden>
+<div class="row sticky-top" id="confirmCard" style="top: 0.5em;" hidden>
     <div class="col-sm-12 d-flex align-items-center justify-content-center">
-        <div class="col-md-3">
-            <div class="card card-body rounded-2 shadow p-2">
-                <div class="row gy-2 align-items-center justify-content-center">
-                    <div class="col-md-3">
+        <div class="col-md-4">
+            <div class="card card-body rounded-2 shadow p-2 px-3">
+                <div class="row gy-2 d-flex align-items-center justify-content-center">
+                    <div class="col-md-4">
                         <h4 class="text-info"><b>Editing</b></h4>
                     </div>
-                    <div class="col-md-3 p-0">
-                        <button type="button" id="btn_discardChang" class="btn btn-outline-danger btn-sm waves-effect waves-light"><i class="mdi mdi-close"></i> Discard</button>
-                    </div>
-                    <div class="col-md-4 p-0">
-                        <button type="button" id="btn_saveChang" class="btn btn-primary btn-sm waves-effect waves-light"><i class="mdi mdi-check"></i> Save Changes</button>
+                    <div class="col-md-8 p-0 d-flex justify-content-between">
+                        <button type="button" id="btn_discardChang" class="btn btn-outline-danger rounded-3 waves-effect waves-light"><i class="mdi mdi-close"></i> Discard</button>
+                        <button type="button" id="btn_saveChang" class="btn btn-primary rounded-3 waves-effect waves-light"><i class="mdi mdi-check"></i> Save Changes</button>
                     </div>
                 </div>
             </div>
