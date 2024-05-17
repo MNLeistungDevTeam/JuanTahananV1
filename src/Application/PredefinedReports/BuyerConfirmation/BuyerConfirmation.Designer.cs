@@ -1453,7 +1453,7 @@
             this.xrLabel4.CanGrow = false;
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[JuridicalPersonalityId] == 4,true , false)\n\n\n\n\n\n")});
-            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 7F);
+            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 7F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(453.118F, 121.8281F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
@@ -1469,7 +1469,7 @@
             this.xrLabel3.CanGrow = false;
             this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[JuridicalPersonalityId] == 5,true , false)\n\n\n\n\n\n\n")});
-            this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Arial", 7F);
+            this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Arial", 7F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(376.8531F, 135.6995F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
@@ -1485,7 +1485,7 @@
             this.xrLabel2.CanGrow = false;
             this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[JuridicalPersonalityId] == 3,true , false)\n\n\n\n\n\n\n")});
-            this.xrLabel2.Font = new DevExpress.Drawing.DXFont("Arial", 7F);
+            this.xrLabel2.Font = new DevExpress.Drawing.DXFont("Arial", 7F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(376.853F, 107.3315F);
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
@@ -1501,7 +1501,7 @@
             this.xrLabel1.CanGrow = false;
             this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[JuridicalPersonalityId] == 2,true , false)\n\n\n\n\n\n")});
-            this.xrLabel1.Font = new DevExpress.Drawing.DXFont("Arial", 7F);
+            this.xrLabel1.Font = new DevExpress.Drawing.DXFont("Arial", 7F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(291.1343F, 135.6995F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
@@ -1517,7 +1517,7 @@
             this.xrLabel53.CanGrow = false;
             this.xrLabel53.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[JuridicalPersonalityId] == 1,true , false)\n\n\n\n\n")});
-            this.xrLabel53.Font = new DevExpress.Drawing.DXFont("Arial", 7F);
+            this.xrLabel53.Font = new DevExpress.Drawing.DXFont("Arial", 7F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(291.1344F, 124.6058F);
             this.xrLabel53.Multiline = true;
             this.xrLabel53.Name = "xrLabel53";
