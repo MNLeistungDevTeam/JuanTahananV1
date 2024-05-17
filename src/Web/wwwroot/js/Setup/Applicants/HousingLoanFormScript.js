@@ -1362,6 +1362,8 @@ $(async function () {
 
         if (hasBcf == "False") {
             $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
+
+
                 $(`[id="bcf-incomeFields"]`).attr({
                     hidden: $(this).attr('id') === 'isRbtn2',
                 });
@@ -1370,9 +1372,12 @@ $(async function () {
                     required: $(this).attr('id') === 'isRbtn1',
                 });
 
-                //if ($(this).attr('id') === 'isRbtn2') {
-                //    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
-                //}
+                if ($(this).attr('id') === 'isRbtn2') {
+                    //$(`[id="bcf-incomeFields"] input[type="text"]`).val('');
+
+                    $("#BuyerConfirmationModel_AdditionalSourceIncome").val(null);
+                    $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(0);
+                }
 
                 $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
             });

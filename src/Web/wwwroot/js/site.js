@@ -1081,11 +1081,16 @@ function bcfUploading() {
             console.log(bcfStatus);
 
             if (bcfStatus != 3) {
+
+                link.setAttribute('title', 'This module requires an approved BCF for access');
+
                 link.classList.add('disabled-nav-link');
                 link.style.cursor = "default";
                 link.setAttribute('href', '#');
             }
             else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+
+                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
 
                 link.classList.add('disabled-nav-link');
                 link.style.cursor = "default";

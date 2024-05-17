@@ -315,9 +315,10 @@
                                             <option value="">Select Marital Status ... </option>
                                             <option value="Single/Unmarried">Single/Unmarried</option>
                                             <option value="Married">Married</option>
-                                            <option value="Annulled">Annulled</option>
-                                            <option value="Legally Separated">Legally Separated</option>
                                             <option value="Widow/er">Widow/er</option>
+                                            <option value="Legally Separated">Legally Separated</option>
+                                            <option value="Annulled">Annulled</option>
+                                     
                                         </select>
                                         <span asp-validation-for="BuyerConfirmationModel.MaritalStatus" class="text-danger"></span>
                                     </div>
@@ -1291,12 +1292,13 @@
                                         <div class="position-relative">
                                             <label asp-for="BarrowersInformationModel.MaritalStatus" class="form-label fw-normal" required></label>
                                             <select asp-for="BarrowersInformationModel.MaritalStatus" class="rounded-4 selectize" data-value="@Model.BarrowersInformationModel.MaritalStatus" required>
+                                                
                                                 <option value="">Select Marital Status ... </option>
                                                 <option value="Single/Unmarried">Single/Unmarried</option>
                                                 <option value="Married">Married</option>
-                                                <option value="Annulled">Annulled</option>
-                                                <option value="Legally Separated">Legally Separated</option>
                                                 <option value="Widow/er">Widow/er</option>
+                                                <option value="Legally Separated">Legally Separated</option>
+                                                <option value="Annulled">Annulled</option>
                                             </select>
                                             <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
                                         </div>

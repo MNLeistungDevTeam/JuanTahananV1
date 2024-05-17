@@ -141,9 +141,12 @@ $(function () {
             required: $(this).attr('id') === 'isRbtn1',
         });
 
-        //if ($(this).attr('id') === 'isRbtn2') {
-        //    $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);
-        //}
+        if ($(this).attr('id') === 'isRbtn2') {
+            /*  $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);*/
+
+            $("#BuyerConfirmationModel_AdditionalSourceIncome").val(null);
+            $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(0);
+        }
 
         $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
     });
