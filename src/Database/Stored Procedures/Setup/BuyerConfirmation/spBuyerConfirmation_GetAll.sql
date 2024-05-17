@@ -11,7 +11,7 @@ AS
     bcf.ProjectProponentName,
     bcf.HouseUnitModel,
     CASE
-        WHEN bcf.ApprovalStatus = 0 THEN 'Application in Draft'
+        WHEN bcf.ApprovalStatus = 0 THEN 'Submitted'
         WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 1 THEN 'Sign and Submitted'
         WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 11 THEN 'For Resubmission' -- document resubmit
         WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 3 THEN 'Approved'
@@ -40,6 +40,13 @@ LEFT JOIN (
     FROM BuyerConfirmationDocument bcd1
 ) bcd ON bcd.ReferenceNo = bcf.Code AND bcd.rn = 1
 LEFT JOIN Document d ON d.Id = bcd.ReferenceId
+ORDER BY 
+    CASE 
+        WHEN bcf.ApprovalStatus = 0 THEN 0 -- Rows with ApprovalStatus = 0 come first
+        ELSE 1 -- All other rows
+    END,
+    -- Add additional sorting criteria as needed
+    bcd.DateModified DESC; -- For example, sorting by DateCreated in descending order
 
 RETURN 0
 
