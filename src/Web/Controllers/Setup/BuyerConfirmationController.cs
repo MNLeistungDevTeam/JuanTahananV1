@@ -1,17 +1,15 @@
 ﻿using ClosedXML.Excel;
-using DevExpress.ClipboardSource.SpreadsheetML;
-using DevExpress.SpreadsheetSource;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Domain.Dto.BuyerConfirmationDto;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using SkiaSharp;
+using Microsoft.Build.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -43,10 +41,19 @@ public class BuyerConfirmationController : Controller
 
     #region Views
 
-    public IActionResult ApplicantRequests()
+    public async Task<IActionResult> ApplicantRequests()
     {
         try
         {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Developer)
+            {
+                return View("AccessDenied");
+            }
+
             return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
@@ -116,6 +123,15 @@ public class BuyerConfirmationController : Controller
 
         try
         {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Developer)
+            {
+                return View("AccessDenied");
+            }
+
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
             var viewModel = new ApplicantViewModel()
