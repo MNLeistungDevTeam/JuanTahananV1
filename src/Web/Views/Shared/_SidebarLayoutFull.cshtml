@@ -52,56 +52,51 @@
     <div id="Layout-defaultProfile" hidden>@Url.Content("~/images/user/default.png")</div>
     <div id="Layout-defaultSignature" hidden>@Url.Content("~//images/user/signature.png")</div>
 
-    <div class="alert text-bg-info d-flex align-items-center justify-content-center sticky-top d-none" role="alert" id="div_approvebcfNote">
-        <i class="mdi mdi-information fs-1 pe-2"></i>
-        <p class="fw-medium mb-0 fs-3 pe-5">
-            Your BCF has been approved and is now ready for download!
-        </p>
-        <button class="btn btn-lg btn-light rounded-4" id="btn_bcfdownload">
-            <span class="text-start fw-medium">View Instructions</span>
-            <span class="text-end fw-medium"><i class="mdi mdi-arrow-right"></i></span>
-        </button>
-    </div>
 
-    <!-- Begin page -->
-    <div id="wrapper">
-
-
+    <div class="d-flex flex-column">
         <!-- ========== Topbar Start ========== -->
         <partial name="_Topbar" />
         <!-- ========== Topbar End ========== -->
-        <!-- ========== Horizontal Menu Start ========== -->
-        <partial name="_Sidebar" />
-        <!-- ========== Horizontal Menu End ========== -->
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-        <div class="content-page">
-            <div class="content">
-                <!-- Start Content-->
-                <div class="container-fluid">
-                    <div class="content-layer-page pt-2">
-                        <!-- Pre-loader -->
-                        <div id="preloader">
-                            <div id="status">
-                                <div class="bouncing-loader"><div></div><div></div><div></div></div>
+        <!-- Begin page -->
+
+        <div class="d-flex">
+            <div id="wrapper">
+                <!-- ========== Horizontal Menu Start ========== -->
+                <partial name="_Sidebar" />
+                <!-- ========== Horizontal Menu End ========== -->
+
+                <!-- ============================================================== -->
+                <!-- Start Page Content here -->
+                <!-- ============================================================== -->
+                <div class="content-page">
+                    <div class="content">
+                        <!-- Start Content-->
+                        <div class="container-fluid">
+                            <div class="content-layer-page pt-2">
+                                <!-- Pre-loader -->
+                                <div id="preloader">
+                                    <div id="status">
+                                        <div class="bouncing-loader"><div></div><div></div><div></div></div>
+                                    </div>
+                                </div>
+                                <!-- End Preloader-->
+                                @RenderBody()
                             </div>
                         </div>
-                        <!-- End Preloader-->
-                        @RenderBody()
                     </div>
+                    <!-- content -->
+                    <!-- Footer Start -->
+                    @*             <partial name="_Footer" />
+                    <!-- end Footer --> *@
                 </div>
+                <!-- ============================================================== -->
+                <!-- End Page content -->
+                <!-- ============================================================== -->
             </div>
-            <!-- content -->
-            <!-- Footer Start -->
-            @*             <partial name="_Footer" />
-            <!-- end Footer --> *@
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
+        <!-- END wrapper -->
     </div>
-    <!-- END wrapper -->
+    
     <!-- Theme Settings -->
     <partial name="_ThemeSettings" />
 

@@ -216,7 +216,7 @@ $(async function () {
 				                                <div class="col-auto">
 					                                <!-- Button -->
 					                                <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                                <i class="fe-upload"></i>
+						                                <i class="fas fa-upload"></i>
 					                                </a>
 				                                </div>
 			                                </div>
@@ -249,7 +249,7 @@ $(async function () {
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
                     if (item.HasSubdocument === 1) {
-                        groupHtml += `<div class="col-md-12 mb-2" id="${firstItem.DocumentTypeId}">
+                        groupHtml += `<div class="col-md-12 mt-3 mb-2" id="${firstItem.DocumentTypeId}">
                             <div class="nav-tabs nav-bordered">
                                 <h4 class="header-title text-muted">${groupName}</h4>
                             </div>
@@ -311,7 +311,7 @@ $(async function () {
 				                            <div class="col-auto">
 					                            <!-- Button -->
 					                            <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                            <i class="fe-upload"></i>
+						                            <i class="fas fa-upload"></i>
 					                            </a>
 				                            </div>
 			                            </div>
