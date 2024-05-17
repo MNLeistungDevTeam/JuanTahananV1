@@ -103,7 +103,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Cell Phone", Prompt = "Mobile Number", Description = "Cell Phone / Mobile Number")]
         public string? MobileNumber { get; set; }
 
-        [Display(Name = "Business", Prompt = "indicate local,if any", Description = "Cell Phone / Mobile Number")]
+        [Display(Name = "Business Contact No.", Prompt = "indicate local, if any", Description = "Cell Phone / Mobile Number")]
         public string? BusinessTelNo { get; set; }
 
         [Required]
@@ -168,7 +168,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Spouse Lot No., Blk No., Phase No., House No.", Prompt = "Lot Name", Description = "Lot No., Blk No., Phase No., House No.")]
         public string? SpouseCompanyLotName { get; set; }
 
-        [Display(Name = "Spouse SpouseStreet Name", Prompt = "Street Name")]
+        [Display(Name = "Spouse Company Street Name", Prompt = "Street Name")]
         public string? SpouseCompanyStreetName { get; set; }
 
         [Display(Name = "Spouse Subdivision", Prompt = "Subdivision Name", Description = "Subdivision")]
@@ -231,8 +231,15 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public DateTime? DateModified { get; set; }
 
-        [Display(Name = "Afford Monthly Amortization", Prompt = "If you will be granted a Pag-IBIG Housing Loan, how much can you afford to pay as your monthly amortization?")]
+        [Display(Name = "If you will be granted a Pag-IBIG Housing Loan, how much can you afford to pay as your monthly amortization?", Prompt = "Monthly Amortization")]
         public decimal? AffordMonthlyAmortization { get; set; }
+
+
+        [Display(Name = "Other Juridical Personality")]
+        public string? OtherJuridicalPersonality { get; set; }
+
+        [Display(Name = "Other Employment Status")]
+        public string? OtherEmploymentStatus { get; set; }
 
         #region Display Prop
 

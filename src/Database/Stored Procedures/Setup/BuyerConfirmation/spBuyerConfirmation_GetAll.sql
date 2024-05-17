@@ -44,8 +44,4 @@ LEFT JOIN Document d ON d.Id = bcd.ReferenceId
 RETURN 0
 
  
- select * from BuyerConfirmationDocument
-
-
- truncate table Document
- truncate table BuyerConfirmationDocument
+ 
