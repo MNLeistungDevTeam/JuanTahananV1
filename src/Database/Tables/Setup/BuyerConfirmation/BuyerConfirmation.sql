@@ -84,5 +84,7 @@
 	PropertyDeveloperId INT NULL,
 	PropertyProjectId INT NULL,
 	ProjectUnitId INT NULL,
-	PropertyLocationId INT NULL
+	PropertyLocationId INT NULL,
+	OtherJuridicalPersonality NVARCHAR(40) NULL,
+	OtherEmploymentStatus NVARCHAR(40) NULL
 )

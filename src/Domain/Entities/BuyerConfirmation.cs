@@ -156,4 +156,8 @@ public partial class BuyerConfirmation
     public int? ProjectUnitId { get; set; }
 
     public int? PropertyLocationId { get; set; }
+
+    public string OtherJuridicalPersonality { get; set; }
+
+    public string OtherEmploymentStatus { get; set; }
 }
