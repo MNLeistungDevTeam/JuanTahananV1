@@ -36,6 +36,10 @@ public class PropertyUnitRepository : IPropertyUnitRepository
     public async Task<List<PropertyUnit>> GetAll() =>
         await _contextHelper.GetAllAsync();
 
+
+
+
+
     #endregion Getters
 
     #region Operation

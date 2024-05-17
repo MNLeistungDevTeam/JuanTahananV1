@@ -117,6 +117,7 @@
     <Folder Include="Tables\Setup\PropertyManagement" />
     <Folder Include="Stored Procedures\Setup\PropertyProject" />
     <Folder Include="Stored Procedures\Setup\PropertyLocation" />
+    <Folder Include="Stored Procedures\Setup\PropertyUnit" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
