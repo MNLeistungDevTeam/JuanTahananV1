@@ -102,10 +102,13 @@ $(function () {
         $("#ApplicantsPersonalInformationModel_EncodedStatus").val(selectedValue);
     });
 
+
+
     //encodedStatusdropDown.on('load', function (options) {
     //});
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
+    //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
 
     // Disable 'e', retain '-', '+'
     //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -183,8 +186,13 @@ $(function () {
         $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
     });
 
-    //$(`[id="bcfdata"] .next button`).on('click', function (e) {
-    //});
+    $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
+        $(`[id="otherJuriPerDiv"]`).attr('hidden', $(this).val() !== '5');
+    });
+
+    $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
+        $(`[id="otherEmploymentDiv"]`).attr('hidden', $(this).val() !== 'Others');
+    });
 
     // #endregion
 
@@ -1716,6 +1724,7 @@ $(function () {
     function initializeBasicTelInput() {
         $(`[name="BuyerConfirmationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BuyerConfirmationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
 
         $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -1742,7 +1751,7 @@ $(function () {
         let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
-        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();;
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
@@ -1827,6 +1836,9 @@ $(function () {
             // Set checked status for BCF term in condition radio buttons
             $("#itcRbtn1").prop("checked", !!termConditions);
             $("#itcRbtn2").prop("checked", !termConditions);
+        }
+        else {
+            $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
         }
 
         // Set miscellanous input to disable
@@ -2311,6 +2323,13 @@ $(function () {
             }
         });
     }
+
+    function removeBcfPlaceholders() {
+        $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
+        $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
+    }
+
+    removeBcfPlaceholders();
 
     //#endregion
 });

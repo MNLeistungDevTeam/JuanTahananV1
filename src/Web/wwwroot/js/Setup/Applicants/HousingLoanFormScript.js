@@ -1271,7 +1271,7 @@ $(async function () {
         //    var selectize = $(this)[0].selectize;
         //    selectize.lock();
         //});
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+        $("#frm_hlf068 input:not(#BuyerConfirmationModel_ProjectProponentName), #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
         $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
 
@@ -1412,6 +1412,16 @@ $(async function () {
 
             $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
                 $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
+            });
+
+            $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
+                $(`[id="otherJuriPerDiv"]`).attr('hidden', $(this).val() !== '5');
+                $(`[id="otherJuriPerDiv"] input`).attr('required', $(this).val() === '5');
+            });
+
+            $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
+                $(`[id="otherEmploymentDiv"]`).attr('hidden', $(this).val() !== 'Others');
+                $(`[id="otherEmploymentDiv"] input`).attr('required', $(this).val() === 'Others');
             });
 
             //Load the possible data on others forms
@@ -1745,6 +1755,10 @@ $(async function () {
     }
 
     function initializeBasicTelInput() {
+        $(`[name="BuyerConfirmationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+
         $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -1770,7 +1784,7 @@ $(async function () {
         //let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
-        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();;
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
@@ -1859,6 +1873,9 @@ $(async function () {
             // Set checked status for BCF term in condition radio buttons
             $("#itcRbtn1").prop("checked", !termConditions);
             $("#itcRbtn2").prop("checked", termConditions);
+        }
+        else {
+            $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
         }
 
         // Set miscellanous input to disable
@@ -2196,6 +2213,8 @@ $(async function () {
 
                 $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
                 $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
+              
+
 
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
@@ -2917,4 +2936,11 @@ $(async function () {
             $(this).prop('disabled', false);
         });
     }
+
+    function removeBcfPlaceholders() {
+        $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
+        $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
+    }
+
+    removeBcfPlaceholders();
 });
