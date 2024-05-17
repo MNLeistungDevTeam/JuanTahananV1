@@ -44,7 +44,6 @@ $(function () {
 
     $('#bcf_PdfFile').on('change', function (e) {
         // $(this).prop('files').length === 0
-
         checkInputFile();
     });
 
@@ -147,6 +146,11 @@ $(function () {
             removeFromPreviewOnError: true
         });
 
+        $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
+            $('#bcf_PdfFile').trigger('change');
+        });
+
         $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
+
     }
 });
