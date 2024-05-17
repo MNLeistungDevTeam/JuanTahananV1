@@ -150,32 +150,43 @@
                                     <h4 class="header-title pb-2 mb-2 border-bottom-dashed">Personal Information</h4>
                                 </div>
 
+                                <div class="row">
 
-                                <div class="col-md-8">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.ProjectProponentName" required></label>
-                                        <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.ProjectProponentName" required>
-                                        <span asp-validation-for="BuyerConfirmationModel.ProjectProponentName" class="text-danger"> </span>
+                                    <div class="col-md-4">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.ProjectProponentName" required></label>
+                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.ProjectProponentName" readonly required>
+                                            <span asp-validation-for="BuyerConfirmationModel.ProjectProponentName" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4" col="9">
+                                        <div class="position-relative">
+                                            <label asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="form-label fw-normal" required></label>
+                                            <select asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="rounded-4 mb-2 selectize" data-value="@Model.BuyerConfirmationModel.JuridicalPersonalityId" required>
+                                                <option value="">Select Juridical Personality...</option>
+                                                <option value="1">LGU</option>
+                                                <option value="2">Cooperative</option>
+                                                <option value="3">Employer</option>
+                                                <option value="4">Employees Association</option>
+                                                <option value="5">Other Group/s, pls specify</option>
+
+                                            </select>
+                                            <span asp-validation-for="BuyerConfirmationModel.JuridicalPersonalityId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-4" id="otherJuriPerDiv" hidden>
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.OtherJuridicalPersonality"></label>
+                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.OtherJuridicalPersonality">
+                                            <span asp-validation-for="BuyerConfirmationModel.OtherJuridicalPersonality" class="text-danger"> </span>
+                                        </div>
                                     </div>
                                 </div>
-
-
-                                <div class="col-md-3" col="9">
-                                    <div class="position-relative">
-                                        <label asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="form-label fw-normal" required></label>
-                                        <select asp-for="BuyerConfirmationModel.JuridicalPersonalityId" class="rounded-4 mb-2 selectize" data-value="@Model.BuyerConfirmationModel.JuridicalPersonalityId" required>
-                                            <option value="">Select Juridical Personality...</option>
-                                            <option value="1">LGU</option>
-                                            <option value="2">Cooperative</option>
-                                            <option value="3">Employer</option>
-                                            <option value="4">Employees Association</option>
-                                            <option value="5">Other Group/s, pls specify</option>
-
-                                        </select>
-                                        <span asp-validation-for="BuyerConfirmationModel.JuridicalPersonalityId" class="text-danger"></span>
-                                    </div>
-                                </div>
-
 
 
                                 <div class="col-md-3">
@@ -264,19 +275,32 @@
                                 </div>
 
 
+                                <div class="row">
 
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label asp-for="BuyerConfirmationModel.OccupationStatus" class="form-label fw-normal" required></label>
-                                        <select asp-for="BuyerConfirmationModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.BuyerConfirmationModel.OccupationStatus" required readonly>
-                                            <option value="">Select Occupation Status ...</option>
-                                            <option value="Permanent">Permanent</option>
-                                            <option value="Temporary">Temporary</option>
-                                            <option value="Casual">Casual</option>
-                                            <option value="Others">Others, pls specify</option>
-                                        </select>
-                                        <span asp-validation-for="BuyerConfirmationModel.OccupationStatus" class="text-danger"></span>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label asp-for="BuyerConfirmationModel.OccupationStatus" class="form-label fw-normal" required></label>
+                                            <select asp-for="BuyerConfirmationModel.OccupationStatus" class="rounded-4 selectize" data-value="@Model.BuyerConfirmationModel.OccupationStatus" required readonly>
+                                                <option value="">Select Occupation Status ...</option>
+                                                <option value="Permanent">Permanent</option>
+                                                <option value="Temporary">Temporary</option>
+                                                <option value="Casual">Casual</option>
+                                                <option value="Others">Others, pls specify</option>
+                                            </select>
+                                            <span asp-validation-for="BuyerConfirmationModel.OccupationStatus" class="text-danger"></span>
+                                        </div>
                                     </div>
+
+
+
+                                    <div class="col-md-3" id="otherEmploymentDiv" hidden>
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.OtherEmploymentStatus"></label>
+                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.OtherEmploymentStatus">
+                                            <span asp-validation-for="BuyerConfirmationModel.OtherEmploymentStatus" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+
                                 </div>
 
 
@@ -709,7 +733,7 @@
 
                                 <div class="col-md-3">
                                     <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization"></label>
+                                        <label class="form-label fw-bold" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization"></label>
                                         <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.AffordMonthlyAmortization">
                                         <span asp-validation-for="BuyerConfirmationModel.AffordMonthlyAmortization" class="text-danger"> </span>
                                     </div>
@@ -811,38 +835,37 @@
                                 </div>
 
 
-
-
-
-
-
-                                <div class="col-md-12">
-                                    <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
+                                <div class="col-md-12 border-bottom-dashed pb-2 mb-2 mt-3">
+                                    <h3 class="header-title">
                                         Details of Preferred House/Unit Model
+                                        <span class="ps-2 fs-6 fw-lighter text-secondary text-opacity-50">(These fields will be filled by the developer once you save this form)</span>
                                     </h3>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
-                                        <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.HouseUnitModel" disabled>
-                                        <span asp-validation-for="BuyerConfirmationModel.HouseUnitModel" class="text-danger"> </span>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.HouseUnitModel"></label>
+                                            <input type="text" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.HouseUnitModel" disabled>
+                                            <span asp-validation-for="BuyerConfirmationModel.HouseUnitModel" class="text-danger"> </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice"></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" disabled>
-                                        <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"> </span>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.SellingPrice"></label>
+                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" disabled>
+                                            <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"> </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
+                                            <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" disabled>
+                                            <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"> </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="position-relative">
-                                        <label class="form-label fw-normal" asp-for="BuyerConfirmationModel.MonthlyAmortization"></label>
-                                        <input class="form-control rounded-3 mb-2 decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" disabled>
-                                        <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"> </span>
-                                    </div>
-                                </div>
-
 
 
 
