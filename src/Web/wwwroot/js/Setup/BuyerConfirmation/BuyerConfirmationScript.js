@@ -53,16 +53,27 @@ $(function () {
                     render: function (data, type, row) {
                         var returndata = "";
 
-                        if (row.ApprovalStatus == 0) { // draft
-                            returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
-                        }
-                        else if (row.ApprovalStatus == 3) { // DeveloperVerified
-                            returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
-                        }
-                        else if (row.ApprovalStatus == 11) { // return
-                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                        if (row.ApprovalStatus == 0) { // submitted
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                         }
 
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 1) { // sign && submitted
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                        }
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 11) { // For Resubmission
+                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                        }
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 3) { // Approved
+                            returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
+                        }
+                        else if (row.ApprovalStatus == 11) { // For Revision
+                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span>`;
+                        }
+                        else if (row.ApprovalStatus == 3) { // ready for printing
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                        }
+
+                       
                         return returndata;
                     }
                 },

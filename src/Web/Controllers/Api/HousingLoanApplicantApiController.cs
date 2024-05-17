@@ -45,6 +45,8 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
+        #region Api For JTAHANAN-PH Portal
+
         [HttpGet("GetDevelopers")]
         public async Task<IActionResult> GetDevelopers()
         {
@@ -59,7 +61,6 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpGet("GetProjectsByCompany/{companyId}")]
         public async Task<IActionResult> GetProjectsByCompany(int companyId)
@@ -76,7 +77,6 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
-
         [HttpGet("GetLocationsByProject/{projectId}")]
         public async Task<IActionResult> GetLocationsByProject(int projectId)
         {
@@ -92,12 +92,26 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
+        [HttpGet("GetUnitsByProject/{projectId}")]
+        public async Task<IActionResult> GetUnitsByProject(int projectId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion Api For JTAHANAN-PH Portal
 
 
 
-
-
-
+       
 
     }
 }
