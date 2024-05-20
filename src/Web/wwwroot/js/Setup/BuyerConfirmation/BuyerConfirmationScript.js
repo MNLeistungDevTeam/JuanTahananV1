@@ -73,7 +73,6 @@ $(function () {
                             returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                         }
 
-                       
                         return returndata;
                     }
                 },
@@ -196,6 +195,30 @@ $(function () {
         let action = $(this).attr("data-value");
 
         openApprovalModal(action);
+    });
+
+    $("#btn_excelSummary").on('click', function (e) {
+        e.preventDefault();
+        window.location.href = baseUrl + "BuyerConfirmation/BCFSummary";
+
+        //$.ajax({
+        //    url: baseUrl + "BuyerConfirmation/BCFSummary",
+        //    type: "GET",
+        //    success: function (data) {
+        //        var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+        //        var link = document.createElement("a");
+        //        link.href = window.URL.createObjectURL(blob);
+        //        link.download = "BCFSummary.xlsx";
+        //        link.click();
+
+        //        window.URL.revokeObjectURL(link.href);
+        //        messageBox("Summary report has been downloaded.", "success", true);
+        //    },
+        //    error: function (xhr, status, error) {
+        //        messageBox(error, "danger", true);
+        //    }
+        //});
     });
 
     async function loadApprovalData(recordId, referenceNo) {
