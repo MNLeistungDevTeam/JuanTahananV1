@@ -66,10 +66,12 @@ $(async function () {
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
-        console.log("triiger");
+
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -95,8 +97,10 @@ $(async function () {
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -235,7 +239,7 @@ $(async function () {
                                 <div class="col-md-12">
                                     <div class="card rounded-3 shadow-lg upload-hover">
                                         <div class="card-body p-0">
-                                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
                                             <div class="p-2 file-upload-wrapper">
                                                 <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
 				                                    <div class="col-auto">
@@ -335,7 +339,7 @@ $(async function () {
                             <div class="col-md-12">
                                 <div class="card rounded-3 shadow-lg upload-hover">
                                     <div class="card-body p-0">
-                                        <input type="file" id="fileInput_${item.DocumentTypeId}"  style="display:none">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
                                         <div class="p-2 file-upload-wrapper">
                                             <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
 				                                <div class="col-auto">
@@ -500,7 +504,7 @@ $(async function () {
                             <div class="col-md-12">
                                 <div class="card rounded-3 shadow-lg upload-hover">
                                     <div class="card-body p-0">
-                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
                                         <div class="p-2 file-upload-wrapper">
                                             <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
                                                 <div class="col-auto">
