@@ -1302,7 +1302,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     --class-item-bg: #60bd3c;
     font-size: 28px;
     font-weight: bold;
-    font: 700 18px/1 "Lato", sans-serif;
+    font: 700 12px/1 "Lato", sans-serif;
     color: #fff;
 }
 

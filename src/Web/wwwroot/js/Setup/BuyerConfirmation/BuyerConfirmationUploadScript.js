@@ -10,6 +10,8 @@ $(function () {
     initializeBsFileInput();
     //initializeTraditionalDrop();
 
+    initializeRibbon();
+
     checkInputFile();
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
@@ -151,6 +153,47 @@ $(function () {
         });
 
         $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
+
+    }
+
+    function initializeRibbon() {
+        var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
+        //var bcfStatus = $("#Bcf_ApplicationStatus").val();
+
+        /*
+            bcf-documentstatus 3 - Approved		
+            bcf-documentstatus 1 - submitted		
+            bcf-documentstatus 11 - For resubmission
+        */
+
+        let ribbonCollection = [
+            {
+                documentStatus: 0,
+                text: "Not Yet Submitted",
+                bsColor: "bg-secondary"
+            },
+            {
+                documentStatus: 1,
+                text: "Submitted",
+                bsColor: "bg-primary"
+            },
+            {
+                documentStatus: 3,
+                text: "Approved",
+                bsColor: "bg-success"
+            },
+            {
+                documentStatus: 11,
+                text: "For Resubmission",
+                bsColor: "bg-warning"
+            }
+        ];
+
+        let ribbon = ribbonCollection.find(r => r.documentStatus === Number(bcfDocumentStatus));
+
+        //$(`[id="bcf_dl_custom_ribbon"]`).attr('hidden', ribbon.documentStatus === 0);
+        $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
+        $(`[id="bcfStatus"]`).html(ribbon.text);
 
     }
 });
