@@ -58,11 +58,21 @@ $(async function () {
         if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
             $(".re-upload").hide();
         }
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            $(`.upload-hover`).find('a.upload, a.re-upload').hide();
+            $(`.upload-hover`).removeClass('upload-hover');
+        }
     });
 
     //#region Events
     $(document).on('click', '.upload-link', async function (e) {
         e.preventDefault();
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
@@ -92,6 +102,10 @@ $(async function () {
     $(document).on('click', '.re-upload', async function (e) {
         e.preventDefault();
 
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
@@ -117,24 +131,36 @@ $(async function () {
     });
 
     $(document).on('mouseover', `.upload-hover`, function (e) {
-        let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
-        let dataStatus = uploadIcon.parent().data('status') === 'exists';
+        try {
 
-        if (dataStatus) {
-            // file already uploaded
-            uploadIcon.removeClass('fa-upload');
-            uploadIcon.addClass('fa-retweet');
-        }
-        else {
-            uploadIcon.removeClass('fa-retweet');
-            uploadIcon.addClass('fa-upload');
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+            let dataStatus = uploadIcon.parent().data('status') === 'exists';
+
+            if (dataStatus) {
+                // file already uploaded
+                uploadIcon.removeClass('fa-upload');
+                uploadIcon.addClass('fa-retweet');
+            }
+            else {
+                uploadIcon.removeClass('fa-retweet');
+                uploadIcon.addClass('fa-upload');
+            }
+
+        } catch (e) {
+            console.error(e);
         }
     }).on('mouseleave', `.upload-hover`, function (e) {
-        let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+        try {
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
 
-        uploadIcon.removeClass('fa-retweet');
-        uploadIcon.removeClass('fa-upload');
+            uploadIcon.removeClass('fa-retweet');
+            uploadIcon.removeClass('fa-upload');
+        } catch (e) {
+            console.error(e);
+        }
+
     });
+
 
     //#endregion Events
 
