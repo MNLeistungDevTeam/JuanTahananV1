@@ -1300,7 +1300,7 @@ $(async function () {
         $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
 
         if (buyerconfirmationAppStatus === '3') {
-            DisableBuyerConfirmationFields();
+            disableBuyerConfirmationFields();
 
             $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
         }
@@ -2267,6 +2267,8 @@ $(async function () {
                 setTimeout(function () {
                     $("#beneficiary-overlay").addClass('d-none');
                 }, 2000); // 2000 milliseconds = 2 seconds
+
+                disableBuyerConfirmationFields();
             }
         });
     }
@@ -2454,7 +2456,7 @@ $(async function () {
         $("#BarrowersInformationModel_Suffix").val(borrower.Suffix);
         $("#BarrowersInformationModel_Citizenship").val(borrower.Citizenship);
 
-        $("#BarrowersInformationModel_BirthDate").val(borrower.BirthDate);
+        $("#BarrowersInformationModel_BirthDate").val(moment(borrower.BirthDate).format('MM/DD/YYYY'));
         setDateValue('#BarrowersInformationModel_BirthDate');
 
         $("#BarrowersInformationModel_Sex").data('selectize').setValue(borrower ? borrower.Sex : null);
@@ -2541,6 +2543,16 @@ $(async function () {
         $("#Form2PageModel_DateOpened2").val(form2Page.DateOpened2 ? form2Page.DateOpened2 : null);
         $("#Form2PageModel_DateOpened3").val(form2Page.DateOpened3 ? form2Page.DateOpened3 : null);
 
+        if (form2Page.DateOpened1) {
+            setDateValue("#Form2PageModel_DateOpened1");
+        }
+        if (form2Page.DateOpened2) {
+            setDateValue("#Form2PageModel_DateOpened2");
+        }
+        if (form2Page.DateOpened3) {
+            setDateValue("#Form2PageModel_DateOpened3");
+        }
+
         $("#Form2PageModel_AverageBalance1").val(form2Page.AverageBalance1 ? form2Page.AverageBalance1 : null);
         $("#Form2PageModel_AverageBalance2").val(form2Page.AverageBalance2 ? form2Page.AverageBalance2 : null);
         $("#Form2PageModel_AverageBalance3").val(form2Page.AverageBalance3 ? form2Page.AverageBalance3 : null);
@@ -2605,6 +2617,16 @@ $(async function () {
         $("#Form2PageModel_MaturityDateTime2").val(form2Page.MaturityDateTime2 ? form2Page.MaturityDateTime2 : null);
         $("#Form2PageModel_MaturityDateTime3").val(form2Page.MaturityDateTime3 ? form2Page.MaturityDateTime3 : null);
 
+        if (form2Page.MaturityDateTime1) {
+            setDateValue("#Form2PageModel_MaturityDateTime1");
+        }
+        if (form2Page.MaturityDateTime2) {
+            setDateValue("#Form2PageModel_MaturityDateTime2");
+        }
+        if (form2Page.MaturityDateTime3) {
+            setDateValue("#Form2PageModel_MaturityDateTime3");
+        }
+
         $("#Form2PageModel_Amortization1").val(form2Page.Amortization1 ? form2Page.Amortization1 : null);
         $("#Form2PageModel_Amortization2").val(form2Page.Amortization2 ? form2Page.Amortization2 : null);
         $("#Form2PageModel_Amortization3").val(form2Page.Amortization3 ? form2Page.Amortization3 : null);
@@ -2642,9 +2664,29 @@ $(async function () {
         $("#Form2PageModel_DateObtained2").val(form2Page.DateObtained2 ? form2Page.DateObtained2 : null);
         $("#Form2PageModel_DateObtained3").val(form2Page.DateObtained3 ? form2Page.DateObtained3 : null);
 
+        if (form2Page.DateObtained1) {
+            setDateValue("#Form2PageModel_DateObtained1");
+        }
+        if (form2Page.DateObtained2) {
+            setDateValue("#Form2PageModel_DateObtained2");
+        }
+        if (form2Page.DateObtained3) {
+            setDateValue("#Form2PageModel_DateObtained3");
+        }
+
         $("#Form2PageModel_DateFullyPaid1").val(form2Page.DateFullyPaid1 ? form2Page.DateFullyPaid1 : null);
         $("#Form2PageModel_DateFullyPaid2").val(form2Page.DateFullyPaid2 ? form2Page.DateFullyPaid2 : null);
         $("#Form2PageModel_DateFullyPaid3").val(form2Page.DateFullyPaid3 ? form2Page.DateFullyPaid3 : null);
+
+        if (form2Page.DateFullyPaid1) {
+            setDateValue("#Form2PageModel_DateFullyPaid1");
+        }
+        if (form2Page.DateFullyPaid2) {
+            setDateValue("#Form2PageModel_DateFullyPaid2");
+        }
+        if (form2Page.DateFullyPaid3) {
+            setDateValue("#Form2PageModel_DateFullyPaid3");
+        }
 
         $("#Form2PageModel_NameSupplier1").val(form2Page.NameSupplier1 ? form2Page.NameSupplier1 : null);
         $("#Form2PageModel_NameSupplier2").val(form2Page.NameSupplier2 ? form2Page.NameSupplier2 : null);
@@ -2790,6 +2832,8 @@ $(async function () {
         $("#BuyerConfirmationModel_SellingPrice").val(buyerConfimarion ? buyerConfimarion.SellingPrice : null);
         $("#BuyerConfirmationModel_MonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.MonthlyAmortization : null);
 
+        setDateValue("#BuyerConfirmationModel_BirthDate");
+
         initializeRadioBtnMisc();
 
         //$("#frm_hlf068").clearValidation();
@@ -2869,7 +2913,7 @@ $(async function () {
 
     //#endregion Getters Funcions
 
-    function DisableBuyerConfirmationFields() {
+    function disableBuyerConfirmationFields() {
         $('[id^="BuyerConfirmationModel_"]').each(function () {
             $(this).prop('disabled', true);
         });
