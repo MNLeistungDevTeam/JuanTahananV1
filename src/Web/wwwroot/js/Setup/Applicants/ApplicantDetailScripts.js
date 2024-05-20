@@ -52,24 +52,36 @@ $(async function () {
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
         }
 
-        $(".re-upload").hide();
+        //$(".re-upload").hide();
 
         //Hides the re-upload button if status is Deferred or Withdrawn
         if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
             $(".re-upload").hide();
+        }
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            $(`.upload-hover`).find('a.upload, a.re-upload').hide();
+            $(`.upload-hover`).removeClass('upload-hover');
         }
     });
 
     //#region Events
     $(document).on('click', '.upload-link', async function (e) {
         e.preventDefault();
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
-        console.log("triiger");
+
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -90,13 +102,19 @@ $(async function () {
     $(document).on('click', '.re-upload', async function (e) {
         e.preventDefault();
 
-        DocumentTypeId = $(this).closest('.file-upload-wrapper').find('a').data("document-type-id");
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
+        DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -111,6 +129,38 @@ $(async function () {
 
         openApprovalModal(action);
     });
+
+    $(document).on('mouseover', `.upload-hover`, function (e) {
+        try {
+
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+            let dataStatus = uploadIcon.parent().data('status') === 'exists';
+
+            if (dataStatus) {
+                // file already uploaded
+                uploadIcon.removeClass('fa-upload');
+                uploadIcon.addClass('fa-retweet');
+            }
+            else {
+                uploadIcon.removeClass('fa-retweet');
+                uploadIcon.addClass('fa-upload');
+            }
+
+        } catch (e) {
+            console.error(e);
+        }
+    }).on('mouseleave', `.upload-hover`, function (e) {
+        try {
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+
+            uploadIcon.removeClass('fa-retweet');
+            uploadIcon.removeClass('fa-upload');
+        } catch (e) {
+            console.error(e);
+        }
+
+    });
+
 
     //#endregion Events
 
@@ -129,13 +179,25 @@ $(async function () {
         // Group items by DocumentTypeName
         verifAttach.forEach(item => {
             const groupId = item.DocumentTypeId;
-            const groupName = item.DocumentTypeName.toPropper();
+            const groupName = item.DocumentTypeName;
 
             if (!groupedItems[groupName]) {
                 groupedItems[groupName] = [];
             }
             groupedItems[groupName].push(item);
         });
+
+
+        let fileExtLibrary = [
+            {
+                extension: ['jpg', 'png'],
+                icon: 'fas fa-image'
+            },
+            {
+                extension: ['pdf'],
+                icon: 'fas fa-file-pdf'
+            }
+        ];
 
         // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
@@ -151,6 +213,9 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
+
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
 
                     //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
                     //    groupHtml += `<div class="col-md-4 mb-2" id="${firstItem.DocumentTypeId}">
@@ -198,28 +263,30 @@ $(async function () {
                             <div class="col-md-4" id="${firstItem.DocumentTypeId}">
                                 <h4 class="header-title text-muted">${groupName}</h4>
                                 <div class="col-md-12">
-                                    <div class="card mb-1 shadow-none border border-1">
-                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                        <div class="p-2 file-upload-wrapper">
-                                            <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-				                                <div class="col-auto">
-					                                <div class="avatar-sm" ${!item.DocumentName ? "hidden" : ""}>
-						                                <span class="avatar-title bg-soft-primary text-primary rounded">
-						                                    ${fileExtension}
-                                                        </span>
-					                                </div>
-				                                </div>
-				                                <div class="col ps-0">
-					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
-				                                </div>
-				                                <div class="col-auto">
-					                                <!-- Button -->
-					                                <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                                <i class="fas fa-upload"></i>
-					                                </a>
-				                                </div>
-			                                </div>
+                                    <div class="card rounded-3 shadow-lg upload-hover">
+                                        <div class="card-body p-0">
+                                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                            <div class="p-2 file-upload-wrapper">
+                                                <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                                    <div class="col-auto">
+					                                    <div ${!item.DocumentName ? "hidden" : ""}>
+						                                    <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                                ${iconTag}
+                                                            </span>
+					                                    </div>
+				                                    </div>
+				                                    <div class="col ps-0">
+					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+				                                    </div>
+				                                    <div class="col-auto">
+					                                    <!-- Button -->
+					                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+						                                    <i class="fas " id="upload-right-icon"></i>
+					                                    </a>
+				                                    </div>
+			                                    </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -247,6 +314,9 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
+
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
 
                     if (item.HasSubdocument === 1) {
                         groupHtml += `<div class="col-md-12 mt-3 mb-2" id="${firstItem.DocumentTypeId}">
@@ -293,33 +363,71 @@ $(async function () {
                         <div class="col-md-4" id="${firstItem.DocumentTypeId}">
                             <h4 class="header-title text-muted">${groupName}</h4>
                             <div class="col-md-12">
-                                <div class="card mb-1 shadow-none border border-1">
-                                    <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                    <div class="p-2 file-upload-wrapper">
-                                        <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-				                            <div class="col-auto">
-					                            <div class="avatar-sm" ${!item.DocumentName ? "hidden" : ""}>
-						                            <span class="avatar-title bg-soft-primary text-primary rounded">
-						                                ${fileExtension}
-                                                    </span>
-					                            </div>
-				                            </div>
-				                            <div class="col ps-0">
-					                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                            <p class="mb-0">${formatSize(item.DocumentSize)}</p>
-				                            </div>
-				                            <div class="col-auto">
-					                            <!-- Button -->
-					                            <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                            <i class="fas fa-upload"></i>
-					                            </a>
-				                            </div>
-			                            </div>
+                                <div class="card rounded-3 shadow-lg upload-hover">
+                                    <div class="card-body p-0">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                        <div class="p-2 file-upload-wrapper">
+                                            <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                                <div class="col-auto">
+					                                <div ${!item.DocumentName ? "hidden" : ""}>
+						                                <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                            ${iconTag}
+                                                        </span>
+					                                </div>
+				                                </div>
+				                                <div class="col ps-0">
+					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+				                                </div>
+				                                <div class="col-auto">
+					                                <!-- Button -->
+					                                <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+						                                <i class="fas " id="upload-right-icon"></i>
+					                                </a>
+				                                </div>
+			                                </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
+
+                    /*
+                        groupHtml += `
+                            <div class="col-md-4" id="${firstItem.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${groupName}</h4>
+                                <div class="col-md-12">
+                                    <div class="card rounded-4 shadow-lg">
+                                        <div class="card-body p-0">
+                                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
+                                            <div class="p-2 file-upload-wrapper">
+                                                <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                                    <div class="col-auto">
+					                                    <div class="avatar-sm" ${!item.DocumentName ? "hidden" : ""}>
+						                                    <span class="avatar-title bg-soft-primary text-primary rounded">
+						                                        ${fileExtension}
+                                                            </span>
+					                                    </div>
+				                                    </div>
+				                                    <div class="col ps-0">
+					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+				                                    </div>
+				                                    <div class="col-auto">
+					                                    <!-- Button -->
+					                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
+						                                    <i class="fas fa-upload" id="upload-right-icon"></i>
+					                                    </a>
+				                                    </div>
+			                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    */
                     }
                 });
 
@@ -357,6 +465,17 @@ $(async function () {
             groupedItems[groupName].push(item);
         });
 
+        let fileExtLibrary = [
+            {
+                extension: ['jpg', 'png'],
+                icon: 'fas fa-image'
+            },
+            {
+                extension: ['pdf'],
+                icon: 'fas fa-file-pdf'
+            }
+        ];
+
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -374,6 +493,9 @@ $(async function () {
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
                     const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
+
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
 
                     //groupHtml += `<div class="file-upload-wrapper">
                     //        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
@@ -406,28 +528,30 @@ $(async function () {
                         <div class="col-md-4" id="${firstItem.DocumentTypeId}">
                             <h4 class="header-title text-muted">${groupName}</h4>
                             <div class="col-md-12">
-                                <div class="card mb-1 shadow-none border border-1">
-                                    <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                    <div class="p-2 file-upload-wrapper">
-                                        <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-				                            <div class="col-auto">
-					                            <div class="avatar-sm" ${!item.DocumentName ? "hidden" : ""}>
-						                            <span class="avatar-title bg-soft-primary text-primary rounded">
-						                                ${fileExtension}
-                                                    </span>
-					                            </div>
-				                            </div>
-				                            <div class="col ps-0" >
-					                            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
-					                            <p class="mb-0">${formatSize(item.DocumentSize)}</p>
-				                            </div>
-				                            <div class="col-auto">
-					                            <!-- Button -->
-					                            <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-						                            <i class="dripicons-download"></i>
-					                            </a>
-				                            </div>
-			                            </div>
+                                <div class="card rounded-3 shadow-lg upload-hover">
+                                    <div class="card-body p-0">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                        <div class="p-2 file-upload-wrapper">
+                                            <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                                <div class="col-auto">
+                                                    <div ${!item.DocumentName ? "hidden" : ""}>
+						                                <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                            ${iconTag}
+                                                        </span>
+					                                </div>
+                                                </div>
+                                                <div class="col ps-0" >
+                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+                                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <!-- Button -->
+                                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
+                                                        <i class="dripicons-download"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

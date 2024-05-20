@@ -9,8 +9,8 @@ namespace DMS.Application.Services
     public interface IHousingLoanIntegrationService
     {
         Task<IEnumerable<CompanyModel>> GetDevelopers();
-        Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int projectId);
-        Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId);
+        Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int? projectId, int? developerId);
+        Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId, int? locationId);
         Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder);
     }
 }

@@ -36,8 +36,8 @@ public class PropertyLocationRepository : IPropertyLocationRepository
     public async Task<List<PropertyLocation>> GetAll() =>
         await _contextHelper.GetAllAsync();
 
-    public async Task<IEnumerable<PropertyLocationModel?>> GetPropertyLocationByProjectAsync(int projectId) =>
-   await _db.LoadDataAsync<PropertyLocationModel, dynamic>("spPropertyLocation_GetByProjectId", new { projectId });
+    public async Task<IEnumerable<PropertyLocationModel?>> GetPropertyLocationByProjectAsync(int? projectId,int? developerId) =>
+   await _db.LoadDataAsync<PropertyLocationModel, dynamic>("spPropertyLocation_GetByProjectId", new { projectId, developerId });
 
     #endregion Getters
 

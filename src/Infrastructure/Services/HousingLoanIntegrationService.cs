@@ -179,16 +179,16 @@ namespace DMS.Infrastructure.Services
             return filteredCompanies;
         }
 
-        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId)
+        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId,int? locationId)
         {
-            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId);
+            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId,locationId);
 
             return projects;
         }
 
-        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int projectId)
+        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int? projectId,int? developerId)
         {
-            var projects = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId);
+            var projects = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId, developerId);
 
             return projects;
         }

@@ -62,12 +62,14 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
-        [HttpGet("GetProjectsByCompany/{companyId}")]
-        public async Task<IActionResult> GetProjectsByCompany(int companyId)
+        [HttpGet("GetProjectsByCompany")]
+ 
+
+        public async Task<IActionResult> GetProjectsByCompany(int companyId, int? locationId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId);
+                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId, locationId);
 
                 return Ok(projects);
             }
@@ -77,12 +79,13 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
-        [HttpGet("GetLocationsByProject/{projectId}")]
-        public async Task<IActionResult> GetLocationsByProject(int projectId)
+
+        [HttpGet("GetLocationsByProject")]
+        public async Task<IActionResult> GetLocationsByProject(int? projectId, int? developerId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId, developerId);
 
                 return Ok(projects);
             }
@@ -92,26 +95,26 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
-        [HttpGet("GetUnitsByProject/{projectId}")]
-        public async Task<IActionResult> GetUnitsByProject(int projectId)
-        {
-            try
-            {
-                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+        //[HttpGet("GetUnitsByProject/{projectId}")]
+        //public async Task<IActionResult> GetUnitsByProject(int projectId)
+        //{
+        //    try
+        //    {
+        //        var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
 
-                return Ok(projects);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok(projects);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         #endregion Api For JTAHANAN-PH Portal
 
 
 
-       
+
 
     }
 }

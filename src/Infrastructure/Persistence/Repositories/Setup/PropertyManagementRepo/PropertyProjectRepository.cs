@@ -47,8 +47,8 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     public async Task<IEnumerable<PropertyProjectModel?>> GetAllAsync() =>
            await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spPropertyProject_GetAll", new { });
 
-    public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId) =>
-           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId });
+    public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId,int? locationId) =>
+           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId , locationId});
 
     public async Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id) =>
        await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetPropertyLocationByProjectId", new { id });
