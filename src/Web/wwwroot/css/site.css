@@ -1612,3 +1612,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
     opacity: .25;
     background-color: #f3ebeb38 !important;
 }
+
+.card.upload-hover:hover {
+    cursor: pointer;
+}
