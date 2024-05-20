@@ -234,7 +234,6 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "If you will be granted a Pag-IBIG Housing Loan, how much can you afford to pay as your monthly amortization?", Prompt = "Monthly Amortization")]
         public decimal? AffordMonthlyAmortization { get; set; }
 
-
         [Display(Name = "Other Juridical Personality")]
         public string? OtherJuridicalPersonality { get; set; }
 

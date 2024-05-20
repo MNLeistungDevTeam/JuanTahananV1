@@ -265,6 +265,7 @@
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByUserId.sql" />
     <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmationDocument.sql" />
     <Build Include="Stored Procedures\Setup\PropertyUnit\spPropertyUnit_GetUnitByProjectId.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetBcfQualifiedReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
