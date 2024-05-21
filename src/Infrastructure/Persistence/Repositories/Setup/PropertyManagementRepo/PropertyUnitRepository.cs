@@ -36,7 +36,8 @@ public class PropertyUnitRepository : IPropertyUnitRepository
     public async Task<List<PropertyUnit>> GetAll() =>
         await _contextHelper.GetAllAsync();
 
-
+    public async Task<IEnumerable<PropertyUnitModel?>> GetUnitByProjectAsync(int? projectId, int? developerId) =>
+       await _db.LoadDataAsync<PropertyUnitModel, dynamic>("spPropertyUnit_GetUnitByProjectId", new { projectId, developerId });
 
 
 

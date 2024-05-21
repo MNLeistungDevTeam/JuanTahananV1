@@ -29,6 +29,7 @@ namespace DMS.Infrastructure.Services
         private readonly ICompanyRepository _companyRepo;
         private readonly IPropertyProjectRepository _propertyProjectRepo;
         private readonly IPropertyLocationRepository _propertyLocationRepo;
+        private readonly IPropertyUnitRepository _propertyUnitRepo;
 
         public HousingLoanIntegrationService(IBarrowersInformationRepository barrowersInformationRepo,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
@@ -40,7 +41,8 @@ namespace DMS.Infrastructure.Services
             IBeneficiaryInformationRepository beneficiaryInformationRepo,
             ICompanyRepository companyRepo,
             IPropertyProjectRepository propertyProjectRepo,
-            IPropertyLocationRepository propertyLocationRepo)
+            IPropertyLocationRepository propertyLocationRepo,
+            IPropertyUnitRepository propertyUnitRepo)
         {
             _barrowersInformationRepo = barrowersInformationRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -53,6 +55,7 @@ namespace DMS.Infrastructure.Services
             _companyRepo = companyRepo;
             _propertyProjectRepo = propertyProjectRepo;
             _propertyLocationRepo = propertyLocationRepo;
+            _propertyUnitRepo = propertyUnitRepo;
         }
 
         public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder)
@@ -141,7 +144,6 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.PropertyProjectId = model.PropertyProjectId;
             beneficiaryModel.PropertyUnitId = model.PropertyUnitId;
 
-
             await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
 
             #endregion Create BeneficiaryInformation
@@ -179,16 +181,32 @@ namespace DMS.Infrastructure.Services
             return filteredCompanies;
         }
 
-        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId,int? locationId)
+        public async Task<CompanyModel> GetDeveloperByCode(string? Code)S
         {
-            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId,locationId);
+            var companies = await _companyRepo.GetCompanies();
+            var company = companies
+                .Where(company => company.Id != 1 && company.Code == Code).SingleOrDefault();
+
+            return company;
+        }
+
+        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId, int? locationId)
+        {
+            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId, locationId);
 
             return projects;
         }
 
-        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int? projectId,int? developerId)
+        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int? projectId, int? developerId)
         {
             var projects = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId, developerId);
+
+            return projects;
+        }
+
+        public async Task<IEnumerable<PropertyUnitModel>> GetUnitsByProject(int? projectId, int? developerId)
+        {
+            var projects = await _propertyUnitRepo.GetUnitByProjectAsync(projectId, developerId);
 
             return projects;
         }
