@@ -236,10 +236,10 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
 
         [Display(Name = "Other Juridical Personality")]
-        public string? OtherJuridicalPersonality { get; set; }
+        public string? OtherJuridicalPersonality { get; set; } = string.Empty;
 
         [Display(Name = "Other Employment Status")]
-        public string? OtherEmploymentStatus { get; set; }
+        public string? OtherEmploymentStatus { get; set; } = string.Empty;
 
         #region Display Prop
 
