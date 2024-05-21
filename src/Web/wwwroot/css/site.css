@@ -1616,3 +1616,33 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 .card.upload-hover:hover {
     cursor: pointer;
 }
+
+.custom-responsive-content {
+    max-width: -webkit-fill-available;
+}
+
+.custom-height-responsive-content {
+    max-height: -webkit-fill-available;
+}
+
+.custom-topbar {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0 5%;
+}
+
+/*#div_approvebcfNote ~ #sidebar-menu {
+    top: calc(var(--ct-topbar-height) + 1.5rem) !important;
+}
+
+#div_approvebcfNote:not(.d-none) ~ #sidebar-menu {
+    top: calc(var(--ct-topbar-height) + 5rem) !important;
+}*/
