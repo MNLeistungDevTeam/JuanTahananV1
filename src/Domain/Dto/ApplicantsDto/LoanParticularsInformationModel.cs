@@ -20,7 +20,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int ApplicantsPersonalInformationId { get; set; }
 
         //[Required(ErrorMessage = "this field is required")]
-        [Display(Name = "Desired Re-Pricing Pediod (Years)", Prompt = "Select Re-pracing Period")]
+        [Display(Name = "Desired Re-Pricing Pediod (Years)", Prompt = "Select Re-pricing Period")]
         public int? RepricingPeriod { get; set; }
 
         [Display(Name = "Desired Loan Term (Years)", Prompt = "Input Year")]
@@ -40,8 +40,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         }
 
         [Display(
-            Name = "Desired Loan Amount", 
-            Prompt = "Input desired loan amount", 
+            Name = "Desired Loan Amount",
+            Prompt = "Input desired loan amount",
             Description = "(Exclusive of the co-borrower's desired loan amount, if any)"
         )]
         public decimal? DesiredLoanAmount { get; set; }
@@ -61,5 +61,9 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? DateDeleted { get; set; }
 
         public int? DeletedById { get; set; }
+        [Display(Name = "Enrollment To MRI/SRI")]
+        public bool? IsEnrolledToMRI { get; set; }
+        [Display(Name = "Payment Scheme")]
+        public string? PaymentScheme { get; set; }
     }
 }

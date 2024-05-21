@@ -14,7 +14,7 @@ public interface IPropertyProjectRepository
     Task<PropertyProject> CreateAsync(PropertyProject model, int userId);
     Task<List<PropertyProject>> GetAll();
     Task<IEnumerable<PropertyProjectModel?>> GetAllAsync();
-    Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId);
+    Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId,int? locationId);
     Task<PropertyProject?> GetById(int id);
     Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id);
     Task<IEnumerable<PropertyProjectModel?>> GetPropertyUnitByProjectAsync(int id);

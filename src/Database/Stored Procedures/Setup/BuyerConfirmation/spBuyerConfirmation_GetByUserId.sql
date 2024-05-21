@@ -10,7 +10,7 @@ SELECT
 		CONCAT(u2.Firstname,' ',u2.MiddleName,' ',u2.LastName) ApproverFullName,
 		u2.FirstName ApproverFirstName,
   CASE
-        WHEN bc.ApprovalStatus = 0 THEN 'Application in Draft'
+        WHEN bc.ApprovalStatus = 0 THEN 'Submitted'
         WHEN bc.ApprovalStatus = 3 AND bcd.[Status] = 1 THEN 'Sign and Submitted'
         WHEN bc.ApprovalStatus = 3 AND bcd.[Status] = 11 THEN 'For Resubmission' -- document resubmit
         WHEN bc.ApprovalStatus = 3 AND bcd.[Status] = 3 THEN 'Approved'
@@ -21,14 +21,14 @@ SELECT
 		u2.Position AS ApproverRole,
 		aps.Remarks,
 		aps.ApproverId,
-	CASE WHEN bcd.[Status] = 11 Then
+	CASE WHEN bcd.[Status] = 11 Then -- Returned
 	'' ELSE d.[Name]
 	END [FileName],
-	CASE WHEN bcd.[Status] = 11 Then
+	CASE WHEN bcd.[Status] = 11 Then -- Returned
 	'' ELSE d.[Location]
 	END FileLocation,
     bcd.Id AS BuyerConfirmationDocumentId,
-	CASE WHEN bcd.[Status] = 11 Then
+	CASE WHEN bcd.[Status] = 11 Then -- Returned
 	0 ELSE bcd.Id
 	END BuyerConfirmationDocumentId,
     bcd.[Status] BuyerConfirmationDocumentStatus

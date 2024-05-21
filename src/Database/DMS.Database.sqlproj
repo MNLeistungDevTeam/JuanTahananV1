@@ -117,6 +117,7 @@
     <Folder Include="Tables\Setup\PropertyManagement" />
     <Folder Include="Stored Procedures\Setup\PropertyProject" />
     <Folder Include="Stored Procedures\Setup\PropertyLocation" />
+    <Folder Include="Stored Procedures\Setup\PropertyUnit" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -263,6 +264,8 @@
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByCode.sql" />
     <Build Include="Stored Procedures\Setup\BeneficiaryInformation\spBeneficiaryInformation_GetByUserId.sql" />
     <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmationDocument.sql" />
+    <Build Include="Stored Procedures\Setup\PropertyUnit\spPropertyUnit_GetUnitByProjectId.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetBcfQualifiedReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

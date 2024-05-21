@@ -2,6 +2,7 @@
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Services;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
@@ -54,6 +55,9 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId) =>
         await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId });
 
+    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync() =>
+        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { });
+
     #endregion Getters
 
     #region Operation Methods
@@ -81,8 +85,6 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
         }
         else
         {
-            
-
             buyerConfirm = await UpdateAsync(buyerConfirm, userId);
         }
 

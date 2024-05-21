@@ -1,4 +1,5 @@
-﻿using DMS.Domain.Dto.BuyerConfirmationDto;
+﻿using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace DMS.Application.Interfaces.Setup.BuyerConfirmationRepo
         Task<IEnumerable<BuyerConfirmationModel>> GetAllAsync();
         Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId);
         Task<BuyerConfirmation> UpdateAsync(BuyerConfirmation buyerConfirm, int userId);
+        Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync();
     }
 }

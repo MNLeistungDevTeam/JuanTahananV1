@@ -4,6 +4,7 @@ using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.BuyerConfirmationDto;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
@@ -88,17 +89,37 @@ public class HomeController : Controller
 
     public async Task<IActionResult> BCFDownload()
     {
-        int userId = int.Parse(User.Identity.Name);
-
-        var bcfData = await _buyerConfirmationRepo.GetByUserAsync(userId);
-
-        BuyerConfirmationModel bcModel = new();
-        if (bcfData != null)
+        try
         {
-            bcModel = bcfData;
-        }
 
-        return View(bcfData);
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            //if the current user is not beneficiary
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Beneficiary)
+            {
+                return View("AccessDenied");
+            }
+            var bcfData = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+            BuyerConfirmationModel bcModel = new();
+            if (bcfData != null)
+            {
+                if (bcfData.ApprovalStatus != 3)
+                {
+                    throw new Exception("Your BCF is not yet approved by Developer");
+                }
+
+                bcModel = bcfData;
+            }
+
+            return View(bcModel);
+
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+
+
     }
 
     #endregion Views

@@ -359,6 +359,45 @@ $(async function () {
         }
     });
 
+
+
+
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
+
+
+
+
     //#endregion
 
     //#endregion
@@ -1300,7 +1339,7 @@ $(async function () {
         $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
 
         if (buyerconfirmationAppStatus === '3') {
-            DisableBuyerConfirmationFields();
+            disableBuyerConfirmationFields();
 
             $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
         }
@@ -1362,8 +1401,6 @@ $(async function () {
 
         if (hasBcf == "False") {
             $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
-
-
                 $(`[id="bcf-incomeFields"]`).attr({
                     hidden: $(this).attr('id') === 'isRbtn2',
                 });
@@ -1415,15 +1452,34 @@ $(async function () {
             });
 
             $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
-                $(`[id="otherJuriPerDiv"]`).attr('hidden', $(this).val() !== '5');
-                $(`[id="otherJuriPerDiv"] input`).attr('required', $(this).val() === '5');
+                console.log($(this).val())
+
+                if ($(this).val() == 5) {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', false).val("");
+                }
             });
 
             $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
-                $(`[id="otherEmploymentDiv"]`).attr('hidden', $(this).val() !== 'Others');
-                $(`[id="otherEmploymentDiv"] input`).attr('required', $(this).val() === 'Others');
+                if ($(this).val() == 'Others') {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', false).attr('');
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
+                }
             });
 
+            $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+            })
+
+      
             //Load the possible data on others forms
             //HLafTobcfConnectedFieldMap();
             //bcfToHLafConnectedFieldMap();
@@ -1787,6 +1843,12 @@ $(async function () {
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
+
+        let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
+        let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
+
+        $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
+        $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
         //if (pagibigAvailedLoan === "True") {
@@ -2188,7 +2250,6 @@ $(async function () {
         //$("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
         //$("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
 
-
         //enable bcf field even approve temporarily to mapped in pdf
         enableBuyerConfirmationFields();
 
@@ -2206,15 +2267,11 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
-
-                
                 $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
                 $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
 
                 $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
                 $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
-              
-
 
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
@@ -2267,6 +2324,8 @@ $(async function () {
                 setTimeout(function () {
                     $("#beneficiary-overlay").addClass('d-none');
                 }, 2000); // 2000 milliseconds = 2 seconds
+
+                disableBuyerConfirmationFields();
             }
         });
     }
@@ -2454,7 +2513,7 @@ $(async function () {
         $("#BarrowersInformationModel_Suffix").val(borrower.Suffix);
         $("#BarrowersInformationModel_Citizenship").val(borrower.Citizenship);
 
-        $("#BarrowersInformationModel_BirthDate").val(borrower.BirthDate);
+        $("#BarrowersInformationModel_BirthDate").val(moment(borrower.BirthDate).format('MM/DD/YYYY'));
         setDateValue('#BarrowersInformationModel_BirthDate');
 
         $("#BarrowersInformationModel_Sex").data('selectize').setValue(borrower ? borrower.Sex : null);
@@ -2541,6 +2600,16 @@ $(async function () {
         $("#Form2PageModel_DateOpened2").val(form2Page.DateOpened2 ? form2Page.DateOpened2 : null);
         $("#Form2PageModel_DateOpened3").val(form2Page.DateOpened3 ? form2Page.DateOpened3 : null);
 
+        if (form2Page.DateOpened1) {
+            setDateValue("#Form2PageModel_DateOpened1");
+        }
+        if (form2Page.DateOpened2) {
+            setDateValue("#Form2PageModel_DateOpened2");
+        }
+        if (form2Page.DateOpened3) {
+            setDateValue("#Form2PageModel_DateOpened3");
+        }
+
         $("#Form2PageModel_AverageBalance1").val(form2Page.AverageBalance1 ? form2Page.AverageBalance1 : null);
         $("#Form2PageModel_AverageBalance2").val(form2Page.AverageBalance2 ? form2Page.AverageBalance2 : null);
         $("#Form2PageModel_AverageBalance3").val(form2Page.AverageBalance3 ? form2Page.AverageBalance3 : null);
@@ -2605,6 +2674,16 @@ $(async function () {
         $("#Form2PageModel_MaturityDateTime2").val(form2Page.MaturityDateTime2 ? form2Page.MaturityDateTime2 : null);
         $("#Form2PageModel_MaturityDateTime3").val(form2Page.MaturityDateTime3 ? form2Page.MaturityDateTime3 : null);
 
+        if (form2Page.MaturityDateTime1) {
+            setDateValue("#Form2PageModel_MaturityDateTime1");
+        }
+        if (form2Page.MaturityDateTime2) {
+            setDateValue("#Form2PageModel_MaturityDateTime2");
+        }
+        if (form2Page.MaturityDateTime3) {
+            setDateValue("#Form2PageModel_MaturityDateTime3");
+        }
+
         $("#Form2PageModel_Amortization1").val(form2Page.Amortization1 ? form2Page.Amortization1 : null);
         $("#Form2PageModel_Amortization2").val(form2Page.Amortization2 ? form2Page.Amortization2 : null);
         $("#Form2PageModel_Amortization3").val(form2Page.Amortization3 ? form2Page.Amortization3 : null);
@@ -2642,9 +2721,29 @@ $(async function () {
         $("#Form2PageModel_DateObtained2").val(form2Page.DateObtained2 ? form2Page.DateObtained2 : null);
         $("#Form2PageModel_DateObtained3").val(form2Page.DateObtained3 ? form2Page.DateObtained3 : null);
 
+        if (form2Page.DateObtained1) {
+            setDateValue("#Form2PageModel_DateObtained1");
+        }
+        if (form2Page.DateObtained2) {
+            setDateValue("#Form2PageModel_DateObtained2");
+        }
+        if (form2Page.DateObtained3) {
+            setDateValue("#Form2PageModel_DateObtained3");
+        }
+
         $("#Form2PageModel_DateFullyPaid1").val(form2Page.DateFullyPaid1 ? form2Page.DateFullyPaid1 : null);
         $("#Form2PageModel_DateFullyPaid2").val(form2Page.DateFullyPaid2 ? form2Page.DateFullyPaid2 : null);
         $("#Form2PageModel_DateFullyPaid3").val(form2Page.DateFullyPaid3 ? form2Page.DateFullyPaid3 : null);
+
+        if (form2Page.DateFullyPaid1) {
+            setDateValue("#Form2PageModel_DateFullyPaid1");
+        }
+        if (form2Page.DateFullyPaid2) {
+            setDateValue("#Form2PageModel_DateFullyPaid2");
+        }
+        if (form2Page.DateFullyPaid3) {
+            setDateValue("#Form2PageModel_DateFullyPaid3");
+        }
 
         $("#Form2PageModel_NameSupplier1").val(form2Page.NameSupplier1 ? form2Page.NameSupplier1 : null);
         $("#Form2PageModel_NameSupplier2").val(form2Page.NameSupplier2 ? form2Page.NameSupplier2 : null);
@@ -2790,6 +2889,11 @@ $(async function () {
         $("#BuyerConfirmationModel_SellingPrice").val(buyerConfimarion ? buyerConfimarion.SellingPrice : null);
         $("#BuyerConfirmationModel_MonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.MonthlyAmortization : null);
 
+        $("#BuyerConfirmationModel_OtherJuridicalPersonality").val(buyerConfimarion ? buyerConfimarion.OtherJuridicalPersonality : null);
+        $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
+
+        setDateValue("#BuyerConfirmationModel_BirthDate");
+
         initializeRadioBtnMisc();
 
         //$("#frm_hlf068").clearValidation();
@@ -2869,7 +2973,7 @@ $(async function () {
 
     //#endregion Getters Funcions
 
-    function DisableBuyerConfirmationFields() {
+    function disableBuyerConfirmationFields() {
         $('[id^="BuyerConfirmationModel_"]').each(function () {
             $(this).prop('disabled', true);
         });

@@ -1,17 +1,14 @@
 ﻿using ClosedXML.Excel;
-using DevExpress.ClipboardSource.SpreadsheetML;
-using DevExpress.SpreadsheetSource;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Domain.Dto.BuyerConfirmationDto;
+using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -43,10 +40,19 @@ public class BuyerConfirmationController : Controller
 
     #region Views
 
-    public IActionResult ApplicantRequests()
+    public async Task<IActionResult> ApplicantRequests()
     {
         try
         {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Developer)
+            {
+                return View("AccessDenied");
+            }
+
             return View();
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
@@ -116,6 +122,15 @@ public class BuyerConfirmationController : Controller
 
         try
         {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Developer)
+            {
+                return View("AccessDenied");
+            }
+
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
             var viewModel = new ApplicantViewModel()
@@ -208,12 +223,13 @@ public class BuyerConfirmationController : Controller
         {
             var rootFolder = _webhost.WebRootPath;
             string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
             string templatePath = Path.Combine(rootFolder, "Files", "ExcelTemplate", "Prequalified_BuyerConfirmation_Summary.xlsx");
-
             string fileName = $"BCFSummary.xlsx";
 
             int companyId = int.Parse(User.FindFirstValue("Company"));
+
+            // Get List of Qualified BCF
+            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync();
 
             // Load the Excel template
             using (var workbook = new XLWorkbook(templatePath))
@@ -221,14 +237,71 @@ public class BuyerConfirmationController : Controller
                 // Get the first worksheet in the workbook
                 var worksheet = workbook.Worksheets.Worksheet(1);
 
-                // Example modification: Set the value of cell A1
+                //Set Date
+                worksheet.Cell("A3").Value = DateTime.UtcNow.ToString("yyyy-MM-dd");
+
+                // Example modification: Set the value of cell B5
                 worksheet.Cell("B5").Value = "Yuhum Residences";
+
+                // Add data
+                int startRow = 11; // Starting row for data
+                int number = 1;
+                foreach (var item in excelList)
+                {
+                    if (item.FullName is null)
+                        break; // Stop if there's no sequence
+
+                    // Populate the cells in the current row
+                    var cellA = worksheet.Cell($"A{startRow}");
+                    var cellB = worksheet.Cell($"B{startRow}");
+                    var cellC = worksheet.Cell($"C{startRow}");
+                    var cellD = worksheet.Cell($"D{startRow}");
+                    var cellE = worksheet.Cell($"E{startRow}");
+                    var cellF = worksheet.Cell($"F{startRow}");
+                    var cellG = worksheet.Cell($"G{startRow}");
+                    var cellH = worksheet.Cell($"H{startRow}");
+                    var cellI = worksheet.Cell($"I{startRow}");
+                    var cellJ = worksheet.Cell($"J{startRow}");
+                    var cellK = worksheet.Cell($"K{startRow}");
+                    var cellL = worksheet.Cell($"L{startRow}");
+                    var cellM = worksheet.Cell($"M{startRow}");
+
+                    cellA.Value = $"{number}.";
+                    cellB.Value = item.FullName;
+                    cellC.Value = item.isPagibigMember ?? "";
+                    cellD.Value = item.PagibigNumber ?? "";
+                    cellE.Value = item.BirthDate ?? "";
+                    cellF.Value = item.MonthlySalary;
+                    cellG.Value = string.Join(" ", item.PresentHomeAddress) ?? "";
+                    cellH.Value = item.MobileNumber ?? "";
+                    cellI.Value = item.Email ?? "";
+                    cellJ.Value = item.EmployerName ?? "";
+                    cellK.Value = item.EmployerContactPerson ?? "";
+                    cellL.Value = item.EmployerContactNumber ?? "";
+                    cellM.Value = item.EmployerEmailAddress ?? "";
+
+                    if (startRow > 40)
+                    {
+                        // Define the range of cells to be styled
+
+                        IXLCell[] cells = { cellA, cellB, cellC, cellD, cellE, cellF, cellG, cellH, cellI, cellJ, cellK, cellL, cellM };
+
+                        foreach (var cell in cells)
+                        {
+                            setBorderCell(cell);
+                        }
+                    }
+
+                    startRow++; // Move to the next row
+                    number++;
+                }
+
+                worksheet.Columns().AdjustToContents();
 
                 // Save the modified workbook to a MemoryStream
                 using (var memoryStream = new MemoryStream())
                 {
                     workbook.SaveAs(memoryStream);
-
                     var content = memoryStream.ToArray();
                     return File(content, contentType, fileName);
                 }
@@ -238,8 +311,19 @@ public class BuyerConfirmationController : Controller
         {
             return BadRequest(ex.Message);
         }
+
         // End of Action
     }
 
     #endregion API Operation
+
+    #region Private Methods
+
+    public void setBorderCell(IXLCell cell)
+    {
+        cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        cell.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+    }
+
+    #endregion Private Methods
 }

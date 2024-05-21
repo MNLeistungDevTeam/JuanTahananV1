@@ -53,14 +53,24 @@ $(function () {
                     render: function (data, type, row) {
                         var returndata = "";
 
-                        if (row.ApprovalStatus == 0) { // draft
-                            returndata = ` <span class="badge fs-6 border bg-secondary">${data}</span> `;
+                        if (row.ApprovalStatus == 0) { // submitted
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                         }
-                        else if (row.ApprovalStatus == 3) { // DeveloperVerified
+
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 1) { // sign && submitted
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
+                        }
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 11) { // For Resubmission
+                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                        }
+                        else if (row.ApprovalStatus == 3 && row.BuyerConfirmationDocumentStatus == 3) { // Approved
                             returndata = ` <span class="badge fs-6 border bg-lightgreen">${data}</span> `;
                         }
-                        else if (row.ApprovalStatus == 11) { // return
-                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span> `;
+                        else if (row.ApprovalStatus == 11) { // For Revision
+                            returndata = ` <span class="badge fs-6 border bg-teal">${data}</span>`;
+                        }
+                        else if (row.ApprovalStatus == 3) { // ready for printing
+                            returndata = ` <span class="badge fs-6 border bg-primary">${data}</span> `;
                         }
 
                         return returndata;
@@ -185,6 +195,30 @@ $(function () {
         let action = $(this).attr("data-value");
 
         openApprovalModal(action);
+    });
+
+    $("#btn_excelSummary").on('click', function (e) {
+        e.preventDefault();
+        window.location.href = baseUrl + "BuyerConfirmation/BCFSummary";
+
+        //$.ajax({
+        //    url: baseUrl + "BuyerConfirmation/BCFSummary",
+        //    type: "GET",
+        //    success: function (data) {
+        //        var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+        //        var link = document.createElement("a");
+        //        link.href = window.URL.createObjectURL(blob);
+        //        link.download = "BCFSummary.xlsx";
+        //        link.click();
+
+        //        window.URL.revokeObjectURL(link.href);
+        //        messageBox("Summary report has been downloaded.", "success", true);
+        //    },
+        //    error: function (xhr, status, error) {
+        //        messageBox(error, "danger", true);
+        //    }
+        //});
     });
 
     async function loadApprovalData(recordId, referenceNo) {

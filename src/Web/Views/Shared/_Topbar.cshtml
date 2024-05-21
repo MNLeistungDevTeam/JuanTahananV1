@@ -62,219 +62,224 @@
 <input type="hidden" id="Bcf_ApplicationStatus" value="@bcfStatus" />
 <input type="hidden" id="Bcf_DocumentStatus" value="@bcfdocumentStatus" />
 
+<div class="alert rounded-0 text-bg-info mb-0 d-flex align-items-center justify-content-center d-none" role="alert" id="div_approvebcfNote">
+    <i class="mdi mdi-information fs-1 pe-2"></i>
+    <p class="fw-medium mb-0 fs-3 pe-5">
+        Your BCF has been approved and is now ready for download!
+    </p>
+    <button class="btn btn-lg btn-light rounded-4" id="btn_bcfdownload">
+        <span class="text-start fw-medium">View Instructions</span>
+        <span class="text-end fw-medium"><i class="mdi mdi-arrow-right"></i></span>
+    </button>
+</div>
 
-
-
-<div class="container-fluid ps-4 pe-4">
-    <div class="navbar-custom mt-2 rounded-4 bg-transparent shadow-none">
-        <div class="topbar">
-            <div class="d-flex align-items-center">
-
-                <!-- Brand Logo Light -->
-                <a asp-controller="Home" asp-action="Index" class="logo logo-light bg-transparent">
-                    <span class="logo-lg">
-                        <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="logo" style="height:60px;">
-                    </span>
-                    <span class="logo-sm">
-                        <img src="~/images/companylogo/mnl_logo_sm_dark.png" alt="small logo">
-                    </span>
-                </a>
-
-                <!-- Brand Logo Dark -->
-                <a asp-controller="Home" asp-action="Index" class="logo logo-dark bg-transparent">
-                    <span class="logo-lg">
-                        <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="dark logo" style="height:60px;">
-                    </span>
-                    <span class="logo-sm">
-                        <img src="~/images/companylogo/mnl_logo_sm_light.png" alt="small logo">
-                    </span>
-                </a>
-
-                <ul class="topbar-menu d-flex align-items-center gap-1 p-0">
-                    <li class="waves-effect waves-light">
-                        <button class="button-toggle-menu">
-                            <i class="fe-menu"></i>
-                        </button>
-                    </li>
-
-                    <li>
-                        <!-- Horizontal Menu Toggle Button -->
-                        <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
-                            <div class="lines">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </button>
-                    </li>
-
-                </ul>
-            </div>
-
-            <ul class="topbar-menu d-flex align-items-center gap-1">
-                <li class="d-none d-sm-inline-block">
-                    <div class="nav-link waves-effect waves-light" id="light-dark-mode">
-                        <i class="ri-moon-line font-22"></i>
-                    </div>
-                </li>
-
-                @*   <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <i class="mdi mdi-bell font-22"></i>
-                <span class="badge bg-danger rounded-circle noti-icon-badge">5</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0 rounded-4">
-                <div class="p-2">
-                <div class="row align-items-center">
-                <div class="col">
-                <h6 class="m-0 font-16 fw-semibold"> Notifications</h6>
-                </div>
-                <div class="col-auto">
-                <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">5 new</span>
-                </div>
-                </div>
-                </div>
-
-                <div class="p-0" style="max-height: 300px;" data-simplebar>
-                <a href="javascript:void(0);" class="dropdown-item p-0 notify-item m-0 card read-noti shadow-none border-0">
-                <div class="card-body">
+<div class="container-fluid px-0" style="background-color: #fafbfe;">
+    <div class="navbar-custom bg-transparent shadow-none" style="margin-top: 0px; padding-right: 0px !important;">
+        <div class="d-flex flex-column">
+            <div class="custom-topbar" style="margin: 0 5%;">
                 <div class="d-flex align-items-center">
-                <div class="flex-shrink-0">
-                <div class="notify-icon bg-primary">
-                <i class="mdi mdi-comment-account-outline"></i>
-                </div>
-                </div>
-                <div class="flex-grow-1 text-truncate ms-2">
-                <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
-                <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
-                </div>
-                </div>
-                </div>
-                </a>
-                <a href="javascript:void(0);" class="dropdown-item p-0 m-0 notify-item card unread-noti shadow-none border-0">
-                <div class="card-body">
-                <div class="d-flex align-items-center">
-                <div class="flex-shrink-0">
-                <div class="notify-icon bg-primary">
-                <i class="mdi mdi-comment-account-outline"></i>
-                </div>
-                </div>
-                <div class="flex-grow-1 text-truncate ms-2">
-                <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
-                <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
-                </div>
-                </div>
-                </div>
-                </a>
 
-                </div>
-                <div class="p-2">
-                <button type="button" class="btn btn-outline-warning rounded-4 waves-effect waves-light w-100">See All Notifications</button>
-                </div>
-                </div>
-                </li> *@
-
-
-
-
-
-
-
-
-
-
-                <!---notification--->
-                <li class="dropdown notification-list d-none">
-                    <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="fe-bell font-22"></i>
-                        <span class="badge bg-danger rounded-circle noti-icon-badge noti-span" hidden>0</span>
+                    <!-- Brand Logo Light -->
+                    <a asp-controller="Home" asp-action="Index" class="logo logo-light bg-transparent">
+                        <span class="logo-lg">
+                            <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="logo" style="height:60px;">
+                        </span>
+                        <span class="logo-sm">
+                            <img src="~/images/companylogo/mnl_logo_sm_dark.png" alt="small logo">
+                        </span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
 
-                        <div class="card-body">
-                            <div class="p-2 pb-0 border-top-0 border-start-0 border-end-0 border-dashed border">
-                                <div class="row align-items-center mb-2">
-                                    <div class="col">
-                                        <h6 class="m-0 font-16 fw-semibold"> Notification</h6>
+                    <!-- Brand Logo Dark -->
+                    <a asp-controller="Home" asp-action="Index" class="logo logo-dark bg-transparent">
+                        <span class="logo-lg">
+                            <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="dark logo" style="height:60px;">
+                        </span>
+                        <span class="logo-sm">
+                            <img src="~/images/companylogo/mnl_logo_sm_light.png" alt="small logo">
+                        </span>
+                    </a>
+
+                    <ul class="topbar-menu d-flex align-items-center gap-1 p-0">
+                        <li class="waves-effect waves-light">
+                            <button class="button-toggle-menu">
+                                <i class="fe-menu"></i>
+                            </button>
+                        </li>
+
+                        <li>
+                            <!-- Horizontal Menu Toggle Button -->
+                            <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+                <ul class="topbar-menu d-flex align-items-center gap-1">
+                    <li class="d-none d-sm-inline-block">
+                        <div class="nav-link waves-effect waves-light" id="light-dark-mode">
+                            <i class="ri-moon-line font-22"></i>
+                        </div>
+                    </li>
+
+                    @*   <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <i class="mdi mdi-bell font-22"></i>
+                    <span class="badge bg-danger rounded-circle noti-icon-badge">5</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0 rounded-4">
+                    <div class="p-2">
+                    <div class="row align-items-center">
+                    <div class="col">
+                    <h6 class="m-0 font-16 fw-semibold"> Notifications</h6>
+                    </div>
+                    <div class="col-auto">
+                    <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">5 new</span>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="p-0" style="max-height: 300px;" data-simplebar>
+                    <a href="javascript:void(0);" class="dropdown-item p-0 notify-item m-0 card read-noti shadow-none border-0">
+                    <div class="card-body">
+                    <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                    <div class="notify-icon bg-primary">
+                    <i class="mdi mdi-comment-account-outline"></i>
+                    </div>
+                    </div>
+                    <div class="flex-grow-1 text-truncate ms-2">
+                    <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
+                    <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
+                    </div>
+                    </div>
+                    </div>
+                    </a>
+                    <a href="javascript:void(0);" class="dropdown-item p-0 m-0 notify-item card unread-noti shadow-none border-0">
+                    <div class="card-body">
+                    <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                    <div class="notify-icon bg-primary">
+                    <i class="mdi mdi-comment-account-outline"></i>
+                    </div>
+                    </div>
+                    <div class="flex-grow-1 text-truncate ms-2">
+                    <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
+                    <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
+                    </div>
+                    </div>
+                    </div>
+                    </a>
+
+                    </div>
+                    <div class="p-2">
+                    <button type="button" class="btn btn-outline-warning rounded-4 waves-effect waves-light w-100">See All Notifications</button>
+                    </div>
+                    </div>
+                    </li> *@
+
+
+
+
+
+
+
+
+
+
+                    <!---notification--->
+                    <li class="dropdown notification-list d-none">
+                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <i class="fe-bell font-22"></i>
+                            <span class="badge bg-danger rounded-circle noti-icon-badge noti-span" hidden>0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
+
+                            <div class="card-body">
+                                <div class="p-2 pb-0 border-top-0 border-start-0 border-end-0 border-dashed border">
+                                    <div class="row align-items-center mb-2">
+                                        <div class="col">
+                                            <h6 class="m-0 font-16 fw-semibold"> Notification</h6>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="javascript: void(0);" class="text-dark text-decoration-underline" id="notif_clearall">
+                                                <small>Clear All</small>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <a href="javascript: void(0);" class="text-dark text-decoration-underline" id="notif_clearall">
-                                            <small>Clear All</small>
-                                        </a>
-                                    </div>
+                                </div>
+
+                                <div class="row align-items-center p-2 pt-0">
+                                    <ul class="nav nav-tabs nav-justified nav-bordered p-0" role="tablist">
+                                        <li class="nav-item d-flex justify-content-end flex-fill" role="presentation">
+                                            <a href="#home-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" id="btn_notiftransaction" tabindex="-1">
+                                                <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                                                <span class="d-none d-md-block text-muted" style="font-size: 12px;">Transaction <span class="unread-notiftransaction">()</span></span> <!-- Adjusted font size -->
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item ms-3 d-flex justify-content-end flex-fill" role="presentation">
+                                            <!-- Adjusted margin -->
+                                            <a href="#settings-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link p-0 active" aria-selected="true" role="tab" id="btn_notifapproval">
+                                                <i class="mdi mdi-settings-outline d-md-none d-block"></i>
+                                                <span class="d-none d-md-block text-muted ms-4" style="font-size: 12px;">Approval <span class="unread-notifapproval">()</span></span> <!-- Adjusted font size -->
+                                            </a>
+                                        </li>
+                                    </ul>
+
+
+
                                 </div>
                             </div>
 
-                            <div class="row align-items-center p-2 pt-0">
-                                <ul class="nav nav-tabs nav-justified nav-bordered p-0" role="tablist">
-                                    <li class="nav-item d-flex justify-content-end flex-fill" role="presentation">
-                                        <a href="#home-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" role="tab" id="btn_notiftransaction" tabindex="-1">
-                                            <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                                            <span class="d-none d-md-block text-muted" style="font-size: 12px;">Transaction <span class="unread-notiftransaction">()</span></span> <!-- Adjusted font size -->
-                                        </a>
-                                    </li>
 
-                                    <li class="nav-item ms-3 d-flex justify-content-end flex-fill" role="presentation">
-                                        <!-- Adjusted margin -->
-                                        <a href="#settings-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link p-0 active" aria-selected="true" role="tab" id="btn_notifapproval">
-                                            <i class="mdi mdi-settings-outline d-md-none d-block"></i>
-                                            <span class="d-none d-md-block text-muted ms-4" style="font-size: 12px;">Approval <span class="unread-notifapproval">()</span></span> <!-- Adjusted font size -->
-                                        </a>
-                                    </li>
-                                </ul>
-
-
-
-                            </div>
-                        </div>
-
-
-                        <div class="px-3" style="max-height: 300px;" data-simplebar id="notif_div">
-                            <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-2">
-                                <div class="card-body">
-                                    <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <div class="notify-icon bg-primary">
-                                                <i class="mdi mdi-comment-account-outline"></i>
+                            <div class="px-3" style="max-height: 300px;" data-simplebar id="notif_div">
+                                <a href="javascript:void(0);" class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-2">
+                                    <div class="card-body">
+                                        <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <div class="notify-icon bg-primary">
+                                                    <i class="mdi mdi-comment-account-outline"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 text-truncate ms-2">
+                                                <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
+                                                <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 text-truncate ms-2">
-                                            <h5 class="noti-item-title fw-semibold font-14">Datacorp <small class="fw-normal text-muted ms-1">1 min ago</small></h5>
-                                            <small class="noti-item-subtitle text-muted">Caleb Flakelar commented on Admin</small>
-                                        </div>
                                     </div>
-                                </div>
+                                </a>
+                            </div>
+
+                            <!-- All-->
+                            <a asp-controller="Notification" asp-action="Index" class="dropdown-item text-center text-primary notify-item border-top border-light py-2">
+                                View All
                             </a>
+
                         </div>
+                    </li>
+                    <!---End notification--->
 
-                        <!-- All-->
-                        <a asp-controller="Notification" asp-action="Index" class="dropdown-item text-center text-primary notify-item border-top border-light py-2">
-                            View All
-                        </a>
-
-                    </div>
-                </li>
-                <!---End notification--->
-
-
-
-
-
-                <li class="d-none d-sm-inline-block">
-                    <a class="nav-link nav-user waves-effect waves-light" asp-controller="User" asp-action="Profile" role="button" aria-haspopup="false" aria-expanded="false">
-                        <span class="account-user-avatar">
-                            <img src="@Url.Content("~" + userProfile)" alt="user-image" width="32" class="rounded-circle user-profile avatar-sm" id="notifProfile">
-                        </span>
-                        <span class="d-lg-flex flex-column gap-1 d-none">
-                            <span class="my-0 font-15 fw-semibold text-dark">
-                                @ViewData["Name"]
+                    <li class="d-none d-sm-inline-block">
+                        <a class="nav-link nav-user waves-effect waves-light" asp-controller="User" asp-action="Profile" role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="account-user-avatar">
+                                <img src="@Url.Content("~" + userProfile)" alt="user-image" width="32" class="rounded-circle user-profile avatar-sm" id="notifProfile">
                             </span>
+                            <span class="d-lg-flex flex-column gap-1 d-none">
+                                <span class="my-0 font-15 fw-semibold text-dark">
+                                    @ViewData["Name"]
+                                </span>
 
-                        </span>
-                    </a>
-                </li>
-            </ul>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

@@ -36,6 +36,9 @@ public class PropertyUnitProjectRepository : IPropertyUnitProjectRepository
     public async Task<List<PropertyUnitProject>> GetAll() =>
         await _contextHelper.GetAllAsync();
 
+    public async Task<IEnumerable<PropertyUnitProjectModel?>> GetPropertyUnitByProjectAsync(int projectId) =>
+            await _db.LoadDataAsync<PropertyUnitProjectModel, dynamic>("spPropertyUnit_GetByProjectId", new { projectId });
+
     #endregion Getters
 
     #region Operation

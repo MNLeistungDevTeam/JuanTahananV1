@@ -45,6 +45,8 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
+        #region Api For JTAHANAN-PH Portal
+
         [HttpGet("GetDevelopers")]
         public async Task<IActionResult> GetDevelopers()
         {
@@ -60,13 +62,14 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
+        [HttpGet("GetProjectsByCompany")]
+ 
 
-        [HttpGet("GetProjectsByCompany/{companyId}")]
-        public async Task<IActionResult> GetProjectsByCompany(int companyId)
+        public async Task<IActionResult> GetProjectsByCompany(int companyId, int? locationId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId);
+                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId, locationId);
 
                 return Ok(projects);
             }
@@ -77,12 +80,12 @@ namespace DMS.Web.Controllers.Api
         }
 
 
-        [HttpGet("GetLocationsByProject/{projectId}")]
-        public async Task<IActionResult> GetLocationsByProject(int projectId)
+        [HttpGet("GetLocationsByProject")]
+        public async Task<IActionResult> GetLocationsByProject(int? projectId, int? developerId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId, developerId);
 
                 return Ok(projects);
             }
@@ -92,8 +95,22 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
+        [HttpGet("GetUnitsByProject")]
+        public async Task<IActionResult> GetUnitsByProject(int? projectId,int? developerId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId,developerId);
 
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
+        #endregion Api For JTAHANAN-PH Portal
 
 
 

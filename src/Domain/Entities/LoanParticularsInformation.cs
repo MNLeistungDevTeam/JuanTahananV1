@@ -34,4 +34,8 @@ public partial class LoanParticularsInformation
     public DateTime? DateDeleted { get; set; }
 
     public int? DeletedById { get; set; }
+
+    public bool? IsEnrolledToMRI { get; set; }
+
+    public string PaymentScheme { get; set; }
 }
