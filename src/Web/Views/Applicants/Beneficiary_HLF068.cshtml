@@ -1000,6 +1000,43 @@
                                     <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
                                 </div>
                             </div>
+
+
+                            <div class="position-relative radio-enrolledMRIRbtn">
+                                <label class="form-label fw-bold text-dark" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true" required />
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false" required />
+                                        <label class="form-check-label">No</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.IsEnrolledToMRI" class="text-danger"> </span>
+                            </div>
+
+
+                            <div class="position-relative radio-pysRbtn">
+                                <label class="form-label fw-bold text-dark" asp-for="LoanParticularsInformationModel.PaymentScheme"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP" required />
+                                        <label class="form-check-label">GAP</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP" required />
+                                        <label class="form-check-label">LAP</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.PaymentScheme" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.PaymentScheme" class="text-danger"> </span>
+                            </div>
+
+
+
                             <div class="col-md-12">
                                 <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
                                     <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">COLLATERAL</span>

@@ -359,6 +359,45 @@ $(async function () {
         }
     });
 
+
+
+
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
+
+
+
+
     //#endregion
 
     //#endregion
@@ -1346,31 +1385,6 @@ $(async function () {
         }
     });
 
-
-
-    $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
-        console.log($(this).val())
-        if ($(this).val() == 5) {
-            $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
-        }
-        else {
-            $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
-            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).val("");
-        }
-    });
-
-    $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
-        if ($(this).val() == 'Others') {
-            $(`[id="otherEmploymentDiv"]`).attr('hidden', false);
-        }
-        else {
-            $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
-            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).val("");
-        }
-    });
-
-
-
     //#endregion
 
     $(function () {
@@ -1387,8 +1401,6 @@ $(async function () {
 
         if (hasBcf == "False") {
             $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
-
-
                 $(`[id="bcf-incomeFields"]`).attr({
                     hidden: $(this).attr('id') === 'isRbtn2',
                 });
@@ -1440,15 +1452,34 @@ $(async function () {
             });
 
             $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
-                $(`[id="otherJuriPerDiv"]`).attr('hidden', $(this).val() !== '5');
-                $(`[id="otherJuriPerDiv"] input`).attr('required', $(this).val() === '5');
+                console.log($(this).val())
+
+                if ($(this).val() == 5) {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', false).val("");
+                }
             });
 
             $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
-                $(`[id="otherEmploymentDiv"]`).attr('hidden', $(this).val() !== 'Others');
-                $(`[id="otherEmploymentDiv"] input`).attr('required', $(this).val() === 'Others');
+                if ($(this).val() == 'Others') {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', false).attr('');
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
+                }
             });
 
+            $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+            })
+
+      
             //Load the possible data on others forms
             //HLafTobcfConnectedFieldMap();
             //bcfToHLafConnectedFieldMap();
@@ -1813,10 +1844,8 @@ $(async function () {
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
-
         let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
         let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
-
 
         $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
         $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
@@ -2221,7 +2250,6 @@ $(async function () {
         //$("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
         //$("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
 
-
         //enable bcf field even approve temporarily to mapped in pdf
         enableBuyerConfirmationFields();
 
@@ -2239,15 +2267,11 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
-
-                
                 $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
                 $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
 
                 $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
                 $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
-              
-
 
                 // Redirect to another URL based on the response
                 //window.location.href = '/Report/LatestHousingForm2';
@@ -2867,7 +2891,6 @@ $(async function () {
 
         $("#BuyerConfirmationModel_OtherJuridicalPersonality").val(buyerConfimarion ? buyerConfimarion.OtherJuridicalPersonality : null);
         $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
-
 
         setDateValue("#BuyerConfirmationModel_BirthDate");
 

@@ -199,25 +199,27 @@ $(function () {
 
     $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
         console.log($(this).val())
+
         if ($(this).val() == 5) {
             $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', true);
         }
         else {
             $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
-            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).val("");
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', false).val("");
         }
     });
 
     $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
         if ($(this).val() == 'Others') {
-            $(`[id="otherEmploymentDiv"]`).attr('hidden', false);
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', false).attr('');
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', true);
         }
         else {
             $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
-            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).val("");
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
         }
     });
-
 
 
 
@@ -434,6 +436,45 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     });
+
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
+
+
+
+
+
+
 
     //#endregion
 
