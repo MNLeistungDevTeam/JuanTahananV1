@@ -1119,6 +1119,8 @@ function approveBcfNote() {
     if (bcfAppStatus == 3) {
         console.log(bcfAppStatus);
         $("#div_approvebcfNote").removeClass("d-none");
+        $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 5rem)`);
+
         $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
     }
 

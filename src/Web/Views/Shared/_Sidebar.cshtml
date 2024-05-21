@@ -35,7 +35,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="leftside-menu rounded-4 overflow-hidden py-2" style="position: fixed;">
+    <div class="leftside-menu rounded-4 overflow-hidden py-2" id="sidebar-menu" style="position: fixed;">
 
         <!-- Brand Logo Light -->
         <a asp-controller="Home" asp-action="Index" class="logo logo-light">
