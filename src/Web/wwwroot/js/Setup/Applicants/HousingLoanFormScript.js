@@ -1850,51 +1850,6 @@ $(async function () {
         $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
         $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
 
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (pagibigAvailedLoan === "True") {
-        //    $("#availedLoanRbtn1").prop("checked", true);
-        //} else {
-        //    $("#availedLoanRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (coborrower === "True") {
-        //    $("#cbwrRbtn1").prop("checked", true);
-        //} else {
-        //    $("#cbwrRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (projectProponent === "True") {
-        //    $("#prpRbtn1").prop("checked", true);
-        //} else {
-        //    $("#prpRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (termConditions === "True") {
-        //    $("#itcRbtn1").prop("checked", true);
-        //} else {
-        //    $("#itcRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (isPagibigMember === "True") {
-        //    $("#pagibigRbtn1").prop("checked", true);
-        //} else {
-        //    $("#pagibigRbtn2").prop("checked", true);
-        //}
-
-        //if (isOtherSourceIncome === "True") {
-        //    $("#isRbtn1").prop("checked", true);
-        //} else {
-        //    $("#isRbtn2").prop("checked", true);
-        //}
-
-        // Set checked status for PendingCase radio buttons
-        $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-        $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
-
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
@@ -2325,7 +2280,7 @@ $(async function () {
                     $("#beneficiary-overlay").addClass('d-none');
                 }, 2000); // 2000 milliseconds = 2 seconds
 
-                disableBuyerConfirmationFields();
+                //disableBuyerConfirmationFields();
             }
         });
     }
