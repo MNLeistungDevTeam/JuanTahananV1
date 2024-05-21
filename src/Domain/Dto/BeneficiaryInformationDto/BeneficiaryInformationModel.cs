@@ -166,6 +166,9 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         public int PropertyUnitId { get; set; }
 
-     
+        public string? HouseUnitDescription { get; set; }
+        public string? DeveloperName { get; set; }
+        public string? ProjectName { get; set; }
+        public string? LocationName { get; set; }
     }
 }

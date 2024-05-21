@@ -40,8 +40,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         }
 
         [Display(
-            Name = "Desired Loan Amount", 
-            Prompt = "Input desired loan amount", 
+            Name = "Desired Loan Amount",
+            Prompt = "Input desired loan amount",
             Description = "(Exclusive of the co-borrower's desired loan amount, if any)"
         )]
         public decimal? DesiredLoanAmount { get; set; }
@@ -61,5 +61,8 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public DateTime? DateDeleted { get; set; }
 
         public int? DeletedById { get; set; }
+
+        public bool? IsEnrolledToMRI { get; set; }
+        public string? PaymentScheme { get; set; }
     }
 }

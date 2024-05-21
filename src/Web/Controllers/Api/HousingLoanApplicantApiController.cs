@@ -95,20 +95,20 @@ namespace DMS.Web.Controllers.Api
             }
         }
 
-        //[HttpGet("GetUnitsByProject/{projectId}")]
-        //public async Task<IActionResult> GetUnitsByProject(int projectId)
-        //{
-        //    try
-        //    {
-        //        var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId);
+        [HttpGet("GetUnitsByProject")]
+        public async Task<IActionResult> GetUnitsByProject(int? projectId,int? developerId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId,developerId);
 
-        //        return Ok(projects);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         #endregion Api For JTAHANAN-PH Portal
 

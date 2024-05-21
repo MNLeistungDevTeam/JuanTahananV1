@@ -152,4 +152,6 @@ public partial class BarrowersInformation
     public string PropertyUnitLevelName { get; set; }
 
     public decimal? MonthlyRent { get; set; }
+
+    public string ContactDetailEmail { get; set; }
 }

@@ -14,6 +14,7 @@ public interface IPropertyUnitRepository
     Task<PropertyUnit> CreateAsync(PropertyUnit model, int userId);
     Task<List<PropertyUnit>> GetAll();
     Task<PropertyUnit?> GetById(int id);
+    Task<IEnumerable<PropertyUnitModel?>> GetUnitByProjectAsync(int? projectId, int? developerId);
     Task<PropertyUnit> SaveAsync(PropertyUnitModel model, int userId);
     Task<PropertyUnit> UpdateAsync(PropertyUnit model, int userId);
 }

@@ -235,10 +235,10 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public decimal? AffordMonthlyAmortization { get; set; }
 
         [Display(Name = "Other Juridical Personality")]
-        public string? OtherJuridicalPersonality { get; set; }
+        public string? OtherJuridicalPersonality { get; set; } = string.Empty;
 
         [Display(Name = "Other Employment Status")]
-        public string? OtherEmploymentStatus { get; set; }
+        public string? OtherEmploymentStatus { get; set; } = string.Empty;
 
         #region Display Prop
 
@@ -262,7 +262,8 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public int PropertyDeveloperId { get; set; }
         public int PropertyProjectId { get; set; }
-        public int PropertyUnitId { get; set; }
+        public int ProjectUnitId { get; set; }
+ 
         public int PropertyLocationId { get; set; }
     }
 }
