@@ -1346,6 +1346,31 @@ $(async function () {
         }
     });
 
+
+
+    $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
+        console.log($(this).val())
+        if ($(this).val() == 5) {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+        }
+        else {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).val("");
+        }
+    });
+
+    $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
+        if ($(this).val() == 'Others') {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', false);
+        }
+        else {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).val("");
+        }
+    });
+
+
+
     //#endregion
 
     $(function () {
@@ -1787,6 +1812,14 @@ $(async function () {
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
+
+
+        let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
+        let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
+
+
+        $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
+        $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
 
         // If pagibigAvailedLoan has a value of "1", set the radio button as checked
         //if (pagibigAvailedLoan === "True") {
@@ -2831,6 +2864,10 @@ $(async function () {
         $("#BuyerConfirmationModel_HouseUnitModel").val(buyerConfimarion ? buyerConfimarion.HouseUnitModel : null);
         $("#BuyerConfirmationModel_SellingPrice").val(buyerConfimarion ? buyerConfimarion.SellingPrice : null);
         $("#BuyerConfirmationModel_MonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.MonthlyAmortization : null);
+
+        $("#BuyerConfirmationModel_OtherJuridicalPersonality").val(buyerConfimarion ? buyerConfimarion.OtherJuridicalPersonality : null);
+        $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
+
 
         setDateValue("#BuyerConfirmationModel_BirthDate");
 

@@ -102,8 +102,6 @@ $(function () {
         $("#ApplicantsPersonalInformationModel_EncodedStatus").val(selectedValue);
     });
 
-
-
     //encodedStatusdropDown.on('load', function (options) {
     //});
 
@@ -186,13 +184,47 @@ $(function () {
         $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
     });
 
+
+
+
+
+    let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
+    let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
+
+
+    $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
+    $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
+
+
+
     $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
-        $(`[id="otherJuriPerDiv"]`).attr('hidden', $(this).val() !== '5');
+        console.log($(this).val())
+        if ($(this).val() == 5) {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+        }
+        else {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).val("");
+        }
     });
 
     $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
-        $(`[id="otherEmploymentDiv"]`).attr('hidden', $(this).val() !== 'Others');
+        if ($(this).val() == 'Others') {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', false);
+        }
+        else {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).val("");
+        }
     });
+
+
+
+
+
+
+   
+
 
     // #endregion
 
@@ -1417,7 +1449,6 @@ $(function () {
     }
 
     function rebindValidators() {
-    
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
@@ -1442,7 +1473,6 @@ $(function () {
             $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
             $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
             $("#BuyerConfirmationModel_MonthlyAmortization").attr("readonly", true);
-
 
             let formData = new FormData(e.target);
 
