@@ -52,43 +52,41 @@
     <div id="Layout-defaultProfile" hidden>@Url.Content("~/images/user/default.png")</div>
     <div id="Layout-defaultSignature" hidden>@Url.Content("~//images/user/signature.png")</div>
 
-
-    <div class="d-flex flex-column">
+    <div class="d-flex gap-1 flex-column">
         <!-- ========== Topbar Start ========== -->
         <partial name="_Topbar" />
         <!-- ========== Topbar End ========== -->
         <!-- Begin page -->
 
-        <div class="d-flex">
+        <div class="d-flex gap-1">
             <div id="wrapper">
-                <!-- ========== Horizontal Menu Start ========== -->
-                <partial name="_Sidebar" />
-                <!-- ========== Horizontal Menu End ========== -->
-
                 <!-- ============================================================== -->
                 <!-- Start Page Content here -->
                 <!-- ============================================================== -->
-                <div class="content-page">
-                    <div class="content">
-                        <!-- Start Content-->
-                        <div class="container-fluid">
-                            <div class="content-layer-page pt-2">
-                                <!-- Pre-loader -->
-                                <div id="preloader">
-                                    <div id="status">
-                                        <div class="bouncing-loader"><div></div><div></div><div></div></div>
-                                    </div>
+                <div class="content">
+                    <!-- Start Content-->
+                    <div class="d-flex container-fluid">
+                        <div class="custom-navbar">
+                            <!-- ========== Horizontal Menu Start ========== -->
+                            <partial name="_Sidebar" />
+                            <!-- ========== Horizontal Menu End ========== -->
+                        </div>
+                        <div class="content-page pt-2 custom-responsive-content">
+                            <!-- Pre-loader -->
+                            <div id="preloader">
+                                <div id="status">
+                                    <div class="bouncing-loader"><div></div><div></div><div></div></div>
                                 </div>
-                                <!-- End Preloader-->
-                                @RenderBody()
                             </div>
+                            <!-- End Preloader-->
+                            @RenderBody()
                         </div>
                     </div>
-                    <!-- content -->
-                    <!-- Footer Start -->
-                    @*             <partial name="_Footer" />
-                    <!-- end Footer --> *@
                 </div>
+                <!-- content -->
+                <!-- Footer Start -->
+                @*             <partial name="_Footer" />
+                <!-- end Footer --> *@
                 <!-- ============================================================== -->
                 <!-- End Page content -->
                 <!-- ============================================================== -->
@@ -96,7 +94,8 @@
         </div>
         <!-- END wrapper -->
     </div>
-    
+
+
     <!-- Theme Settings -->
     <partial name="_ThemeSettings" />
 

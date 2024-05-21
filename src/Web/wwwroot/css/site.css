@@ -1616,3 +1616,7 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 .card.upload-hover:hover {
     cursor: pointer;
 }
+
+.custom-responsive-content {
+    max-width: -webkit-fill-available;
+}
