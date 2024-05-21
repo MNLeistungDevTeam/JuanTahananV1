@@ -359,10 +359,6 @@ $(async function () {
         }
     });
 
-
-
-
-
     $('input[name="paymentSchemeRbtn"]').on('change ', function () {
         if ($(this).is(':checked')) {
             $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
@@ -394,9 +390,6 @@ $(async function () {
     else if (enrolledMRI == 'False') {
         $('#enrolledMRIRbtn2').prop('checked', true);
     }
-
-
-
 
     //#endregion
 
@@ -1479,7 +1472,6 @@ $(async function () {
                 $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
             })
 
-      
             //Load the possible data on others forms
             //HLafTobcfConnectedFieldMap();
             //bcfToHLafConnectedFieldMap();
@@ -1505,25 +1497,25 @@ $(async function () {
             }
         });
 
-        //form.find('input[type="radio"][required]').each(function () {
-        //    let hasClass = $(this).hasClass('valid');
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
 
-        //    console.log(roleId);
-        //    if (roleId === '3') {
-        //        $(this).prop('required', false);
-        //        return;
-        //    }
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
 
-        //    if (!hasClass) {
-        //        $(this).addClass('is-invalid');
-        //        $(this).removeClass('valid');
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('valid');
 
-        //        isValid = false;
-        //    } else {
-        //        $(this).addClass('valid');
-        //        $(this).removeClass('is-invalid');
-        //    }
-        //});
+                isValid = false;
+            } else {
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
+            }
+        });
 
         return isValid;
     }
@@ -1852,44 +1844,44 @@ $(async function () {
 
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
-            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass("valid");
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue).addClass("valid");
 
             // Set checked status for PastDue radio buttons
-            $("#pdRbtn1").prop("checked", !!pastDueValue);
-            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#pdRbtn1").prop("checked", !!pastDueValue).addClass("valid");
+            $("#pdRbtn2").prop("checked", !pastDueValue).addClass("valid");
 
             // Set checked status for BouncingChecks radio buttons
-            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue).addClass("valid");
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue).addClass("valid");
 
             // Set checked status for MedicalAdvice radio buttons
-            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass("valid");
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass("valid");
 
             // Set checked status for BCF Additional income radio buttons
-            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome);
-            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome);
+            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass("valid");
+            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass("valid");
 
             // Set checked status for BCF Pagibig Number radio buttons
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber);
-            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber);
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass("valid");
+            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass("valid");
 
             // Set checked status for BCF availed laon radio buttons
-            $("#availedLoanRbtn1").prop("checked", !pagibigAvailedLoan);
-            $("#availedLoanRbtn2").prop("checked", pagibigAvailedLoan);
+            $("#availedLoanRbtn1").prop("checked", !pagibigAvailedLoan).addClass("valid");
+            $("#availedLoanRbtn2").prop("checked", pagibigAvailedLoan).addClass("valid");
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#cbwrRbtn1").prop("checked", !coborrower);
-            $("#cbwrRbtn2").prop("checked", coborrower);
+            $("#cbwrRbtn1").prop("checked", !coborrower).addClass("valid");
+            $("#cbwrRbtn2").prop("checked", coborrower).addClass("valid");
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#prpRbtn1").prop("checked", !projectProponent);
-            $("#prpRbtn2").prop("checked", projectProponent);
+            $("#prpRbtn1").prop("checked", !projectProponent).addClass("valid");
+            $("#prpRbtn2").prop("checked", projectProponent).addClass("valid");
 
             // Set checked status for BCF term in condition radio buttons
-            $("#itcRbtn1").prop("checked", !termConditions);
-            $("#itcRbtn2").prop("checked", termConditions);
+            $("#itcRbtn1").prop("checked", !termConditions).addClass("valid");
+            $("#itcRbtn2").prop("checked", termConditions).addClass("valid");
         }
         else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
@@ -1904,6 +1896,17 @@ $(async function () {
         //BCF Particulars
         $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
         $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
+
+        //BCF Radiobuttons
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
+    }
+
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
     }
 
     function bcfToHLafConnectedFieldMap() {

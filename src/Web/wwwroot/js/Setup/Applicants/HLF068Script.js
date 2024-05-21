@@ -334,7 +334,6 @@ $(function () {
         }
     });
 
-
     $('input[name="paymentSchemeRbtn"]').on('change ', function () {
         if ($(this).is(':checked')) {
             $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
@@ -366,12 +365,6 @@ $(function () {
     else if (enrolledMRI == 'False') {
         $('#enrolledMRIRbtn2').prop('checked', true);
     }
-
-
-
-
-
-
 
     //#endregion
 
@@ -1791,6 +1784,8 @@ $(function () {
         let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
+        let isEnrolledToMRI = $("[name='LoanParticularsInformationModel.IsEnrolledToMRI']").val();
+        let paymentScheme = $("[name='LoanParticularsInformationModel.PaymentScheme']").val();
 
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
@@ -1807,8 +1802,11 @@ $(function () {
 
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
-            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid'); 
         }
+
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
 
         // Set miscellanous input to disable
         $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
@@ -1828,5 +1826,12 @@ $(function () {
             $('#rdo_aplCompletion').click();
         }
     }
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
+    }
+
     //#endregion
 });

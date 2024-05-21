@@ -1826,87 +1826,46 @@ $(function () {
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
         let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (pagibigAvailedLoan === "True") {
-        //    $("#availedLoanRbtn1").prop("checked", true);
-        //} else {
-        //    $("#availedLoanRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (coborrower === "True") {
-        //    $("#cbwrRbtn1").prop("checked", true);
-        //} else {
-        //    $("#cbwrRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (projectProponent === "True") {
-        //    $("#prpRbtn1").prop("checked", true);
-        //} else {
-        //    $("#prpRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (termConditions === "True") {
-        //    $("#itcRbtn1").prop("checked", true);
-        //} else {
-        //    $("#itcRbtn2").prop("checked", true);
-        //}
-
-        // If pagibigAvailedLoan has a value of "1", set the radio button as checked
-        //if (isPagibigMember === "True") {
-        //    $("#pagibigRbtn1").prop("checked", true);
-        //} else {
-        //    $("#pagibigRbtn2").prop("checked", true);
-        //}
-
-        //if (isOtherSourceIncome === "True") {
-        //    $("#isRbtn1").prop("checked", true);
-        //} else {
-        //    $("#isRbtn2").prop("checked", true);
-        //}
-
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
-            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass('valid');
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue).addClass('valid');
 
             // Set checked status for PastDue radio buttons
-            $("#pdRbtn1").prop("checked", !!pastDueValue);
-            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#pdRbtn1").prop("checked", !!pastDueValue).addClass('valid');
+            $("#pdRbtn2").prop("checked", !pastDueValue).addClass('valid');
 
             // Set checked status for BouncingChecks radio buttons
-            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue).addClass('valid');
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue).addClass('valid');
 
             // Set checked status for MedicalAdvice radio buttons
-            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
 
             // Set checked status for BCF Additional income radio buttons
-            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome);
-            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome);
+            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass('valid');
+            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass('valid');
 
             // Set checked status for BCF Pagibig Number radio buttons
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber);
-            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber);
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
+            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
 
             // Set checked status for BCF availed laon radio buttons
-            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan);
-            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan);
+            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
+            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#cbwrRbtn1").prop("checked", !!coborrower);
-            $("#cbwrRbtn2").prop("checked", !coborrower);
+            $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
+            $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#prpRbtn1").prop("checked", !!projectProponent);
-            $("#prpRbtn2").prop("checked", !projectProponent);
+            $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
+            $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
 
             // Set checked status for BCF term in condition radio buttons
-            $("#itcRbtn1").prop("checked", !!termConditions);
-            $("#itcRbtn2").prop("checked", !termConditions);
+            $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
+            $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
         }
         else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
@@ -1923,16 +1882,8 @@ $(function () {
         $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
 
         //BCF Radiobuttons
-        updateRadioValidation('#pcRadioBtn1', '#pcRadioBtn2');
-        updateRadioValidation('#pdRbtn1', '#pdRbtn2');
-        updateRadioValidation('#bcRbtn1', '#bcRbtn2');
-        updateRadioValidation('#maRbtn1', '#maRbtn2');
-        updateRadioValidation('#isRbtn1', '#isRbtn2');
-        updateRadioValidation('#pagibigRbtn1', '#pagibigRbtn2');
-        updateRadioValidation('#availedLoanRbtn1', '#availedLoanRbtn2');
-        updateRadioValidation('#cbwrRbtn1', '#cbwrRbtn2');
-        updateRadioValidation('#prpRbtn1', '#prpRbtn2');
-        updateRadioValidation('#itcRbtn1', '#itcRbtn2');
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
     }
 
     function updateRadioValidation(radioBtn1, radioBtn2) {
