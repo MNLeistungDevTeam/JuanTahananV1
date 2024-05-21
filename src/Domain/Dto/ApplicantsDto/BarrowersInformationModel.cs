@@ -257,6 +257,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public bool IsBcfCreated { get; set; }
 
+        [Display(Name="Mailing Address/Contact Detail")]
         public string? ContactDetailEmail { get;set; } 
     }
 }

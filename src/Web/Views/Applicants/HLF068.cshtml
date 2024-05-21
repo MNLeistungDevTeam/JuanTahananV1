@@ -962,6 +962,14 @@
                                             <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.ContactDetailEmail"></label>
+                                            <input type="email" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.ContactDetailEmail" value="@Model.BarrowersInformationModel.ContactDetailEmail">
+                                            <span asp-validation-for="BarrowersInformationModel.ContactDetailEmail" class="text-danger"> </span>
+                                        </div>
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PreferredTimeToContact"></label>
