@@ -102,8 +102,6 @@ $(function () {
         $("#ApplicantsPersonalInformationModel_EncodedStatus").val(selectedValue);
     });
 
-
-
     //encodedStatusdropDown.on('load', function (options) {
     //});
 
@@ -1228,7 +1226,7 @@ $(function () {
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
 
-            // Find the current tab pane
+            // Find the current tab av
             var currentTabPane = $('.tab-pane').eq(index);
 
             // Hide the previous form (loanparticulars) and remove 'fade' class
@@ -1393,31 +1391,30 @@ $(function () {
             }
         });
 
-        //form.find('input[type="radio"][required]').each(function () {
-        //    let hasClass = $(this).hasClass('valid');
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
 
-        //    console.log(roleId);
-        //    if (roleId === '3') {
-        //        $(this).prop('required', false);
-        //        return;
-        //    }
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
 
-        //    if (!hasClass) {
-        //        $(this).addClass('is-invalid');
-        //        $(this).removeClass('valid');
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('valid');
 
-        //        isValid = false;
-        //    } else {
-        //        $(this).addClass('valid');
-        //        $(this).removeClass('is-invalid');
-        //    }
-        //});
+                isValid = false;
+            } else {
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
+            }
+        });
 
         return isValid;
     }
 
     function rebindValidators() {
-    
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
@@ -1442,7 +1439,6 @@ $(function () {
             $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
             $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
             $("#BuyerConfirmationModel_MonthlyAmortization").attr("readonly", true);
-
 
             let formData = new FormData(e.target);
 
@@ -1850,6 +1846,25 @@ $(function () {
         //BCF Particulars
         $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
         $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
+
+        //BCF Radiobuttons
+        updateRadioValidation('#pcRadioBtn1', '#pcRadioBtn2');
+        updateRadioValidation('#pdRbtn1', '#pdRbtn2');
+        updateRadioValidation('#bcRbtn1', '#bcRbtn2');
+        updateRadioValidation('#maRbtn1', '#maRbtn2');
+        updateRadioValidation('#isRbtn1', '#isRbtn2');
+        updateRadioValidation('#pagibigRbtn1', '#pagibigRbtn2');
+        updateRadioValidation('#availedLoanRbtn1', '#availedLoanRbtn2');
+        updateRadioValidation('#cbwrRbtn1', '#cbwrRbtn2');
+        updateRadioValidation('#prpRbtn1', '#prpRbtn2');
+        updateRadioValidation('#itcRbtn1', '#itcRbtn2');
+    }
+
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
     }
 
     function initializeBcfCheck() {
