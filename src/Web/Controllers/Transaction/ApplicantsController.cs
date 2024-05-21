@@ -258,9 +258,10 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+
                         //mostly not needed its on edit mode
-                        // vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName?? beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName ?? beneficiaryData.PropertyDeveloperName;
 
                         #region With Api Integration
 
@@ -296,6 +297,7 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
                         vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
+                        //disable this if integrate the latest api
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
 
@@ -668,7 +670,7 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
                     vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
 
-                    //New
+                    //New   
                     //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
                     //vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.LocationName;
                     //vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.HouseUnitDescription;
