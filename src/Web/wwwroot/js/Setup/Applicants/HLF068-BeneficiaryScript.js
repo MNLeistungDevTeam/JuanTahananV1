@@ -2021,9 +2021,9 @@ $(function () {
         $("#BarrowersInformationModel_EmployerName").val(employername);
 
         var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseFirstName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseLastName').val();
-        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseFirstName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseSuffix').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseMiddleName').val();
 
         $('#SpouseModel_LastName').val(spouseLastName);
         $('#SpouseModel_FirstName').val(spouseFirstName);
