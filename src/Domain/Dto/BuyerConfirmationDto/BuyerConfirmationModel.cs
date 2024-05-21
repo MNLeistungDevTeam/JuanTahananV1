@@ -262,7 +262,8 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
 
         public int PropertyDeveloperId { get; set; }
         public int PropertyProjectId { get; set; }
-        public int PropertyUnitId { get; set; }
+        public int ProjectUnitId { get; set; }
+ 
         public int PropertyLocationId { get; set; }
     }
 }

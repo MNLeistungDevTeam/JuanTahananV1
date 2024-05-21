@@ -181,7 +181,7 @@ namespace DMS.Infrastructure.Services
             return filteredCompanies;
         }
 
-        public async Task<CompanyModel> GetDeveloperByCode(string? Code)S
+        public async Task<CompanyModel> GetDeveloperByCode(string? Code)
         {
             var companies = await _companyRepo.GetCompanies();
             var company = companies

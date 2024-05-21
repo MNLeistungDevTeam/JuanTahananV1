@@ -256,9 +256,12 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
                         vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
-                    }
+
+
+                        //vwModel.BuyerConfirmationModel.HouseUnitModel =beneficiaryData.HouseUnitDescription;
+                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                    } 
                     else
                     {
                         vwModel.BuyerConfirmationModel.FirstName = beneficiaryData.FirstName ?? string.Empty;
@@ -279,7 +282,9 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
                         vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
 
+
                         vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
                         vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                         vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
                     }
@@ -334,7 +339,7 @@ namespace Template.Web.Controllers.Transaction
                     if (borrowerInfo != null)
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
-                        vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;
+                        vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;          
                     }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -524,8 +529,10 @@ namespace Template.Web.Controllers.Transaction
                 if (buyerConfirmationInfo != null)
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                   // vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
 
-                    vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
                 }
                 else
                 {
@@ -549,9 +556,16 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
                     vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
                     vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
+
+
+                    vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                    vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                    vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                    vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
                 }
 
                 return View("HousingLoanForm", vwModel);
@@ -601,9 +615,19 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
                     vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
 
-                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+
+                    //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                    //vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+
+                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
+                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.LocationName;
+                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.HouseUnitDescription;
+
+                 
+
                     vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
 
                     var buyerConfirmationInfo = await _buyerConfirmationRepo.GetByUserAsync(beneficiaryData.UserId);
@@ -632,8 +656,13 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentZipCode = beneficiaryData.PresentZipCode;
                     vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+
+
+                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName/*;*/
+
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
                     vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
                     //vwModel.BarrowersInformationModel.IsPermanentAddressAbroad = beneficiaryData.IsPermanentAddressAbroad.Value; // no condition because all address is required
@@ -1246,9 +1275,8 @@ namespace Template.Web.Controllers.Transaction
         {
             try
             {
-
-                if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.DeveloperVerified) {
-
+                if (vwModel.BuyerConfirmationModel.ApprovalStatus is (int)AppStatusType.DeveloperVerified)
+                {
                     // Manually remove validation errors for properties of BuyerConfirmationModel
                     var buyerConfirmationProperties = typeof(BuyerConfirmationModel).GetProperties()
                         .SelectMany(prop => ModelState.Keys.Where(key => key.StartsWith($"BuyerConfirmationModel.{prop.Name}")));
@@ -1257,7 +1285,6 @@ namespace Template.Web.Controllers.Transaction
                     {
                         ModelState.Remove(propertyKey);
                     }
-
                 }
 
                 if (!ModelState.IsValid)
