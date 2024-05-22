@@ -63,8 +63,6 @@ namespace DMS.Web.Controllers.Api
         }
 
         [HttpGet("GetProjectsByCompany")]
- 
-
         public async Task<IActionResult> GetProjectsByCompany(int companyId, int? locationId)
         {
             try
@@ -78,7 +76,6 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpGet("GetLocationsByProject")]
         public async Task<IActionResult> GetLocationsByProject(int? projectId, int? developerId)
@@ -96,11 +93,11 @@ namespace DMS.Web.Controllers.Api
         }
 
         [HttpGet("GetUnitsByProject")]
-        public async Task<IActionResult> GetUnitsByProject(int? projectId,int? developerId)
+        public async Task<IActionResult> GetUnitsByProject(int? projectId, int? developerId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId,developerId);
+                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId, developerId);
 
                 return Ok(projects);
             }
@@ -111,10 +108,5 @@ namespace DMS.Web.Controllers.Api
         }
 
         #endregion Api For JTAHANAN-PH Portal
-
-
-
-
-
     }
 }
