@@ -1413,9 +1413,13 @@ $(async function () {
                     required: $(this).attr('id') === 'pagibigRbtn1',
                 });
 
-                //if ($(this).attr('id') === 'pagibigRbtn2') {
-                //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
-                //}
+                $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
+
+
+                if ($(this).attr('id') === 'pagibigRbtn2') {
+                    //$(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+                    $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
+                }
 
                 $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
             });
