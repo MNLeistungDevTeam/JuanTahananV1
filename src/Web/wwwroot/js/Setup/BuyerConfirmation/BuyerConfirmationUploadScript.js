@@ -53,6 +53,9 @@ $(function () {
         checkInputFile();
     });
 
+    $(".fileInputArea").on('change', function () {
+    });
+
     function upload(file) {
         var formData = new FormData();
         formData.append('file', file);
@@ -119,41 +122,100 @@ $(function () {
     }
 
     function initializeBsFileInput() {
-        $(`[id="bcf_PdfFile"]`).fileinput({
+        const fileInputSelector = '#bcf_PdfFile';
+        const fileInputAreaSelector = '#fileInputArea';
+
+        $(fileInputSelector).fileinput({
             dropZoneTitle: `
-                <div class="file-icon">
-                    <img src="${baseUrl}img/pdf.png" />
-                </div>
-                <p class="fw-4">
-                    <span class="text-info fw-bold">Drag and Drop</span>
-                    <br>
-                    here to upload your file or
-                    <br>
-                    browse files using the button below.
-                </p>
-            `,
+            <div class="file-icon">
+                <img src="${baseUrl}img/pdf.png" />
+            </div>
+            <p class="fw-4">
+                <span class="text-info fw-bold">Drag and Drop</span>
+                <br>
+                here to upload your file or
+                <br>
+                browse files using the button below.
+            </p>
+        `,
             showPreview: true,
             allowedFileExtensions: ['pdf'],
             maxFileCount: 1,
             minFileCount: 1,
-            maxFileSize: (1024 * 5),
+            maxFileSize: (1024 * 5), // 5MB
             theme: "explorer-fa5",
             browseClass: "btn btn-info flex-grow-1",
             removeClass: "btn btn-danger flex-grow-1",
             browseLabel: "Browse",
             mainClass: "d-flex gap-1 justify-content-center",
             showCaption: false,
-            showRemove: true,
             showUpload: false,
             removeFromPreviewOnError: true
         });
 
-        $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
-            $('#bcf_PdfFile').trigger('change');
+        $(fileInputAreaSelector).on('drop', '.file-drop-zone', function (e) {
+            $(fileInputSelector).trigger('change');
         });
 
-        $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
+        $(fileInputSelector).on('fileloaded', function (event, file, previewId, index, reader) {
+            // Escape the previewId selector to handle special characters
+            const escapedPreviewId = escapeSelector(`#${previewId}`);
+            // Show the remove button when a file is loaded
+            $(`${escapedPreviewId} .fileinput-remove`).removeClass('d-none');
+        });
 
+        $(fileInputSelector).on('fileremoved', function (event, id) {
+            // Ensure remove button is hidden when file is removed
+            $(fileInputSelector).fileinput('clear');
+        });
+
+        $(fileInputSelector).on('filecleared', function (event) {
+            // Ensure the remove button is hidden after clearing the file input
+            $(`${fileInputAreaSelector} .file-preview .fileinput-remove`).addClass('d-none');
+        });
+
+        // Initial state: Hide the remove button
+        $(`${fileInputAreaSelector} .file-preview .fileinput-remove`).addClass('d-none');
+
+        // Function to escape special characters in jQuery selectors
+        function escapeSelector(selector) {
+            return selector.replace(/([!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+        }
+
+        //$(`[id="bcf_PdfFile"]`).fileinput({
+        //    dropZoneTitle: `
+        //        <div class="file-icon">
+        //            <img src="${baseUrl}img/pdf.png" />
+        //        </div>
+        //        <p class="fw-4">
+        //            <span class="text-info fw-bold">Drag and Drop</span>
+        //            <br>
+        //            here to upload your file or
+        //            <br>
+        //            browse files using the button below.
+        //        </p>
+        //    `,
+        //    showPreview: true,
+        //    allowedFileExtensions: ['pdf'],
+        //    maxFileCount: 1,
+        //    minFileCount: 1,
+        //    maxFileSize: (1024 * 5),
+        //    theme: "explorer-fa5",
+        //    browseClass: "btn btn-info flex-grow-1",
+        //    removeClass: "btn btn-danger flex-grow-1",
+        //    browseLabel: "Browse",
+        //    mainClass: "d-flex gap-1 justify-content-center",
+        //    showCaption: false,
+        //    showRemove: true,
+        //    showUpload: false,
+        //    removeFromPreviewOnError: true
+        //});
+
+        //$(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
+        //    $('#bcf_PdfFile').trigger('change');
+        //});
+
+        //$(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
     }
 
     function initializeRibbon() {
@@ -161,8 +223,8 @@ $(function () {
         //var bcfStatus = $("#Bcf_ApplicationStatus").val();
 
         /*
-            bcf-documentstatus 3 - Approved		
-            bcf-documentstatus 1 - submitted		
+            bcf-documentstatus 3 - Approved
+            bcf-documentstatus 1 - submitted
             bcf-documentstatus 11 - For resubmission
         */
 
@@ -194,6 +256,5 @@ $(function () {
         //$(`[id="bcf_dl_custom_ribbon"]`).attr('hidden', ribbon.documentStatus === 0);
         $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
         $(`[id="bcfStatus"]`).html(ribbon.text);
-
     }
 });
