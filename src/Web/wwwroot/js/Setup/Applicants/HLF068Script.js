@@ -1183,6 +1183,13 @@ $(function () {
                 return;
             }
 
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
+
             //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
             //}
 

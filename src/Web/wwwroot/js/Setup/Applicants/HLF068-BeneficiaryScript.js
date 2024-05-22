@@ -1348,6 +1348,13 @@ $(function () {
                 loadHlafPreview();
             }
 
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
+
             progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
