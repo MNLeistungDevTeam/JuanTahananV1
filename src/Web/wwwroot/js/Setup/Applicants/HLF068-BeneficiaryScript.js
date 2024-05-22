@@ -2,6 +2,7 @@
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
+const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
 let isFormValid;
 
@@ -184,18 +185,11 @@ $(function () {
         $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
     });
 
-
-
-
-
     let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
     let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
 
-
     $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
     $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
-
-
 
     $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
         console.log($(this).val())
@@ -220,13 +214,6 @@ $(function () {
             $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
         }
     });
-
-
-
-
-
-   
-
 
     // #endregion
 
@@ -437,7 +424,6 @@ $(function () {
         }
     });
 
-
     $('input[name="paymentSchemeRbtn"]').on('change ', function () {
         if ($(this).is(':checked')) {
             $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
@@ -469,12 +455,6 @@ $(function () {
     else if (enrolledMRI == 'False') {
         $('#enrolledMRIRbtn2').prop('checked', true);
     }
-
-
-
-
-
-
 
     //#endregion
 
@@ -1453,6 +1433,10 @@ $(function () {
                 }
             }
         });
+
+        if (buyerconfirmationAppStatus == 3) {
+            disableBuyerConfirmationFields();
+        }
     });
 
     //#region Methods
@@ -1924,7 +1908,7 @@ $(function () {
     }
 
     function bcfToHLafConnectedFieldMap() {
-        if (hasBcf == "True") {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
             return;
         }
 
@@ -2033,7 +2017,7 @@ $(function () {
     }
 
     function HLafTobcfConnectedFieldMap() {
-        if (hasBcf == "True") {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
             return;
         }
 
@@ -2372,6 +2356,39 @@ $(function () {
         });
     }
 
+    function disableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('readonly', true);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+    }
     function removeBcfPlaceholders() {
         $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
         $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');

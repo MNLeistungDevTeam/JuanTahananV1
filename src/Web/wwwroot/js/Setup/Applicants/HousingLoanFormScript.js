@@ -109,21 +109,6 @@ $(async function () {
         if (editableFlag) {
             event.returnValue = "You have unsaved changes. Are you sure you want to leave this page?";
             return event.returnValue;
-
-            //Swal.fire({
-            //    title: 'Leave edit mode?',
-            //    text: 'You have unsaved changes. If you leave now then all of your edits progress will be lost.',
-            //    icon: 'warning',
-            //    showCancelButton: true,
-            //    confirmButtonColor: '#3085d6',
-            //    cancelButtonColor: '#d33',
-            //    confirmButtonText: 'Discard changes',
-            //    cancelButtonText: 'Continue editing'
-            //}).then((result) => {
-            //    if (result.isConfirmed) {
-            //        editableFlag = false; // Resetting the flag
-            //    }
-            //});
         }
     };
 
@@ -2940,7 +2925,7 @@ $(async function () {
 
     function disableBuyerConfirmationFields() {
         $('[id^="BuyerConfirmationModel_"]').each(function () {
-            $(this).prop('disabled', true);
+            $(this).prop('readonly', true);
         });
 
         $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
