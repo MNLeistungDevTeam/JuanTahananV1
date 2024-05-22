@@ -52,7 +52,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         [Display(Name = "Date of Birth", Prompt = "Birth Date", Description = "(mm/dd/yyyy)")]
         public DateTime? BirthDate { get; set; }
 
-        [Display(Name = "Mothers Maiden Name", Prompt = "Mothers Maiden Name")]
+        [Display(Name = "Mothers Maiden Name", Prompt = "Mother`s Maiden Name")]
         public string? MothersMaidenName { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
