@@ -1517,7 +1517,7 @@ $(async function () {
     }
 
     function rebindValidators() {
-        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", false);
 
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
@@ -1565,7 +1565,7 @@ $(async function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
-                    $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
 
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
@@ -2221,7 +2221,7 @@ $(async function () {
                 $("#beneficiary-overlay").removeClass('d-none');
             },
             success: function (response) {
-                $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
                 $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
 
                 $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
@@ -2963,7 +2963,7 @@ $(async function () {
 
     function enableBuyerConfirmationFields() {
         $('[id^="BuyerConfirmationModel_"]').each(function () {
-            $(this).prop('disabled', false);
+            $(this).prop('readonly', false);
         });
 
         $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.unlock();
