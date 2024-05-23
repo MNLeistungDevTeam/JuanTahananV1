@@ -7,6 +7,7 @@ $(function () {
     const CONST_MODULE = "BuyerConfirmation  Requests";
     const CONST_MODULE_CODE = "BCF-APLRQST";
     const CONST_TRANSACTIONID = $("#BuyerConfirmation_Id").val();
+    const buyerConfirmationCode = $("#BuyerConfirmationModel_Code").val();
 
     var currentStep = 0;
     var inputLock = false;
@@ -25,19 +26,38 @@ $(function () {
         //#region Initialization
 
         // Add blue border on focus
-        $(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
-            $(this).addClass("focused");
-        });
+        //$(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
+        //    $(this).addClass("focused");
+        //});
 
         // Remove blue border when focus is lost
-        $(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
-            $(this).removeClass("focused");
-        });
+        //$(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
+        //    $(this).removeClass("focused");
+        //});
+
+        if (buyerConfirmationCode !== localStorage.getItem("BuyerConfirmationModel_Code")) {
+            localStorage.removeItem("BuyerConfirmationModel_Code");
+            localStorage.removeItem("BuyerConfirmationModel_SellingPrice");
+            localStorage.removeItem("BuyerConfirmationModel_MonthlyAmortization")
+        }
+
+        //Load data from local storage
+        if (localStorage.getItem("BuyerConfirmationModel_Code")) {
+            $("#BuyerConfirmationModel_Code").val(localStorage.getItem("BuyerConfirmationModel_Code"));
+        }
+
+        if (localStorage.getItem("BuyerConfirmationModel_SellingPrice")) {
+            $("#BuyerConfirmationModel_SellingPrice").val(localStorage.getItem("BuyerConfirmationModel_SellingPrice"));
+        }
+
+        if (localStorage.getItem("BuyerConfirmationModel_MonthlyAmortization")) {
+            $("#BuyerConfirmationModel_MonthlyAmortization").val(localStorage.getItem("BuyerConfirmationModel_MonthlyAmortization"));
+        }
+
+        PricingFieldInputChecker();
 
         //#endregion
     });
-
-
 
     //#region Events
     $(`[id="bcfSetAmount"]`).on('click', function (e) {
@@ -54,6 +74,10 @@ $(function () {
 
         $(`[id="bcfPreviewBtn"]`).addClass(!inputLock ? "btn-outline-info" : "btn-info");
         $(`[id="bcfPreviewBtn"]`).removeClass(inputLock ? "btn-outline-info" : "btn-info");
+
+        localStorage.setItem("BuyerConfirmationModel_Code", buyerConfirmationCode);
+        localStorage.setItem("BuyerConfirmationModel_SellingPrice", $("#BuyerConfirmationModel_SellingPrice").val());
+        localStorage.setItem("BuyerConfirmationModel_MonthlyAmortization", $("#BuyerConfirmationModel_MonthlyAmortization").val());
     });
 
     $(`[id="bcfPreviewBtn"]`).on('click', function (e) {
@@ -75,7 +99,6 @@ $(function () {
         $(`#previewBcf`).attr('hidden', true);
         $(`#inputBcf`).attr('hidden', false);
     });
-
 
     $("#btnApprove, #btnReturn").on('click', function (e) {
         e.preventDefault();
@@ -132,7 +155,6 @@ $(function () {
 
             $(`[id="bcfSetAmount"]`).attr('disabled', monthlyAmort > sellingPrice);
         });
-
     }
 
     function initializeInputMasks() {
@@ -154,7 +176,7 @@ $(function () {
                 formId: ["previewBcf"],
                 progress: 1,
                 callback: function () {
-                   // loadBcfPreview();
+                    // loadBcfPreview();
                 }
             }
         ];
@@ -210,7 +232,6 @@ $(function () {
                 // Do something with the response, like displaying a success message
 
                 console.log(response)
-
 
                 var responseData = atob(response);
 
@@ -387,10 +408,13 @@ $(function () {
                             // $("#btnApprove").attr({ disabled: true });
                         },
                         success: function (response) {
-
                             //$("#beneficiary-overlay").addClass('d-none');
 
                             //messageBox("Successfully saved.", "success");
+                            //Clear local storage data
+                            localStorage.removeItem("BuyerConfirmationModel_Code");
+                            localStorage.removeItem("BuyerConfirmationModel_SellingPrice");
+                            localStorage.removeItem("BuyerConfirmationModel_MonthlyAmortization")
 
                             updateBCF(approvalLevelStatus);
                             $approverModal.modal("hide");

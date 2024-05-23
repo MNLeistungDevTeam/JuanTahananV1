@@ -1130,6 +1130,13 @@ $(function () {
                 $("#form2").removeClass('fade').prop('hidden', false);
                 return;
             }
+
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
