@@ -1493,25 +1493,25 @@ $(async function () {
             }
         });
 
-        form.find('input[type="radio"][required]').each(function () {
-            let hasClass = $(this).hasClass('valid');
+        //form.find('input[type="radio"][required]').each(function () {
+        //    let hasClass = $(this).hasClass('valid');
 
-            console.log(roleId);
-            if (roleId === '3') {
-                $(this).prop('required', false);
-                return;
-            }
+        //    console.log(roleId);
+        //    if (roleId === '3') {
+        //        $(this).prop('required', false);
+        //        return;
+        //    }
 
-            if (!hasClass) {
-                $(this).addClass('is-invalid');
-                $(this).removeClass('valid');
+        //    if (!hasClass) {
+        //        $(this).addClass('is-invalid');
+        //        $(this).removeClass('valid');
 
-                isValid = false;
-            } else {
-                $(this).addClass('valid');
-                $(this).removeClass('is-invalid');
-            }
-        });
+        //        isValid = false;
+        //    } else {
+        //        $(this).addClass('valid');
+        //        $(this).removeClass('is-invalid');
+        //    }
+        //});
 
         return isValid;
     }
