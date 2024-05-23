@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,4 +22,7 @@ public class PropertyUnitModel
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public string? ProfileImage { get; set; } = string.Empty;
+    public IFormFile? ProfileImageFile { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,4 +33,7 @@ public class PropertyProjectModel
 
     public int LocationId { get; set; }
     public int UnitId { get; set; }
+
+    public string? ProfileImage { get; set; } = string.Empty;
+    public IFormFile? ProfileImageFile { get; set; }
 }

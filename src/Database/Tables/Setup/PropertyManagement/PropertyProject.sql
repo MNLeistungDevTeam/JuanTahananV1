@@ -9,4 +9,5 @@
     [DateCreated] DATETIME2 NOT NULL DEFAULT GETDATE(), 
     [ModifiedById] INT NULL, 
     [DateModified] DATETIME2 NULL DEFAULT GETDATE(), 
+	[ProfileImage] NVARCHAR(255) NULL
 )
