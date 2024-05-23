@@ -165,9 +165,8 @@ $(function () {
         $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
 
         if ($(this).attr('id') === 'pagibigRbtn2') {
-        //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+            //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
             $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
-
         }
 
         $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
@@ -1870,6 +1869,7 @@ $(function () {
         }
         else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+            $("#BuyerConfirmationModel_IsPagibigMember").val(bcfPagibigNumber.length > 0 ? "True" : "False");
         }
 
         // Set miscellanous input to disable

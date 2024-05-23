@@ -1415,7 +1415,6 @@ $(async function () {
 
                 $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
 
-
                 if ($(this).attr('id') === 'pagibigRbtn2') {
                     //$(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
                     $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
@@ -1825,7 +1824,7 @@ $(async function () {
         let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
         let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
 
-        //let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
+        let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
@@ -1860,8 +1859,8 @@ $(async function () {
             $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass("valid");
 
             // Set checked status for BCF Pagibig Number radio buttons
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass("valid");
-            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass("valid");
+            $("#pagibigRbtn1").prop("checked", isPagibigMember == "True").addClass('valid');
+            $("#pagibigRbtn2").prop("checked", isPagibigMember == "False").addClass('valid');
 
             // Set checked status for BCF availed laon radio buttons
             $("#availedLoanRbtn1").prop("checked", !pagibigAvailedLoan).addClass("valid");
