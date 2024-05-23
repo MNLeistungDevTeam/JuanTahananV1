@@ -1333,7 +1333,7 @@
             // 
             this.xrLabel17.CanGrow = false;
             this.xrLabel17.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[IsPagibigMember] == 1,true , false)\n\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[IsPagibigMember] == 0,true , false)\n\n\n\n\n\n")});
             this.xrLabel17.LocationFloat = new DevExpress.Utils.PointFloat(660.8271F, 802.2919F);
             this.xrLabel17.Multiline = true;
             this.xrLabel17.Name = "xrLabel17";
@@ -1347,7 +1347,7 @@
             // 
             this.xrLabel16.CanGrow = false;
             this.xrLabel16.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[IsPagibigMember] == 0,true , false)\n\n\n\n\n")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Visible", "Iif([BuyerConfirmationModel].[IsPagibigMember] == 1,true , false)\n\n\n\n\n")});
             this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(593.9562F, 802.2919F);
             this.xrLabel16.Multiline = true;
             this.xrLabel16.Name = "xrLabel16";

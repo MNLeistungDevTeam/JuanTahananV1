@@ -23,7 +23,7 @@ VALUES
 (14, 'Management', 1, '2024-03-21T10:10:00', NULL, NULL),
 (15, 'Manufacturing', 1, '2024-03-21T10:20:00', NULL, NULL),
 (16, 'Media', 1, '2024-03-21T10:30:00', NULL, NULL),
-(17, 'Mining and Quarrying', 1, '2024-03-21T10:40:00', NULL, NULL),
+(17, 'Mining & Quarrying', 1, '2024-03-21T10:40:00', NULL, NULL),
 (18, 'Other Community, Social & Personal Service Activities', 1, '2024-03-21T10:50:00', NULL, NULL),
 (19, 'Public Administration & Defense; Compulsory Social Security', 1, '2024-03-21T11:00:00', NULL, NULL),
 (20, 'Technology', 1, '2024-03-21T11:10:00', NULL, NULL),
