@@ -140,8 +140,8 @@ $(function () {
 
                 let removeColorClasses = ["bg-primary", "bg-danger"];
 
-                $(`[id="fileInputArea"] .fileinput-remove.fileinput-remove-button`).attr('disabled', false);
-                $(`[id="bcf_PdfFile"]`).attr('disabled', false);
+                $(`[id="fileInputArea"] .fileinput-remove.fileinput-remove-button`).removeAttr('disabled');
+                $(`[id="bcf_PdfFile"]`).removeAttr('disabled');
                 $(`[id="bcf_PdfFile"]`).parent().removeClass('disabled');
 
                 progressBar.find('.progress-bar')
@@ -199,12 +199,9 @@ $(function () {
         });
 
         $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
-            if ($(`[id="bcf_PdfFile"]`).attr('disabled')) {
-                e.preventDefault();
-                return false;
-            }
-
-            $('#bcf_PdfFile').trigger('change');
+            //$('#bcf_PdfFile').trigger('change');
+            checkInputFile();
+            $(`[id="uploadProgressBar"]`).attr('hidden', true);
         });
 
         $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
