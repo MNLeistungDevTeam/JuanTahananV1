@@ -241,6 +241,24 @@ $(async function () {
         openUnitProjectModal(id);
     });
 
+    $('#fileInputTrigger').on('click', function () {
+        $('#PropProjModel_ProfileImageFile').click();
+    });
+
+    $('#PropProjModel_ProfileImageFile').on('change', function () {
+        let container = $('#imagePreview');
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                container.attr("src", e.target.result);
+                container.hide();
+                container.fadeIn(650);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
     //#endregion Project Table
 
     //#region Project Location Table
@@ -507,6 +525,15 @@ $(async function () {
                     $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
                     //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
                     companyDropdown.setValue(propProject.CompanyId);
+
+                    let defaultProfile = "";
+                    let actualPicture = "";
+                    let profileImage = propProject.ProfileImage;
+
+                    if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
+                    else actualPicture = profileImage;
+
+                    $('#imagePreview').attr('src', actualPicture);
                 }
             });
         }

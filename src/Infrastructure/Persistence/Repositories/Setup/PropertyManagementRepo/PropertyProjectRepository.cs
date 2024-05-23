@@ -47,8 +47,8 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     public async Task<IEnumerable<PropertyProjectModel?>> GetAllAsync() =>
            await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spPropertyProject_GetAll", new { });
 
-    public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId,int? locationId) =>
-           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId , locationId});
+    public async Task<IEnumerable<PropertyProjectModel?>> GetByCompanyAsync(int companyId, int? locationId) =>
+           await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetByCompanyId", new { companyId, locationId });
 
     public async Task<IEnumerable<PropertyProjectModel?>> GetPropertyLocationByProjectAsync(int id) =>
        await _db.LoadDataAsync<PropertyProjectModel, dynamic>("spProject_GetPropertyLocationByProjectId", new { id });
@@ -161,9 +161,24 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
     public async Task<PropertyProject> UpdateAsync(PropertyProject model, int userId)
     {
+        List<string> excludedPropertiesList = new List<string>
+            {
+                 "CreatedById",
+                "DateCreated"
+            };
+
+        if (string.IsNullOrWhiteSpace(model.ProfileImage))
+        {
+            excludedPropertiesList.Add("ProfileImage");
+        }
+
+        // Convert list to array
+        string[] excludedProperties = excludedPropertiesList.ToArray();
+
         model.ModifiedById = userId;
-        model.DateModified = DateTime.UtcNow;
-        var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
+        model.DateModified = DateTime.Now;
+
+        var result = await _contextHelper.UpdateAsync(model, excludedProperties);
 
         return result;
     }

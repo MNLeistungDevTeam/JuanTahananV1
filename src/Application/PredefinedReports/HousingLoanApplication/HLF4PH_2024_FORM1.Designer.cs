@@ -2538,12 +2538,12 @@
             // 
             // xrTable11
             // 
-            this.xrTable11.LocationFloat = new DevExpress.Utils.PointFloat(41.29585F, 374.9959F);
+            this.xrTable11.LocationFloat = new DevExpress.Utils.PointFloat(38.68397F, 364.3946F);
             this.xrTable11.Name = "xrTable11";
             this.xrTable11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.xrTable11.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow11});
-            this.xrTable11.SizeF = new System.Drawing.SizeF(502.785F, 23.53116F);
+            this.xrTable11.SizeF = new System.Drawing.SizeF(504.2808F, 34.77414F);
             // 
             // xrTableRow11
             // 
@@ -2571,7 +2571,7 @@
             // 
             // xrTableCell18
             // 
-            this.xrTableCell18.CanGrow = false;
+            this.xrTableCell18.CanShrink = true;
             this.xrTableCell18.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[PermanentBuildingName]")});
             this.xrTableCell18.Font = new DevExpress.Drawing.DXFont("Tahoma", 6F);
@@ -2585,7 +2585,7 @@
             // 
             // xrTableCell20
             // 
-            this.xrTableCell20.CanGrow = false;
+            this.xrTableCell20.CanShrink = true;
             this.xrTableCell20.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[PermanentLotName]")});
             this.xrTableCell20.Font = new DevExpress.Drawing.DXFont("Tahoma", 6F);
@@ -2979,7 +2979,7 @@
             this.xrTableCell38.CanGrow = false;
             this.xrTableCell38.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[Email]")});
-            this.xrTableCell38.Font = new DevExpress.Drawing.DXFont("Tahoma", 7F);
+            this.xrTableCell38.Font = new DevExpress.Drawing.DXFont("Tahoma", 6F);
             this.xrTableCell38.Multiline = true;
             this.xrTableCell38.Name = "xrTableCell38";
             this.xrTableCell38.StylePriority.UseFont = false;
@@ -3233,7 +3233,7 @@
             this.xrTableCell46.CanGrow = false;
             this.xrTableCell46.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BarrowersInformationModel].[BusinessEmail]")});
-            this.xrTableCell46.Font = new DevExpress.Drawing.DXFont("Tahoma", 7F);
+            this.xrTableCell46.Font = new DevExpress.Drawing.DXFont("Tahoma", 6F);
             this.xrTableCell46.Multiline = true;
             this.xrTableCell46.Name = "xrTableCell46";
             this.xrTableCell46.StylePriority.UseFont = false;

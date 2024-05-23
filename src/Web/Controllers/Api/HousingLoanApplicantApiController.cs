@@ -3,6 +3,7 @@ using DMS.Domain.Dto.BasicBeneficiaryDto;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Api
@@ -47,6 +48,30 @@ namespace DMS.Web.Controllers.Api
 
         #region Api For JTAHANAN-PH Portal
 
+        //to separate zeta and rs use constant companyCode
+        [HttpGet("GetDeveloperByCode/{developerCode}")]
+        public async Task<IActionResult> GetDeveloperByCode(string? developerCode)
+        {
+            try
+            {
+                var developers = await _zetaHousingLoanIntegrationService.GetDevelopers();
+                var developer = developers.FirstOrDefault(d => d.Code == developerCode);
+
+                if (developer != null)
+                {
+                    return Ok(developer);
+                }
+                else
+                {
+                    return BadRequest($"Developer with code {developerCode} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetDevelopers")]
         public async Task<IActionResult> GetDevelopers()
         {
@@ -63,8 +88,6 @@ namespace DMS.Web.Controllers.Api
         }
 
         [HttpGet("GetProjectsByCompany")]
- 
-
         public async Task<IActionResult> GetProjectsByCompany(int companyId, int? locationId)
         {
             try
@@ -78,7 +101,6 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpGet("GetLocationsByProject")]
         public async Task<IActionResult> GetLocationsByProject(int? projectId, int? developerId)
@@ -96,11 +118,11 @@ namespace DMS.Web.Controllers.Api
         }
 
         [HttpGet("GetUnitsByProject")]
-        public async Task<IActionResult> GetUnitsByProject(int? projectId,int? developerId)
+        public async Task<IActionResult> GetUnitsByProject(int? projectId, int? developerId)
         {
             try
             {
-                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId,developerId);
+                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId, developerId);
 
                 return Ok(projects);
             }
@@ -111,10 +133,5 @@ namespace DMS.Web.Controllers.Api
         }
 
         #endregion Api For JTAHANAN-PH Portal
-
-
-
-
-
     }
 }

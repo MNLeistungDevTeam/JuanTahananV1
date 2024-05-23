@@ -36,7 +36,7 @@
                     <div class="col-md-6 mb-2">
                         <div class="input-group float-end" style="width:250px;">
                             <input bound="tbl_PropProj" type="search" class="form-control form-control-sm" placeholder="Search..." />
-                            <span class="input-group-text"><i class="fe-search"></i></span>
+                            <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
                         </div>
                     </div>
                 </div>
@@ -70,6 +70,33 @@
             <div class="modal-body">
                 <form asp-action="SavePropertyProject" asp-antiforgery="true" method="post" role="form" id="PropProjModel_form" enctype="multipart/form-data">
                     <input hidden type="text" asp-for="PropProjModel.Id" class="form-control form-control-sm">
+
+
+
+                   
+
+
+                    <div class="card border border-soft-secondary">
+                        <div class="card-header py-1 px-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h5 class="text-muted"><span class="mdi mdi-image-edit-outline"></span> Project Image</h5>
+                                <button class="btn btn-sm btn-light waves-effect" type="button" id="fileInputTrigger">
+                                    <span class="fe-plus"></span> Update Image
+                                </button>
+ 
+                        </div>
+                        <div class="card-body border-top">
+                            <div class="d-flex justify-content-center">
+                                <img id="imagePreview" src="~/images/JuanTahananAssets/Logo/ARAO_logo.png" class="img-thumbnail bg-light" alt="item-image" style="height: 150px;"> 
+                                
+                                <input accept=".png, .jpg, .jpeg" hidden="" type="file" asp-for="PropProjModel.ProfileImageFile">
+
+                                   
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
 
                     <div class="position-relative mb-3">
                         <label class="form-label fw-normal" asp-for="PropProjModel.Name" required></label>

@@ -39,8 +39,6 @@ public class PropertyUnitRepository : IPropertyUnitRepository
     public async Task<IEnumerable<PropertyUnitModel?>> GetUnitByProjectAsync(int? projectId, int? developerId) =>
        await _db.LoadDataAsync<PropertyUnitModel, dynamic>("spPropertyUnit_GetUnitByProjectId", new { projectId, developerId });
 
-
-
     #endregion Getters
 
     #region Operation
@@ -73,18 +71,34 @@ public class PropertyUnitRepository : IPropertyUnitRepository
         }
         catch (Exception)
         {
-
             throw;
         }
     }
 
     public async Task<PropertyUnit> UpdateAsync(PropertyUnit model, int userId)
     {
+        List<string> excludedPropertiesList = new List<string>
+            {
+                 "CreatedById",
+                "DateCreated"
+            };
+
+        if (string.IsNullOrWhiteSpace(model.ProfileImage))
+        {
+            excludedPropertiesList.Add("ProfileImage");
+        }
+
+        // Convert list to array
+        string[] excludedProperties = excludedPropertiesList.ToArray();
+
         model.ModifiedById = userId;
-        model.DateModified = DateTime.UtcNow;
-        var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
+        model.DateModified = DateTime.Now;
+
+        var result = await _contextHelper.UpdateAsync(model, excludedProperties);
 
         return result;
+
+      
     }
 
     public async Task BatchDeleteAsync(int[] ids)

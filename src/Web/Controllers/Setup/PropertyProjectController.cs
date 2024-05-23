@@ -1,9 +1,12 @@
 ﻿using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
+using DMS.Application.Services;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Web.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,10 +18,14 @@ public class PropertyProjectController : Controller
     #region Fields
 
     private readonly IPropertyProjectRepository _propertyProjectRepo;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IFileUploadService _fileUploadService;
 
-    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo)
+    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo,IWebHostEnvironment webHostEnvironment,IFileUploadService fileUploadService)
     {
         _propertyProjectRepo = propertyProjectRepo;
+        _webHostEnvironment = webHostEnvironment;
+        _fileUploadService = fileUploadService; 
     }
 
     #endregion Fields
@@ -66,6 +73,12 @@ public class PropertyProjectController : Controller
                 return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
 
             var userId = int.Parse(User.Identity.Name);
+
+            var rootFolder = _webHostEnvironment.WebRootPath;
+            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyProject", model.PropProjModel.Name);
+            string? projectProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropProjModel?.ProfileImageFile, model.PropProjModel.Name, profileSaveLocation, rootFolder);
+
+            model.PropProjModel.ProfileImage = projectProfileImage;
 
             var result = await _propertyProjectRepo.SaveAsync(model.PropProjModel, userId);
 

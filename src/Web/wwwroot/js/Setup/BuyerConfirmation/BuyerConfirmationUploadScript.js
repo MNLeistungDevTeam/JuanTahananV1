@@ -1,6 +1,8 @@
 ﻿"use strict"
 
 $(function () {
+    const progressBar = $(`[id="uploadProgressBar"] [role="progressbar"]`);
+
     var ajaxUploadCall;
 
     let documentReferenceId = $('#Id').val();
@@ -47,13 +49,17 @@ $(function () {
     $('#bcf_PdfFile').on('change', function (e) {
         // $(this).prop('files').length === 0
         checkInputFile();
+        $(`[id="uploadProgressBar"]`).attr('hidden', true);
     });
 
     $(`#fileInputArea .fileinput-remove-button`).on('click', function (e) {
         checkInputFile();
+        $(`[id="uploadProgressBar"]`).attr('hidden', true);
     });
 
     function upload(file) {
+        var successFlag = false;
+
         var formData = new FormData();
         formData.append('file', file);
         formData.append('BuyerConfirmationId', documentReferenceId);
@@ -67,50 +73,94 @@ $(function () {
             cache: false,
             processData: false,
             contentType: false,
-            beforeSend: function () {
-                $(`[id="submitPdfFile"]`).attr('disabled', true);
-                //loading('Uploading...', true);
-            },
-            success: function (response) {
-                messageBox('Uploaded Successfully', "success", true);
-                //loader.close();
-            },
-
             xhr: function () {
                 var xhr = new XMLHttpRequest();
 
                 if (xhr.upload) {
-                    // Show progressbar
-                    $(`[id="uploadProgressBar"]`).attr('hidden', false);
-
                     // Add event listener
                     xhr.upload.addEventListener('progress', function (e) {
                         if (e.lengthComputable) {
                             var percentComplete = e.loaded / e.total;
                             percentComplete = parseFloat(percentComplete * 100);
-                            console.log(e);
+
+                            //console.log(e);
                             if (percentComplete > 100) {
                                 percentComplete = 100;
                             }
 
-                            $(`[id="uploadProgressBar"] [role="progressbar"]`).attr('aria-valuenow', `${percentComplete}`);
-                            $(`[id="uploadProgressBar"] [role="progressbar"] .progress-bar`).css('width', `${percentComplete}%`);
+                            progressBar.attr('aria-valuenow', `${percentComplete}`);
+                            progressBar.find(`.progress-bar`).css('width', `${percentComplete}%`);
                         }
                     }, false);
                 }
 
                 return xhr;
             },
+            beforeSend: function () {
+                // Show progressbar
+                $(`[id="uploadProgressBar"]`).attr('hidden', false);
+
+                let removeColorClasses = ["bg-primary", "bg-danger"];
+                $(`[id="submitPdfFile"]`).attr('disabled', true);
+
+                progressBar.attr('aria-valuenow', `0`);
+                progressBar.find(`.progress-bar`).css('width', `0%`);
+                progressBar.find('.progress-bar').removeClass(removeColorClasses).addClass('bg-primary');
+
+                $(`#btnCancelRetry`).data('btn-mode', "cancel")
+                    .removeClass("btn-info")
+                    .addClass("btn-danger")
+                    .html("Cancel")
+                    .attr('disabled', false);
+
+                $(`[id="fileInputArea"] .fileinput-remove.fileinput-remove-button`).attr('disabled', true);
+                $(`[id="bcf_PdfFile"]`).attr('disabled', true);
+                $(`[id="bcf_PdfFile"]`).parent().addClass('disabled');
+
+                $(`[id="upload-overlay"]`).removeClass('d-none');
+
+                //loading('Uploading...', true);
+            },
+            success: function (response) {
+                messageBox('Uploaded Successfully', "success", true);
+                //loader.close();
+
+                $(`#btnCancelRetry`).attr({
+                    disabled: true,
+                    hidden: true
+                });
+
+                successFlag = true;
+            },
             error: function (xhr, status) {
                 //console.log(status);
                 //console.log(xhr);
-                messageBox(status, "danger", true);
-                $(`[id="submitPdfFile"]`).attr('disabled', false);
+
+                //$(`[id="submitPdfFile"]`).attr('disabled', false);
+
+                let removeColorClasses = ["bg-primary", "bg-danger"];
+
+                $(`[id="fileInputArea"] .fileinput-remove.fileinput-remove-button`).removeAttr('disabled');
+                $(`[id="bcf_PdfFile"]`).removeAttr('disabled');
+                $(`[id="bcf_PdfFile"]`).parent().removeClass('disabled');
+
+                progressBar.find('.progress-bar')
+                    .removeClass(removeColorClasses)
+                    .addClass('bg-danger');
+
+                $(`#btnCancelRetry`).data('btn-mode', "retry")
+                    .removeClass("btn-danger")
+                    .addClass("btn-info")
+                    .html("Retry");
+
+                $(`[id="upload-overlay"]`).addClass('d-none');
+                messageBox("Upload failed: " + status, "danger", true);
             },
             complete: function (xhr, status) {
-                $(`[id="uploadProgressBar"]`).attr('hidden', true);
+                $(`[id="uploadProgressBar"]`).attr('hidden', successFlag);
             }
         });
+
     }
 
     function checkInputFile() {
@@ -149,11 +199,27 @@ $(function () {
         });
 
         $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
-            $('#bcf_PdfFile').trigger('change');
+            //$('#bcf_PdfFile').trigger('change');
+            checkInputFile();
+            $(`[id="uploadProgressBar"]`).attr('hidden', true);
         });
 
         $(`[id="fileInputArea"] .file-preview .fileinput-remove`).addClass('d-none');
 
+        $(`#btnCancelRetry`).on('click', function (e) {
+            e.preventDefault();
+            let removeColorClasses = ["bg-primary", "bg-danger"];
+
+            if ($(this).data('btn-mode') === 'cancel') {
+                ajaxUploadCall.abort("Cancelled by user");
+            }
+            else if ($(this).data('btn-mode') === 'retry') {
+                var selectedFile = $('#bcf_PdfFile').prop('files');
+
+                messageBox("Retrying to upload", "info", true);
+                upload(selectedFile[0]);
+            }
+        });
     }
 
     function initializeRibbon() {

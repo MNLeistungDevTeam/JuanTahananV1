@@ -1,7 +1,10 @@
 ﻿using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
+using DMS.Application.Services;
 using DMS.Web.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +15,14 @@ public class PropertyUnitController : Controller
     #region Fields
 
     private readonly IPropertyUnitRepository _propertyUnitRepo;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IFileUploadService _fileUploadService;
 
-    public PropertyUnitController(IPropertyUnitRepository propertyUnitRepo)
+    public PropertyUnitController(IPropertyUnitRepository propertyUnitRepo, IWebHostEnvironment webHostEnvironment,IFileUploadService fileUploadService)
     {
         _propertyUnitRepo = propertyUnitRepo;
+        _webHostEnvironment = webHostEnvironment;
+        _fileUploadService = fileUploadService;
     }
 
     #endregion Fields
@@ -59,6 +66,13 @@ public class PropertyUnitController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
+
+            var rootFolder = _webHostEnvironment.WebRootPath;
+            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyUnit", model.PropUnitModel.Name);
+            string? unitProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropUnitModel?.ProfileImageFile, model.PropUnitModel.Name, profileSaveLocation, rootFolder);
+
+            model.PropUnitModel.ProfileImage = unitProfileImage;
+ 
             var result = await _propertyUnitRepo.SaveAsync(model.PropUnitModel, userId);
 
             return Ok(result);

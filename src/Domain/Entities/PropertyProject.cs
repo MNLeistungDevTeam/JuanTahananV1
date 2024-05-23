@@ -24,4 +24,6 @@ public partial class PropertyProject
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public string ProfileImage { get; set; }
 }

@@ -20,4 +20,6 @@ public partial class PropertyUnit
     public int? ModifiedById { get; set; }
 
     public DateTime? DateModified { get; set; }
+
+    public string ProfileImage { get; set; }
 }
