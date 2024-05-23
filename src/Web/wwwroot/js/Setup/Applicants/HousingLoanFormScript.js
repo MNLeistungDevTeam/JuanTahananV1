@@ -20,7 +20,7 @@ $(async function () {
 
     //#region Initialization
 
-    $("#btn_savehlf068").prop('disabled', true);
+    $("#btn_savehlf068").prop('hidden', true);
 
     console.log(hasBcf);
     //$("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus == '0' || applicantInfoApprovalStatus == '11'));
@@ -1319,7 +1319,7 @@ $(async function () {
             e.selectize.unlock();
         })
 
-        $("#btn_savehlf068").prop('disabled', false);
+        $("#btn_savehlf068").prop('hidden', false);
 
         $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
 
@@ -1415,7 +1415,6 @@ $(async function () {
 
                 $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
 
-
                 if ($(this).attr('id') === 'pagibigRbtn2') {
                     //$(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
                     $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
@@ -1442,6 +1441,7 @@ $(async function () {
 
             $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
                 console.log($(this).val())
+                removeBcfPlaceholders();
 
                 if ($(this).val() == 5) {
                     $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
@@ -2847,8 +2847,16 @@ $(async function () {
         $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
 
         setDateValue("#BuyerConfirmationModel_BirthDate");
+        $("#btn_savehlf068").prop("hidden", true);
 
         initializeRadioBtnMisc();
+
+        $("#beneficiary-overlay").removeClass('d-none');
+        setTimeout(function () {
+            $("#beneficiary-overlay").addClass('d-none');
+            // Redirect to the specified location
+            window.location.href = baseUrl + link;
+        }, 2000);
 
         //$("#frm_hlf068").clearValidation();
     }
@@ -2999,6 +3007,25 @@ $(async function () {
         $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
         $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
     }
+    function toggleNextButton() {
+        // Check if all required fields with BuyerConfirmationModel in their IDs have values
+        var allFilled = true;
+        $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+            if ($(this).val().trim() === '') {
+                allFilled = false;
+                return false; // Exit the each loop early
+            }
+        });
 
+        // Enable or disable the Next button based on whether all fields are filled
+        $(".nextBtn").prop("disabled", !allFilled);
+    }
+
+    // Bind the toggleNextButton function to change events on each individual input
+    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+        $(this).on('change', toggleNextButton);
+    });
+
+    toggleNextButton();
     removeBcfPlaceholders();
 });

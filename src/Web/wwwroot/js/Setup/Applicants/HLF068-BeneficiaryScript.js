@@ -1820,7 +1820,6 @@ $(function () {
         let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
         let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
 
-        let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
         let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
 
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
@@ -1885,6 +1884,7 @@ $(function () {
         //BCF Radiobuttons
         updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
         updateRadioValidation('#pysRbtn1', '#pysRbtn2');
+        $("[name='BuyerConfirmationModel.IsPagibigMember']").val($("#pagibigRbtn1").is(":checked") ? 'True' : 'False');
     }
 
     function updateRadioValidation(radioBtn1, radioBtn2) {
@@ -2404,6 +2404,26 @@ $(function () {
         $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
     }
 
+    function toggleNextButton() {
+        // Check if all required fields with BuyerConfirmationModel in their IDs have values
+        var allFilled = true;
+        $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+            if ($(this).val().trim() === '') {
+                allFilled = false;
+                return false; // Exit the each loop early
+            }
+        });
+
+        // Enable or disable the Next button based on whether all fields are filled
+        $(".nextBtn").prop("disabled", !allFilled);
+    }
+
+    // Bind the toggleNextButton function to change events on each individual input
+    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+        $(this).on('change', toggleNextButton);
+    });
+
+    toggleNextButton();
     removeBcfPlaceholders();
 
     //#endregion
