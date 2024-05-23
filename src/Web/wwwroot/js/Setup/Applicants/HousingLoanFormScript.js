@@ -80,6 +80,13 @@ $(async function () {
         }
     });
 
+    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+        mask: "99-99999[9][9]-99",
+        placeholder: 'X',
+        //clearIncomplete: true
+    });
+
+
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     initializeLoanCreditDate();
@@ -739,12 +746,6 @@ $(async function () {
 
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
-
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[9][9]-99",
-        placeholder: 'X',
-        //clearIncomplete: true
-    });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {

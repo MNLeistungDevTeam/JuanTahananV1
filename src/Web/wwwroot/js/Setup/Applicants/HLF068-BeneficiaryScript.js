@@ -46,6 +46,28 @@ $(function () {
         //clearIncomplete: true
     });
 
+    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
+        mask: "99-99999[9][9]-99",
+        placeholder: 'X'
+        //clearIncomplete: true
+    });
+
+    //$('[name="BarrowersInformationModel.SSSNumber"]').on('input', function (e) {
+    //    $(this).attr('required', Boolean($(this).val()));
+
+    //    if ($(this).val() && !$(this).inputmask("isComplete")) {
+    //        // input has value but it's not completed
+    //        $(this).addClass('is-invalid');
+    //        $(this).removeClass('was-validated');
+    //    }
+    //    else {
+    //        // value is valid
+    //        $(this).removeClass('is-invalid');
+    //        $(this).addClass('was-validated');
+    //    }
+    //});
+
+
     //// Disable 'e', '+', retain '-'
     //$('.codeInputMask').inputmask({ regex: "^[A-Z0-9-]*$" }); // zip code
 
@@ -821,12 +843,6 @@ $(function () {
 
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
-
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[9][9]-99",
-        placeholder: 'X',
-        //clearIncomplete: true
-    });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
