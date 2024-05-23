@@ -3,8 +3,6 @@
     const $modal = $('#modal-PropUnitModel');
     const $form = $("#PropUnitModel_form");
 
-
-
     $('#fileInputTrigger').on('click', function () {
         $('#PropUnitModel_ProfileImageFile').click();
     });
@@ -22,7 +20,6 @@
             reader.readAsDataURL(this.files[0]);
         }
     });
-
 
     if ($tbl_propUnit) {
         var tbl_propUnit = $("#tbl_PropUnit").DataTable({
@@ -124,66 +121,73 @@
         });
     });
 
-        var btn_add_PropUnitModel = $('#btn_add_PropUnitModel').on('click', async function (e) {
-            e.preventDefault();
-            await applyPropUnit();
-        });
-        var btn_edit_PropUnitModel = $('#btn_edit_PropUnitModel').on('click', async function (e) {
-            e.preventDefault();
-            var id = tbl_propUnit.rows('.selected').data().pluck('Id').toArray()[0];
-            await applyPropUnit(id);
-        });
-        var btn_delete_PropUnitModel = $('#btn_delete_PropUnitModel').on('click', function (e) {
-            e.preventDefault();
-            var ids = tbl_propUnit.rows('.selected').data().pluck('Id').toArray();
-            var names = tbl_propUnit.rows('.selected').data().pluck('Name').toArray();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: `The following Role/s will be deleted: ${names}`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Confirm',
-                showLoaderOnConfirm: true,
-                preConfirm: (login) => {
-                    return fetch(`/PropertyUnit/DeletePropertyUnit/`,
-                        {
-                            method: "delete",
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: `ids=${ids}`
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(response.statusText)
-                            }
-                            return response;
-                        })
-                        .catch(error => {
-                            Swal.showValidationMessage(
-                                `Request failed: ${error}`
-                            )
-                        })
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    messageBox("Unit(s) successfully deleted.", "success");
-                    tbl_propUnit.ajax.reload(null, false)
-                }
-            })
+    var btn_add_PropUnitModel = $('#btn_add_PropUnitModel').on('click', async function (e) {
+        e.preventDefault();
+        await applyPropUnit();
+    });
+    var btn_edit_PropUnitModel = $('#btn_edit_PropUnitModel').on('click', async function (e) {
+        e.preventDefault();
+        var id = tbl_propUnit.rows('.selected').data().pluck('Id').toArray()[0];
+        await applyPropUnit(id);
+    });
+    var btn_delete_PropUnitModel = $('#btn_delete_PropUnitModel').on('click', function (e) {
+        e.preventDefault();
+        var ids = tbl_propUnit.rows('.selected').data().pluck('Id').toArray();
+        var names = tbl_propUnit.rows('.selected').data().pluck('Name').toArray();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `The following Role/s will be deleted: ${names}`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`/PropertyUnit/DeletePropertyUnit/`,
+                    {
+                        method: "delete",
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `ids=${ids}`
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response;
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                messageBox("Unit(s) successfully deleted.", "success");
+                tbl_propUnit.ajax.reload(null, false)
+            }
         })
+    })
 
     async function applyPropUnit(id) {
         clearForm($form);
-
-        console.log(id);
 
         let propUnit = await getProperyUnit(id);
 
         $('[name="PropUnitModel.Id"]').val(propUnit ? propUnit.Id : 0);
         $('[name="PropUnitModel.Name"]').val(propUnit ? propUnit.Name : "");
         $('[name="PropUnitModel.Description"]').val(propUnit ? propUnit.Description : "");
+
+        let defaultProfile = "";
+        let actualPicture = "";
+        let profileImage = propUnit.ProfileImage;
+
+        if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
+        else actualPicture = profileImage;
+
+        $('#imagePreview').attr('src', actualPicture);
 
         $modal.modal('show')
     }

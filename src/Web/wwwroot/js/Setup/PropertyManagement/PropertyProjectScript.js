@@ -525,6 +525,15 @@ $(async function () {
                     $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
                     //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
                     companyDropdown.setValue(propProject.CompanyId);
+
+                    let defaultProfile = "";
+                    let actualPicture = "";
+                    let profileImage = propProject.ProfileImage;
+
+                    if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
+                    else actualPicture = profileImage;
+
+                    $('#imagePreview').attr('src', actualPicture);
                 }
             });
         }
