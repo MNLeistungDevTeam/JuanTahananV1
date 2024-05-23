@@ -76,7 +76,7 @@ public class PropertyProjectController : Controller
 
             var rootFolder = _webHostEnvironment.WebRootPath;
             string profileSaveLocation = Path.Combine("Files", "Images", "PropertyProject", model.PropProjModel.Name);
-            string? projectProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropUnitModel?.ProfileImageFile, model.PropProjModel.Name, profileSaveLocation, rootFolder);
+            string? projectProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropProjModel?.ProfileImageFile, model.PropProjModel.Name, profileSaveLocation, rootFolder);
 
             model.PropProjModel.ProfileImage = projectProfileImage;
 

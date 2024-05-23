@@ -241,6 +241,24 @@ $(async function () {
         openUnitProjectModal(id);
     });
 
+    $('#fileInputTrigger').on('click', function () {
+        $('#PropProjModel_ProfileImageFile').click();
+    });
+
+    $('#PropProjModel_ProfileImageFile').on('change', function () {
+        let container = $('#imagePreview');
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                container.attr("src", e.target.result);
+                container.hide();
+                container.fadeIn(650);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
     //#endregion Project Table
 
     //#region Project Location Table

@@ -3,6 +3,27 @@
     const $modal = $('#modal-PropUnitModel');
     const $form = $("#PropUnitModel_form");
 
+
+
+    $('#fileInputTrigger').on('click', function () {
+        $('#PropUnitModel_ProfileImageFile').click();
+    });
+
+    $('#PropUnitModel_ProfileImageFile').on('change', function () {
+        let container = $('#imagePreview');
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                container.attr("src", e.target.result);
+                container.hide();
+                container.fadeIn(650);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+
     if ($tbl_propUnit) {
         var tbl_propUnit = $("#tbl_PropUnit").DataTable({
             ajax: {
