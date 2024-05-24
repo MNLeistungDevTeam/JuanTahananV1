@@ -1832,12 +1832,8 @@ $(async function () {
         let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
         let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
 
-        //let isPagibigMember = $("[name='BuyerConfirmationModel.IsPagibigMember']").val();
-        let isOtherSourceIncome = $("[name='BuyerConfirmationModel.IsOtherSourceOfIncome']").val();
-
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
-        let bcfAverageMonthlyAddIncome = $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val();
 
         let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
         let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
@@ -1871,20 +1867,16 @@ $(async function () {
             $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass("valid");
 
             // Set checked status for BCF availed laon radio buttons
-            $("#availedLoanRbtn1").prop("checked", !pagibigAvailedLoan).addClass("valid");
-            $("#availedLoanRbtn2").prop("checked", pagibigAvailedLoan).addClass("valid");
+            setCheckedAndValidStatus('#availedLoanRbtn1', '#availedLoanRbtn2', pagibigAvailedLoan);
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#cbwrRbtn1").prop("checked", !coborrower).addClass("valid");
-            $("#cbwrRbtn2").prop("checked", coborrower).addClass("valid");
+            setCheckedAndValidStatus('#cbwrRbtn1', '#cbwrRbtn2', coborrower);
 
             // Set checked status for BCF co-borrower radio buttons
-            $("#prpRbtn1").prop("checked", !projectProponent).addClass("valid");
-            $("#prpRbtn2").prop("checked", projectProponent).addClass("valid");
+            setCheckedAndValidStatus('#prpRbtn1', '#prpRbtn2', projectProponent);
 
             // Set checked status for BCF term in condition radio buttons
-            $("#itcRbtn1").prop("checked", !termConditions).addClass("valid");
-            $("#itcRbtn2").prop("checked", termConditions).addClass("valid");
+            setCheckedAndValidStatus('#itcRbtn1', '#itcRbtn2', termConditions);
         }
         else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
@@ -1910,6 +1902,17 @@ $(async function () {
             $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
             $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
         }
+    }
+
+    function setCheckedAndValidStatus(radioBtn1, radioBtn2, value) {
+        if (value !== 'False') {
+            $(radioBtn1).prop('checked', true);
+        } else {
+            $(radioBtn2).prop('checked', true);
+        }
+
+        $(radioBtn1).addClass('valid');
+        $(radioBtn2).addClass('valid');
     }
 
     function bcfToHLafConnectedFieldMap() {
@@ -3026,19 +3029,21 @@ $(async function () {
         });
 
         // Only BCF Radio Button
-        $('input[type="radio"].bcfRbtn[required]').each(function () {
-            let hasClass = $(this).hasClass('valid');
-            console.log("asd");
+        if (applicantInfoIdVal === '0') {
+            $('input[type="radio"].bcfRbtn[required]').each(function () {
+                let hasClass = $(this).hasClass('valid');
+                console.log("asd");
 
-            if (roleId === '3') {
-                return;  // Exit if roleId is '3'
-            }
+                if (roleId === '3') {
+                    return;  // Exit if roleId is '3'
+                }
 
-            if (!hasClass) {
-                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
-                return false;  // Break out of the each loop
-            }
-        });
+                if (!hasClass) {
+                    allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+                    return false;  // Break out of the each loop
+                }
+            });
+        }
 
         isBcfValid = allFilled;
 

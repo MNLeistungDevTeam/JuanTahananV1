@@ -1809,7 +1809,7 @@ $(function () {
 
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
-            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid'); 
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
         }
 
         updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
