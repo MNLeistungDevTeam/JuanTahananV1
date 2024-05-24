@@ -5,6 +5,7 @@ const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
 let isFormValid;
+let isBcfValid;
 
 $(function () {
     const { pdfjsLib } = globalThis;
@@ -165,9 +166,8 @@ $(function () {
         $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
 
         if ($(this).attr('id') === 'pagibigRbtn2') {
-        //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+            //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
             $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
-
         }
 
         $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
@@ -1282,6 +1282,11 @@ $(function () {
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
 
+            // Check if bcf form
+            if (!isBcfValid) {
+                return false;
+            }
+
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
 
@@ -1464,28 +1469,28 @@ $(function () {
             }
         });
 
-        //form.find('input[type="radio"][required]').each(function () {
-        //    let hasClass = $(this).hasClass('valid');
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
 
-        //    console.log(roleId);
-        //    if (roleId === '3') {
-        //        $(this).prop('required', false);
-        //        return;
-        //    }
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
 
-        //    if (!hasClass) {
-        //        $(this).addClass('is-invalid');
-        //        $(this).removeClass('valid');
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('valid');
 
-        //        console.log('invalid');
-        //        console.log($(this));
+                console.log('invalid');
+                console.log($(this));
 
-        //        isValid = false;
-        //    } else {
-        //        $(this).addClass('valid');
-        //        $(this).removeClass('is-invalid');
-        //    }
-        //});
+                isValid = false;
+            } else {
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
+            }
+        });
 
         return isValid;
     }
@@ -1884,6 +1889,7 @@ $(function () {
         //BCF Radiobuttons
         updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
         updateRadioValidation('#pysRbtn1', '#pysRbtn2');
+        updateRadioValidation('#pagibigRbtn1', '#pagibigRbtn2')
         $("[name='BuyerConfirmationModel.IsPagibigMember']").val($("#pagibigRbtn1").is(":checked") ? 'True' : 'False');
     }
 
@@ -2407,6 +2413,7 @@ $(function () {
     function toggleNextButton() {
         // Check if all required fields with BuyerConfirmationModel in their IDs have values
         var allFilled = true;
+        isBcfValid = true;
         $("input[id*='BuyerConfirmationModel'][required]").each(function () {
             if ($(this).val().trim() === '') {
                 allFilled = false;
@@ -2414,12 +2421,33 @@ $(function () {
             }
         });
 
+        // Only BCF Radio Button
+        $('input[type="radio"].bcfRbtn[required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+            console.log("asd");
+
+            if (roleId === '3') {
+                return;  // Exit if roleId is '3'
+            }
+
+            if (!hasClass) {
+                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+                return false;  // Break out of the each loop
+            }
+        });
+
+        isBcfValid = allFilled;
+
         // Enable or disable the Next button based on whether all fields are filled
         $(".nextBtn").prop("disabled", !allFilled);
     }
 
     // Bind the toggleNextButton function to change events on each individual input
     $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+        $(this).on('change', toggleNextButton);
+    });
+
+    $('input[type="radio"].bcfRbtn[required]').each(function () {
         $(this).on('change', toggleNextButton);
     });
 

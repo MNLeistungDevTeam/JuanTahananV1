@@ -7,6 +7,8 @@ const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
 const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
+let isBcfValid;
+
 $(async function () {
     var telNoArray = [];
     var itiFlag = false;
@@ -1164,6 +1166,11 @@ $(async function () {
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
+
+            // Check if bcf form
+            if (!isBcfValid) {
+                return false;
+            }
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
@@ -3010,6 +3017,7 @@ $(async function () {
     function toggleNextButton() {
         // Check if all required fields with BuyerConfirmationModel in their IDs have values
         var allFilled = true;
+        isBcfValid = true;
         $("input[id*='BuyerConfirmationModel'][required]").each(function () {
             if ($(this).val().trim() === '') {
                 allFilled = false;
@@ -3017,12 +3025,33 @@ $(async function () {
             }
         });
 
+        // Only BCF Radio Button
+        $('input[type="radio"].bcfRbtn[required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+            console.log("asd");
+
+            if (roleId === '3') {
+                return;  // Exit if roleId is '3'
+            }
+
+            if (!hasClass) {
+                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+                return false;  // Break out of the each loop
+            }
+        });
+
+        isBcfValid = allFilled;
+
         // Enable or disable the Next button based on whether all fields are filled
         $(".nextBtn").prop("disabled", !allFilled);
     }
 
     // Bind the toggleNextButton function to change events on each individual input
     $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+        $(this).on('change', toggleNextButton);
+    });
+
+    $('input[type="radio"].bcfRbtn[required]').each(function () {
         $(this).on('change', toggleNextButton);
     });
 
