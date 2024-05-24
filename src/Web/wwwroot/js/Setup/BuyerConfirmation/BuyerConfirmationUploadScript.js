@@ -1,20 +1,18 @@
 ﻿"use strict"
 
-$(function () {
+$(async function () {
     const progressBar = $(`[id="uploadProgressBar"] [role="progressbar"]`);
 
     var ajaxUploadCall;
 
     let documentReferenceId = $('#Id').val();
-
-    ////////////////////////////////
+    let bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
 
     initializeBsFileInput();
-    //initializeTraditionalDrop();
-
     initializeRibbon();
-
     checkInputFile();
+
+
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
@@ -157,10 +155,12 @@ $(function () {
                 messageBox("Upload failed: " + status, "danger", true);
             },
             complete: function (xhr, status) {
-                $(`[id="uploadProgressBar"]`).attr('hidden', successFlag);
+                setTimeout(function () {
+                    $(`[id="uploadProgressBar"]`).attr('hidden', successFlag);
+                    $(`[id="upload-overlay"]`).addClass('d-none');
+                }, 2000);
             }
         });
-
     }
 
     function checkInputFile() {
@@ -169,6 +169,13 @@ $(function () {
     }
 
     function initializeBsFileInput() {
+
+        //if (bcfDocumentStatus === '1') {
+        //    //$(".upload-div").prop("hidden", true);
+        //    //$("#submitPdfFile").prop('hidden', true);
+        //    return;
+        //}
+
         $(`[id="bcf_PdfFile"]`).fileinput({
             dropZoneTitle: `
                 <div class="file-icon">
@@ -223,12 +230,11 @@ $(function () {
     }
 
     function initializeRibbon() {
-        var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
         //var bcfStatus = $("#Bcf_ApplicationStatus").val();
 
         /*
-            bcf-documentstatus 3 - Approved		
-            bcf-documentstatus 1 - submitted		
+            bcf-documentstatus 3 - Approved
+            bcf-documentstatus 1 - submitted
             bcf-documentstatus 11 - For resubmission
         */
 
@@ -260,6 +266,5 @@ $(function () {
         //$(`[id="bcf_dl_custom_ribbon"]`).attr('hidden', ribbon.documentStatus === 0);
         $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
         $(`[id="bcfStatus"]`).html(ribbon.text);
-
     }
 });
