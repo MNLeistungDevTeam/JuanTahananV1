@@ -55,8 +55,8 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId) =>
         await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId });
 
-    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync() =>
-        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { });
+    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync(int? locationId,int? projectId) =>
+        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { locationId, projectId });
 
     #endregion Getters
 

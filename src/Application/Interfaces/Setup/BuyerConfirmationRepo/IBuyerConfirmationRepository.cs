@@ -19,6 +19,8 @@ namespace DMS.Application.Interfaces.Setup.BuyerConfirmationRepo
         Task<IEnumerable<BuyerConfirmationModel>> GetAllAsync();
         Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId);
         Task<BuyerConfirmation> UpdateAsync(BuyerConfirmation buyerConfirm, int userId);
-        Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync();
+
+        Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync(int? locationId, int? projectId);
+      
     }
 }
