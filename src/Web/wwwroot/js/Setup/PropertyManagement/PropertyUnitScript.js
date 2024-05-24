@@ -173,21 +173,37 @@
 
     async function applyPropUnit(id) {
         clearForm($form);
+        ////reset iformfile
 
-        let propUnit = await getProperyUnit(id);
 
-        $('[name="PropUnitModel.Id"]').val(propUnit ? propUnit.Id : 0);
-        $('[name="PropUnitModel.Name"]').val(propUnit ? propUnit.Name : "");
-        $('[name="PropUnitModel.Description"]').val(propUnit ? propUnit.Description : "");
+        //method removing iformfile
+        var profilePictureFile = $('#PropUnitModel_ProfileImageFile')[0];
 
-        let defaultProfile = "";
-        let actualPicture = "";
-        let profileImage = propUnit.ProfileImage;
+        profilePictureFile.files[0];
 
-        if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
-        else actualPicture = profileImage;
+        // remove filename
+        $('#PropUnitModel_ProfileImageFile').val('');
 
-        $('#imagePreview').attr('src', actualPicture);
+        var defaultProfile = "";
+        var actualPicture = "";
+
+        console.log(id)
+
+        if (id != 0) {
+            var propUnit = await getProperyUnit(id);
+
+            $('[name="PropUnitModel.Id"]').val(propUnit ? propUnit.Id : 0);
+            $('[name="PropUnitModel.Name"]').val(propUnit ? propUnit.Name : "");
+            $('[name="PropUnitModel.Description"]').val(propUnit ? propUnit.Description : "");
+
+      
+            let profileImage = propUnit.ProfileImage;
+
+            if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
+            else actualPicture = profileImage;
+            console.log(propUnit.ProfileImage)
+            $('#imagePreview').attr('src', actualPicture);
+        }
 
         $modal.modal('show')
     }
