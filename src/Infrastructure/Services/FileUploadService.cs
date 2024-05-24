@@ -479,6 +479,54 @@ namespace DMS.Infrastructure.Services
             }
         }
 
+
+
+
+
+
+
+        public async Task<string?> SaveLogoAsync(IFormFile? file, string userName, string location, string rootPath)
+        {
+            try
+            {
+                if (file == null)
+                {
+                    return null;
+                }
+
+                var fileName = userName + Path.GetExtension(file.FileName);
+                var path = Path.Combine(rootPath, location, fileName);
+
+                ////for testing only, the uploaded picture will overwrite the existing image
+                //if (File.Exists(path))
+                //{
+                //    File.Delete(path);
+                //}
+
+                Directory.CreateDirectory(Path.Combine(rootPath, location));
+
+
+                using var image = Image.Load(file.OpenReadStream());
+                //image.Mutate(x => x.Resize(new ResizeOptions
+                //{
+                //    Size = new Size(500, 500x500),
+                //    Mode = ResizeMode.Crop
+                //}));
+                await image.SaveAsync(path);
+
+                return $"/{location.Replace("\\", "/")}/{fileName}";
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+
+
+
+
         #region Private Helper Methods
 
         private async Task<string> ExistingFileCheck(string fileNameLocation)
