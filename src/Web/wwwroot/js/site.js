@@ -1123,20 +1123,22 @@ function bcfUploading() {
 
 function approveBcfNote() {
     var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
+    var bcfDocuStatus = $("#Bcf_DocumentStatus").val();
     console.log(bcfAppStatus);
-    if (bcfAppStatus == 3) {
+    if (bcfAppStatus == 3 && bcfDocuStatus != 3) {
         console.log(bcfAppStatus);
         $("#div_approvebcfNote").removeClass("d-none");
         $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 5rem)`);
 
         $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
+
+        $("#btn_bcfdownload").on("click", function () {
+            let dataurl = $(this).attr('data-url');
+
+            window.location.href = baseUrl + dataurl;
+        });
     }
 
-    $("#btn_bcfdownload").on("click", function () {
-        let dataurl = $(this).attr('data-url');
-
-        window.location.href = baseUrl + dataurl;
-    });
 }
 
 function hlafBcfNav() {
