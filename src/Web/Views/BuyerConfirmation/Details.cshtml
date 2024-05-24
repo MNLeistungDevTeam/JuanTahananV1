@@ -46,6 +46,7 @@
         <form id="frm_bcf" method="post" asp-action="UpdateBCF" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
             <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
             <input type="hidden" asp-for="BuyerConfirmationModel.Id" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus"/>
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">

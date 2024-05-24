@@ -8,6 +8,7 @@ $(function () {
     const CONST_MODULE_CODE = "BCF-APLRQST";
     const CONST_TRANSACTIONID = $("#BuyerConfirmation_Id").val();
     const buyerConfirmationCode = $("#BuyerConfirmationModel_Code").val();
+    const approvalStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
     var currentStep = 0;
     var inputLock = false;
@@ -41,7 +42,6 @@ $(function () {
         $(document).on("focus", "#BuyerConfirmationModel_MonthlyAmortization", function () {
             $(this).addClass("focused");
             $(this).addClass("border-primary border-2 focused");
-            console.log("asdlk");
         });
 
         // remove blue border when focus is lost
@@ -67,6 +67,12 @@ $(function () {
 
         if (localStorage.getItem("BuyerConfirmationModel_MonthlyAmortization")) {
             $("#BuyerConfirmationModel_MonthlyAmortization").val(localStorage.getItem("BuyerConfirmationModel_MonthlyAmortization"));
+        }
+
+        if (approvalStatus === '3') {
+            $("#bcfSetAmount").click();
+            $("#bcfSetAmount").text("Change Pricing");
+            updateChangePricingButton();
         }
 
         PricingFieldInputChecker();
@@ -490,22 +496,23 @@ $(function () {
     }
 
     function updateChangePricingButton() {
-        // Check if all required fields with BuyerConfirmationModel in their IDs have values
-        var allFilled = true;
-        $("input[id*='BuyerConfirmationModel'][required]").each(function () {
-            if ($(this).val().trim() === '') {
-                allFilled = false;
-                return false; // Exit the each loop early
-            }
-        });
+        // Check if the selling price input field is not readonly
+        if (!$("#BuyerConfirmationModel_SellingPrice").prop("readonly")) {
+            // Check if all required fields with BuyerConfirmationModel in their IDs have values
+            var allFilled = true;
+            $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+                if ($(this).val().trim() === '') {
+                    allFilled = false;
+                    return false; // Exit the each loop early
+                }
+            });
 
-        // Change the button label based on whether all fields are filled
-        if (allFilled) {
-            $("#bcfSetAmount").text("Change pricing");
-            $("#bcfSetAmount").text("Apply pricing");
-        } else {
-            $("#bcfSetAmount").text("Change Pricing");
-            $("#bcfSetAmount").text("Set pricing");
+            // Change the button label based on whether all fields are filled
+            if (allFilled) {
+                $("#bcfSetAmount").text("Apply pricing");
+            } else {
+                $("#bcfSetAmount").text("Set pricing");
+            }
         }
     }
 
