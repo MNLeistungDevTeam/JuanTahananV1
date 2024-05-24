@@ -1096,9 +1096,10 @@ function bcfUploading() {
                 link.style.cursor = "default";
                 link.setAttribute('href', '#');
             }
-            else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
-
-                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
+            else if (bcfDocumentStatus == 1) {
+                // 1: Signed and Submitted
+                // 3: Approved
+                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
 
                 link.classList.add('disabled-nav-link');
                 link.style.cursor = "default";
@@ -1112,7 +1113,7 @@ function bcfUploading() {
                     event.preventDefault();
                 }
                 //if bcf document  is submitted && verified
-                else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                else if (bcfDocumentStatus == 1) {
                     console.log(0);
                     event.preventDefault();
                 }
@@ -1125,7 +1126,7 @@ function approveBcfNote() {
     var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
     var bcfDocuStatus = $("#Bcf_DocumentStatus").val();
     console.log(bcfAppStatus);
-    if (bcfAppStatus == 3 && bcfDocuStatus != 3) {
+    if (bcfAppStatus == 3 && bcfDocuStatus != 3 && bcfDocuStatus != 1) {
         console.log(bcfAppStatus);
         $("#div_approvebcfNote").removeClass("d-none");
         $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 5rem)`);
