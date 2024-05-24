@@ -993,7 +993,15 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
         allowMinus: isallownegative,
         autoGroup: true,
         placeholder: placeholder,
-        max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+        max: Number(limiter.replace(/[^-?0-9\.]+/g, "")),
+        onBeforePaste: function (pastedValue, opts) {
+            var processedValue = pastedValue;
+            //console.log(pastedValue);
+            //console.log(processedValue);
+
+            //do something with it
+            return processedValue;
+        }
     });
 }
 

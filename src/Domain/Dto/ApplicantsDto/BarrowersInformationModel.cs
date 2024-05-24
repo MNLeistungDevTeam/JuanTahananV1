@@ -124,7 +124,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Years of stay in Present Home Address", Prompt = "Years", Description = "Years of stay in Present Home Address")]
         public int? YearsofStay { get; set; }
 
-        [Display(Name = "EE SSS/GSIS ID No.", Prompt = "XX-XXXXXXX-XX", Description = "EE SSS/GSIS ID No.")]
+        [Display(Name = "EE SSS/GSIS ID No.", Prompt = "XX-XXXXX(XX)-XX", Description = "EE SSS/GSIS ID No.")]
         public string? SSSNumber { get; set; }
 
         [Display(Name = "TIN", Prompt = "XXX-XXX-XXX-XXXX")]
