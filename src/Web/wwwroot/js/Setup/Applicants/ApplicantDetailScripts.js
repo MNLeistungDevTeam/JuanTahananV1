@@ -546,8 +546,8 @@ $(async function () {
                                                 </div>
                                                 <div class="col-auto">
                                                     <!-- Button -->
-                                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted upload" ${item.DocumentName ? "hidden" : ""}>
-                                                        <i class="dripicons-download"></i>
+                                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+                                                        <i class="fas " id="upload-right-icon"></i>
                                                     </a>
                                                 </div>
                                             </div>
