@@ -257,8 +257,13 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public bool IsBcfCreated { get; set; }
 
- 
         [Display(Name = "Mailing Address/Contact Detail", Prompt = "Mailing Address/Contact Detail")]
-        public string? ContactDetailEmail { get;set; } 
+        public string? ContactDetailEmail { get; set; } = string.Empty;
+
+        public string? PropertyDeveloper { get; set; } = string.Empty;
+        public string? PropertyLocationName { get; set; } = string.Empty;
+        
+        public string? PropertyProject { get; set; } = string.Empty;
+        public string? PropertyUnitDescription { get; set; } = string.Empty;
     }
 }
