@@ -56,7 +56,6 @@ public class PropertyUnitController : Controller
     #region API Actions
 
     [HttpPost]
-    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> SavePropertyUnit(PropertyManagementViewModel model)
     {
         try
@@ -66,12 +65,10 @@ public class PropertyUnitController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-
+            string unitName = model.PropUnitModel.Name.Trim();
             var rootFolder = _webHostEnvironment.WebRootPath;
-            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyManagementFile", "PropertyUnit", model.PropUnitModel.Name);
+            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyManagementFile", "PropertyUnit", unitName);
             var unitProfileImage = await _fileUploadService.SaveFileAsync(model.PropUnitModel?.ProfileImageFile, profileSaveLocation, rootFolder);
-
-
 
             model.PropUnitModel.ProfileImage = unitProfileImage;
 

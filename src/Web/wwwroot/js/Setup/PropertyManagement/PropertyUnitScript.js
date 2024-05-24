@@ -171,7 +171,7 @@
         })
     })
 
-    async function applyPropUnit(id) {
+    async function applyPropUnit(id = 0) {
         clearForm($form);
         ////reset iformfile
 
@@ -203,6 +203,9 @@
             else actualPicture = profileImage;
             console.log(propUnit.ProfileImage)
             $('#imagePreview').attr('src', actualPicture);
+        }
+        else {
+            $('[name="PropUnitModel.Id"]').val(0);
         }
 
         $modal.modal('show')
