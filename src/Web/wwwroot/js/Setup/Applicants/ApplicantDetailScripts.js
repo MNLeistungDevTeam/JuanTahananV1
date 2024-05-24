@@ -60,7 +60,9 @@ $(async function () {
         }
 
         if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
-            $(`.upload-hover`).find('a.upload, a.re-upload').hide();
+            $(`.upload-hover`).find('a.upload, a.re-upload')
+                .html(`<i class="fas"></i>`)
+                .css('cursor', 'unset');
             $(`.upload-hover`).removeClass('upload-hover');
         }
     });
