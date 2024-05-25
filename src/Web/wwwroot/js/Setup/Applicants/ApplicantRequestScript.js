@@ -40,16 +40,16 @@ $(function () {
                 visible: false
             },
             {
-                data: 'Developer',
+                data: 'PropertyDeveloperName',
                 className: 'align-middle'
             },
             {
-                data: 'ProjectLocation',
+                data: 'PropertyLocationName',
                 className: 'align-middle'
             },
 
             {
-                data: 'Unit',
+                data: 'PropertyUnitDescription',
                 className: 'align-middle'
             },
             {

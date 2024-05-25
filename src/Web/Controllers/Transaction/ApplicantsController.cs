@@ -604,18 +604,18 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
                     vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
 
                     #region With Api Integration
 
-                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
-                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
-                    //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                    //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                    //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                    //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                    vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                    vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                    vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                    vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                     #endregion With Api Integration
                 }

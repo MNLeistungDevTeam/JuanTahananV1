@@ -2,7 +2,7 @@
 @applicantId INT
 AS
 	SELECT  bai.*,
-	   c.[Name] PropertyDeveloper,
+	   c.[Name] PropertyDeveloperName,
 		pl.[Name] PropertyLocationName,
 		pp.[Name] PropertyProject,
 		pu.[Description] PropertyUnitDescription

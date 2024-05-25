@@ -13,10 +13,18 @@ FROM (
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-		c.[Name] Developer,
-		pl.[Name] ProjectLocation,
-		pp.[Name] Project,
-		pu.[Description] Unit,
+		c.[Name] Developer,     ---remove this
+		pl.[Name] ProjectLocation,   ---remove this
+		pp.[Name] Project,   ---remove this
+		pu.[Description] Unit,   ---remove this
+		c.[Name] PropertyDeveloperName,
+		pl.[Name] PropertyLocationName,
+		pp.[Name] PropertyProjectName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo,
+
 		lpi.DesiredLoanAmount As LoanAmount,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
@@ -60,6 +68,7 @@ FROM (
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
 	LEFT JOIN [Role] r ON r.Id = ur.RoleId
 	LEFT JOIN Company c ON c.Id = bfi.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	LEFT JOIN PropertyProject pp ON pp.Id = bfi.PropertyProjectId
 	LEFT JOIN PropertyUnit pu ON pu.Id = bfi.PropertyUnitId
 	LEFT JOIN PropertyLocation pl ON pl.Id = bfi.PropertyLocationId

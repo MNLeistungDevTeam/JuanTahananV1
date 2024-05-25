@@ -71,12 +71,6 @@ public partial class BeneficiaryInformation
 
     public string PermanentZipCode { get; set; }
 
-    public string PropertyDeveloperName { get; set; }
-
-    public string PropertyLocation { get; set; }
-
-    public string PropertyUnitLevelName { get; set; }
-
     public int? PropertyDeveloperId { get; set; }
 
     public int? PropertyUnitId { get; set; }

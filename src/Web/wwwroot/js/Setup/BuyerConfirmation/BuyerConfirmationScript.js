@@ -44,7 +44,7 @@ $(function () {
                     className: 'align-middle'
                 },
                 {
-                    data: 'HouseUnitModel',
+                    data: 'PropertyUnitDescription',
                     className: 'align-middle'
                 },
                 {
