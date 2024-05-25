@@ -74,4 +74,5 @@
     PropertyUnitLevelName NVARCHAR(255) NULL,
     MonthlyRent DECIMAL(18,2) NULL,
     ContactDetailEmail NVARCHAR(255) NULL
+    --remove this  PropertyDeveloperName NVARCHAR(255) NULL,PropertyLocation NVARCHAR(255) NULL, PropertyUnitLevelName NVARCHAR(255) NULL, not necessary referencing table was beneficiaryinformation
 )
