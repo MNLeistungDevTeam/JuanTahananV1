@@ -132,11 +132,11 @@ $(() => {
                 //$(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
                 let defaultDevLogo = "/images/juantahananassets/logo/zeta_landscape_logo.png";
-                let defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";  
+                let defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";
                 let defaultProjectLogo = "/images/juantahananassets/logo/arao_logo.png";
-                $(`[id="img_developer"]`).attr('src', data.PropertyDeveloperLogo ?? defaultDevLogo);
-                $(`[id="project_location"]`).html(data.PropertyLocationName || "-----");
 
+                $(`[id="project_location"]`).html(data.PropertyLocationName || "-----");
+                $(`[id="img_developer"]`).attr('src', data.PropertyDeveloperLogo ?? defaultDevLogo);
                 $(`[id="img_projectlogo"]`).attr('src', data.PropertyProjectLogo ?? defaultProjectLogo);
                 $(`[id="img_unitlogo"]`).attr('src', data.PropertyUnitLogo ?? defaultUnitLogo);
 
