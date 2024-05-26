@@ -21,4 +21,16 @@ public static class HtmlExtensions
 
         return new HtmlString(modelExpression.Metadata.Description);
     }
+
+    public static IHtmlContent PlaceholderFor<TModel, TValue>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+    {
+        if (html == null) throw new ArgumentNullException(nameof(html));
+        if (expression == null) throw new ArgumentNullException(nameof(expression));
+
+        var expressionProvider = html.ViewContext?.HttpContext?.RequestServices?.GetService<ModelExpressionProvider>()
+            ?? new ModelExpressionProvider(html.MetadataProvider);
+        var modelExpression = expressionProvider.CreateModelExpression(html.ViewData, expression);
+
+        return new HtmlString(modelExpression.Metadata.Placeholder);
+    }
 }

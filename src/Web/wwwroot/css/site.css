@@ -1618,7 +1618,8 @@ html[data-sidenav-size=condensed]:not([data-layout=topnav]) #wrapper .leftside-m
 }
 
 .custom-responsive-content {
-    max-width: -webkit-fill-available;
+    max-width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+    max-width: -moz-available; /* WebKit-based browsers will ignore this. */
 }
 
 .custom-height-responsive-content {
