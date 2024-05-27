@@ -262,8 +262,18 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public string? PropertyDeveloper { get; set; } = string.Empty;
         public string? PropertyLocationName { get; set; } = string.Empty;
-        
+
         public string? PropertyProject { get; set; } = string.Empty;
         public string? PropertyUnitDescription { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Developer")]
+        public int? PropertyDeveloperId { get; set; }
+        [Display(Name = "House Unit")]
+        public int? PropertyUnitId { get; set; }
+        [Display(Name = "Project")]
+        public int? PropertyProjectId { get; set; }
+        [Display(Name = "Location")]
+        public int? PropertyLocationId { get; set; }
     }
 }

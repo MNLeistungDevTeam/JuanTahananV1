@@ -118,37 +118,82 @@
 
 
 
-
+@* 
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PropertyLocation"></label>
                                                 <input class="form-control rounded-3 mb-2" asp-for="PropertyLocation">
                                                 <span asp-validation-for="PropertyLocation" class="text-danger"> </span>
                                             </div>
-                                        </div>
+                                        </div> *@
 
                                         
+
+
+
+
                              
 
                                         <div class="col-md-3" col="9">
                                             <div class="position-relative">
-                                                <label asp-for="PropertyDeveloperName" class="form-label fw-normal" required></label>
-                                                <select asp-for="PropertyDeveloperName" class="rounded-4 mb-2" data-value="@Model.PropertyDeveloperName" required>
+                                                <label asp-for="PropertyDeveloperId" class="form-label fw-normal" required></label>
+                                                <select asp-for="PropertyDeveloperId" class="rounded-4 mb-2" data-value="@Model.PropertyDeveloperId" required>
                                                     <option value="">Select Developer ...</option>
                                              
                                                 </select>
-                                                <span asp-validation-for="PropertyDeveloperName" class="text-danger"></span>
+                                                <span asp-validation-for="PropertyDeveloperId" class="text-danger"></span>
                                             </div>
                                         </div>
 
 
                                         <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label asp-for="PropertyProjectId" class="form-label fw-normal" required></label>
+                                                <select asp-for="PropertyProjectId" class="rounded-4 mb-2" data-value="@Model.PropertyProjectId" required>
+                                                    <option value="">Select Project ...</option>
+
+                                                </select>
+                                                <span asp-validation-for="PropertyProjectId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label asp-for="PropertyLocationId" class="form-label fw-normal" required></label>
+                                                <select asp-for="PropertyLocationId" class="rounded-4 mb-2" data-value="@Model.PropertyLocationId" required>
+                                                    <option value="">Select Location ...</option>
+
+                                                </select>
+                                                <span asp-validation-for="PropertyLocationId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-3" col="9">
+                                            <div class="position-relative">
+                                                <label asp-for="PropertyUnitId" class="form-label fw-normal" required></label>
+                                                <select asp-for="PropertyUnitId" class="rounded-4 mb-2" data-value="@Model.PropertyUnitId" required>
+                                                    <option value="">Select Unit ...</option>
+
+                                                </select>
+                                                <span asp-validation-for="PropertyUnitId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+
+                                       @*  <div class="col-md-3" col="9">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="PropertyUnitLevelName"></label>
                                                 <input class="form-control rounded-3 mb-2" asp-for="PropertyUnitLevelName">
                                                 <span asp-validation-for="PropertyUnitLevelName" class="text-danger"> </span>
                                             </div>
-                                        </div>
+                                        </div> *@
                                         <div class="col-md-6">
                                             <div class="position-relative">
                                                 <label class="form-label fw-normal" asp-for="Email" required></label>

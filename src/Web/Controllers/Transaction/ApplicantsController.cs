@@ -479,9 +479,10 @@ namespace Template.Web.Controllers.Transaction
                 vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
 
                 //Old
-                vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
 
                 //New
                 //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
@@ -1158,11 +1159,12 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
 
-                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+                        beneficiaryModel.PropertyDeveloperId = vwModel.BarrowersInformationModel.PropertyDeveloperId.Value;
 
-                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+                        beneficiaryModel.PropertyUnitId = vwModel.BarrowersInformationModel.PropertyUnitId.Value;
 
-                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+                        beneficiaryModel.PropertyLocationId = vwModel.BarrowersInformationModel.PropertyLocationId.Value;
+                        beneficiaryModel.PropertyProjectId = vwModel.BarrowersInformationModel.PropertyProjectId.Value;
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;

@@ -181,6 +181,20 @@ public class BuyerConfirmationController : Controller
 
     #region API Getters
 
+    public async Task<IActionResult> BCFSummaryData()
+    {
+        int userId = int.Parse(User.Identity.Name);
+        var userInfo = await _userRepo.GetUserAsync(userId);
+
+        int? roleId = userInfo.UserRoleId.Value;
+
+        int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+        var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null, null, developerId);
+
+        return Ok(data);
+    }
+
     public async Task<IActionResult> GetBCFInquiry()
     {
         BuyerConfirmationInqModel bciModel = new();

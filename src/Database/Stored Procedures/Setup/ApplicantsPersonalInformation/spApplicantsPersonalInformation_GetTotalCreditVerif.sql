@@ -22,7 +22,7 @@ AS
 
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = apl.UserId
-    LEFT JOIN ApprovalStatus aps ON aps.ReferenceId = apl.Id
+    LEFT JOIN ApprovalStatus aps ON aps.ReferenceId = apl.Id AND aps.ReferenceType = (select Id from Module where Code = 'APLCNTREQ')
 	LEFT JOIN (
 		SELECT ApprovalStatusId,ur.RoleId,[Status] FROM ApprovalLevel 
 		LEFT JOIN [UserRole] ur ON ur.UserId = ApproverId  WHERE [Status] = 2) x 
