@@ -70,16 +70,13 @@ $(function () {
 
     //#region Events
 
-    $('#txtSearch').on('input keyup', function () {
+    $('#txtSearch').on('input', function () {
         var value = $(this).val().toLowerCase();
         $("#div-user-container #div-user-cards .col-xl-3").filter(function () {
-            var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1)
+            var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1);
+            $(this).toggle(data);
 
-            $(this).toggle(data)
-            const containsSubstring = data.some((arr) => arr.includes(value));
-            // arr variable is declared and the data from ajax get user list is passed in this variable
-
-            if (!containsSubstring) {
+            if (!data) {
                 $("#noSearch").show();
             }
             else {
