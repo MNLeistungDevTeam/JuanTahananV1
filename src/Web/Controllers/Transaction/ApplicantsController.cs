@@ -13,6 +13,7 @@ using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.UserDto;
@@ -20,6 +21,7 @@ using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -741,11 +743,25 @@ namespace Template.Web.Controllers.Transaction
         {
             try
             {
+                List<UserModel> userModel = new();
+
                 int companyId = int.Parse(User.FindFirstValue("Company"));
+                int userId = int.Parse(User.Identity.Name);
 
-                var result = await _userRepo.spGetByRoleName(roleName, companyId);
+                var data = await _userRepo.spGetByRoleName(roleName, companyId);
 
-                return Ok(result);
+                var userInfo = await _userRepo.GetUserAsync(userId);
+
+                if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+                {
+                    userModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+                }
+                else
+                {
+                    userModel = data.ToList();
+                }
+
+                return Ok(userModel);
             }
             catch (Exception e)
             {
@@ -768,12 +784,20 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            List<ApplicantsPersonalInformationModel> apiModel = new();
 
-            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId, companyId);
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(userInfo.UserRoleId.Value, companyId);
 
-            return Ok(data);
+            if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+            {
+                apiModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+            }
+            else
+            {
+                apiModel = data.ToList();
+            }
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetMyApplications()
@@ -830,9 +854,24 @@ namespace Template.Web.Controllers.Transaction
         public async Task<IActionResult> GetApprovalTotalInfo()
         {
             int companyId = int.Parse(User.FindFirstValue("Company"));
-            //int userId = int.Parse(User.Identity.Name);
+            int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId));
+            List<ApprovalInfoModel> apiModel = new();
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+            {
+                var apiData = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, userInfo.DeveloperId);
+                apiModel = apiData.ToList();
+            }
+            else
+            {
+                var data = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, null);
+                apiModel = data.ToList();
+            }
+
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetBeneficiaryApprovalTotalInfo()
@@ -840,7 +879,7 @@ namespace Template.Web.Controllers.Transaction
             int companyId = int.Parse(User.FindFirstValue("Company"));
             int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId, null));
         }
 
         public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
@@ -873,11 +912,16 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            ApplicationInfoModel apiModel = new();
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId);
-            return Ok(result);
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            int roleId = userInfo.UserRoleId.Value;
+
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            apiModel = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId, developerId);
+
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetTotalCreditVerif()
@@ -885,10 +929,12 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            int? roleId = userInfo.UserRoleId.Value;
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId);
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId, developerId);
             return Ok(result);
         }
 
@@ -897,10 +943,14 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId);
+            int? roleId = userInfo.UserRoleId.Value;
+
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId, developerId);
+
             return Ok(result);
         }
 

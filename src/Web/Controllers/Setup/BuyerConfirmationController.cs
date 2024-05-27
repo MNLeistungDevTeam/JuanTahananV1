@@ -2,6 +2,7 @@
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
+using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Enums;
 using DMS.Web.Models;
@@ -182,10 +183,23 @@ public class BuyerConfirmationController : Controller
 
     public async Task<IActionResult> GetBCFInquiry()
     {
+        BuyerConfirmationInqModel bciModel = new();
+
         int companyId = int.Parse(User.FindFirstValue("Company"));
 
-        var result = await _buyerConfirmationRepo.GetInqAsync(companyId);
-        return Ok(result);
+        int userId = int.Parse(User.Identity.Name);
+        var userInfo = await _userRepo.GetUserAsync(userId);
+
+        if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+        {
+            bciModel = await _buyerConfirmationRepo.GetInqAsync(companyId, userInfo.DeveloperId);
+        }
+        else
+        {
+            bciModel = await _buyerConfirmationRepo.GetInqAsync(companyId, null);
+        }
+
+        return Ok(bciModel);
     }
 
     public async Task<IActionResult> GetBCFapplicationByCode(string code)
@@ -263,20 +277,21 @@ public class BuyerConfirmationController : Controller
             string? fileName = $"BCFSummary.xlsx";
 
             int companyId = int.Parse(User.FindFirstValue("Company"));
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            int? developerId = userInfo.UserRoleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId.Value : null;
 
             // Get List of Qualified BCF
-            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId, projectId);
+            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId, projectId, developerId);
 
             int itemCount = excelList.Count();
-
-
 
             // Extract distinct PropertyProjectName values
             var projectName = excelList.Select(x => x.PropertyProjectName).Distinct().FirstOrDefault();
             var developerName = excelList.Select(x => x.PropertyDeveloperName).Distinct().FirstOrDefault();
             var locationName = excelList.Select(x => x.PropertyLocationName).Distinct().FirstOrDefault();
-
-
 
             // Load the Excel template
             using (var workbook = new XLWorkbook(templatePath))
@@ -366,13 +381,6 @@ public class BuyerConfirmationController : Controller
         }
 
         // End of Action
-    }
-
-    public async Task<IActionResult> BCFSummaryData()
-    {
-        var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null, null);
-
-        return Ok(data);
     }
 
     #endregion API Operation

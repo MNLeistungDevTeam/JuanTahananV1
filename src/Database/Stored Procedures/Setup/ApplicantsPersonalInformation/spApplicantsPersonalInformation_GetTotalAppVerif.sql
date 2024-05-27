@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalAppVerif]
-	@companyId INT
+	@companyId INT,
+	@developerId INT
 AS
 	SET NOCOUNT ON;
 
@@ -18,10 +19,14 @@ AS
 		COUNT(CASE WHEN apl.ApprovalStatus = 10 THEN 1 END) AS Withdrawn
 
 	FROM ApplicantsPersonalInformation apl
+	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = apl.UserId
     LEFT JOIN ApprovalStatus aps ON aps.ReferenceId = apl.Id
 	LEFT JOIN (
 		SELECT ApprovalStatusId,ur.RoleId,[Status] FROM ApprovalLevel 
 		LEFT JOIN [UserRole] ur ON ur.UserId = ApproverId  WHERE [Status] = 9) x 
 		ON x.ApprovalStatusId = aps.ReferenceId	
 	WHERE apl.CompanyId = @companyId
+	AND 1 = ( CASE WHEN @developerId IS NULL THEN 1
+	WHEN @developerId IS NOT NULL AND @developerId = bi.PropertyDeveloperId THEN 1
+	END)
 RETURN 0

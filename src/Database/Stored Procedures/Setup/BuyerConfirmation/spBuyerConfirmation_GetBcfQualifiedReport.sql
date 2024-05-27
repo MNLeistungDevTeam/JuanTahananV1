@@ -1,7 +1,8 @@
 ﻿ CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetBcfQualifiedReport]
  
  @locationId INT,
- @projectId INT
+ @projectId INT,
+ @developerId INT
 AS
 	SELECT 
 		CONCAT(bcf.LastName, ', ', bcf.FirstName, ' ', bcf.MiddleName) AS FullName,
@@ -48,7 +49,9 @@ AS
 	(CASE WHEN @projectId IS NULL THEN 1
 		  WHEN @projectId IS NOT NULL AND @projectId = bcf.PropertyProjectId THEN 1
 	END)
-
-
+	AND 1 = 
+	(CASE WHEN @developerId IS NULL THEN 1
+		  WHEN @developerId IS NOT NULL AND @developerId = bcf.PropertyDeveloperId THEN 1
+	END)
 RETURN 0
  
