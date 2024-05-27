@@ -1095,10 +1095,10 @@ function bcfUploading() {
                 link.style.cursor = "default";
                 link.setAttribute('href', '#');
             }
-            else if (bcfDocumentStatus == 1) {
+            //else if (bcfDocumentStatus == 1) {
                 // 1: Signed and Submitted
                 // 3: Approved
-                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
+                //link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
 
             //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
             //    link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');

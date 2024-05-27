@@ -2,9 +2,9 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using DMS.Domain.Entities;
 using DMS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using DMS.Domain.Entities;
 
 namespace DMS.Infrastructure.Persistence;
 
@@ -119,6 +119,8 @@ public partial class DMSDBContext : DbContext
 
     public virtual DbSet<UserApprover> UserApprovers { get; set; }
 
+    public virtual DbSet<UserCompany> UserCompanies { get; set; }
+
     public virtual DbSet<UserDocument> UserDocuments { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
@@ -133,7 +135,7 @@ public partial class DMSDBContext : DbContext
     {
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Address__3214EC0751D6F66D");
+            entity.HasKey(e => e.Id).HasName("PK__Address__3214EC07A3C785F8");
 
             entity.ToTable("Address");
 
@@ -145,7 +147,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<AddressType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AddressT__3214EC0771D06409");
+            entity.HasKey(e => e.Id).HasName("PK__AddressT__3214EC07C1E111CF");
 
             entity.ToTable("AddressType");
 
@@ -160,7 +162,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ApplicantsPersonalInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Applican__3214EC075346A945");
+            entity.HasKey(e => e.Id).HasName("PK__Applican__3214EC07D7493426");
 
             entity.ToTable("ApplicantsPersonalInformation");
 
@@ -171,7 +173,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ApprovalLevel>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC07DF4F5C04");
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC0729938E00");
 
             entity.ToTable("ApprovalLevel");
 
@@ -181,7 +183,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ApprovalLog>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC0774499EBE");
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC074AFC1F16");
 
             entity.ToTable("ApprovalLog");
 
@@ -193,7 +195,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ApprovalStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC07B12625B1");
+            entity.HasKey(e => e.Id).HasName("PK__Approval__3214EC072C855805");
 
             entity.ToTable("ApprovalStatus");
 
@@ -206,7 +208,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<AuditTrail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AuditTra__3214EC07DCD3DBF4");
+            entity.HasKey(e => e.Id).HasName("PK__AuditTra__3214EC078942E9C5");
 
             entity.ToTable("AuditTrail");
 
@@ -233,7 +235,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<BarrowersInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Barrower__3214EC0799BA0B2D");
+            entity.HasKey(e => e.Id).HasName("PK__Barrower__3214EC0785ECBB6E");
 
             entity.ToTable("BarrowersInformation");
 
@@ -307,7 +309,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<BeneficiaryInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Benefici__3214EC0739DCEDDA");
+            entity.HasKey(e => e.Id).HasName("PK__Benefici__3214EC073C876D34");
 
             entity.ToTable("BeneficiaryInformation");
 
@@ -344,7 +346,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<BuyerConfirmation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BuyerCon__3214EC07A2931C62");
+            entity.HasKey(e => e.Id).HasName("PK__BuyerCon__3214EC07FFD70B88");
 
             entity.ToTable("BuyerConfirmation");
 
@@ -412,7 +414,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<BuyerConfirmationDocument>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BuyerCon__3214EC074813D48F");
+            entity.HasKey(e => e.Id).HasName("PK__BuyerCon__3214EC0718500C59");
 
             entity.ToTable("BuyerConfirmationDocument");
 
@@ -423,7 +425,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<CollateralInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Collater__3214EC07CEFA8DF9");
+            entity.HasKey(e => e.Id).HasName("PK__Collater__3214EC07F9276825");
 
             entity.ToTable("CollateralInformation");
 
@@ -441,7 +443,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Company__3214EC07C7867649");
+            entity.HasKey(e => e.Id).HasName("PK__Company__3214EC07DDEA397A");
 
             entity.ToTable("Company", tb => tb.HasTrigger("Trigger_Company_ColumnUpdates"));
 
@@ -468,7 +470,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<CompanyLogo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CompanyL__3214EC07312786ED");
+            entity.HasKey(e => e.Id).HasName("PK__CompanyL__3214EC0784F5AED5");
 
             entity.ToTable("CompanyLogo");
 
@@ -487,7 +489,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<CompanySetting>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CompanyS__3214EC078E1401BD");
+            entity.HasKey(e => e.Id).HasName("PK__CompanyS__3214EC0760C54904");
 
             entity.ToTable("CompanySetting");
 
@@ -518,7 +520,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Document>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC0732644C13");
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07A7D70ECA");
 
             entity.ToTable("Document");
 
@@ -544,7 +546,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<DocumentType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC0706D16ADD");
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07F2F2F97D");
 
             entity.ToTable("DocumentType");
 
@@ -559,14 +561,14 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<DocumentVerification>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07E39EED78");
+            entity.HasKey(e => e.Id).HasName("PK__Document__3214EC07A3C1A733");
 
             entity.ToTable("DocumentVerification");
         });
 
         modelBuilder.Entity<EmailLog>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__EmailLog__3214EC07E63F336F");
+            entity.HasKey(e => e.Id).HasName("PK__EmailLog__3214EC07462E7B02");
 
             entity.ToTable("EmailLog");
 
@@ -584,7 +586,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<EmailSetup>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__EmailSet__3214EC078FFD8CB4");
+            entity.HasKey(e => e.Id).HasName("PK__EmailSet__3214EC07DCE35A98");
 
             entity.ToTable("EmailSetup");
 
@@ -603,7 +605,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Form2Page>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Form2Pag__3214EC0711E2A894");
+            entity.HasKey(e => e.Id).HasName("PK__Form2Pag__3214EC079E8C8115");
 
             entity.ToTable("Form2Page");
 
@@ -719,7 +721,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Industry>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Industry__3214EC07E683070D");
+            entity.HasKey(e => e.Id).HasName("PK__Industry__3214EC0783760D9D");
 
             entity.ToTable("Industry");
 
@@ -735,7 +737,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<LoanParticularsInformation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__LoanPart__3214EC07846885D2");
+            entity.HasKey(e => e.Id).HasName("PK__LoanPart__3214EC073FDF20B6");
 
             entity.ToTable("LoanParticularsInformation");
 
@@ -747,7 +749,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModeOfPayment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModeOfPa__3214EC07F7DE613F");
+            entity.HasKey(e => e.Id).HasName("PK__ModeOfPa__3214EC070C325628");
 
             entity.ToTable("ModeOfPayment");
 
@@ -757,7 +759,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Module>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC0734CE0F50");
+            entity.HasKey(e => e.Id).HasName("PK__Module__3214EC070B01799F");
 
             entity.ToTable("Module", tb => tb.HasTrigger("Trigger_Module_ColumnUpdates"));
 
@@ -779,7 +781,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC070B57C321");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC07DFEB1858");
 
             entity.ToTable("ModuleStage", tb => tb.HasTrigger("Trigger_ModuleStage_ColumnUpdates"));
 
@@ -802,7 +804,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStageApprover>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC0762F88E8E");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC07A6858273");
 
             entity.ToTable("ModuleStageApprover");
 
@@ -812,7 +814,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC07D597EBF1");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleSt__3214EC079806F0BA");
 
             entity.ToTable("ModuleStatus");
 
@@ -827,7 +829,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<ModuleType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ModuleTy__3214EC07C24F7AAB");
+            entity.HasKey(e => e.Id).HasName("PK__ModuleTy__3214EC07E60D6FBA");
 
             entity.ToTable("ModuleType", tb => tb.HasTrigger("Trigger_ModuleType_ColumnUpdates"));
 
@@ -849,7 +851,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Notification>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC07065C553F");
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC077A1E7790");
 
             entity.ToTable("Notification");
 
@@ -868,7 +870,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<NotificationPriorityLevel>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC072E14C5D9");
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC078A2F8D8E");
 
             entity.ToTable("NotificationPriorityLevel");
 
@@ -880,7 +882,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<NotificationReceiver>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC075844F91E");
+            entity.HasKey(e => e.Id).HasName("PK__Notifica__3214EC075892660B");
 
             entity.ToTable("NotificationReceiver");
 
@@ -888,12 +890,12 @@ public partial class DMSDBContext : DbContext
 
             entity.HasOne(d => d.Notif).WithMany(p => p.NotificationReceivers)
                 .HasForeignKey(d => d.NotifId)
-                .HasConstraintName("FK__Notificat__Notif__7755B73D");
+                .HasConstraintName("FK__Notificat__Notif__0A688BB1");
         });
 
         modelBuilder.Entity<PropertyLocation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC077F2149FE");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC072FCC9542");
 
             entity.ToTable("PropertyLocation");
 
@@ -904,7 +906,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PropertyProject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07596ECDDC");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC0708D90E07");
 
             entity.ToTable("PropertyProject");
 
@@ -918,7 +920,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PropertyProjectLocation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07AB3EDA4B");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07AFF7F4D8");
 
             entity.ToTable("PropertyProjectLocation");
 
@@ -928,7 +930,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PropertyType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC0740CEB168");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07FED8186F");
 
             entity.ToTable("PropertyType");
 
@@ -938,7 +940,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PropertyUnit>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC075B33B494");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC07A0E753AB");
 
             entity.ToTable("PropertyUnit");
 
@@ -951,7 +953,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PropertyUnitProject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC070F2CC753");
+            entity.HasKey(e => e.Id).HasName("PK__Property__3214EC071F746E37");
 
             entity.ToTable("PropertyUnitProject");
 
@@ -961,7 +963,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<PurposeOfLoan>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PurposeO__3214EC0776FE6616");
+            entity.HasKey(e => e.Id).HasName("PK__PurposeO__3214EC07EEBF8D49");
 
             entity.ToTable("PurposeOfLoan");
 
@@ -978,7 +980,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07442FCD2D");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07FE48A4D6");
 
             entity.ToTable("Role");
 
@@ -993,7 +995,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<RoleAccess>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__RoleAcce__3214EC079D1E17A3");
+            entity.HasKey(e => e.Id).HasName("PK__RoleAcce__3214EC07B20C9AE4");
 
             entity.ToTable("RoleAccess");
 
@@ -1003,7 +1005,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<SourcePagibigFund>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__SourcePa__3214EC07B4B590A0");
+            entity.HasKey(e => e.Id).HasName("PK__SourcePa__3214EC072E645F89");
 
             entity.ToTable("SourcePagibigFund");
 
@@ -1014,7 +1016,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<Spouse>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Spouse__3214EC077A208BAA");
+            entity.HasKey(e => e.Id).HasName("PK__Spouse__3214EC07F126AB08");
 
             entity.ToTable("Spouse");
 
@@ -1057,7 +1059,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<SubDocument>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__SubDocum__3214EC07A526FD67");
+            entity.HasKey(e => e.Id).HasName("PK__SubDocum__3214EC07439D7657");
 
             entity.ToTable("SubDocument");
 
@@ -1066,7 +1068,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<TemporaryLink>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Temporar__3214EC07EFF272C4");
+            entity.HasKey(e => e.Id).HasName("PK__Temporar__3214EC07C8AF297F");
 
             entity.ToTable("TemporaryLink");
 
@@ -1076,7 +1078,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07FC4420C5");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0753C27E66");
 
             entity.ToTable("User");
 
@@ -1115,7 +1117,7 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<UserActivity>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserActi__3214EC079E396BB5");
+            entity.HasKey(e => e.Id).HasName("PK__UserActi__3214EC0738621CD5");
 
             entity.ToTable("UserActivity");
 
@@ -1132,30 +1134,40 @@ public partial class DMSDBContext : DbContext
 
         modelBuilder.Entity<UserApprover>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserAppr__3214EC0771FED51B");
+            entity.HasKey(e => e.Id).HasName("PK__UserAppr__3214EC076061994F");
 
             entity.ToTable("UserApprover");
 
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
+        modelBuilder.Entity<UserCompany>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserComp__3214EC07B4B599A5");
+
+            entity.ToTable("UserCompany");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+        });
+
         modelBuilder.Entity<UserDocument>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserDocu__3214EC07E6FF4558");
+            entity.HasKey(e => e.Id).HasName("PK__UserDocu__3214EC07CD94CF81");
 
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC0750B69983");
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC0744BADE96");
 
             entity.ToTable("UserRole");
         });
 
         modelBuilder.Entity<UserToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserToke__3214EC074DB55E3B");
+            entity.HasKey(e => e.Id).HasName("PK__UserToke__3214EC0771BDD508");
 
             entity.ToTable("UserToken");
 
