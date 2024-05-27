@@ -19,10 +19,10 @@ $(function () {
 
     /*    initializeSelectizeDev();*/
 
-    var developerVal = $('[name="PropertyDeveloperName"]').attr('data-value'),
+    var developerVal = $('[name="PropertyDeveloperId"]').attr('data-value'),
 
-        $developerDropdown = $(`[name='PropertyDeveloperName']`).selectize({
-            valueField: 'PropertyDeveloperName',
+        $developerDropdown = $(`[name='PropertyDeveloperId']`).selectize({
+            valueField: 'Id',
             labelField: 'PropertyDeveloperName',
             searchField: 'PropertyDeveloperName',
             preload: true,

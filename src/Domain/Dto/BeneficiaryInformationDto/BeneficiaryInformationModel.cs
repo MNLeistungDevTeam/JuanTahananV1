@@ -120,7 +120,6 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
 
-        [Required]
         [Display(Name = "Property Developer Name", Prompt = "Property Developer Name")]
         public string? PropertyDeveloperName { get; set; }
 
@@ -159,6 +158,7 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
 
         public bool IsBcfCreated { get; set; }
 
+        [Display(Name = "Property Developer Name", Prompt = "Property Developer Name")]
         public int PropertyDeveloperId { get; set; }
 
         public int PropertyLocationId { get; set; }
