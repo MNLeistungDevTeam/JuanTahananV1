@@ -12,6 +12,7 @@ $(function () {
     //#region Initialization
 
     var $userRoleDropdown, userRoleDropdown;
+    var $developerDropdown, developerDropdown;
     const dateFrom = moment().startOf("month").format("YYYY-MM-DD");
     const dateTo = moment().endOf("month").format("YYYY-MM-DD");
 
@@ -33,6 +34,7 @@ $(function () {
         selectOnTab: true,
         preload: true,
         persist: false,
+        search: false,
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + "Role/GetAllRoles",
@@ -65,6 +67,50 @@ $(function () {
     });
 
     userRoleDropdown = $userRoleDropdown[0].selectize;
+
+
+
+    $developerDropdown = $("[name='User.DeveloperId']").selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: ['Name'],
+        selectOnTab: true,
+        preload: true,
+        persist: false,
+        search:false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "Company/GetDevelopers",
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>");
+            },
+            option: function (item, escape) {
+                return (
+                    "<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    developerDropdown = $developerDropdown[0].selectize;
+
 
     //#endregion
 
