@@ -367,6 +367,9 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
                         vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;
+                      
+
+
                     }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
