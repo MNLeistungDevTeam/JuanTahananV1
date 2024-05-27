@@ -121,4 +121,7 @@ public class UserModel
     public string? ActiveApplicationCode { get; set; }
     public int? CompanyId { get; set; }
     public int? SenderId { get; set; }
+
+    [Display(Name = "Developer")]
+    public int? DeveloperId { get; set; }
 }
