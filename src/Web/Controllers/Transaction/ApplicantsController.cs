@@ -267,14 +267,14 @@ namespace Template.Web.Controllers.Transaction
 
                         #region With Api Integration
 
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
-                        //vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                        vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
-                        //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                        //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                        //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                        //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                        vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                        vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                        vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                        vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                         #endregion With Api Integration
                     }
@@ -615,7 +615,7 @@ namespace Template.Web.Controllers.Transaction
 
                     #region With Api Integration
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
                     vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
