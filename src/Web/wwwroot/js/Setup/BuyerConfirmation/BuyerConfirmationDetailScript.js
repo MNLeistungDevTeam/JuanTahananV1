@@ -1,5 +1,7 @@
 "use strict"
 
+var inputLock = false;
+
 $(function () {
     const { pdfjsLib } = globalThis;
     const debounceError = debounce((callback) => { callback(); }, 5000);
@@ -11,8 +13,6 @@ $(function () {
     const approvalStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
     var currentStep = 0;
-    var inputLock = false;
-
     //document.ready
     $(function () {
         initializeLeftDecimalInputMask(".decimalInputMask", 2);
@@ -387,7 +387,15 @@ $(function () {
         $form.submit(function (e) {
             e.preventDefault();
 
-            if (!$form.valid()) { return; }
+            if (!$form.valid()) {
+                messageBox("Please apply the fields.", "danger", true);
+                return;
+            }
+
+            if (!inputLock) {
+                messageBox("Please apply the pricing details first before proceeding.", "warning", true);
+                return;
+            }
 
             let formData = $form.serialize();
             formData = formData.replace(/ApprovalLevel\./g, "");
@@ -499,7 +507,7 @@ $(function () {
         // Check if the selling price input field is not readonly
         if (!$("#BuyerConfirmationModel_SellingPrice").prop("readonly")) {
             // Check if all required fields with BuyerConfirmationModel in their IDs have values
-            var allFilled = true;
+            let allFilled = true;
             $("input[id*='BuyerConfirmationModel'][required]").each(function () {
                 if ($(this).val().trim() === '') {
                     allFilled = false;
