@@ -68,8 +68,6 @@ $(function () {
 
     userRoleDropdown = $userRoleDropdown[0].selectize;
 
-
-
     $developerDropdown = $("[name='User.DeveloperId']").selectize({
         valueField: 'Id',
         labelField: 'Name',
@@ -77,7 +75,7 @@ $(function () {
         selectOnTab: true,
         preload: true,
         persist: false,
-        search:false,
+        search: false,
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + "Company/GetDevelopers",
@@ -110,7 +108,6 @@ $(function () {
     });
 
     developerDropdown = $developerDropdown[0].selectize;
-
 
     //#endregion
 
@@ -352,6 +349,10 @@ $(function () {
 
             userRoleDropdown.unlock();
             userRoleDropdown.setValue(userInfo.UserRoleId);
+
+            developerDropdown.unlock();
+            developerDropdown.setValue(userInfo.DeveloperId);
+
             //userRoleDropdown.lock();
 
             if (UserPicture === "" || UserPicture === null) ActualPicture = DefaultProfile;
@@ -491,8 +492,6 @@ $(function () {
                     if (recordId == currentUserId) {
                         updateUserProfile();
                     }
-
-                      
 
                     loadUsers();
                     button.attr({ disabled: false });

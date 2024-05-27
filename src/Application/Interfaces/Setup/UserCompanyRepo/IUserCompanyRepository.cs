@@ -8,5 +8,6 @@ namespace DMS.Application.Interfaces.Setup.UserCompanyRepo
 {
     public interface IUserCompanyRepository
     {
+        Task SaveAsync(int? developerId, int userId, int editorId);
     }
 }

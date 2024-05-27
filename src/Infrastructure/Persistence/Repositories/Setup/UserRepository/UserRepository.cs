@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.Setup.UserCompanyRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +21,15 @@ public class UserRepository : IUserRepository
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
     private readonly IOptions<AuthenticationConfig> _authenticationConfig;
+    private readonly IUserCompanyRepository _userCompanyRepo;
 
     public UserRepository(
         DMSDBContext context,
         ISQLDatabaseService db,
         IMapper mapper,
         IUserApproverRepository userApproverRepo,
-         IOptions<AuthenticationConfig> authenticationConfig)
+         IOptions<AuthenticationConfig> authenticationConfig,
+         IUserCompanyRepository userCompanyRepo)
     {
         _context = context;
         _contextHelper = new EfCoreHelper<User>(context);
@@ -33,6 +37,7 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
         _userApproverRepo = userApproverRepo;
         _authenticationConfig = authenticationConfig;
+        _userCompanyRepo = userCompanyRepo;
     }
 
     public async Task<User?> GetByIdAsync(int id) =>
@@ -60,7 +65,7 @@ public class UserRepository : IUserRepository
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetAll", new { })).ToList();
 
     public async Task<List<UserModel>> spGetByRoleName(string roleName, int companyId) =>
-        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByRoleName", new { roleName , companyId})).ToList();
+        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByRoleName", new { roleName, companyId })).ToList();
 
     public async Task<List<UserModel>> GetUserByUserRoleIdAsync(int userRoleId) =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByUserRoleId", new { userRoleId })).ToList();
@@ -103,6 +108,11 @@ public class UserRepository : IUserRepository
                 .ToArrayAsync();
 
             await _userApproverRepo.BatchDeleteAsync(toDelete);
+        }
+
+        if (user.UserRoleId == (int)PredefinedRoleType.Developer)
+        {
+            await _userCompanyRepo.SaveAsync(user.DeveloperId, _user.Id, editorId: userId);
         }
 
         return _user;

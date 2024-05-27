@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -227,8 +229,22 @@ public class BuyerConfirmationController : Controller
     {
         try
         {
+            List<BuyerConfirmationModel> bcModel = new();
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
             var data = await _buyerConfirmationRepo.GetAllAsync();
-            return Ok(data);
+
+            if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+            {
+                bcModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+            }
+            else
+            {
+                bcModel = data.ToList();
+            }
+
+            return Ok(bcModel);
         }
         catch (System.Exception ex)
         {
@@ -236,7 +252,7 @@ public class BuyerConfirmationController : Controller
         }
     }
 
-    public async Task<IActionResult> DownloadBCFSummary(int? locationId,int? projectId)
+    public async Task<IActionResult> DownloadBCFSummary(int? locationId, int? projectId)
     {
         try
         {
@@ -244,14 +260,23 @@ public class BuyerConfirmationController : Controller
             string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             string templatePath = Path.Combine(rootFolder, "Files", "ExcelTemplate", "Prequalified_BuyerConfirmation_Summary.xlsx");
 
-   
-            string?   fileName = $"BCFSummary.xlsx";
-             
+            string? fileName = $"BCFSummary.xlsx";
 
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
             // Get List of Qualified BCF
-            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId,projectId);
+            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId, projectId);
+
+            int itemCount = excelList.Count();
+
+
+
+            // Extract distinct PropertyProjectName values
+            var projectName = excelList.Select(x => x.PropertyProjectName).Distinct().FirstOrDefault();
+            var developerName = excelList.Select(x => x.PropertyDeveloperName).Distinct().FirstOrDefault();
+            var locationName = excelList.Select(x => x.PropertyLocationName).Distinct().FirstOrDefault();
+
+
 
             // Load the Excel template
             using (var workbook = new XLWorkbook(templatePath))
@@ -260,10 +285,15 @@ public class BuyerConfirmationController : Controller
                 var worksheet = workbook.Worksheets.Worksheet(1);
 
                 //Set Date
-                worksheet.Cell("A3").Value = DateTime.UtcNow.ToString("yyyy-MM-dd");
+                worksheet.Cell("G4").Value = DateTime.UtcNow.ToString("yyyy-MM-dd");
 
                 // Example modification: Set the value of cell B5
-                worksheet.Cell("B5").Value = "Yuhum Residences";
+                worksheet.Cell("B5").Value = developerName;
+                worksheet.Cell("B6").Value = projectName;
+                worksheet.Cell("B7").Value = locationName;
+
+                worksheet.Cell("L6").Value = itemCount;
+                worksheet.Cell("L7").Value = itemCount;
 
                 // Add data
                 int startRow = 11; // Starting row for data
@@ -340,7 +370,7 @@ public class BuyerConfirmationController : Controller
 
     public async Task<IActionResult> BCFSummaryData()
     {
-        var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null,null);
+        var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null, null);
 
         return Ok(data);
     }

@@ -24,6 +24,7 @@ AS
 		bcf.ProjectUnitId,
 		pp.[Name] PropertyProjectName,
 		pl.[Name] PropertyLocationName,
+		c.[Name] PropertyDeveloperName,
 		bcd.DateModified LastUpdate
 
 	FROM BuyerConfirmation bcf
@@ -37,7 +38,7 @@ AS
 		LEFT JOIN PropertyLocation pl ON pl.Id = bcf.PropertyLocationId
 		LEFT JOIN PropertyProject pp ON pp.Id = bcf.PropertyProjectId
 		LEFT JOIN PropertyUnit pu ON pu.Id = bcf.ProjectUnitId
-		LEFT JOIN Company dvl ON dvl.Id = bcf.PropertyDeveloperId
+		LEFT JOIN Company c ON c.Id = bcf.PropertyDeveloperId
 	WHERE bcd.[Status] = 3  -- Approved by Developer
 	AND 1 = 
 	(CASE WHEN @locationId IS NULL THEN 1
@@ -50,13 +51,4 @@ AS
 
 
 RETURN 0
-
-select * from BuyerConfirmation 
-
-update BuyerConfirmation set PropertyLocationId = 1 where Id = 3
-
-
-
-select * from BuyerConfirmation 
-
-update BuyerConfirmation set PropertyLocationId = 1 where Id = 1
+ 

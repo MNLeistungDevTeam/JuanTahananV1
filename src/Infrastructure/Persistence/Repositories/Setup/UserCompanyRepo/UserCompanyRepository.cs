@@ -180,7 +180,7 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.UserCompanyRepo
             {
                 var userCompany = await _context.UserCompanies
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(m => m.UserId == userId && m.DeveloperId == developerId);
+                    .FirstOrDefaultAsync(m => m.UserId == userId && m.CompanyId == developerId);
 
                 if (userCompany is not null)
                 {

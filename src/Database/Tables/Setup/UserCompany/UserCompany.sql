@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[UserCompany]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT NOT NULL  PRIMARY KEY IDENTITY, 
 	UserId INT NOT NULL,
 	CompanyId INT NOT NULL,
 	CreatedById INT NULL,
