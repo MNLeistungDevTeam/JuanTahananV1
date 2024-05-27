@@ -131,7 +131,9 @@ $(() => {
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
                 //$(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
-                let defaultDevLogo = "/images/juantahananassets/logo/zeta_landscape_logo.png";
+                let defaultDevLogo = "/images/juantahananassets/logo/rscity.png";
+
+
                 let defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";
                 let defaultProjectLogo = "/images/juantahananassets/logo/arao_logo.png";
 
