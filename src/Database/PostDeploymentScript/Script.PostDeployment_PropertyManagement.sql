@@ -10,7 +10,10 @@ GO
  IF NOT EXISTS (SELECT 1 FROM [dbo].[PropertyLocation])
 BEGIN
 SET IDENTITY_INSERT [dbo].[PropertyLocation] ON 
-INSERT [dbo].[PropertyLocation] ([Id],[Name],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (1, N'Bacolod Rizal', CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL)
+INSERT [dbo].[PropertyLocation] ([Id],[Name],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (1, N'Bacolod Rizal', CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL);
+INSERT [dbo].[PropertyLocation] ([Id],[Name],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (2, N'Antipolo Rizal', CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL);
+INSERT [dbo].[PropertyLocation] ([Id],[Name],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (3, N'Angono Rizal', CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL);
+INSERT [dbo].[PropertyLocation] ([Id],[Name],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (4, N'Cainta Rizal', CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL);
  
  SET IDENTITY_INSERT [dbo].[PropertyLocation] OFF
 END
@@ -20,6 +23,7 @@ GO
 BEGIN
 SET IDENTITY_INSERT [dbo].[PropertyUnit] ON 
 INSERT [dbo].[PropertyUnit] ([Id],[Name],[Description],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (1, N'Single House', N'A 24 sqm With 4 Bed Room',CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL)
+INSERT [dbo].[PropertyUnit] ([Id],[Name],[Description],DateCreated,CreatedById,DateModified,ModifiedById) VALUES (2, N'Small Condominium', N'A 48 sqm With 8 Bed Room',CAST(N'2024-02-24T08:31:43.3808888' AS DateTime2), 1, NULL,NULL)
  
  SET IDENTITY_INSERT [dbo].[PropertyUnit] OFF
 END
