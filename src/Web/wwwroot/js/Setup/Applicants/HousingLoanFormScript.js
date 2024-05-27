@@ -3,6 +3,7 @@ const applicantInfoApprovalStatus = $(`[name='ApplicantsPersonalInformationModel
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
+const buyerConfirmationId = $("#BuyerConfirmationModel_Id").val();
 const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
 const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
@@ -115,7 +116,6 @@ $(async function () {
             }
         }
     });
-
 
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
@@ -1196,73 +1196,40 @@ $(async function () {
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
 
-            // Check if bcf form
+            // Check if BCF form is valid
             if (!isBcfValid) {
                 return false;
             }
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
             var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the previous form (loanparticulars) and remove 'fade' class
             var prevForm = currentTabPane;
+
             console.log("Current form ID: " + currentFormName);
 
             currentForm.addClass('was-validated');
 
-            // Validate the current form
-            var isValid = validateForm(currentForm);
-
             if (editableFlag) {
                 console.log("editableFlag is true");
 
-                currentForm.addClass('was-validated');
                 var isValid = validateForm(currentForm);
 
-                if (currentFormName == "bcfdata") {
+                if (currentFormName === "bcfdata") {
                     bcfToHLafConnectedFieldMap();
                 }
 
                 if (!isValid) {
-                    // If validation fails, prevent navigation to the next step
-                    console.log("validation fail");
+                    console.log("Validation failed");
                     return false;
-                } else {
-                    console.log('fade executed');
-                    // Hide the current form
-                    currentForm.addClass('fade').prop('hidden', true);
-
-                    // Show the previous form
-                    prevForm.removeClass('fade').prop('hidden', false);
-
-                    if (currentFormName == "bcfdata") {
-                        bcfToHLafConnectedFieldMap();
-                    }
                 }
-            } else {
-                console.log('fade executed');
-                // Hide the current form
-                currentForm.addClass('fade').prop('hidden', true);
-
-                // Show the previous form
-                prevForm.removeClass('fade').prop('hidden', false);
             }
 
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "previewHlaf") {
-                $("#previewHlaf").removeClass('fade').prop('hidden', false);
-                return;
-            }
+            console.log('fade executed');
+            currentForm.addClass('fade').prop('hidden', true);
+            prevForm.removeClass('fade').prop('hidden', false);
 
-            //Will auto scroll to Top of the view
-            if (currentFormName === "bcfdata") {
-                $("html, body").animate({ scrollTop: 0 }, "fast");
-            }
-
-            if (currentFormName == "form2" && isValid) {
+            if (currentFormName === "form2") {
                 if (hasBcf === "True") {
                     loadHlafPreview();
                 } else {
@@ -1270,11 +1237,20 @@ $(async function () {
                 }
             }
 
-            if (currentFormName == "previewBcf") {
+            if (currentFormName === "previewHlaf") {
+                $("#previewHlaf").removeClass('fade').prop('hidden', false);
+                return;
+            }
+
+            if (currentFormName === "bcfdata") {
+                $("html, body").animate({ scrollTop: 0 }, "fast");
+            }
+
+            if (currentFormName === "previewBcf") {
                 loadHlafPreview();
             }
 
-            if (currentFormName = "collateraldata") {
+            if (currentFormName === "collateraldata") {
                 let field = $("#BarrowersInformationModel_ContactDetailEmail");
                 if (!field.attr("readonly")) {
                     $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
@@ -1288,24 +1264,16 @@ $(async function () {
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
+            var currentTabPane = $('.tab-pane').eq(index);
+            var nextForm = currentTabPane;
 
-            if (currentFormName == "loanparticulars") {
+            console.log("Current form ID: " + currentFormName);
+
+            if (currentFormName === "loanparticulars") {
                 HLafTobcfConnectedFieldMap();
             }
 
-            // Find the current tab pane
-            var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the current form (collateral) and remove 'fade' class
-            var nextForm = currentTabPane;
-            console.log("Current form ID: " + currentFormName);
-
-            //$("#form3").addClass('was-validated').prop('hidden', true);
-
-            // Hide the current form
             currentForm.addClass('fade').prop('hidden', true);
-
-            // Show the next form
             nextForm.removeClass('fade').prop('hidden', false);
 
             progressCheck(nextForm.attr('id'));
@@ -1364,6 +1332,10 @@ $(async function () {
 
             $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
         }
+
+        $("#BuyerConfirmationModel_HouseUnitModel").prop("readonly", true);
+        $("#BuyerConfirmationModel_SellingPrice").prop("readonly", true);
+        $("#BuyerConfirmationModel_MonthlyAmortization").prop("readonly", true);
 
         //Load the possible data on others forms
         HLafTobcfConnectedFieldMap();
@@ -1555,7 +1527,6 @@ $(async function () {
                 $(this).removeClass('is-invalid');
                 $(this).addClass('is-valid');
                 //$(this).addClass('was-validated');
-
             }
         });
 
@@ -1642,6 +1613,12 @@ $(async function () {
             $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
             $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
             $('input[type="radio"]').prop('disabled', false);
+
+            //BCF FORM
+            $("#BuyerConfirmationModel_ProjectProponentName").prop('readonly', true);
+            $("#BuyerConfirmationModel_HouseUnitModel").prop('readonly', true);
+            $("#BuyerConfirmationModel_SellingPrice").prop('readonly', true);
+            $("#BuyerConfirmationModel_MonthlyAmortization").prop('readonly', true);
 
             if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
@@ -1861,8 +1838,6 @@ $(async function () {
 
             return true;
         }, $.validator.messages.pagIBIGNumber);
-
-
     }
 
     function initializeLoanCreditDate() {
@@ -1989,6 +1964,7 @@ $(async function () {
 
         let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
         let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
+        let isPagibigMember = $("#BuyerConfirmationModel_IsPagibigMember").val();
 
         let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
         let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
@@ -1996,6 +1972,7 @@ $(async function () {
         $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
         $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
 
+        //HLAF FROM
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
             $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass("valid");
@@ -2012,14 +1989,16 @@ $(async function () {
             // Set checked status for MedicalAdvice radio buttons
             $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass("valid");
             $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass("valid");
+        }
 
+        //BCF FORM
+        if (buyerConfirmationId !== '0') {
             // Set checked status for BCF Additional income radio buttons
             $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass("valid");
             $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass("valid");
 
             // Set checked status for BCF Pagibig Number radio buttons
-            $("#pagibigRbtn1").prop("checked", isPagibigMember == "True").addClass('valid');
-            $("#pagibigRbtn2").prop("checked", isPagibigMember == "False").addClass('valid');
+            setCheckedAndValidStatus("#pagibigRbtn1", "#pagibigRbtn2", isPagibigMember);
 
             // Set checked status for BCF availed laon radio buttons
             setCheckedAndValidStatus('#availedLoanRbtn1', '#availedLoanRbtn2', pagibigAvailedLoan);
@@ -2032,9 +2011,9 @@ $(async function () {
 
             // Set checked status for BCF term in condition radio buttons
             setCheckedAndValidStatus('#itcRbtn1', '#itcRbtn2', termConditions);
-        }
-        else {
-            $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+        } else {
+            console.log("Sample");
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).val("True");
         }
 
         // Set miscellanous input to disable
@@ -3007,7 +2986,7 @@ $(async function () {
         $("#BuyerConfirmationModel_HouseUnitModel").val(buyerConfimarion ? buyerConfimarion.HouseUnitModel : null);
         $("#BuyerConfirmationModel_SellingPrice").val(buyerConfimarion ? buyerConfimarion.SellingPrice : null);
         $("#BuyerConfirmationModel_MonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.MonthlyAmortization : null);
-
+        $("#BuyerConfirmationModel_AffordMonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.AffordMonthlyAmortization : null);
         $("#BuyerConfirmationModel_OtherJuridicalPersonality").val(buyerConfimarion ? buyerConfimarion.OtherJuridicalPersonality : null);
         $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
 
@@ -3019,8 +2998,6 @@ $(async function () {
         $("#beneficiary-overlay").removeClass('d-none');
         setTimeout(function () {
             $("#beneficiary-overlay").addClass('d-none');
-            // Redirect to the specified location
-            window.location.href = baseUrl + link;
         }, 2000);
 
         //$("#frm_hlf068").clearValidation();
