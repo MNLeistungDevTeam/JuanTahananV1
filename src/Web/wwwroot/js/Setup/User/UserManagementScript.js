@@ -76,12 +76,12 @@ $(function () {
             var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1);
             $(this).toggle(data);
 
-            if (!data) {
-                $("#noSearch").show();
-            }
-            else {
-                $("#noSearch").hide();
-            }
+            //if (!data) {
+            //    $("#noSearch").show();
+            //}
+            //else {
+            //    $("#noSearch").hide();
+            //}
         });
     });
 
