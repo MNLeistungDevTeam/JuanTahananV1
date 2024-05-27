@@ -32,9 +32,6 @@
     [PermanentMunicipalityName] NVARCHAR(255) NULL,
     [PermanentProvinceName] NVARCHAR(255) NULL,
     [PermanentZipCode] NVARCHAR(50) NULL,
-    PropertyDeveloperName NVARCHAR(255) NULL,
-    PropertyLocation NVARCHAR(255) NULL,
-    PropertyUnitLevelName NVARCHAR(255) NULL,
 
     PropertyDeveloperId INT,
     PropertyUnitId INT,

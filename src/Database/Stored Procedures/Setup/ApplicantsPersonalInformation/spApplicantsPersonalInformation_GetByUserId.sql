@@ -44,7 +44,9 @@ AS
 		pp.[Name] PropertyProjectName,
 		pl.[Name] PropertyLocationName,
 		pu.[Description] PropertyUnitDescription,
-		cl.[Location] PropertyDeveloperLogo
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = apl.UserId
 	LEFT JOIN PropertyLocation pl ON pl.Id = bi.PropertyLocationId

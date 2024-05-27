@@ -170,5 +170,16 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         public string? DeveloperName { get; set; }
         public string? ProjectName { get; set; }
         public string? LocationName { get; set; }
+
+
+
+
+        public string? PropertyUnitDescription { get; set; }
+        public string? PropertyProjectName { get; set; }
+        public string? PropertyLocationName { get; set; }
+       
+
+
+
     }
 }

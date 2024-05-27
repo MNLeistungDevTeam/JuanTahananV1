@@ -128,6 +128,7 @@ $(async function () {
                     hidden: true
                 });
 
+                $(`[id="upload-overlay"]`).addClass('d-none');
                 successFlag = true;
             },
             error: function (xhr, status) {

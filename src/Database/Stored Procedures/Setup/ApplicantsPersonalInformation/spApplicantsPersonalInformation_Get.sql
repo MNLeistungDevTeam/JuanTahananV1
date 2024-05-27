@@ -2,7 +2,14 @@
 	@id INT
 AS
 	SELECT  
-	apl.*,
+	    apl.*,
+		c.[Name] PropertyDeveloperName,
+		pl.[Name] PropertyLocationName,
+		pp.[Name] PropertyProjectName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo,
 			CASE
 			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
@@ -27,7 +34,7 @@ AS
 		END StageNo,
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
-		aps.Remarks 
+		aps.Remarks
 
 	FROM ApplicantsPersonalInformation apl
 		LEFT JOIN (
@@ -50,7 +57,12 @@ AS
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId
-
+	LEFT JOIN BeneficiaryInformation bf ON bf.UserId = apl.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bf.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bf.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bf.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bf.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	
 
 	WHERE apl.Id = @id

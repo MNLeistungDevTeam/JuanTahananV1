@@ -58,6 +58,25 @@ public class BuyerConfirmationController : Controller
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
 
+    [Route("BuyerConfirmation/BCFRequests/BCFSummary")]
+    public async Task<IActionResult> BCFSummary()
+    {
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId != (int)PredefinedRoleType.Developer)
+            {
+                return View("AccessDenied");
+            }
+
+            return View();
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
     [HttpPost]
     public async Task<IActionResult> UpdateBCF(ApplicantViewModel vwModel)
     {
@@ -217,19 +236,22 @@ public class BuyerConfirmationController : Controller
         }
     }
 
-    public async Task<IActionResult> BCFSummary()
+    public async Task<IActionResult> DownloadBCFSummary(int? locationId,int? projectId)
     {
         try
         {
             var rootFolder = _webhost.WebRootPath;
             string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             string templatePath = Path.Combine(rootFolder, "Files", "ExcelTemplate", "Prequalified_BuyerConfirmation_Summary.xlsx");
-            string fileName = $"BCFSummary.xlsx";
+
+   
+            string?   fileName = $"BCFSummary.xlsx";
+             
 
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
             // Get List of Qualified BCF
-            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync();
+            var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId,projectId);
 
             // Load the Excel template
             using (var workbook = new XLWorkbook(templatePath))
@@ -297,6 +319,7 @@ public class BuyerConfirmationController : Controller
                 }
 
                 worksheet.Columns().AdjustToContents();
+                worksheet.Rows().AdjustToContents();
 
                 // Save the modified workbook to a MemoryStream
                 using (var memoryStream = new MemoryStream())
@@ -313,6 +336,13 @@ public class BuyerConfirmationController : Controller
         }
 
         // End of Action
+    }
+
+    public async Task<IActionResult> BCFSummaryData()
+    {
+        var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null,null);
+
+        return Ok(data);
     }
 
     #endregion API Operation

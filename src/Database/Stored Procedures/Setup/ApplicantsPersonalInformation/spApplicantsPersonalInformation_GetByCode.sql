@@ -7,10 +7,13 @@ AS
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-        bf.PropertyDeveloperName Developer,
-		bf.PropertyLocation ProjectLocation,
-		'' Project,
-		bf.PropertyUnitLevelName Unit,
+		c.[Name] PropertyDeveloperName,
+		pl.[Name] PropertyLocationName,
+		pp.[Name] PropertyProjectName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo,
 		lpi.DesiredLoanAmount As LoanAmount,
 		lpi.DesiredLoanTermYears As LoanYears,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
@@ -46,11 +49,7 @@ AS
 		bf.PropertyProjectId,
 		bf.PropertyUnitId,
 		bf.PropertyDeveloperId,
-		bf.PropertyLocationId,
-		pp.[Name] PropertyProjectName,
-		pl.[Name] PropertyLocationName,
-		pu.[Description] PropertyUnitDescription,
-		cl.[Location] PropertyDeveloperLogo
+		bf.PropertyLocationId
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN BeneficiaryInformation bf ON bf.UserId = apl.UserId

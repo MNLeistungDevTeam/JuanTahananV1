@@ -129,11 +129,16 @@ $(() => {
                 $(`[id="application_code"]`).html(data.Code === "------" ? "No Application found" : data.Code);
                 $(`[id="requested_loan_amount"]`).html(data.LoanAmount !== 0 ? numeral(data.LoanAmount).format('0, 0.00') : "------"); // use numeral
                 $(`[id="loan_term"]`).html(data.LoanYears !== 0 ? data.LoanYears : "--"); // use numeral
-                $(`[id="project_location"]`).html(data.ProjectLocation || "-----");
+                //$(`[id="project_location"]`).html(data.ProjectLocation || "-----");
 
-                //let defaultDevLogo = "/images/juantahananassets/logo/zeta_landscape_logo.png";
-                //$(`[id="img_developer"]`).attr('src', data.PropertyDeveloperLogo ?? defaultDevLogo);
-                //$(`[id="project_location"]`).html(data.PropertyLocationName || "-----");
+                let defaultDevLogo = "/images/juantahananassets/logo/zeta_landscape_logo.png";
+                let defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";
+                let defaultProjectLogo = "/images/juantahananassets/logo/arao_logo.png";
+
+                $(`[id="project_location"]`).html(data.PropertyLocationName || "-----");
+                $(`[id="img_developer"]`).attr('src', data.PropertyDeveloperLogo ?? defaultDevLogo);
+                $(`[id="img_projectlogo"]`).attr('src', data.PropertyProjectLogo ?? defaultProjectLogo);
+                $(`[id="img_unitlogo"]`).attr('src', data.PropertyUnitLogo ?? defaultUnitLogo);
 
                 // Side card text and Lower left side card (Application Status)
                 let appStatus = data.Stage || "No Application";

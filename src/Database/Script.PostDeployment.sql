@@ -28,3 +28,4 @@ Post-Deployment Script Template
 :r .\PostDeploymentScript\Script.PostDeployment_Industry.sql
 :r .\PostDeploymentScript\Script.PostDeployment_Applicant.sql
 :r .\PostDeploymentScript\Script.PostDeployment_EmailSetup.sql
+:r .\PostDeploymentScript\Script.PostDeployment_PropertyManagement.sql

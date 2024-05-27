@@ -8,8 +8,17 @@ AS
     CONCAT(bcf.LastName, ', ', bcf.FirstName, ' ', bcf.MiddleName) AS ApplicantFullName,
     bcf.PagibigNumber,
     bcf.MonthlySalary,
-    bcf.ProjectProponentName,
-    bcf.HouseUnitModel,
+    c.[Name] PropertyDeveloperName,
+    c.[Name] ProjectProponentName,
+    pl.[Name] PropertyLocationName,
+    pp.[Name] PropertyProjectName,
+    pu.[Description] PropertyUnitDescription,
+    cl.[Location] PropertyDeveloperLogo,
+    pp.ProfileImage PropertyProjectLogo,
+    pu.ProfileImage PropertyUnitLogo,
+
+
+
     CASE
         WHEN bcf.ApprovalStatus = 0 THEN 'Submitted'
         WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 1 THEN 'Sign and Submitted'
@@ -32,7 +41,14 @@ AS
 	0 ELSE bcd.Id
 	END BuyerConfirmationDocumentId,
     bcd.[Status] BuyerConfirmationDocumentStatus
-FROM BuyerConfirmation bcf
+    FROM BuyerConfirmation bcf
+    LEFT JOIN BeneficiaryInformation bf ON bf.UserId = bcf.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bf.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bf.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bf.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bf.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
+
 LEFT JOIN (
     SELECT 
         bcd1.*,

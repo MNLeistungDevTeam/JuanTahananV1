@@ -98,10 +98,15 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public int? PropertyDeveloperId { get; set; }
         public int? PropertyLocationId { get; set; }
 
+    
+
         public string? PropertyProjectName { get; set; }
+        public string? PropertyDeveloperName { get; set; }
         public string? PropertyLocationName { get; set; }
         public string? PropertyUnitDescription { get; set; }
         public string? PropertyDeveloperLogo { get; set; }
+        public string? PropertyProjectLogo { get; set; }
+        public string? PropertyUnitLogo { get; set; }
 
         #endregion Display Properties
     }

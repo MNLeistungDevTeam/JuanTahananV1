@@ -993,7 +993,15 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
         allowMinus: isallownegative,
         autoGroup: true,
         placeholder: placeholder,
-        max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+        max: Number(limiter.replace(/[^-?0-9\.]+/g, "")),
+        onBeforePaste: function (pastedValue, opts) {
+            var processedValue = pastedValue;
+            //console.log(pastedValue);
+            //console.log(processedValue);
+
+            //do something with it
+            return processedValue;
+        }
     });
 }
 
@@ -1087,6 +1095,10 @@ function bcfUploading() {
                 link.style.cursor = "default";
                 link.setAttribute('href', '#');
             }
+            else if (bcfDocumentStatus == 1) {
+                // 1: Signed and Submitted
+                // 3: Approved
+                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
 
             //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
             //    link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
@@ -1102,6 +1114,10 @@ function bcfUploading() {
                     event.preventDefault();
                 }
                 //if bcf document  is submitted && verified
+                else if (bcfDocumentStatus == 1) {
+                    console.log(0);
+                    event.preventDefault();
+                }
                 //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
                 //    console.log(0);
                 //    event.preventDefault();
@@ -1113,20 +1129,22 @@ function bcfUploading() {
 
 function approveBcfNote() {
     var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
+    var bcfDocuStatus = $("#Bcf_DocumentStatus").val();
     console.log(bcfAppStatus);
-    if (bcfAppStatus == 3) {
+    if (bcfAppStatus == 3 && bcfDocuStatus != 3 && bcfDocuStatus != 1) {
         console.log(bcfAppStatus);
         $("#div_approvebcfNote").removeClass("d-none");
         $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 5rem)`);
 
         $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
+
+        $("#btn_bcfdownload").on("click", function () {
+            let dataurl = $(this).attr('data-url');
+
+            window.location.href = baseUrl + dataurl;
+        });
     }
 
-    $("#btn_bcfdownload").on("click", function () {
-        let dataurl = $(this).attr('data-url');
-
-        window.location.href = baseUrl + dataurl;
-    });
 }
 
 function hlafBcfNav() {

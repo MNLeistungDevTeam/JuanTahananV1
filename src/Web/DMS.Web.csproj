@@ -103,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\Files\Documents\Applicant\" />
+    <Folder Include="wwwroot\Files\Images\PropertyManagementFile\PropertyUnit\" />
+    <Folder Include="wwwroot\Files\Images\PropertyManagementFile\PropertyProject\" />
     <Folder Include="wwwroot\js\Transaction\" />
   </ItemGroup>
   <ItemGroup>

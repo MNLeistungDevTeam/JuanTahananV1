@@ -44,7 +44,7 @@ $(function () {
                     className: 'align-middle'
                 },
                 {
-                    data: 'HouseUnitModel',
+                    data: 'PropertyUnitDescription',
                     className: 'align-middle'
                 },
                 {
@@ -199,7 +199,7 @@ $(function () {
 
     $("#btn_excelSummary").on('click', function (e) {
         e.preventDefault();
-        window.location.href = baseUrl + "BuyerConfirmation/BCFSummary";
+        window.location.href = baseUrl + "BuyerConfirmation/BCFRequests/BCFSummary";
 
         //$.ajax({
         //    url: baseUrl + "BuyerConfirmation/BCFSummary",
