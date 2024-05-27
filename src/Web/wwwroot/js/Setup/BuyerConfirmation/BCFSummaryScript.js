@@ -1,12 +1,6 @@
 ﻿$(function () {
+    refreshFilterSetting();
     loadBcfSummaryList();
- 
-
-
-
-
-
-
 
     function loadBcfSummaryList() {
         $.ajax({
@@ -16,8 +10,8 @@
                 $("#div_bcflist").empty();
             },
             success: function (data) {
-                console.log(data)
-
+                console.log(data);
+                data = sortData(data);
                 // Use a Set to track unique combinations and an array to store the unique items
                 const uniqueCombinations = new Set();
                 const uniqueData = [];
@@ -48,7 +42,7 @@
                     // Format LastUpdate date and time
                     let dateApplied = "";
                     if (item.LastUpdate && item.LastUpdate.trim() !== "") {
-                        let lastUpdateDate = moment(item.LastUpdate).format('MMM. D, YYYY'); // Format date as "Aug. 15, 2024"
+                        let lastUpdateDate = moment(item.LastUpdate).format('MMM D, YYYY'); // Format date as "Aug 15, 2024"
                         let lastUpdateTime = moment(item.LastUpdate).format('HH:mm'); // Format time in 24-hour format without AM/PM
                         let lastUpdateTimeWithPM = moment(item.LastUpdate).format('h:mm a'); // Format time with AM/PM
 
@@ -57,13 +51,13 @@
 
                     // Generate HTML for each item
                     return `
-                <div class="col-xxl-4">
+                <div class="col-xxl-6 bcf-card-content">
                     <div class="card rounded-4 beneficiary-card border border-0 bg-light">
                         <div class="card-header rounded-4 rounded-bottom bg-light">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h6 class="m-0 font-16 fw-semibold text-primary text-center">
-                                        ${item.PropertyProjectName} - ${item.PropertyLocationName}
+                                    <h6 class="m-0 font-16 fw-semibold text-primary text-center bcf-title">
+                                        <span id="bcfProjectName">${item.PropertyProjectName}</span> - <span id="bcfLocationName">${item.PropertyLocationName}</span> 
                                     </h6>
                                 </div>
                             </div>
@@ -100,26 +94,18 @@
             `;
                 }).join('');
 
-
                 // Append the generated HTML to the div
                 $("#div_bcflist").append(bcfdatalist);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching data:", error);
                 // Handle error appropriately here
+            },
+            complete: function () {
+                $(`[id="searchBar"]`).trigger('input');
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
 
     // Event delegation to handle click event on .beneficiary-card
     $("#div_bcflist").on("click", ".download-btn", function () {
@@ -133,6 +119,35 @@
         var projectId = card.find(".bcfprojectId").attr('value');
 
         downloadBcfProject(fileName, locationId, projectId);
+    });
+
+    // Search bar event
+    $(`[id="searchBar"]`).on('input', function () {
+        var value = $(this).val().toLowerCase();
+
+        var isEmpty = $(`[id="div_bcflist"] .bcf-card-content`).toArray().some(function (elem) {
+            //console.log($(elem).find('.bcf-title').text().trim().toLowerCase().indexOf(value) > -1);
+            return $(elem).find('.bcf-title').text().trim().toLowerCase().indexOf(value) > -1;
+        });
+
+        $(`[id="div_bcflist"] .bcf-card-content`).filter(function () {
+            let data = ($(this).find('.bcf-title').text().trim().toLowerCase().indexOf(value) > -1);
+            $(this).toggle(data);
+        });
+
+        $(`#emptyEntry`).attr('hidden', isEmpty);
+    });
+
+    $(`[id="dropdown-selection"] a.dropdown-item`).on('click', function (e) {
+        e.preventDefault();
+
+        let dataType = $(this).data('type').split('-');
+
+        let sortType = dataType[0]; // sort or order
+        let sortCategory = dataType[1]; // ascending/descending, project/location/last_updated
+
+        refreshFilterSetting(sortType, sortCategory);
+        loadBcfSummaryList();
     });
 
     function downloadBcfProject(fileName, locationId, projectId) {
@@ -176,5 +191,83 @@
                 toastr.error(error, "An error occurred!");
             },
         });
+    }
+
+    function refreshFilterSetting(sortType, sortCategory) {
+        // Visual Part
+        if (!sortType && !sortCategory) {
+            $(`[id="dropdown-selection"] a.dropdown-item[data-type^="sort-"]`).first().addClass("active");
+            $(`[id="dropdown-selection"] a.dropdown-item[data-type^="order-"]`).first().addClass("active");
+            $(`[id="searchBar"]`).trigger('input');
+            return;
+        }
+        else {
+            $(`[id="dropdown-selection"] a.dropdown-item[data-type^="${sortType}-${sortCategory}"]`).addClass("active");
+            $(`[id="dropdown-selection"] a.dropdown-item[data-type^="${sortType}-"]:not([data-type="${sortType}-${sortCategory}"])`).removeClass("active");
+        }
+
+        // Logic Part:
+    }
+
+    function sortData(data) {
+        let sortType = $(`[id="dropdown-selection"] a.dropdown-item.active[data-type^="sort-"]`).data('type').split('-')[1]; // project, location, last_update
+        let orderType = $(`[id="dropdown-selection"] a.dropdown-item.active[data-type^="order-"]`).data('type').split('-')[1]; // ASC, DESC
+
+        console.log(sortType);
+        console.log(orderType);
+
+        // PropertyProjectName
+        // PropertyLocationName
+        // LastUpdate
+
+        if (sortType === 'project') {
+            data = data.sort(function (a, b) {
+                let nameA = a.PropertyProjectName.toLowerCase();
+                let nameB = b.PropertyProjectName.toLowerCase();
+
+                console.log(nameA > nameB);
+                console.log(nameA < nameB);
+
+                if (nameA === nameB) {
+                    return 0;
+                }
+                else if (nameA < nameB) {
+                    return orderType === 'asc' ? -1 : 1;
+                }
+            });
+        }
+        else if (sortType === 'location') {
+            data = data.sort(function (a, b) {
+                let nameA = a.PropertyLocationName.toLowerCase();
+                let nameB = b.PropertyLocationName.toLowerCase();
+
+                console.log(nameA > nameB);
+                console.log(nameA < nameB);
+
+                if (nameA === nameB) {
+                    return 0;
+                }
+                else if (nameA < nameB) {
+                    return orderType === 'asc' ? -1 : 1;
+                }
+            });
+        }
+        else if (sortType === 'last_updated') {
+            data = data.sort(function (a, b) {
+                //let aa = moment(a.LastUpdate).format('YYYY-MM-DD HH:mm:ss');
+                //let bb = moment(b.LastUpdate).format('YYYY-MM-DD HH:mm:ss');
+                //console.log(moment(a.LastUpdate) > moment(b.LastUpdate));
+                //console.log(moment(a.LastUpdate) < moment(b.LastUpdate));
+
+                if (moment(a.LastUpdate) === moment(b.LastUpdate)) {
+                    return 0;
+                }
+                else if (moment(a.LastUpdate) < moment(b.LastUpdate)) {
+                    return orderType === 'asc' ? -1 : 1;
+                }
+            });
+        }
+
+        return data;
     }
 });
