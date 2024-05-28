@@ -79,9 +79,12 @@
                                                     <p class="fw-lighter fs-6 mb-0">Last updated ${dateApplied}</p>
                                                 </div>
                                             </div>
-                                            <div class="ms-auto">
+                                            <div class="ms-auto d-flex flex-column align-items-center justify-content-end">
                                                 <button class="btn btn-link download-btn">
                                                     <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="btn btn-link print-btn">
+                                                    <i class="fas fa-print"></i>
                                                 </button>
                                             </div>
                                         </div>
