@@ -75,7 +75,7 @@ $(function () {
 
         $(`[id="bcfPreviewBtn"]`).addClass(!inputLock ? "btn-outline-info" : "btn-info");
         $(`[id="bcfPreviewBtn"]`).removeClass(inputLock ? "btn-outline-info" : "btn-info");
-        $(`[id="bcfPreviewBtn"]`).attr('disabled', !inputLock);
+        //$(`[id="bcfPreviewBtn"]`).attr('disabled', !inputLock);
 
         localStorage.setItem("BuyerConfirmationModel_Code", buyerConfirmationCode);
         localStorage.setItem("BuyerConfirmationModel_SellingPrice", $("#BuyerConfirmationModel_SellingPrice").val());
@@ -132,7 +132,7 @@ $(function () {
     }
 
     function initializeCustomValidators() {
-        $(`[id="bcfPreviewBtn"]`).attr('disabled', true);
+        //$(`[id="bcfPreviewBtn"]`).attr('disabled', true);
 
         $(`[name="BuyerConfirmationModel.MonthlyAmortization"], [name="BuyerConfirmationModel.SellingPrice"]`).on('input', function (e) {
             if (!PricingFieldInputChecker()) {
@@ -157,8 +157,9 @@ $(function () {
                 $(`[id="BuyerConfirmationModel_MonthlyAmortization-error-custom"]`).html(``);
             }
 
+            //console.log(inputLock);
             $(`[id="bcfSetAmount"]`).attr('disabled', monthlyAmort > sellingPrice);
-            $(`[id="bcfPreviewBtn"]`).attr('disabled', monthlyAmort > sellingPrice); // remove if bugs occurred
+            //$(`[id="bcfPreviewBtn"]`).attr('disabled', (monthlyAmort > sellingPrice) && !inputLock); // remove if bugs occurred
         });
 
 
