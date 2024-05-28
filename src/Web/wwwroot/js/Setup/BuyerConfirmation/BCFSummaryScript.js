@@ -124,6 +124,20 @@
         downloadBcfProject(fileName, locationId, projectId);
     });
 
+    // Event delegation to handle click event on .beneficiary-card
+    $("#div_bcflist").on("click", ".print-btn", function () {
+        // Find the .bcfFileName within the closest card
+
+        //var card = $(this).closest(".beneficiary-card");
+
+        //var fileName = card.find(".bcfFileName").text().trim();
+
+        //var locationId = card.find(".bcflocationId").attr('value');
+        //var projectId = card.find(".bcfprojectId").attr('value');
+
+        //downloadBcfProject(fileName, locationId, projectId);
+    });
+
     // Search bar event
     $(`[id="searchBar"]`).on('input', function () {
         var value = $(this).val().toLowerCase();
