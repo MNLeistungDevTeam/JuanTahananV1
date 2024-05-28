@@ -269,10 +269,16 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Required]
         [Display(Name = "Developer")]
         public int? PropertyDeveloperId { get; set; }
+
+        [Required]
         [Display(Name = "House Unit")]
         public int? PropertyUnitId { get; set; }
+
+        [Required]
         [Display(Name = "Project")]
         public int? PropertyProjectId { get; set; }
+
+        [Required]
         [Display(Name = "Location")]
         public int? PropertyLocationId { get; set; }
     }
