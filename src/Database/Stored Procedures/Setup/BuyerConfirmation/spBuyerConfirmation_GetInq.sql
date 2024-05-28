@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetInq]
-	@companyId INT
+	@companyId INT,
+	@developerId INT
 AS
 	
 	SET NOCOUNT ON;
@@ -14,6 +15,12 @@ AS
 
 		COUNT(CASE WHEN bc.ApprovalStatus IN (2,9) THEN 1 END) AS TotalReturned
 
-	FROM BuyerConfirmation bc WHERE bc.CompanyId = @companyId
+	FROM BuyerConfirmation bc 
+	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = bc.UserId
+	WHERE 1 = (	CASE WHEN @developerId IS NULL THEN 1 
+					 WHEN @developerId IS NOT NULL AND @developerId = bi.PropertyDeveloperId THEN 1
+			END) 
+			AND  bc.CompanyId = @companyId
+	
 
 RETURN 0

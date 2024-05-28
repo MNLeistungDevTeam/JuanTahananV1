@@ -1278,6 +1278,10 @@
 
                     <div class="tab-pane fade" id="collateraldata" hidden>
 
+                        <input type="hidden" asp-for="BarrowersInformationModel.PropertyUnitId">
+                        <input type="hidden" asp-for="BarrowersInformationModel.PropertyProjectId">
+                        <input type="hidden" asp-for="BarrowersInformationModel.PropertyDeveloperId">
+                        <input type="hidden" asp-for="BarrowersInformationModel.PropertyLocationId">
 
                         @*  <form id="collateraldata" method="post" action="#" class="form-horizontal needs-validation" novalidate></form> *@
                         <div class="row gy-2">
@@ -1586,14 +1590,14 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BarrowersInformationModel.SSSNumber"></label>
-                                            <input class="form-control rounded-3 " asp-for="BarrowersInformationModel.SSSNumber" title="@Html.DescriptionFor(m => m.BarrowersInformationModel.SSSNumber)">
+                                            <input class="form-control rounded-3 sssInputMask" type="sssNumber" data-type="sssInputMask" asp-for="BarrowersInformationModel.SSSNumber" placeholder="@Html.PlaceholderFor(m => m.BarrowersInformationModel.SSSNumber)">
                                             <span asp-validation-for="BarrowersInformationModel.SSSNumber" class="text-danger"> </span>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label class="form-label fw-normal" asp-for="BarrowersInformationModel.TinNumber"></label>
-                                            <input class="form-control rounded-3  tinInputMask" asp-for="BarrowersInformationModel.TinNumber">
+                                            <input class="form-control rounded-3 tinInputMask" type="tinNumber" data-type="tinInputMask" asp-for="BarrowersInformationModel.TinNumber" placeholder="@Html.PlaceholderFor(m => m.BarrowersInformationModel.TinNumber)">
                                             <span asp-validation-for="BarrowersInformationModel.TinNumber" class="text-danger"> </span>
                                         </div>
                                     </div>
@@ -1611,7 +1615,7 @@
                                     <div class="col-md-3">
                                         <div class="position-relative">
                                             <label asp-for="ApplicantsPersonalInformationModel.PagibigNumber" class="form-label fw-normal" required></label>
-                                            <input class="form-control  rounded-3 pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" required>
+                                            <input class="form-control rounded-3 pagibigInputMask" type="pagIBIGNumber" data-type="pagibigInputMask" asp-for="ApplicantsPersonalInformationModel.PagibigNumber" placeholder="@Html.PlaceholderFor(m => m.ApplicantsPersonalInformationModel.PagibigNumber)" required>
                                             <span asp-validation-for="ApplicantsPersonalInformationModel.PagibigNumber" class="text-danger"></span>
                                         </div>
                                     </div>

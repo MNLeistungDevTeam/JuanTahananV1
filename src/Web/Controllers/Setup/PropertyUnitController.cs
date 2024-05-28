@@ -18,7 +18,7 @@ public class PropertyUnitController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IFileUploadService _fileUploadService;
 
-    public PropertyUnitController(IPropertyUnitRepository propertyUnitRepo, IWebHostEnvironment webHostEnvironment,IFileUploadService fileUploadService)
+    public PropertyUnitController(IPropertyUnitRepository propertyUnitRepo, IWebHostEnvironment webHostEnvironment, IFileUploadService fileUploadService)
     {
         _propertyUnitRepo = propertyUnitRepo;
         _webHostEnvironment = webHostEnvironment;
@@ -56,7 +56,6 @@ public class PropertyUnitController : Controller
     #region API Actions
 
     [HttpPost]
-    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> SavePropertyUnit(PropertyManagementViewModel model)
     {
         try
@@ -66,13 +65,13 @@ public class PropertyUnitController : Controller
 
             var userId = int.Parse(User.Identity.Name);
 
-
+            string unitName = model.PropUnitModel.Name.Trim();
             var rootFolder = _webHostEnvironment.WebRootPath;
-            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyUnit", model.PropUnitModel.Name);
-            string? unitProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropUnitModel?.ProfileImageFile, model.PropUnitModel.Name, profileSaveLocation, rootFolder);
+            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyManagementFile", "PropertyUnit", unitName);
+            var unitProfileImage = await _fileUploadService.SaveFileAsync(model.PropUnitModel?.ProfileImageFile, profileSaveLocation, rootFolder);
 
             model.PropUnitModel.ProfileImage = unitProfileImage;
- 
+
             var result = await _propertyUnitRepo.SaveAsync(model.PropUnitModel, userId);
 
             return Ok(result);

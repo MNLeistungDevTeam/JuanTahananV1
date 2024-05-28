@@ -108,7 +108,7 @@
                                         <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BENEFICIARY PROPERTY INFO</span>
                                     </h3>
                                 </div>
-                                <div class="col-md-4">
+                              @*   <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyDeveloperName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyDeveloperName">
@@ -129,7 +129,46 @@
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyLocation">
                                         <span asp-validation-for="BarrowersInformationModel.PropertyLocation" class="text-danger"> </span>
                                     </div>
+                                </div> *@
+
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyDeveloperId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyDeveloperId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyDeveloperId">
+                                            <option value="">Select Developer ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyDeveloperId" class="text-danger"></span>
+                                    </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyProjectId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyProjectId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyProjectId">
+                                            <option value="">Select Project ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyProjectId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyLocationId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyLocationId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyLocationId">
+                                            <option value="">Select Location ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyLocationId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyUnitId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyUnitId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyUnitId">
+                                            <option value="">Select House Unit ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyUnitId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
 
                             </div>
 
@@ -218,11 +257,11 @@
                                     <label class="form-label fw-bold text-dark" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline"> 
-                                            <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true" required />
+                                            <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true"  />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false"  required />
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false"  />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -235,11 +274,11 @@
                                     <label class="form-label fw-bold text-dark" asp-for="LoanParticularsInformationModel.PaymentScheme"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP" required />
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP"  />
                                             <label class="form-check-label">GAP</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP" required />
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP"  />
                                             <label class="form-check-label">LAP</label>
                                         </div>
                                     </div>

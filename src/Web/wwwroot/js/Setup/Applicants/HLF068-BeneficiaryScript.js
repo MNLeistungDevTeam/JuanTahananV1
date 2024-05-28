@@ -41,9 +41,43 @@ $(function () {
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999[-9999]",
+        mask: ["999-999-999", "999-999-999-9999"],
+        //mask: "999-999-999[-9999]",
         placeholder: "X",
         //clearIncomplete: true
+    });
+
+    $('.sssInputMask').inputmask({
+        mask: "99-99999[9][9]-99",
+        placeholder: 'X',
+        //clearMaskOnLostFocus: true
+        //clearIncomplete: true
+    });
+
+    $('input[type="sssNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+    
+    $('input[type="tinNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+    
+    $('input[type="pagIBIGNumber"]').on('input', function (e) {
+        this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
     });
 
     //// Disable 'e', '+', retain '-'
@@ -165,9 +199,8 @@ $(function () {
         $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
 
         if ($(this).attr('id') === 'pagibigRbtn2') {
-        //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+            //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
             $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
-
         }
 
         $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
@@ -822,12 +855,6 @@ $(function () {
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
 
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[9][9]-99",
-        placeholder: 'X',
-        //clearIncomplete: true
-    });
-
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
             $('#rentalForm').show();
@@ -1292,10 +1319,11 @@ $(function () {
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            currentForm.addClass('was-validated');
+            //currentForm.removeClass('was-validated');
 
             // Validate the current form
             isFormValid = validateForm(currentForm);
+            //currentForm.addClass('was-validated');
 
             console.log(isFormValid);
 
@@ -1449,20 +1477,74 @@ $(function () {
 
         // Your validation logic here
         // For example, check if required fields are filled
-        form.find(':input[required]').each(function () {
+
+        form.removeClass('was-validated');
+
+        form.find(':input[required]').not(`[data-type$="InputMask"]`).each(function () {
+            // check if it is a radiobutton
+            //if ($(`[name="${this.name}"]`).attr('type') === 'radio') {
+            //    console.log('amd');
+            //    let selectedRadio = $(`[name="${this.name}"]:checked`);
+            //    if (selectedRadio.length > 0) {
+            //        // radio button is selected, valid
+            //        $(this).removeClass('is-invalid');
+            //        $(this).addClass('is-valid');
+            //    }
+            //    else {
+            //        // radio button is NOT selected, invalid
+            //        $(this).removeClass('is-valid');
+            //        $(this).addClass('is-invalid');
+
+            //        isValid = false;
+            //    }
+
+            //    return;
+            //}
+
             if (!$(this).val()) {
+                //$(this).removeClass('was-validated');
+                $(this).removeClass('is-valid');
                 $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
 
                 console.log('invalid');
                 console.log($(this));
 
                 isValid = false;
-            } else {
+            }
+            else {
+                // valid
                 $(this).removeClass('is-invalid');
-                $(this).addClass('was-validated');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
+
             }
         });
+
+        form.find(':input[required][data-type$="InputMask"]').each(function () {
+            if (!$(this).inputmask("isComplete")) {
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+                //$(this).removeClass('was-validated');
+
+                console.log('invalid');
+                console.log($(this));
+                // $(this)[0].setCustomValidity("aa")
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
+
+                this.setCustomValidity("");
+            }
+        });
+
+        //form.find(':input:not(.is-valid):not(.is-invalid):not([readonly])').each(function () {
+        //    $(this).addClass('is-valid');
+        //});
 
         //form.find('input[type="radio"][required]').each(function () {
         //    let hasClass = $(this).hasClass('valid');
@@ -1487,6 +1569,7 @@ $(function () {
         //    }
         //});
 
+        form.addClass('was-validated');
         return isValid;
     }
 
@@ -1499,6 +1582,8 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
+
+        initializeInputmaskValidation();
 
         // Prevent form submission when "Enter" key is pressed
         $form.on("keydown", function (e) {
@@ -1698,6 +1783,50 @@ $(function () {
         return isValid;
     }
 
+    function initializeInputmaskValidation() {
+        $.validator.addMethod("sssNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length 
+                $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.sssNumber);
+
+        $.validator.addMethod("tinNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.tinNumber = "Format must be like this: 123-456-789(-0000)";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.tinNumber);
+
+        $.validator.addMethod("pagIBIGNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 12 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.pagIBIGNumber = "Format must be exactly this: 1234-5678-9012";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.pagIBIGNumber);
+    }
+
     function initializeLoanCreditDate() {
         const dateFormat = "Y-m-d";
         var currentDate = moment().format("YYYY-MM-DD");
@@ -1870,6 +1999,7 @@ $(function () {
         }
         else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+            $("#BuyerConfirmationModel_IsPagibigMember").val(bcfPagibigNumber.length > 0 ? "True" : "False");
         }
 
         // Set miscellanous input to disable

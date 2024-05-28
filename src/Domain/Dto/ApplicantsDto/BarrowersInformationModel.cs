@@ -124,7 +124,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         [Display(Name = "Years of stay in Present Home Address", Prompt = "Years", Description = "Years of stay in Present Home Address")]
         public int? YearsofStay { get; set; }
 
-        [Display(Name = "EE SSS/GSIS ID No.", Prompt = "XX-XXXXXXX-XX", Description = "EE SSS/GSIS ID No.")]
+        [Display(Name = "EE SSS/GSIS ID No.", Prompt = "XX-XXXXX(XX)-XX", Description = "EE SSS/GSIS ID No.")]
         public string? SSSNumber { get; set; }
 
         [Display(Name = "TIN", Prompt = "XXX-XXX-XXX-XXXX")]
@@ -257,8 +257,23 @@ namespace DMS.Domain.Dto.ApplicantsDto
 
         public bool IsBcfCreated { get; set; }
 
- 
         [Display(Name = "Mailing Address/Contact Detail", Prompt = "Mailing Address/Contact Detail")]
-        public string? ContactDetailEmail { get;set; } 
+        public string? ContactDetailEmail { get; set; } = string.Empty;
+
+        public string? PropertyDeveloper { get; set; } = string.Empty;
+        public string? PropertyLocationName { get; set; } = string.Empty;
+
+        public string? PropertyProject { get; set; } = string.Empty;
+        public string? PropertyUnitDescription { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Developer")]
+        public int? PropertyDeveloperId { get; set; }
+        [Display(Name = "House Unit")]
+        public int? PropertyUnitId { get; set; }
+        [Display(Name = "Project")]
+        public int? PropertyProjectId { get; set; }
+        [Display(Name = "Location")]
+        public int? PropertyLocationId { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using DMS.Application.Interfaces.Setup.SourcePagibigFundRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.UserDto;
@@ -20,6 +21,7 @@ using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -259,20 +261,20 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
 
-                        //mostly not needed its on edit mode
-                        vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
-                        vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName ?? beneficiaryData.PropertyDeveloperName;
+                        ////mostly not needed its on edit mode
+                        //vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
+                        //vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName ?? beneficiaryData.PropertyDeveloperName;
 
                         #region With Api Integration
 
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
-                        //vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                        vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
-                        //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                        //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                        //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                        //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                        vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                        vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                        vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                        vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                         #endregion With Api Integration
                     }
@@ -298,18 +300,18 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
                         //disable this if integrate the latest api
-                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
 
                         #region With Api Integration
 
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
-                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
-                        //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                        //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                        //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                        //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                        vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                        vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                        vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                        vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                         #endregion With Api Integration
                     }
@@ -365,6 +367,9 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
                         vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;
+                      
+
+
                     }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -477,9 +482,10 @@ namespace Template.Web.Controllers.Transaction
                 vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
 
                 //Old
-                vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
 
                 //New
                 //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
@@ -534,6 +540,10 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.BarrowersInformationModel = borrowerInfo;
 
+                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
+                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.LocationName;
+                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.HouseUnitDescription;
+
                     vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
                 }
                 if (vwModel.BarrowersInformationModel.IsPresentAddressPermanentAddress)
@@ -561,16 +571,14 @@ namespace Template.Web.Controllers.Transaction
                 {
                     vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
 
-                    vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
-
                     //mostly not needed its on edit mode
                     // vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
                     //vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName?? beneficiaryData.PropertyDeveloperName;
 
                     #region With Api Integration
 
-                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
-                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
                     //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
                     //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
@@ -602,21 +610,27 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BuyerConfirmationModel.PresentStreetName = beneficiaryData.PresentStreetName;
                     vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
-                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
 
                     #region With Api Integration
 
-                    //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
-                    //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                    vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                    vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
-                    //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                    //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                    //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                    //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                    vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                    vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                    vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                    vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                     #endregion With Api Integration
                 }
+
+                // erase if not needed
+                vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
 
                 return View("HousingLoanForm", vwModel);
             }
@@ -665,15 +679,21 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
                     vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
 
-                    //Old
-                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
-                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
-                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+                    // erase if not needed
+                    vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                    vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                    vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                    vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
 
-                    //New   
-                    //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
-                    //vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.LocationName;
-                    //vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.HouseUnitDescription;
+                    ////Old
+                    //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
+                    //vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.PropertyLocation;
+                    //vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.PropertyUnitLevelName;
+
+                    //New
+                    vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.DeveloperName;
+                    vwModel.BarrowersInformationModel.PropertyLocation = beneficiaryData.LocationName;
+                    vwModel.BarrowersInformationModel.PropertyUnitLevelName = beneficiaryData.HouseUnitDescription;
 
                     vwModel.BarrowersInformationModel.IsBcfCreated = beneficiaryData.IsBcfCreated;
 
@@ -682,6 +702,8 @@ namespace Template.Web.Controllers.Transaction
                     if (buyerConfirmationInfo != null)
                     {
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
                     }
                     else
                     {
@@ -705,18 +727,18 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel.PagibigNumber = beneficiaryData.PagibigNumber;
 
                         //hide this if using update api integration
-                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
-                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
+                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.PropertyDeveloperName;
+                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.PropertyUnitLevelName;
 
                         #region With Api Integration
 
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
-                        //vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
-                        //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
-                        //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
-                        //vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
-                        //vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                        vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                        vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                        vwModel.BuyerConfirmationModel.ProjectUnitId = beneficiaryData.PropertyUnitId;
+                        vwModel.BuyerConfirmationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
 
                         #endregion With Api Integration
                     }
@@ -737,11 +759,25 @@ namespace Template.Web.Controllers.Transaction
         {
             try
             {
+                List<UserModel> userModel = new();
+
                 int companyId = int.Parse(User.FindFirstValue("Company"));
+                int userId = int.Parse(User.Identity.Name);
 
-                var result = await _userRepo.spGetByRoleName(roleName, companyId);
+                var data = await _userRepo.spGetByRoleName(roleName, companyId);
 
-                return Ok(result);
+                var userInfo = await _userRepo.GetUserAsync(userId);
+
+                if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+                {
+                    userModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+                }
+                else
+                {
+                    userModel = data.ToList();
+                }
+
+                return Ok(userModel);
             }
             catch (Exception e)
             {
@@ -764,12 +800,20 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            List<ApplicantsPersonalInformationModel> apiModel = new();
 
-            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(roleId, companyId);
+            var data = await _applicantsPersonalInformationRepo.GetApplicantsAsync(userInfo.UserRoleId.Value, companyId);
 
-            return Ok(data);
+            if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+            {
+                apiModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+            }
+            else
+            {
+                apiModel = data.ToList();
+            }
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetMyApplications()
@@ -826,9 +870,24 @@ namespace Template.Web.Controllers.Transaction
         public async Task<IActionResult> GetApprovalTotalInfo()
         {
             int companyId = int.Parse(User.FindFirstValue("Company"));
-            //int userId = int.Parse(User.Identity.Name);
+            int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId));
+            List<ApprovalInfoModel> apiModel = new();
+
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+            {
+                var apiData = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, userInfo.DeveloperId);
+                apiModel = apiData.ToList();
+            }
+            else
+            {
+                var data = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, null);
+                apiModel = data.ToList();
+            }
+
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetBeneficiaryApprovalTotalInfo()
@@ -836,7 +895,7 @@ namespace Template.Web.Controllers.Transaction
             int companyId = int.Parse(User.FindFirstValue("Company"));
             int userId = int.Parse(User.Identity.Name);
 
-            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId));
+            return Ok(await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(userId, companyId, null));
         }
 
         public async Task<IActionResult> GetEligibilityVerificationDocuments(string applicantCode)
@@ -869,11 +928,16 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            ApplicationInfoModel apiModel = new();
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId);
-            return Ok(result);
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            int roleId = userInfo.UserRoleId.Value;
+
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            apiModel = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId, developerId);
+
+            return Ok(apiModel);
         }
 
         public async Task<IActionResult> GetTotalCreditVerif()
@@ -881,10 +945,12 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
+            int? roleId = userInfo.UserRoleId.Value;
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId);
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId, developerId);
             return Ok(result);
         }
 
@@ -893,10 +959,14 @@ namespace Template.Web.Controllers.Transaction
             int userId = int.Parse(User.Identity.Name);
             int companyId = int.Parse(User.FindFirstValue("Company"));
 
-            var userdata = await _userRepo.GetUserAsync(userId);
-            int roleId = userdata.UserRoleId.Value;
+            var userInfo = await _userRepo.GetUserAsync(userId);
 
-            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId);
+            int? roleId = userInfo.UserRoleId.Value;
+
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+
+            var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId, developerId);
+
             return Ok(result);
         }
 
@@ -1104,11 +1174,12 @@ namespace Template.Web.Controllers.Transaction
                         beneficiaryModel.Sex = vwModel.BarrowersInformationModel.Sex;
                         beneficiaryModel.Email = vwModel.BarrowersInformationModel.Email;
 
-                        beneficiaryModel.PropertyDeveloperName = vwModel.BarrowersInformationModel.PropertyDeveloperName;
+                        beneficiaryModel.PropertyDeveloperId = vwModel.BarrowersInformationModel.PropertyDeveloperId.Value;
 
-                        beneficiaryModel.PropertyUnitLevelName = vwModel.BarrowersInformationModel.PropertyUnitLevelName;
+                        beneficiaryModel.PropertyUnitId = vwModel.BarrowersInformationModel.PropertyUnitId.Value;
 
-                        beneficiaryModel.PropertyLocation = vwModel.BarrowersInformationModel.PropertyLocation;
+                        beneficiaryModel.PropertyLocationId = vwModel.BarrowersInformationModel.PropertyLocationId.Value;
+                        beneficiaryModel.PropertyProjectId = vwModel.BarrowersInformationModel.PropertyProjectId.Value;
 
                         beneficiaryModel.PermanentUnitName = vwModel.BarrowersInformationModel.PermanentUnitName;
                         beneficiaryModel.PermanentBuildingName = vwModel.BarrowersInformationModel.PermanentBuildingName;

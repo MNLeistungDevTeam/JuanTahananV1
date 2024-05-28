@@ -118,6 +118,7 @@
     <Folder Include="Stored Procedures\Setup\PropertyProject" />
     <Folder Include="Stored Procedures\Setup\PropertyLocation" />
     <Folder Include="Stored Procedures\Setup\PropertyUnit" />
+    <Folder Include="Tables\Setup\UserCompany" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -266,6 +267,7 @@
     <Build Include="Tables\Setup\BuyerConfirmation\BuyerConfirmationDocument.sql" />
     <Build Include="Stored Procedures\Setup\PropertyUnit\spPropertyUnit_GetUnitByProjectId.sql" />
     <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetBcfQualifiedReport.sql" />
+    <Build Include="Tables\Setup\UserCompany\UserCompany.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
@@ -296,6 +298,8 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_Industry.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_Applicant.sql" />
     <None Include="PostDeploymentScript\Script.PostDeployment_EmailSetup.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_PropertyManagement.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_UserCompany.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Template.Database.refactorlog" />

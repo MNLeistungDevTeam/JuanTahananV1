@@ -44,7 +44,7 @@ $(function () {
                     className: 'align-middle'
                 },
                 {
-                    data: 'HouseUnitModel',
+                    data: 'PropertyUnitDescription',
                     className: 'align-middle'
                 },
                 {
@@ -102,6 +102,13 @@ $(function () {
             drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                     $('li.paginate_button.page-item.active > a').addClass('waves-effect')
+
+                let api = this.api();
+                let rowCount = api.rows().data().filter(function (data) {
+                    return data.BuyerConfirmationDocumentStatus === 3;
+                }).length;
+                
+                $("#btn_excelSummary").attr("disabled", rowCount === 0);
 
                 //loadApplicantTotalInfo();
             },
@@ -199,7 +206,7 @@ $(function () {
 
     $("#btn_excelSummary").on('click', function (e) {
         e.preventDefault();
-        window.location.href = baseUrl + "BuyerConfirmation/BCFSummary";
+        window.location.href = baseUrl + "BuyerConfirmation/BCFRequests/BCFSummary";
 
         //$.ajax({
         //    url: baseUrl + "BuyerConfirmation/BCFSummary",

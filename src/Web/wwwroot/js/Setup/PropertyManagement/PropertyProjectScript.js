@@ -509,8 +509,21 @@ $(async function () {
         });
     });
     //#endregion Project Unit Table
-    function openProjectModal(id) {
+    function openProjectModal(id = 0) {
         clearForm($form);
+
+        ////reset iformfile
+
+        //method removing iformfile
+        var profilePictureFile = $('#PropProjModel_ProfileImageFile')[0];
+
+        profilePictureFile.files[0];
+
+        // remove filename
+        $('#PropProjModel_ProfileImageFile').val('');
+
+        var defaultProfile = "";
+        var actualPicture = "";
 
         if (id != 0) {
             $.ajax({
@@ -519,23 +532,28 @@ $(async function () {
                 data: {
                     id: id
                 },
-                success: function (propProject) {
-                    $('[name="PropProjModel.Id"]').val(propProject ? propProject.Id : 0);
-                    $('[name="PropProjModel.Name"]').val(propProject ? propProject.Name : "");
-                    $('[name="PropProjModel.Description"]').val(propProject ? propProject.Description : "");
-                    //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
-                    companyDropdown.setValue(propProject.CompanyId);
+                success: function (response) {
+                    var profileImage = response.ProfileImage;
 
-                    let defaultProfile = "";
-                    let actualPicture = "";
-                    let profileImage = propProject.ProfileImage;
+                    $('[name="PropProjModel.Id"]').val(response.Id);
+                    $('[name="PropProjModel.Name"]').val(response.Name);
+                    $('[name="PropProjModel.Description"]').val(response.Description);
+                    //$('[name="PropProjModel.CompanyId"]').data('selectize').setValue(propProject ? propProject.CompanyId : "");
+                    companyDropdown.setValue(response.CompanyId);
 
                     if (profileImage === "" || profileImage === null) actualPicture = defaultProfile;
                     else actualPicture = profileImage;
 
+                    console.log(actualPicture)
+                },
+                complete: function () {
                     $('#imagePreview').attr('src', actualPicture);
                 }
             });
+        }
+
+        else {
+            $('[name="PropProjModel.Id"]').val(0);
         }
 
         $modal_PropProj.modal('show')

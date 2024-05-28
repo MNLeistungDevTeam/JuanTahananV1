@@ -6,10 +6,10 @@ AS
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-		bi.PropertyDeveloperName Developer,
-		bi.PropertyLocation ProjectLocation,
-		'' Project,
-		bi.PropertyUnitLevelName Unit,
+		c.[Name] PropertyDeveloperName,
+		pl.[Name] PropertyLocationName,
+		pp.[Name] PropertyProjectName,
+		pu.[Description] PropertyUnitDescription,
 		lpi.DesiredLoanAmount As LoanAmount,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
@@ -67,6 +67,12 @@ AS
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId
+	LEFT JOIN BeneficiaryInformation bfi ON bfi.UserId = apl.UserId
+	LEFT JOIN Company c ON c.Id = bfi.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
+	LEFT JOIN PropertyProject pp ON pp.Id = bfi.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bfi.PropertyUnitId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bfi.PropertyLocationId
 
 
 	WHERE apl.PagibigNumber = @pagibigNumber

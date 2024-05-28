@@ -1,0 +1,342 @@
+﻿@{
+    ViewData["Title"] = "BCF Summaries";
+}
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="BuyerConfirmation" asp-action="ApplicantRequests">BCF Requests</a></li>
+
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-outline rounded-4 mt-2">
+    <div class="card-header bg-transparent p-2 border-bottom">
+        <div class="row">
+            <div class="col-md-6 text-start">
+                <h3 class="ms-2">BCF Summaries</h3>
+            </div>
+            <div class="col-md-6 text-end">
+                <button id="btnPrint" type="button" class="btn btn-xs waves-effect border-0">
+                    <i class="fe-printer"></i> Print All
+                </button>
+                <button type="button" class="btn btn-tool border-0" data-bs-toggle="modal" data-bs-target="#attachmentsModal">
+                    <i class="fas fa-download"></i> Download All
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border-top">
+
+        <div class="row gy-2">
+            <div class="col-xl-12 d-flex gap-2 justify-content-center">
+                <div class="col-4">
+                    <div class="input-group mb-3 rounded-4" role="group">
+                        <div class="input-group">
+                            <div class="input-group-text" id="btngroupaddon">
+                                <i class="mdi mdi-magnify fs-4"></i>
+                            </div>
+                            <input id="searchBar" type="text" class="form-control rounded-end-4" placeholder="Search for a project" aria-label="search" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-sort-variant fs-4"></i> Sort by
+                        </button>
+                        <div class="dropdown-menu rounded-4 shadow-lg" id="dropdown-selection">
+                            <div class="sort-by-menu px-1 py-1">
+                                <p class="text-muted fs-6 mb-0 ps-2">SORT BY</p>
+                                <a class="dropdown-item" href="#" data-type="sort-project">Project</a>
+                                <a class="dropdown-item" href="#" data-type="sort-location">Location</a>
+                                <a class="dropdown-item" href="#" data-type="sort-last_updated">Last Updated</a>
+                            </div>
+                            <hr class="dropdown-divider my-0" />
+                            <div class="px-1 py-1">
+                                <p class="text-muted fs-6 mb-0 ps-2">ORDER BY</p>
+                                <a class="dropdown-item" href="#" data-type="order-asc">Ascending</a>
+                                <a class="dropdown-item" href="#" data-type="order-desc">Descending</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div id="emptyEntry" class="row application-container" hidden>
+                    <div class="col-xxl-12">
+                        <h2 class="text-center">No Summary found</h2>
+                    </div>
+                </div>
+                <div class="row application-container" id="div_bcflist">
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xxl-6 bcf-card-content">
+                        <div class="card rounded-4 beneficiary-card">
+                            <div class="card-header rounded-4 rounded-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 font-16 fw-semibold text-center">
+                                            Arao Yuhum Residences  - Bacolod Rizal
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+
+
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-10 card shadow-lg">
+                                        <div class="card-body rounded-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="d-flex col-2 justify-content-start dl-icon-logo me-4">
+                                                    <img src="/img/excel_logo.png" style="width: 60px;">
+                                                </div>
+                                                <div class="d-flex flex-column col-8 dl-filename align-self-center justify-content-start">
+
+                                                    <p class="fw-light fs-5 text-info" id="bcfFileName">WLF251_Arao_Residence_Bacolod.pdf</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">10 Prequalified Benefeciaries</p>
+                                                    <p class="fw-lighter fs-6 mb-0" id="bcfFileSize">Last updated May 10 2024 at 10:00pm</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <script src="~/js/Setup/BuyerConfirmation/BCFSummaryScript.js" asp-append-version="true"></script>
+}

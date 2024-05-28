@@ -14,4 +14,16 @@ public class BuyerConfirmationExcelModel
     public string? EmployerContactPerson { get; set; }
     public string? EmployerContactNumber { get; set; }
     public string? EmployerEmailAddress { get; set; }
+
+
+    public string? PropertyProjectName { get; set; }
+    public string? PropertyDeveloperName { get; set; }
+    public string? PropertyLocationName { get; set; }
+
+    public int PropertyDeveloperId { get; set; }
+    public int PropertyProjectId { get; set; }
+    public int ProjectUnitId { get; set; }
+
+    public int PropertyLocationId { get; set; }
+    public DateTime? LastUpdate { get; set; }
 }

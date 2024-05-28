@@ -224,6 +224,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[UserCompany]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[UserDocuments]",
          "ObjectType": 0
       },

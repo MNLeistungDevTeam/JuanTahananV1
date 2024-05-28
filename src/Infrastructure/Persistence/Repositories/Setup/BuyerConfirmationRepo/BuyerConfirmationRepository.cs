@@ -52,11 +52,11 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     public async Task<BuyerConfirmationModel?> GetByCodeAsync(string code) =>
         await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_GetByCode", new { code });
 
-    public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId) =>
-        await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId });
+    public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId,int? developerId) =>
+        await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId , developerId });
 
-    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync() =>
-        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { });
+    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync(int? locationId,int? projectId,int? developerId) =>
+        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { locationId, projectId,developerId });
 
     #endregion Getters
 

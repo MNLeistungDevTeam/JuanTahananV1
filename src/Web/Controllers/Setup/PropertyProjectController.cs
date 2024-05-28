@@ -21,11 +21,11 @@ public class PropertyProjectController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IFileUploadService _fileUploadService;
 
-    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo,IWebHostEnvironment webHostEnvironment,IFileUploadService fileUploadService)
+    public PropertyProjectController(IPropertyProjectRepository propertyProjectRepo, IWebHostEnvironment webHostEnvironment, IFileUploadService fileUploadService)
     {
         _propertyProjectRepo = propertyProjectRepo;
         _webHostEnvironment = webHostEnvironment;
-        _fileUploadService = fileUploadService; 
+        _fileUploadService = fileUploadService;
     }
 
     #endregion Fields
@@ -75,8 +75,11 @@ public class PropertyProjectController : Controller
             var userId = int.Parse(User.Identity.Name);
 
             var rootFolder = _webHostEnvironment.WebRootPath;
-            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyProject", model.PropProjModel.Name);
-            string? projectProfileImage = await _fileUploadService.SaveProfilePictureAsync(model.PropProjModel?.ProfileImageFile, model.PropProjModel.Name, profileSaveLocation, rootFolder);
+
+            string projectName = model.PropProjModel.Name.Trim();
+            string profileSaveLocation = Path.Combine("Files", "Images", "PropertyManagementFile", "PropertyProject", projectName);
+
+            var projectProfileImage = await _fileUploadService.SaveFileAsync(model.PropProjModel?.ProfileImageFile, profileSaveLocation, rootFolder);
 
             model.PropProjModel.ProfileImage = projectProfileImage;
 
