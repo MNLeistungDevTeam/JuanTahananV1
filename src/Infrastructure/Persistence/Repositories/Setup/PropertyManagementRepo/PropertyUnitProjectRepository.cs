@@ -3,6 +3,7 @@ using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Entities;
+using System.Data.Entity;
 
 namespace DMS.Infrastructure.Persistence.Repositories.Setup.PropertyManagementRepo;
 
@@ -61,28 +62,50 @@ public class PropertyUnitProjectRepository : IPropertyUnitProjectRepository
 
     public async Task<PropertyUnitProject> CreateAsync(PropertyUnitProject model, int userId)
     {
-        model.CreatedById = userId;
-        model.DateCreated = DateTime.UtcNow;
-        var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
+        try
+        {
+            model.CreatedById = userId;
+            model.DateCreated = DateTime.UtcNow;
+            var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
 
-        return result;
+            return result;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task<PropertyUnitProject> UpdateAsync(PropertyUnitProject model, int userId)
     {
-        model.ModifiedById = userId;
-        model.DateModified = DateTime.UtcNow;
-        var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
+        try
+        {
+            model.ModifiedById = userId;
+            model.DateModified = DateTime.UtcNow;
+            var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
 
-        return result;
+            return result;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task BatchDeleteAsync(int[] ids)
     {
-        var entities = _context.PropertyUnitProjects.Where(m => ids.Contains(m.Id));
+        try
+        {
+            var entities = _context.PropertyUnitProjects
+                .Where(m => ids.Contains(m.Id));
 
-        if (entities is not null)
-            await _contextHelper.BatchDeleteAsync(entities);
+            if (entities is not null)
+                await _contextHelper.BatchDeleteAsync(entities);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     #endregion Operation

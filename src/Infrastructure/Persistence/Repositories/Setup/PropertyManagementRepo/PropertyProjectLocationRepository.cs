@@ -58,11 +58,11 @@ public class PropertyProjectLocationRepository : IPropertyProjectLocationReposit
 
         if (_model.Id == 0)
         {
-            await CreateAsync(_model, userId);
+            _model = await CreateAsync(_model, userId);
         }
         else
         {
-            await UpdateAsync(_model, userId);
+            _model = await UpdateAsync(_model, userId);
         }
 
         return _model;
@@ -70,28 +70,51 @@ public class PropertyProjectLocationRepository : IPropertyProjectLocationReposit
 
     public async Task<PropertyProjectLocation> CreateAsync(PropertyProjectLocation model, int userId)
     {
-        model.CreatedById = userId;
-        model.DateCreated = DateTime.UtcNow;
-        var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
+        try
+        {
+            model.CreatedById = userId;
+            model.DateCreated = DateTime.UtcNow;
+            var result = await _contextHelper.CreateAsync(model, "ModifiedById", "DateModified");
 
-        return result;
+            return result;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task<PropertyProjectLocation> UpdateAsync(PropertyProjectLocation model, int userId)
     {
-        model.ModifiedById = userId;
-        model.DateModified = DateTime.UtcNow;
-        var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
+        try
+        {
+            model.ModifiedById = userId;
+            model.DateModified = DateTime.UtcNow;
+            var result = await _contextHelper.UpdateAsync(model, "CreatedById", "DateCreated");
 
-        return result;
+            return result;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task BatchDeleteAsync(int[] ids)
     {
-        var entities = _context.PropertyProjectLocations.Where(m => ids.Contains(m.Id));
+        try
+        {
+            var entities = await _context.PropertyProjectLocations
+                .Where(m => ids.Contains(m.Id))
+                .ToListAsync();
 
-        if (entities is not null)
-            await _contextHelper.BatchDeleteAsync(entities);
+            if (entities is not null)
+                await _contextHelper.BatchDeleteAsync(entities);
+        }
+        catch (Exception)
+        {
+            throw;
+        } 
     }
 
     #endregion Operation

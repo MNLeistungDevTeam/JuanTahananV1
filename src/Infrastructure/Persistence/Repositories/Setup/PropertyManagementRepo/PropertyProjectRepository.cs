@@ -76,36 +76,92 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         return _model;
     }
 
-    public async Task SaveProjectLocations(PropertyProjectModel project, List<PropertyProjectLocationModel> userProjectList, int userId)
+    public async Task SaveProjectLocations(PropertyProjectModel project, List<PropertyProjectLocationModel> locations, int userId)
     {
+        //try
+        //{
+        //    if (project == null) return;
+
+        //    var userCounter = 1;
+        //    var _locations = _mapper.Map<List<PropertyProjectLocation>>(locations);
+
+        //    foreach (var location in _locations)
+        //    {
+
+        //        if (location.Id == 0)
+        //        {
+        //            await _propertyprojectLocationRepo.CreateAsync(location, userId);
+        //        }
+        //        else
+        //        {
+        //            await _propertyprojectLocationRepo.CreateAsync(location, userId);
+        //        }
+
+        //        userCounter++;
+        //    }
+
+        //    // clean up for unused project
+        //    var userIds = _locations.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+
+        //    var toDelete = await _context.PropertyProjectLocations
+        //       .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+        //       .Select(m => m.Id)
+        //       .ToArrayAsync();
+
+        //    if (toDelete is not null && userIds.Any())
+        //    {
+        //        await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
+        //    }
+
+        //}
+        //catch (Exception)
+        //{
+        //    throw;
+        //}
+
         try
         {
-            if (project == null) return;
+            var entityToCompare = new List<PropertyProjectLocation>();
 
-            var userCounter = 1;
-
-            var _userProjectList = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
-
-            foreach (var address in _userProjectList)
+            foreach (var location in locations)
             {
-                if (address.Id == 0)
-                    await _propertyprojectLocationRepo.CreateAsync(address, userId);
-                else
-                    await _propertyprojectLocationRepo.UpdateAsync(address, userId);
+                var existingLocation = await _context.PropertyProjectLocations
+                    .FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.LocationId == location.LocationId);
 
-                userCounter++;
+                if (existingLocation == null)
+                {
+                    // Create new location
+                    var _location = new PropertyProjectLocation
+                    {
+                        ProjectId = project.Id,
+                        LocationId = location.LocationId,
+                        CreatedById = userId,
+                        DateCreated = DateTime.UtcNow
+                    };
+
+                    var _model = await _propertyprojectLocationRepo.CreateAsync(_location, userId);
+                    entityToCompare.Add(_model);
+                }
+                else
+                {
+                    entityToCompare.Add(existingLocation);
+                }
             }
 
-            // clean up for unused stages
-            var userIds = _userProjectList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            // clean up for unused project
+            var userIds = entityToCompare.Where(m => m.Id != 0).Select(m => m.Id).ToList();
 
             var toDelete = await _context.PropertyProjectLocations
-                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
-                .Select(m => m.Id)
-                .ToArrayAsync();
+                  .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+                  .Select(m => m.Id)
+                  .ToArrayAsync();
 
-            if (toDelete is not null && toDelete.Any())
+            if (toDelete.Any())
+            {
                 await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
+            }
+
+
         }
         catch (Exception)
         {
@@ -113,41 +169,91 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         }
     }
 
-    public async Task SaveProjectUnits(PropertyProjectModel project, List<PropertyUnitProjectModel> userUnitList, int userId)
+    public async Task SaveProjectUnits(PropertyProjectModel project, List<PropertyUnitProjectModel> units, int userId)
     {
+        //try
+        //{
+        //    if (project == null) return;
+
+        //    var userCounter = 1;
+
+        //    var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
+
+        //    foreach (var unit in _userUnitList)
+        //    {
+        //        if (unit.Id == 0)
+        //            await _propertyunitProjectRepository.CreateAsync(unit, userId);
+        //        else
+        //            await _propertyunitProjectRepository.UpdateAsync(unit, userId);
+
+        //        userCounter++;
+        //    }
+
+        //    // clean up for unused stages
+        //    var userIds = _userUnitList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+
+        //    var toDelete = await _context.PropertyUnitProjects
+        //        .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+        //        .Select(m => m.Id)
+        //        .ToArrayAsync();
+
+        //    if (toDelete is not null && toDelete.Any())
+        //        await _propertyunitProjectRepository.BatchDeleteAsync(toDelete);
+        //}
+        //catch (Exception)
+        //{
+        //    throw;
+        //}
+
         try
         {
-            if (project == null) return;
+            var entityToCompare = new List<PropertyUnitProject>();
 
-            var userCounter = 1;
-
-            var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
-
-            foreach (var unit in _userUnitList)
+            foreach (var unit in units)
             {
-                if (unit.Id == 0)
-                    await _propertyunitProjectRepository.CreateAsync(unit, userId);
-                else
-                    await _propertyunitProjectRepository.UpdateAsync(unit, userId);
+                var existingLocation = await _context.PropertyUnitProjects
+                    .FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.UnitId == unit.UnitId);
 
-                userCounter++;
+                if (existingLocation == null)
+                {
+                    // Create new location
+                    var newLocation = new PropertyUnitProject
+                    {
+                        ProjectId = project.Id,
+                        UnitId = unit.UnitId,
+                        CreatedById = userId,
+                        DateCreated = DateTime.UtcNow
+                    };
+
+                    var _model = await _propertyunitProjectRepository.CreateAsync(newLocation, userId);
+                    entityToCompare.Add(_model);
+                }
+                else
+                {
+                    entityToCompare.Add(existingLocation);
+                }
             }
 
-            // clean up for unused stages
-            var userIds = _userUnitList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            // clean up for unused project
+            var userIds = entityToCompare.Where(m => m.Id != 0).Select(m => m.Id).ToList();
 
             var toDelete = await _context.PropertyUnitProjects
-                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
-                .Select(m => m.Id)
-                .ToArrayAsync();
+               .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+               .Select(m => m.Id)
+               .ToArrayAsync();
 
-            if (toDelete is not null && toDelete.Any())
+
+            if (toDelete.Any())
+            {
                 await _propertyunitProjectRepository.BatchDeleteAsync(toDelete);
+            }
+
         }
         catch (Exception)
         {
             throw;
         }
+
     }
 
     public async Task<PropertyProject> CreateAsync(PropertyProject model, int userId)

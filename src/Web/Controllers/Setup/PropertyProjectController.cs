@@ -97,11 +97,12 @@ public class PropertyProjectController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveProjectLocation(PropertyManagementViewModel vwModel)
     {
+
+        //if (!ModelState.IsValid)
+        //    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
+
         try
         {
-            //if (!ModelState.IsValid)
-            //    return Conflict(ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }));
-
             var userId = int.Parse(User.Identity.Name);
             var companyId = int.Parse(User.FindFirstValue("Company"));
 
@@ -128,7 +129,11 @@ public class PropertyProjectController : Controller
 
             return Ok();
         }
-        catch (Exception ex) { return BadRequest(ex.Message); }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
     }
 
     [HttpPost]

@@ -1,4 +1,5 @@
-﻿const $tbl_propProj = $("#tbl_PropProj");
+﻿
+const $tbl_propProj = $("#tbl_PropProj");
 const $tbl_location = $("#tbl-location-add");
 const $tbl_unit = $("#tbl-unit-add");
 const $modal_PropProj = $('#modal-PropProjModel');
@@ -376,9 +377,6 @@ $(async function () {
                     messageBox("Save project Successfuly!", "success");
                     $("#modal-location").modal("hide");
                     tbl_propProj.ajax.reload();
-                },
-                error: async function (jqXHR, textStatus, errorThrown) {
-                    messageBox(jqXHR.responseText, "danger", true);
                 }
             });
         });
@@ -501,9 +499,6 @@ $(async function () {
                     messageBox("Save unit Successfuly!", "success");
                     $("#modal-unit").modal("hide");
                     tbl_propProj.ajax.reload();
-                },
-                error: async function (jqXHR, textStatus, errorThrown) {
-                    messageBox(jqXHR.responseText, "danger", true);
                 }
             });
         });

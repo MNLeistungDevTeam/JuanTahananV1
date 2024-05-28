@@ -137,17 +137,16 @@
                     <input asp-for="PropProjLocModel.Id" hidden />
                     <input asp-for="PropProjLocModel.ProjectId" hidden />
                     <input asp-for="PropProjLocModel.LocationId" hidden />
-                    <input hidden type="text" asp-for="PropertyLocationIds" class="form-control form-control-sm">
-                    <input hidden type="text" asp-for="PropProjModel.Id" class="form-control form-control-sm">
-                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" placeholder="Name" hidden>
-                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Description" placeholder="Description" hidden>
+                    <input asp-for="PropertyLocationIds" hidden>
+                    <input asp-for="PropProjModel.Id" hidden>
+                    <input asp-for="PropProjModel.Name" hidden>
+                    <input asp-for="PropProjModel.Description" hidden>
 
                     <div class="col-12 mb-2">
                         <div class="position-relative mb-3">
-                            <label class="form-label fw-normal" asp-for="PropProjLocModel.ProjectId"></label>
-                            <input type="text" class="form-control rounded-3" asp-for="PropProjLocModel.ProjectId" hidden>
-                            <input type="text" class="form-control rounded-3" asp-for="PropProjLocModel.ProjectName" readonly>
-                            <span asp-validation-for="PropProjLocModel.ProjectId" class="invalid-tooltip"> </span>
+                            <label class="form-label fw-normal" asp-for="PropProjModel.Name"></label>
+                            <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" readonly>
+                            <span asp-validation-for="PropProjModel.Name" class="invalid-tooltip"> </span>
                         </div>
                     </div>
 
@@ -207,17 +206,16 @@
                     <input asp-for="PropUnitProjModel.Id" hidden />
                     <input asp-for="PropUnitProjModel.ProjectId" hidden/>
                     <input asp-for="PropUnitProjModel.UnitId" hidden />
-                    <input hidden type="text" asp-for="PropertyUnitIds" class="form-control form-control-sm">
-                    <input hidden type="text" asp-for="PropProjModel.Id" class="form-control form-control-sm">
-                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" placeholder="Name" hidden>
-                    <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Description" placeholder="Description" hidden>
+                    <input asp-for="PropertyUnitIds" hidden />
+                    <input asp-for="PropProjModel.Id" hidden />
+                    <input asp-for="PropProjModel.Name" hidden />
+                    <input asp-for="PropProjModel.Description" hidden />
 
                     <div class="col-12 mb-2">
                         <div class="position-relative mb-3">
-                            <label class="form-label fw-normal" asp-for="PropProjLocModel.Id"></label>
-                            <input type="text" class="form-control rounded-3" asp-for="PropUnitProjModel.ProjectId" hidden>
+                            <label class="form-label fw-normal" asp-for="PropProjModel.Name"></label>
                             <input type="text" class="form-control rounded-3" asp-for="PropProjModel.Name" readonly>
-                            <span asp-validation-for="PropUnitProjModel.ProjectId" class="invalid-tooltip"> </span>
+                            <span asp-validation-for="PropProjModel.Name" class="invalid-tooltip"> </span>
                         </div>
                     </div>
 
