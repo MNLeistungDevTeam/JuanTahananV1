@@ -85,6 +85,222 @@ $(function () {
 
     //#endregion
 
+    var developerVal = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).attr('data-value');
+    var houseunitVal = $(`[name='BarrowersInformationModel.PropertyUnitId']`).attr('data-value');
+
+    var projectVal = $(`[name='BarrowersInformationModel.PropertyProjectId']`).attr('data-value');
+    var locationVal = $(`[name='BarrowersInformationModel.PropertyLocationId']`).attr('data-value');
+
+    var developerDropdown, $developerDropdown;
+    var houseUnitDropdown, $houseUnitDropdown;
+
+    var projectDropdown, $projectDropdown;
+    var locationDropdown, $locationDropdown;
+
+
+    $developerDropdown = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetDevelopers',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+    developerDropdown = $developerDropdown[0].selectize;
+
+
+    developerDropdown.on('load', function (options) {
+        developerDropdown.setValue(developerVal || '');
+        //resourceCounter("purposeofloan");
+        developerDropdown.off('load');
+    });
+
+
+    $houseUnitDropdown = $(`[name='BarrowersInformationModel.PropertyUnitId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetUnits',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Description) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+
+    houseUnitDropdown = $houseUnitDropdown[0].selectize;
+    houseUnitDropdown.on('load', function (options) {
+        houseUnitDropdown.setValue(houseunitVal  || '');
+        //resourceCounter("purposeofloan");
+        houseUnitDropdown.off('load');
+    });
+
+
+
+
+    $projectDropdown = $(`[name='BarrowersInformationModel.PropertyProjectId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetProjects',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+
+    projectDropdown = $projectDropdown[0].selectize;
+    projectDropdown.on('load', function (options) {
+        projectDropdown.setValue(projectVal || '');
+        //resourceCounter("purposeofloan");
+        projectDropdown.off('load');
+    });
+
+
+
+
+    $locationDropdown = $(`[name='BarrowersInformationModel.PropertyLocationId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetLocations',
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+    });
+
+
+    locationDropdown = $locationDropdown[0].selectize;
+    locationDropdown.on('load', function (options) {
+        locationDropdown.setValue(locationVal || '');
+        //resourceCounter("purposeofloan");
+        locationDropdown.off('load');
+    });
+
+
+
+
+
+
+
+
+
+
+
+
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
     encodedStatusdropDown.lock();

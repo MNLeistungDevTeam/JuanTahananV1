@@ -1,7 +1,8 @@
 ﻿ CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetBcfQualifiedReport]
  
  @locationId INT,
- @projectId INT
+ @projectId INT,
+ @developerId INT
 AS
 	SELECT 
 		CONCAT(bcf.LastName, ', ', bcf.FirstName, ' ', bcf.MiddleName) AS FullName,
@@ -24,6 +25,7 @@ AS
 		bcf.ProjectUnitId,
 		pp.[Name] PropertyProjectName,
 		pl.[Name] PropertyLocationName,
+		c.[Name] PropertyDeveloperName,
 		bcd.DateModified LastUpdate
 
 	FROM BuyerConfirmation bcf
@@ -37,7 +39,7 @@ AS
 		LEFT JOIN PropertyLocation pl ON pl.Id = bcf.PropertyLocationId
 		LEFT JOIN PropertyProject pp ON pp.Id = bcf.PropertyProjectId
 		LEFT JOIN PropertyUnit pu ON pu.Id = bcf.ProjectUnitId
-		LEFT JOIN Company dvl ON dvl.Id = bcf.PropertyDeveloperId
+		LEFT JOIN Company c ON c.Id = bcf.PropertyDeveloperId
 	WHERE bcd.[Status] = 3  -- Approved by Developer
 	AND 1 = 
 	(CASE WHEN @locationId IS NULL THEN 1
@@ -47,16 +49,9 @@ AS
 	(CASE WHEN @projectId IS NULL THEN 1
 		  WHEN @projectId IS NOT NULL AND @projectId = bcf.PropertyProjectId THEN 1
 	END)
-
-
+	AND 1 = 
+	(CASE WHEN @developerId IS NULL THEN 1
+		  WHEN @developerId IS NOT NULL AND @developerId = bcf.PropertyDeveloperId THEN 1
+	END)
 RETURN 0
-
-select * from BuyerConfirmation 
-
-update BuyerConfirmation set PropertyLocationId = 1 where Id = 3
-
-
-
-select * from BuyerConfirmation 
-
-update BuyerConfirmation set PropertyLocationId = 1 where Id = 1
+ 

@@ -5,7 +5,11 @@ AS
 	   c.[Name] PropertyDeveloperName,
 		pl.[Name] PropertyLocationName,
 		pp.[Name] PropertyProject,
-		pu.[Description] PropertyUnitDescription
+		pu.[Description] PropertyUnitDescription,
+		bi.PropertyDeveloperId,
+		bi.PropertyProjectId,
+		bi.PropertyUnitId,
+		bi.PropertyLocationId
 		FROM BarrowersInformation bai
 	LEFT JOIN ApplicantsPersonalInformation api ON api.Id = bai.ApplicantsPersonalInformationId
 	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = api.UserId

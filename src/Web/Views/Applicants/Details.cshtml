@@ -2,6 +2,8 @@
 @inject DMS.Application.Services.ICurrentUserService _currentUserService
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo;
+@inject DMS.Application.Interfaces.Setup.ApplicantsRepository.IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+
 @model ApplicantViewModel
 @{
     string title = "Application Details - " + Model.ApplicantsPersonalInformationModel.Code;
@@ -12,6 +14,11 @@
     var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
 
     var roleInfo = await _roleRepo.GetByIdAsync(currentUserRole.RoleId);
+
+
+    var defaultDevLogo = "/images/juantahananassets/logo/rscity.png";
+    var defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";
+    var defaultProjectLogo = "/images/juantahananassets/logo/arao_logo.png";
 }
 
 <!-- start page title -->
@@ -291,14 +298,27 @@
                                                 <h3 class="fw-bold">
                                                     @(Model.BarrowersInformationModel.PropertyUnitDescription ?? "N/A")
                                                 </h3>
-                                                <p>@(Model.BarrowersInformationModel.PropertyLocationName ?? "N/A")</p>
+                                                @* <div class="row">
+                                                    <img src="@(Model.ApplicantsPersonalInformationModel.PropertyUnitLogo ?? defaultUnitLogo)" alt="" class="img-fluid" />
+                                                </div> *@
+                                                <div class="row">
+                                                    <p>@(Model.BarrowersInformationModel.PropertyLocationName ?? "N/A")</p>
+                                                </div>
 
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <h4>Developer</h4>
-                                            <div class="product">
+                                            @* <div class="product">
                                                 <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
+                                            </div> *@
+                                            @*
+                                            PropertyDeveloperLogo
+                                            PropertyProjectLogo
+                                            PropertyUnitLogo
+                                            *@
+                                            <div class="row">
+                                                <img src="@(Model.ApplicantsPersonalInformationModel.PropertyDeveloperLogo ?? defaultDevLogo)" alt="@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")" class="img-fluid" />
                                             </div>
                                         </div>
 

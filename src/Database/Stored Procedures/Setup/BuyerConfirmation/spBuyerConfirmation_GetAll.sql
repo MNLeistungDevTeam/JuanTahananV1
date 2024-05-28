@@ -16,9 +16,10 @@ AS
     cl.[Location] PropertyDeveloperLogo,
     pp.ProfileImage PropertyProjectLogo,
     pu.ProfileImage PropertyUnitLogo,
-
-
-
+    bcf.PropertyDeveloperId,
+    bcf.PropertyLocationId,
+    bcf.PropertyProjectId,
+    bcf.ProjectUnitId,
     CASE
         WHEN bcf.ApprovalStatus = 0 THEN 'Submitted'
         WHEN bcf.ApprovalStatus = 3 AND bcd.[Status] = 1 THEN 'Sign and Submitted'

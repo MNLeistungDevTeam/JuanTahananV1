@@ -26,6 +26,10 @@ FROM (
 		pu.ProfileImage PropertyUnitLogo,
 
 		lpi.DesiredLoanAmount As LoanAmount,
+		bfi.PropertyDeveloperId,
+		bfi.PropertyLocationId,
+		bfi.PropertyProjectId,
+		bfi.PropertyUnitId,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
 		--	 WHEN  apl.ApprovalStatus = 2 Then 'Approved'
 		--	 ELSE 'Defered'	

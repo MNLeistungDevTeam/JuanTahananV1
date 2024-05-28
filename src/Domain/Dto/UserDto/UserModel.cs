@@ -124,4 +124,5 @@ public class UserModel
 
     [Display(Name = "Developer")]
     public int? DeveloperId { get; set; }
+    public int? PropertyDeveloperId { get; set; }
 }

@@ -75,6 +75,8 @@ using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.PropertyProjectRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationDocumentRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationDocumentRepo;
+using DMS.Application.Interfaces.Setup.UserCompanyRepo;
+using DMS.Infrastructure.Persistence.Repositories.Setup.UserCompanyRepo;
 
 namespace Template.Infrastructure;
 
@@ -189,6 +191,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPropertyUnitProjectRepository, PropertyUnitProjectRepository>();
         services.AddScoped<IPropertyUnitRepository, PropertyUnitRepository>();
         services.AddScoped<IBuyerConfirmationDocumentRepository, BuyerConfirmationDocumentRepository>();
+        services.AddScoped<IUserCompanyRepository, UserCompanyRepository>();
         return services;
     }
 }

@@ -103,6 +103,13 @@ $(function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded"),
                     $('li.paginate_button.page-item.active > a').addClass('waves-effect')
 
+                let api = this.api();
+                let rowCount = api.rows().data().filter(function (data) {
+                    return data.BuyerConfirmationDocumentStatus === 3;
+                }).length;
+                
+                $("#btn_excelSummary").attr("disabled", rowCount === 0);
+
                 //loadApplicantTotalInfo();
             },
             language: {
