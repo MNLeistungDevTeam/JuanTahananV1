@@ -626,6 +626,12 @@ namespace Template.Web.Controllers.Transaction
                     #endregion With Api Integration
                 }
 
+                // erase if not needed
+                vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
+
                 return View("HousingLoanForm", vwModel);
             }
             else
@@ -672,6 +678,12 @@ namespace Template.Web.Controllers.Transaction
                     vwModel.BarrowersInformationModel.PermanentMunicipalityName = beneficiaryData.PermanentMunicipalityName;
                     vwModel.BarrowersInformationModel.PermanentProvinceName = beneficiaryData.PermanentProvinceName;
                     vwModel.BarrowersInformationModel.PermanentZipCode = beneficiaryData.PermanentZipCode;
+
+                    // erase if not needed
+                    vwModel.BarrowersInformationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;
+                    vwModel.BarrowersInformationModel.PropertyProjectId = beneficiaryData.PropertyProjectId;
+                    vwModel.BarrowersInformationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
+                    vwModel.BarrowersInformationModel.PropertyUnitId = beneficiaryData.PropertyUnitId;
 
                     ////Old
                     //vwModel.BarrowersInformationModel.PropertyDeveloperName = beneficiaryData.PropertyDeveloperName;
