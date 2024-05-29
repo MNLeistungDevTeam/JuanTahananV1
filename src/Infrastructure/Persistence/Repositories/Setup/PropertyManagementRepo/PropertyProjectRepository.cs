@@ -16,7 +16,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     private readonly EfCoreHelper<PropertyProject> _contextHelper;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
-    private readonly IPropertyProjectLocationRepository _propertyprojectLocationRepo;
+    private readonly IPropertyProjectLocationRepository _propertyProjectLocationRepo;
     private readonly IPropertyUnitProjectRepository _propertyunitProjectRepository;
 
     public PropertyProjectRepository(
@@ -30,7 +30,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         _contextHelper = new EfCoreHelper<PropertyProject>(context);
         _db = db;
         _mapper = mapper;
-        _propertyprojectLocationRepo = propertyprojectLocationRepo;
+        _propertyProjectLocationRepo = propertyprojectLocationRepo;
         _propertyunitProjectRepository = propertyunitProjectRepository;
     }
 
@@ -82,30 +82,28 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         {
             if (project == null) return;
 
-            var userCounter = 1;
+            var projectLocations = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
 
-            var _userProjectList = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
-
-            foreach (var address in _userProjectList)
+            foreach (var address in projectLocations)
             {
-                if (address.Id == 0)
-                    await _propertyprojectLocationRepo.CreateAsync(address, userId);
-                else
-                    await _propertyprojectLocationRepo.UpdateAsync(address, userId);
+                address.ProjectId = project.Id;
 
-                userCounter++;
+                if (address.Id == 0)
+                    await _propertyProjectLocationRepo.CreateAsync(address, userId);
+                else
+                    await _propertyProjectLocationRepo.UpdateAsync(address, userId);
             }
 
             // clean up for unused stages
-            var userIds = _userProjectList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            var ids = projectLocations.Where(m => m.Id != 0).Select(m => m.Id).ToList();
 
             var toDelete = await _context.PropertyProjectLocations
-                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
+                .Where(m => m.ProjectId == project.Id && !ids.Contains(m.Id))
                 .Select(m => m.Id)
                 .ToArrayAsync();
 
             if (toDelete is not null && toDelete.Any())
-                await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
+                await _propertyProjectLocationRepo.BatchDeleteAsync(toDelete);
         }
         catch (Exception)
         {
@@ -119,18 +117,16 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         {
             if (project == null) return;
 
-            var userCounter = 1;
-
             var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
 
             foreach (var unit in _userUnitList)
             {
+                unit.ProjectId = project.Id;
+
                 if (unit.Id == 0)
                     await _propertyunitProjectRepository.CreateAsync(unit, userId);
                 else
                     await _propertyunitProjectRepository.UpdateAsync(unit, userId);
-
-                userCounter++;
             }
 
             // clean up for unused stages
