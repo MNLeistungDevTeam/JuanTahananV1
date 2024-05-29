@@ -196,6 +196,8 @@ $(async function () {
             }
         ];
 
+        let noFileString = "No file uploaded yet. Click here to upload.";
+
         // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -233,7 +235,7 @@ $(async function () {
 					                                    </div>
 				                                    </div>
 				                                    <div class="col ps-0">
-					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
 					                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                                    </div>
 				                                    <div class="col-auto">
@@ -302,7 +304,7 @@ $(async function () {
 					                                </div>
 				                                </div>
 				                                <div class="col ps-0">
-					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
 					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                                </div>
 				                                <div class="col-auto">
@@ -366,6 +368,8 @@ $(async function () {
             }
         ];
 
+        let noFileString = "No file uploaded yet. Click here to upload.";
+
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -400,7 +404,7 @@ $(async function () {
 					                                </div>
                                                 </div>
                                                 <div class="col ps-0" >
-                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
                                                     <p class="mb-0">${formatSize(item.DocumentSize)}</p>
                                                 </div>
                                                 <div class="col-auto">
