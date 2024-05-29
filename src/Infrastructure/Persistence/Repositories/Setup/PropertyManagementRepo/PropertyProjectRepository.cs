@@ -16,7 +16,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
     private readonly EfCoreHelper<PropertyProject> _contextHelper;
     private readonly ISQLDatabaseService _db;
     private readonly IMapper _mapper;
-    private readonly IPropertyProjectLocationRepository _propertyprojectLocationRepo;
+    private readonly IPropertyProjectLocationRepository _propertyProjectLocationRepo;
     private readonly IPropertyUnitProjectRepository _propertyunitProjectRepository;
 
     public PropertyProjectRepository(
@@ -30,7 +30,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         _contextHelper = new EfCoreHelper<PropertyProject>(context);
         _db = db;
         _mapper = mapper;
-        _propertyprojectLocationRepo = propertyprojectLocationRepo;
+        _propertyProjectLocationRepo = propertyprojectLocationRepo;
         _propertyunitProjectRepository = propertyunitProjectRepository;
     }
 
@@ -121,47 +121,30 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
         try
         {
-            var entityToCompare = new List<PropertyProjectLocation>();
+            if (project == null) return;
 
-            foreach (var location in locations)
+            var projectLocations = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
+
+            foreach (var address in projectLocations)
             {
-                var existingLocation = await _context.PropertyProjectLocations
-                    .FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.LocationId == location.LocationId);
+                address.ProjectId = project.Id;
 
-                if (existingLocation == null)
-                {
-                    // Create new location
-                    var _location = new PropertyProjectLocation
-                    {
-                        ProjectId = project.Id,
-                        LocationId = location.LocationId,
-                        CreatedById = userId,
-                        DateCreated = DateTime.UtcNow
-                    };
-
-                    var _model = await _propertyprojectLocationRepo.CreateAsync(_location, userId);
-                    entityToCompare.Add(_model);
-                }
+                if (address.Id == 0)
+                    await _propertyProjectLocationRepo.CreateAsync(address, userId);
                 else
-                {
-                    entityToCompare.Add(existingLocation);
-                }
+                    await _propertyProjectLocationRepo.UpdateAsync(address, userId);
             }
 
-            // clean up for unused project
-            var userIds = entityToCompare.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            // clean up for unused stages
+            var ids = projectLocations.Where(m => m.Id != 0).Select(m => m.Id).ToList();
 
             var toDelete = await _context.PropertyProjectLocations
-                  .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
-                  .Select(m => m.Id)
-                  .ToArrayAsync();
+                .Where(m => m.ProjectId == project.Id && !ids.Contains(m.Id))
+                .Select(m => m.Id)
+                .ToArrayAsync();
 
-            if (toDelete.Any())
-            {
-                await _propertyprojectLocationRepo.BatchDeleteAsync(toDelete);
-            }
-
-
+            if (toDelete is not null && toDelete.Any())
+                await _propertyProjectLocationRepo.BatchDeleteAsync(toDelete);
         }
         catch (Exception)
         {
@@ -207,31 +190,18 @@ public class PropertyProjectRepository : IPropertyProjectRepository
 
         try
         {
-            var entityToCompare = new List<PropertyUnitProject>();
+            if (project == null) return;
 
-            foreach (var unit in units)
+            var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
+
+            foreach (var unit in _userUnitList)
             {
-                var existingLocation = await _context.PropertyUnitProjects
-                    .FirstOrDefaultAsync(x => x.ProjectId == project.Id && x.UnitId == unit.UnitId);
-
-                if (existingLocation == null)
-                {
-                    // Create new location
-                    var newLocation = new PropertyUnitProject
-                    {
-                        ProjectId = project.Id,
-                        UnitId = unit.UnitId,
-                        CreatedById = userId,
-                        DateCreated = DateTime.UtcNow
-                    };
-
-                    var _model = await _propertyunitProjectRepository.CreateAsync(newLocation, userId);
-                    entityToCompare.Add(_model);
-                }
+                if (unit.Id == 0)
+                    await _propertyunitProjectRepository.CreateAsync(unit, userId);
                 else
-                {
-                    entityToCompare.Add(existingLocation);
-                }
+                    await _propertyunitProjectRepository.UpdateAsync(unit, userId);
+
+                userCounter++;
             }
 
             // clean up for unused project

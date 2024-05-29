@@ -355,30 +355,30 @@ $(async function () {
     });
 
     btn_saveprojectlocation.on("click", function (e) {
-        let selected = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
-        $("[name='PropertyLocationIds']").val(selected);
+        e.preventDefault();
 
         let $form = $("#frm_projectLocation");
+        if (!$form.valid()) {
+            messageBox("Fill all required fields!", "danger", true);
+            return;
+        }
+
+        let selected = tbl_projectLocation.rows({ selected: true }).data().pluck("Id").toArray().toString();
+        $("[name='PropertyLocationIds']").val(selected);
         let formData = $form.serialize();
 
-        $form.on("submit", function (e) {
-            e.preventDefault();
-
-            if (!$(this).valid()) {
-                messageBox("Fill all required fields!", "danger", true);
-                return;
+        $.ajax({
+            url: baseUrl + `PropertyProject/SaveProjectLocation`,
+            method: "POST",
+            data: formData,
+            success: function (response) {
+                messageBox("Save project Successfuly!", "success");
+                $("#modal-location").modal("hide");
+                tbl_propProj.ajax.reload();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                messageBox(jqXHR.responseText, "danger", true);
             }
-
-            $.ajax({
-                url: baseUrl + `PropertyProject/SaveProjectLocation`,
-                method: "POST",
-                data: formData,
-                success: function (response) {
-                    messageBox("Save project Successfuly!", "success");
-                    $("#modal-location").modal("hide");
-                    tbl_propProj.ajax.reload();
-                }
-            });
         });
     });
 
@@ -477,30 +477,30 @@ $(async function () {
     });
 
     btn_saveprojectUnit.on("click", function (e) {
-        let selected = tbl_unit.rows({ selected: true }).data().pluck("Id").toArray().toString();
-        $("[name='PropertyUnitIds']").val(selected);
+        e.preventDefault();
 
         let $form = $("#frm_projectUnit");
+        if (!$form.valid()) {
+            messageBox("Fill all required fields!", "danger", true);
+            return;
+        }
+
+        let selected = tbl_unit.rows({ selected: true }).data().pluck("Id").toArray().toString();
+        $("[name='PropertyUnitIds']").val(selected);
         let formData = $form.serialize();
 
-        $form.on("submit", function (e) {
-            e.preventDefault();
-
-            if (!$(this).valid()) {
-                messageBox("Fill all required fields!", "danger", true);
-                return;
+        $.ajax({
+            url: baseUrl + `PropertyProject/SaveProjectUnit`,
+            method: "POST",
+            data: formData,
+            success: function (response) {
+                messageBox("Save unit Successfuly!", "success");
+                $("#modal-unit").modal("hide");
+                tbl_propProj.ajax.reload();
+            },
+            error: async function (jqXHR, textStatus, errorThrown) {
+                messageBox(jqXHR.responseText, "danger", true);
             }
-
-            $.ajax({
-                url: baseUrl + `PropertyProject/SaveProjectUnit`,
-                method: "POST",
-                data: formData,
-                success: function (response) {
-                    messageBox("Save unit Successfuly!", "success");
-                    $("#modal-unit").modal("hide");
-                    tbl_propProj.ajax.reload();
-                }
-            });
         });
     });
     //#endregion Project Unit Table
@@ -648,6 +648,7 @@ $(async function () {
 
         $modal_Unit.modal('show');
     }
+
     function rebindValidator() {
         $form.on('submit', async function (e) {
             e.preventDefault();
