@@ -32,7 +32,7 @@
     </div>
     <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
 
-   
+
         <div id="rootwizard">
             <ul class="nav nav-pills nav-justified form-wizard-header mb-3" hidden>
                 @if (!Model.BarrowersInformationModel.IsBcfCreated)
@@ -105,7 +105,7 @@
                     <h4 class="text-primary fw-bolder">Important note:</h4>
                     <ul>
                         <li class="text-primary mb-2">
-                            These are <span class="fw-bold">not</span> the final application forms, but they will auto-fill the 
+                            These are <span class="fw-bold">not</span> the final application forms, but they will auto-fill the
                             Buyer Confirmation Form (BCF) and Housing Loan Application Form (HLAF) PDFs you need for your application.
                             These PDFs will need to be printed, signed, scanned, and uploaded as part of your application.
                         </li>
@@ -136,8 +136,8 @@
                             <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyProjectId" hidden>
                             <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyDeveloperId" hidden>
                             <input class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PropertyLocationId" hidden>
- 
-                            <div class="row gy-2"> 
+
+                            <div class="row gy-2">
                                 <div class="col-md-12">
                                     <h3 class="text-dark float-start">
                                         <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">Buyer Confirmation Form</span>
@@ -573,9 +573,9 @@
                                 </div>
 
 
-                              
 
-                          
+
+
 
 
 
@@ -682,34 +682,27 @@
                                     </div>
                                 </div>
 
-
-
-
-
                                 <div class="col-md-12">
                                     <h3 class="header-title pb-2 mb-2 mt-3 border-bottom-dashed">
                                         Particulars
                                     </h3>
                                 </div>
 
-
-
                                 <div class="position-relative radio-incomeSrcRbtn">
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsOtherSourceOfIncome"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="incomeSrcRbtn" id="isRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="incomeSrcRbtn" id="isRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="incomeSrcRbtn" id="isRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="incomeSrcRbtn" id="isRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsOtherSourceOfIncome" hidden>
                                     <span asp-validation-for="BuyerConfirmationModel.IsOtherSourceOfIncome" class="text-danger"> </span>
                                 </div>
-
 
                                 <div id="bcf-incomeFields" class="row" hidden>
                                     <div class="col-md-3">
@@ -744,19 +737,17 @@
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigMember"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="pagibigRbtn" id="pagibigRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="pagibigRbtn" id="pagibigRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="pagibigRbtn" id="pagibigRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="pagibigRbtn" id="pagibigRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsPagibigMember" hidden>
                                     <span asp-validation-for="BuyerConfirmationModel.IsPagibigMember" class="text-danger"> </span>
                                 </div>
-
-
 
                                 <div class="col-md-3" id="bcf-pagIbigNumField" hidden>
                                     <div class="position-relative">
@@ -766,17 +757,15 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="position-relative radio-availedLoanRbtn">
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigAvailedLoan"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="availedLoanRbtn" id="availedLoanRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="availedLoanRbtn" id="availedLoanRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="availedLoanRbtn" id="availedLoanRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="availedLoanRbtn" id="availedLoanRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -788,11 +777,11 @@
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPagibigCoBorrower"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="coBorrowerRbtn" id="cbwrRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="coBorrowerRbtn" id="cbwrRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="coBorrowerRbtn" id="cbwrRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="coBorrowerRbtn" id="cbwrRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -800,16 +789,15 @@
                                     <span asp-validation-for="BuyerConfirmationModel.IsPagibigCoBorrower" class="text-danger"> </span>
                                 </div>
 
-
                                 <div class="position-relative radio-prpRbtn">
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsPursueProjectProponent"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="projectPropRbtn" id="prpRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="projectPropRbtn" id="prpRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="projectPropRbtn" id="prpRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="projectPropRbtn" id="prpRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -817,23 +805,21 @@
                                     <span asp-validation-for="BuyerConfirmationModel.IsPursueProjectProponent" class="text-danger"> </span>
                                 </div>
 
-
                                 <div class="position-relative radio-itcRbtn">
                                     <label class="form-label fw-bold text-dark" asp-for="BuyerConfirmationModel.IsInformedTermsConditions"></label>
                                     <div class="mb-2">
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="informedTermsRbtn" id="itcRbtn1" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="informedTermsRbtn" id="itcRbtn1" required />
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="informedTermsRbtn" id="itcRbtn2" required />
+                                            <input type="radio" class="form-check-input bcfRbtn" name="informedTermsRbtn" id="itcRbtn2" required />
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control rounded-3 text-center" asp-for="BuyerConfirmationModel.IsInformedTermsConditions" hidden>
                                     <span asp-validation-for="BuyerConfirmationModel.IsInformedTermsConditions" class="text-danger"> </span>
                                 </div>
-
 
                                 <div class="col-md-12 border-bottom-dashed pb-2 mb-2 mt-3">
                                     <h3 class="header-title">
@@ -866,21 +852,16 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
 
                             <div class="col-md-12 mt-3">
                                 <ul class="pager wizard mb-0 list-inline">
 
                                     <li class="next list-inline-item float-end">
-                                        <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Next</button>
+                                        <button type="button" class="btn btn-light waves-effect waves-light nextBtn" style="z-index: 999;">Next</button>
                                     </li>
                                 </ul>
                             </div>
-
-
                         </div>
                     }
 
@@ -1006,11 +987,11 @@
                                 <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true"/>
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true" />
                                         <label class="form-check-label">Yes</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false"/>
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false" />
                                         <label class="form-check-label">No</label>
                                     </div>
                                 </div>
@@ -1023,11 +1004,11 @@
                                 <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.PaymentScheme"></label>
                                 <div class="mb-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP"/>
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP" />
                                         <label class="form-check-label">GAP</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP"/>
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP" />
                                         <label class="form-check-label">LAP</label>
                                     </div>
                                 </div>
@@ -3156,7 +3137,6 @@
 
                         <div class="row">
                             <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="hlafPreview">
-                                
                             </div>
                         </div>
 
@@ -3166,9 +3146,9 @@
                                     <li class="previous list-inline-item">
                                         <button type="button" class="btn btn-light waves-effect waves-light" style="z-index: 999;">Previous</button>
                                     </li>
-                            <li class="next list-inline-item float-end">
-                                <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
-                            </li>
+                                    <li class="next list-inline-item float-end">
+                                        <button type="submit" class="btn btn-primary submit-form" id="btn_savehlf068"><span class='mdi mdi-content-save-outline'></span> Save</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

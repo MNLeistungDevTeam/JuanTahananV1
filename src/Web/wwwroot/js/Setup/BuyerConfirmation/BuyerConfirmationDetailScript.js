@@ -1,5 +1,7 @@
 "use strict"
 
+var inputLock = false;
+
 $(function () {
     const { pdfjsLib } = globalThis;
     const debounceError = debounce((callback) => { callback(); }, 5000);
@@ -8,10 +10,9 @@ $(function () {
     const CONST_MODULE_CODE = "BCF-APLRQST";
     const CONST_TRANSACTIONID = $("#BuyerConfirmation_Id").val();
     const buyerConfirmationCode = $("#BuyerConfirmationModel_Code").val();
+    const approvalStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
     var currentStep = 0;
-    var inputLock = false;
-
     //document.ready
     $(function () {
         initializeLeftDecimalInputMask(".decimalInputMask", 2);
@@ -25,15 +26,29 @@ $(function () {
 
         //#region Initialization
 
-        //// Add blue border on focus
-        //$(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
-        //    $(this).addClass("focused");
-        //});
+        // add blue border on focus
+        $(document).on("focus", "#BuyerConfirmationModel_SellingPrice", function () {
+            $(this).addClass("focused");
+            $(this).addClass("border-primary border-3 focused");
+        });
 
-        // //Remove blue border when focus is lost
-        //$(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
-        //    $(this).removeClass("focused");
-        //});
+        // remove blue border when focus is lost
+        $(document).on("blur", "#BuyerConfirmationModel_SellingPrice", function () {
+            $(this).removeClass("focused");
+            $(this).removeClass("border-primary border-3 focused");
+        });
+
+        // add blue border on focus
+        $(document).on("focus", "#BuyerConfirmationModel_MonthlyAmortization", function () {
+            $(this).addClass("focused");
+            $(this).addClass("border-primary border-2 focused");
+        });
+
+        // remove blue border when focus is lost
+        $(document).on("blur", "#BuyerConfirmationModel_MonthlyAmortization", function () {
+            $(this).removeClass("focused");
+            $(this).removeClass("border-primary border-2 focused");
+        });
 
         if (buyerConfirmationCode !== localStorage.getItem("BuyerConfirmationModel_Code")) {
             localStorage.removeItem("BuyerConfirmationModel_Code");
@@ -54,7 +69,14 @@ $(function () {
             $("#BuyerConfirmationModel_MonthlyAmortization").val(localStorage.getItem("BuyerConfirmationModel_MonthlyAmortization"));
         }
 
+        if (approvalStatus === '3') {
+            $("#bcfSetAmount").click();
+            $("#bcfSetAmount").text("Change Pricing");
+            updateChangePricingButton();
+        }
+
         PricingFieldInputChecker();
+        updateChangePricingButton();
 
         //#endregion
     });
@@ -67,7 +89,7 @@ $(function () {
         inputLock = !inputLock;
         $(`[name="BuyerConfirmationModel.SellingPrice"], [name="BuyerConfirmationModel.MonthlyAmortization"]`).attr('readonly', inputLock);
 
-        $(this).html(inputLock ? "Change pricing" : "Apply pricing");
+        $(this).html(inputLock ? "Change Pricing" : "Apply Pricing");
 
         $(this).addClass(inputLock ? "btn-outline-info" : "btn-info");
         $(this).removeClass(!inputLock ? "btn-outline-info" : "btn-info");
@@ -109,7 +131,10 @@ $(function () {
         openApprovalModal(action);
     });
 
-    //#endregion
+    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+        $(this).on('change input', updateChangePricingButton);
+    });
+    //#endregion Events
 
     //#region Methods
     function PricingFieldInputChecker() {
@@ -369,7 +394,15 @@ $(function () {
         $form.submit(function (e) {
             e.preventDefault();
 
-            if (!$form.valid()) { return; }
+            if (!$form.valid()) {
+                messageBox("Please apply the fields.", "danger", true);
+                return;
+            }
+
+            if (!inputLock) {
+                messageBox("Please apply the pricing details first before proceeding.", "warning", true);
+                return;
+            }
 
             let formData = $form.serialize();
             formData = formData.replace(/ApprovalLevel\./g, "");
@@ -475,6 +508,27 @@ $(function () {
                 }, 2000);
             }
         });
+    }
+
+    function updateChangePricingButton() {
+        // Check if the selling price input field is not readonly
+        if (!$("#BuyerConfirmationModel_SellingPrice").prop("readonly")) {
+            // Check if all required fields with BuyerConfirmationModel in their IDs have values
+            let allFilled = true;
+            $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+                if ($(this).val().trim() === '') {
+                    allFilled = false;
+                    return false; // Exit the each loop early
+                }
+            });
+
+            // Change the button label based on whether all fields are filled
+            if (allFilled) {
+                $("#bcfSetAmount").text("Apply pricing");
+            } else {
+                $("#bcfSetAmount").text("Set pricing");
+            }
+        }
     }
 
     //#endregion

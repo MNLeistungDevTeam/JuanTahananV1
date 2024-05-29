@@ -1089,23 +1089,24 @@ function bcfUploading() {
             console.log(bcfStatus);
 
             if (bcfStatus != 3) {
-
                 link.setAttribute('title', 'This module requires an approved BCF for access');
 
                 link.classList.add('disabled-nav-link');
                 link.style.cursor = "default";
                 link.setAttribute('href', '#');
             }
-            else if (bcfDocumentStatus == 1) {
+            //else if (bcfDocumentStatus == 1) {
                 // 1: Signed and Submitted
                 // 3: Approved
-                link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
+                //link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
 
-                link.classList.add('disabled-nav-link');
-                link.style.cursor = "default";
-                link.setAttribute('href', '#');
+            //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+            //    link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
 
-            }
+            //    link.classList.add('disabled-nav-link');
+            //    link.style.cursor = "default";
+            //    link.setAttribute('href', '#');
+            //}
 
             link.addEventListener('click', function (event) {
                 //if bcf not verified by dev
@@ -1117,6 +1118,10 @@ function bcfUploading() {
                     console.log(0);
                     event.preventDefault();
                 }
+                //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                //    console.log(0);
+                //    event.preventDefault();
+                //}
             });
         }
     });

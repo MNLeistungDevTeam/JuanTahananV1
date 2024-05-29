@@ -2,9 +2,9 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using DMS.Domain.Entities;
 using DMS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using DMS.Domain.Entities;
 
 namespace DMS.Infrastructure.Persistence;
 
@@ -890,7 +890,7 @@ public partial class DMSDBContext : DbContext
 
             entity.HasOne(d => d.Notif).WithMany(p => p.NotificationReceivers)
                 .HasForeignKey(d => d.NotifId)
-                .HasConstraintName("FK__Notificat__Notif__7755B73D");
+                .HasConstraintName("FK__Notificat__Notif__0A688BB1");
         });
 
         modelBuilder.Entity<PropertyLocation>(entity =>
@@ -1136,6 +1136,16 @@ public partial class DMSDBContext : DbContext
 
             entity.ToTable("UserApprover");
 
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<UserCompany>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserComp__3214EC07B4B599A5");
+
+            entity.ToTable("UserCompany");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
         });
 

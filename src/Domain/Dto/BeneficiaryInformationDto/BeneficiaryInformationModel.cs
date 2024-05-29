@@ -120,7 +120,6 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [Display(Name = "ZIP Code", Prompt = "Zip Code")]
         public string? PermanentZipCode { get; set; }
 
-        
         [Display(Name = "Property Developer Name", Prompt = "Property Developer Name")]
         public string? PropertyDeveloperName { get; set; }
 
