@@ -262,8 +262,8 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BuyerConfirmationModel = buyerConfirmationInfo;
 
                         ////mostly not needed its on edit mode
-                        //vwModel.BuyerConfirmationModel.HouseUnitModel = vwModel.BuyerConfirmationModel.HouseUnitModel ?? beneficiaryData.PropertyUnitLevelName;
-                        //vwModel.BuyerConfirmationModel.ProjectProponentName = vwModel.BuyerConfirmationModel.ProjectProponentName ?? beneficiaryData.PropertyDeveloperName;
+                        vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
+                        vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
 
                         #region With Api Integration
 

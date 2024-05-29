@@ -1659,7 +1659,7 @@ $(function () {
                     if (applicantInfoIdVal == 0) {
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
-                            window.location.href = "/Applicants/HLF068/" + response;
+                            window.location.href = "/Applicants/Details/" + response;
                         }, 2000);
                     }
 
