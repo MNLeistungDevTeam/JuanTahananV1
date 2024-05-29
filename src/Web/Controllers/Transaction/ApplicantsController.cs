@@ -579,6 +579,7 @@ namespace Template.Web.Controllers.Transaction
 
                     vwModel.BuyerConfirmationModel.ProjectProponentName = beneficiaryData.DeveloperName;
                     vwModel.BuyerConfirmationModel.HouseUnitModel = beneficiaryData.HouseUnitDescription;
+                    vwModel.ApplicantsPersonalInformationModel.BuyerConfirmationCode = buyerConfirmationInfo.Code;
 
                     //vwModel.BuyerConfirmationModel.PropertyLocationId = beneficiaryData.PropertyLocationId;
                     //vwModel.BuyerConfirmationModel.PropertyDeveloperId = beneficiaryData.PropertyDeveloperId;

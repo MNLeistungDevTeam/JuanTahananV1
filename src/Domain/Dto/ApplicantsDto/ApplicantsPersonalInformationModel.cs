@@ -107,6 +107,7 @@ namespace DMS.Domain.Dto.ApplicantsDto
         public string? PropertyDeveloperLogo { get; set; }
         public string? PropertyProjectLogo { get; set; }
         public string? PropertyUnitLogo { get; set; }
+        public string? BuyerConfirmationCode { get; set; }
 
         #endregion Display Properties
     }

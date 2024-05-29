@@ -55,7 +55,14 @@
                     <i class="mdi mdi-dots-vertical"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a href="#" id="btn_edit" class="dropdown-item text-info"><i class="mdi mdi-pencil-outline text-info"></i> Edit</a>
+                    @* @if(Model.ApplicantsPersonalInformationModel.ApprovalStatus == 0){ *@
+                        <a href="#" id="btn_edit" class="dropdown-item text-info"><i class="mdi mdi-pencil-outline text-info"></i> Edit</a>
+                @*     }else{
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Application is submitted">
+                            <a href="#" id="btn_edit" class="dropdown-item text-info"><i class="mdi mdi-pencil-outline text-info"></i> Edit</a>
+                        </span>
+                    } *@
+                    
                     @if (Model.BuyerConfirmationModel.ApprovalStatus == 3)
                     {
                         <a href="#" id="btn_bcfpdf" class="dropdown-item text-info"><i class="mdi mdi-thumb-up-outline"></i> View BCF File</a>
@@ -188,11 +195,13 @@
                 <input type="hidden" asp-for="BarrowersInformationModel.IsBcfCreated">
 
                 <form id="frm_hlf068" method="post" asp-action="@(!Model.BarrowersInformationModel.IsBcfCreated ? "SaveBCFHLAF" : "SaveHLF068")" asp-controller="Applicants" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+                        
+                    <input type="hidden" asp-for="ApplicantsPersonalInformationModel.BuyerConfirmationCode" />
+                    <input type="hidden" asp-for="ApplicantsPersonalInformationModel.ApprovalStatus" />
+
                     @if (!Model.BarrowersInformationModel.IsBcfCreated)
                     {
                         <div id="bcfdata" class="tab-pane">
-
-
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.UserId">
                             <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.Id">
                             @* <input type="hidden" class="form-control rounded-3 mb-2" asp-for="BuyerConfirmationModel.PagibigNumber"> *@
