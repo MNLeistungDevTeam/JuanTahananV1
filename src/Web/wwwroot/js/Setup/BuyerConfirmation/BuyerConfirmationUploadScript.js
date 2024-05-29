@@ -12,7 +12,10 @@ $(async function () {
     initializeRibbon();
     checkInputFile();
 
-
+    if (bcfDocumentStatus === "3" || bcfDocumentStatus === "2") {
+        console.log("asd");
+        $("#submitPdfFile").prop("disabled", true);
+    }
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
@@ -165,7 +168,12 @@ $(async function () {
     }
 
     function checkInputFile() {
-        $(`[id="submitPdfFile"]`).attr('disabled', $('#bcf_PdfFile').prop('files').length === 0);
+        if (bcfDocumentStatus === "3" || bcfDocumentStatus === "2") {
+            $("#submitPdfFile").prop("disabled", true);
+        } else {
+            $(`[id="submitPdfFile"]`).attr('disabled', $('#bcf_PdfFile').prop('files').length === 0);
+        }
+
         $(`[id="fileInputArea"] .d-flex .fileinput-remove-button`).attr('hidden', $('#bcf_PdfFile').prop('files').length === 0);
     }
 
