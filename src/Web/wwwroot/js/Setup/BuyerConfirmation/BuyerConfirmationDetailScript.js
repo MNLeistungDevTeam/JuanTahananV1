@@ -446,7 +446,7 @@ $(function () {
         let messageArray = [
             {
                 approvalLevels: [3, 4], // Approved
-                message: "BCF has been saved and approved, and ready for printing"
+                message: "BCF has been saved and approved. Document is ready for printing"
             },
             {
                 approvalLevels: [11], // Resubmission
