@@ -237,34 +237,42 @@ public class BeneficiaryController : Controller
             var data = await _propertyProjectRepo.GetAll();
             return Ok(data);
         }
-
-        return Ok();
+        else
+        {
+            var data = await _propertyProjectRepo.GetByCompanyAsync(developerId.Value, null);
+            return Ok(data);
+        }
     }
 
-    public async Task<IActionResult> GetUnits(int? projectId)
+    public async Task<IActionResult> GetUnits(int? projectId, int? developerId)
     {
         if (projectId is null)
         {
             var data = await _propertyUnitRepo.GetAll();
             return Ok(data);
         }
+        else
+        {
+            var data = await _propertyUnitRepo.GetUnitByProjectAsync(projectId.Value, developerId);
 
-        return Ok();
+            return Ok(data);
+        }
     }
 
-
-
-    public async Task<IActionResult> GetLocations(int? projectId)
+    public async Task<IActionResult> GetLocations(int? projectId,int? developerId)
     {
         if (projectId is null)
         {
             var data = await _propertyLocationRepo.GetAll();
             return Ok(data);
         }
+        else
+        {
+            var data = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId.Value,developerId) ;
 
-        return Ok();
+            return Ok(data);
+        }
     }
-
 
     #endregion API Operation
 }

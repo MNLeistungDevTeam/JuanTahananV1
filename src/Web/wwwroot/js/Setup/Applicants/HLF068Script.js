@@ -10,6 +10,15 @@ $(function () {
     var telNoArray = [];
     var itiFlag = false;
 
+    var xhr;
+    var xhr1;
+    var xhr2;
+    var resources = [];
+    var developerDropdown, $developerDropdown;
+    var houseUnitDropdown, $houseUnitDropdown;
+    var locationDropdown, $locationDropdown;
+    var projectDropdown, $projectDropdown;
+
     //#region Initialization
 
     $(".selectize").selectize({
@@ -67,6 +76,8 @@ $(function () {
         }
     });
 
+    $("#btn_savehlf068").attr('disabled', true);
+
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     initializeLoanCreditDate();
@@ -85,28 +96,25 @@ $(function () {
 
     //#endregion
 
-    var developerVal = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).attr('data-value');
-    var houseunitVal = $(`[name='BarrowersInformationModel.PropertyUnitId']`).attr('data-value');
+    var locationVal = $('[name="BarrowersInformationModel.PropertyLocationId"]').attr('data-value');
+    var houseUnitVal = $('[name="BarrowersInformationModel.PropertyUnitId"]').attr('data-value');
+    var projectVal = $('[name="BarrowersInformationModel.PropertyProjectId"]').attr('data-value');
+    var developerVal = $('[name="BarrowersInformationModel.PropertyDeveloperId"]').attr('data-value');
 
-    var projectVal = $(`[name='BarrowersInformationModel.PropertyProjectId']`).attr('data-value');
-    var locationVal = $(`[name='BarrowersInformationModel.PropertyLocationId']`).attr('data-value');
-
-    var developerDropdown, $developerDropdown;
-    var houseUnitDropdown, $houseUnitDropdown;
-
-    var projectDropdown, $projectDropdown;
-    var locationDropdown, $locationDropdown;
-
-
-    $developerDropdown = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).selectize({
+    $locationDropdown = $(`[name='BarrowersInformationModel.PropertyLocationId']`).selectize({
         valueField: 'Id',
         labelField: 'Name',
         searchField: 'Name',
         preload: true,
         search: false,
+
         load: function (query, callback) {
             $.ajax({
-                url: baseUrl + 'Beneficiary/GetDevelopers',
+                url: baseUrl + 'Beneficiary/GetLocations',
+                data: {
+                    projectId: $('[name="BarrowersInformationModel.PropertyProjectId"]').val(),
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
                 success: function (results) {
                     try {
                         callback(results);
@@ -119,32 +127,41 @@ $(function () {
                 }
             });
         },
+        onChange: function (value) {
+            houseUnitDropdown.setValue("");
+            houseUnitDropdown.disable();
+            houseUnitDropdown.clearOptions();
+            houseUnitDropdown.load(function (callback) {
+                xhr2 && xhr2.abort();
+                xhr2 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetUnits",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                        console.log(results)
 
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            }
+                        try {
+                            if (!results.length) houseUnitDropdown.disable();
+                            else houseUnitDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
         },
     });
 
-    developerDropdown = $developerDropdown[0].selectize;
-
-
-    developerDropdown.on('load', function (options) {
-        developerDropdown.setValue(developerVal || '');
-        //resourceCounter("purposeofloan");
-        developerDropdown.off('load');
-    });
-
+    locationDropdown = $locationDropdown[0].selectize;
 
     $houseUnitDropdown = $(`[name='BarrowersInformationModel.PropertyUnitId']`).selectize({
         valueField: 'Id',
@@ -155,6 +172,11 @@ $(function () {
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + 'Beneficiary/GetUnits',
+                data: {
+                    projectId: $('[name="BarrowersInformationModel.PropertyProjectId"]').val(),
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
+
                 success: function (results) {
                     try {
                         callback(results);
@@ -168,32 +190,23 @@ $(function () {
             });
         },
 
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.Description) +
-                    "</div>"
-                );
-            },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.Description) +
-                    "</div>"
-                );
-            }
-        },
+        //render: {
+        //    item: function (item, escape) {
+        //        return ("<div>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    },
+        //    option: function (item, escape) {
+        //        return ("<div class='py-1 px-2'>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    }
+        //},
     });
-
 
     houseUnitDropdown = $houseUnitDropdown[0].selectize;
-    houseUnitDropdown.on('load', function (options) {
-        houseUnitDropdown.setValue(houseunitVal  || '');
-        //resourceCounter("purposeofloan");
-        houseUnitDropdown.off('load');
-    });
-
-
-
 
     $projectDropdown = $(`[name='BarrowersInformationModel.PropertyProjectId']`).selectize({
         valueField: 'Id',
@@ -201,9 +214,76 @@ $(function () {
         searchField: 'Name',
         preload: true,
         search: false,
+
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + 'Beneficiary/GetProjects',
+                data: {
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        onChange: function (value) {
+            console.log($('[name="BarrowersInformationModel.PropertyDeveloperId"]').val())
+            console.log(value)
+
+            locationDropdown.setValue("");
+            locationDropdown.disable();
+            locationDropdown.clearOptions();
+            locationDropdown.load(function (callback) {
+                xhr1 && xhr1.abort();
+                xhr1 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetLocations",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                        console.log(results)
+
+                        try {
+                            if (!results.length) locationDropdown.disable();
+                            else locationDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+    });
+
+    projectDropdown = $projectDropdown[0].selectize;
+
+    $developerDropdown = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetDevelopers',
+
                 success: function (results) {
                     try {
                         callback(results);
@@ -231,75 +311,74 @@ $(function () {
                 );
             }
         },
+        onChange: function (value) {
+            projectDropdown.setValue("");
+            projectDropdown.disable();
+            projectDropdown.clearOptions();
+            projectDropdown.load(function (callback) {
+                xhr && xhr.abort();
+                xhr = $.ajax({
+                    url: baseUrl + "Beneficiary/GetProjects/",
+                    data: {
+                        developerId: value
+                    },
+                    success: function (results) {
+                        try {
+                            if (!results.length) projectDropdown.disable();
+                            else projectDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(projectVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
     });
 
+    developerDropdown = $developerDropdown[0].selectize;
 
-    projectDropdown = $projectDropdown[0].selectize;
+    developerDropdown.on('load', function (options) {
+        developerDropdown.setValue(developerVal || '');
+        resourceCounter("developer");
+        developerDropdown.off('load');
+    });
+
     projectDropdown.on('load', function (options) {
-        projectDropdown.setValue(projectVal || '');
-        //resourceCounter("purposeofloan");
+        setTimeout(function () {
+            projectDropdown.setValue(projectVal || '');
+            projectDropdown.lock();
+            resourceCounter("project");
+        }, 800)
+
         projectDropdown.off('load');
     });
 
-
-
-
-    $locationDropdown = $(`[name='BarrowersInformationModel.PropertyLocationId']`).selectize({
-        valueField: 'Id',
-        labelField: 'Description',
-        searchField: 'Description',
-        preload: true,
-        search: false,
-        load: function (query, callback) {
-            $.ajax({
-                url: baseUrl + 'Beneficiary/GetLocations',
-                success: function (results) {
-                    try {
-                        callback(results);
-                    } catch (e) {
-                        callback();
-                    }
-                },
-                error: function () {
-                    callback();
-                }
-            });
-        },
-
-        render: {
-            item: function (item, escape) {
-                return ("<div>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            },
-            option: function (item, escape) {
-                return ("<div class='py-1 px-2'>" +
-                    escape(item.Name) +
-                    "</div>"
-                );
-            }
-        },
-    });
-
-
-    locationDropdown = $locationDropdown[0].selectize;
     locationDropdown.on('load', function (options) {
-        locationDropdown.setValue(locationVal || '');
-        //resourceCounter("purposeofloan");
+        setTimeout(function () {
+            locationDropdown.setValue(locationVal || '');
+            locationDropdown.lock();
+            resourceCounter("location");
+        }, 1000)
+
         locationDropdown.off('load');
     });
 
+    houseUnitDropdown.on('load', function (options) {
+        setTimeout(function () {
+            houseUnitDropdown.setValue(houseUnitVal || '');
+            houseUnitDropdown.lock();
+            resourceCounter("unit");
+        }, 1200)
 
-
-
-
-
-
-
-
-
-
+        houseUnitDropdown.off('load');
+    });
 
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
@@ -2053,6 +2132,15 @@ $(function () {
         if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
             $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
             $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
+    }
+
+    const resourceCounter = (item) => {
+        if (resources.indexOf(item) == -1)
+            resources.push(item);
+
+        if (resources.length == 4) {
+            $("#btn_savehlf068").attr('disabled', false);
         }
     }
 
