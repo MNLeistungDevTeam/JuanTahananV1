@@ -123,7 +123,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         {
             if (project == null) return;
 
-            var projectLocations = _mapper.Map<List<PropertyProjectLocation>>(userProjectList);
+            var projectLocations = _mapper.Map<List<PropertyProjectLocation>>(locations);
 
             foreach (var address in projectLocations)
             {
@@ -192,7 +192,8 @@ public class PropertyProjectRepository : IPropertyProjectRepository
         {
             if (project == null) return;
 
-            var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(userUnitList);
+            int userCounter = 0;
+            var _userUnitList = _mapper.Map<List<PropertyUnitProject>>(units);
 
             foreach (var unit in _userUnitList)
             {
@@ -205,7 +206,7 @@ public class PropertyProjectRepository : IPropertyProjectRepository
             }
 
             // clean up for unused project
-            var userIds = entityToCompare.Where(m => m.Id != 0).Select(m => m.Id).ToList();
+            var userIds = _userUnitList.Where(m => m.Id != 0).Select(m => m.Id).ToList();
 
             var toDelete = await _context.PropertyUnitProjects
                .Where(m => m.ProjectId == project.Id && !userIds.Contains(m.Id))
