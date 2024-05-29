@@ -89,6 +89,8 @@ $(async function () {
         if (!result)
             return;
 
+        //console.log('exec');
+
         if ($creditVerificationChart && $("#ApexCharts_CreditVerificationStatus svg").length === 0) {
             var options = {
                 chart: {
@@ -102,12 +104,8 @@ $(async function () {
                     text: "No data for the selected period",
                     align: 'center',
                     verticalAlign: 'middle',
-                    offsetX: 0,
-                    offsetY: 0,
                     style: {
-                        color: undefined,
-                        fontSize: '14px',
-                        fontFamily: undefined
+                        fontSize: '14px'
                     }
                 },
                 legend: {
@@ -210,12 +208,8 @@ $(async function () {
                     text: "No data for the selected period",
                     align: 'center',
                     verticalAlign: 'middle',
-                    offsetX: 0,
-                    offsetY: 0,
                     style: {
-                        color: undefined,
-                        fontSize: '14px',
-                        fontFamily: undefined
+                        fontSize: '14px'
                     }
                 },
                 legend: {
@@ -301,6 +295,7 @@ $(async function () {
 
     async function StageAndStatusChart() {
         var result = await GetApplicationStatusAndStages();
+        //console.log(result);
 
         if (!result)
             return;
@@ -342,6 +337,14 @@ $(async function () {
                 fill: {
                     type: 'solid',
                     colors: ['#126387', '#EE6A25', '#186A24']
+                },
+                noData: {
+                    text: "No data for the selected period",
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    style: {
+                        fontSize: '14px'
+                    }
                 },
                 colors: ['#126387', '#EE6A25', '#186A24'],
                 legend: {
@@ -423,6 +426,14 @@ $(async function () {
                     offsetX: 0,
                     offsetY: 10
                 },
+                noData: {
+                    text: "No data for the selected period",
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    style: {
+                        fontSize: '14px'
+                    }
+                }
             };
 
             approveDeferRatioPie = new ApexCharts($approveDeferRatioPie, options);
