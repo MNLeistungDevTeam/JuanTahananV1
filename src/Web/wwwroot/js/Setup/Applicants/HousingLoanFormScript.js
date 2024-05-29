@@ -6,6 +6,7 @@ const roleId = $("#txt_roleId").val();
 const buyerConfirmationId = $("#BuyerConfirmationModel_Id").val();
 const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
 const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
+const aplBuyerConfirmationCode = $("#ApplicantsPersonalInformationModel_BuyerConfirmationCode").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 
 let isBcfValid;
@@ -1100,10 +1101,6 @@ $(async function () {
             $('#SpouseModel_LastName').prop('required', true);
             $('#SpouseModel_Citizenship').prop('required', true);
             $('#SpouseModel_BirthDate').prop('required', true);
-            //$('#SpouseModel_SpouseEmploymentBaranggayName').prop('required', true);
-            //$('#SpouseModel_SpouseEmploymentMunicipalityName').prop('required', true);
-            //$('#SpouseModel_SpouseEmploymentProvinceName').prop('required', true);
-            //$('#SpouseModel_SpouseEmploymentZipCode').prop('required', true);
         }
     });
 
@@ -1333,6 +1330,10 @@ $(async function () {
             $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
         }
 
+        if (applicantInfoApprovalStatus !== '0') {
+            disableHLAF();
+        }
+
         $("#BuyerConfirmationModel_HouseUnitModel").prop("readonly", true);
         $("#BuyerConfirmationModel_SellingPrice").prop("readonly", true);
         $("#BuyerConfirmationModel_MonthlyAmortization").prop("readonly", true);
@@ -1354,7 +1355,7 @@ $(async function () {
     });
 
     $("#btn_bcfpdf").on('click', function () {
-        let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + buyerconfirmationCode;
+        let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + aplBuyerConfirmationCode;
 
         // If buyerconfirmationCode is not null or empty, open the link in a new tab
         window.open(link, '_blank');
@@ -1619,6 +1620,10 @@ $(async function () {
             $("#BuyerConfirmationModel_HouseUnitModel").prop('readonly', true);
             $("#BuyerConfirmationModel_SellingPrice").prop('readonly', true);
             $("#BuyerConfirmationModel_MonthlyAmortization").prop('readonly', true);
+
+            $('#frm_hlf068').find('.selectized').each(function (i, e) {
+                e.selectize.unlock();
+            })
 
             if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
@@ -2012,8 +2017,7 @@ $(async function () {
             // Set checked status for BCF term in condition radio buttons
             setCheckedAndValidStatus('#itcRbtn1', '#itcRbtn2', termConditions);
         } else {
-            console.log("Sample");
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).val("True");
+            setCheckedAndValidStatus("#pagibigRbtn1", "#pagibigRbtn2", isPagibigMember);
         }
 
         // Set miscellanous input to disable
@@ -3164,8 +3168,6 @@ $(async function () {
         if (applicantInfoIdVal === '0') {
             $('input[type="radio"].bcfRbtn[required]').each(function () {
                 let hasClass = $(this).hasClass('valid');
-                console.log("asd");
-
                 if (roleId === '3') {
                     return;  // Exit if roleId is '3'
                 }
@@ -3194,4 +3196,59 @@ $(async function () {
 
     toggleNextButton();
     removeBcfPlaceholders();
+
+    function disableHLAF() {
+        //Loan Particulars Field
+        $("input[id*='LoanParticularsInformationModel']").each(function () {
+            $(this).prop("readonly", true);
+        });
+
+        $("#enrolledMRIRbtn1").prop("disabled", true);
+        $("#enrolledMRIRbtn2").prop("disabled", true);
+        $("#pysRbtn1").prop("disabled", true);
+        $("#pysRbtn2").prop("disabled", true);
+
+        $('#frm_hlf068 [name="LoanParticularsInformationModel.ModeOfPaymentId"]')[0].selectize.lock();
+
+        //Collateral Information Field
+        $("input[id*='CollateralInformationModel']").each(function () {
+            $(this).prop("readonly", true);
+        });
+
+        $("#frm_hlf068 [name='CollateralInformationModel.PropertyTypeId']")[0].selectize.lock();
+
+        //Barrowers Beneficiary Fields
+        $("input[id*='BarrowersInformationModel']").each(function () {
+            $(this).prop("readonly", true);
+        });
+
+        $("#frm_hlf068 [name='BarrowersInformationModel.Sex']")[0].selectize.lock();
+        $("#frm_hlf068 [name='BarrowersInformationModel.MaritalStatus']")[0].selectize.lock();
+        $("#frm_hlf068 [name='BarrowersInformationModel.HomeOwnerShip']")[0].selectize.lock();
+        $("#frm_hlf068 [name='BarrowersInformationModel.OccupationStatus']")[0].selectize.lock();
+        $("#frm_hlf068 [name='BarrowersInformationModel.IndustryName']")[0].selectize.lock();
+        $("#frm_hlf068 [name='BarrowersInformationModel.PreparedMailingAddress']")[0].selectize.lock();
+
+        //Spouse Fields
+        $("input[id*='SpouseModel']").each(function () {
+            $(this).prop("readonly", true);
+        });
+
+        $("#frm_hlf068 [name='SpouseModel.OccupationStatus']")[0].selectize.disable();
+        $("#frm_hlf068 [name='SpouseModel.IndustryId']")[0].selectize.disable();
+
+        //FormPage2 Fields
+        $('input[id*="Form2PageModel"]').each(function () {
+            $(this).prop("readonly", true);
+        });
+
+        $("#pcRadioBtn1").prop("disabled", true);
+        $("#pcRadioBtn2").prop("disabled", true);
+        $("#pdRbtn1").prop("disabled", true);
+        $("#pdRbtn2").prop("disabled", true);
+        $("#bcRbtn1").prop("disabled", true);
+        $("#bcRbtn2").prop("disabled", true);
+        $("#maRbtn1").prop("disabled", true);
+        $("#maRbtn2").prop("disabled", true);
+    }
 });
