@@ -38,6 +38,7 @@ $(async function () {
 
     await loadVerificationAttachments(CONST_APPLICANTCODE);
     await loadApplicationAttachments(CONST_APPLICANTCODE);
+    initializeAutoTabSwitch();
 
     $(document).ready(function () {
         // Add click event listener to the tab
@@ -196,6 +197,8 @@ $(async function () {
             }
         ];
 
+        let noFileString = "No file uploaded yet. Click here to upload.";
+
         // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -233,7 +236,7 @@ $(async function () {
 					                                    </div>
 				                                    </div>
 				                                    <div class="col ps-0">
-					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
 					                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                                    </div>
 				                                    <div class="col-auto">
@@ -302,7 +305,7 @@ $(async function () {
 					                                </div>
 				                                </div>
 				                                <div class="col ps-0">
-					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
 					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
 				                                </div>
 				                                <div class="col-auto">
@@ -366,6 +369,8 @@ $(async function () {
             }
         ];
 
+        let noFileString = "No file uploaded yet. Click here to upload.";
+
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
@@ -400,7 +405,7 @@ $(async function () {
 					                                </div>
                                                 </div>
                                                 <div class="col ps-0" >
-                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}</a>
+                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
                                                     <p class="mb-0">${formatSize(item.DocumentSize)}</p>
                                                 </div>
                                                 <div class="col-auto">
@@ -698,6 +703,36 @@ $(async function () {
         return documentSizeInBytes ? (sizeInMB >= 1 ? sizeInMB.toFixed(1) + ' MB' : sizeInKB.toFixed(1) + ' KB') : "";
     };
 
+    function initializeAutoTabSwitch() {
+        /*
+            Credit Attachments: "#settings-b1"
+            Application Attachments: "#tab4"
+        */
+
+        let stageNumber = $(`[id="txt_stageNo"]`).val();
+        //console.log(stageNumber);
+        if (Number(stageNumber) === 1) {
+            $("#home-b1").removeClass('active show');
+            $("#settings-b1").addClass('active show');
+
+            $(`a[href="#home-b1"]`).removeClass("active");
+            $(`a[href="#settings-b1"]`).addClass("active");
+
+            $(`a[href="#home-b1"]`).attr("aria-selected", "false");
+            $(`a[href="#settings-b1"]`).attr("aria-selected", "true");
+        }
+        else if (Number(stageNumber) === 2) {
+            $("#home-b1").removeClass('active show');
+            $("#tab4").addClass('active show');
+
+            $(`a[href="#home-b1"]`).removeClass("active");
+            $(`a[href="#tab4"]`).addClass("active");
+
+            $(`a[href="#home-b1"]`).attr("aria-selected", "false");
+            $(`a[href="#tab4"]`).attr("aria-selected", "true");
+        }
+    }
+
     //#endregion Function
 
     //#region Getters Function
@@ -735,6 +770,7 @@ $(async function () {
 
         return response;
     }
+
     async function getApplicationDocuments(applicantCode) {
         const response = $.ajax({
             url: baseUrl + "Applicants/GetApplicationVerificationDocuments",

@@ -198,7 +198,7 @@ namespace Template.Web.Controllers.Transaction
                 }
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
-
+                
                 ////if the application approvalStatus is not greater than 4 on pagibig viewer
                 //if (applicantinfo.ApprovalStatus < (int)AppStatusType.DeveloperVerified && userInfo.UserRoleId == (int)PredefinedRoleType.Pagibig)
                 //{
@@ -220,10 +220,13 @@ namespace Template.Web.Controllers.Transaction
                     applicantinfo.isRequiredDocumentsUploaded = true;
                 }
 
+                var bcfInfo = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
                 var viewModel = new ApplicantViewModel()
                 {
                     ApplicantsPersonalInformationModel = applicantinfo,
                     BarrowersInformationModel = barrowerInfo,
+                    BuyerConfirmationModel = bcfInfo
                 };
 
                 return View(viewModel);

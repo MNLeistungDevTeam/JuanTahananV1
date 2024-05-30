@@ -242,15 +242,27 @@
                 let nameA = a.PropertyProjectName.toLowerCase();
                 let nameB = b.PropertyProjectName.toLowerCase();
 
-                console.log(nameA > nameB);
-                console.log(nameA < nameB);
+                //console.log(nameA);
+                //console.log(nameB);
 
-                if (nameA === nameB) {
-                    return 0;
+                if (orderType === 'asc') {
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
                 }
-                else if (nameA < nameB) {
-                    return orderType === 'asc' ? -1 : 1;
+                else if (orderType === 'desc') {
+                    if (nameA < nameB) {
+                        return 1;
+                    }
+                    if (nameA > nameB) {
+                        return -1;
+                    }
                 }
+
+                return 0;
             });
         }
         else if (sortType === 'location') {
@@ -258,15 +270,26 @@
                 let nameA = a.PropertyLocationName.toLowerCase();
                 let nameB = b.PropertyLocationName.toLowerCase();
 
-                console.log(nameA > nameB);
-                console.log(nameA < nameB);
+                //console.log(nameA);
+                //console.log(nameB);
 
-                if (nameA === nameB) {
-                    return 0;
+                if (orderType === 'asc') {
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
                 }
-                else if (nameA < nameB) {
-                    return orderType === 'asc' ? -1 : 1;
+                else if (orderType === 'desc') {
+                    if (nameA < nameB) {
+                        return 1;
+                    }
+                    if (nameA > nameB) {
+                        return -1;
+                    }
                 }
+                return 0;
             });
         }
         else if (sortType === 'last_updated') {
@@ -276,15 +299,34 @@
                 //console.log(moment(a.LastUpdate) > moment(b.LastUpdate));
                 //console.log(moment(a.LastUpdate) < moment(b.LastUpdate));
 
-                if (moment(a.LastUpdate) === moment(b.LastUpdate)) {
-                    return 0;
+                //if (moment(a.LastUpdate) === moment(b.LastUpdate)) {
+                //}
+                //else if (moment(a.LastUpdate) < moment(b.LastUpdate)) {
+                //    return orderType === 'asc' ? -1 : 1;
+                //}
+
+                if (orderType === 'asc') {
+                    if (moment(a.LastUpdate) < moment(b.LastUpdate)) {
+                        return -1;
+                    }
+                    if (moment(a.LastUpdate) > moment(b.LastUpdate)) {
+                        return 1;
+                    }
                 }
-                else if (moment(a.LastUpdate) < moment(b.LastUpdate)) {
-                    return orderType === 'asc' ? -1 : 1;
+                else if (orderType === 'desc') {
+                    if (moment(a.LastUpdate) < moment(b.LastUpdate)) {
+                        return 1;
+                    }
+                    if (moment(a.LastUpdate) > moment(b.LastUpdate)) {
+                        return -1;
+                    }
                 }
+
+                return 0;
             });
         }
 
+        console.log(data);
         return data;
     }
 });
