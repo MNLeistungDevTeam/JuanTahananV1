@@ -1595,9 +1595,7 @@ $(function () {
                 $(this).addClass('is-valid');
                 this.setCustomValidity("");
             }
-
-        form.addClass('was-validated');
-        return isValid;
+        });
     }
 
     function rebindValidators() {
