@@ -185,6 +185,7 @@ namespace Template.Web.Controllers.Transaction
 
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
+ 
 
                 if (applicantinfo == null)
                 {
@@ -195,6 +196,10 @@ namespace Template.Web.Controllers.Transaction
                 if (applicantinfo.UserId != userId && userInfo.UserRoleId == (int)PredefinedRoleType.Beneficiary)
                 {
                     return View("AccessDenied");
+                }
+                else if (applicantinfo.PropertyDeveloperId != userInfo.PropertyDeveloperId && userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
+                {
+                    throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
