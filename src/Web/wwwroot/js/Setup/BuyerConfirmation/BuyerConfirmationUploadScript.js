@@ -28,6 +28,36 @@ $(async function () {
 
     var ajaxUploadCall;
 
+    var fileInputConfig = {
+        dropZoneTitle: `
+                    <div class="file-icon">
+                        <img src="${baseUrl}img/pdf.png" />
+                    </div>
+                    <p class="fw-4">
+                        <span class="text-info fw-bold">Drag and Drop</span>
+                        <br>
+                        here to upload your file or
+                        <br>
+                        browse files using the button below.
+                    </p>
+                `,
+        showPreview: true,
+        allowedFileExtensions: ['pdf'],
+        minFileCount: 1,
+        maxFileCount: 1,
+        maxFileSize: (1024 * 5),
+        theme: "explorer-fa5",
+        browseClass: "btn btn-info flex-grow-1",
+        removeClass: "btn btn-danger flex-grow-1",
+        browseLabel: "Browse",
+        mainClass: "d-flex gap-1 justify-content-center",
+        showCaption: false,
+        showRemove: true,
+        showUpload: false,
+        removeFromPreviewOnError: true,
+        browseOnZoneClick: true
+    };
+
     let documentReferenceId = $('#Id').val();
     let bcfDocumentStatus = $("#Bcf_DocumentStatus");
 
@@ -35,65 +65,66 @@ $(async function () {
     initializeRibbon();
     checkInputFile();
 
-     loadAttachments();
     function loadAttachments() {
         let attachmentInput = $("#bcf_PdfFile");
         let allowedExtensions = ['pdf'];
 
         let options = {
-            theme: 'explorer',
-            browseClass: "btn btn-info",
-            showUpload: false,
-            maxFileCount: 10,
-            validateInitialCount: true,
-            initialPreviewShowDelete: true,
-            overwriteInitial: false,
-            maxFileSize: 25 * 1024,
-            msgSizeTooLarge: 'File "{name}" (<b>{size} KB</b>)'
-                + 'exceeds maximum allowed upload size of <b>{5} MB</b>. '
-                + 'Please retry your upload!',
-            allowedFileExtensions: allowedExtensions
+            //theme: 'explorer',
+            //browseClass: "btn btn-info",
+            //showUpload: false,
+            //maxFileCount: 10,
+            //validateInitialCount: true,
+            //initialPreviewShowDelete: true,
+            //overwriteInitial: false,
+            //maxFileSize: 25 * 1024,
+            //msgSizeTooLarge: 'File "{name}" (<b>{size} KB</b>)'
+            //    + 'exceeds maximum allowed upload size of <b>{5} MB</b>. '
+            //    + 'Please retry your upload!',
+            //allowedFileExtensions: allowedExtensions
         };
 
-        attachmentInput.fileinput("clear");
-        attachmentInput.fileinput("destroy");
+        //attachmentInput.fileinput("clear");
+        //attachmentInput.fileinput("destroy");
 
         $.ajax({
             url: baseUrl + "BuyerConfirmation/GetMyBCF",
             success: function (item) {
                 let _initialPreview = [];
                 let _initialPreviewConfig = [];
- 
-                    var fileLocation = baseUrl.replace("/", "") + item.FileLocation.replaceAll("\\", "/") + item.FileName;
-                    var deleteUrl = baseUrl + "Document/DeleteDocument/" + item.Id;
 
-                    _initialPreview.push(fileLocation);
-                    console.log(fileLocation)
-                    _initialPreviewConfig.push({
-                        type: ".pdf",
-                        description: "",
-                        size: item.FileSize,
-                        caption: item.FileName,
-                        url: deleteUrl,
-                        key: item.Id,
-                        downloadUrl: fileLocation
-                    });
-         
+                var fileLocation = baseUrl.replace("/", window.location.origin) + item.FileLocation.replaceAll("\\", "/") + item.FileName;
+                var deleteUrl = baseUrl + "Document/DeleteDocument/" + item.Id;
 
-                options.allowedFileExtensions = allowedExtensions;
-                options.initialPreviewAsData = true;
-                options.initialPreview = _initialPreview;
-                options.initialPreviewConfig = _initialPreviewConfig;
+                console.log(fileLocation)
+                _initialPreview.push(fileLocation);
+                _initialPreviewConfig.push({
+                    type: ".pdf",
+                    description: "",
+                    size: item.FileSize,
+                    caption: item.FileName,
+                    key: item.Id,
+                    downloadUrl: fileLocation
+                });
 
-                options.showRemove = false
-                options.showBrowse = false;
-                attachmentInput.fileinput(options);
-                $(".kv-file-remove").addClass('d-none');
+                //options.allowedFileExtensions = allowedExtensions;
+                fileInputConfig.initialPreviewAsData = true;
+                fileInputConfig.initialPreview = _initialPreview;
+                fileInputConfig.initialPreviewConfig = _initialPreviewConfig;
+                fileInputConfig.initialPreviewShowDelete = false;
+                fileInputConfig.browseOnZoneClick = false;
+                //fileInputConfig.deleteUrl = deleteUrl;
+                fileInputConfig.showRemove = false;
+                fileInputConfig.showBrowse = false;
+                fileInputConfig.dropZoneEnabled = false;
+
+
+                //attachmentInput.fileinput(fileInputConfig);
+                //checkInputFile();
+                //$(".kv-file-remove").addClass('d-none');
+                initializeBsFileInput(true);
             }
         });
-
-
-
     }
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
@@ -260,7 +291,7 @@ $(async function () {
         $(`[id="fileInputArea"] .d-flex .fileinput-remove-button`).attr('hidden', $('#bcf_PdfFile').prop('files').length === 0);
     }
 
-    function initializeBsFileInput() {
+    function initializeBsFileInput(attachmentFlag) {
         //if (bcfDocumentStatus.val() === '1') {
         //if (bcfDocumentStatus === '1') {
         //    //$(".upload-div").prop("hidden", true);
@@ -268,34 +299,16 @@ $(async function () {
         //    return;
         //}
 
-        $(`[id="bcf_PdfFile"]`).fileinput({
-            dropZoneTitle: `
-                <div class="file-icon">
-                    <img src="${baseUrl}img/pdf.png" />
-                </div>
-                <p class="fw-4">
-                    <span class="text-info fw-bold">Drag and Drop</span>
-                    <br>
-                    here to upload your file or
-                    <br>
-                    browse files using the button below.
-                </p>
-            `,
-            showPreview: true,
-            allowedFileExtensions: ['pdf'],
-            maxFileCount: 1,
-            minFileCount: 1,
-            maxFileSize: (1024 * 5),
-            theme: "explorer-fa5",
-            browseClass: "btn btn-info flex-grow-1",
-            removeClass: "btn btn-danger flex-grow-1",
-            browseLabel: "Browse",
-            mainClass: "d-flex gap-1 justify-content-center",
-            showCaption: false,
-            showRemove: true,
-            showUpload: false,
-            removeFromPreviewOnError: true
-        });
+        let documentStatus = $(`#Bcf_DocumentStatus`).val();
+
+        if (!attachmentFlag && [1, 3].includes(Number(documentStatus))) {
+            // Load Attachments
+            loadAttachments();
+            return;
+        }
+        else {
+            $(`[id="bcf_PdfFile"]`).fileinput(fileInputConfig);
+        }
 
         $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
             checkInputFile();
