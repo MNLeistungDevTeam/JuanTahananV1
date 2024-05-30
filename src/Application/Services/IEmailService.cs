@@ -13,6 +13,7 @@ namespace DMS.Application.Services
 {
     public interface IEmailService
     {
+ 
         Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId, ReferenceModel refModel);
 
         Task SendUserCredential2(UserModel? model, string? rootFolder);
@@ -24,5 +25,6 @@ namespace DMS.Application.Services
         Task SendApplicationStatus(ApplicantsPersonalInformationModel model, string receiverEmail);
         Task SendApplicationStatusToBeneficiary(ApplicantsPersonalInformationModel model, string receiverEmail, string? rootFolder);
         Task SendBuyerConfirmationStatusToBeneficiary(BuyerConfirmationModel model, string receiverEmail, string? rootFolder);
+        Task SendUserCredentialResetConfirmation(UserModel model, string? rootFolder, string? baseUrl);
     }
 }

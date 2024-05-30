@@ -125,15 +125,24 @@ public class BeneficiaryController : Controller
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
     public async Task<IActionResult> Beneficiary(string? pagibigNumber = null)
     {
+        //must not accessible by beneficiary
+
         var vwModel = new BeneficiaryInformationModel();
 
-        //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
-        var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+        int userId = int.Parse(User.Identity.Name);
 
-        if (beneficiaryData != null)
+        var userData = await _userRepo.GetUserAsync(userId);
+
+        if (pagibigNumber is not null)
         {
-            vwModel = beneficiaryData;
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            if (beneficiaryData != null)
+            {
+                vwModel = beneficiaryData;
+            }
         }
+        vwModel.PropertyDeveloperId = userData.PropertyDeveloperId ?? 0;
 
         return View(vwModel);
     }
@@ -259,7 +268,7 @@ public class BeneficiaryController : Controller
         }
     }
 
-    public async Task<IActionResult> GetLocations(int? projectId,int? developerId)
+    public async Task<IActionResult> GetLocations(int? projectId, int? developerId)
     {
         if (projectId is null)
         {
@@ -268,7 +277,7 @@ public class BeneficiaryController : Controller
         }
         else
         {
-            var data = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId.Value,developerId) ;
+            var data = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId.Value, developerId);
 
             return Ok(data);
         }

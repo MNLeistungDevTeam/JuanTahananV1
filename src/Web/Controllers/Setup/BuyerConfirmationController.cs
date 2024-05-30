@@ -188,7 +188,7 @@ public class BuyerConfirmationController : Controller
 
         int? roleId = userInfo.UserRoleId.Value;
 
-        int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+        int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.PropertyDeveloperId : null;
 
         var data = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(null, null, developerId);
 
@@ -206,7 +206,7 @@ public class BuyerConfirmationController : Controller
 
         if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
         {
-            bciModel = await _buyerConfirmationRepo.GetInqAsync(companyId, userInfo.DeveloperId);
+            bciModel = await _buyerConfirmationRepo.GetInqAsync(companyId, userInfo.PropertyDeveloperId);
         }
         else
         {
@@ -265,7 +265,7 @@ public class BuyerConfirmationController : Controller
 
             if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
             {
-                bcModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+                bcModel = data.Where(m => m.PropertyDeveloperId == userInfo.PropertyDeveloperId).ToList();
             }
             else
             {
@@ -295,7 +295,7 @@ public class BuyerConfirmationController : Controller
 
             var userInfo = await _userRepo.GetUserAsync(userId);
 
-            int? developerId = userInfo.UserRoleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId.Value : null;
+            int? developerId = userInfo.UserRoleId == (int)PredefinedRoleType.Developer ? userInfo.PropertyDeveloperId.Value : null;
 
             // Get List of Qualified BCF
             var excelList = await _buyerConfirmationRepo.GetBCDExcelSummaryReportAsync(locationId, projectId, developerId);

@@ -770,7 +770,7 @@ namespace Template.Web.Controllers.Transaction
 
                 if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
                 {
-                    userModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+                    userModel = data.Where(m => m.PropertyDeveloperId == userInfo.PropertyDeveloperId).ToList();
                 }
                 else
                 {
@@ -807,7 +807,7 @@ namespace Template.Web.Controllers.Transaction
 
             if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
             {
-                apiModel = data.Where(m => m.PropertyDeveloperId == userInfo.DeveloperId).ToList();
+                apiModel = data.Where(m => m.PropertyDeveloperId == userInfo.PropertyDeveloperId).ToList();
             }
             else
             {
@@ -878,7 +878,7 @@ namespace Template.Web.Controllers.Transaction
 
             if (userInfo.UserRoleId == (int)PredefinedRoleType.Developer)
             {
-                var apiData = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, userInfo.DeveloperId);
+                var apiData = await _applicantsPersonalInformationRepo.GetApprovalTotalInfo(null, companyId, userInfo.PropertyDeveloperId);
                 apiModel = apiData.ToList();
             }
             else
@@ -933,7 +933,7 @@ namespace Template.Web.Controllers.Transaction
             var userInfo = await _userRepo.GetUserAsync(userId);
             int roleId = userInfo.UserRoleId.Value;
 
-            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.PropertyDeveloperId : null;
 
             apiModel = await _applicantsPersonalInformationRepo.GetTotalApplication(roleId, companyId, developerId);
 
@@ -948,7 +948,7 @@ namespace Template.Web.Controllers.Transaction
             var userInfo = await _userRepo.GetUserAsync(userId);
             int? roleId = userInfo.UserRoleId.Value;
 
-            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.PropertyDeveloperId : null;
 
             var result = await _applicantsPersonalInformationRepo.GetTotalCreditVerif(companyId, developerId);
             return Ok(result);
@@ -963,7 +963,7 @@ namespace Template.Web.Controllers.Transaction
 
             int? roleId = userInfo.UserRoleId.Value;
 
-            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.DeveloperId : null;
+            int? developerId = roleId == (int)PredefinedRoleType.Developer ? userInfo.PropertyDeveloperId : null;
 
             var result = await _applicantsPersonalInformationRepo.GetTotalAppVerif(companyId, developerId);
 

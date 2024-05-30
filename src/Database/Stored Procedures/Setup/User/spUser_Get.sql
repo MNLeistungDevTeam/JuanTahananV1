@@ -12,7 +12,7 @@ BEGIN
 		r.[Description] UserRoleName,
 		r.[Name] UserRoleCode,
 		r.Id as UserRoleId,
-		uc.CompanyId DeveloperId
+		uc.CompanyId PropertyDeveloperId
 	FROM [User] u
 	LEFT JOIN [UserRole] ur on ur.UserId = u.Id
 	LEFT JOIN [Role] r ON ur.RoleId = r.Id

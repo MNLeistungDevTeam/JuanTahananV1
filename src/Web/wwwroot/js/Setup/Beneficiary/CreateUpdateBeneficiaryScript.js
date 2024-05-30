@@ -293,17 +293,21 @@ $(function () {
 
     developerDropdown.on('load', function (options) {
         developerDropdown.setValue(developerVal || '');
+
+        if (developerVal > 0) developerDropdown.lock();
+
         resourceCounter("developer");
         developerDropdown.off('load');
     });
 
     projectDropdown.on('load', function (options) {
+
+        if (developerVal > 0) projectDropdown.lock();
+
         setTimeout(function () {
             projectDropdown.setValue(projectVal || '');
-            projectDropdown.lock();
             resourceCounter("project");
         }, 800)
-
 
         projectDropdown.off('load');
     });
