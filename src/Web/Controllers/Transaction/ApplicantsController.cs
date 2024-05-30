@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DevExpress.CodeParser;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -21,12 +20,10 @@ using DMS.Domain.Entities;
 using DMS.Domain.Enums;
 using DMS.Infrastructure.Persistence;
 using DMS.Web.Models;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -367,9 +364,6 @@ namespace Template.Web.Controllers.Transaction
                     {
                         vwModel.BarrowersInformationModel = borrowerInfo;
                         vwModel.BarrowersInformationModel.IsBcfCreated = hasBcf;
-                      
-
-
                     }
 
                     var collateralInfo = await _collateralInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
@@ -391,6 +385,8 @@ namespace Template.Web.Controllers.Transaction
                         vwModel.BarrowersInformationModel.PresentAddressIsPermanentAddress = true;
                     }
                 }
+
+                vwModel.BarrowersInformationModel.PropertyDeveloperId = userInfo.PropertyDeveloperId ?? 0;
 
                 return View(returnViewPage, vwModel);
             }

@@ -142,7 +142,10 @@ public class BeneficiaryController : Controller
                 vwModel = beneficiaryData;
             }
         }
-        vwModel.PropertyDeveloperId = userData.PropertyDeveloperId ?? 0;
+        else
+        {
+            vwModel.PropertyDeveloperId = userData.PropertyDeveloperId ?? 0;
+        }
 
         return View(vwModel);
     }

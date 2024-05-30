@@ -182,8 +182,8 @@ $(function () {
         },
 
         onChange: function (value) {
-            console.log($('[name="PropertyDeveloperId"]').val())
-            console.log(value)
+
+
 
             locationDropdown.setValue("");
             locationDropdown.disable();
@@ -197,7 +197,7 @@ $(function () {
                         developerId: $('[name="PropertyDeveloperId"]').val()
                     },
                     success: function (results) {
-                        console.log(results)
+                 
 
                         try {
                             if (!results.length) locationDropdown.disable();
@@ -292,16 +292,15 @@ $(function () {
     developerDropdown = $developerDropdown[0].selectize;
 
     developerDropdown.on('load', function (options) {
-        developerDropdown.setValue(developerVal || '');
-
         if (developerVal > 0) developerDropdown.lock();
+
+        developerDropdown.setValue(developerVal || '');
 
         resourceCounter("developer");
         developerDropdown.off('load');
     });
 
     projectDropdown.on('load', function (options) {
-
         if (developerVal > 0) projectDropdown.lock();
 
         setTimeout(function () {
