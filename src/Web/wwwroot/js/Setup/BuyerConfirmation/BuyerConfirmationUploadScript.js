@@ -12,7 +12,66 @@ $(async function () {
     initializeRibbon();
     checkInputFile();
 
+     loadAttachments();
+    function loadAttachments() {
+        let attachmentInput = $("#bcf_PdfFile");
+        let allowedExtensions = ['pdf'];
 
+        let options = {
+            theme: 'explorer',
+            browseClass: "btn btn-info",
+            showUpload: false,
+            maxFileCount: 10,
+            validateInitialCount: true,
+            initialPreviewShowDelete: true,
+            overwriteInitial: false,
+            maxFileSize: 25 * 1024,
+            msgSizeTooLarge: 'File "{name}" (<b>{size} KB</b>)'
+                + 'exceeds maximum allowed upload size of <b>{5} MB</b>. '
+                + 'Please retry your upload!',
+            allowedFileExtensions: allowedExtensions
+        };
+
+        attachmentInput.fileinput("clear");
+        attachmentInput.fileinput("destroy");
+
+        $.ajax({
+            url: baseUrl + "BuyerConfirmation/GetMyBCF",
+            success: function (item) {
+                let _initialPreview = [];
+                let _initialPreviewConfig = [];
+ 
+                    var fileLocation = baseUrl.replace("/", "") + item.FileLocation.replaceAll("\\", "/") + item.FileName;
+                    var deleteUrl = baseUrl + "Document/DeleteDocument/" + item.Id;
+
+                    _initialPreview.push(fileLocation);
+                    console.log(fileLocation)
+                    _initialPreviewConfig.push({
+                        type: ".pdf",
+                        description: "",
+                        size: item.FileSize,
+                        caption: item.FileName,
+                        url: deleteUrl,
+                        key: item.Id,
+                        downloadUrl: fileLocation
+                    });
+         
+
+                options.allowedFileExtensions = allowedExtensions;
+                options.initialPreviewAsData = true;
+                options.initialPreview = _initialPreview;
+                options.initialPreviewConfig = _initialPreviewConfig;
+
+                options.showRemove = false
+                options.showBrowse = false;
+                attachmentInput.fileinput(options);
+                $(".kv-file-remove").addClass('d-none');
+            }
+        });
+
+
+
+    }
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
@@ -170,7 +229,6 @@ $(async function () {
     }
 
     function initializeBsFileInput() {
-
         //if (bcfDocumentStatus === '1') {
         //    //$(".upload-div").prop("hidden", true);
         //    //$("#submitPdfFile").prop('hidden', true);

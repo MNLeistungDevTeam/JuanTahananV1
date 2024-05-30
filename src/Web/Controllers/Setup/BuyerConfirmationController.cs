@@ -216,6 +216,15 @@ public class BuyerConfirmationController : Controller
         return Ok(bciModel);
     }
 
+    public async Task<IActionResult> GetMyBCF()
+    {
+        int userId = int.Parse(User.Identity.Name);
+
+        var data = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+        return Ok(data);
+    }
+
     public async Task<IActionResult> GetBCFapplicationByCode(string code)
     {
         var result = await _buyerConfirmationRepo.GetByCodeAsync(code);

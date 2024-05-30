@@ -260,6 +260,8 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public string? FileName { get; set; }
         public string? FileLocation { get; set; }
 
+        public string? FileSize { get; set; }
+
         public int PropertyDeveloperId { get; set; }
         public int PropertyProjectId { get; set; }
         public int ProjectUnitId { get; set; }

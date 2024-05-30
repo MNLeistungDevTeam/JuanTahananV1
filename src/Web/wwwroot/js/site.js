@@ -1096,9 +1096,9 @@ function bcfUploading() {
                 link.setAttribute('href', '#');
             }
             //else if (bcfDocumentStatus == 1) {
-                // 1: Signed and Submitted
-                // 3: Approved
-                //link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
+            // 1: Signed and Submitted
+            // 3: Approved
+            //link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
 
             //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
             //    link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
@@ -1144,7 +1144,6 @@ function approveBcfNote() {
             window.location.href = baseUrl + dataurl;
         });
     }
-
 }
 
 function hlafBcfNav() {
@@ -1326,8 +1325,26 @@ function hlfRedirect() {
     location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
 }
 
-String.prototype.toPropper = function () {
-    return this.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-};
+function GetFileTypes(fileType) {
+    var imageFiles = [".png", ".jpeg", ".jpg"];
+    var officeDocs = [".docx", ".doc", ".xls", ".xlsx", ".ppt", ".pptx"]
+    var googleDocs = [".tif", ".ai", ".eps"];
+    var txtFile = [".txt"];
+    var pdfFile = [".pdf"];
+
+    if (imageFiles.includes(fileType.toLowerCase())) return "image";
+    if (officeDocs.includes(fileType.toLowerCase())) return "office";
+    if (googleDocs.includes(fileType.toLowerCase())) return "gdocs";
+    if (txtFile.includes(fileType.toLowerCase())) return "text";
+    if (pdfFile.includes(fileType.toLowerCase())) return "pdf";
+
+    return fileType.replace(".", "");
+}
+
+//String.prototype.toPropper = function () {
+//    return this.replace(/\w\S*/g, function (txt) {
+//        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//    });
+//};
+
+ 
