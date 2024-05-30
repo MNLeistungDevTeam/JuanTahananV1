@@ -155,6 +155,7 @@ $(async function () {
 
                 $("#div_approvebcfNote").addClass("d-none");
                 $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 1.5rem)`);
+                $("#bcf_PdfFile").fileinput("disable");
                 updateBcfStatus();
 
                 successFlag = true;
