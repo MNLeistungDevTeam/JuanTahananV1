@@ -181,6 +181,18 @@ public class BuyerConfirmationController : Controller
 
     #region API Getters
 
+    public async Task<IActionResult> GetBcf()
+    {
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+            var buyerConfirmation = await _buyerConfirmationRepo.GetByUserAsync(userId);
+
+            return Ok(buyerConfirmation);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
     public async Task<IActionResult> BCFSummaryData()
     {
         int userId = int.Parse(User.Identity.Name);

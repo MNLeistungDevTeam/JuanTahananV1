@@ -1,18 +1,39 @@
 ﻿"use strict"
 
 $(async function () {
+    const ribbonCollection = [
+        {
+            documentStatus: 0,
+            text: "Not Yet Submitted",
+            bsColor: "bg-secondary"
+        },
+        {
+            documentStatus: 1,
+            text: "Submitted",
+            bsColor: "bg-primary"
+        },
+        {
+            documentStatus: 3,
+            text: "Approved",
+            bsColor: "bg-success"
+        },
+        {
+            documentStatus: 11,
+            text: "For Resubmission",
+            bsColor: "bg-warning"
+        }
+    ];
+
     const progressBar = $(`[id="uploadProgressBar"] [role="progressbar"]`);
 
     var ajaxUploadCall;
 
     let documentReferenceId = $('#Id').val();
-    let bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
+    let bcfDocumentStatus = $("#Bcf_DocumentStatus");
 
     initializeBsFileInput();
     initializeRibbon();
     checkInputFile();
-
-
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
         e.preventDefault();
@@ -65,7 +86,7 @@ $(async function () {
         //console.log(documentReferenceId);
 
         ajaxUploadCall = $.ajax({
-            url: '/Document/UploadBCF',
+            url: baseUrl + 'Document/UploadBCF',
             type: 'POST',
             data: formData,
             cache: false,
@@ -117,6 +138,8 @@ $(async function () {
 
                 $(`[id="upload-overlay"]`).removeClass('d-none');
 
+                $("#bcf_PdfFile").fileinput("disable");
+
                 //loading('Uploading...', true);
             },
             success: function (response) {
@@ -129,6 +152,11 @@ $(async function () {
                 });
 
                 $(`[id="upload-overlay"]`).addClass('d-none');
+
+                $("#div_approvebcfNote").addClass("d-none");
+                $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 1.5rem)`);
+                updateBcfStatus();
+
                 successFlag = true;
             },
             error: function (xhr, status) {
@@ -153,12 +181,13 @@ $(async function () {
                     .html("Retry");
 
                 $(`[id="upload-overlay"]`).addClass('d-none');
+                $("#bcf_PdfFile").fileinput("enable");
                 messageBox("Upload failed: " + status, "danger", true);
             },
             complete: function (xhr, status) {
                 setTimeout(function () {
                     $(`[id="uploadProgressBar"]`).attr('hidden', successFlag);
-                    $(`[id="upload-overlay"]`).addClass('d-none');
+                    //$(`[id="upload-overlay"]`).addClass('d-none');
                 }, 2000);
             }
         });
@@ -170,8 +199,7 @@ $(async function () {
     }
 
     function initializeBsFileInput() {
-
-        //if (bcfDocumentStatus === '1') {
+        //if (bcfDocumentStatus.val() === '1') {
         //    //$(".upload-div").prop("hidden", true);
         //    //$("#submitPdfFile").prop('hidden', true);
         //    return;
@@ -207,7 +235,6 @@ $(async function () {
         });
 
         $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
-            //$('#bcf_PdfFile').trigger('change');
             checkInputFile();
             $(`[id="uploadProgressBar"]`).attr('hidden', true);
         });
@@ -239,33 +266,29 @@ $(async function () {
             bcf-documentstatus 11 - For resubmission
         */
 
-        let ribbonCollection = [
-            {
-                documentStatus: 0,
-                text: "Not Yet Submitted",
-                bsColor: "bg-secondary"
-            },
-            {
-                documentStatus: 1,
-                text: "Submitted",
-                bsColor: "bg-primary"
-            },
-            {
-                documentStatus: 3,
-                text: "Approved",
-                bsColor: "bg-success"
-            },
-            {
-                documentStatus: 11,
-                text: "For Resubmission",
-                bsColor: "bg-warning"
-            }
-        ];
-
-        let ribbon = ribbonCollection.find(r => r.documentStatus === Number(bcfDocumentStatus));
+        let ribbon = ribbonCollection.find(r => r.documentStatus === Number(bcfDocumentStatus.val()));
 
         //$(`[id="bcf_dl_custom_ribbon"]`).attr('hidden', ribbon.documentStatus === 0);
         $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
         $(`[id="bcfStatus"]`).html(ribbon.text);
+    }
+
+    function updateBcfStatus() {
+        $.ajax({
+            method: 'GET',
+            url: baseUrl + 'BuyerConfirmation/GetBcf',
+            success: function (data) {
+                $(`#Bcf_DocumentStatus`).val(data.BuyerConfirmationDocumentStatus);
+
+                let ribbonColors = ribbonCollection.map(r => r.bsColor);
+                let ribbon = ribbonCollection.find(r => r.documentStatus === Number(data.BuyerConfirmationDocumentStatus));
+
+                $(`[id="bcfStatus"]`).removeClass(ribbonColors);
+                $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
+                $(`[id="bcfStatus"]`).html(ribbon.text);
+
+                initializeRibbon();
+            }
+        });
     }
 });
