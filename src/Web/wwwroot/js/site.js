@@ -1114,10 +1114,10 @@ function bcfUploading() {
                     event.preventDefault();
                 }
                 //if bcf document  is submitted && verified
-                else if (bcfDocumentStatus == 1) {
-                    console.log(0);
-                    event.preventDefault();
-                }
+                //else if (bcfDocumentStatus == 1) {
+                //    console.log(0);
+                //    event.preventDefault();
+                //}
                 //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
                 //    console.log(0);
                 //    event.preventDefault();
