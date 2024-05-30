@@ -155,6 +155,11 @@ public class BuyerConfirmationController : Controller
 
             var buyerConfirmation = await _buyerConfirmationRepo.GetByCodeAsync(bcfCode);
 
+            if (userInfo.PropertyDeveloperId != buyerConfirmation.PropertyDeveloperId)
+            {
+                throw new Exception($"Transaction: {bcfCode}: no record Found!");
+            }
+
             var viewModel = new ApplicantViewModel()
             {
                 BuyerConfirmationModel = buyerConfirmation
