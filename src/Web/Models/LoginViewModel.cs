@@ -29,4 +29,6 @@ public class LoginViewModel
     public List<CompanyModel>? Company { get; set; }
 
     public string? RecoveryEmail { get; set; }
+
+    public string? BaseUrl { get; set; }
 }

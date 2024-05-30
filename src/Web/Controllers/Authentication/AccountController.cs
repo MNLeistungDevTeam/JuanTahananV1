@@ -13,6 +13,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SQLitePCL;
@@ -37,7 +38,7 @@ public class AccountController : Controller
     private IUserRepository _userRepo;
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly IEmailService _emailService;
-
+    private readonly IWebHostEnvironment _webHostEnvironment;
     public AccountController(
         Application.Services.IAuthenticationService authService,
         IHubContext<AuthenticationHub> hubContext,
@@ -46,7 +47,8 @@ public class AccountController : Controller
         ICompanyRepository companyRepo,
         IUserRepository userRepo,
         IBackgroundJobClient backgroundJobClient,
-        IEmailService emailService)
+        IEmailService emailService,
+        IWebHostEnvironment webHostEnvironment)
     {
         _authService = authService;
         _hubContext = hubContext;
@@ -56,6 +58,7 @@ public class AccountController : Controller
         _userRepo = userRepo;
         _backgroundJobClient = backgroundJobClient;
         _emailService = emailService;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     [AllowAnonymous]
@@ -259,15 +262,20 @@ public class AccountController : Controller
 
             var userdata = await _userRepo.GetUserAsync(userWithEmail.Id);
 
+
+
+
             if (userWithEmail != null)
             {
-               // userdata.Password = _authService.GenerateTemporaryPasswordAsync(userdata.FirstName); //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+                // userdata.Password = _authService.GenerateTemporaryPasswordAsync(userdata.FirstName); //sample output JohnDoe9a6d67fc51f747a76d05279cbe1f8ed0
+
+                userdata.CompanyId = 1;
 
                 userdata.Action = "reset";
               // await _authService.ResetCredential(userdata);
 
                 //// make the usage of hangfire
-                _backgroundJobClient.Enqueue(() => _emailService.SendUserConfirmationMessage(userdata));
+                _backgroundJobClient.Enqueue(() => _emailService.SendUserCredentialResetConfirmation(userdata, _webHostEnvironment.WebRootPath,model.BaseUrl));
             }
 
             return Ok();

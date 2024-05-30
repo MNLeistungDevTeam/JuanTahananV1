@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetByUserId]
+﻿ CREATE PROCEDURE [dbo].[spBuyerConfirmation_GetByUserId]
 @userId INT
 AS
 SELECT 		
@@ -31,7 +31,13 @@ SELECT
 	CASE WHEN bcd.[Status] = 11 Then -- Returned
 	0 ELSE bcd.Id
 	END BuyerConfirmationDocumentId,
-    bcd.[Status] BuyerConfirmationDocumentStatus
+    bcd.[Status] BuyerConfirmationDocumentStatus,
+	CASE WHEN bcd.[Status] = 11 Then -- Returned
+	'' ELSE d.FileType
+	END FileType,
+	CASE WHEN bcd.[Status] = 11 Then -- Returned
+	'' ELSE d.Size
+	END FileSize
 	FROM BuyerConfirmation bc
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId

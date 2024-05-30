@@ -204,7 +204,7 @@ $(() => {
 
                     welcomeTextStatus = `
                         Your application is <span class="fw-bolder text-secondary">in draft</span>.
-                        Kindly <span class="text-warning">submit requirements</span> to proceed.
+                        Kindly <span class="text-warning"><a href="${baseUrl}Applicants/Details/${data.Code}">submit requirements</span> to proceed.
                     `;
                 }
                 else if (data.ApprovalStatus === 1) {

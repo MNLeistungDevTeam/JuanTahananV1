@@ -125,14 +125,26 @@ public class BeneficiaryController : Controller
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
     public async Task<IActionResult> Beneficiary(string? pagibigNumber = null)
     {
+        //must not accessible by beneficiary
+
         var vwModel = new BeneficiaryInformationModel();
 
-        //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
-        var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+        int userId = int.Parse(User.Identity.Name);
 
-        if (beneficiaryData != null)
+        var userData = await _userRepo.GetUserAsync(userId);
+
+        if (pagibigNumber is not null)
         {
-            vwModel = beneficiaryData;
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            if (beneficiaryData != null)
+            {
+                vwModel = beneficiaryData;
+            }
+        }
+        else
+        {
+            vwModel.PropertyDeveloperId = userData.PropertyDeveloperId ?? 0;
         }
 
         return View(vwModel);
@@ -237,34 +249,42 @@ public class BeneficiaryController : Controller
             var data = await _propertyProjectRepo.GetAll();
             return Ok(data);
         }
-
-        return Ok();
+        else
+        {
+            var data = await _propertyProjectRepo.GetByCompanyAsync(developerId.Value, null);
+            return Ok(data);
+        }
     }
 
-    public async Task<IActionResult> GetUnits(int? projectId)
+    public async Task<IActionResult> GetUnits(int? projectId, int? developerId)
     {
         if (projectId is null)
         {
             var data = await _propertyUnitRepo.GetAll();
             return Ok(data);
         }
+        else
+        {
+            var data = await _propertyUnitRepo.GetUnitByProjectAsync(projectId.Value, developerId);
 
-        return Ok();
+            return Ok(data);
+        }
     }
 
-
-
-    public async Task<IActionResult> GetLocations(int? projectId)
+    public async Task<IActionResult> GetLocations(int? projectId, int? developerId)
     {
         if (projectId is null)
         {
             var data = await _propertyLocationRepo.GetAll();
             return Ok(data);
         }
+        else
+        {
+            var data = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId.Value, developerId);
 
-        return Ok();
+            return Ok(data);
+        }
     }
-
 
     #endregion API Operation
 }
