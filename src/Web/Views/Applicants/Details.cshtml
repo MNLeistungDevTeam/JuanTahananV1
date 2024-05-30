@@ -52,6 +52,7 @@
                         <h3 class="align-items-center">
                             <span class="fw-bold font-28 me-2">@Model.ApplicantsPersonalInformationModel.Code</span>
                             <input hidden id="txt_applicantCode" value="@Model.ApplicantsPersonalInformationModel.Code" />
+                            <input type="hidden" id="txt_bcfCreated" value="@Model.BarrowersInformationModel.IsBcfCreated.ToString()" />
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
                                 <span class="badge bg-secondary ms-auto fs-9">Application in Draft</span>

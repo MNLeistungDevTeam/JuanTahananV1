@@ -6,6 +6,7 @@ const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
 const CONST_APPLICANTCODE = $("#txt_applicantCode").val();
+const hasBcfCreated = $("#txt_bcfCreated").val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -177,6 +178,8 @@ $(async function () {
 
         // Group items by DocumentTypeName
         verifAttach.forEach(item => {
+            if (hasBcfCreated == "True" && item.DocumentTypeId === 26) { return; } // Skip items with DocumentTypeId == 26 bcf
+
             const groupId = item.DocumentTypeId;
             const groupName = item.DocumentTypeName;
 
@@ -349,6 +352,8 @@ $(async function () {
 
         // Group items by DocumentTypeName
         await appAttach.forEach(item => {
+            // if (hasBcfCreated == "True" && item.DocumentTypeId === 26) { return; } // Skip items with DocumentTypeId == 26 bcf
+
             const groupId = item.DocumentTypeId;
             const groupName = item.DocumentTypeName;
 
