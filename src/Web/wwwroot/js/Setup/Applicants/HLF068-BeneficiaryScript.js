@@ -65,7 +65,7 @@ $(function () {
             this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
         }
     });
-    
+
     $('input[type="tinNumber"]').on('input', function (e) {
         $(this).prop('required', Boolean($(this).val()));
 
@@ -76,7 +76,7 @@ $(function () {
             this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
         }
     });
-    
+
     $('input[type="pagIBIGNumber"]').on('input', function (e) {
         this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
     });
@@ -1522,7 +1522,6 @@ $(function () {
                 $(this).removeClass('is-invalid');
                 $(this).addClass('is-valid');
                 //$(this).addClass('was-validated');
-
             }
         });
 
@@ -1571,7 +1570,6 @@ $(function () {
             }
         });
 
-
         form.find(':input.iti__tel-input').each(function () {
             //let invalidFlag = $(this).data('invalid');
             let id = $(this).attr('id');
@@ -1595,6 +1593,7 @@ $(function () {
                 $(this).addClass('is-valid');
                 this.setCustomValidity("");
             }
+        });
 
         form.addClass('was-validated');
         return isValid;
@@ -1817,7 +1816,7 @@ $(function () {
                 return true;
             }
             else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
-                // if it has value, validate by length 
+                // if it has value, validate by length
                 $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
                 return false;
             }
