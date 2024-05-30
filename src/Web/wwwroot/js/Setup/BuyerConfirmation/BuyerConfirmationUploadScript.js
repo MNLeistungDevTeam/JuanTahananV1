@@ -99,16 +99,18 @@ $(async function () {
                 console.log(fileLocation)
                 _initialPreview.push(fileLocation);
                 _initialPreviewConfig.push({
-                    type: ".pdf",
+                    type: "pdf",
                     description: "",
                     size: item.FileSize,
                     caption: item.FileName,
                     key: item.Id,
-                    downloadUrl: fileLocation
+                    downloadUrl: fileLocation,
+                    //url: fileLocation
                 });
 
                 //options.allowedFileExtensions = allowedExtensions;
                 fileInputConfig.initialPreviewAsData = true;
+                //fileInputConfig.usePdfRenderer = false;
                 fileInputConfig.initialPreview = _initialPreview;
                 fileInputConfig.initialPreviewConfig = _initialPreviewConfig;
                 fileInputConfig.initialPreviewShowDelete = false;
@@ -117,6 +119,9 @@ $(async function () {
                 fileInputConfig.showRemove = false;
                 fileInputConfig.showBrowse = false;
                 fileInputConfig.dropZoneEnabled = false;
+                fileInputConfig.fileActionSettings = {
+                    showDrag: false
+                };
 
 
                 //attachmentInput.fileinput(fileInputConfig);
