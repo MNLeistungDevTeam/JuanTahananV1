@@ -161,27 +161,20 @@ namespace DMS.Domain.Dto.BeneficiaryInformationDto
         [Required]
         [Display(Name = "Developer")]
         public int PropertyDeveloperId { get; set; }
+
         [Display(Name = "Location")]
         public int PropertyLocationId { get; set; }
+
         [Display(Name = "Project")]
         public int PropertyProjectId { get; set; }
+
         [Display(Name = "House Unit")]
         public int PropertyUnitId { get; set; }
 
-        public string? HouseUnitDescription { get; set; }
-        public string? DeveloperName { get; set; }
-        public string? ProjectName { get; set; }
-        public string? LocationName { get; set; }
-
-
-
-
         public string? PropertyUnitDescription { get; set; }
-        public string? PropertyProjectName { get; set; }
+        public string? DeveloperName { get; set; }
         public string? PropertyLocationName { get; set; }
-       
 
-
-
+        public string? PropertyProjectName { get; set; }
     }
 }
