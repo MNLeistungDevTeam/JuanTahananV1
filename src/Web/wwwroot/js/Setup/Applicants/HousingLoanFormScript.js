@@ -121,8 +121,8 @@ $(async function () {
 
     initializeLoanCreditDate();
 
-    //initializeIntlTelInput();
-    initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     initializePdfJs();
 
@@ -1552,6 +1552,54 @@ $(async function () {
             }
         });
 
+        //for (var index in telNoArray) {
+        //    let itiElement = telNoArray[index];
+        //    let telInput = $(`[name="${itiElement.a.name}"]`);
+
+        //    let invalidFlag = telInput.data('invalid');
+
+        //    if (Boolean(invalidFlag)) {
+        //        //
+        //        telInput.removeClass('is-valid');
+        //        telInput.addClass('is-invalid');
+
+        //        telInput.setCustomValidity("Invalid");
+        //    }
+        //    else {
+        //        $(this).removeClass('is-invalid');
+        //        $(this).addClass('is-valid');
+
+        //        telInput.setCustomValidity("");
+        //    }
+        //}
+
+        //let xe = form.find(':input.iti__tel-input').each;
+
+        form.find(':input.iti__tel-input').each(function () {
+            //let invalidFlag = $(this).data('invalid');
+            let id = $(this).attr('id');
+            let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+            //  (itiInstance.a.hasAttribute('required') || itiInstance.a.value)
+
+            if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                console.log('tel has errors');
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                this.setCustomValidity("");
+            }
+        });
+
         //form.find(':input:not(.is-valid):not(.is-invalid):not([readonly])').each(function () {
         //    $(this).addClass('is-valid');
         //});
@@ -1894,6 +1942,8 @@ $(async function () {
         //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
         //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
 
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -1925,9 +1975,13 @@ $(async function () {
                 if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
                     console.log(itiInstance.getValidationError());
                     $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                    this.setCustomValidity("Invalid");
                 }
                 else {
                     $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                    this.setCustomValidity("");
                 }
             });
         }
