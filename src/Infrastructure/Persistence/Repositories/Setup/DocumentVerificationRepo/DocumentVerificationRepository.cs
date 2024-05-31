@@ -5,87 +5,94 @@ using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo
+namespace DMS.Infrastructure.Persistence.Repositories.Setup.DocumentVerificationRepo;
+
+public class DocumentVerificationRepository : IDocumentVerificationRepository
 {
-    public class DocumentVerificationRepository : IDocumentVerificationRepository
+    #region Fields
+
+    private readonly DMSDBContext _context;
+    private readonly EfCoreHelper<DocumentVerification> _contextHelper;
+    private readonly IMapper _mapper;
+    private readonly ISQLDatabaseService _db;
+
+    public DocumentVerificationRepository(DMSDBContext context, IMapper mapper, ISQLDatabaseService db)
     {
-        private readonly DMSDBContext _context;
-        private readonly EfCoreHelper<DocumentVerification> _contextHelper;
-        private readonly IMapper _mapper;
-        private readonly ISQLDatabaseService _db;
-
-        public DocumentVerificationRepository(DMSDBContext context, IMapper mapper, ISQLDatabaseService db)
-        {
-            _context = context;
-            _contextHelper = new EfCoreHelper<DocumentVerification>(context);
-            _mapper = mapper;
-            _db = db;
-        }
-
-        public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode) =>
-         await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type, applicantCode });
-
-        public async Task<DocumentVerificationModel?> GetByDocumentTypeId(int id) =>
-            await _db.LoadSingleAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetDocumentTypeId", new { id });
-
-        public async Task<DocumentVerification?> GetByIdAsync(int id)
-        {
-            return await _contextHelper.GetByIdAsync(id);
-        }
-
-        public async Task<List<DocumentVerification>> GetAllAsync()
-        {
-            return await _contextHelper.GetAllAsync();
-        }
-
-        public async Task<DocumentVerification> SaveAsync(DocumentVerificationModel model, int userId)
-        {
-            var documentVerification = _mapper.Map<DocumentVerification>(model);
-
-            if (model.Id == 0)
-                documentVerification = await CreateAsync(documentVerification, userId);
-            else
-                documentVerification = await UpdateAsync(documentVerification, userId);
-
-            return documentVerification;
-        }
-
-        public async Task<DocumentVerification> CreateAsync(DocumentVerification documentVerification, int userId)
-        {
-            documentVerification.CreatedById = userId;
-            documentVerification.DateCreated = DateTime.Now;
-
-            var result = await _contextHelper.CreateAsync(documentVerification, "ModifiedById", "DateModified");
-            return result;
-        }
-
-        public async Task<DocumentVerification> UpdateAsync(DocumentVerification documentVerification, int userId)
-        {
-            documentVerification.ModifiedById = userId;
-            documentVerification.DateModified = DateTime.Now;
-            var result = await _contextHelper.UpdateAsync(documentVerification, "CreatedById", "DateCreated");
-
-            return result;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var document = await _context.DocumentVerifications.FindAsync(id);
-
-            if (document == null)
-                return;
-
-            await _contextHelper.DeleteAsync(document);
-        }
-
-        public async Task BatchDeleteAsync(int[] ids)
-        {
-            var documents = await _context.DocumentVerifications.
-                Where(d => ids.Contains(d.Id))
-                .ToListAsync();
-
-            if (documents is not null)
-                await _contextHelper.BatchDeleteAsync(documents);
-        }
+        _context = context;
+        _contextHelper = new EfCoreHelper<DocumentVerification>(context);
+        _mapper = mapper;
+        _db = db;
     }
+
+    #endregion Fields
+
+    #region Getter Methods
+
+    public async Task<DocumentVerification?> GetByIdAsync(int id) =>
+        await _contextHelper.GetByIdAsync(id);
+
+    public async Task<List<DocumentVerification>> GetAllAsync() =>
+        await _contextHelper.GetAllAsync();
+
+    public async Task<IEnumerable<DocumentVerificationModel?>> GetByTypeAsync(int type, string? applicantCode) =>
+     await _db.LoadDataAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetByType", new { type, applicantCode });
+
+    public async Task<DocumentVerificationModel?> GetByDocumentTypeId(int id) =>
+        await _db.LoadSingleAsync<DocumentVerificationModel, dynamic>("spDocumentVerification_GetDocumentTypeId", new { id });
+
+    #endregion Getter Methods
+
+    #region Operation Methods
+
+    public async Task<DocumentVerification> SaveAsync(DocumentVerificationModel model, int userId)
+    {
+        var documentVerification = _mapper.Map<DocumentVerification>(model);
+
+        if (model.Id == 0)
+            documentVerification = await CreateAsync(documentVerification, userId);
+        else
+            documentVerification = await UpdateAsync(documentVerification, userId);
+
+        return documentVerification;
+    }
+
+    public async Task<DocumentVerification> CreateAsync(DocumentVerification documentVerification, int userId)
+    {
+        documentVerification.CreatedById = userId;
+        documentVerification.DateCreated = DateTime.Now;
+
+        var result = await _contextHelper.CreateAsync(documentVerification, "ModifiedById", "DateModified");
+        return result;
+    }
+
+    public async Task<DocumentVerification> UpdateAsync(DocumentVerification documentVerification, int userId)
+    {
+        documentVerification.ModifiedById = userId;
+        documentVerification.DateModified = DateTime.Now;
+        var result = await _contextHelper.UpdateAsync(documentVerification, "CreatedById", "DateCreated");
+
+        return result;
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var document = await _context.DocumentVerifications.FindAsync(id);
+
+        if (document == null)
+            return;
+
+        await _contextHelper.DeleteAsync(document);
+    }
+
+    public async Task BatchDeleteAsync(int[] ids)
+    {
+        var documents = await _context.DocumentVerifications.
+            Where(d => ids.Contains(d.Id))
+            .ToListAsync();
+
+        if (documents is not null)
+            await _contextHelper.BatchDeleteAsync(documents);
+    }
+
+    #endregion Operation Methods
 }

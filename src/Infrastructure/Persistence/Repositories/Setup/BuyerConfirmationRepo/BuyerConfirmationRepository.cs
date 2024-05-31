@@ -2,7 +2,6 @@
 using DMS.Application.Interfaces.Setup.ApprovalStatusRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Services;
-using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Entities;
 using DMS.Domain.Enums;
@@ -52,11 +51,11 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
     public async Task<BuyerConfirmationModel?> GetByCodeAsync(string code) =>
         await _db.LoadSingleAsync<BuyerConfirmationModel, dynamic>("spBuyerConfirmation_GetByCode", new { code });
 
-    public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId,int? developerId) =>
-        await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId , developerId });
+    public async Task<BuyerConfirmationInqModel?> GetInqAsync(int companyId, int? developerId) =>
+        await _db.LoadSingleAsync<BuyerConfirmationInqModel, dynamic>("spBuyerConfirmation_GetInq", new { companyId, developerId });
 
-    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync(int? locationId,int? projectId,int? developerId) =>
-        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { locationId, projectId,developerId });
+    public async Task<IEnumerable<BuyerConfirmationExcelModel?>> GetBCDExcelSummaryReportAsync(int? locationId, int? projectId, int? developerId) =>
+        await _db.LoadDataAsync<BuyerConfirmationExcelModel, dynamic>("spBuyerConfirmation_GetBcfQualifiedReport", new { locationId, projectId, developerId });
 
     #endregion Getters
 
@@ -124,10 +123,8 @@ public class BuyerConfirmationRepository : IBuyerConfirmationRepository
         }
     }
 
-    public async Task DeleteAsync(BuyerConfirmation buyerConfirm)
-    {
+    public async Task DeleteAsync(BuyerConfirmation buyerConfirm) =>
         await _contextHelper.DeleteAsync(buyerConfirm);
-    }
 
     public async Task DeleteAsync(int id)
     {
