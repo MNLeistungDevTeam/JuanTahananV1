@@ -12,6 +12,7 @@ using DMS.Application.Services;
 using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
+using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
@@ -107,6 +108,7 @@ namespace DMS.Infrastructure.Services
 
                 //checker if exist in records
                 var approvalStatus = await _approvalStatusRepo.GetByReferenceIdAsync(null, null, model.ApprovalStatusId);
+
                 if (approvalStatus is null) { throw new Exception("Approval status not found!"); }
 
                 if (approvalStatus.Status == (int)AppStatusType.Withdrawn)
@@ -120,9 +122,9 @@ namespace DMS.Infrastructure.Services
                 var userInfo = await _userRepo.GetUserAsync(approverId);
 
                 //usage for developer and lgu can be approver
-                if (userInfo.UserRoleId == 2)
+                if (userInfo.UserRoleId == (int)PredefinedRoleType.Lgu)
                 {
-                    userInfo.UserRoleId = 5;
+                    userInfo.UserRoleId = (int)PredefinedRoleType.Developer;
                 }
 
                 var moduleStage = moduleStages.FirstOrDefault(m => m.RoleId == userInfo.UserRoleId);
@@ -162,6 +164,8 @@ namespace DMS.Infrastructure.Services
                 };
                 await _approvalLogRepo.SaveAsync(log, approverId);
 
+                approvalStatus.Remarks = model.Remarks;
+
                 await UpdateApprovalStatus(approvalStatus, model);
 
                 if (model.Status == (int)AppStatusType.DeveloperVerified ||
@@ -190,27 +194,19 @@ namespace DMS.Infrastructure.Services
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
                     }
+                    else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_BCFUPLOAD)
+                    {
+                        var bcfDetail = await _buyerConfirmationDocumentRepo.GetByReferenceAsync(approvalStatus.ReferenceId);
 
+                        bcfDetail.SenderId = approverId;
+                        bcfDetail.CompanyId = 1;
+                        bcfDetail.Remarks = model.Remarks;
 
-
-                    //else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_DocumentUpload)
-                    //{
-                    //    var bcfDetail = await _buyerConfirmationDocumentRepo.GetByReferenceIdAsync(approvalStatus.ReferenceId);
-
-                    //    //bcfDetail.SenderId = approverId;
-
-                    //  //  _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
-                    //}
-
-
-
-
+                        _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationDocumentStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
+                    }
                 }
                 else if (model.Status == (int)AppStatusType.Submitted || model.Status == (int)AppStatusType.PostSubmitted || model.Status == (int)AppStatusType.ForResubmition)
                 {
-
-
-
                     if (approvalStatus.ModuleCode == ModuleCodes2.CONST_APPLICANTSREQUESTS)
                     {
                         var applicantDetail = await _applicantsPersonalInformationRepo.GetAsync(approvalStatus.ReferenceId);
@@ -221,7 +217,6 @@ namespace DMS.Infrastructure.Services
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendApplicationStatusToBeneficiary(activeapplication, activeapplication.ApplicantEmail, contentRootPath));
                     }
-
                     else if (approvalStatus.ModuleCode == ModuleCodes2.CONST_BCFREQUESTS)
                     {
                         var bcfDetail = await _buyerConfirmationRepo.GetByUserAsync(approvalStatus.UserId);
@@ -230,9 +225,6 @@ namespace DMS.Infrastructure.Services
 
                         _backgroundJobClient.Enqueue(() => _emailService.SendBuyerConfirmationStatusToBeneficiary(bcfDetail, bcfDetail.ApplicantEmail, contentRootPath));
                     }
-
-
-
                 }
             }
             catch (Exception)
@@ -346,11 +338,9 @@ namespace DMS.Infrastructure.Services
                     bcfData.ApprovalStatus = approvalStatus.Status;
                     bcfData = await _buyerConfirmationRepo.UpdateAsync(bcfData, approverId);
                 }
-
-
                 else if (module.Code == ModuleCodes2.CONST_BCFUPLOAD)
                 {
-                    var bcfDocumentData = await _buyerConfirmationDocumentRepo.GetByIdAsync(approvalStatus.ReferenceId);
+                    var bcfDocumentData = await _buyerConfirmationDocumentRepo.GetByReferenceIdAsync(approvalStatus.ReferenceId);
                     //var budgetInfo = await _applicantsPersonalInformationRepo.GetByTransactionId(budget.Id, budget.CompanyId);
                     if (bcfDocumentData == null) { throw new Exception("Referencing record not found! Unable to proceed."); }
                     //if (user.UserName != budgetInfo.LockedUserName && budgetInfo.IsLocked.Value)
@@ -359,12 +349,9 @@ namespace DMS.Infrastructure.Services
                     //}
 
                     bcfDocumentData.Status = approvalStatus.Status;
+
                     bcfDocumentData = await _buyerConfirmationDocumentRepo.UpdateAsync(bcfDocumentData, approverId);
                 }
-
-
-
-
             }
             catch (Exception)
             {

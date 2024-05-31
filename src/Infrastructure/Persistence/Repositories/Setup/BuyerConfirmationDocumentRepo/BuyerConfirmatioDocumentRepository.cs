@@ -43,6 +43,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationDoc
         public async Task<BuyerConfirmationDocument?> GetByReferenceIdAsync(int documentId) =>
             await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.ReferenceId == documentId);
 
+
+
+        public async Task<BuyerConfirmationDocumentModel?> GetByReferenceAsync(int documentId) =>
+            await _db.LoadSingleAsync<BuyerConfirmationDocumentModel, dynamic>("spBuyerConfirmationDocument_GetByDocumentId", new { documentId });
+
         public async Task<BuyerConfirmationDocument?> GetByIdAsync(int id) =>
             await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 

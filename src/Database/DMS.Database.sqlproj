@@ -119,6 +119,9 @@
     <Folder Include="Stored Procedures\Setup\PropertyLocation" />
     <Folder Include="Stored Procedures\Setup\PropertyUnit" />
     <Folder Include="Tables\Setup\UserCompany" />
+    <Folder Include="Tables\Additional Features\TransactionLocking" />
+    <Folder Include="Stored Procedures\Others\LockedTransaction" />
+    <Folder Include="Stored Procedures\Setup\BuyerConfirmationDocument" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\AuditTrail\AuditTrail.sql" />
@@ -268,6 +271,9 @@
     <Build Include="Stored Procedures\Setup\PropertyUnit\spPropertyUnit_GetUnitByProjectId.sql" />
     <Build Include="Stored Procedures\Setup\BuyerConfirmation\spBuyerConfirmation_GetBcfQualifiedReport.sql" />
     <Build Include="Tables\Setup\UserCompany\UserCompany.sql" />
+    <Build Include="Tables\Additional Features\TransactionLocking\LockedTransaction.sql" />
+    <Build Include="Stored Procedures\Others\LockedTransaction\spLockedTransaction_Get.sql" />
+    <Build Include="Stored Procedures\Setup\BuyerConfirmationDocument\spBuyerConfirmationDocument_GetByDocumentId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
