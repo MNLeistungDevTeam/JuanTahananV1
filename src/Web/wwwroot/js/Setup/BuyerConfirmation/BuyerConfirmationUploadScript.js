@@ -1,20 +1,135 @@
 ﻿"use strict"
 
 $(async function () {
+    const ribbonCollection = [
+        {
+            documentStatus: 0,
+            text: "Not Yet Submitted",
+            bsColor: "bg-secondary"
+        },
+        {
+            documentStatus: 1,
+            text: "Submitted",
+            bsColor: "bg-primary"
+        },
+        {
+            documentStatus: 3,
+            text: "Approved",
+            bsColor: "bg-success"
+        },
+        {
+            documentStatus: 11,
+            text: "For Resubmission",
+            bsColor: "bg-warning"
+        }
+    ];
+
     const progressBar = $(`[id="uploadProgressBar"] [role="progressbar"]`);
 
     var ajaxUploadCall;
 
+    var fileInputConfig = {
+        dropZoneTitle: `
+                    <div class="file-icon">
+                        <img src="${baseUrl}img/pdf.png" />
+                    </div>
+                    <p class="fw-4">
+                        <span class="text-info fw-bold">Drag and Drop</span>
+                        <br>
+                        here to upload your file or
+                        <br>
+                        browse files using the button below.
+                    </p>
+                `,
+        showPreview: true,
+        allowedFileExtensions: ['pdf'],
+        minFileCount: 1,
+        maxFileCount: 1,
+        maxFileSize: (1024 * 5),
+        theme: "explorer-fa5",
+        browseClass: "btn btn-info flex-grow-1",
+        removeClass: "btn btn-danger flex-grow-1",
+        browseLabel: "Browse",
+        mainClass: "d-flex gap-1 justify-content-center",
+        showCaption: false,
+        showRemove: true,
+        showUpload: false,
+        removeFromPreviewOnError: true,
+        browseOnZoneClick: true
+    };
+
     let documentReferenceId = $('#Id').val();
-    let bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
+    let bcfDocumentStatus = $("#Bcf_DocumentStatus");
 
     initializeBsFileInput();
     initializeRibbon();
     checkInputFile();
 
-    if (bcfDocumentStatus === "3" || bcfDocumentStatus === "2") {
-        console.log("asd");
-        $("#submitPdfFile").prop("disabled", true);
+    function loadAttachments() {
+        let attachmentInput = $("#bcf_PdfFile");
+        let allowedExtensions = ['pdf'];
+
+        let options = {
+            //theme: 'explorer',
+            //browseClass: "btn btn-info",
+            //showUpload: false,
+            //maxFileCount: 10,
+            //validateInitialCount: true,
+            //initialPreviewShowDelete: true,
+            //overwriteInitial: false,
+            //maxFileSize: 25 * 1024,
+            //msgSizeTooLarge: 'File "{name}" (<b>{size} KB</b>)'
+            //    + 'exceeds maximum allowed upload size of <b>{5} MB</b>. '
+            //    + 'Please retry your upload!',
+            //allowedFileExtensions: allowedExtensions
+        };
+
+        //attachmentInput.fileinput("clear");
+        //attachmentInput.fileinput("destroy");
+
+        $.ajax({
+            url: baseUrl + "BuyerConfirmation/GetMyBCF",
+            success: function (item) {
+                let _initialPreview = [];
+                let _initialPreviewConfig = [];
+
+                var fileLocation = baseUrl.replace("/", window.location.origin) + item.FileLocation.replaceAll("\\", "/") + item.FileName;
+                var deleteUrl = baseUrl + "Document/DeleteDocument/" + item.Id;
+
+                console.log(fileLocation)
+                _initialPreview.push(fileLocation);
+                _initialPreviewConfig.push({
+                    type: "pdf",
+                    description: "",
+                    size: item.FileSize,
+                    caption: item.FileName,
+                    key: item.Id,
+                    downloadUrl: fileLocation,
+                    //url: fileLocation
+                });
+
+                //options.allowedFileExtensions = allowedExtensions;
+                fileInputConfig.initialPreviewAsData = true;
+                //fileInputConfig.usePdfRenderer = false;
+                fileInputConfig.initialPreview = _initialPreview;
+                fileInputConfig.initialPreviewConfig = _initialPreviewConfig;
+                fileInputConfig.initialPreviewShowDelete = false;
+                fileInputConfig.browseOnZoneClick = false;
+                //fileInputConfig.deleteUrl = deleteUrl;
+                fileInputConfig.showRemove = false;
+                fileInputConfig.showBrowse = false;
+                fileInputConfig.dropZoneEnabled = false;
+                fileInputConfig.fileActionSettings = {
+                    showDrag: false
+                };
+
+
+                //attachmentInput.fileinput(fileInputConfig);
+                //checkInputFile();
+                //$(".kv-file-remove").addClass('d-none');
+                initializeBsFileInput(true);
+            }
+        });
     }
 
     $(`[id="submitPdfFile"]`).on('click', function (e) {
@@ -68,7 +183,7 @@ $(async function () {
         //console.log(documentReferenceId);
 
         ajaxUploadCall = $.ajax({
-            url: '/Document/UploadBCF',
+            url: baseUrl + 'Document/UploadBCF',
             type: 'POST',
             data: formData,
             cache: false,
@@ -120,6 +235,8 @@ $(async function () {
 
                 $(`[id="upload-overlay"]`).removeClass('d-none');
 
+                $("#bcf_PdfFile").fileinput("disable");
+
                 //loading('Uploading...', true);
             },
             success: function (response) {
@@ -132,6 +249,12 @@ $(async function () {
                 });
 
                 $(`[id="upload-overlay"]`).addClass('d-none');
+
+                $("#div_approvebcfNote").addClass("d-none");
+                $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 1.5rem)`);
+                $("#bcf_PdfFile").fileinput("disable");
+                updateBcfStatus();
+
                 successFlag = true;
             },
             error: function (xhr, status) {
@@ -156,12 +279,13 @@ $(async function () {
                     .html("Retry");
 
                 $(`[id="upload-overlay"]`).addClass('d-none');
+                $("#bcf_PdfFile").fileinput("enable");
                 messageBox("Upload failed: " + status, "danger", true);
             },
             complete: function (xhr, status) {
                 setTimeout(function () {
                     $(`[id="uploadProgressBar"]`).attr('hidden', successFlag);
-                    $(`[id="upload-overlay"]`).addClass('d-none');
+                    //$(`[id="upload-overlay"]`).addClass('d-none');
                 }, 2000);
             }
         });
@@ -177,45 +301,26 @@ $(async function () {
         $(`[id="fileInputArea"] .d-flex .fileinput-remove-button`).attr('hidden', $('#bcf_PdfFile').prop('files').length === 0);
     }
 
-    function initializeBsFileInput() {
-
+    function initializeBsFileInput(attachmentFlag) {
+        //if (bcfDocumentStatus.val() === '1') {
         //if (bcfDocumentStatus === '1') {
         //    //$(".upload-div").prop("hidden", true);
         //    //$("#submitPdfFile").prop('hidden', true);
         //    return;
         //}
 
-        $(`[id="bcf_PdfFile"]`).fileinput({
-            dropZoneTitle: `
-                <div class="file-icon">
-                    <img src="${baseUrl}img/pdf.png" />
-                </div>
-                <p class="fw-4">
-                    <span class="text-info fw-bold">Drag and Drop</span>
-                    <br>
-                    here to upload your file or
-                    <br>
-                    browse files using the button below.
-                </p>
-            `,
-            showPreview: true,
-            allowedFileExtensions: ['pdf'],
-            maxFileCount: 1,
-            minFileCount: 1,
-            maxFileSize: (1024 * 5),
-            theme: "explorer-fa5",
-            browseClass: "btn btn-info flex-grow-1",
-            removeClass: "btn btn-danger flex-grow-1",
-            browseLabel: "Browse",
-            mainClass: "d-flex gap-1 justify-content-center",
-            showCaption: false,
-            showRemove: true,
-            showUpload: false,
-            removeFromPreviewOnError: true
-        });
+        let documentStatus = $(`#Bcf_DocumentStatus`).val();
+
+        if (!attachmentFlag && [1, 3].includes(Number(documentStatus))) {
+            // Load Attachments
+            loadAttachments();
+            return;
+        }
+        else {
+            $(`[id="bcf_PdfFile"]`).fileinput(fileInputConfig);
+        }
 
         $(`[id="fileInputArea"] .file-drop-zone`).on('drop', function (e) {
-            //$('#bcf_PdfFile').trigger('change');
             checkInputFile();
             $(`[id="uploadProgressBar"]`).attr('hidden', true);
         });
@@ -247,33 +352,29 @@ $(async function () {
             bcf-documentstatus 11 - For resubmission
         */
 
-        let ribbonCollection = [
-            {
-                documentStatus: 0,
-                text: "Not Yet Submitted",
-                bsColor: "bg-secondary"
-            },
-            {
-                documentStatus: 1,
-                text: "Submitted",
-                bsColor: "bg-primary"
-            },
-            {
-                documentStatus: 3,
-                text: "Approved",
-                bsColor: "bg-success"
-            },
-            {
-                documentStatus: 11,
-                text: "For Resubmission",
-                bsColor: "bg-warning"
-            }
-        ];
-
-        let ribbon = ribbonCollection.find(r => r.documentStatus === Number(bcfDocumentStatus));
+        let ribbon = ribbonCollection.find(r => r.documentStatus === Number(bcfDocumentStatus.val()));
 
         //$(`[id="bcf_dl_custom_ribbon"]`).attr('hidden', ribbon.documentStatus === 0);
         $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
         $(`[id="bcfStatus"]`).html(ribbon.text);
+    }
+
+    function updateBcfStatus() {
+        $.ajax({
+            method: 'GET',
+            url: baseUrl + 'BuyerConfirmation/GetBcf',
+            success: function (data) {
+                $(`#Bcf_DocumentStatus`).val(data.BuyerConfirmationDocumentStatus);
+
+                let ribbonColors = ribbonCollection.map(r => r.bsColor);
+                let ribbon = ribbonCollection.find(r => r.documentStatus === Number(data.BuyerConfirmationDocumentStatus));
+
+                $(`[id="bcfStatus"]`).removeClass(ribbonColors);
+                $(`[id="bcfStatus"]`).addClass(ribbon.bsColor);
+                $(`[id="bcfStatus"]`).html(ribbon.text);
+
+                initializeRibbon();
+            }
+        });
     }
 });

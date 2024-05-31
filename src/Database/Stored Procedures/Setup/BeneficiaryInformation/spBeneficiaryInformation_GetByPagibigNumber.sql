@@ -1,12 +1,12 @@
-﻿CREATE PROCEDURE [dbo].[spBeneficiaryInformation_GetByPagibigNumber]
+﻿ CREATE PROCEDURE [dbo].[spBeneficiaryInformation_GetByPagibigNumber]
 	@pagibigNumber NVARCHAR(255) 
 AS
 	SELECT bi.*,
 			u.ProfilePicture,
-			pu.[Description] HouseUnitDescription,
+			pu.[Description] PropertyUnitDescription,
 			c.[Name] DeveloperName,
-			pp.[Name] ProjectName,
-			pl.[Name] LocationName
+			pp.[Name] PropertyProjectName,
+			pl.[Name] PropertyLocationName
 	from BeneficiaryInformation bi 
 	LEFT JOIN [User] u ON u.Id = bi.UserId
 	LEFT JOIN PropertyUnit pu ON pu.Id = bi.PropertyUnitId

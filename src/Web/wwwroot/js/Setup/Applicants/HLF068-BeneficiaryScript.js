@@ -65,7 +65,7 @@ $(function () {
             this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
         }
     });
-    
+
     $('input[type="tinNumber"]').on('input', function (e) {
         $(this).prop('required', Boolean($(this).val()));
 
@@ -76,7 +76,7 @@ $(function () {
             this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
         }
     });
-    
+
     $('input[type="pagIBIGNumber"]').on('input', function (e) {
         this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
     });
@@ -108,8 +108,8 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    //initializeIntlTelInput();
-    initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
 
     initializePdfJs();
 
@@ -1311,9 +1311,9 @@ $(function () {
             console.log("Next button clicked");
 
             // Check if bcf form
-            if (!isBcfValid) {
-                return false;
-            }
+            //if (!isBcfValid) {
+            //    return false;
+            //}
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
@@ -1522,7 +1522,6 @@ $(function () {
                 $(this).removeClass('is-invalid');
                 $(this).addClass('is-valid');
                 //$(this).addClass('was-validated');
-
             }
         });
 
@@ -1568,6 +1567,31 @@ $(function () {
             } else {
                 $(this).addClass('valid');
                 $(this).removeClass('is-invalid');
+            }
+        });
+
+        form.find(':input.iti__tel-input').each(function () {
+            //let invalidFlag = $(this).data('invalid');
+            let id = $(this).attr('id');
+            let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+            //  (itiInstance.a.hasAttribute('required') || itiInstance.a.value)
+
+            if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                console.log('tel has errors');
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                this.setCustomValidity("");
             }
         });
 
@@ -1659,7 +1683,7 @@ $(function () {
                     if (applicantInfoIdVal == 0) {
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
-                            window.location.href = "/Applicants/HLF068/" + response;
+                            window.location.href = "/Applicants/Details/" + response;
                         }, 2000);
                     }
 
@@ -1792,7 +1816,7 @@ $(function () {
                 return true;
             }
             else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
-                // if it has value, validate by length 
+                // if it has value, validate by length
                 $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
                 return false;
             }
@@ -1883,6 +1907,8 @@ $(function () {
         //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
         //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
 
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -1914,9 +1940,13 @@ $(function () {
                 if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
                     console.log(itiInstance.getValidationError());
                     $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                    this.setCustomValidity("Invalid");
                 }
                 else {
                     $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                    this.setCustomValidity("");
                 }
             });
         }
@@ -1980,18 +2010,23 @@ $(function () {
             $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
 
             // Set checked status for BCF availed laon radio buttons
-            setCheckedAndValidStatus('#availedLoanRbtn1', '#availedLoanRbtn2', pagibigAvailedLoan);
+            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
+            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
 
             // Set checked status for BCF co-borrower radio buttons
-            setCheckedAndValidStatus('#cbwrRbtn1', '#cbwrRbtn2', coborrower);
+            $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
+            $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
 
             // Set checked status for BCF co-borrower radio buttons
-            setCheckedAndValidStatus('#prpRbtn1', '#prpRbtn2', projectProponent);
+            $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
+            $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
 
             // Set checked status for BCF term in condition radio buttons
-            setCheckedAndValidStatus('#itcRbtn1', '#itcRbtn2', termConditions);
-        } else {
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
+            $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
+            $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
+        }
+        else {
+            $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
         }
 
         // Set miscellanous input to disable
@@ -2018,16 +2053,16 @@ $(function () {
         }
     }
 
-    function setCheckedAndValidStatus(radioBtn1, radioBtn2, value) {
-        if (value !== 'False') {
-            $(radioBtn1).prop('checked', true);
-        } else {
-            $(radioBtn2).prop('checked', true);
-        }
+    //function setCheckedAndValidStatus(radioBtn1, radioBtn2, value) {
+    //    if (value !== 'False') {
+    //        $(radioBtn1).prop('checked', true);
+    //    } else {
+    //        $(radioBtn2).prop('checked', true);
+    //    }
 
-        $(radioBtn1).addClass('valid');
-        $(radioBtn2).addClass('valid');
-    }
+    //    $(radioBtn1).addClass('valid');
+    //    $(radioBtn2).addClass('valid');
+    //}
 
     function initializeBcfCheck() {
         if ($(`[name="BarrowersInformationModel.IsBcfCreated"]`).val().toLowerCase() === 'true') {
@@ -2539,50 +2574,50 @@ $(function () {
         $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
     }
 
-    function toggleNextButton() {
-        // Check if all required fields with BuyerConfirmationModel in their IDs have values
-        var allFilled = true;
-        isBcfValid = true;
-        $("input[id*='BuyerConfirmationModel'][required]").each(function () {
-            if ($(this).val().trim() === '') {
-                allFilled = false;
-                return false; // Exit the each loop early
-            }
-        });
+    //function toggleNextButton() {
+    //    // Check if all required fields with BuyerConfirmationModel in their IDs have values
+    //    var allFilled = true;
+    //    isBcfValid = true;
+    //    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //        if ($(this).val().trim() === '') {
+    //            allFilled = false;
+    //            return false; // Exit the each loop early
+    //        }
+    //    });
 
-        // Only BCF Radio Button
-        if (applicantInfoIdVal === '0') {
-            $('input[type="radio"].bcfRbtn[required]').each(function () {
-                let hasClass = $(this).hasClass('valid');
-                console.log("asd");
+    //    // Only BCF Radio Button
+    //    if (applicantInfoIdVal === '0') {
+    //        $('input[type="radio"].bcfRbtn[required]').each(function () {
+    //            let hasClass = $(this).hasClass('valid');
+    //            console.log("asd");
 
-                if (roleId === '3') {
-                    return;  // Exit if roleId is '3'
-                }
+    //            if (roleId === '3') {
+    //                return;  // Exit if roleId is '3'
+    //            }
 
-                if (!hasClass) {
-                    allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
-                    return false;  // Break out of the each loop
-                }
-            });
-        }
+    //            if (!hasClass) {
+    //                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+    //                return false;  // Break out of the each loop
+    //            }
+    //        });
+    //    }
 
-        isBcfValid = allFilled;
+    //    isBcfValid = allFilled;
 
-        // Enable or disable the Next button based on whether all fields are filled
-        $(".nextBtn").prop("disabled", !allFilled);
-    }
+    //    // Enable or disable the Next button based on whether all fields are filled
+    //    $(".nextBtn").prop("disabled", !allFilled);
+    //}
 
     // Bind the toggleNextButton function to change events on each individual input
-    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
-        $(this).on('change', toggleNextButton);
-    });
+    //$("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
 
-    $('input[type="radio"].bcfRbtn[required]').each(function () {
-        $(this).on('change', toggleNextButton);
-    });
+    //$('input[type="radio"].bcfRbtn[required]').each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
 
-    toggleNextButton();
+    //toggleNextButton();
     removeBcfPlaceholders();
 
     //#endregion

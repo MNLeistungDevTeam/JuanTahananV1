@@ -9,7 +9,8 @@ AS
 		bi.PropertyDeveloperId,
 		bi.PropertyProjectId,
 		bi.PropertyUnitId,
-		bi.PropertyLocationId
+		bi.PropertyLocationId,
+		bi.IsBcfCreated
 		FROM BarrowersInformation bai
 	LEFT JOIN ApplicantsPersonalInformation api ON api.Id = bai.ApplicantsPersonalInformationId
 	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = api.UserId

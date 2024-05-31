@@ -21,7 +21,7 @@ AS
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
 			CASE
-			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
+			WHEN apl.ApprovalStatus = 0 THEN 'Application in draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
 			WHEN apl.ApprovalStatus = 4 THEN 'Pag-IBIG Verified'

@@ -112,7 +112,7 @@ public class UserRepository : IUserRepository
 
         if (user.UserRoleId == (int)PredefinedRoleType.Developer)
         {
-            await _userCompanyRepo.SaveAsync(user.DeveloperId, _user.Id, editorId: userId);
+            await _userCompanyRepo.SaveAsync(user.PropertyDeveloperId, _user.Id, editorId: userId);
         }
 
         return _user;

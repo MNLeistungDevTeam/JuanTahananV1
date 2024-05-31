@@ -1,15 +1,20 @@
-﻿using DMS.Application.Interfaces.Setup.EmailLogRepo;
+﻿using DevExpress.DirectX.NativeInterop.Direct2D;
+using DevExpress.XtraPrinting.Native.Properties;
+using DMS.Application.Interfaces.Setup.EmailLogRepo;
 using DMS.Application.Interfaces.Setup.EmailSetupRepo;
+using DMS.Application.Interfaces.Setup.TemporaryLinkRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.EmailSettingsDto;
 using DMS.Domain.Dto.ReferenceDto;
+using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System.Numerics;
 
 namespace DMS.Infrastructure.Services
 {
@@ -18,12 +23,14 @@ namespace DMS.Infrastructure.Services
         private EmailSettingsModel _emailSettings;
         private IEmailSetupRepository _emailSetupRepo;
         private IEmailLogRepository _emailLogRepo;
+        private ITemporaryLinkRepository _temporaryLinkRepo;
 
-        public EmailService(IOptions<EmailSettingsModel> emailSettings, IEmailSetupRepository emailSetupRepo, IEmailLogRepository emailLogRepo)
+        public EmailService(IOptions<EmailSettingsModel> emailSettings, IEmailSetupRepository emailSetupRepo, IEmailLogRepository emailLogRepo, ITemporaryLinkRepository temporaryLinkRepo)
         {
             _emailSettings = emailSettings.Value;
             _emailSetupRepo = emailSetupRepo;
             _emailLogRepo = emailLogRepo;
+            _temporaryLinkRepo = temporaryLinkRepo;
         }
 
         public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId, ReferenceModel refModel)
@@ -577,10 +584,58 @@ namespace DMS.Infrastructure.Services
             await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
 
+        public async Task SendUserCredentialResetConfirmation(UserModel model, string? rootFolder,string? baseUrl)
+        {
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "ResetCredentialConfirmation.html");
+
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            var tempData = new TemporaryLinkModel()
+            {
+                UserId = model.Id,
+                GuId = Guid.NewGuid(),
+            };
+            var tempLink = await _temporaryLinkRepo.GetTemporaryLinkData(tempData);
+            body = body.Replace("{email}", model.Email)
+                .Replace("{firstName}", model.FirstName).Replace("[provided_link]", $"{baseUrl}/Account/ResetCredentials/{tempLink.GuId}");
+
+            var emails = new List<string> { model.Email };
+            var subject = $"Good Day {model.FirstName} your reset credential request is already processed";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+
+                TransactionNo = model.PagibigNumber,
+                Description = "Request for Reset Credentials for Account has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.Id,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
+
+
+            //Creating GuId
+            await _temporaryLinkRepo.SaveContextAsync(tempLink);
+
+        }
+
         private static string GetTemplateForBuyerConfirmationStatus(int applicationStatusNumber)
         {
             Dictionary<int, string> applicationDictionary = new Dictionary<int, string>
-        {  
+        {
             { 1, "Submitted.html" },
             { 3, "DeveloperConfirmed.html" },
             { 11, "Resubmission.html" }
