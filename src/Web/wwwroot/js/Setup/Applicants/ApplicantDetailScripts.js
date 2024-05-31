@@ -21,6 +21,7 @@ let stageNo = $('#txt_stageNo').val();
 let ApplicationId = $('#applicationId').val();
 let DocumentTypeId = 0;
 
+const IsTransactionLock = $("#txt_IsTransactionLock").val();
 const FileFormats = {
     1: ['.pdf'],
     2: ['.docx'],
@@ -788,6 +789,14 @@ $(async function () {
 
         return response;
     }
+
+    //if (IsTransactionLock == "True") {
+    //    let transactionNo = $("#txt_applicantCode").val();
+
+    //    let lockStatusInterval = setInterval(function () {
+    //        updateLockedStatus(transactionNo);
+    //    }, 5000);
+    //}
 
     //#endregion Getters Function
 });
