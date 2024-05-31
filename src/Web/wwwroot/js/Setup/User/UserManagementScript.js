@@ -68,7 +68,7 @@ $(function () {
 
     userRoleDropdown = $userRoleDropdown[0].selectize;
 
-    $developerDropdown = $("[name='User.DeveloperId']").selectize({
+    $developerDropdown = $("[name='User.PropertyDeveloperId']").selectize({
         valueField: 'Id',
         labelField: 'Name',
         searchField: ['Name'],
@@ -348,7 +348,7 @@ $(function () {
             userRoleDropdown.setValue(userInfo.UserRoleId);
 
             developerDropdown.unlock();
-            developerDropdown.setValue(userInfo.DeveloperId);
+            developerDropdown.setValue(userInfo.PropertyDeveloperId);
 
             //userRoleDropdown.lock();
 
