@@ -114,7 +114,7 @@ namespace DMS.Infrastructure.Services
                 if (approvalStatus.Status == (int)AppStatusType.Withdrawn)
                     throw new Exception($"Application already Withdrawn!");
 
-                //if (approvalStatus.Status == (int)AppStatusType.Submitted && approvalStatus.Status == (int)AppStatusType.Deferred)
+                //if (approvalStatus.Status == model.Status)
                 //    throw new Exception($"Application already {approvalStatus.StatusDescription}!");
 
                 var moduleStages = await _moduleStageRepo.GetByModuleId(approvalStatus.ReferenceType);

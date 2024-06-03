@@ -1907,8 +1907,11 @@ $(function () {
         //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
         //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
 
-        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
-        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
+        if (hasBcf === "False") {
+            telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
+            telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
+        }
+
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -2001,32 +2004,45 @@ $(function () {
             $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
             $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
 
-            // Set checked status for BCF Additional income radio buttons
-            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass('valid');
-            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass('valid');
+            if (hasBcf == "False") {
 
-            // Set checked status for BCF Pagibig Number radio buttons
-            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
-            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
 
-            // Set checked status for BCF availed laon radio buttons
-            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
-            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
+                // Set checked status for BCF Additional income radio buttons
+                $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass('valid');
+                $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass('valid');
 
-            // Set checked status for BCF co-borrower radio buttons
-            $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
-            $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
+                // Set checked status for BCF Pagibig Number radio buttons
+                $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
+                $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
 
-            // Set checked status for BCF co-borrower radio buttons
-            $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
-            $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
+                // Set checked status for BCF availed laon radio buttons
+                $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
+                $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
 
-            // Set checked status for BCF term in condition radio buttons
-            $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
-            $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
+                // Set checked status for BCF co-borrower radio buttons
+                $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
+                $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
+
+                // Set checked status for BCF co-borrower radio buttons
+                $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
+                $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
+
+
+
+                // Set checked status for BCF term in condition radio buttons
+                $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
+                $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
+
+            }
+
         }
         else {
-            $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+
+            if (hasBcf == "False") {
+
+                $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+            }
+      
         }
 
         // Set miscellanous input to disable

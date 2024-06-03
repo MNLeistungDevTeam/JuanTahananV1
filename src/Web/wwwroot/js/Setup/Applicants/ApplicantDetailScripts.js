@@ -628,7 +628,7 @@ $(async function () {
 
                             $approverModal.modal("hide");
 
-                            location.reload();
+                           location.reload();
 
                             $("#btnSubmitApplication").prop('disabled', false);
                         },
@@ -636,7 +636,9 @@ $(async function () {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(response.responseText, "danger", true);
+
+                            let messageConflict = response.responseText + action;
+                            messageBox(messageConflict, "danger", true);
                         }
                     });
                 }

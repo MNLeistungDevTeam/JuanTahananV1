@@ -156,7 +156,7 @@ public class ApprovalController : Controller
                 await _hubContext.Clients.Group(company.Code).SendAsync("AddNotifToPage", userInfo.Name, applicantInfo.Code);
             }
 
-            //await _notificationService.NotifyUsersByApproval(model.ApprovalLevel.ApprovalStatusId, userId, companyId);
+           // await _notificationService.NotifyUsersByApproval(model.ApprovalLevel.ApprovalStatusId, userId, companyId);
             return Ok();
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
