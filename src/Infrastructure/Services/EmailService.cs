@@ -1,20 +1,19 @@
-﻿using DevExpress.DirectX.NativeInterop.Direct2D;
-using DevExpress.XtraPrinting.Native.Properties;
-using DMS.Application.Interfaces.Setup.EmailLogRepo;
+﻿using DMS.Application.Interfaces.Setup.EmailLogRepo;
 using DMS.Application.Interfaces.Setup.EmailSetupRepo;
 using DMS.Application.Interfaces.Setup.TemporaryLinkRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.EmailSettingsDto;
 using DMS.Domain.Dto.ReferenceDto;
 using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System.Numerics;
 
 namespace DMS.Infrastructure.Services
 {
@@ -288,6 +287,54 @@ namespace DMS.Infrastructure.Services
                 Id = model.Id,
                 TransactionNo = model.Code,
                 Description = "Buyer Confirmation Status for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
+        }
+
+        public async Task SendBuyerConfirmationDocumentStatusToBeneficiary(BuyerConfirmationDocumentModel model, string receiverEmail, string? rootFolder)
+        {
+            string? htmlTemplate = "";
+
+            if (model.Status.Value == (int)AppStatusType.DeveloperVerified)
+            {
+                htmlTemplate = "DeveloperDocumentApproved.html";
+            }
+            else
+            {
+                htmlTemplate = "DeveloperDocumentReturned.html";
+            }
+
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "BuyerConfirmationStatusTemplate", htmlTemplate);
+
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            body = body.Replace("{buyerConfirmationCode}", model.BuyerConfirmationCode)
+                .Replace("{buyerConfirmationRemarks}", model.Remarks)
+                .Replace("{buyerConfirmationStatus}", model.BuyerConfirmationStatus);
+
+            var emails = new List<string> { receiverEmail };
+            var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.BuyerConfirmationCode,
+                Description = "Buyer Confirmation Document Status for Beneficiary has been delivered",
                 //"Email link for quotation delivered"
                 SenderId = model.SenderId.Value,
                 ReceiverId = model.Id,
@@ -584,7 +631,7 @@ namespace DMS.Infrastructure.Services
             await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
         }
 
-        public async Task SendUserCredentialResetConfirmation(UserModel model, string? rootFolder,string? baseUrl)
+        public async Task SendUserCredentialResetConfirmation(UserModel model, string? rootFolder, string? baseUrl)
         {
             //HTML Body
             string body = string.Empty;
@@ -626,10 +673,8 @@ namespace DMS.Infrastructure.Services
 
             await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
 
-
             //Creating GuId
             await _temporaryLinkRepo.SaveContextAsync(tempLink);
-
         }
 
         private static string GetTemplateForBuyerConfirmationStatus(int applicationStatusNumber)

@@ -116,6 +116,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[LockedTransaction]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ModeOfPayment]",
          "ObjectType": 0
       },
@@ -248,7 +252,7 @@
          "ObjectType": 3
       }
    ],
-   "UiHint": "win-0nl07aifc04.dbDOCRSDEV.dbo",
+   "UiHint": "mnl.eiDOCRS2023.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DMS.Application.Interfaces.AdditionalFeature.LockedTransactionRepo;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
@@ -63,6 +64,7 @@ namespace Template.Web.Controllers.Transaction
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
+        private readonly ILockedTransactionRepository _transactionLockRepo;
 
         private DMSDBContext _context;
 
@@ -91,7 +93,8 @@ namespace Template.Web.Controllers.Transaction
             IRoleAccessRepository roleAccessRepo,
             IBeneficiaryInformationRepository beneficiaryInformationRepo,
             IWebHostEnvironment webHostEnvironment,
-            IBuyerConfirmationRepository buyerConfirmationRepo)
+            IBuyerConfirmationRepository buyerConfirmationRepo,
+            ILockedTransactionRepository transactionLockRepo)
         {
             _userRepo = userRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -119,6 +122,7 @@ namespace Template.Web.Controllers.Transaction
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
             _webHostEnvironment = webHostEnvironment;
             _buyerConfirmationRepo = buyerConfirmationRepo;
+            _transactionLockRepo = transactionLockRepo;
         }
 
         #endregion Fields
@@ -185,7 +189,7 @@ namespace Template.Web.Controllers.Transaction
 
                 int userId = int.Parse(User.Identity.Name);
                 var userInfo = await _userRepo.GetUserAsync(userId);
- 
+
 
                 if (applicantinfo == null)
                 {
@@ -201,6 +205,9 @@ namespace Template.Web.Controllers.Transaction
                 {
                     throw new Exception($"Transaction: {applicantCode}: no record Found!");
                 }
+                 
+
+                //await _transactionLockRepo.UpdateLockedTransaction(userId, applicantinfo.Code);
 
                 var barrowerInfo = await _barrowersInformationRepo.GetByApplicantIdAsync(applicantinfo.Id);
 

@@ -1341,6 +1341,15 @@ function GetFileTypes(fileType) {
     return fileType.replace(".", "");
 }
 
+
+
+function updateLockedStatus(transactionNo) {
+    $.ajax({
+        url: baseUrl + "Transaction/UpdateLockStatus/" + transactionNo,
+        success: function (response) { }
+    });
+}
+
 //String.prototype.toPropper = function () {
 //    return this.replace(/\w\S*/g, function (txt) {
 //        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();

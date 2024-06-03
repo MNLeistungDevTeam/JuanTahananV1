@@ -25,6 +25,22 @@ namespace DMS.Domain.Dto.BuyerConfirmationDocumentDto
         public int? ModifiedById { get; set; }
 
         public DateTime? DateModified { get; set; }
+
         public int? CompanyId { get; set; }
+
+        #region Display Properties
+
+        // Sending Email Bcf Document Status
+
+        public string? BuyerConfirmationCode { get; set; }
+
+        public string? BuyerConfirmationStatus { get; set; }
+
+        public string? ApplicantEmail { get; set; }
+        public string? ApproverRole { get; set; }
+        public int? SenderId { get; set; }
+        public string? ApplicantFirstName { get; set; }
+
+        #endregion Display Properties
     }
 }

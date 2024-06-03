@@ -77,6 +77,8 @@ using DMS.Application.Interfaces.Setup.BuyerConfirmationDocumentRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.BuyerConfirmationDocumentRepo;
 using DMS.Application.Interfaces.Setup.UserCompanyRepo;
 using DMS.Infrastructure.Persistence.Repositories.Setup.UserCompanyRepo;
+using DMS.Application.Interfaces.AdditionalFeature.LockedTransactionRepo;
+using DMS.Infrastructure.Persistence.Repositories.AdditionalFeature.LockedTransactionRepo;
 
 namespace Template.Infrastructure;
 
@@ -192,6 +194,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPropertyUnitRepository, PropertyUnitRepository>();
         services.AddScoped<IBuyerConfirmationDocumentRepository, BuyerConfirmationDocumentRepository>();
         services.AddScoped<IUserCompanyRepository, UserCompanyRepository>();
+        services.AddScoped<ILockedTransactionRepository, LockedTransactionRepository>();
         return services;
     }
 }
