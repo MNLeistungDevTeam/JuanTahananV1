@@ -993,7 +993,15 @@ function initializeDecimalInputMask(classname = ".decimalInputMask", digits = 2,
         allowMinus: isallownegative,
         autoGroup: true,
         placeholder: placeholder,
-        max: Number(limiter.replace(/[^-?0-9\.]+/g, ""))
+        max: Number(limiter.replace(/[^-?0-9\.]+/g, "")),
+        onBeforePaste: function (pastedValue, opts) {
+            var processedValue = pastedValue;
+            //console.log(pastedValue);
+            //console.log(processedValue);
+
+            //do something with it
+            return processedValue;
+        }
     });
 }
 
@@ -1057,3 +1065,295 @@ function assessCheckbox(checkbox, target) {
 
     target.prop('readonly', false);
 }
+
+hlafBcfNav();
+
+bcfUploading();
+
+approveBcfNote();
+
+function bcfUploading() {
+    // Get all <a> elements in the side navigation menu
+    var sideNavLinks = document.querySelectorAll('.side-nav-item a');
+
+    // Iterate through each <a> element
+    sideNavLinks.forEach(function (link) {
+        // Check if the href attribute starts with '/Applicants/HousingLoanForm'
+        if (link.getAttribute('href').startsWith('/BuyerConfirmation/Upload')) {
+            // Add a click event listener to the link
+
+            var bcfDocumentStatus = $("#Bcf_DocumentStatus").val();
+            var bcfStatus = $("#Bcf_ApplicationStatus").val();
+
+            console.log(bcfDocumentStatus);
+            console.log(bcfStatus);
+
+            if (bcfStatus != 3) {
+                link.setAttribute('title', 'This module requires an approved BCF for access');
+
+                link.classList.add('disabled-nav-link');
+                link.style.cursor = "default";
+                link.setAttribute('href', '#');
+            }
+            //else if (bcfDocumentStatus == 1) {
+            // 1: Signed and Submitted
+            // 3: Approved
+            //link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed and submitted.');
+
+            //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+            //    link.setAttribute('title', 'You are unable to access this module while you have a document that is either signed & submitted or approved.');
+
+            //    link.classList.add('disabled-nav-link');
+            //    link.style.cursor = "default";
+            //    link.setAttribute('href', '#');
+            //}
+
+            link.addEventListener('click', function (event) {
+                //if bcf not verified by dev
+                if (bcfStatus != 3) {
+                    event.preventDefault();
+                }
+                //if bcf document  is submitted && verified
+                //else if (bcfDocumentStatus == 1) {
+                //    console.log(0);
+                //    event.preventDefault();
+                //}
+                //else if (bcfDocumentStatus == 1 || bcfDocumentStatus == 3) {
+                //    console.log(0);
+                //    event.preventDefault();
+                //}
+            });
+        }
+    });
+}
+
+function approveBcfNote() {
+    var bcfAppStatus = $("#Bcf_ApplicationStatus").val();
+    var bcfDocuStatus = $("#Bcf_DocumentStatus").val();
+    console.log(bcfAppStatus);
+    if (bcfAppStatus == 3 && bcfDocuStatus != 3 && bcfDocuStatus != 1) {
+        console.log(bcfAppStatus);
+        $("#div_approvebcfNote").removeClass("d-none");
+        $(`#sidebar-menu`).css('top', `calc(var(--ct-topbar-height) + 5rem)`);
+
+        $("#btn_bcfdownload").attr("data-url", "Home/BcfDownload");
+
+        $("#btn_bcfdownload").on("click", function () {
+            let dataurl = $(this).attr('data-url');
+
+            window.location.href = baseUrl + dataurl;
+        });
+    }
+}
+
+function hlafBcfNav() {
+    // Get all <a> elements in the side navigation menu
+    var sideNavLinks = document.querySelectorAll('.side-nav-item a');
+
+    // Iterate through each <a> element
+    sideNavLinks.forEach(function (link) {
+        // Check if the href attribute starts with '/Applicants/HousingLoanForm'
+        if (link.getAttribute('href').startsWith('/Applicants/HousingLoanForm')) {
+            // Add a click event listener to the link
+            link.addEventListener('click', function (event) {
+                // Prevent the default behavior (navigation)
+                event.preventDefault();
+                loadBcfPrompt();
+            });
+        }
+    });
+}
+
+async function loadBcfPrompt() {
+    let bcfExists = await bcfChecker();
+    let hlafExists = await hlafChecker();
+    let isBcfQAnswered = $(`[id="UserFlag_IsBcfCreated"]`).data('flag');
+
+    if (isBcfQAnswered && hlafExists) {
+        // Check if HLAF is created and active AND User selects "I have BCF"
+        hlfRedirect();
+        return;
+    }
+    else if (!isBcfQAnswered && (bcfExists && hlafExists)) {
+        // Check if both HLAF and BCF is created, HLAF is active, AND User selects "I don't have BCF yet"
+        hlfRedirect();
+        return;
+    }
+
+    Swal.fire({
+        //width: `60%`,
+        customClass: {
+            popup: `rounded-5`,
+            confirmButton: "btn btn-primary btn-lg rounded-4",
+        },
+        title: `<span class="text-info fw-medium">Important Question</span>`,
+        html: `
+                <div class="d-flex flex-column justify-content-center">
+                    <p class="text-secondary text-wrap">Do you have a completely filled-up 4PH Buyer Confirmation Form (BCF)?</p>
+                </div>
+                <div class="d-flex flex-column align-items-start">
+                    <div class="mt-2 mb-1 form-check form-check-inline">
+                        <input type="radio" name="4PH_Confirmation" id="4PH_Confirm_True" data-val="1" />
+                        <label class="fs-4 text-muted form-check-label" for="4PH_Confirm_True">Yes, I do have a completely filled-up one.</label>
+                    </div>
+                    <div class="mb-2 form-check form-check-inline">
+                        <input type="radio" name="4PH_Confirmation" id="4PH_Confirm_False" data-val="0" />
+                        <label class="fs-4 text-muted form-check-label" for="4PH_Confirm_False">No, I do not have that yet.</label>
+                    </div>
+                </div>
+            `,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: `<span class="fs-4">Confirm Selection</span>`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Check one of two Radio buttons
+            let filledUpForm = ($('input[name="4PH_Confirmation"]:checked').data("val") === 1);
+            let filledUpTitle = filledUpForm ? `You have a BCF` : `You do not have a BCF`;
+            let filledUpString = filledUpForm ? `you have` : `you do not have`;
+
+            loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm);
+        }
+    });
+
+    $('input[name="4PH_Confirmation"]').on('change', function () {
+        $(Swal.getConfirmButton()).prop('disabled', false);
+    });
+
+    $(Swal.getConfirmButton()).prop('disabled', true);
+}
+
+function loadBcfConfirmation(filledUpTitle, filledUpString, filledUpForm) {
+    Swal.fire({
+        customClass: {
+            popup: `rounded-4`,
+            confirmButton: "rounded-4",
+            cancelButton: "rounded-4",
+            htmlContainer: 'd-flex justify-content-center',
+        },
+        title: `<span class="text-info fw-medium">${filledUpTitle}</span>`,
+        html: `
+                <div class="align-items-center justify-content-center" style="width: 75%;">
+                    Do you confirm that <span class="fw-bolder">${filledUpString}</span> a completely filled-up 4PH BCF?
+                </div>
+            `,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: `<span class="fs-4">Confirm</span>`,
+        cancelButtonText: `<span class="fs-4">Cancel</span>`,
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            // Check one of two radio buttons
+            //if (filledUpForm) {
+            //    // Code block of user selecting "I do have a completely filled-up one"
+            //    console.log("Execute 4PH - TRUE Code block");
+
+            //    // redirect to housing loan form
+            //    updateBcfFlag(true, () => { location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val()); });
+            //}
+            //else {
+            //    // Code block of user selecting "No, I do not have that yet"
+            //    console.log("Execute 4PH - FALSE Code block");
+            //    updateBcfFlag(false, () => { return; });
+            //}
+
+            updateBcfFlag(filledUpForm, () => { location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val()); });
+        }
+        else {
+            $('input[name="4PH_Confirmation"]').off('change');
+            await loadBcfPrompt();
+        }
+    });
+}
+
+function updateBcfFlag(flag, callback) {
+    $.ajax({
+        url: baseUrl + 'Applicants/UpdateBcfFlag',
+        method: "POST",
+        data: {
+            flag: flag
+        },
+        success: callback
+    });
+}
+
+async function bcfChecker() {
+    let bcfFlag = await fetch(baseUrl + 'Applicants/CheckBcf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return bcfFlag;
+}
+
+async function hlafChecker() {
+    let hlafFlag = await fetch(baseUrl + 'Applicants/CheckCurrentHlaf')
+        .then(response => {
+            if (!response.ok) {
+                messageBox(response.statusText, "danger");
+            }
+
+            return response.json();
+        })
+        .then(response => {
+            // Using the fetched data
+            //console.log('Data received:', response);
+            return response;
+        }).catch(error => {
+            // Handling any errors that occur during the request
+            messageBox(error, "danger");
+        });
+
+    return hlafFlag;
+}
+
+function hlfRedirect() {
+    location.replace(baseUrl + `Applicants/HousingLoanForm/` + $(`[id="txt_userPagibigNumber"]`).val());
+}
+
+function GetFileTypes(fileType) {
+    var imageFiles = [".png", ".jpeg", ".jpg"];
+    var officeDocs = [".docx", ".doc", ".xls", ".xlsx", ".ppt", ".pptx"]
+    var googleDocs = [".tif", ".ai", ".eps"];
+    var txtFile = [".txt"];
+    var pdfFile = [".pdf"];
+
+    if (imageFiles.includes(fileType.toLowerCase())) return "image";
+    if (officeDocs.includes(fileType.toLowerCase())) return "office";
+    if (googleDocs.includes(fileType.toLowerCase())) return "gdocs";
+    if (txtFile.includes(fileType.toLowerCase())) return "text";
+    if (pdfFile.includes(fileType.toLowerCase())) return "pdf";
+
+    return fileType.replace(".", "");
+}
+
+
+
+function updateLockedStatus(transactionNo) {
+    $.ajax({
+        url: baseUrl + "Transaction/UpdateLockStatus/" + transactionNo,
+        success: function (response) { }
+    });
+}
+
+//String.prototype.toPropper = function () {
+//    return this.replace(/\w\S*/g, function (txt) {
+//        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//    });
+//};
+
+ 

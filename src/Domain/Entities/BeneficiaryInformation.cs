@@ -13,6 +13,8 @@ public partial class BeneficiaryInformation
 
     public string PagibigNumber { get; set; }
 
+    public string Code { get; set; }
+
     public int? CompanyId { get; set; }
 
     public string LastName { get; set; }
@@ -69,11 +71,13 @@ public partial class BeneficiaryInformation
 
     public string PermanentZipCode { get; set; }
 
-    public string PropertyDeveloperName { get; set; }
+    public int? PropertyDeveloperId { get; set; }
 
-    public string PropertyLocation { get; set; }
+    public int? PropertyUnitId { get; set; }
 
-    public string PropertyUnitLevelName { get; set; }
+    public int? PropertyLocationId { get; set; }
+
+    public int? PropertyProjectId { get; set; }
 
     public int? CreatedById { get; set; }
 
@@ -84,4 +88,6 @@ public partial class BeneficiaryInformation
     public DateTime? DateModified { get; set; }
 
     public string Email { get; set; }
+
+    public bool IsBcfCreated { get; set; }
 }

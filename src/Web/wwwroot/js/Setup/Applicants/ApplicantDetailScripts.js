@@ -1,13 +1,12 @@
 ﻿"use strict"
 
-
 //updated
-
 
 const CONST_MODULE = "Applicants Requests";
 const CONST_MODULE_CODE = "APLCNTREQ";
 const CONST_TRANSACTIONID = $("#ApplicantsPersonalInformationModel_Id").val();
 const CONST_APPLICANTCODE = $("#txt_applicantCode").val();
+const hasBcfCreated = $("#txt_bcfCreated").val();
 
 const $btnApprove = $('#btnApprove');
 const $btnDisapprove = $('#btnDisapprove');
@@ -22,6 +21,7 @@ let stageNo = $('#txt_stageNo').val();
 let ApplicationId = $('#applicationId').val();
 let DocumentTypeId = 0;
 
+const IsTransactionLock = $("#txt_IsTransactionLock").val();
 const FileFormats = {
     1: ['.pdf'],
     2: ['.docx'],
@@ -40,6 +40,7 @@ $(async function () {
 
     await loadVerificationAttachments(CONST_APPLICANTCODE);
     await loadApplicationAttachments(CONST_APPLICANTCODE);
+    initializeAutoTabSwitch();
 
     $(document).ready(function () {
         // Add click event listener to the tab
@@ -54,24 +55,38 @@ $(async function () {
             $('a[href="#tab4"]').addClass('disabled'); // Add a disabled class to visual
         }
 
-        $(".re-upload").hide();
+        //$(".re-upload").hide();
 
         //Hides the re-upload button if status is Deferred or Withdrawn
         if (approvalStatus === '2' || approvalStatus === '5' || approvalStatus === '9' || approvalStatus === '10') {
             $(".re-upload").hide();
+        }
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            $(`.upload-hover`).find('a.upload, a.re-upload')
+                .html(`<i class="fas"></i>`)
+                .css('cursor', 'unset');
+            $(`.upload-hover`).removeClass('upload-hover');
         }
     });
 
     //#region Events
     $(document).on('click', '.upload-link', async function (e) {
         e.preventDefault();
+
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
         DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
-        console.log("triiger");
+
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -92,13 +107,19 @@ $(async function () {
     $(document).on('click', '.re-upload', async function (e) {
         e.preventDefault();
 
-        DocumentTypeId = $(this).closest('.file-upload-wrapper').find('a').data("document-type-id");
+        if (Number($(`[id="txt_roleId"]`).val()) !== 4) {
+            return;
+        }
+
+        DocumentTypeId = $(this).data("document-type-id");
         const fileInput = $(`#fileInput_${DocumentTypeId}`);
         var documentType = await GetDocumentType(DocumentTypeId);
 
         let fileFormats = FileFormats[documentType.FileType];
+        console.log(documentType.FileType);
+
         if (fileFormats === undefined || !Array.isArray(fileFormats)) {
-            fileInput.prop('accept', '*/*');
+            fileInput.prop('accept', '.pdf, application/pdf, image/*');
         } else {
             let formated = fileFormats.join(',');
             fileInput.prop('accept', formated);
@@ -114,14 +135,40 @@ $(async function () {
         openApprovalModal(action);
     });
 
+    $(document).on('mouseover', `.upload-hover`, function (e) {
+        try {
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+            let dataStatus = uploadIcon.parent().data('status') === 'exists';
+
+            if (dataStatus) {
+                // file already uploaded
+                uploadIcon.removeClass('fa-upload');
+                uploadIcon.addClass('fa-retweet');
+            }
+            else {
+                uploadIcon.removeClass('fa-retweet');
+                uploadIcon.addClass('fa-upload');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }).on('mouseleave', `.upload-hover`, function (e) {
+        try {
+            let uploadIcon = $(this).find(`[id="upload-right-icon"]`);
+
+            uploadIcon.removeClass('fa-retweet');
+            uploadIcon.removeClass('fa-upload');
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
     //#endregion Events
 
     //#region Function
 
     async function loadVerificationAttachments(applicantCode) {
         let verifAttach = await getVerificationDocuments(applicantCode);
-
-        console.log(verifAttach);
 
         if (!verifAttach) { return; }
 
@@ -132,6 +179,8 @@ $(async function () {
 
         // Group items by DocumentTypeName
         verifAttach.forEach(item => {
+            if (hasBcfCreated == "True" && item.DocumentTypeId === 26) { return; } // Skip items with DocumentTypeId == 26 bcf
+
             const groupId = item.DocumentTypeId;
             const groupName = item.DocumentTypeName;
 
@@ -140,6 +189,19 @@ $(async function () {
             }
             groupedItems[groupName].push(item);
         });
+
+        let fileExtLibrary = [
+            {
+                extension: ['jpg', 'png'],
+                icon: 'fas fa-image'
+            },
+            {
+                extension: ['pdf'],
+                icon: 'fas fa-file-pdf'
+            }
+        ];
+
+        let noFileString = "No file uploaded yet. Click here to upload.";
 
         // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
@@ -154,46 +216,47 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+                    const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
+
+                    //New Design
                     if (item.HasParentId === 0 && item.HasSubdocument === 0) {
-                        groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
-                        <h4 class="header-title text-muted">${groupName}</h4>
-                        <div class="list-group">`;
-
-                        groupHtml += `<div class="file-upload-wrapper">
-                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                        groupHtml += `
+                            <div class="col-md-4" id="${firstItem.DocumentTypeId}">
+                                <h4 class="header-title text-muted">${groupName}</h4>
+                                <div class="col-md-12">
+                                    <div class="card rounded-3 shadow-lg upload-hover">
+                                        <div class="card-body p-0">
+                                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                            <div class="p-2 file-upload-wrapper">
+                                                <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                                    <div class="col-auto">
+					                                    <div ${!item.DocumentName ? "hidden" : ""}>
+						                                    <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                                ${iconTag}
+                                                            </span>
+					                                    </div>
+				                                    </div>
+				                                    <div class="col ps-0">
+					                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
+					                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+				                                    </div>
+				                                    <div class="col-auto">
+					                                    <!-- Button -->
+					                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+						                                    <i class="fas " id="upload-right-icon"></i>
+					                                    </a>
+				                                    </div>
+			                                    </div>
+                                            </div>
                                         </div>
-
                                     </div>
-                                </a>
+                                </div>
                             </div>
-                          </div>`;
+                        `;
                     }
-
-                    //if (item.HasParentId === 0 && item.HasSubdocument === 0) {
-                    //    groupHtml += `<div class="col-md-4 mb-2"" id="${firstItem.DocumentTypeId}">
-                    //    <h4 class="header-title text-muted">${groupName}</h4>
-                    //    <div class="list-group">`;
-
-                    //    groupHtml += `<div class="file-upload-wrapper">
-                    //        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                    //            <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                    //                <div class="d-flex justify-content-between align-items-center">
-                    //                    <div>
-                    //                        <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
-                    //                    </div>
-                    //                    <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
-                    //                        <i class="fe-upload"></i>
-                    //                    </button>
-                    //                </div>
-                    //            </a>
-                    //        </div>
-                    //      </div>`;
-                    //}
                 });
 
                 groupHtml += `</div></div>`;
@@ -214,9 +277,13 @@ $(async function () {
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+                    const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
+
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
 
                     if (item.HasSubdocument === 1) {
-                        groupHtml += `<div class="col-md-12 mb-2" id="${firstItem.DocumentTypeId}">
+                        groupHtml += `<div class="col-md-12 mt-3 mb-2" id="${firstItem.DocumentTypeId}">
                             <div class="nav-tabs nav-bordered">
                                 <h4 class="header-title text-muted">${groupName}</h4>
                             </div>
@@ -224,24 +291,40 @@ $(async function () {
 
                         groupItems.splice(index, 1);  //Removed the object
                     } else if (item.HasParentId === 1) {
-                        groupHtml += `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
-                        <h4 class="header-title text-muted ">${groupName}</h4>
-                        <div class="list-group">`;
-
-                        groupHtml += `<div class="file-upload-wrapper">
-                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                        //New Design
+                        groupHtml += `
+                        <div class="col-md-4" id="${firstItem.DocumentTypeId}">
+                            <h4 class="header-title text-muted">${groupName}</h4>
+                            <div class="col-md-12">
+                                <div class="card rounded-3 shadow-lg upload-hover">
+                                    <div class="card-body p-0">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                        <div class="p-2 file-upload-wrapper">
+                                            <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+				                                <div class="col-auto">
+					                                <div ${!item.DocumentName ? "hidden" : ""}>
+						                                <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                            ${iconTag}
+                                                        </span>
+					                                </div>
+				                                </div>
+				                                <div class="col ps-0">
+					                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
+					                                <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+				                                </div>
+				                                <div class="col-auto">
+					                                <!-- Button -->
+					                                <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+						                                <i class="fas " id="upload-right-icon"></i>
+					                                </a>
+				                                </div>
+			                                </div>
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload d-none" ${item.DocumentName ? '' : 'hidden'}>
-                                                <i class="fe-upload"></i>
-                                        </button>
                                     </div>
-                                </a>
+                                </div>
                             </div>
-                          </div>`;
+                        </div>
+                    `;
                     }
                 });
 
@@ -270,6 +353,8 @@ $(async function () {
 
         // Group items by DocumentTypeName
         await appAttach.forEach(item => {
+            // if (hasBcfCreated == "True" && item.DocumentTypeId === 26) { return; } // Skip items with DocumentTypeId == 26 bcf
+
             const groupId = item.DocumentTypeId;
             const groupName = item.DocumentTypeName;
 
@@ -279,35 +364,69 @@ $(async function () {
             groupedItems[groupName].push(item);
         });
 
+        let fileExtLibrary = [
+            {
+                extension: ['jpg', 'png'],
+                icon: 'fas fa-image'
+            },
+            {
+                extension: ['pdf'],
+                icon: 'fas fa-file-pdf'
+            }
+        ];
+
+        let noFileString = "No file uploaded yet. Click here to upload.";
+
         // Append grouped items
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
                 const groupItems = groupedItems[groupName];
                 const firstItem = groupItems[0];
-                let groupHtml = `<div class="col-md-4 col-6 mb-2" id="${firstItem.DocumentTypeId}">
-                        <h4 class="header-title text-muted">${groupName}</h4>
-                        <div class="list-group">`;
+                let groupHtml = ``;
 
                 groupItems.forEach((item, index) => {
                     const itemLink = item.DocumentLocation + item.DocumentName;
                     const uploadLinkClass = !item.DocumentName ? 'upload-link' : ''; // Add upload-link class conditionally
                     const isDisabled = !item.DocumentName ? 'disabled' : ''; // Add disabled attribute conditionally
                     const documentNumber = item.DocumentSequence ? `(${item.DocumentSequence})` : ''; // Append document number
+                    const fileExtension = item.DocumentName ? item.DocumentName.split('.').pop() : null;
 
-                    groupHtml += `<div class="file-upload-wrapper">
-                            <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none">
-                                <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" class="list-group-item list-group-item-action ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="fe-file-text me-1"></i> ${item.DocumentName ? item.DocumentName + ' ' + documentNumber : 'Not Uploaded Yet'}
+                    let iconClass = fileExtLibrary.find(i => i.extension.includes(fileExtension));
+                    let iconTag = iconClass !== undefined ? `<i class="${iconClass.icon ?? ""} fs-2"></i>` : fileExtension;
+
+                    groupHtml += `
+                        <div class="col-md-4" id="${firstItem.DocumentTypeId}">
+                            <h4 class="header-title text-muted">${groupName}</h4>
+                            <div class="col-md-12">
+                                <div class="card rounded-3 shadow-lg upload-hover">
+                                    <div class="card-body p-0">
+                                        <input type="file" id="fileInput_${item.DocumentTypeId}" style="display:none" accept=".pdf, application/pdf, image/*">
+                                        <div class="p-2 file-upload-wrapper">
+                                            <div class="row align-items-center ${uploadLinkClass}" target="${item.DocumentName ? '_blank' : ''}" ${isDisabled} data-document-type-id="${item.DocumentTypeId}">
+                                                <div class="col-auto">
+                                                    <div ${!item.DocumentName ? "hidden" : ""}>
+						                                <span class="avatar-title bg-soft-primary p-1 text-primary rounded">
+                                                            ${iconTag}
+                                                        </span>
+					                                </div>
+                                                </div>
+                                                <div class="col ps-0" >
+                                                    <a href="${item.DocumentName ? itemLink : 'javascript:void(0)'}" target="_blank" class="text-muted fw-bold">${item.DocumentName ? item.DocumentName + ' ' + documentNumber : noFileString}</a>
+                                                    <p class="mb-0">${formatSize(item.DocumentSize)}</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <!-- Button -->
+                                                    <a href="#fileInput_${item.DocumentTypeId}" class="btn btn-link btn-lg text-muted ${item.DocumentName ? "re-upload" : "upload"}" data-document-type-id="${item.DocumentTypeId}" data-status="${item.DocumentName ? "exists" : "not-exist"}">
+                                                        <i class="fas " id="upload-right-icon"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <button type="button" class="btn btn-info waves-effect waves-light re-upload" ${item.DocumentName ? '' : 'hidden'}>
-                                                <i class="fe-upload"></i>
-                                        </button>
                                     </div>
-                                </a>
+                                </div>
                             </div>
-                          </div>`;
+                        </div>
+                    `;
                 });
 
                 groupHtml += `</div></div>`;
@@ -509,7 +628,7 @@ $(async function () {
 
                             $approverModal.modal("hide");
 
-                            location.reload();
+                           location.reload();
 
                             $("#btnSubmitApplication").prop('disabled', false);
                         },
@@ -517,7 +636,9 @@ $(async function () {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(response.responseText, "danger", true);
+
+                            let messageConflict = response.responseText + action;
+                            messageBox(messageConflict, "danger", true);
                         }
                     });
                 }
@@ -569,8 +690,7 @@ $(async function () {
         });
     }
 
-    //Count for DocumentFile
-    function allItemsHaveFiles(groupedItems) {
+    function allItemsHaveFiles(groupedItems) { //Count for DocumentFile
         for (const groupName in groupedItems) {
             if (groupedItems.hasOwnProperty(groupName)) {
                 const groupItems = groupedItems[groupName];
@@ -583,6 +703,42 @@ $(async function () {
             }
         }
         return true; // Return true if all items have files attached
+    }
+
+    function formatSize(documentSizeInBytes) {
+        const sizeInMB = documentSizeInBytes / (1024 * 1024);
+        const sizeInKB = documentSizeInBytes / 1024;
+        return documentSizeInBytes ? (sizeInMB >= 1 ? sizeInMB.toFixed(1) + ' MB' : sizeInKB.toFixed(1) + ' KB') : "";
+    };
+
+    function initializeAutoTabSwitch() {
+        /*
+            Credit Attachments: "#settings-b1"
+            Application Attachments: "#tab4"
+        */
+
+        let stageNumber = $(`[id="txt_stageNo"]`).val();
+        //console.log(stageNumber);
+        if (Number(stageNumber) === 1) {
+            $("#home-b1").removeClass('active show');
+            $("#settings-b1").addClass('active show');
+
+            $(`a[href="#home-b1"]`).removeClass("active");
+            $(`a[href="#settings-b1"]`).addClass("active");
+
+            $(`a[href="#home-b1"]`).attr("aria-selected", "false");
+            $(`a[href="#settings-b1"]`).attr("aria-selected", "true");
+        }
+        else if (Number(stageNumber) === 2) {
+            $("#home-b1").removeClass('active show');
+            $("#tab4").addClass('active show');
+
+            $(`a[href="#home-b1"]`).removeClass("active");
+            $(`a[href="#tab4"]`).addClass("active");
+
+            $(`a[href="#home-b1"]`).attr("aria-selected", "false");
+            $(`a[href="#tab4"]`).attr("aria-selected", "true");
+        }
     }
 
     //#endregion Function
@@ -622,6 +778,7 @@ $(async function () {
 
         return response;
     }
+
     async function getApplicationDocuments(applicantCode) {
         const response = $.ajax({
             url: baseUrl + "Applicants/GetApplicationVerificationDocuments",
@@ -634,6 +791,14 @@ $(async function () {
 
         return response;
     }
+
+    //if (IsTransactionLock == "True") {
+    //    let transactionNo = $("#txt_applicantCode").val();
+
+    //    let lockStatusInterval = setInterval(function () {
+    //        updateLockedStatus(transactionNo);
+    //    }, 5000);
+    //}
 
     //#endregion Getters Function
 });

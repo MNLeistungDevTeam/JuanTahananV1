@@ -9,7 +9,7 @@ BEGIN
 		END LockStatus,
 		30 - datediff(minute, LockedTime, GETDATE()) LockedDuration,
 		r.[Name] UserRoleName,
-		r.Id as UserRoleId
+		ur.RoleId as UserRoleId
 	FROM [User] u
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
 	LEFT JOIN [Role] r ON ur.RoleId = r.Id

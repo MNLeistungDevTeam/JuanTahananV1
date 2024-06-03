@@ -10,7 +10,7 @@ namespace DMS.Domain.Enums
     {
      
         Applicant = 1,//ApplicantsPersonalInformation Table
-        Seller = 2,
-        Developer = 3
+        Buyer = 2, // BuyerConfirmation Table
+        
     }
 }

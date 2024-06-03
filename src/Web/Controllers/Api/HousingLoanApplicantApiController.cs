@@ -3,7 +3,7 @@ using DMS.Domain.Dto.BasicBeneficiaryDto;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Api
@@ -45,5 +45,93 @@ namespace DMS.Web.Controllers.Api
                 return BadRequest(ex.Message);
             }
         }
+
+        #region Api For JTAHANAN-PH Portal
+
+        //to separate zeta and rs use constant companyCode
+        [HttpGet("GetDeveloperByCode/{developerCode}")]
+        public async Task<IActionResult> GetDeveloperByCode(string? developerCode)
+        {
+            try
+            {
+                var developers = await _zetaHousingLoanIntegrationService.GetDevelopers();
+                var developer = developers.FirstOrDefault(d => d.Code == developerCode);
+
+                if (developer != null)
+                {
+                    return Ok(developer);
+                }
+                else
+                {
+                    return BadRequest($"Developer with code {developerCode} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetDevelopers")]
+        public async Task<IActionResult> GetDevelopers()
+        {
+            try
+            {
+                var developers = await _zetaHousingLoanIntegrationService.GetDevelopers();
+
+                return Ok(developers);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetProjectsByCompany")]
+        public async Task<IActionResult> GetProjectsByCompany(int companyId, int? locationId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetProjectsByCompany(companyId, locationId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetLocationsByProject")]
+        public async Task<IActionResult> GetLocationsByProject(int? projectId, int? developerId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetLocationsByProject(projectId, developerId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetUnitsByProject")]
+        public async Task<IActionResult> GetUnitsByProject(int? projectId, int? developerId)
+        {
+            try
+            {
+                var projects = await _zetaHousingLoanIntegrationService.GetUnitsByProject(projectId, developerId);
+
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion Api For JTAHANAN-PH Portal
     }
 }

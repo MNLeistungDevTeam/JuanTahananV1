@@ -14,7 +14,7 @@
     {
         var profile = System.IO.Path.Combine("/images", "user", users.ProfilePicture);
         if (System.IO.File.Exists(profile))
-        ViewData["Profile"] = profile;
+            ViewData["Profile"] = profile;
     }
 
 
@@ -40,6 +40,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="~/lib/intl-tel-input/build/css/intltelinput.min.css" rel="stylesheet" />
     <link href="~/css/hypertheme.css" asp-append-version="true" rel="stylesheet" />
+    @*<link href="~/css/bootstrap-fileinput.bundle.css" rel="stylesheet" />*@
+    <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -49,25 +52,28 @@
     <div id="Layout-defaultProfile" hidden>@Url.Content("~/images/user/default.png")</div>
     <div id="Layout-defaultSignature" hidden>@Url.Content("~//images/user/signature.png")</div>
 
-    
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-column topbar sticky-top">
+            <!-- ========== Topbar Start ========== -->
+            <partial name="_Topbar" />
+            <!-- ========== Topbar End ========== -->
+        </div>
 
-    <!-- Begin page -->
-    <div id="wrapper">
-
-        <!-- ========== Topbar Start ========== -->
-        <partial name="_Topbar" />
-        <!-- ========== Topbar End ========== -->
-        <!-- ========== Horizontal Menu Start ========== -->
-        <partial name="_Sidebar" />
-        <!-- ========== Horizontal Menu End ========== -->
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-        <div class="content-page">
+        <!-- Begin page -->
+        <div id="wrapper">
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
             <div class="content">
                 <!-- Start Content-->
-                <div class="container-fluid">                    
-                    <div class="content-layer-page pt-2">
+                <div class="d-flex container-fluid">
+                    <div class="d-flex flex-column pt-2 custom-navbar">
+
+                        <!-- ========== Horizontal Menu Start ========== -->
+                        <partial name="_Sidebar" />
+                        <!-- ========== Horizontal Menu End ========== -->
+                    </div>
+                    <div class="content-page pt-2 w-100 custom-responsive-content">
                         <!-- Pre-loader -->
                         <div id="preloader">
                             <div id="status">
@@ -83,17 +89,18 @@
             <!-- Footer Start -->
             @*             <partial name="_Footer" />
             <!-- end Footer --> *@
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
+        <!-- END wrapper -->
     </div>
-    <!-- END wrapper -->
+
+
     <!-- Theme Settings -->
     <partial name="_ThemeSettings" />
 
     <!-- Thirdparty js -->
-     
     <script src="~/lib/izitoast/dist/js/izitoast.min.js" asp-append-version="true"></script>
     <script src="~/js/site.thirdparty.bundle.js" asp-append-version="true"></script>
     <script src="~/js/datatables.bundle.js" asp-append-version="true"></script>
@@ -105,7 +112,12 @@
     <script src="~/js/uploader.js" asp-append-version="true"></script>
     <script src="~/js/validation.bundle.js" asp-append-version="true"></script>
     <script src="~/lib/intl-tel-input/build/js/intltelinput.min.js"></script>
- 
+    <script src="~/lib/pdfjs-dist/build/pdf.mjs" type="module"></script>
+    @*<script src="~/js/bootstrap-fileinput.bundle.js"></script>*@
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+
+
+
     @RenderSection("Scripts", false)
 
 </body>

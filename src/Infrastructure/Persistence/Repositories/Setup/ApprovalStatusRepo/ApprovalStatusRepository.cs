@@ -41,11 +41,11 @@ namespace DMS.Infrastructure.Persistence.Repositories.Setup.ApprovalStatusRepo
         public async Task<ApprovalStatusModel?> GetByReferenceModuleCodeAsync(int referenceId, string moduleCode, int companyId) =>
          await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_GetByReferenceModuleCode", new { referenceId, moduleCode, companyId });
 
-        public async Task<ApprovalStatusModel?> GetByReferenceIdAsync(int? referenceId = null, int? companyId = null, int? approvalStatusId = null)
+        public async Task<ApprovalStatusModel?> GetByReferenceIdAsync(int? referenceId = null, int? companyId = null, int? approvalStatusId = null,int? referenceType = null)
         {
             try
             {
-                var data = await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_Inquiry", new { referenceId, approvalStatusId, companyId });
+                var data = await _db.LoadSingleAsync<ApprovalStatusModel, dynamic>("spApprovalStatus_Inquiry", new { referenceId, approvalStatusId, companyId,referenceType });
                 return data;
             }
             catch (Exception)

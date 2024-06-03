@@ -145,11 +145,7 @@ public partial class BarrowersInformation
 
     public int? DeletedById { get; set; }
 
-    public string PropertyDeveloperName { get; set; }
-
-    public string PropertyLocation { get; set; }
-
-    public string PropertyUnitLevelName { get; set; }
-
     public decimal? MonthlyRent { get; set; }
+
+    public string ContactDetailEmail { get; set; }
 }

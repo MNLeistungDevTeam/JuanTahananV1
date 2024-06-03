@@ -1,15 +1,32 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
+const applicantInfoApprovalStatus = $(`[name='ApplicantsPersonalInformationModel.ApprovalStatus']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
-$(function () {
+const buyerConfirmationId = $("#BuyerConfirmationModel_Id").val();
+const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
+const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
+const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
+
+let isBcfValid;
+
+$(async function () {
     var telNoArray = [];
     var itiFlag = false;
+
     var editableFlag = false;
+
+    const { pdfjsLib } = globalThis;
+
+    var telNoArray = [];
+    var currentStep = 0;
 
     //#region Initialization
 
-    $("#btn_savehlf068").prop('disabled', true);
+    $("#btn_savehlf068").prop('hidden', true);
+
+    console.log(hasBcf);
+    //$("#btn_edit").prop('disabled', !(applicantInfoApprovalStatus == '0' || applicantInfoApprovalStatus == '11'));
 
     $(".selectize").selectize({
         search: false
@@ -38,9 +55,43 @@ $(function () {
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999[-9999]",
+        mask: ["999-999-999", "999-999-999-9999"],
+        //mask: "999-999-999[-9999]",
         placeholder: "X",
         //clearIncomplete: true
+    });
+
+    $('.sssInputMask').inputmask({
+        mask: "99-99999[9][9]-99",
+        placeholder: 'X',
+        //clearMaskOnLostFocus: true
+        //clearIncomplete: true
+    });
+
+    $('input[type="sssNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+
+    $('input[type="tinNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+
+    $('input[type="pagIBIGNumber"]').on('input', function (e) {
+        this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
     });
 
     //// Disable 'e', '+', retain '-'
@@ -70,8 +121,10 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    //initializeIntlTelInput();
-    initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+
+    initializePdfJs();
 
     //assessPresentPermanentCheckbox();
 
@@ -82,10 +135,19 @@ $(function () {
 
     rebindValidators();
 
+    adjustEditCard();
+    progressCheck();
+
     //#endregion
 
-    $('.codeInputMask').on('input', function (e) {
-    });
+    // Function to handle beforeunload prompt
+
+    window.onbeforeunload = function (event) {
+        if (editableFlag) {
+            event.returnValue = "You have unsaved changes. Are you sure you want to leave this page?";
+            return event.returnValue;
+        }
+    };
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
@@ -318,6 +380,38 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     });
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
 
     //#endregion
 
@@ -642,7 +736,7 @@ $(function () {
         if ($("#pcRadioBtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -652,7 +746,7 @@ $(function () {
         if ($("#pdRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -662,7 +756,7 @@ $(function () {
         if ($("#bcRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -672,7 +766,7 @@ $(function () {
         if ($("#maRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -682,12 +776,6 @@ $(function () {
 
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
-
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[9][9]-99",
-        placeholder: 'X',
-        //clearIncomplete: true
-    });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
@@ -1090,72 +1178,105 @@ $(function () {
 
     //#endregion
 
+    //$(`[id="form2"] .next button`).on('click', function (e) {
+    //    if (hasBcf === "True") {
+    //        loadHlafPreview();
+    //    }
+
+    //    else {
+    //        loadBcfPreview();
+    //    }
+    //});
+
+    //$(`[id="previewBcf"] .next button`).on('click', function (e) {
+    //    loadHlafPreview();
+    //});
+
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
 
+            // Check if BCF form is valid
+            //if (!isBcfValid) {
+            //    return false;
+            //}
+
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
             var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the previous form (loanparticulars) and remove 'fade' class
             var prevForm = currentTabPane;
+
             console.log("Current form ID: " + currentFormName);
 
-            // Validate the current form
-
-            // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                return;
-            }
+            currentForm.addClass('was-validated');
 
             if (editableFlag) {
                 console.log("editableFlag is true");
 
-                currentForm.addClass('was-validated');
                 var isValid = validateForm(currentForm);
 
-                if (!isValid) {
-                    // If validation fails, prevent navigation to the next step
-                    console.log("validation fail");
-                    return false;
-                } else {
-                    console.log('fade executed');
-                    // Hide the current form
-                    currentForm.addClass('fade').prop('hidden', true);
-
-                    // Show the previous form
-                    prevForm.removeClass('fade').prop('hidden', false);
+                if (currentFormName === "bcfdata") {
+                    bcfToHLafConnectedFieldMap();
                 }
-            } else {
-                console.log('fade executed');
-                // Hide the current form
-                currentForm.addClass('fade').prop('hidden', true);
 
-                // Show the previous form
-                prevForm.removeClass('fade').prop('hidden', false);
+                if (!isValid) {
+                    console.log("Validation failed");
+                    return false;
+                }
             }
+
+            console.log('fade executed');
+            currentForm.addClass('fade').prop('hidden', true);
+            prevForm.removeClass('fade').prop('hidden', false);
+
+            if (currentFormName === "form2") {
+                if (hasBcf === "True") {
+                    loadHlafPreview();
+                } else {
+                    loadBcfPreview();
+                }
+            }
+
+            if (currentFormName === "previewHlaf") {
+                $("#previewHlaf").removeClass('fade').prop('hidden', false);
+                return;
+            }
+
+            if (currentFormName === "bcfdata") {
+                $("html, body").animate({ scrollTop: 0 }, "fast");
+            }
+
+            if (currentFormName === "previewBcf") {
+                loadHlafPreview();
+            }
+
+            if (currentFormName === "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
+
+            progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
-
-            // Find the current tab pane
             var currentTabPane = $('.tab-pane').eq(index);
-
-            // Hide the current form (collateral) and remove 'fade' class
             var nextForm = currentTabPane;
+
             console.log("Current form ID: " + currentFormName);
 
-            // Hide the current form
-            currentForm.addClass('fade').prop('hidden', true);
+            if (currentFormName === "loanparticulars") {
+                HLafTobcfConnectedFieldMap();
+            }
 
-            // Show the next form
+            currentForm.addClass('fade').prop('hidden', true);
             nextForm.removeClass('fade').prop('hidden', false);
+
+            progressCheck(nextForm.attr('id'));
 
             // Always return true to allow navigation to the previous step
             return true;
@@ -1163,14 +1284,22 @@ $(function () {
     });
 
     //#region Events
-    $("#btn_edit").on('click', function () {
+    $("#btn_edit").on('click', async function () {
+        if (editableFlag) {
+            preConfirmationSwal();
+            return;
+        }
+
         editableFlag = true;
+
         $(this).addClass("active");
+
+        $('#confirmCard').prop("hidden", false);
         //$("#frm_hlf068 .selectize").each(function () {
         //    var selectize = $(this)[0].selectize;
         //    selectize.lock();
         //});
-        $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
+        $("#frm_hlf068 input:not(#BuyerConfirmationModel_ProjectProponentName), #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
         $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeClass("disabled");
         $(`#frm_hlf068 input[type="checkbox"]`).removeAttr("disabled");
 
@@ -1194,14 +1323,59 @@ $(function () {
             e.selectize.unlock();
         })
 
-        $("#btn_savehlf068").prop('disabled', false);
+        $("#btn_savehlf068").prop('hidden', false);
+
+        $(this).removeClass("text-info").addClass("text-danger").html(`<i class="mdi mdi-pencil-outline text-info"></i> Leave Edit Mode`);
+
+        if (buyerconfirmationAppStatus === '3') {
+            disableBuyerConfirmationFields();
+
+            $("#BuyerConfirmationModel_ApprovalStatus").attr('disabled', false);
+        }
+
+        $("#BuyerConfirmationModel_HouseUnitModel").prop("readonly", true);
+        $("#BuyerConfirmationModel_SellingPrice").prop("readonly", true);
+        $("#BuyerConfirmationModel_MonthlyAmortization").prop("readonly", true);
+
+        //Load the possible data on others forms
+        HLafTobcfConnectedFieldMap();
+        bcfToHLafConnectedFieldMap();
+
+        messageBox("Editing Mode", "info", true);
     });
 
-    $("#btn_pdf").on('click', function () {
+    $("#btn_discardChang").on("click", () => preConfirmationSwal());
+
+    $("#btn_hlafpdf").on('click', function () {
         let applicationCode = $("#ApplicantsPersonalInformationModel_Code").val();
         let link = baseUrl + "Report/LatestHousingForm/" + applicationCode;
 
         window.open(link, '_blank');
+    });
+
+    $("#btn_bcfpdf").on('click', function () {
+        let link = baseUrl + "Report/LatestBuyerConfirmationForm/" + buyerconfirmationCode;
+
+        // If buyerconfirmationCode is not null or empty, open the link in a new tab
+        window.open(link, '_blank');
+    });
+
+    $("#btn_saveChang").on('click', function () {
+        editableFlag = false;
+        $("#frm_hlf068").trigger('submit');
+    });
+
+    $('#BuyerConfirmationModel_MaritalStatus').on('change', function () {
+        var value = $(this).val();
+
+        if (value === 'Married') {
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', true);
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', true);
+        }
+        else {
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', false);
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', false);
+        }
     });
 
     //#endregion
@@ -1217,126 +1391,249 @@ $(function () {
             e.selectize.lock();
         });
         initializeRadioBtnMisc();
+
+        if (hasBcf == "False") {
+            $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
+                $(`[id="bcf-incomeFields"]`).attr({
+                    hidden: $(this).attr('id') === 'isRbtn2',
+                });
+
+                $(`[id="bcf-incomeFields"] input[type="text"]`).attr({
+                    required: $(this).attr('id') === 'isRbtn1',
+                });
+
+                if ($(this).attr('id') === 'isRbtn2') {
+                    //$(`[id="bcf-incomeFields"] input[type="text"]`).val('');
+
+                    $("#BuyerConfirmationModel_AdditionalSourceIncome").val(null);
+                    $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(0);
+                }
+
+                $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
+            });
+
+            $(`.radio-pagibigRbtn input[name="pagibigRbtn"]`).on(`change`, function (e) {
+                $(`[id="bcf-pagIbigNumField"]`).attr({
+                    hidden: $(this).attr('id') === 'pagibigRbtn2',
+                });
+
+                $(`[id="bcf-pagIbigNumField"] [id="BuyerConfirmationModel_PagibigNumber"]`).attr({
+                    required: $(this).attr('id') === 'pagibigRbtn1',
+                });
+
+                $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
+
+                if ($(this).attr('id') === 'pagibigRbtn2') {
+                    //$(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+                    $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
+                }
+
+                $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
+            });
+
+            $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+            });
+
+            $(`.radio-cbwrRbtn input[name="coBorrowerRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigCoBorrower"]`).attr('value', $(this).attr('id') === 'cbwrRbtn1');
+            });
+
+            $(`.radio-prpRbtn input[name="projectPropRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPursueProjectProponent"]`).attr('value', $(this).attr('id') === 'prpRbtn1');
+            });
+
+            $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
+            });
+
+            $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
+                console.log($(this).val())
+                removeBcfPlaceholders();
+
+                if ($(this).val() == 5) {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', false).val("");
+                }
+            });
+
+            $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
+                if ($(this).val() == 'Others') {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', false).attr('');
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', true);
+                }
+                else {
+                    $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+                    $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
+                }
+            });
+
+            $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+                $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+            })
+
+            //Load the possible data on others forms
+            //HLafTobcfConnectedFieldMap();
+            //bcfToHLafConnectedFieldMap();
+        }
     });
 
     //#region Methods
-
-    //$(document).ready(function () {
-    //    loadloanParticularInformation(applicantInfoIdVal);
-    //    loadSpouseInformation(applicantInfoIdVal);
-    //    loadBorrowerInformation(applicantInfoIdVal);
-    //    loadCollateralInformation(applicantInfoIdVal);
-    //    loadForm2PageInformation(applicantInfoIdVal);
-    //    initializeRadioBtnMisc();
-    //});
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
     function validateForm(form) {
         var isValid = true;
 
         // Your validation logic here
         // For example, check if required fields are filled
-        form.find(':input[required]').each(function () {
+
+        //form.removeClass('was-validated');
+
+        form.find(':input[required]').not(`[data-type$="InputMask"]`).each(function () {
+            // check if it is a radiobutton
+            //if ($(`[name="${this.name}"]`).attr('type') === 'radio') {
+            //    console.log('amd');
+            //    let selectedRadio = $(`[name="${this.name}"]:checked`);
+            //    if (selectedRadio.length > 0) {
+            //        // radio button is selected, valid
+            //        $(this).removeClass('is-invalid');
+            //        $(this).addClass('is-valid');
+            //    }
+            //    else {
+            //        // radio button is NOT selected, invalid
+            //        $(this).removeClass('is-valid');
+            //        $(this).addClass('is-invalid');
+
+            //        isValid = false;
+            //    }
+
+            //    return;
+            //}
+
             if (!$(this).val()) {
+                //$(this).removeClass('was-validated');
+                $(this).removeClass('is-valid');
                 $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
+
+                console.log('invalid');
+                console.log($(this));
 
                 isValid = false;
-            } else {
+            }
+            else {
+                // valid
                 $(this).removeClass('is-invalid');
-                $(this).addClass('was-validated');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
             }
         });
 
+        form.find(':input[required][data-type$="InputMask"]').each(function () {
+            if (!$(this).inputmask("isComplete")) {
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+                //$(this).removeClass('was-validated');
+
+                console.log('invalid');
+                console.log($(this));
+                // $(this)[0].setCustomValidity("aa")
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
+
+                this.setCustomValidity("");
+            }
+        });
+
+        //for (var index in telNoArray) {
+        //    let itiElement = telNoArray[index];
+        //    let telInput = $(`[name="${itiElement.a.name}"]`);
+
+        //    let invalidFlag = telInput.data('invalid');
+
+        //    if (Boolean(invalidFlag)) {
+        //        //
+        //        telInput.removeClass('is-valid');
+        //        telInput.addClass('is-invalid');
+
+        //        telInput.setCustomValidity("Invalid");
+        //    }
+        //    else {
+        //        $(this).removeClass('is-invalid');
+        //        $(this).addClass('is-valid');
+
+        //        telInput.setCustomValidity("");
+        //    }
+        //}
+
+        //let xe = form.find(':input.iti__tel-input').each;
+
+        form.find(':input.iti__tel-input').each(function () {
+            //let invalidFlag = $(this).data('invalid');
+            let id = $(this).attr('id');
+            let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+            //  (itiInstance.a.hasAttribute('required') || itiInstance.a.value)
+
+            if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                console.log('tel has errors');
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                this.setCustomValidity("");
+            }
+        });
+
+        //form.find(':input:not(.is-valid):not(.is-invalid):not([readonly])').each(function () {
+        //    $(this).addClass('is-valid');
+        //});
+
+        //form.find('input[type="radio"][required]').each(function () {
+        //    let hasClass = $(this).hasClass('valid');
+
+        //    console.log(roleId);
+        //    if (roleId === '3') {
+        //        $(this).prop('required', false);
+        //        return;
+        //    }
+
+        //    if (!hasClass) {
+        //        $(this).addClass('is-invalid');
+        //        $(this).removeClass('valid');
+
+        //        console.log('invalid');
+        //        console.log($(this));
+
+        //        isValid = false;
+        //    } else {
+        //        $(this).addClass('valid');
+        //        $(this).removeClass('is-invalid');
+        //    }
+        //});
+
+        //form.addClass('was-validated');
         return isValid;
     }
 
     function rebindValidators() {
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", false);
+
         let $form = $("#frm_hlf068");
         let button = $("#btn_savehlf068");
 
@@ -1345,6 +1642,8 @@ $(function () {
         $.validator.unobtrusive.parse($form);
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
+
+        initializeInputmaskValidation();
 
         // Prevent form submission when "Enter" key is pressed
         $form.on("keydown", function (e) {
@@ -1362,6 +1661,12 @@ $(function () {
             $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").removeAttr("readonly");
             $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', false);
             $('input[type="radio"]').prop('disabled', false);
+
+            //BCF FORM
+            $("#BuyerConfirmationModel_ProjectProponentName").prop('readonly', true);
+            $("#BuyerConfirmationModel_HouseUnitModel").prop('readonly', true);
+            $("#BuyerConfirmationModel_SellingPrice").prop('readonly', true);
+            $("#BuyerConfirmationModel_MonthlyAmortization").prop('readonly', true);
 
             if (!$(this).valid()) {
                 messageBox("Please fill out all required fields!", "danger", true);
@@ -1383,6 +1688,8 @@ $(function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
+
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
@@ -1394,7 +1701,7 @@ $(function () {
                     if (applicantInfoIdVal == 0) {
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
-                            window.location.href = "/Applicants/HLF068/" + response;
+                            window.location.href = "/Applicants/Details/" + response;
                         }, 2000);
                     } else {
                         var link = "Applicants/Beneficiary";
@@ -1408,6 +1715,8 @@ $(function () {
                     // Reset button state
                     button.attr({ disabled: false });
                     button.html("<span class='mdi mdi-content-save-outline'></span> Save");
+
+                    editableFlag = false;
                 },
                 error: function (response) {
                     // Error message handling
@@ -1517,6 +1826,68 @@ $(function () {
         return isValid;
     }
 
+    function initializeInputmaskValidation() {
+        $.validator.addMethod("sssNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && val.length < 9) {
+                // if it has value, validate by length
+                //let errorMessage = $(`#${elem.id}`).parent().find(`[data-valmsg-for="${elem.name}"]`).find(`[id="${elem.id}-error"]`);
+                //errorMessage.html("Invalid format, must be like this: [12-12345(67)-89]");
+
+                $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
+                return false;
+            }
+            else if (!$(`#${elem.id}`).inputmask("isComplete")) {
+                //let errorMessage = $(`#${elem.id}`).parent().find(`[data-valmsg-for="${elem.name}"]`).find(`[id="${elem.id}-error"]`);
+                //errorMessage.html("Invalid format, must be like this: [12-12345(67)-89]");
+                $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.sssNumber);
+
+        $.validator.addMethod("tinNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && val.length < 9) {
+                // if it has value, validate by length
+                //let errorMessage = $(`#${elem.id}`).parent().find(`[data-valmsg-for="${elem.name}"]`).find(`[id="${elem.id}-error"]`);
+                //errorMessage.html("Invalid format, must be like this: [12-12345(67)-89]");
+
+                $.validator.messages.tinNumber = "Format must be like this: 123-456-789(-0000)";
+                return false;
+            }
+            else if (!$(`#${elem.id}`).inputmask("isComplete")) {
+                //let errorMessage = $(`#${elem.id}`).parent().find(`[data-valmsg-for="${elem.name}"]`).find(`[id="${elem.id}-error"]`);
+                //errorMessage.html("Invalid format, must be like this: [12-12345(67)-89]");
+                $.validator.messages.tinNumber = "Format must be like this: 123-456-789(-0000)";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.tinNumber);
+
+        $.validator.addMethod("pagIBIGNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 12 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.pagIBIGNumber = "Format must be exactly this: 1234-5678-9012";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.pagIBIGNumber);
+    }
+
     function initializeLoanCreditDate() {
         const dateFormat = "Y-m-d";
         var currentDate = moment().format("YYYY-MM-DD");
@@ -1571,6 +1942,8 @@ $(function () {
         //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
         //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
 
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
+        telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -1602,9 +1975,13 @@ $(function () {
                 if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
                     console.log(itiInstance.getValidationError());
                     $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                    this.setCustomValidity("Invalid");
                 }
                 else {
                     $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                    this.setCustomValidity("");
                 }
             });
         }
@@ -1613,6 +1990,10 @@ $(function () {
     }
 
     function initializeBasicTelInput() {
+        $(`[name="BuyerConfirmationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+
         $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -1628,22 +2009,70 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
+        let pagibigAvailedLoan = $("[name='BuyerConfirmationModel.IsPagibigAvailedLoan']").val();
+
+        let coborrower = $("[name='BuyerConfirmationModel.IsPagibigCoBorrower']").val();
+
+        let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
+        let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
+
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
+        let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
+        let isPagibigMember = $("#BuyerConfirmationModel_IsPagibigMember").val();
+
+        let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
+        let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
+
+        $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
+        $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
+
+        //HLAF FROM
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
-            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass("valid");
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue).addClass("valid");
 
             // Set checked status for PastDue radio buttons
-            $("#pdRbtn1").prop("checked", !!pastDueValue);
-            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#pdRbtn1").prop("checked", !!pastDueValue).addClass("valid");
+            $("#pdRbtn2").prop("checked", !pastDueValue).addClass("valid");
 
             // Set checked status for BouncingChecks radio buttons
-            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue).addClass("valid");
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue).addClass("valid");
 
             // Set checked status for MedicalAdvice radio buttons
-            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass("valid");
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass("valid");
+        }
+
+        //BCF FORM
+        if (buyerConfirmationId !== '0') {
+            // Set checked status for BCF Additional income radio buttons
+            $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass("valid");
+            $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass("valid");
+
+            // Set checked status for BCF Pagibig Number radio buttons
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
+            $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
+
+            // Set checked status for BCF availed laon radio buttons
+            $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
+            $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
+            $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
+
+            // Set checked status for BCF co-borrower radio buttons
+            $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
+            $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
+
+            // Set checked status for BCF term in condition radio buttons
+            $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
+            $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
+        } else {
+            console.log("Sample");
+            $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).val("True");
         }
 
         // Set miscellanous input to disable
@@ -1651,6 +2080,1177 @@ $(function () {
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        //BCF Particulars
+        $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
+        $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
+
+        //BCF Radiobuttons
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
     }
+
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
+    }
+
+    //function setCheckedAndValidStatus(radioBtn1, radioBtn2, value) {
+    //    if (value !== 'False') {
+    //        $(radioBtn1).prop('checked', true);
+    //    } else {
+    //        $(radioBtn2).prop('checked', true);
+    //    }
+
+    //    $(radioBtn1).addClass('valid');
+    //    $(radioBtn2).addClass('valid');
+    //}
+
+    function bcfToHLafConnectedFieldMap() {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
+            return;
+        }
+
+        var lastName = $("#BuyerConfirmationModel_LastName").val();
+        var FirstName = $("#BuyerConfirmationModel_FirstName").val();
+        var MiddleName = $("#BuyerConfirmationModel_MiddleName").val();
+        var Suffix = $("#BuyerConfirmationModel_Suffix").val();
+        var BirthDate = $("#BuyerConfirmationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BarrowersInformationModel_LastName").val(lastName);
+        $("#BarrowersInformationModel_FirstName").val(FirstName);
+        $("#BarrowersInformationModel_MiddleName").val(MiddleName);
+        $("#BarrowersInformationModel_Suffix").val(Suffix);
+        $("#BarrowersInformationModel_BirthDate").val(BirthDate);
+        $('#BarrowersInformationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+
+        var homeNumber = $("#BuyerConfirmationModel_HomeNumber").val();
+        var mobileNumber = $("#BuyerConfirmationModel_MobileNumber").val();
+        var email = $("#BuyerConfirmationModel_Email").val();
+
+        $("#BarrowersInformationModel_HomeNumber").val(homeNumber);
+        $("#BarrowersInformationModel_MobileNumber").val(mobileNumber);
+
+        $("#BarrowersInformationModel_Email").val(email);
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BuyerConfirmationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BuyerConfirmationModel_PresentBuildingName").val();
+        var presentLotName = $("#BuyerConfirmationModel_PresentLotName").val();
+        var presentStreetName = $("#BuyerConfirmationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BuyerConfirmationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BuyerConfirmationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BuyerConfirmationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BuyerConfirmationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BuyerConfirmationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BarrowersInformationModel_PresentUnitName").val(presentUnitName);
+        $("#BarrowersInformationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BarrowersInformationModel_PresentLotName").val(presentLotName);
+        $("#BarrowersInformationModel_PresentStreetName").val(presentStreetName);
+        $("#BarrowersInformationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BarrowersInformationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BarrowersInformationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BarrowersInformationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BarrowersInformationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BuyerConfirmationModel_EmployerName").val();
+
+        $("#BarrowersInformationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseFirstName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseSuffix').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseMiddleName').val();
+
+        $('#SpouseModel_LastName').val(spouseLastName);
+        $('#SpouseModel_FirstName').val(spouseFirstName);
+        $('#SpouseModel_Suffix').val(spouseExtensionName);
+        $('#SpouseModel_MiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#BuyerConfirmationModel_SpouseCompanyUnitName').val();
+        var spouseCompanyBuilding = $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val();
+        var spouseCompanyLot = $('#BuyerConfirmationModel_SpouseCompanyLotName').val();
+        var spouseCompanyStreet = $('#BuyerConfirmationModel_SpouseCompanyStreetName').val();
+        var spouseCompanySubdivision = $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val();
+        var spouseCompanyBaranggay = $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val();
+        var spouseCompanyMunicipality = $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val();
+        var spouseCompanyProvince = $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val();
+        var spouseCompanyZipcode = $('#BuyerConfirmationModel_SpouseCompanyZipCode').val();
+
+        $('#SpouseModel_SpouseEmploymentUnitName').val(spouseEmploymentUnit);
+        $('#SpouseModel_SpouseEmploymentBuildingName').val(spouseCompanyBuilding);
+        $('#SpouseModel_SpouseEmploymentLotName').val(spouseCompanyLot);
+        $('#SpouseModel_SpouseEmploymentStreetName').val(spouseCompanyStreet);
+        $('#SpouseModel_SpouseEmploymentSubdivisionName').val(spouseCompanySubdivision);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').val(spouseCompanyBaranggay);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').val(spouseCompanyMunicipality);
+        $('#SpouseModel_SpouseEmploymentProvinceName').val(spouseCompanyProvince);
+        $('#SpouseModel_SpouseEmploymentZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BuyerConfirmationModel_CompanyUnitName').val();
+        var companyBldgName = $('#BuyerConfirmationModel_CompanyBuildingName').val();
+        var companyLotNo = $('#BuyerConfirmationModel_CompanyLotName').val();
+        var companySreetName = $('#BuyerConfirmationModel_CompanyStreetName').val();
+        var companySubd = $('#BuyerConfirmationModel_CompanySubdivisionName').val();
+        var companyBrgy = $('#BuyerConfirmationModel_CompanyBaranggayName').val();
+        var companyMuni = $('#BuyerConfirmationModel_CompanyMunicipalityName').val();
+        var companyProv = $('#BuyerConfirmationModel_CompanyProvinceName').val();
+        var companyZipcode = $('#BuyerConfirmationModel_CompanyZipCode').val();
+
+        $('#BarrowersInformationModel_BusinessUnitName').val(companyUnit);
+        $('#BarrowersInformationModel_BusinessBuildingName').val(companyBldgName);
+        $('#BarrowersInformationModel_BusinessLotName').val(companyLotNo);
+        $('#BarrowersInformationModel_BusinessStreetName').val(companySreetName);
+        $('#BarrowersInformationModel_BusinessSubdivisionName').val(companySubd);
+        $('#BarrowersInformationModel_BusinessBaranggayName').val(companyBrgy);
+        $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
+        $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
+        $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
+        $("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
+    }
+
+    function HLafTobcfConnectedFieldMap() {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
+            return;
+        }
+
+        var lastName = $("#BarrowersInformationModel_LastName").val();
+        var FirstName = $("#BarrowersInformationModel_FirstName").val();
+        var MiddleName = $("#BarrowersInformationModel_MiddleName").val();
+        var Suffix = $("#BarrowersInformationModel_Suffix").val();
+        var BirthDate = $("#BarrowersInformationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BarrowersInformationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BuyerConfirmationModel_LastName").val(lastName);
+        $("#BuyerConfirmationModel_FirstName").val(FirstName);
+        $("#BuyerConfirmationModel_MiddleName").val(MiddleName);
+        $("#BuyerConfirmationModel_Suffix").val(Suffix);
+        $("#BuyerConfirmationModel_BirthDate").val(BirthDate);
+        $('#BuyerConfirmationModel_MaritalStatus').data("selectize").setValue(MaritalStatus);
+
+        var homeNumber = $("#BarrowersInformationModel_HomeNumber").val();
+        var mobileNumber = $("#BarrowersInformationModel_MobileNumber").val();
+        var email = $("#BarrowersInformationModel_Email").val();
+
+        $("#BuyerConfirmationModel_HomeNumber").val(homeNumber);
+        $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
+        $("#BuyerConfirmationModel_Email").val(email);
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BarrowersInformationModel_PresentBuildingName").val();
+        var presentLotName = $("#BarrowersInformationModel_PresentLotName").val();
+        var presentStreetName = $("#BarrowersInformationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BarrowersInformationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BarrowersInformationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BarrowersInformationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BarrowersInformationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BarrowersInformationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BuyerConfirmationModel_PresentUnitName").val(presentUnitName);
+        $("#BuyerConfirmationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BuyerConfirmationModel_PresentLotName").val(presentLotName);
+        $("#BuyerConfirmationModel_PresentStreetName").val(presentStreetName);
+        $("#BuyerConfirmationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BuyerConfirmationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BuyerConfirmationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BuyerConfirmationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BuyerConfirmationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BarrowersInformationModel_EmployerName").val();
+
+        $("#BuyerConfirmationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#SpouseModel_LastName').val();
+        var spouseFirstName = $('#SpouseModel_FirstName').val();
+        var spouseExtensionName = $('#SpouseModel_Suffix').val();
+        var spouseMiddleName = $('#SpouseModel_MiddleName').val();
+
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
+        $('#BuyerConfirmationModel_SpouseFirstName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseSuffix').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseMiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
+        var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
+        var spouseCompanyLot = $('#SpouseModel_SpouseEmploymentLotName').val();
+        var spouseCompanyStreet = $('#SpouseModel_SpouseEmploymentStreetName').val();
+        var spouseCompanySubdivision = $('#SpouseModel_SpouseEmploymentSubdivisionName').val();
+        var spouseCompanyBaranggay = $('#SpouseModel_SpouseEmploymentBaranggayName').val();
+        var spouseCompanyMunicipality = $('#SpouseModel_SpouseEmploymentMunicipalityName').val();
+        var spouseCompanyProvince = $('#SpouseModel_SpouseEmploymentProvinceName').val();
+        var spouseCompanyZipcode = $('#SpouseModel_SpouseEmploymentZipCode').val();
+
+        $('#BuyerConfirmationModel_SpouseCompanyUnitName').val(spouseEmploymentUnit);
+        $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val(spouseCompanyBuilding);
+        $('#BuyerConfirmationModel_SpouseCompanyLotName').val(spouseCompanyLot);
+        $('#BuyerConfirmationModel_SpouseCompanyStreetName').val(spouseCompanyStreet);
+        $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val(spouseCompanySubdivision);
+        $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val(spouseCompanyBaranggay);
+        $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val(spouseCompanyMunicipality);
+        $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val(spouseCompanyProvince);
+        $('#BuyerConfirmationModel_SpouseCompanyZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BarrowersInformationModel_BusinessUnitName').val();
+        var companyBldgName = $('#BarrowersInformationModel_BusinessBuildingName').val();
+        var companyLotNo = $('#BarrowersInformationModel_BusinessLotName').val();
+        var companySreetName = $('#BarrowersInformationModel_BusinessStreetName').val();
+        var companySubd = $('#BarrowersInformationModel_BusinessSubdivisionName').val();
+        var companyBrgy = $('#BarrowersInformationModel_BusinessBaranggayName').val();
+        var companyMuni = $('#BarrowersInformationModel_BusinessMunicipalityName').val();
+        var companyProv = $('#BarrowersInformationModel_BusinessProvinceName').val();
+        var companyZipcode = $('#BarrowersInformationModel_BusinessZipCode').val();
+
+        $('#BuyerConfirmationModel_CompanyUnitName').val(companyUnit);
+        $('#BuyerConfirmationModel_CompanyBuildingName').val(companyBldgName);
+        $('#BuyerConfirmationModel_CompanyLotName').val(companyLotNo);
+        $('#BuyerConfirmationModel_CompanyStreetName').val(companySreetName);
+        $('#BuyerConfirmationModel_CompanySubdivisionName').val(companySubd);
+        $('#BuyerConfirmationModel_CompanyBaranggayName').val(companyBrgy);
+        $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
+        $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
+        $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
+
+        if (pagibigNo) {
+            $("#pagibigRbtn1").prop("checked", true);
+            $("#bcf-pagIbigNumField").prop("hidden", false);
+            $("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+        }
+    }
+
+    function progressCheck(targetForm = "bcfdata") {
+        console.log("execute");
+        if (targetForm === "bcfdata" && $(`#bcfdata`).length === 0) {
+            targetForm = "loanparticulars";
+        }
+
+        var steps = $(".progressbar .progress-step");
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
+
+        currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
+
+        steps.each((index, step) => {
+            if (index === currentStep) {
+                step.classList.remove("completed");
+                step.classList.add("current");
+            }
+            else if (index < currentStep) {
+                step.classList.add("completed");
+            }
+            else {
+                step.classList.remove("current");
+                step.classList.remove("completed");
+            }
+        });
+
+        const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
+
+        let width = ((allCurrentClasses.length / (steps.length - 1)) * 99) + allCurrentClasses.length;
+
+        if (width > 99) width = 99;
+
+        $(`.progressbar #progress`).css('width', `${width}%`);
+    }
+
+    function initializePdfJs() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
+    }
+
+    function loadBcfPreview() {
+        //$("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        //$("#BuyerConfirmationModel_BirthDate").attr("disabled", false);
+
+        //$("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+        //$("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+
+        //enable bcf field even approve temporarily to mapped in pdf
+        enableBuyerConfirmationFields();
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestBCFB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
+                $("#BuyerConfirmationModel_BirthDate").attr("disabled", true);
+
+                $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
+                $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
+
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="bcfPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="bcfPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+
+                //disableBuyerConfirmationFields();
+            }
+        });
+    }
+
+    function loadHlafPreview() {
+        $("#BarrowersInformationModel_BirthDate").attr('disabled', false);
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        // var formData = form1.serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestHousingFormB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                $("#BarrowersInformationModel_BirthDate").attr('disabled', true);
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="hlafPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="hlafPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+
+                    //  $("#beneficiary-overlay").addClass('d-none');
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            },
+
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            }
+        });
+    }
+
     //#endregion
+
+    function preConfirmationSwal() {
+        // Use SweetAlert for confirmation
+        Swal.fire({
+            title: `<h1 class="text-warning p-0"><b>Leave edit mode?</b></h1>`,
+            text: `You have unsaved changes. If you leave now then all of your edit progress will be lost.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Continue editing`,
+            cancelButtonText: 'Discard changes',
+            reverseButtons: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+        }).then(async (result) => {
+            if (result.isDismissed) {
+                // Discard Changes
+
+                await retreiveHLAFandBCF();
+
+                $("#btn_edit").removeClass("active");
+
+                $("#confirmCard").prop('hidden', true);
+
+                $("#frm_hlf068 input, #frm_hlf068 select, #frm_hlf068 textarea").attr("readonly", true).addClass("disabled");
+
+                $(`#frm_hlf068 input[type="checkbox"]`).attr("disabled", true);
+                $('.calendarpicker, .timepicker, .present-calendar-picker').prop('disabled', true);
+                $('input[type="radio"]').prop('disabled', true);
+
+                $('#frm_hlf068').find('.selectized').each(function (i, e) {
+                    e.selectize.lock();
+                });
+
+                $("#btn_edit").removeClass("text-danger").addClass("text-info").html(`<i class="mdi mdi-pencil-outline text-info"></i> Edit`);
+
+                editableFlag = false;
+            }
+        });
+    }
+
+    async function retreiveHLAFandBCF() {
+        //Loan Particulars Information Model
+        let particulars = await getLoanParticularInformation(applicantInfoIdVal);
+
+        //$("#LoanParticularsInformationModel_Id").val(particulars.Id);
+        $("#LoanParticularsInformationModel_PurposeOfLoanId").val(particulars ? particulars.PurposeOfLoanId : null);
+        //$("#LoanParticularsInformationModel_ApplicantsPersonalInformationId").val(particulars.ApplicantsPersonalInformationId);
+        $("#LoanParticularsInformationModel_RepricingPeriod").val(particulars ? particulars.RepricingPeriod : null);
+        $("#LoanParticularsInformationModel_DesiredLoanTermYears").val(particulars ? particulars.DesiredLoanTermYears : null);
+        $("#LoanParticularsInformationModel_ModeOfPaymentId").data('selectize').setValue(particulars ? particulars.ModeOfPaymentId : null);
+        $("#LoanParticularsInformationModel_DesiredLoanAmount").val(particulars ? particulars.DesiredLoanAmount : null);
+        $("#LoanParticularsInformationModel_ExistingHousingApplicationNumber").val(particulars ? particulars.ExistingHousingApplicationNumber : null);
+
+        let spouse = await getSpouseInformation(applicantInfoIdVal)
+
+        //$("#SpouseModel_Id").val(spouse ? spouse.Id : 0);
+        //$("#SpouseModel_ApplicantsPersonalInformationId").val(spouse ? spouse.ApplicantsPersonalInformationId : null);
+
+        $("#SpouseModel_IsSpouseAddressAbroad").prop('checked', spouse ? spouse.IsSpouseAddressAbroad : false);
+        $("#SpouseModel_SpouseEmploymentUnitName").val(spouse ? spouse.SpouseEmploymentUnitName : '');
+        $("#SpouseModel_SpouseEmploymentBuildingName").val(spouse ? spouse.SpouseEmploymentBuildingName : '');
+        $("#SpouseModel_SpouseEmploymentLotName").val(spouse ? spouse.SpouseEmploymentLotName : '');
+        $("#SpouseModel_SpouseEmploymentStreetName").val(spouse ? spouse.SpouseEmploymentStreetName : '');
+        $("#SpouseModel_SpouseEmploymentSubdivisionName").val(spouse ? spouse.SpouseEmploymentSubdivisionName : '');
+        $("#SpouseModel_SpouseEmploymentBaranggayName").val(spouse ? spouse.SpouseEmploymentBaranggayName : '');
+        $("#SpouseModel_SpouseEmploymentMunicipalityName").val(spouse ? spouse.SpouseEmploymentMunicipalityName : '');
+        $("#SpouseModel_SpouseEmploymentProvinceName").val(spouse ? spouse.SpouseEmploymentProvinceName : '');
+        $("#SpouseModel_SpouseEmploymentZipCode").val(spouse ? spouse.SpouseEmploymentZipCode : '');
+        $("#SpouseModel_PreparedMailingAddress").val(spouse ? spouse.PreparedMailingAddress : '');
+        $("#SpouseModel_PreferredTimeToContact").val(spouse ? spouse.PreferredTimeToContact : '');
+        $("#SpouseModel_LastName").val(spouse ? spouse.LastName : '');
+        $("#SpouseModel_FirstName").val(spouse ? spouse.FirstName : '');
+        $("#SpouseModel_MiddleName").val(spouse ? spouse.MiddleName : '');
+        $("#SpouseModel_Suffix").val(spouse ? spouse.Suffix : '');
+        $("#SpouseModel_PagibigMidNumber").val(spouse ? spouse.PagibigMidNumber : '');
+        $("#SpouseModel_TinNumber").val(spouse ? spouse.TinNumber : '');
+        $("#SpouseModel_Citizenship").val(spouse ? spouse.Citizenship : '');
+
+        $("#SpouseModel_BirthDate").val(spouse ? spouse.BirthDate : '');
+        setDateValue("#SpouseModel_BirthDate");
+
+        $("#SpouseModel_BusinessNumber").val(spouse ? spouse.BusinessNumber : '');
+        $("#SpouseModel_DeletedById").val(spouse ? spouse.DeletedById : null);
+        $("#SpouseModel_IndustryId").data('selectize').setValue(spouse ? spouse.IndustryId : null);
+        $("#SpouseModel_BusinessName").val(spouse ? spouse.BusinessName : '');
+        $("#SpouseModel_OccupationStatus").data('selectize').setValue(spouse ? spouse.OccupationStatus : null);
+        $("#SpouseModel_YearsInEmployment").val(spouse ? spouse.YearsInEmployment : null);
+        $("#SpouseModel_EmploymentPosition").val(spouse ? spouse.EmploymentPosition : '');
+        $("#SpouseModel_BusinessTelNo").val(spouse ? spouse.BusinessTelNo : '');
+
+        let borrower = await getBorrowerInformation(applicantInfoIdVal);
+
+        //$("#BarrowersInformationModel_Id").val(borrower.Id);
+        //$("#BarrowersInformationModel_ApplicantsPersonalInformationId").val(borrower.ApplicantsPersonalInformationId);
+
+        $("#BarrowersInformationModel_LastName").val(borrower.LastName);
+        $("#BarrowersInformationModel_FirstName").val(borrower.FirstName);
+        $("#BarrowersInformationModel_MiddleName").val(borrower.MiddleName);
+        $("#BarrowersInformationModel_Suffix").val(borrower.Suffix);
+        $("#BarrowersInformationModel_Citizenship").val(borrower.Citizenship);
+
+        $("#BarrowersInformationModel_BirthDate").val(moment(borrower.BirthDate).format('MM/DD/YYYY'));
+        setDateValue('#BarrowersInformationModel_BirthDate');
+
+        $("#BarrowersInformationModel_Sex").data('selectize').setValue(borrower ? borrower.Sex : null);
+        $("#BarrowersInformationModel_MaritalStatus").data('selectize').setValue(borrower ? borrower.MaritalStatus : null);
+        $("#BarrowersInformationModel_HomeNumber").val(borrower.HomeNumber);
+        $("#BarrowersInformationModel_MobileNumber").val(borrower.MobileNumber);
+        $("#BarrowersInformationModel_Email").val(borrower.Email);
+        $("#BarrowersInformationModel_PresentUnitName").val(borrower.PresentUnitName);
+        $("#BarrowersInformationModel_PresentBuildingName").val(borrower.PresentBuildingName);
+        $("#BarrowersInformationModel_PresentLotName").val(borrower.PresentLotName);
+        $("#BarrowersInformationModel_PresentStreetName").val(borrower.PresentStreetName);
+        $("#BarrowersInformationModel_PresentSubdivisionName").val(borrower.PresentSubdivisionName);
+        $("#BarrowersInformationModel_PresentBaranggayName").val(borrower.PresentBaranggayName);
+        $("#BarrowersInformationModel_PresentMunicipalityName").val(borrower.PresentMunicipalityName);
+        $("#BarrowersInformationModel_PresentProvinceName").val(borrower.PresentProvinceName);
+        $("#BarrowersInformationModel_PresentZipCode").val(borrower.PresentZipCode);
+        $("#BarrowersInformationModel_PermanentUnitName").val(borrower.PermanentUnitName);
+        $("#BarrowersInformationModel_PermanentBuildingName").val(borrower.PermanentBuildingName);
+        $("#BarrowersInformationModel_PermanentLotName").val(borrower.PermanentLotName);
+        $("#BarrowersInformationModel_PermanentStreetName").val(borrower.PermanentStreetName);
+        $("#BarrowersInformationModel_PermanentSubdivisionName").val(borrower.PermanentSubdivisionName);
+        $("#BarrowersInformationModel_PermanentBaranggayName").val(borrower.PermanentBaranggayName);
+        $("#BarrowersInformationModel_PermanentMunicipalityName").val(borrower.PermanentMunicipalityName);
+        $("#BarrowersInformationModel_PermanentProvinceName").val(borrower.PermanentProvinceName);
+        $("#BarrowersInformationModel_PermanentZipCode").val(borrower.PermanentZipCode);
+        $("#BarrowersInformationModel_HomeOwnerShip").data('selectize').setValue(borrower ? borrower.HomeOwnerShip : null);
+        $("#BarrowersInformationModel_MonthlyRent").val(borrower.MonthlyRent);
+        $("#BarrowersInformationModel_YearsofStay").val(borrower.YearsofStay);
+        $("#BarrowersInformationModel_SSSNumber").val(borrower.SSSNumber);
+        $("#BarrowersInformationModel_TinNumber").val(borrower.TinNumber);
+        $("#BarrowersInformationModel_OccupationStatus").data('selectize').setValue(borrower ? borrower.OccupationStatus : null);
+        $("#BarrowersInformationModel_EmployerName").val(borrower.EmployerName);
+        $("#BarrowersInformationModel_IndustryName").data('selectize').setValue(borrower ? borrower.IndustryName : null);
+        $("#BarrowersInformationModel_PositionName").val(borrower.PositionName);
+        $("#BarrowersInformationModel_DepartmentName").val(borrower.DepartmentName);
+        $("#BarrowersInformationModel_YearsEmployment").val(borrower.YearsEmployment);
+        $("#BarrowersInformationModel_NumberOfDependent").val(borrower.NumberOfDependent);
+        $("#BarrowersInformationModel_BusinessUnitName").val(borrower.BusinessUnitName);
+        $("#BarrowersInformationModel_BusinessBuildingName").val(borrower.BusinessBuildingName);
+        $("#BarrowersInformationModel_BusinessLotName").val(borrower.BusinessLotName);
+        $("#BarrowersInformationModel_BusinessStreetName").val(borrower.BusinessStreetName);
+        $("#BarrowersInformationModel_BusinessSubdivisionName").val(borrower.BusinessSubdivisionName);
+        $("#BarrowersInformationModel_BusinessBaranggayName").val(borrower.BusinessBaranggayName);
+        $("#BarrowersInformationModel_BusinessMunicipalityName").val(borrower.BusinessMunicipalityName);
+        $("#BarrowersInformationModel_BusinessProvinceName").val(borrower.BusinessProvinceName);
+        $("#BarrowersInformationModel_BusinessZipCode").val(borrower.BusinessZipCode);
+        $("#BarrowersInformationModel_BusinessCountry").val(borrower.BusinessCountry);
+        $("#BarrowersInformationModel_BusinessContactNumber").val(borrower.BusinessContactNumber);
+        $("#BarrowersInformationModel_BusinessDirectLineNumber").val(borrower.BusinessDirectLineNumber);
+        $("#BarrowersInformationModel_BusinessTruckLineNumber").val(borrower.BusinessTruckLineNumber);
+        $("#BarrowersInformationModel_BusinessEmail").val(borrower.BusinessEmail);
+        $("#BarrowersInformationModel_PreparedMailingAddress").data('selectize').setValue(borrower ? borrower.PreparedMailingAddress : null);
+        $("#BarrowersInformationModel_PreferredTimeToContact").val(borrower.PreferredTimeToContact);
+        $("#BarrowersInformationModel_IsPermanentAddressAbroad").prop('checked', borrower.IsPermanentAddressAbroad);
+        $("#BarrowersInformationModel_IsPresentAddressAbroad").prop('checked', borrower.IsPresentAddressAbroad);
+        $("#BarrowersInformationModel_PresentAddressIsPermanentAddress").prop('checked', borrower.PresentAddressIsPermanentAddress);
+        $("#BarrowersInformationModel_IsBusinessAddressAbroad").prop('checked', borrower.IsBusinessAddressAbroad);
+        $("#BarrowersInformationModel_PropertyDeveloperName").val(borrower.PropertyDeveloperName);
+        $("#BarrowersInformationModel_PropertyLocation").val(borrower.PropertyLocation);
+        $("#BarrowersInformationModel_PropertyUnitLevelName").val(borrower.PropertyUnitLevelName);
+
+        let form2Page = await getForm2PageInformation(applicantInfoIdVal);
+
+        //$("#Form2PageModel_Id").val(form2Page.Id);
+        //$("#Form2PageModel_ApplicantsPersonalInformationId").val(form2Page.ApplicantsPersonalInformationId);
+
+        $("#Form2PageModel_Bank1").val(form2Page.Bank1 ? form2Page.Bank1 : null);
+        $("#Form2PageModel_Bank2").val(form2Page.Bank2 ? form2Page.Bank2 : null);
+        $("#Form2PageModel_Bank3").val(form2Page.Bank3 ? form2Page.Bank3 : null);
+
+        $("#Form2PageModel_BranchAddress1").val(form2Page.BranchAddress1 ? form2Page.BranchAddress1 : null);
+        $("#Form2PageModel_BranchAddress2").val(form2Page.BranchAddress2 ? form2Page.BranchAddress2 : null);
+        $("#Form2PageModel_BranchAddress3").val(form2Page.BranchAddress3 ? form2Page.BranchAddress3 : null);
+
+        $("#Form2PageModel_TypeOfAccount1").val(form2Page.TypeOfAccount1 ? form2Page.TypeOfAccount1 : null);
+        $("#Form2PageModel_TypeOfAccount2").val(form2Page.TypeOfAccount2 ? form2Page.TypeOfAccount2 : null);
+        $("#Form2PageModel_TypeOfAccount3").val(form2Page.TypeOfAccount3 ? form2Page.TypeOfAccount3 : null);
+
+        $("#Form2PageModel_AccountNumber1").val(form2Page.AccountNumber1 ? form2Page.AccountNumber1 : null);
+        $("#Form2PageModel_AccountNumber2").val(form2Page.AccountNumber2 ? form2Page.AccountNumber2 : null);
+        $("#Form2PageModel_AccountNumber3").val(form2Page.AccountNumber3 ? form2Page.AccountNumber3 : null);
+
+        $("#Form2PageModel_DateOpened1").val(form2Page.DateOpened1 ? form2Page.DateOpened1 : null);
+        $("#Form2PageModel_DateOpened2").val(form2Page.DateOpened2 ? form2Page.DateOpened2 : null);
+        $("#Form2PageModel_DateOpened3").val(form2Page.DateOpened3 ? form2Page.DateOpened3 : null);
+
+        if (form2Page.DateOpened1) {
+            setDateValue("#Form2PageModel_DateOpened1");
+        }
+        if (form2Page.DateOpened2) {
+            setDateValue("#Form2PageModel_DateOpened2");
+        }
+        if (form2Page.DateOpened3) {
+            setDateValue("#Form2PageModel_DateOpened3");
+        }
+
+        $("#Form2PageModel_AverageBalance1").val(form2Page.AverageBalance1 ? form2Page.AverageBalance1 : null);
+        $("#Form2PageModel_AverageBalance2").val(form2Page.AverageBalance2 ? form2Page.AverageBalance2 : null);
+        $("#Form2PageModel_AverageBalance3").val(form2Page.AverageBalance3 ? form2Page.AverageBalance3 : null);
+
+        $("#Form2PageModel_IssuerName1").val(form2Page.IssuerName1 ? form2Page.IssuerName1 : null);
+        $("#Form2PageModel_IssuerName2").val(form2Page.IssuerName2 ? form2Page.IssuerName2 : null);
+        $("#Form2PageModel_IssuerName3").val(form2Page.IssuerName3 ? form2Page.IssuerName3 : null);
+
+        $("#Form2PageModel_CardType1").val(form2Page.CardType1 ? form2Page.CardType1 : null);
+        $("#Form2PageModel_CardType2").val(form2Page.CardType2 ? form2Page.CardType2 : null);
+        $("#Form2PageModel_CardType3").val(form2Page.CardType3 ? form2Page.CardType3 : null);
+
+        $("#Form2PageModel_CardExpiration1").val(form2Page.CardExpiration1 ? form2Page.CardExpiration1 : null);
+        $("#Form2PageModel_CardExpiration2").val(form2Page.CardExpiration2 ? form2Page.CardExpiration2 : null);
+        $("#Form2PageModel_CardExpiration3").val(form2Page.CardExpiration3 ? form2Page.CardExpiration3 : null);
+
+        $("#Form2PageModel_CreditLimit1").val(form2Page.CreditLimit1 ? form2Page.CreditLimit1 : null);
+        $("#Form2PageModel_CreditLimit2").val(form2Page.CreditLimit2 ? form2Page.CreditLimit2 : null);
+        $("#Form2PageModel_CreditLimit3").val(form2Page.CreditLimit3 ? form2Page.CreditLimit3 : null);
+
+        $("#Form2PageModel_Location1").val(form2Page.Location1 ? form2Page.Location1 : null);
+        $("#Form2PageModel_Location2").val(form2Page.Location2 ? form2Page.Location2 : null);
+        $("#Form2PageModel_Location3").val(form2Page.Location3 ? form2Page.Location3 : null);
+
+        $("#Form2PageModel_TypeOfProperty1").val(form2Page.TypeOfProperty1 ? form2Page.TypeOfProperty1 : null);
+        $("#Form2PageModel_TypeOfProperty2").val(form2Page.TypeOfProperty2 ? form2Page.TypeOfProperty2 : null);
+        $("#Form2PageModel_TypeOfProperty3").val(form2Page.TypeOfProperty3 ? form2Page.TypeOfProperty3 : null);
+
+        $("#Form2PageModel_AquisitionCost1").val(form2Page.AquisitionCost1 ? form2Page.AquisitionCost1 : null);
+        $("#Form2PageModel_AquisitionCost2").val(form2Page.AquisitionCost2 ? form2Page.AquisitionCost2 : null);
+        $("#Form2PageModel_AquisitionCost3").val(form2Page.AquisitionCost3 ? form2Page.AquisitionCost3 : null);
+
+        $("#Form2PageModel_MarketValue1").val(form2Page.MarketValue1 ? form2Page.MarketValue1 : null);
+        $("#Form2PageModel_MarketValue2").val(form2Page.MarketValue2 ? form2Page.MarketValue2 : null);
+        $("#Form2PageModel_MarketValue3").val(form2Page.MarketValue3 ? form2Page.MarketValue3 : null);
+
+        $("#Form2PageModel_MortgageBalance1").val(form2Page.MortgageBalance1 ? form2Page.MortgageBalance1 : null);
+        $("#Form2PageModel_MortgageBalance2").val(form2Page.MortgageBalance2 ? form2Page.MortgageBalance2 : null);
+        $("#Form2PageModel_MortgageBalance3").val(form2Page.MortgageBalance3 ? form2Page.MortgageBalance3 : null);
+
+        $("#Form2PageModel_RentalIncome1").val(form2Page.RentalIncome1 ? form2Page.RentalIncome1 : null);
+        $("#Form2PageModel_RentalIncome2").val(form2Page.RentalIncome2 ? form2Page.RentalIncome2 : null);
+        $("#Form2PageModel_RentalIncome3").val(form2Page.RentalIncome3 ? form2Page.RentalIncome3 : null);
+
+        $("#Form2PageModel_CreditorAndAddress1").val(form2Page.CreditorAndAddress1 ? form2Page.CreditorAndAddress1 : null);
+        $("#Form2PageModel_CreditorAndAddress2").val(form2Page.CreditorAndAddress2 ? form2Page.CreditorAndAddress2 : null);
+        $("#Form2PageModel_CreditorAndAddress3").val(form2Page.CreditorAndAddress3 ? form2Page.CreditorAndAddress3 : null);
+
+        $("#Form2PageModel_Security1").val(form2Page.Security1 ? form2Page.Security1 : null);
+        $("#Form2PageModel_Security2").val(form2Page.Security2 ? form2Page.Security2 : null);
+        $("#Form2PageModel_Security3").val(form2Page.Security3 ? form2Page.Security3 : null);
+
+        $("#Form2PageModel_Type1").val(form2Page.Type1 ? form2Page.Type1 : null);
+        $("#Form2PageModel_Type2").val(form2Page.Type2 ? form2Page.Type2 : null);
+        $("#Form2PageModel_Type3").val(form2Page.Type3 ? form2Page.Type3 : null);
+
+        $("#Form2PageModel_AmountBalance1").val(form2Page.AmountBalance1 ? form2Page.AmountBalance1 : null);
+        $("#Form2PageModel_AmountBalance2").val(form2Page.AmountBalance2 ? form2Page.AmountBalance2 : null);
+        $("#Form2PageModel_AmountBalance3").val(form2Page.AmountBalance3 ? form2Page.AmountBalance3 : null);
+
+        $("#Form2PageModel_MaturityDateTime1").val(form2Page.MaturityDateTime1 ? form2Page.MaturityDateTime1 : null);
+        $("#Form2PageModel_MaturityDateTime2").val(form2Page.MaturityDateTime2 ? form2Page.MaturityDateTime2 : null);
+        $("#Form2PageModel_MaturityDateTime3").val(form2Page.MaturityDateTime3 ? form2Page.MaturityDateTime3 : null);
+
+        if (form2Page.MaturityDateTime1) {
+            setDateValue("#Form2PageModel_MaturityDateTime1");
+        }
+        if (form2Page.MaturityDateTime2) {
+            setDateValue("#Form2PageModel_MaturityDateTime2");
+        }
+        if (form2Page.MaturityDateTime3) {
+            setDateValue("#Form2PageModel_MaturityDateTime3");
+        }
+
+        $("#Form2PageModel_Amortization1").val(form2Page.Amortization1 ? form2Page.Amortization1 : null);
+        $("#Form2PageModel_Amortization2").val(form2Page.Amortization2 ? form2Page.Amortization2 : null);
+        $("#Form2PageModel_Amortization3").val(form2Page.Amortization3 ? form2Page.Amortization3 : null);
+
+        $("#Form2PageModel_PendingCase").val(form2Page.PendingCase ? form2Page.PendingCase : null);
+        $("#Form2PageModel_PastDue").val(form2Page.PastDue ? form2Page.PastDue : null);
+        $("#Form2PageModel_BouncingChecks").val(form2Page.BouncingChecks ? form2Page.BouncingChecks : null);
+        $("#Form2PageModel_MedicalAdvice").val(form2Page.MedicalAdvice ? form2Page.MedicalAdvice : null);
+
+        $("#Form2PageModel_BankFinancial1").val(form2Page.BankFinancial1 ? form2Page.BankFinancial1 : null);
+        $("#Form2PageModel_BankFinancial2").val(form2Page.BankFinancial2 ? form2Page.BankFinancial2 : null);
+        $("#Form2PageModel_BankFinancial3").val(form2Page.BankFinancial3 ? form2Page.BankFinancial3 : null);
+
+        $("#Form2PageModel_Address1").val(form2Page.Address1 ? form2Page.Address1 : null);
+        $("#Form2PageModel_Address2").val(form2Page.Address2 ? form2Page.Address2 : null);
+        $("#Form2PageModel_Address3").val(form2Page.Address3 ? form2Page.Address3 : null);
+
+        $("#Form2PageModel_Purpose1").val(form2Page.Purpose1 ? form2Page.Purpose1 : null);
+        $("#Form2PageModel_Purpose2").val(form2Page.Purpose2 ? form2Page.Purpose2 : null);
+        $("#Form2PageModel_Purpose3").val(form2Page.Purpose3 ? form2Page.Purpose3 : null);
+
+        $("#Form2PageModel_LoanSecurity1").val(form2Page.LoanSecurity1 ? form2Page.LoanSecurity1 : null);
+        $("#Form2PageModel_LoanSecurity2").val(form2Page.LoanSecurity2 ? form2Page.LoanSecurity2 : null);
+        $("#Form2PageModel_LoanSecurity3").val(form2Page.LoanSecurity3 ? form2Page.LoanSecurity3 : null);
+
+        $("#Form2PageModel_HighestAmount1").val(form2Page.HighestAmount1 ? form2Page.HighestAmount1 : null);
+        $("#Form2PageModel_HighestAmount2").val(form2Page.HighestAmount2 ? form2Page.HighestAmount2 : null);
+        $("#Form2PageModel_HighestAmount3").val(form2Page.HighestAmount3 ? form2Page.HighestAmount3 : null);
+
+        $("#Form2PageModel_PresentBalance1").val(form2Page.PresentBalance1 ? form2Page.PresentBalance1 : null);
+        $("#Form2PageModel_PresentBalance2").val(form2Page.PresentBalance2 ? form2Page.PresentBalance2 : null);
+        $("#Form2PageModel_PresentBalance3").val(form2Page.PresentBalance3 ? form2Page.PresentBalance3 : null);
+
+        $("#Form2PageModel_DateObtained1").val(form2Page.DateObtained1 ? form2Page.DateObtained1 : null);
+        $("#Form2PageModel_DateObtained2").val(form2Page.DateObtained2 ? form2Page.DateObtained2 : null);
+        $("#Form2PageModel_DateObtained3").val(form2Page.DateObtained3 ? form2Page.DateObtained3 : null);
+
+        if (form2Page.DateObtained1) {
+            setDateValue("#Form2PageModel_DateObtained1");
+        }
+        if (form2Page.DateObtained2) {
+            setDateValue("#Form2PageModel_DateObtained2");
+        }
+        if (form2Page.DateObtained3) {
+            setDateValue("#Form2PageModel_DateObtained3");
+        }
+
+        $("#Form2PageModel_DateFullyPaid1").val(form2Page.DateFullyPaid1 ? form2Page.DateFullyPaid1 : null);
+        $("#Form2PageModel_DateFullyPaid2").val(form2Page.DateFullyPaid2 ? form2Page.DateFullyPaid2 : null);
+        $("#Form2PageModel_DateFullyPaid3").val(form2Page.DateFullyPaid3 ? form2Page.DateFullyPaid3 : null);
+
+        if (form2Page.DateFullyPaid1) {
+            setDateValue("#Form2PageModel_DateFullyPaid1");
+        }
+        if (form2Page.DateFullyPaid2) {
+            setDateValue("#Form2PageModel_DateFullyPaid2");
+        }
+        if (form2Page.DateFullyPaid3) {
+            setDateValue("#Form2PageModel_DateFullyPaid3");
+        }
+
+        $("#Form2PageModel_NameSupplier1").val(form2Page.NameSupplier1 ? form2Page.NameSupplier1 : null);
+        $("#Form2PageModel_NameSupplier2").val(form2Page.NameSupplier2 ? form2Page.NameSupplier2 : null);
+        $("#Form2PageModel_NameSupplier3").val(form2Page.NameSupplier3 ? form2Page.NameSupplier3 : null);
+
+        $("#Form2PageModel_TradeAddress1").val(form2Page.TradeAddress1 ? form2Page.TradeAddress1 : null);
+        $("#Form2PageModel_TradeAddress2").val(form2Page.TradeAddress2 ? form2Page.TradeAddress2 : null);
+        $("#Form2PageModel_TradeAddress3").val(form2Page.TradeAddress3 ? form2Page.TradeAddress3 : null);
+
+        $("#Form2PageModel_TradeTellNo1").val(form2Page.TradeTellNo1 ? form2Page.TradeTellNo1 : null);
+        $("#Form2PageModel_TradeTellNo2").val(form2Page.TradeTellNo2 ? form2Page.TradeTellNo2 : null);
+        $("#Form2PageModel_TradeTellNo3").val(form2Page.TradeTellNo3 ? form2Page.TradeTellNo3 : null);
+
+        $("#Form2PageModel_CharacterNameSupplier1").val(form2Page.CharacterNameSupplier1 ? form2Page.CharacterNameSupplier1 : null);
+        $("#Form2PageModel_CharacterNameSupplier2").val(form2Page.CharacterNameSupplier2 ? form2Page.CharacterNameSupplier2 : null);
+        $("#Form2PageModel_CharacterNameSupplier3").val(form2Page.CharacterNameSupplier3 ? form2Page.CharacterNameSupplier3 : null);
+
+        $("#Form2PageModel_CharacterAddress1").val(form2Page.CharacterAddress1 ? form2Page.CharacterAddress1 : null);
+        $("#Form2PageModel_CharacterAddress2").val(form2Page.CharacterAddress2 ? form2Page.CharacterAddress2 : null);
+        $("#Form2PageModel_CharacterAddress3").val(form2Page.CharacterAddress3 ? form2Page.CharacterAddress3 : null);
+
+        $("#Form2PageModel_CharacterTellNo1").val(form2Page.CharacterTellNo1 ? form2Page.CharacterTellNo1 : null);
+        $("#Form2PageModel_CharacterTellNo2").val(form2Page.CharacterTellNo2 ? form2Page.CharacterTellNo2 : null);
+        $("#Form2PageModel_CharacterTellNo3").val(form2Page.CharacterTellNo3 ? form2Page.CharacterTellNo3 : null);
+
+        $("#Form2PageModel_FirstName").val(form2Page.FirstName ? form2Page.FirstName : null);
+        $("#Form2PageModel_MiddleName").val(form2Page.MiddleName ? form2Page.MiddleName : null);
+        $("#Form2PageModel_Suffix").val(form2Page.Suffix ? form2Page.Suffix : null);
+        $("#Form2PageModel_LastName").val(form2Page.LastName ? form2Page.LastName : null);
+        $("#Form2PageModel_PagibigNumber").val(form2Page.PagibigNumber ? form2Page.PagibigNumber : null);
+        $("#Form2PageModel_TinNumber").val(form2Page.TinNumber ? form2Page.TinNumber : null);
+        $("#Form2PageModel_ContactNumber").val(form2Page.ContactNumber ? form2Page.ContactNumber : null);
+        $("#Form2PageModel_Email").val(form2Page.Email ? form2Page.Email : null);
+        $("#Form2PageModel_SourcePagibigFundId").val(form2Page.SourcePagibigFundId ? form2Page.SourcePagibigFundId : null);
+        $("#Form2PageModel_DateCreated").val(form2Page.DateCreated ? form2Page.DateCreated : null);
+        $("#Form2PageModel_CreatedById").val(form2Page.CreatedById ? form2Page.CreatedById : null);
+        $("#Form2PageModel_DateModified").val(form2Page.DateModified ? form2Page.DateModified : null);
+        $("#Form2PageModel_ModifiedById").val(form2Page.ModifiedById ? form2Page.ModifiedById : null);
+        $("#Form2PageModel_DateDeleted").val(form2Page.DateDeleted ? form2Page.DateDeleted : null);
+        $("#Form2PageModel_DeletedById").val(form2Page.DeletedById ? form2Page.DeletedById : null);
+        $("#Form2PageModel_Agreement").val(form2Page.Agreement ? form2Page.Agreement : null);
+        $("#Form2PageModel_SellersUnitName").val(form2Page.SellersUnitName ? form2Page.SellersUnitName : null);
+        $("#Form2PageModel_SellersBuildingName").val(form2Page.SellersBuildingName ? form2Page.SellersBuildingName : null);
+        $("#Form2PageModel_SellersLotName").val(form2Page.SellersLotName ? form2Page.SellersLotName : null);
+        $("#Form2PageModel_SellersStreetName").val(form2Page.SellersStreetName ? form2Page.SellersStreetName : null);
+        $("#Form2PageModel_SellersSubdivisionName").val(form2Page.SellersSubdivisionName ? form2Page.SellersSubdivisionName : null);
+        $("#Form2PageModel_SellersBaranggayName").val(form2Page.SellersBaranggayName ? form2Page.SellersBaranggayName : null);
+        $("#Form2PageModel_SellersMunicipalityName").val(form2Page.SellersMunicipalityName ? form2Page.SellersMunicipalityName : null);
+        $("#Form2PageModel_SellersProvinceName").val(form2Page.SellersProvinceName ? form2Page.SellersProvinceName : null);
+        $("#Form2PageModel_SellersZipCode").val(form2Page.SellersZipCode ? form2Page.SellersZipCode : null);
+
+        let collateral = await getCollateralInformation(applicantInfoIdVal);
+
+        //$("#CollateralInformationModel_Id").val(collateral ? collateral.Id : 0);
+        //$("#CollateralInformationModel_ApplicantsPersonalInformationId").val(collateral ? collateral.ApplicantsPersonalInformationId : null);
+
+        $("#CollateralInformationModel_Province").val(collateral ? collateral.Province : '');
+        $("#CollateralInformationModel_Municipality").val(collateral ? collateral.Municipality : '');
+        $("#CollateralInformationModel_Street").val(collateral ? collateral.Street : '');
+        $("#CollateralInformationModel_DeveloperName").val(collateral ? collateral.DeveloperName : '');
+        $("#CollateralInformationModel_PropertyTypeId").data('selectize').setValue(collateral ? collateral.PropertyTypeId : null);
+        $("#CollateralInformationModel_TctOctCctNumber").val(collateral ? collateral.TctOctCctNumber : '');
+        $("#CollateralInformationModel_TaxDeclrationNumber").val(collateral ? collateral.TaxDeclarationNumber : '');
+        $("#CollateralInformationModel_LotUnitNumber").val(collateral ? collateral.LotUnitNumber : null);
+        $("#CollateralInformationModel_BlockBuildingNumber").val(collateral ? collateral.BlockBuildingNumber : null);
+        $("#CollateralInformationModel_IsMortgage").prop("checked", collateral ? collateral.IsMortgage : false);
+        $("#CollateralInformationModel_CollateralReason").val(collateral ? collateral.CollateralReason : '');
+        $("#CollateralInformationModel_LandArea").val(collateral ? collateral.LandArea : null);
+        $("#CollateralInformationModel_HouseAge").val(collateral ? collateral.HouseAge : null);
+        $("#CollateralInformationModel_NumberOfStoreys").val(collateral ? collateral.NumberOfStoreys : null);
+        $("#CollateralInformationModel_ProposedNoOfStoreys").val(collateral ? collateral.ProposedNoOfStoreys : null);
+        $("#CollateralInformationModel_ExistingTotalFloorArea").val(collateral ? collateral.ExistingTotalFloorArea : null);
+        $("#CollateralInformationModel_ProposedTotalFloorArea").val(collateral ? collateral.ProposedTotalFloorArea : null);
+        $("#CollateralInformationModel_PagibigMidNumber").val(collateral ? collateral.PagibigMidNumber : null);
+        $("#CollateralInformationModel_HanNumber").val(collateral ? collateral.HanNumber : null);
+
+        let buyerConfimarion = await getBuyerConfirmation(buyerconfirmationCode);
+
+        //$("#BuyerConfirmationModel_Id").val(buyerConfimarion ? buyerConfimarion.Id : null);
+        //$("#BuyerConfirmationModel_ApplicantsPersonalInformationId").val(buyerConfimarion ? buyerConfimarion.ApplicantsPersonalInformationId : null);
+
+        $("#BuyerConfirmationModel_UserId").val(buyerConfimarion ? buyerConfimarion.UserId : null);
+        $("#BuyerConfirmationModel_PagibigNumber").val(buyerConfimarion ? buyerConfimarion.PagibigNumber : null);
+        $("#BuyerConfirmationModel_Code").val(buyerConfimarion ? buyerConfimarion.Code : null);
+        $("#BuyerConfirmationModel_ProjectProponentName").val(buyerConfimarion ? buyerConfimarion.ProjectProponentName : null);
+        $("#BuyerConfirmationModel_JuridicalPersonalityId").val(buyerConfimarion ? buyerConfimarion.JuridicalPersonalityId : null);
+        $("#BuyerConfirmationModel_LastName").val(buyerConfimarion ? buyerConfimarion.LastName : null);
+        $("#BuyerConfirmationModel_FirstName").val(buyerConfimarion ? buyerConfimarion.FirstName : null);
+        $("#BuyerConfirmationModel_MiddleName").val(buyerConfimarion ? buyerConfimarion.MiddleName : null);
+        $("#BuyerConfirmationModel_Suffix").val(buyerConfimarion ? buyerConfimarion.Suffix : null);
+        $("#BuyerConfirmationModel_BirthDate").val(buyerConfimarion ? buyerConfimarion.BirthDate : null);
+        $("#BuyerConfirmationModel_MothersMaidenName").val(buyerConfimarion ? buyerConfimarion.MothersMaidenName : null);
+        $("#BuyerConfirmationModel_MaritalStatus").val(buyerConfimarion ? buyerConfimarion.MaritalStatus : null);
+        $("#BuyerConfirmationModel_OccupationStatus").val(buyerConfimarion ? buyerConfimarion.OccupationStatus : null);
+        $("#BuyerConfirmationModel_PresentUnitName").val(buyerConfimarion ? buyerConfimarion.PresentUnitName : null);
+        $("#BuyerConfirmationModel_PresentBuildingName").val(buyerConfimarion ? buyerConfimarion.PresentBuildingName : null);
+        $("#BuyerConfirmationModel_PresentLotName").val(buyerConfimarion ? buyerConfimarion.PresentLotName : null);
+        $("#BuyerConfirmationModel_PresentStreetName").val(buyerConfimarion ? buyerConfimarion.PresentStreetName : null);
+        $("#BuyerConfirmationModel_PresentSubdivisionName").val(buyerConfimarion ? buyerConfimarion.PresentSubdivisionName : null);
+        $("#BuyerConfirmationModel_PresentBaranggayName").val(buyerConfimarion ? buyerConfimarion.PresentBaranggayName : null);
+        $("#BuyerConfirmationModel_PresentMunicipalityName").val(buyerConfimarion ? buyerConfimarion.PresentMunicipalityName : null);
+        $("#BuyerConfirmationModel_PresentProvinceName").val(buyerConfimarion ? buyerConfimarion.PresentProvinceName : null);
+        $("#BuyerConfirmationModel_PresentZipCode").val(buyerConfimarion ? buyerConfimarion.PresentZipCode : null);
+        $("#BuyerConfirmationModel_HomeNumber").val(buyerConfimarion ? buyerConfimarion.HomeNumber : null);
+        $("#BuyerConfirmationModel_MobileNumber").val(buyerConfimarion ? buyerConfimarion.MobileNumber : null);
+        $("#BuyerConfirmationModel_BusinessTelNo").val(buyerConfimarion ? buyerConfimarion.BusinessTelNo : null);
+        $("#BuyerConfirmationModel_Email").val(buyerConfimarion ? buyerConfimarion.Email : null);
+        $("#BuyerConfirmationModel_CompanyEmployerName").val(buyerConfimarion ? buyerConfimarion.CompanyEmployerName : null);
+        $("#BuyerConfirmationModel_CompanyUnitName").val(buyerConfimarion ? buyerConfimarion.CompanyUnitName : null);
+        $("#BuyerConfirmationModel_CompanyBuildingName").val(buyerConfimarion ? buyerConfimarion.CompanyBuildingName : null);
+        $("#BuyerConfirmationModel_CompanyLotName").val(buyerConfimarion ? buyerConfimarion.CompanyLotName : null);
+        $("#BuyerConfirmationModel_CompanyStreetName").val(buyerConfimarion ? buyerConfimarion.CompanyStreetName : null);
+        $("#BuyerConfirmationModel_CompanySubdivisionName").val(buyerConfimarion ? buyerConfimarion.CompanySubdivisionName : null);
+        $("#BuyerConfirmationModel_CompanyBaranggayName").val(buyerConfimarion ? buyerConfimarion.CompanyBaranggayName : null);
+        $("#BuyerConfirmationModel_CompanyMunicipalityName").val(buyerConfimarion ? buyerConfimarion.CompanyMunicipalityName : null);
+        $("#BuyerConfirmationModel_CompanyProvinceName").val(buyerConfimarion ? buyerConfimarion.CompanyProvinceName : null);
+        $("#BuyerConfirmationModel_CompanyZipCode").val(buyerConfimarion ? buyerConfimarion.CompanyZipCode : null);
+        $("#BuyerConfirmationModel_SpouseLastName").val(buyerConfimarion ? buyerConfimarion.SpouseLastName : null);
+        $("#BuyerConfirmationModel_SpouseFirstName").val(buyerConfimarion ? buyerConfimarion.SpouseFirstName : null);
+        $("#BuyerConfirmationModel_SpouseMiddleName").val(buyerConfimarion ? buyerConfimarion.SpouseMiddleName : null);
+        $("#BuyerConfirmationModel_SpouseSuffix").val(buyerConfimarion ? buyerConfimarion.SpouseSuffix : null);
+        $("#BuyerConfirmationModel_SpouseCompanyEmployerName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyEmployerName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyUnitName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyUnitName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyBuildingName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyBuildingName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyLotName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyLotName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyStreetName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyStreetName : null);
+        $("#BuyerConfirmationModel_SpouseCompanySubdivisionName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanySubdivisionName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyBaranggayName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyBaranggayName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyMunicipalityName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyMunicipalityName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyProvinceName").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyProvinceName : null);
+        $("#BuyerConfirmationModel_SpouseCompanyZipCode").val(buyerConfimarion ? buyerConfimarion.SpouseCompanyZipCode : null);
+        $("#BuyerConfirmationModel_MonthlySalary").val(buyerConfimarion ? buyerConfimarion.MonthlySalary : null);
+        $("#BuyerConfirmationModel_SpouseMonthlySalary").val(buyerConfimarion ? buyerConfimarion.SpouseMonthlySalary : null);
+        $("#BuyerConfirmationModel_IsOtherSourceOfIncome").prop('checked', buyerConfimarion ? buyerConfimarion.IsOtherSourceOfIncome : false);
+        $("#BuyerConfirmationModel_AdditionalSourceIncome").val(buyerConfimarion ? buyerConfimarion.AdditionalSourceIncome : null);
+        $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(buyerConfimarion ? buyerConfimarion.AverageMonthlyAdditionalIncome : null);
+        $("#BuyerConfirmationModel_IsPagibigMember").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigMember : false);
+        $("#BuyerConfirmationModel_IsPagibigAvailedLoan").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigAvailedLoan : false);
+        $("#BuyerConfirmationModel_IsPagibigCoBorrower").prop('checked', buyerConfimarion ? buyerConfimarion.IsPagibigCoBorrower : false);
+        $("#BuyerConfirmationModel_IsPursueProjectProponent").prop('checked', buyerConfimarion ? buyerConfimarion.IsPursueProjectProponent : false);
+        $("#BuyerConfirmationModel_IsInformedTermsConditions").prop('checked', buyerConfimarion ? buyerConfimarion.IsInformedTermsConditions : false);
+        $("#BuyerConfirmationModel_HouseUnitModel").val(buyerConfimarion ? buyerConfimarion.HouseUnitModel : null);
+        $("#BuyerConfirmationModel_SellingPrice").val(buyerConfimarion ? buyerConfimarion.SellingPrice : null);
+        $("#BuyerConfirmationModel_MonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.MonthlyAmortization : null);
+        $("#BuyerConfirmationModel_AffordMonthlyAmortization").val(buyerConfimarion ? buyerConfimarion.AffordMonthlyAmortization : null);
+        $("#BuyerConfirmationModel_OtherJuridicalPersonality").val(buyerConfimarion ? buyerConfimarion.OtherJuridicalPersonality : null);
+        $("#BuyerConfirmationModel_OtherEmploymentStatus").val(buyerConfimarion ? buyerConfimarion.OtherEmploymentStatus : null);
+
+        setDateValue("#BuyerConfirmationModel_BirthDate");
+        $("#btn_savehlf068").prop("hidden", true);
+
+        initializeRadioBtnMisc();
+
+        $("#beneficiary-overlay").removeClass('d-none');
+        setTimeout(function () {
+            $("#beneficiary-overlay").addClass('d-none');
+        }, 2000);
+
+        //$("#frm_hlf068").clearValidation();
+    }
+
+    function adjustEditCard() {
+        if (!$(`[id="div_approvebcfNote"]`).hasClass('d-none')) {
+            $(`[id="confirmCard"]`).css('top', '6em');
+        }
+        //else {
+        //    $(`[id="confirmCard"]`).css('top', '0.5em');
+        //}
+    }
+
+    //#region Getters Functions
+
+    async function getBuyerConfirmation(code) {
+        const response = await $.ajax({
+            url: baseUrl + "BuyerConfirmation/GetBCFapplicationByCode/",
+            data: { code: code },
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function getLoanParticularInformation(id) {
+        const response = await $.ajax({
+            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function getSpouseInformation(id) {
+        const response = await $.ajax({
+            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function getBorrowerInformation(applicantId) {
+        const response = await $.ajax({
+            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function getForm2PageInformation(applicantId) {
+        const response = await $.ajax({
+            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    async function getCollateralInformation(applicantId) {
+        const response = await $.ajax({
+            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
+            method: 'Get',
+            dataType: 'json'
+        });
+
+        return response;
+    }
+
+    //#endregion Getters Funcions
+
+    function disableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('readonly', true);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+    }
+
+    function enableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('readonly', false);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.unlock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.unlock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.unlock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', false);
+        });
+    }
+
+    function removeBcfPlaceholders() {
+        $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
+        $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
+    }
+    //function toggleNextButton() {
+    //    // Check if all required fields with BuyerConfirmationModel in their IDs have values
+    //    var allFilled = true;
+    //    isBcfValid = true;
+    //    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //        if ($(this).val().trim() === '') {
+    //            allFilled = false;
+    //            return false; // Exit the each loop early
+    //        }
+    //    });
+
+    //    // Only BCF Radio Button
+    //    if (applicantInfoIdVal === '0') {
+    //        $('input[type="radio"].bcfRbtn[required]').each(function () {
+    //            let hasClass = $(this).hasClass('valid');
+    //            console.log("asd");
+
+    //            if (roleId === '3') {
+    //                return;  // Exit if roleId is '3'
+    //            }
+
+    //            if (!hasClass) {
+    //                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+    //                return false;  // Break out of the each loop
+    //            }
+    //        });
+    //    }
+
+    //    isBcfValid = allFilled;
+
+    //    // Enable or disable the Next button based on whether all fields are filled
+    //    $(".nextBtn").prop("disabled", !allFilled);
+    //}
+
+    // Bind the toggleNextButton function to change events on each individual input
+    //$("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
+
+    //$('input[type="radio"].bcfRbtn[required]').each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
+
+    //toggleNextButton();
+    removeBcfPlaceholders();
 });

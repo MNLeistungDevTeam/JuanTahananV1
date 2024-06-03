@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DevExpress.XtraRichEdit.Model;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.UserDto;
@@ -228,7 +229,7 @@ namespace DMS.Infrastructure.Services
                     //File Type validation
                     var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
 
-                    if (documentType.FileType != null)
+                    if (documentType != null && documentType.FileType != null)
                     {
                         FileType fileType = (FileType)documentType.FileType;
 
@@ -256,6 +257,101 @@ namespace DMS.Infrastructure.Services
                 throw;
             }
         }
+
+
+
+
+
+
+
+        public async Task<Document> UploadDocumentFilesAsync(
+       List<IFormFile>? files,
+       string saveLocation,
+       string rootPath,
+       int referenceId,
+       string referenceNo,
+       int referenceType,
+       int documentTypeId,
+       int userId,
+       int companyId)
+        {
+            if (files == null || files.Count == 0)
+                throw new ArgumentException("File is Required");
+
+            Document document = null;
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length <= 0)
+                {
+                    continue;
+                }
+
+                // Generate a unique filename for the uploaded file
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+
+                string fileName = await ExistingFileCheck(Path.Combine(rootPath, saveLocation, formFile.FileName));
+                Directory.CreateDirectory(Path.Combine(rootPath, saveLocation));
+
+                using var stream = new FileStream(Path.Combine(rootPath, saveLocation, fileName), FileMode.Create);
+                await formFile.CopyToAsync(stream);
+
+                string rawFilePath = $"/{saveLocation.Replace("\\", "/")}/";
+                string filePath = Path.Combine(rootPath, rawFilePath);
+
+                var provider = new FileExtensionContentTypeProvider();
+                string contentType = string.Empty;
+                provider.TryGetContentType(fileName, out contentType);
+
+                string extension = Path.GetExtension(fileName).ToLower();
+
+                document = new Document
+                {
+                    ReferenceId = referenceId,
+                    ReferenceNo = referenceNo,
+                    ReferenceTypeId = referenceType,
+                    Code = uniqueFileName,
+                    Name = formFile.FileName,
+                    Location = filePath,
+                    Size = (int)formFile.Length,
+                    DocumentTypeId = documentTypeId,
+                    FileType = contentType,
+                    IsFolder = false,
+                    CompanyId = companyId,
+                    CreatedById = userId
+                };
+
+                var documentType = await _documentTypeRepo.GetByIdAsync(documentTypeId);
+
+                if (documentType != null && documentType.FileType != null)
+                {
+                    FileType fileType = (FileType)documentType.FileType;
+                    string convertedToString = $".{fileType.ToString().ToLower()}";
+
+                    if (documentType.FileType == 5 && IsImageFileType(extension))
+                    {
+                        document = await _documentRepository.CreateAsync(document);
+                    }
+                    else if (extension != convertedToString)
+                        throw new ArgumentException("Invalid Assigned File Type.");
+                    else
+                    {
+                        document = await _documentRepository.CreateAsync(document);
+                    }
+                }
+                else
+                {
+                    document = await _documentRepository.CreateAsync(document);
+                }
+
+                return document; // Return the document after processing the first valid file
+            }
+
+            throw new InvalidOperationException("No valid files to upload."); // No valid files were processed
+        }
+
+
+
 
         public static bool IsImageFileType(string fileType)
         {
@@ -382,6 +478,54 @@ namespace DMS.Infrastructure.Services
                 return null;
             }
         }
+
+
+
+
+
+
+
+        public async Task<string?> SaveLogoAsync(IFormFile? file, string userName, string location, string rootPath)
+        {
+            try
+            {
+                if (file == null)
+                {
+                    return null;
+                }
+
+                var fileName = userName + Path.GetExtension(file.FileName);
+                var path = Path.Combine(rootPath, location, fileName);
+
+                ////for testing only, the uploaded picture will overwrite the existing image
+                //if (File.Exists(path))
+                //{
+                //    File.Delete(path);
+                //}
+
+                Directory.CreateDirectory(Path.Combine(rootPath, location));
+
+
+                using var image = Image.Load(file.OpenReadStream());
+                //image.Mutate(x => x.Resize(new ResizeOptions
+                //{
+                //    Size = new Size(500, 500x500),
+                //    Mode = ResizeMode.Crop
+                //}));
+                await image.SaveAsync(path);
+
+                return $"/{location.Replace("\\", "/")}/{fileName}";
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+
+
+
 
         #region Private Helper Methods
 

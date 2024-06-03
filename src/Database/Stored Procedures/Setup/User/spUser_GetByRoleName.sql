@@ -28,7 +28,8 @@ SELECT
     usr.LastName,
     COALESCE(ap.TotalLoanCounts, 0) AS TotalLoanCounts,
     usr.PagibigNumber,
-    RankedCodes.Code AS ActiveApplicationCode
+    RankedCodes.Code AS ActiveApplicationCode,
+    bi.PropertyDeveloperId
 FROM 
     [User] usr
 LEFT JOIN 
@@ -42,6 +43,7 @@ LEFT JOIN (
     GROUP BY UserId
 ) ap ON ap.UserId = usr.Id
 LEFT JOIN RankedCodes ON RankedCodes.UserId = usr.Id AND RankedCodes.CodeRank = 1
+LEFT JOIN BeneficiaryInformation bi ON bi.UserId = usr.Id
 WHERE 
     r.[Name] = @roleName
 ORDER BY usr.DateCreated DESC;

@@ -100,9 +100,6 @@
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.Id" value="@Model.SpouseModel.Id">
                         <input hidden type="text" class="form-control" asp-for="SpouseModel.ApplicantsPersonalInformationId" value="@Model.ApplicantsPersonalInformationModel.Id">
 
-
-
-
                         <div class="row gy-2">
 
                             <div id="beneficiary-propInfo" class="row" @(string.IsNullOrWhiteSpace(Model.ApplicantsPersonalInformationModel.Code) ? "" : "hidden")>
@@ -112,14 +109,53 @@
                                         <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">BENEFICIARY PROPERTY INFO</span>
                                     </h3>
                                 </div>
-                                <div class="col-md-4">
+                             @*    <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyDeveloperName"></label>
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyDeveloperName">
                                         <span asp-validation-for="BarrowersInformationModel.PropertyDeveloperName" class="text-danger"> </span>
                                     </div>
+                                </div> *@
+
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyDeveloperId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyDeveloperId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyDeveloperId">
+                                            <option value="">Select Developer ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyDeveloperId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                  <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyProjectId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyProjectId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyProjectId">
+                                            <option value="">Select Project ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyProjectId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                 <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyLocationId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyLocationId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyLocationId">
+                                            <option value="">Select Location ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyLocationId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <label asp-for="BarrowersInformationModel.PropertyUnitId" class="form-label fw-normal"></label>
+                                        <select asp-for="BarrowersInformationModel.PropertyUnitId" class="rounded-4" data-value="@Model.BarrowersInformationModel.PropertyUnitId">
+                                            <option value="">Select House Unit ...</option>
+                                        </select>
+                                        <span asp-validation-for="BarrowersInformationModel.PropertyUnitId" class="text-danger"></span>
+                                    </div>
                                 </div>
 
+
+                                    @* 
                                 <div class="col-md-4">
                                     <div class="position-relative">
                                         <label class="form-label fw-normal" asp-for="BarrowersInformationModel.PropertyUnitLevelName"></label>
@@ -133,7 +169,7 @@
                                         <input type="text" class="form-control rounded-3" asp-for="BarrowersInformationModel.PropertyLocation">
                                         <span asp-validation-for="BarrowersInformationModel.PropertyLocation" class="text-danger"> </span>
                                     </div>
-                                </div>
+                                </div> *@
 
                             </div>
 
@@ -186,7 +222,7 @@
                             <div class="col-md-3">
                                 <div class="position-relative">
                                     <label asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="form-label fw-normal" ></label>
-                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="1" max="30" class="form-control rounded-3 text-start">
+                                    <input asp-for="LoanParticularsInformationModel.DesiredLoanTermYears" min="0" max="30" class="form-control rounded-3 text-start">
                                     <span asp-validation-for="LoanParticularsInformationModel.DesiredLoanTermYears" class="text-danger"></span>
                                 </div>
                             </div>
@@ -216,6 +252,41 @@
                                     <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
                                 </div>
                             </div>
+
+
+                            <div class="position-relative radio-enrolledMRIRbtn">
+                                <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true"/>
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false"/>
+                                        <label class="form-check-label">No</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.IsEnrolledToMRI" class="text-danger"> </span>
+                            </div>
+
+
+                            <div class="position-relative radio-pysRbtn">
+                                <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.PaymentScheme"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP"/>
+                                        <label class="form-check-label">GAP</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP"/>
+                                        <label class="form-check-label">LAP</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.PaymentScheme" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.PaymentScheme" class="text-danger"> </span>
+                            </div>
+
                             <div class="col-md-12">
                                 <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
                                     <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">COLLATERAL</span>
@@ -456,9 +527,9 @@
                                                 <option value="">Select Marital Status ... </option>
                                                 <option value="Single/Unmarried">Single/Unmarried</option>
                                                 <option value="Married">Married</option>
-                                                <option value="Annulled">Annulled</option>
-                                                <option value="Legally Separated">Legally Separated</option>
                                                 <option value="Widow/er">Widow/er</option>
+                                                <option value="Legally Separated">Legally Separated</option>
+                                                <option value="Annulled">Annulled</option>
                                             </select>
                                             <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
                                         </div>
@@ -775,7 +846,7 @@
                                                     Media
                                                 </option>
                                                 <option value="17">
-                                                    Mining and Quanrying
+                                                    Mining & Quarrying
                                                 </option>
                                                 <option value="18">
                                                     Other Community, Social & Personal Service Activities
@@ -928,6 +999,14 @@
                                                 <option value="Permanent Home Address">Permanent Home Address</option>
                                             </select>
                                             <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.ContactDetailEmail"></label>
+                                            <input type="email" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.ContactDetailEmail" value="@Model.BarrowersInformationModel.ContactDetailEmail">
+                                            <span asp-validation-for="BarrowersInformationModel.ContactDetailEmail" class="text-danger"> </span>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -1211,7 +1290,7 @@
                                             Media
                                         </option>
                                         <option value="17">
-                                            Mining and Quanrying
+                                            Mining & Quarrying
                                         </option>
                                         <option value="18">
                                             Other Community, Social & Personal Service Activities

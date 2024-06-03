@@ -1,10 +1,17 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
+const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
+const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
+
+let isFormValid;
+let isBcfValid;
 
 $(function () {
+    const { pdfjsLib } = globalThis;
+
     var telNoArray = [];
-    var itiFlag = false;
+    var currentStep = 0;
 
     //#region Initialization
 
@@ -35,9 +42,43 @@ $(function () {
     });
 
     $('.tinInputMask').inputmask({
-        mask: "999-999-999[-9999]",
+        mask: ["999-999-999", "999-999-999-9999"],
+        //mask: "999-999-999[-9999]",
         placeholder: "X",
         //clearIncomplete: true
+    });
+
+    $('.sssInputMask').inputmask({
+        mask: "99-99999[9][9]-99",
+        placeholder: 'X',
+        //clearMaskOnLostFocus: true
+        //clearIncomplete: true
+    });
+
+    $('input[type="sssNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+
+    $('input[type="tinNumber"]').on('input', function (e) {
+        $(this).prop('required', Boolean($(this).val()));
+
+        if (!$(this).prop('required') && !$(this).inputmask("isComplete")) {
+            this.setCustomValidity("");
+        }
+        else {
+            this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
+        }
+    });
+
+    $('input[type="pagIBIGNumber"]').on('input', function (e) {
+        this.setCustomValidity($(this).inputmask("isComplete") ? "" : "Error");
     });
 
     //// Disable 'e', '+', retain '-'
@@ -67,8 +108,10 @@ $(function () {
 
     initializeLoanCreditDate();
 
-    //initializeIntlTelInput();
-    initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+    initializeIntlTelInput();
+    //initializeBasicTelInput();    // Disable 'e', retain '-', '+'
+
+    initializePdfJs();
 
     //assessPresentPermanentCheckbox();
 
@@ -77,7 +120,11 @@ $(function () {
         $(`input[name^="BarrowersInformationModel.Present"][type="text"]`)
     );
 
+    assessRadioBtn($(`.radio-pagibigRbtn input[name="pagibigRbtn"]:checked`));
+
     rebindValidators();
+
+    progressCheck();
 
     //#endregion
 
@@ -95,6 +142,7 @@ $(function () {
     //});
 
     //$('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
+    //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
 
     // Disable 'e', retain '-', '+'
     //$(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -118,6 +166,94 @@ $(function () {
             $('#ApplicantsPersonalInformationModel_HousingAccountNumber').trigger('invalid');
         }
     });
+
+    // #region BCF
+
+    $(`.radio-incomeSrcRbtn [name="incomeSrcRbtn"]`).on(`change`, function (e) {
+        $(`[id="bcf-incomeFields"]`).attr({
+            hidden: $(this).attr('id') === 'isRbtn2',
+        });
+
+        $(`[id="bcf-incomeFields"] input[type="text"]`).attr({
+            required: $(this).attr('id') === 'isRbtn1',
+        });
+
+        if ($(this).attr('id') === 'isRbtn2') {
+            /*  $(`[id="bcf-incomeFields"] input[type="text"]`).val(0);*/
+
+            $("#BuyerConfirmationModel_AdditionalSourceIncome").val(null);
+            $("#BuyerConfirmationModel_AverageMonthlyAdditionalIncome").val(0);
+        }
+
+        $(`[name="BuyerConfirmationModel.IsOtherSourceOfIncome"]`).attr('value', $(this).attr('id') === 'isRbtn1');
+    });
+
+    $(`.radio-pagibigRbtn input[name="pagibigRbtn"]`).on(`change`, function (e) {
+        $(`[id="bcf-pagIbigNumField"]`).attr({
+            hidden: $(this).attr('id') === 'pagibigRbtn2',
+        });
+
+        $(`[id="bcf-pagIbigNumField"] [id="BuyerConfirmationModel_PagibigNumber"]`).attr({
+            required: $(this).attr('id') === 'pagibigRbtn1',
+        });
+
+        $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", false);
+
+        if ($(this).attr('id') === 'pagibigRbtn2') {
+            //    $(`[id="bcf-pagIbigNumField"] input[type="text"]`).val("");
+            $(`#BuyerConfirmationModel_PagibigNumber`).prop("disabled", true);
+        }
+
+        $(`[name="BuyerConfirmationModel.IsPagibigMember"]`).attr('value', $(this).attr('id') === 'pagibigRbtn1');
+    });
+
+    $(`.radio-availedLoanRbtn input[name="availedLoanRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPagibigAvailedLoan"]`).attr('value', $(this).attr('id') === 'availedLoanRbtn1');
+    });
+
+    $(`.radio-cbwrRbtn input[name="coBorrowerRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPagibigCoBorrower"]`).attr('value', $(this).attr('id') === 'cbwrRbtn1');
+    });
+
+    $(`.radio-prpRbtn input[name="projectPropRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsPursueProjectProponent"]`).attr('value', $(this).attr('id') === 'prpRbtn1');
+    });
+
+    $(`.radio-itcRbtn input[name="informedTermsRbtn"]`).on(`change`, function (e) {
+        $(`[name="BuyerConfirmationModel.IsInformedTermsConditions"]`).attr('value', $(this).attr('id') === 'itcRbtn1');
+    });
+
+    let juridicalPersonalityVal = $("[name='BuyerConfirmationModel.JuridicalPersonalityId']").val();
+    let employmentstatusVal = $("[name='BuyerConfirmationModel.OccupationStatus']").val();
+
+    $("#otherJuriPerDiv").attr("hidden", juridicalPersonalityVal != 5);
+    $("#otherEmploymentDiv").attr("hidden", employmentstatusVal != 'Others');
+
+    $(`[name="BuyerConfirmationModel.JuridicalPersonalityId"]`).on('change', function (e) {
+        console.log($(this).val())
+
+        if ($(this).val() == 5) {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', false);
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', true);
+        }
+        else {
+            $(`[id="otherJuriPerDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherJuridicalPersonality"]`).attr('required', false).val("");
+        }
+    });
+
+    $(`[name="BuyerConfirmationModel.OccupationStatus"]`).on('change', function (e) {
+        if ($(this).val() == 'Others') {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', false).attr('');
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', true);
+        }
+        else {
+            $(`[id="otherEmploymentDiv"]`).attr('hidden', true);
+            $(`[id="BuyerConfirmationModel_OtherEmploymentStatus"]`).attr('required', false).val("");
+        }
+    });
+
+    // #endregion
 
     //#region Loan Particulars
 
@@ -325,6 +461,38 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     });
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
 
     //#endregion
 
@@ -647,7 +815,7 @@ $(function () {
         if ($("#pcRadioBtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -657,7 +825,7 @@ $(function () {
         if ($("#pdRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -667,7 +835,7 @@ $(function () {
         if ($("#bcRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -677,7 +845,7 @@ $(function () {
         if ($("#maRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -687,12 +855,6 @@ $(function () {
 
     // Set value for BarrowersInformationModel_BirthDate
     setDateValue('#BarrowersInformationModel_BirthDate');
-
-    $('[name="BarrowersInformationModel.SSSNumber"]').inputmask({
-        mask: "99-99999[9][9]-99",
-        placeholder: 'X',
-        //clearIncomplete: true
-    });
 
     $('[name="BarrowersInformationModel.HomeOwnerShip"]').on('change', function () {
         if ($(this).val() == 'Rented') {
@@ -1095,26 +1257,83 @@ $(function () {
 
     //#endregion
 
+    //#region BuyerConfirmation
+    setDateValue('#BuyerConfirmationModel_BirthDate');
+
+    $('#BuyerConfirmationModel_BirthDate').on('change', function () {
+        var birthdate = moment($(this).val());
+        var today = moment();
+        var age = today.diff(birthdate, 'years');
+
+        console.log("Age: " + age);
+
+        // Check if age is 21 or older
+        if (age < 21) {
+            console.log("User is NOT 21 or older");
+            $(`[id="BuyerConfirmationModel.BirthDate_RequiredAge"]`).fadeIn(0);
+            $(this).val('');
+        }
+        else {
+            $(`[id="BuyerConfirmationModel.BirthDate_RequiredAge"]`).fadeOut(0);
+        }
+    });
+
+    $('#BuyerConfirmationModel_MaritalStatus').on('change', function () {
+        let value = $(this).val()
+        $('#BuyerConfirmationModel_SpouseFirstName').prop('required', false);
+        $('#BuyerConfirmationModel_SpouseLastName').prop('required', false);
+
+        if (value !== 'Married') {
+            return;
+        }
+        else {
+            $('#BuyerConfirmationModel_SpouseLastName').prop('required', true);
+            $('#BuyerConfirmationModel_SpouseFirstName').prop('required', true);
+        }
+    });
+
+    //$(`[id="form2"] .next button`).on('click', function (e) {
+    //    if (hasBcf === "True") {
+    //        loadHlafPreview();
+    //    } else {
+    //        loadBcfPreview();
+    //    }
+    //});
+
+    //$(`[id="previewBcf"] .next button`).on('click', function (e) {
+    //    loadHlafPreview();
+    //});
+
+    //#endregion
+
     $('#rootwizard').bootstrapWizard({
         onNext: function (tab, navigation, index, e) {
             console.log("Next button clicked");
 
+            // Check if bcf form
+            //if (!isBcfValid) {
+            //    return false;
+            //}
+
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
 
-            // Find the current tab pane
+            // Find the current tab av
             var currentTabPane = $('.tab-pane').eq(index);
 
             // Hide the previous form (loanparticulars) and remove 'fade' class
             var prevForm = currentTabPane;
             console.log("Current form ID: " + currentFormName);
 
-            currentForm.addClass('was-validated');
+            //currentForm.removeClass('was-validated');
 
             // Validate the current form
-            var isValid = validateForm(currentForm);
+            isFormValid = validateForm(currentForm);
+            //currentForm.addClass('was-validated');
 
-            if (!isValid) {
+            console.log(isFormValid);
+
+            if (!isFormValid) {
                 // If validation fails, prevent navigation to the next step
                 return false;
             } else {
@@ -1123,19 +1342,48 @@ $(function () {
 
                 // Show the previous form
                 prevForm.removeClass('fade').prop('hidden', false);
+
+                if (currentFormName == "bcfdata") {
+                    bcfToHLafConnectedFieldMap();
+                }
             }
 
             // If current form is "form2", return without proceeding to next step
-            if (currentFormName == "form2") {
-                $("#form2").removeClass('fade').prop('hidden', false);
+            if (currentFormName == "previewHlaf") {
+                $("#previewHlaf").removeClass('fade').prop('hidden', false);
                 return;
             }
+
+            if (currentFormName == "form2" && isFormValid) {
+                if (hasBcf === "True") {
+                    loadHlafPreview();
+                } else {
+                    loadBcfPreview();
+                }
+            }
+
+            if (currentFormName == "previewBcf") {
+                loadHlafPreview();
+            }
+
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
+
+            progressCheck(prevForm.attr('id'));
         },
         onPrevious: function (tab, navigation, index) {
             console.log("Previous button clicked");
 
             var currentForm = $($(tab).data("target-div"));
             var currentFormName = currentForm.attr("id");
+
+            if (currentFormName == "loanparticulars") {
+                HLafTobcfConnectedFieldMap();
+            }
 
             // Find the current tab pane
             var currentTabPane = $('.tab-pane').eq(index);
@@ -1151,6 +1399,8 @@ $(function () {
 
             // Show the next form
             nextForm.removeClass('fade').prop('hidden', false);
+
+            progressCheck(nextForm.attr('id'));
 
             // Always return true to allow navigation to the previous step
             return true;
@@ -1221,122 +1471,131 @@ $(function () {
                 }
             }
         });
+
+        if (buyerconfirmationAppStatus == 3) {
+            disableBuyerConfirmationFields();
+        }
     });
 
     //#region Methods
-
-    //$(document).ready(function () {
-    //    loadloanParticularInformation(applicantInfoIdVal);
-    //    loadSpouseInformation(applicantInfoIdVal);
-    //    loadBorrowerInformation(applicantInfoIdVal);
-    //    loadCollateralInformation(applicantInfoIdVal);
-    //    loadForm2PageInformation(applicantInfoIdVal);
-    //    initializeRadioBtnMisc();
-    //});
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
     function validateForm(form) {
         var isValid = true;
 
         // Your validation logic here
         // For example, check if required fields are filled
-        form.find(':input[required]').each(function () {
+
+        form.removeClass('was-validated');
+
+        form.find(':input[required]').not(`[data-type$="InputMask"]`).each(function () {
+            // check if it is a radiobutton
+            //if ($(`[name="${this.name}"]`).attr('type') === 'radio') {
+            //    console.log('amd');
+            //    let selectedRadio = $(`[name="${this.name}"]:checked`);
+            //    if (selectedRadio.length > 0) {
+            //        // radio button is selected, valid
+            //        $(this).removeClass('is-invalid');
+            //        $(this).addClass('is-valid');
+            //    }
+            //    else {
+            //        // radio button is NOT selected, invalid
+            //        $(this).removeClass('is-valid');
+            //        $(this).addClass('is-invalid');
+
+            //        isValid = false;
+            //    }
+
+            //    return;
+            //}
+
             if (!$(this).val()) {
+                //$(this).removeClass('was-validated');
+                $(this).removeClass('is-valid');
                 $(this).addClass('is-invalid');
-                $(this).removeClass('was-validated');
+
+                console.log('invalid');
+                console.log($(this));
 
                 isValid = false;
-            } else {
+            }
+            else {
+                // valid
                 $(this).removeClass('is-invalid');
-                $(this).addClass('was-validated');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
             }
         });
 
+        form.find(':input[required][data-type$="InputMask"]').each(function () {
+            if (!$(this).inputmask("isComplete")) {
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+                //$(this).removeClass('was-validated');
+
+                console.log('invalid');
+                console.log($(this));
+                // $(this)[0].setCustomValidity("aa")
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                //$(this).addClass('was-validated');
+
+                this.setCustomValidity("");
+            }
+        });
+
+        form.find('input[type="radio"][required]').each(function () {
+            let hasClass = $(this).hasClass('valid');
+
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
+
+            if (!hasClass) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('valid');
+
+                console.log('invalid');
+                console.log($(this));
+
+                isValid = false;
+            } else {
+                $(this).addClass('valid');
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        form.find(':input.iti__tel-input').each(function () {
+            //let invalidFlag = $(this).data('invalid');
+            let id = $(this).attr('id');
+            let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
+            //  (itiInstance.a.hasAttribute('required') || itiInstance.a.value)
+
+            if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                console.log('tel has errors');
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+
+                this.setCustomValidity("Invalid");
+                isValid = false;
+            }
+            else {
+                $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid');
+                this.setCustomValidity("");
+            }
+        });
+
+        form.addClass('was-validated');
         return isValid;
     }
 
@@ -1350,6 +1609,8 @@ $(function () {
         $form.validate($form.data("unobtrusiveValidation").options);
         $form.data("validator").settings.ignore = "";
 
+        initializeInputmaskValidation();
+
         // Prevent form submission when "Enter" key is pressed
         $form.on("keydown", function (e) {
             if (e.key === "Enter") {
@@ -1359,6 +1620,13 @@ $(function () {
 
         $form.on("submit", function (e) {
             e.preventDefault();
+            $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+            $("#BuyerConfirmationModel_SellingPrice").attr("readonly", true);
+            $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+            $("#BuyerConfirmationModel_HouseUnitModel").attr("readonly", true);
+            $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+            $("#BuyerConfirmationModel_MonthlyAmortization").attr("readonly", true);
+
             let formData = new FormData(e.target);
 
             if ($(this).valid() == false) {
@@ -1401,6 +1669,8 @@ $(function () {
                     $("#beneficiary-overlay").removeClass('d-none');
                 },
                 success: function (response) {
+                    $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+
                     // Success message handling
                     let recordId = $("input[name='User.Id']").val();
                     console.log(recordId);
@@ -1413,7 +1683,7 @@ $(function () {
                     if (applicantInfoIdVal == 0) {
                         setTimeout(function () {
                             $("#beneficiary-overlay").addClass('d-none');
-                            window.location.href = "/Applicants/HLF068/" + response;
+                            window.location.href = "/Applicants/Details/" + response;
                         }, 2000);
                     }
 
@@ -1539,6 +1809,50 @@ $(function () {
         return isValid;
     }
 
+    function initializeInputmaskValidation() {
+        $.validator.addMethod("sssNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.sssNumber = "Format must be like this: 12-12345(67)-89";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.sssNumber);
+
+        $.validator.addMethod("tinNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 9 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.tinNumber = "Format must be like this: 123-456-789(-0000)";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.tinNumber);
+
+        $.validator.addMethod("pagIBIGNumber", function (val, elem) {
+            if (!val) {
+                // make it optional
+                return true;
+            }
+            else if (val && (val.length < 12 || !$(`#${elem.id}`).inputmask("isComplete"))) {
+                // if it has value, validate by length
+                $.validator.messages.pagIBIGNumber = "Format must be exactly this: 1234-5678-9012";
+                return false;
+            }
+
+            return true;
+        }, $.validator.messages.pagIBIGNumber);
+    }
+
     function initializeLoanCreditDate() {
         const dateFormat = "Y-m-d";
         var currentDate = moment().format("YYYY-MM-DD");
@@ -1593,6 +1907,11 @@ $(function () {
         //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
         //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
 
+        if (hasBcf === "False") {
+            telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.HomeNumber`)[0], intlTelConfig));
+            telNoArray.push(intlTelInput(document.getElementsByName(`BuyerConfirmationModel.MobileNumber`)[0], intlTelConfig));
+        }
+
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
         telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
@@ -1624,9 +1943,13 @@ $(function () {
                 if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
                     console.log(itiInstance.getValidationError());
                     $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
+
+                    this.setCustomValidity("Invalid");
                 }
                 else {
                     $(`span[name="${itiInstance.a.name}.Error"]`).html("");
+
+                    this.setCustomValidity("");
                 }
             });
         }
@@ -1635,6 +1958,10 @@ $(function () {
     }
 
     function initializeBasicTelInput() {
+        $(`[name="BuyerConfirmationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+        $(`[name="BuyerConfirmationModel.BusinessTelNo"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
+
         $(`[name="BarrowersInformationModel.HomeNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.MobileNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
         $(`[name="BarrowersInformationModel.BusinessDirectLineNumber"]`).inputmask({ regex: `^[0-9+-]*$` /*, mask: `(+9{1,}) 9{1,}`*/ });
@@ -1650,22 +1977,72 @@ $(function () {
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
 
+        let pagibigAvailedLoan = $("[name='BuyerConfirmationModel.IsPagibigAvailedLoan']").val();
+
+        let coborrower = $("[name='BuyerConfirmationModel.IsPagibigCoBorrower']").val();
+
+        let projectProponent = $("[name='BuyerConfirmationModel.IsPursueProjectProponent']").val();
+        let termConditions = $("[name='BuyerConfirmationModel.IsInformedTermsConditions']").val();
+
+        let bcfPagibigNumber = $("#BuyerConfirmationModel_PagibigNumber").val();
+        let bcfAdditionalSourceIncome = $("#BuyerConfirmationModel_AdditionalSourceIncome").val();
+
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
-            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue);
-            $("#pcRadioBtn2").prop("checked", !pendingCaseValue);
+            $("#pcRadioBtn1").prop("checked", !!pendingCaseValue).addClass('valid');
+            $("#pcRadioBtn2").prop("checked", !pendingCaseValue).addClass('valid');
 
             // Set checked status for PastDue radio buttons
-            $("#pdRbtn1").prop("checked", !!pastDueValue);
-            $("#pdRbtn2").prop("checked", !pastDueValue);
+            $("#pdRbtn1").prop("checked", !!pastDueValue).addClass('valid');
+            $("#pdRbtn2").prop("checked", !pastDueValue).addClass('valid');
 
             // Set checked status for BouncingChecks radio buttons
-            $("#bcRbtn1").prop("checked", !!bouncingChecksValue);
-            $("#bcRbtn2").prop("checked", !bouncingChecksValue);
+            $("#bcRbtn1").prop("checked", !!bouncingChecksValue).addClass('valid');
+            $("#bcRbtn2").prop("checked", !bouncingChecksValue).addClass('valid');
 
             // Set checked status for MedicalAdvice radio buttons
-            $("#maRbtn1").prop("checked", !!medicalAdviceValue);
-            $("#maRbtn2").prop("checked", !medicalAdviceValue);
+            $("#maRbtn1").prop("checked", !!medicalAdviceValue).addClass('valid');
+            $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
+
+            if (hasBcf == "False") {
+
+
+                // Set checked status for BCF Additional income radio buttons
+                $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass('valid');
+                $("#isRbtn2").prop("checked", !bcfAdditionalSourceIncome).addClass('valid');
+
+                // Set checked status for BCF Pagibig Number radio buttons
+                $("#pagibigRbtn1").prop("checked", !!bcfPagibigNumber).addClass('valid');
+                $("#pagibigRbtn2").prop("checked", !bcfPagibigNumber).addClass('valid');
+
+                // Set checked status for BCF availed laon radio buttons
+                $("#availedLoanRbtn1").prop("checked", !!pagibigAvailedLoan).addClass('valid');
+                $("#availedLoanRbtn2").prop("checked", !pagibigAvailedLoan).addClass('valid');
+
+                // Set checked status for BCF co-borrower radio buttons
+                $("#cbwrRbtn1").prop("checked", !!coborrower).addClass('valid');
+                $("#cbwrRbtn2").prop("checked", !coborrower).addClass('valid');
+
+                // Set checked status for BCF co-borrower radio buttons
+                $("#prpRbtn1").prop("checked", !!projectProponent).addClass('valid');
+                $("#prpRbtn2").prop("checked", !projectProponent).addClass('valid');
+
+
+
+                // Set checked status for BCF term in condition radio buttons
+                $("#itcRbtn1").prop("checked", !!termConditions).addClass('valid');
+                $("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
+
+            }
+
+        }
+        else {
+
+            if (hasBcf == "False") {
+
+                $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
+            }
+      
         }
 
         // Set miscellanous input to disable
@@ -1673,6 +2050,591 @@ $(function () {
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
         $("[name='Form2PageModel.BouncingChecks']").prop("disabled", !bouncingChecksValue);
         $("[name='Form2PageModel.MedicalAdvice']").prop("disabled", !medicalAdviceValue);
+
+        //BCF Particulars
+        $("#bcf-incomeFields").prop("hidden", !bcfAdditionalSourceIncome);
+        $("#bcf-pagIbigNumField").prop("hidden", !bcfPagibigNumber);
+
+        //BCF Radiobuttons
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
+        updateRadioValidation('#pagibigRbtn1', '#pagibigRbtn2')
+        $("[name='BuyerConfirmationModel.IsPagibigMember']").val($("#pagibigRbtn1").is(":checked") ? 'True' : 'False');
     }
+
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
+    }
+
+    //function setCheckedAndValidStatus(radioBtn1, radioBtn2, value) {
+    //    if (value !== 'False') {
+    //        $(radioBtn1).prop('checked', true);
+    //    } else {
+    //        $(radioBtn2).prop('checked', true);
+    //    }
+
+    //    $(radioBtn1).addClass('valid');
+    //    $(radioBtn2).addClass('valid');
+    //}
+
+    function initializeBcfCheck() {
+        if ($(`[name="BarrowersInformationModel.IsBcfCreated"]`).val().toLowerCase() === 'true') {
+            let firstPage = $(`#bcfdata`);
+            let secondPage = $(`#loanparticulars`);
+
+            /** // Hide the current form
+                currentForm.addClass('fade').prop('hidden', true);
+
+                // Show the previous form
+                prevForm.removeClass('fade').prop('hidden', false); */
+
+            // Hide the current form
+            $(firstPage).addClass('fade').prop('hidden', true);
+
+            // Show the previous form
+            $(secondPage).removeClass('fade').prop('hidden', false);
+        }
+    }
+
+    function assessRadioBtn(radioBtn) {
+        radioBtn.trigger('change');
+    }
+
+    function bcfToHLafConnectedFieldMap() {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
+            return;
+        }
+
+        var lastName = $("#BuyerConfirmationModel_LastName").val();
+        var FirstName = $("#BuyerConfirmationModel_FirstName").val();
+        var MiddleName = $("#BuyerConfirmationModel_MiddleName").val();
+        var Suffix = $("#BuyerConfirmationModel_Suffix").val();
+        var BirthDate = $("#BuyerConfirmationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BarrowersInformationModel_LastName").val(lastName);
+        $("#BarrowersInformationModel_FirstName").val(FirstName);
+        $("#BarrowersInformationModel_MiddleName").val(MiddleName);
+        $("#BarrowersInformationModel_Suffix").val(Suffix);
+        $("#BarrowersInformationModel_BirthDate").val(BirthDate);
+        $('#BarrowersInformationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+
+        var homeNumber = $("#BuyerConfirmationModel_HomeNumber").val();
+        var mobileNumber = $("#BuyerConfirmationModel_MobileNumber").val();
+        var email = $("#BuyerConfirmationModel_Email").val();
+
+        $("#BarrowersInformationModel_HomeNumber").val(homeNumber);
+        $("#BarrowersInformationModel_MobileNumber").val(mobileNumber);
+
+        $("#BarrowersInformationModel_Email").val(email);
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BuyerConfirmationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BuyerConfirmationModel_PresentBuildingName").val();
+        var presentLotName = $("#BuyerConfirmationModel_PresentLotName").val();
+        var presentStreetName = $("#BuyerConfirmationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BuyerConfirmationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BuyerConfirmationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BuyerConfirmationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BuyerConfirmationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BuyerConfirmationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BarrowersInformationModel_PresentUnitName").val(presentUnitName);
+        $("#BarrowersInformationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BarrowersInformationModel_PresentLotName").val(presentLotName);
+        $("#BarrowersInformationModel_PresentStreetName").val(presentStreetName);
+        $("#BarrowersInformationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BarrowersInformationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BarrowersInformationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BarrowersInformationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BarrowersInformationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BuyerConfirmationModel_EmployerName").val();
+
+        $("#BarrowersInformationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#BuyerConfirmationModel_SpouseLastName').val();
+        var spouseFirstName = $('#BuyerConfirmationModel_SpouseFirstName').val();
+        var spouseExtensionName = $('#BuyerConfirmationModel_SpouseSuffix').val();
+        var spouseMiddleName = $('#BuyerConfirmationModel_SpouseMiddleName').val();
+
+        $('#SpouseModel_LastName').val(spouseLastName);
+        $('#SpouseModel_FirstName').val(spouseFirstName);
+        $('#SpouseModel_Suffix').val(spouseExtensionName);
+        $('#SpouseModel_MiddleName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#BuyerConfirmationModel_SpouseCompanyUnitName').val();
+        var spouseCompanyBuilding = $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val();
+        var spouseCompanyLot = $('#BuyerConfirmationModel_SpouseCompanyLotName').val();
+        var spouseCompanyStreet = $('#BuyerConfirmationModel_SpouseCompanyStreetName').val();
+        var spouseCompanySubdivision = $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val();
+        var spouseCompanyBaranggay = $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val();
+        var spouseCompanyMunicipality = $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val();
+        var spouseCompanyProvince = $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val();
+        var spouseCompanyZipcode = $('#BuyerConfirmationModel_SpouseCompanyZipCode').val();
+
+        $('#SpouseModel_SpouseEmploymentUnitName').val(spouseEmploymentUnit);
+        $('#SpouseModel_SpouseEmploymentBuildingName').val(spouseCompanyBuilding);
+        $('#SpouseModel_SpouseEmploymentLotName').val(spouseCompanyLot);
+        $('#SpouseModel_SpouseEmploymentStreetName').val(spouseCompanyStreet);
+        $('#SpouseModel_SpouseEmploymentSubdivisionName').val(spouseCompanySubdivision);
+        $('#SpouseModel_SpouseEmploymentBaranggayName').val(spouseCompanyBaranggay);
+        $('#SpouseModel_SpouseEmploymentMunicipalityName').val(spouseCompanyMunicipality);
+        $('#SpouseModel_SpouseEmploymentProvinceName').val(spouseCompanyProvince);
+        $('#SpouseModel_SpouseEmploymentZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BuyerConfirmationModel_CompanyUnitName').val();
+        var companyBldgName = $('#BuyerConfirmationModel_CompanyBuildingName').val();
+        var companyLotNo = $('#BuyerConfirmationModel_CompanyLotName').val();
+        var companySreetName = $('#BuyerConfirmationModel_CompanyStreetName').val();
+        var companySubd = $('#BuyerConfirmationModel_CompanySubdivisionName').val();
+        var companyBrgy = $('#BuyerConfirmationModel_CompanyBaranggayName').val();
+        var companyMuni = $('#BuyerConfirmationModel_CompanyMunicipalityName').val();
+        var companyProv = $('#BuyerConfirmationModel_CompanyProvinceName').val();
+        var companyZipcode = $('#BuyerConfirmationModel_CompanyZipCode').val();
+
+        $('#BarrowersInformationModel_BusinessUnitName').val(companyUnit);
+        $('#BarrowersInformationModel_BusinessBuildingName').val(companyBldgName);
+        $('#BarrowersInformationModel_BusinessLotName').val(companyLotNo);
+        $('#BarrowersInformationModel_BusinessStreetName').val(companySreetName);
+        $('#BarrowersInformationModel_BusinessSubdivisionName').val(companySubd);
+        $('#BarrowersInformationModel_BusinessBaranggayName').val(companyBrgy);
+        $('#BarrowersInformationModel_BusinessMunicipalityName').val(companyMuni);
+        $('#BarrowersInformationModel_BusinessProvinceName').val(companyProv);
+        $('#BarrowersInformationModel_BusinessZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#BuyerConfirmationModel_PagibigNumber').val();
+        $("#ApplicantsPersonalInformationModel_PagibigNumber").val(pagibigNo);
+    }
+
+    function HLafTobcfConnectedFieldMap() {
+        if (hasBcf == "True" || buyerconfirmationAppStatus == 3) {
+            return;
+        }
+
+        var lastName = $("#BarrowersInformationModel_LastName").val();
+        var FirstName = $("#BarrowersInformationModel_FirstName").val();
+        var MiddleName = $("#BarrowersInformationModel_MiddleName").val();
+        var Suffix = $("#BarrowersInformationModel_Suffix").val();
+        var BirthDate = $("#BarrowersInformationModel_BirthDate").val();
+
+        var MaritalStatus = $('#BarrowersInformationModel_MaritalStatus')[0].selectize.getValue();
+
+        $("#BuyerConfirmationModel_LastName").val(lastName);
+        $("#BuyerConfirmationModel_FirstName").val(FirstName);
+        $("#BuyerConfirmationModel_MiddleName").val(MiddleName);
+        $("#BuyerConfirmationModel_Suffix").val(Suffix);
+        $("#BuyerConfirmationModel_BirthDate").val(BirthDate);
+        $('#BuyerConfirmationModel_MaritalStatus')[0].selectize.setValue(MaritalStatus);
+
+        var homeNumber = $("#BarrowersInformationModel_HomeNumber").val();
+        var mobileNumber = $("#BarrowersInformationModel_MobileNumber").val();
+        var email = $("#BarrowersInformationModel_Email").val();
+
+        $("#BuyerConfirmationModel_HomeNumber").val(homeNumber);
+        $("#BuyerConfirmationModel_MobileNumber").val(mobileNumber);
+        $("#BuyerConfirmationModel_Email").val(email);
+
+        // Accessing values of all fields in the model
+        var presentUnitName = $("#BarrowersInformationModel_PresentUnitName").val();
+        var presentBuildingName = $("#BarrowersInformationModel_PresentBuildingName").val();
+        var presentLotName = $("#BarrowersInformationModel_PresentLotName").val();
+        var presentStreetName = $("#BarrowersInformationModel_PresentStreetName").val();
+        var presentSubdivisionName = $("#BarrowersInformationModel_PresentSubdivisionName").val();
+        var presentBaranggayName = $("#BarrowersInformationModel_PresentBaranggayName").val();
+        var presentMunicipalityName = $("#BarrowersInformationModel_PresentMunicipalityName").val();
+        var presentProvinceName = $("#BarrowersInformationModel_PresentProvinceName").val();
+        var presentZipCode = $("#BarrowersInformationModel_PresentZipCode").val();
+
+        // Update properties of the BarrowersInformationModel directly
+        $("#BuyerConfirmationModel_PresentUnitName").val(presentUnitName);
+        $("#BuyerConfirmationModel_PresentBuildingName").val(presentBuildingName);
+        $("#BuyerConfirmationModel_PresentLotName").val(presentLotName);
+        $("#BuyerConfirmationModel_PresentStreetName").val(presentStreetName);
+        $("#BuyerConfirmationModel_PresentSubdivisionName").val(presentSubdivisionName);
+        $("#BuyerConfirmationModel_PresentBaranggayName").val(presentBaranggayName);
+        $("#BuyerConfirmationModel_PresentMunicipalityName").val(presentMunicipalityName);
+        $("#BuyerConfirmationModel_PresentProvinceName").val(presentProvinceName);
+        $("#BuyerConfirmationModel_PresentZipCode").val(presentZipCode);
+
+        var employername = $("#BarrowersInformationModel_EmployerName").val();
+
+        $("#BuyerConfirmationModel_EmployerName").val(employername);
+
+        var spouseLastName = $('#SpouseModel_LastName').val();
+        var spouseFirstName = $('#SpouseModel_FirstName').val();
+        var spouseExtensionName = $('#SpouseModel_Suffix').val();
+        var spouseMiddleName = $('#SpouseModel_MiddleName').val();
+
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseLastName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseFirstName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseExtensionName);
+        $('#BuyerConfirmationModel_SpouseLastName').val(spouseMiddleName);
+
+        var spouseEmploymentUnit = $('#SpouseModel_SpouseEmploymentUnitName').val();
+        var spouseCompanyBuilding = $('#SpouseModel_SpouseEmploymentBuildingName').val();
+        var spouseCompanyLot = $('#SpouseModel_SpouseEmploymentLotName').val();
+        var spouseCompanyStreet = $('#SpouseModel_SpouseEmploymentStreetName').val();
+        var spouseCompanySubdivision = $('#SpouseModel_SpouseEmploymentSubdivisionName').val();
+        var spouseCompanyBaranggay = $('#SpouseModel_SpouseEmploymentBaranggayName').val();
+        var spouseCompanyMunicipality = $('#SpouseModel_SpouseEmploymentMunicipalityName').val();
+        var spouseCompanyProvince = $('#SpouseModel_SpouseEmploymentProvinceName').val();
+        var spouseCompanyZipcode = $('#SpouseModel_SpouseEmploymentZipCode').val();
+
+        $('#BuyerConfirmationModel_SpouseCompanyUnitName').val(spouseEmploymentUnit);
+        $('#BuyerConfirmationModel_SpouseCompanyBuildingName').val(spouseCompanyBuilding);
+        $('#BuyerConfirmationModel_SpouseCompanyLotName').val(spouseCompanyLot);
+        $('#BuyerConfirmationModel_SpouseCompanyStreetName').val(spouseCompanyStreet);
+        $('#BuyerConfirmationModel_SpouseCompanySubdivisionName').val(spouseCompanySubdivision);
+        $('#BuyerConfirmationModel_SpouseCompanyBaranggayName').val(spouseCompanyBaranggay);
+        $('#BuyerConfirmationModel_SpouseCompanyMunicipalityName').val(spouseCompanyMunicipality);
+        $('#BuyerConfirmationModel_SpouseCompanyProvinceName').val(spouseCompanyProvince);
+        $('#BuyerConfirmationModel_SpouseCompanyZipCode').val(spouseCompanyZipcode);
+
+        var companyUnit = $('#BarrowersInformationModel_BusinessUnitName').val();
+        var companyBldgName = $('#BarrowersInformationModel_BusinessBuildingName').val();
+        var companyLotNo = $('#BarrowersInformationModel_BusinessLotName').val();
+        var companySreetName = $('#BarrowersInformationModel_BusinessStreetName').val();
+        var companySubd = $('#BarrowersInformationModel_BusinessSubdivisionName').val();
+        var companyBrgy = $('#BarrowersInformationModel_BusinessBaranggayName').val();
+        var companyMuni = $('#BarrowersInformationModel_BusinessMunicipalityName').val();
+        var companyProv = $('#BarrowersInformationModel_BusinessProvinceName').val();
+        var companyZipcode = $('#BarrowersInformationModel_BusinessZipCode').val();
+
+        $('#BuyerConfirmationModel_CompanyUnitName').val(companyUnit);
+        $('#BuyerConfirmationModel_CompanyBuildingName').val(companyBldgName);
+        $('#BuyerConfirmationModel_CompanyLotName').val(companyLotNo);
+        $('#BuyerConfirmationModel_CompanyStreetName').val(companySreetName);
+        $('#BuyerConfirmationModel_CompanySubdivisionName').val(companySubd);
+        $('#BuyerConfirmationModel_CompanyBaranggayName').val(companyBrgy);
+        $('#BuyerConfirmationModel_CompanyMunicipalityName').val(companyMuni);
+        $('#BuyerConfirmationModel_CompanyProvinceName').val(companyProv);
+        $('#BuyerConfirmationModel_CompanyZipCode').val(companyZipcode);
+
+        var pagibigNo = $('#ApplicantsPersonalInformationModel_PagibigNumber').val();
+
+        if (pagibigNo) {
+            $("#pagibigRbtn1").prop("checked", true);
+            $("#bcf-pagIbigNumField").prop("hidden", false);
+            $("#BuyerConfirmationModel_PagibigNumber").val(pagibigNo);
+        }
+
+        console.log(pagibigNo);
+    }
+
+    function progressCheck(targetForm = "bcfdata") {
+        console.log("execute");
+        if (targetForm === "bcfdata" && $(`#bcfdata`).length === 0) {
+            targetForm = "loanparticulars";
+        }
+
+        var steps = $(".progressbar .progress-step");
+
+        let stepIndexArray = {
+            2: [
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 0
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 1
+                }
+            ],
+            4: [
+                {
+                    formId: ["bcfdata"],
+                    progress: 0
+                },
+                {
+                    formId: ["loanparticulars", "collateraldata", "spousedata", "form2"],
+                    progress: 1
+                },
+                {
+                    formId: ["previewBcf"],
+                    progress: 2
+                },
+                {
+                    formId: ["previewHlaf"],
+                    progress: 3
+                }
+            ],
+        };
+
+        let stepIndex = stepIndexArray[steps.length];
+
+        currentStep = stepIndex.find(a => a.formId.includes(targetForm)).progress;
+
+        steps.each((index, step) => {
+            if (index === currentStep) {
+                step.classList.remove("completed");
+                step.classList.add("current");
+            }
+            else if (index < currentStep) {
+                step.classList.add("completed");
+            }
+            else {
+                step.classList.remove("current");
+                step.classList.remove("completed");
+            }
+        });
+
+        const allCurrentClasses = document.querySelectorAll(".progressbar .completed");
+
+        let width = ((allCurrentClasses.length / (steps.length - 1)) * 99) + allCurrentClasses.length;
+
+        if (width > 99) width = 99;
+
+        $(`.progressbar #progress`).css('width', `${width}%`);
+    }
+
+    function initializePdfJs() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = baseUrl + 'lib/pdfjs-dist/build/pdf.worker.mjs';
+    }
+
+    function loadBcfPreview() {
+        $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", false);
+        $("#BuyerConfirmationModel_SellingPrice").attr("disabled", false);
+        $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", false);
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestBCFB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                $("#BuyerConfirmationModel_HouseUnitModel").attr("disabled", true);
+                $("#BuyerConfirmationModel_SellingPrice").attr("disabled", true);
+                $("#BuyerConfirmationModel_MonthlyAmortization").attr("disabled", true);
+
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="bcfPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="bcfPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            }
+        });
+    }
+
+    function loadHlafPreview() {
+        var form1 = $("#frm_hlf068");
+
+        var formData = new FormData(document.querySelector(`#frm_hlf068`));
+        // var formData = form1.serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: '/Report/LatestHousingFormB64',
+            data: formData, // Convert to JSON string
+            contentType: 'application/json', // Set content type to JSON,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $("#beneficiary-overlay").removeClass('d-none');
+            },
+            success: function (response) {
+                // Redirect to another URL based on the response
+                //window.location.href = '/Report/LatestHousingForm2';
+
+                // Handle success response
+                //console.log(response);
+                // Do something with the response, like displaying a success message
+
+                $(`[id="hlafPreview"]`).html("");
+                var loadingTask = pdfjsLib.getDocument({ data: atob(response) });
+
+                loadingTask.promise.then(function (pdf) {
+                    console.log('PDF loaded');
+
+                    let pages = pdf._pdfInfo.numPages;
+
+                    for (let i = 1; i <= pages; i++) {
+                        pdf.getPage(i).then(page => {
+                            console.log(page);
+
+                            let pdfCanvas = document.createElement("canvas");
+                            let context = pdfCanvas.getContext("2d");
+                            let pageViewPort = page.getViewport({ scale: 1.75 });
+                            console.log(pageViewPort);
+
+                            pdfCanvas.width = pageViewPort.width;
+                            pdfCanvas.height = pageViewPort.height;
+
+                            $(`[id="hlafPreview"]`).append(pdfCanvas);
+
+                            page.render({
+                                canvasContext: context,
+                                viewport: pageViewPort
+                            });
+                        }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+
+                    //  $("#beneficiary-overlay").addClass('d-none');
+                }).catch(function (reason) {
+                    // PDF loading error
+                    console.error(reason);
+                });
+            },
+
+            complete: function () {
+                setTimeout(function () {
+                    $("#beneficiary-overlay").addClass('d-none');
+                }, 2000); // 2000 milliseconds = 2 seconds
+            },
+
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+            }
+        });
+    }
+
+    function disableBuyerConfirmationFields() {
+        $('[id^="BuyerConfirmationModel_"]').each(function () {
+            $(this).prop('readonly', true);
+        });
+
+        $("#BuyerConfirmationModel_JuridicalPersonalityId")[0].selectize.lock();
+        $("#BuyerConfirmationModel_OccupationStatus")[0].selectize.lock();
+        $("#BuyerConfirmationModel_MaritalStatus")[0].selectize.lock();
+
+        $('[name^="incomeSrcRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="pagibigRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="informedTermsRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="availedLoanRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="coBorrowerRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+
+        $('[name^="projectPropRbtn"]').each(function () {
+            $(this).prop('disabled', true);
+        });
+    }
+    function removeBcfPlaceholders() {
+        $("#BuyerConfirmationModel_SellingPrice").removeAttr('placeholder');
+        $("#BuyerConfirmationModel_MonthlyAmortization").removeAttr('placeholder');
+    }
+
+    //function toggleNextButton() {
+    //    // Check if all required fields with BuyerConfirmationModel in their IDs have values
+    //    var allFilled = true;
+    //    isBcfValid = true;
+    //    $("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //        if ($(this).val().trim() === '') {
+    //            allFilled = false;
+    //            return false; // Exit the each loop early
+    //        }
+    //    });
+
+    //    // Only BCF Radio Button
+    //    if (applicantInfoIdVal === '0') {
+    //        $('input[type="radio"].bcfRbtn[required]').each(function () {
+    //            let hasClass = $(this).hasClass('valid');
+    //            console.log("asd");
+
+    //            if (roleId === '3') {
+    //                return;  // Exit if roleId is '3'
+    //            }
+
+    //            if (!hasClass) {
+    //                allFilled = false;  // Set isBcfValid to false if a required radio button is not valid
+    //                return false;  // Break out of the each loop
+    //            }
+    //        });
+    //    }
+
+    //    isBcfValid = allFilled;
+
+    //    // Enable or disable the Next button based on whether all fields are filled
+    //    $(".nextBtn").prop("disabled", !allFilled);
+    //}
+
+    // Bind the toggleNextButton function to change events on each individual input
+    //$("input[id*='BuyerConfirmationModel'][required]").each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
+
+    //$('input[type="radio"].bcfRbtn[required]').each(function () {
+    //    $(this).on('change', toggleNextButton);
+    //});
+
+    //toggleNextButton();
+    removeBcfPlaceholders();
+
     //#endregion
 });

@@ -647,7 +647,7 @@ $(function () {
         if ($("#pcRadioBtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);;
         }
     });
 
@@ -657,7 +657,7 @@ $(function () {
         if ($("#pdRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);;
         }
     });
 
@@ -667,7 +667,7 @@ $(function () {
         if ($("#bcRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);;
         }
     });
 
@@ -677,7 +677,7 @@ $(function () {
         if ($("#maRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);;
         }
     });
 
@@ -1129,6 +1129,13 @@ $(function () {
             if (currentFormName == "form2") {
                 $("#form2").removeClass('fade').prop('hidden', false);
                 return;
+            }
+
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
             }
         },
         onPrevious: function (tab, navigation, index) {

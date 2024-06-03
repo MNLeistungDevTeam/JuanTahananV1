@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spApplicantsPersonalInformation_GetTotalApplication]
 	@roleId INT,
-	@companyId INT
+	@companyId INT,
+	@developerId INT
 AS
 	SET NOCOUNT ON;
 
@@ -33,5 +34,9 @@ AS
 	LEFT JOIN [User] u ON u.Id = apl.UserId
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
 	LEFT JOIN [Role] r ON r.Id = ur.RoleId
-	WHERE apl.CompanyId = @companyId
+	LEFT JOIN [BeneficiaryInformation] bi ON bi.UserId = apl.UserId
+	WHERE apl.CompanyId = @companyId 
+	AND 1 = (CASE WHEN @developerId IS NULL THEN 1
+	WHEN @developerId IS NOT NULL AND @developerId = bi.PropertyDeveloperId THEN 1
+	END)
 RETURN 0

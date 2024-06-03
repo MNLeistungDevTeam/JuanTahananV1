@@ -1,0 +1,196 @@
+﻿@inject IStringLocalizer<SharedResources> localizer
+ @using DMS.Domain.Enums
+@model ApplicantViewModel
+@{
+    ViewData["Title"] = Model.BuyerConfirmationModel.Code + " - BCF Details";
+    // var items = (List<ApplicantViewModel>)ViewBag.items;
+}
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="BuyerConfirmation" asp-action="ApplicantRequests">BCF Requests</a></li>
+                    <li class="breadcrumb-item active">@Model.BuyerConfirmationModel.Code</li>
+                </ol>
+            </div>
+            <h4 class="page-title">BCF Details</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+
+<div class="card card-outline rounded-4">
+    <div class="card-body rounded-4 rounded-bottom bg-transparent border rounded border-theme-warning border-4 border-bottom-0 border-end-0 border-start-0">
+
+        <div class="row">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <!-- Content for step progress -->
+                <div class="progressbar" style="width: 50%;">
+                    <div id="progress" class="progresso"></div>
+                    <div class="progress-step" data-title="Set pricing">
+                        <i class="mdi mdi-currency-php fs-2"></i>
+                    </div>
+                    <div class="progress-step" data-title="Review BCF">
+                        <i class="mdi mdi-file-outline fs-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="frm_bcf" method="post" asp-action="UpdateBCF" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
+            <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.Id" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.Mode" />
+
+            <div class="row" id="inputBcf">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="row mb-3" style="width: 30%;">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" asp-for="BuyerConfirmationModel.HouseUnitModel" readonly required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.HouseUnitModel" required></label>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control decimalInputMask5" asp-for="BuyerConfirmationModel.SellingPrice" required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.SellingPrice" required></label>
+                            <span asp-validation-for="BuyerConfirmationModel.SellingPrice" class="text-danger"></span>
+                            <span id="BuyerConfirmationModel_SellingPrice-error-custom" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control decimalInputMask5" asp-for="BuyerConfirmationModel.MonthlyAmortization" required />
+                            <label class="mx-2" asp-for="BuyerConfirmationModel.MonthlyAmortization" required></label>
+                            <span asp-validation-for="BuyerConfirmationModel.MonthlyAmortization" class="text-danger"></span>
+                            <span id="BuyerConfirmationModel_MonthlyAmortization-error-custom" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="row mb-3" style="width: 30%;">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-info btn-lg rounded-3" id="bcfSetAmount" disabled>Apply pricing</button>
+                            <button class="btn btn-outline-info btn-lg rounded-3" id="bcfPreviewBtn">
+                                <span class="text-center ms-2">Review BCF</span>
+                                <span class="float-end"><i class="mdi mdi-arrow-right"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-0 b-0" id="previewBcf" hidden>
+                <div class="row">
+                    <div class="d-flex flex-column align-items-center justify-content-center overflow-auto" id="bcfPreview">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <ul class="mb-0 list-inline mt-1">
+                            <li class="list-inline-item">
+                                <button class="btn btn-outline-info btn-lg rounded-3" id="bcfBackBtn">
+                                    <span class="float-start"><i class="mdi mdi-arrow-left"></i></span>
+                                    <span class="text-center ms-2">Change pricing</span>
+                                </button>
+                            </li>
+                            <li class="list-inline-item float-end">
+
+                                @if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.Draft)
+                                {
+                                //approval process
+                                    <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
+                                        <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
+                                        <span class="text-center ms-2">Return BCF</span>
+                                    </button>
+
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
+                                        <span class="text-center me-2">Save & Approve</span>
+                                        <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
+                                    </button>
+                                }
+                                else if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
+                                {
+                                //approved
+
+
+                                    <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
+                                        <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
+                                        <span class="text-center ms-2">Return BCF</span>
+                                    </button>
+
+                                }
+
+                                else if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                {
+                                //approved
+
+                                    //return
+                                    <button type="button" class="btn btn-primary btn-lg waves-effect waves-light" id="btnApprove" data-value="3">
+                                        <span class="text-center me-2">Save & Approve</span>
+                                        <span class="float-end"><i class="mdi mdi-check-circle-outline"></i></span>
+                                    </button>
+
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<div id="approver-modal" class="modal fade" ttabindex="-1" role="dialog" aria-labelledby="approver-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="overlay" id="approver-modal-overlay" hidden>
+                <span class='spinner-border spinner-border-lg'></span>
+            </div>
+            <div class="modal-header bg-soft-light border-bottom">
+                <h4 class="modal-title" id="approver-modalLabel"><span class="mdi mdi-plus"></span> Buyer Confirmation Approval</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="SaveApprovalLevel" asp-controller="Approval" asp-antiforgery="true" method="post" role="form" id="frm_approver_level">
+                <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <input asp-for="ApprovalLevel.Id" type="hidden" />
+                    <input asp-for="ApprovalLevel.ApprovalStatusId" type="hidden" />
+                    <input asp-for="ApprovalLevel.Status" type="hidden" />
+                    <input asp-for="ApprovalLevel.ModuleCode" type="hidden" />
+                    <input asp-for="ApprovalLevel.TransactionId" type="hidden" />
+                    <div class="mb-2">
+                        <label asp-for="ApprovalLevel.TransactionNo"></label>
+                        <input asp-for="ApprovalLevel.TransactionNo" class="form-control" placeholder="Transaction No." readonly />
+                        <span asp-validation-for="ApprovalLevel.TransactionNo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2" id="action-container">
+                        <label asp-for="ApprovalLevel.Remarks"></label>
+                        <textarea asp-for="ApprovalLevel.Remarks" class="form-control" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-12 text-muted">Author: Developer</span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-soft-light border-top">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="btn_close">Close</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary"><span class="fas fa-thumbs-up"></span> Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/Setup/BuyerConfirmation/BuyerConfirmationDetailScript.js" asp-append-version="true"></script>
+}

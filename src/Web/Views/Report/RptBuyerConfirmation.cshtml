@@ -1,0 +1,27 @@
+﻿ @using DMS.Application.PredefinedReports.BuyerConfirmation
+@using DevExpress.AspNetCore;
+ @model BuyerConfirmation
+@{
+    ViewData["Title"] = "Buyer Confirmation";
+
+    var viewerRender = Html.DevExpress().WebDocumentViewer("DocumentViewer")
+        .Height("100%")
+        .Bind(Model);
+}
+
+<div class="d-flex flex-column" style="height:100vh;">
+    @viewerRender.RenderHtml()
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/DevExpress/dx-reporting-skeleton-screen.css" />
+    <link rel="stylesheet" href="~/css/DevExpress/viewer.part.bundle.css" />
+    <link rel="stylesheet" href="~/css/DevExpress/dx.material.blue.light.bundle.css" />
+
+    <script src="~/js/DevExpress/reporting.thirdparty.bundle.js"></script>
+    <script src="~/js/DevExpress/viewer.part.bundle.js"></script>
+
+    @* <script src="~/js/Reporting/SaveReportEvent.js"></script> *@
+
+    @viewerRender.RenderScripts()
+}

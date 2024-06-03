@@ -3,6 +3,7 @@
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	UserId INT NOT NULL,
 	PagibigNumber NVARCHAR(255),
+    Code NVARCHAR(255),
 	CompanyId INT NULL,
 	LastName NVARCHAR(150),
 	FirstName NVARCHAR(150),
@@ -31,12 +32,16 @@
     [PermanentMunicipalityName] NVARCHAR(255) NULL,
     [PermanentProvinceName] NVARCHAR(255) NULL,
     [PermanentZipCode] NVARCHAR(50) NULL,
-    PropertyDeveloperName NVARCHAR(255) NULL,
-    PropertyLocation NVARCHAR(255) NULL,
-    PropertyUnitLevelName NVARCHAR(255) NULL,
+
+    PropertyDeveloperId INT,
+    PropertyUnitId INT,
+    PropertyLocationId INT,
+    PropertyProjectId INT,
+
     CreatedById INT NULL,
     DateCreated DATETIME2(7) NOT NULL DEFAULT(GETDATE()),
     ModifiedById INT NULL,
     DateModified DATETIME2(7) NULL,
-    Email NVARCHAR(255) NULL
+    Email NVARCHAR(255) NULL, 
+    [IsBcfCreated] BIT NOT NULL DEFAULT 0
 )

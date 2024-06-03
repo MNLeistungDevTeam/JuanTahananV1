@@ -12,6 +12,7 @@ $(function () {
     //#region Initialization
 
     var $userRoleDropdown, userRoleDropdown;
+    var $developerDropdown, developerDropdown;
     const dateFrom = moment().startOf("month").format("YYYY-MM-DD");
     const dateTo = moment().endOf("month").format("YYYY-MM-DD");
 
@@ -33,6 +34,7 @@ $(function () {
         selectOnTab: true,
         preload: true,
         persist: false,
+        search: false,
         load: function (query, callback) {
             $.ajax({
                 url: baseUrl + "Role/GetAllRoles",
@@ -66,25 +68,63 @@ $(function () {
 
     userRoleDropdown = $userRoleDropdown[0].selectize;
 
+    $developerDropdown = $("[name='User.PropertyDeveloperId']").selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: ['Name'],
+        selectOnTab: true,
+        preload: true,
+        persist: false,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + "Company/GetDevelopers",
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>");
+            },
+            option: function (item, escape) {
+                return (
+                    "<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        }
+    });
+
+    developerDropdown = $developerDropdown[0].selectize;
+
     //#endregion
 
     //#region Events
 
-    $('#txtSearch').on('input keyup', function () {
+    $('#txtSearch').on('input', function () {
         var value = $(this).val().toLowerCase();
         $("#div-user-container #div-user-cards .col-xl-3").filter(function () {
-            var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1)
+            var data = ($(this).find('.card-body h4').text().toLowerCase().indexOf(value) > -1);
+            $(this).toggle(data);
 
-            $(this).toggle(data)
-            const containsSubstring = data.some((arr) => arr.includes(value));
-            // arr variable is declared and the data from ajax get user list is passed in this variable
-
-            if (!containsSubstring) {
-                $("#noSearch").show();
-            }
-            else {
-                $("#noSearch").hide();
-            }
+            //if (!data) {
+            //    $("#noSearch").show();
+            //}
+            //else {
+            //    $("#noSearch").hide();
+            //}
         });
     });
 
@@ -306,6 +346,10 @@ $(function () {
 
             userRoleDropdown.unlock();
             userRoleDropdown.setValue(userInfo.UserRoleId);
+
+            developerDropdown.unlock();
+            developerDropdown.setValue(userInfo.PropertyDeveloperId);
+
             //userRoleDropdown.lock();
 
             if (UserPicture === "" || UserPicture === null) ActualPicture = DefaultProfile;
@@ -445,8 +489,6 @@ $(function () {
                     if (recordId == currentUserId) {
                         updateUserProfile();
                     }
-
-                      
 
                     loadUsers();
                     button.attr({ disabled: false });

@@ -2,6 +2,7 @@
 	@userId INT,
 	@companyId INT
 AS
+ 
 	SELECT TOP 1 
 		apl.*,
 		CONCAT(u1.Firstname,' ',u1.MiddleName,' ',u1.LastName) ApplicantFullName,
@@ -35,8 +36,24 @@ AS
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks,
-		aps.ApproverId
+		aps.ApproverId,
+		bi.PropertyProjectId,
+		bi.PropertyUnitId,
+		bi.PropertyDeveloperId,
+		bi.PropertyLocationId,
+		pp.[Name] PropertyProjectName,
+		pl.[Name] PropertyLocationName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo
 	FROM ApplicantsPersonalInformation apl
+	LEFT JOIN BeneficiaryInformation bi ON bi.UserId = apl.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bi.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bi.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bi.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bi.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	LEFT JOIN (	SELECT aps1.*, aplvl.Remarks, aplvl.ApproverId,
 		ur.RoleId ApproverRoleId
 		FROM ApprovalStatus aps1
@@ -51,6 +68,7 @@ AS
 		) aplvl ON aps1.Id = aplvl.ApprovalStatusId
 		LEFT JOIN [User] ua ON aplvl.ApproverId = ua.Id
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
+		WHERE aps1.ReferenceType =   (SELECT Id from Module WHERE Id = 8 OR Code = 'APLCNTREQ')
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON aps.ApproverId = u2.Id

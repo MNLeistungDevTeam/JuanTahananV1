@@ -91,6 +91,7 @@
                         <input hidden type="text" class="form-control" asp-for="BarrowersInformationModel.PropertyLocation" value="@Model.BarrowersInformationModel.PropertyLocation">
                         <input hidden type="text" class="form-control" asp-for="BarrowersInformationModel.PropertyUnitLevelName" value="@Model.BarrowersInformationModel.PropertyUnitLevelName">
 
+ 
 
 
                         <div class="row gy-2">
@@ -170,6 +171,42 @@
                                     <span asp-validation-for="LoanParticularsInformationModel.ModeOfPaymentId" class="text-danger"></span>
                                 </div>
                             </div>
+
+
+
+                            <div class="position-relative radio-enrolledMRIRbtn">
+                                <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn1" radio-value="true"/>
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="mriPropBtn" id="enrolledMRIRbtn2" radio-value="false"/>
+                                        <label class="form-check-label">No</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.IsEnrolledToMRI" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.IsEnrolledToMRI" class="text-danger"> </span>
+                            </div>
+
+
+                            <div class="position-relative radio-pysRbtn">
+                                <label class="form-label fw-normal" asp-for="LoanParticularsInformationModel.PaymentScheme"></label>
+                                <div class="mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn1" radio-value="GAP"/>
+                                        <label class="form-check-label">GAP</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="paymentSchemeRbtn" id="pysRbtn2" radio-value="LAP"/>
+                                        <label class="form-check-label">LAP</label>
+                                    </div>
+                                </div>
+                                <input class="form-control rounded-3 text-center" asp-for="LoanParticularsInformationModel.PaymentScheme" hidden>
+                                <span asp-validation-for="LoanParticularsInformationModel.PaymentScheme" class="text-danger"> </span>
+                            </div>
+
                             <div class="col-md-12">
                                 <h3 class="header-title pb-2 mb-2 mt-2 border-bottom-dashed">
                                     <span class="badge text-bg-warning rounded-4 px-3 py-1 font-16">COLLATERAL</span>
@@ -410,9 +447,9 @@
                                                 <option value="">Select Marital Status ... </option>
                                                 <option value="Single/Unmarried">Single/Unmarried</option>
                                                 <option value="Married">Married</option>
-                                                <option value="Annulled">Annulled</option>
-                                                <option value="Legally Separated">Legally Separated</option>
                                                 <option value="Widow/er">Widow/er</option>
+                                                <option value="Legally Separated">Legally Separated</option>
+                                                <option value="Annulled">Annulled</option>
                                             </select>
                                             <span asp-validation-for="BarrowersInformationModel.MaritalStatus" class="text-danger"></span>
                                         </div>
@@ -729,7 +766,7 @@
                                                     Media
                                                 </option>
                                                 <option value="17">
-                                                    Mining and Quanrying
+                                                    Mining & Quarrying
                                                 </option>
                                                 <option value="18">
                                                     Other Community, Social & Personal Service Activities
@@ -882,6 +919,13 @@
                                                 <option value="Permanent Home Address">Permanent Home Address</option>
                                             </select>
                                             <span asp-validation-for="BarrowersInformationModel.PreparedMailingAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative">
+                                            <label class="form-label fw-normal" asp-for="BarrowersInformationModel.ContactDetailEmail"></label>
+                                            <input type="email" class="form-control rounded-3 text-start" asp-for="BarrowersInformationModel.ContactDetailEmail" value="@Model.BarrowersInformationModel.ContactDetailEmail">
+                                            <span asp-validation-for="BarrowersInformationModel.ContactDetailEmail" class="text-danger"> </span>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -1165,7 +1209,7 @@
                                             Media
                                         </option>
                                         <option value="17">
-                                            Mining and Quanrying
+                                            Mining & Quarrying
                                         </option>
                                         <option value="18">
                                             Other Community, Social & Personal Service Activities

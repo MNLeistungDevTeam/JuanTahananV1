@@ -2,6 +2,8 @@
 @inject DMS.Application.Services.ICurrentUserService _currentUserService
 @inject DMS.Application.Interfaces.Setup.UserRepository.IUserRoleRepository _userRoleRepo
 @inject DMS.Application.Interfaces.Setup.RoleRepository.IRoleRepository _roleRepo;
+@inject DMS.Application.Interfaces.Setup.ApplicantsRepository.IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
+
 @model ApplicantViewModel
 @{
     string title = "Application Details - " + Model.ApplicantsPersonalInformationModel.Code;
@@ -12,6 +14,11 @@
     var currentUserRole = await _userRoleRepo.GetUserRoleAsync(currentUserId);
 
     var roleInfo = await _roleRepo.GetByIdAsync(currentUserRole.RoleId);
+
+
+    var defaultDevLogo = "/images/juantahananassets/logo/rscity.png";
+    var defaultUnitLogo = "/images/juantahananassets/sample/layoutsample.png";
+    var defaultProjectLogo = "/images/juantahananassets/logo/arao_logo.png";
 }
 
 <!-- start page title -->
@@ -21,10 +28,10 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                    <li class="breadcrumb-item active">Application Details</li>
                 </ol>
             </div>
-            <h4 class="page-title">@ViewData["Title"]</h4>
+            <h4 class="page-title">Application Details</h4>
         </div>
     </div>
 </div>
@@ -45,6 +52,7 @@
                         <h3 class="align-items-center">
                             <span class="fw-bold font-28 me-2">@Model.ApplicantsPersonalInformationModel.Code</span>
                             <input hidden id="txt_applicantCode" value="@Model.ApplicantsPersonalInformationModel.Code" />
+                            <input type="hidden" id="txt_bcfCreated" value="@Model.BarrowersInformationModel.IsBcfCreated.ToString()" />
                             @if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Draft)
                             {
                                 <span class="badge bg-secondary ms-auto fs-9">Application in Draft</span>
@@ -119,6 +127,7 @@
                                                 <i class="fe-send me-1"></i> <span>Submit Application</span>
                                             </button>
 
+
                                         }
                                         else
 
@@ -145,6 +154,8 @@
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                     {
@@ -153,6 +164,9 @@
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
+
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigVerified)
                                     {
@@ -167,6 +181,8 @@
                                             <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                                 <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             </button>
+
+                                            <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                         }
                                         else
 
@@ -181,6 +197,8 @@
                                             <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Discontinued)">
                                                 <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                             </button>
+
+                                            <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                         }
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
@@ -188,24 +206,34 @@
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
                                     {
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
+
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PagibigConfirmed)
                                     {
                                         <button type="button" class="btn btn-warning waves-effect waves-light" id="btnWithdraw" data-value="@((int)AppStatusType.Withdrawn)">
                                             <i class="mdi mdi-book-cancel-outline me-1"></i> <span>Withdraw Application</span>
                                         </button>
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                     }
                                     else if (Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
                                     {
                                         <button type="button" class="btn btn-info waves-effect waves-light" id="btnSubmitApplication" data-value="@((int)AppStatusType.Submitted)">
                                             <i class="fe-send me-1"></i> <span>Submit Application</span>
                                         </button>
+
+                                        <input type="hidden" id="txt_IsTransactionLock" value="True" />
+
                                     }
                                 }
                                 else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Submitted)
@@ -219,6 +247,10 @@
                                     <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
+
+
+
+                                    <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                 }
 
 
@@ -234,6 +266,9 @@
                                     <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
+
+
+                                    <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                 }
                                 else if ((currentUserRole.RoleId == (int)PredefinedRoleType.Developer || currentUserRole.RoleId == (int)PredefinedRoleType.Lgu) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.PostSubmitted)
                                 {
@@ -247,6 +282,9 @@
                                     <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
+
+
+                                    <input type="hidden" id="txt_IsTransactionLock" value="True" />
                                 }
                                 else if (currentUserRole.RoleId == (int)PredefinedRoleType.Pagibig && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.DeveloperConfirmed)
                                 {
@@ -263,6 +301,14 @@
                                     <button type="button" class="btn btn-warning waves-effect waves-light" id="btnDefer" data-value="@((int)AppStatusType.ForResubmition)">
                                         <i class="fe-repeat me-1"></i><span>Return</span>
                                     </button>
+
+
+                                    <input type="hidden" id="txt_IsTransactionLock" value="True" />
+                                }
+
+                                else
+                                {
+                                    <input type="hidden" id="txt_IsTransactionLock" value="False" />
                                 }
                             }
                         </div>
@@ -289,16 +335,29 @@
                                             <h4>Unit</h4>
                                             <div class="product">
                                                 <h3 class="fw-bold">
-                                                    @(Model.BarrowersInformationModel.PropertyUnitLevelName ?? "N/A")
+                                                    @(Model.BarrowersInformationModel.PropertyUnitDescription ?? "N/A")
                                                 </h3>
-                                                <p>@(Model.BarrowersInformationModel.PropertyLocation ?? "N/A")</p>
+                                                @* <div class="row">
+                                                <img src="@(Model.ApplicantsPersonalInformationModel.PropertyUnitLogo ?? defaultUnitLogo)" alt="" class="img-fluid" />
+                                                </div> *@
+                                                <div class="row">
+                                                    <p>@(Model.BarrowersInformationModel.PropertyLocationName ?? "N/A")</p>
+                                                </div>
 
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <h4>Developer</h4>
-                                            <div class="product">
-                                                <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
+                                            @* <div class="product">
+                                            <h3 class="fw-bold">@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")</h3>
+                                            </div> *@
+                                            @*
+                                            PropertyDeveloperLogo
+                                            PropertyProjectLogo
+                                            PropertyUnitLogo
+                                            *@
+                                            <div class="row">
+                                                <img src="@(Model.ApplicantsPersonalInformationModel.PropertyDeveloperLogo ?? defaultDevLogo)" alt="@(Model.BarrowersInformationModel.PropertyDeveloperName ?? "N/A")" class="img-fluid" />
                                             </div>
                                         </div>
 
@@ -390,48 +449,47 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active show" id="home-b1" role="tabpanel">
                                             <div class="row">
+                                                <div class="col-md-6 d-flex flex-column">
 
-                                                <div class="col-md-6">
-
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Last Name:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.LastName</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-3 my-2">Last Name:</label>
+                                                        <div class="col-md-9 d-flex align-items-center">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.LastName</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Middle Name:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.MiddleName</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-3 my-2">Middle Name:</label>
+                                                        <div class="col-md-9 d-flex align-items-center">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.MiddleName</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">First Name:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.FirstName</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-3 my-2">First Name:</label>
+                                                        <div class="col-md-9 d-flex align-items-center">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.FirstName</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Email:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.Email</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-3 my-2">Email:</label>
+                                                        <div class="col-md-9 d-flex align-items-center">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.Email</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Residence:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.PresentBaranggayName @Model.BarrowersInformationModel.PresentMunicipalityName @Model.BarrowersInformationModel.PresentProvinceName</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-3 my-2">Residence:</label>
+                                                        <div class="col-md-9 d-flex align-items-center">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.PresentBaranggayName @Model.BarrowersInformationModel.PresentMunicipalityName @Model.BarrowersInformationModel.PresentProvinceName</p>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="row align-items-center">
-                                                        <label class="col-md-3 text-md-end">Current Stage:</label>
-                                                        <div class="col-md-9">
+                                                <div class="col-md-6 d-flex flex-column">
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-4 my-2">Current Stage:</label>
+                                                        <div class="col-md-8">
                                                             @if (Model.ApplicantsPersonalInformationModel.StageNo == 1)
                                                             {
                                                                 <h3 class="badge bg-darkorange ms-auto font-14" id="header_remarks">@Model.ApplicantsPersonalInformationModel.Stage</h3>
@@ -446,31 +504,38 @@
                                                             }
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Birth Date:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@(Model.BarrowersInformationModel.BirthDate?.ToString("MM/dd/yyyy") ?? "")</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-4 my-2">Birth Date:</label>
+                                                        <div class="col-md-8">
+                                                            <p class="mb-0">@(Model.BarrowersInformationModel.BirthDate?.ToString("MM/dd/yyyy") ?? "")</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Marital Status:</label>
-                                                        <div class="col-md-9">
-                                                            <p>@Model.BarrowersInformationModel.MaritalStatus</p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-4 my-2">Marital Status:</label>
+                                                        <div class="col-md-8">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.MaritalStatus</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Employment Status:</label>
-                                                        <div class="col-md-9">
-                                                            <p></p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-4 my-2">Employment Status:</label>
+                                                        <div class="col-md-8">
+                                                            <p class="mb-0">@Model.BarrowersInformationModel.OccupationStatus</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row">
-                                                        <label class="col-md-3 text-md-end">Monthly Salary:</label>
-                                                        <div class="col-md-9">
-                                                            <p></p>
+                                                    <div class="row d-flex align-items-center">
+                                                        <label class="col-md-4 my-2">Monthly Salary:</label>
+                                                        <div class="col-md-8">
+                                                            @if (Model.BuyerConfirmationModel is not null)
+                                                            {
+                                                                <p class="mb-0">@Model.BuyerConfirmationModel.MonthlySalary</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="mb-0">-----</p>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -494,11 +559,16 @@
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: <i>@Model.ApplicantsPersonalInformationModel.Remarks</i></span>
                                                 </h3>
                                             }
+                                            else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                            {
+                                                <h3 class="badge bg-teal ms-auto font-14" id="header_remarks">
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: <i>@Model.ApplicantsPersonalInformationModel.Remarks</i></span>
+                                                </h3>
+                                            }
 
                                             <div class="col-md-12">
-                                                <div class="row" id="div_verification"></div>
+                                                <div class="row" id="div_verification"> </div>
                                             </div>
-
                                         </div>
                                         <!-- New tab content -->
                                         <div class="tab-pane" id="tab4" role="tabpanel">
@@ -513,6 +583,12 @@
                                             else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.Disqualified)
                                             {
                                                 <h3 class="badge bg-yellowgreen ms-auto font-14" id="header_remarks">
+                                                    <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: <i>@Model.ApplicantsPersonalInformationModel.Remarks</i></span>
+                                                </h3>
+                                            }
+                                            else if (!string.IsNullOrEmpty(Model.ApplicantsPersonalInformationModel.Remarks) && Model.ApplicantsPersonalInformationModel.ApprovalStatus == (int)AppStatusType.ForResubmition)
+                                            {
+                                                <h3 class="badge bg-teal ms-auto font-14" id="header_remarks">
                                                     <span id="span_remarks">@Model.ApplicantsPersonalInformationModel.ApproverRole Remarks: <i>@Model.ApplicantsPersonalInformationModel.Remarks</i></span>
                                                 </h3>
                                             }

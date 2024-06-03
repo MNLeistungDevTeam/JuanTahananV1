@@ -1,11 +1,16 @@
 ﻿using DMS.Application.Interfaces.Setup.EmailLogRepo;
 using DMS.Application.Interfaces.Setup.EmailSetupRepo;
+using DMS.Application.Interfaces.Setup.TemporaryLinkRepo;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.EmailSettingsDto;
 using DMS.Domain.Dto.ReferenceDto;
+using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Entities;
+using DMS.Domain.Enums;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -17,12 +22,14 @@ namespace DMS.Infrastructure.Services
         private EmailSettingsModel _emailSettings;
         private IEmailSetupRepository _emailSetupRepo;
         private IEmailLogRepository _emailLogRepo;
+        private ITemporaryLinkRepository _temporaryLinkRepo;
 
-        public EmailService(IOptions<EmailSettingsModel> emailSettings, IEmailSetupRepository emailSetupRepo, IEmailLogRepository emailLogRepo)
+        public EmailService(IOptions<EmailSettingsModel> emailSettings, IEmailSetupRepository emailSetupRepo, IEmailLogRepository emailLogRepo, ITemporaryLinkRepository temporaryLinkRepo)
         {
             _emailSettings = emailSettings.Value;
             _emailSetupRepo = emailSetupRepo;
             _emailLogRepo = emailLogRepo;
+            _temporaryLinkRepo = temporaryLinkRepo;
         }
 
         public async Task SendEmailAsync(List<string> sendToEmails, string subject, MimeEntity body, int companyId, ReferenceModel refModel)
@@ -60,12 +67,14 @@ namespace DMS.Infrastructure.Services
                 var emailAddress = new List<MailboxAddress>();
 
                 emailAddress.Add(MailboxAddress.Parse(setup.Email.Trim()));
-                emailMessage.From.AddRange(emailAddress);
+
+                emailMessage.From.Add(new MailboxAddress(setup.DisplayName, setup.Email));
                 emailMessage.Sender = MailboxAddress.Parse(setup.Email.Trim());
                 emailMessage.To.AddRange(emailList);
                 emailMessage.Subject = subject;
                 emailMessage.Body = body;
                 emailMessage.Date = DateTime.Now;
+
                 //emailMessage.ReplyTo.Add(new MailboxAddress("Jericho ", "jericho.mosqueda@mnleistung.de"));
 
                 using MailKit.Net.Smtp.SmtpClient smtp = new();
@@ -74,7 +83,9 @@ namespace DMS.Infrastructure.Services
                 var forSSL = SecureSocketOptions.SslOnConnect;
                 var forAuto = SecureSocketOptions.Auto;
                 smtp.Connect(setup.Host, setup.Port, forAuto);
+
                 smtp.Authenticate(setup.Email.Trim(), setup.Password);
+
                 await smtp.SendAsync(emailMessage);
                 smtp.Disconnect(true);
             }
@@ -236,6 +247,94 @@ namespace DMS.Infrastructure.Services
                 Id = model.Id,
                 TransactionNo = model.Code,
                 Description = "Application Status for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
+        }
+
+        public async Task SendBuyerConfirmationStatusToBeneficiary(BuyerConfirmationModel model, string receiverEmail, string? rootFolder)
+        {
+            string htmlTemplate = GetTemplateForBuyerConfirmationStatus(model.ApprovalStatus.Value);
+
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "BuyerConfirmationStatusTemplate", htmlTemplate);
+
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            body = body.Replace("{buyerConfirmationCode}", model.Code)
+                .Replace("{buyerConfirmationRemarks}", model.Remarks)
+                .Replace("{buyerConfirmationStatus}", model.ApplicationStatus)
+                .Replace("{approverRoleName}", model.ApproverRole);
+
+            var emails = new List<string> { receiverEmail };
+            var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.Code,
+                Description = "Buyer Confirmation Status for Beneficiary has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.SenderId.Value,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
+        }
+
+        public async Task SendBuyerConfirmationDocumentStatusToBeneficiary(BuyerConfirmationDocumentModel model, string receiverEmail, string? rootFolder)
+        {
+            string? htmlTemplate = "";
+
+            if (model.Status.Value == (int)AppStatusType.DeveloperVerified)
+            {
+                htmlTemplate = "DeveloperDocumentApproved.html";
+            }
+            else
+            {
+                htmlTemplate = "DeveloperDocumentReturned.html";
+            }
+
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "BuyerConfirmationStatusTemplate", htmlTemplate);
+
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            body = body.Replace("{buyerConfirmationCode}", model.BuyerConfirmationCode)
+                .Replace("{buyerConfirmationRemarks}", model.Remarks)
+                .Replace("{buyerConfirmationStatus}", model.BuyerConfirmationStatus);
+
+            var emails = new List<string> { receiverEmail };
+            var subject = $"Good Day {model.ApplicantFirstName} your application is already  processed";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+                TransactionNo = model.BuyerConfirmationCode,
+                Description = "Buyer Confirmation Document Status for Beneficiary has been delivered",
                 //"Email link for quotation delivered"
                 SenderId = model.SenderId.Value,
                 ReceiverId = model.Id,
@@ -530,6 +629,74 @@ namespace DMS.Infrastructure.Services
             };
 
             await SendEmailAsync(emails, subject, emailBody, model.CompanyId.Value, refModel);
+        }
+
+        public async Task SendUserCredentialResetConfirmation(UserModel model, string? rootFolder, string? baseUrl)
+        {
+            //HTML Body
+            string body = string.Empty;
+            string filepath = Path.Combine(rootFolder, "EmailTemplate", "ResetCredentialConfirmation.html");
+
+            using (StreamReader str = new(filepath))
+            {
+                body = str.ReadToEnd();
+            }
+
+            var tempData = new TemporaryLinkModel()
+            {
+                UserId = model.Id,
+                GuId = Guid.NewGuid(),
+            };
+            var tempLink = await _temporaryLinkRepo.GetTemporaryLinkData(tempData);
+            body = body.Replace("{email}", model.Email)
+                .Replace("{firstName}", model.FirstName).Replace("[provided_link]", $"{baseUrl}/Account/ResetCredentials/{tempLink.GuId}");
+
+            var emails = new List<string> { model.Email };
+            var subject = $"Good Day {model.FirstName} your reset credential request is already processed";
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = body;
+
+            //Sending of Email
+            MimeEntity generatedbody = builder.ToMessageBody();
+
+            ReferenceModel refModel = new()
+            {
+                Id = model.Id,
+
+                TransactionNo = model.PagibigNumber,
+                Description = "Request for Reset Credentials for Account has been delivered",
+                //"Email link for quotation delivered"
+                SenderId = model.Id,
+                ReceiverId = model.Id,
+            };
+
+            await SendEmailAsync(emails, subject, generatedbody, model.CompanyId.Value, refModel);
+
+            //Creating GuId
+            await _temporaryLinkRepo.SaveContextAsync(tempLink);
+        }
+
+        private static string GetTemplateForBuyerConfirmationStatus(int applicationStatusNumber)
+        {
+            Dictionary<int, string> applicationDictionary = new Dictionary<int, string>
+        {
+            { 1, "Submitted.html" },
+            { 3, "DeveloperConfirmed.html" },
+            { 11, "Resubmission.html" }
+        };
+
+            // Check if the key exists in the dictionary
+            if (applicationDictionary.ContainsKey(applicationStatusNumber))
+            {
+                // If yes, return the corresponding value
+                return applicationDictionary[applicationStatusNumber];
+            }
+            else
+            {
+                // If not, return a default value
+                return "DefaultTemplate.cshtml"; // Or any other default template
+            }
         }
     }
 }

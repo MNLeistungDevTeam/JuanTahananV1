@@ -10,6 +10,15 @@ $(function () {
     var telNoArray = [];
     var itiFlag = false;
 
+    var xhr;
+    var xhr1;
+    var xhr2;
+    var resources = [];
+    var developerDropdown, $developerDropdown;
+    var houseUnitDropdown, $houseUnitDropdown;
+    var locationDropdown, $locationDropdown;
+    var projectDropdown, $projectDropdown;
+
     //#region Initialization
 
     $(".selectize").selectize({
@@ -67,6 +76,8 @@ $(function () {
         }
     });
 
+    $("#btn_savehlf068").attr('disabled', true);
+
     initializeLeftDecimalInputMask(".decimalInputMask5", 2);
 
     initializeLoanCreditDate();
@@ -84,6 +95,293 @@ $(function () {
     rebindValidators();
 
     //#endregion
+
+    var locationVal = $('[name="BarrowersInformationModel.PropertyLocationId"]').attr('data-value');
+    var houseUnitVal = $('[name="BarrowersInformationModel.PropertyUnitId"]').attr('data-value');
+    var projectVal = $('[name="BarrowersInformationModel.PropertyProjectId"]').attr('data-value');
+    var developerVal = $('[name="BarrowersInformationModel.PropertyDeveloperId"]').attr('data-value');
+
+    $locationDropdown = $(`[name='BarrowersInformationModel.PropertyLocationId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetLocations',
+                data: {
+                    projectId: $('[name="BarrowersInformationModel.PropertyProjectId"]').val(),
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        onChange: function (value) {
+            houseUnitDropdown.setValue("");
+            houseUnitDropdown.disable();
+            houseUnitDropdown.clearOptions();
+            houseUnitDropdown.load(function (callback) {
+                xhr2 && xhr2.abort();
+                xhr2 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetUnits",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                        console.log(results)
+
+                        try {
+                            if (!results.length) houseUnitDropdown.disable();
+                            else houseUnitDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+    });
+
+    locationDropdown = $locationDropdown[0].selectize;
+
+    $houseUnitDropdown = $(`[name='BarrowersInformationModel.PropertyUnitId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
+        preload: true,
+        search: false,
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetUnits',
+                data: {
+                    projectId: $('[name="BarrowersInformationModel.PropertyProjectId"]').val(),
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
+
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        //render: {
+        //    item: function (item, escape) {
+        //        return ("<div>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    },
+        //    option: function (item, escape) {
+        //        return ("<div class='py-1 px-2'>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    }
+        //},
+    });
+
+    houseUnitDropdown = $houseUnitDropdown[0].selectize;
+
+    $projectDropdown = $(`[name='BarrowersInformationModel.PropertyProjectId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetProjects',
+                data: {
+                    developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                },
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        onChange: function (value) {
+            console.log($('[name="BarrowersInformationModel.PropertyDeveloperId"]').val())
+            console.log(value)
+
+            locationDropdown.setValue("");
+            locationDropdown.disable();
+            locationDropdown.clearOptions();
+            locationDropdown.load(function (callback) {
+                xhr1 && xhr1.abort();
+                xhr1 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetLocations",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="BarrowersInformationModel.PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                        console.log(results)
+
+                        try {
+                            if (!results.length) locationDropdown.disable();
+                            else locationDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+    });
+
+    projectDropdown = $projectDropdown[0].selectize;
+
+    $developerDropdown = $(`[name='BarrowersInformationModel.PropertyDeveloperId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetDevelopers',
+
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        render: {
+            item: function (item, escape) {
+                return ("<div>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            },
+            option: function (item, escape) {
+                return ("<div class='py-1 px-2'>" +
+                    escape(item.Name) +
+                    "</div>"
+                );
+            }
+        },
+        onChange: function (value) {
+            projectDropdown.setValue("");
+            projectDropdown.disable();
+            projectDropdown.clearOptions();
+            projectDropdown.load(function (callback) {
+                xhr && xhr.abort();
+                xhr = $.ajax({
+                    url: baseUrl + "Beneficiary/GetProjects/",
+                    data: {
+                        developerId: value
+                    },
+                    success: function (results) {
+                        try {
+                            if (!results.length) projectDropdown.disable();
+                            else projectDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(projectVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+    });
+
+    developerDropdown = $developerDropdown[0].selectize;
+
+    developerDropdown.on('load', function (options) {
+
+        developerDropdown.setValue(developerVal || '');
+        if (developerVal > 0) developerDropdown.lock();
+        resourceCounter("developer");
+        developerDropdown.off('load');
+    });
+
+    projectDropdown.on('load', function (options) {
+
+        if (developerVal > 0) projectDropdown.lock();
+        setTimeout(function () {
+            projectDropdown.setValue(projectVal || '');
+            resourceCounter("project");
+        }, 800)
+
+        projectDropdown.off('load');
+    });
+
+    locationDropdown.on('load', function (options) {
+        setTimeout(function () {
+            locationDropdown.setValue(locationVal || '');
+            locationDropdown.lock();
+            resourceCounter("location");
+        }, 1000)
+
+        locationDropdown.off('load');
+    });
+
+    houseUnitDropdown.on('load', function (options) {
+        setTimeout(function () {
+            houseUnitDropdown.setValue(houseUnitVal || '');
+            houseUnitDropdown.lock();
+            resourceCounter("unit");
+        }, 1200)
+
+        houseUnitDropdown.off('load');
+    });
 
     var encodedStatusdropDown = $('#ApplicantsPersonalInformationModel_EncodedPartialStatus')[0].selectize;
     encodedStatusdropDown.setValue(currentStatusVal || '');
@@ -333,6 +631,38 @@ $(function () {
             $('[name="LoanParticularsInformationModel.ExistingHousingApplicationNumber"]').removeAttr('required');
         }
     });
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
 
     //#endregion
 
@@ -656,7 +986,7 @@ $(function () {
         if ($("#pcRadioBtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -666,7 +996,7 @@ $(function () {
         if ($("#pdRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -676,7 +1006,7 @@ $(function () {
         if ($("#bcRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -686,7 +1016,7 @@ $(function () {
         if ($("#maRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -1151,6 +1481,13 @@ $(function () {
                 return;
             }
 
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
+            }
+
             //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {
             //}
 
@@ -1387,8 +1724,6 @@ $(function () {
     function validateForm(form) {
         var isValid = true;
 
-        // Your validation logic here
-        // For example, check if required fields are filled
         form.find(':input[required]').each(function () {
             if (!$(this).val()) {
                 $(this).addClass('is-invalid');
@@ -1404,6 +1739,12 @@ $(function () {
         // Checks the radio button if valid class exists
         form.find('input[type="radio"][required]').each(function () {
             let hasClass = $(this).hasClass('valid');
+
+            console.log(roleId);
+            if (roleId === '3') {
+                $(this).prop('required', false);
+                return;
+            }
 
             if (!hasClass) {
                 $(this).addClass('is-invalid');
@@ -1748,6 +2089,8 @@ $(function () {
         let pastDueValue = $("[name='Form2PageModel.PastDue']").val();
         let bouncingChecksValue = $("[name='Form2PageModel.BouncingChecks']").val();
         let medicalAdviceValue = $("[name='Form2PageModel.MedicalAdvice']").val();
+        let isEnrolledToMRI = $("[name='LoanParticularsInformationModel.IsEnrolledToMRI']").val();
+        let paymentScheme = $("[name='LoanParticularsInformationModel.PaymentScheme']").val();
 
         if (applicantInfoIdVal !== '0') {
             // Set checked status for PendingCase radio buttons
@@ -1767,6 +2110,9 @@ $(function () {
             $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
         }
 
+        updateRadioValidation('#enrolledMRIRbtn1', '#enrolledMRIRbtn2');
+        updateRadioValidation('#pysRbtn1', '#pysRbtn2');
+
         // Set miscellanous input to disable
         $("[name='Form2PageModel.PendingCase']").prop("disabled", !pendingCaseValue);
         $("[name='Form2PageModel.PastDue']").prop("disabled", !pastDueValue);
@@ -1785,5 +2131,21 @@ $(function () {
             $('#rdo_aplCompletion').click();
         }
     }
+    function updateRadioValidation(radioBtn1, radioBtn2) {
+        if ($(radioBtn1).prop('checked') || $(radioBtn2).prop('checked')) {
+            $(radioBtn1 + ', ' + radioBtn2).removeClass('is-valid');
+            $(radioBtn1 + ', ' + radioBtn2).addClass('valid');
+        }
+    }
+
+    const resourceCounter = (item) => {
+        if (resources.indexOf(item) == -1)
+            resources.push(item);
+
+        if (resources.length == 4) {
+            $("#btn_savehlf068").attr('disabled', false);
+        }
+    }
+
     //#endregion
 });

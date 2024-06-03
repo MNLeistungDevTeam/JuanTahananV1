@@ -7,10 +7,13 @@ AS
 		CONCAT(u.LastName,', ',u.FirstName,' ',u.MiddleName) ApplicantFullName,
 		u.[Position] PositionName,  --applicant position
 		0.00 As IncomeAmount,
-        bf.PropertyDeveloperName Developer,
-		bf.PropertyLocation ProjectLocation,
-		'' Project,
-		bf.PropertyUnitLevelName Unit,
+		c.[Name] PropertyDeveloperName,
+		pl.[Name] PropertyLocationName,
+		pp.[Name] PropertyProjectName,
+		pu.[Description] PropertyUnitDescription,
+		cl.[Location] PropertyDeveloperLogo,
+		pp.ProfileImage PropertyProjectLogo,
+		pu.ProfileImage PropertyUnitLogo,
 		lpi.DesiredLoanAmount As LoanAmount,
 		lpi.DesiredLoanTermYears As LoanYears,
 		--CASE WHEN apl.ApprovalStatus = 1 Then 'Application in Draft'
@@ -18,7 +21,7 @@ AS
 		--	 ELSE 'Defered'	
 		--END ApplicationStatus
 			CASE
-			WHEN apl.ApprovalStatus = 0 THEN 'Application in Draft'
+			WHEN apl.ApprovalStatus = 0 THEN 'Application in draft'
 			WHEN apl.ApprovalStatus = 1 THEN 'Submitted'
 			WHEN apl.ApprovalStatus = 3 THEN 'Developer Verified'
 			WHEN apl.ApprovalStatus = 4 THEN 'Pag-IBIG Verified'
@@ -42,10 +45,19 @@ AS
 		CONCAT(u2.LastName, ' ',u2.FirstName, ' ', u2.MiddleName) AS ApproverFullName,
 		u2.Position AS ApproverRole,
 		aps.Remarks ,
-		aps.ApproverId
+		aps.ApproverId,
+		bf.PropertyProjectId,
+		bf.PropertyUnitId,
+		bf.PropertyDeveloperId,
+		bf.PropertyLocationId
 	FROM ApplicantsPersonalInformation apl
 	LEFT JOIN BarrowersInformation bi ON bi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN BeneficiaryInformation bf ON bf.UserId = apl.UserId
+	LEFT JOIN PropertyLocation pl ON pl.Id = bf.PropertyLocationId
+	LEFT JOIN PropertyProject pp ON pp.Id = bf.PropertyProjectId
+	LEFT JOIN PropertyUnit pu ON pu.Id = bf.PropertyUnitId
+	LEFT JOIN Company c ON c.Id = bf.PropertyDeveloperId
+	LEFT JOIN CompanyLogo cl ON cl.CompanyId = c.Id 
 	LEFT JOIN LoanParticularsInformation lpi ON lpi.ApplicantsPersonalInformationId = apl.Id
 	LEFT JOIN [User] u on u.Id = apl.UserId
 	LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
@@ -62,9 +74,12 @@ AS
 				FROM ApprovalLevel
 				GROUP BY ApprovalStatusId
 			) x ON aplvl1.Id = x.Id
+			
+
 		) aplvl ON aps1.Id = aplvl.ApprovalStatusId
 		LEFT JOIN [User] ua ON aplvl.ApproverId = ua.Id
 		INNER JOIN UserRole ur ON ua.Id = ur.UserId
+		WHERE aps1.ReferenceType = (SELECT Id from Module WHERE Id = 8 OR Code = 'APLCNTREQ')
 	) aps ON apl.Id = aps.ReferenceId
 	LEFT JOIN [Role] ar ON aps.ApproverRoleId = ar.Id
 	LEFT JOIN [User] u2 ON u2.Id = aps.ApproverId

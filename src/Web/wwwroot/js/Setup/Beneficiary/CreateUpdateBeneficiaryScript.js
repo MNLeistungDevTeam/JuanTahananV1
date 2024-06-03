@@ -1,8 +1,15 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 var developerDropdown, $developerDropdown;
+var houseUnitDropdown, $houseUnitDropdown;
+var locationDropdown, $locationDropdown;
+var projectDropdown, $projectDropdown;
 $(function () {
     var developerInput;
+    var xhr;
+    var xhr1;
+    var xhr2;
+    var resources = [];
 
     $(".selectize").selectize();
     $('.calendarpicker').flatpickr();
@@ -10,28 +17,220 @@ $(function () {
     $('.pagibigInputMask').inputmask({
         mask: "9999-9999-9999",
         placeholder: 'X',
-        clearIncomplete: true
+        //clearIncomplete: true
     });
 
     $('.mobileNumInputMask').inputmask({ mask: "9999-999-9999" });
 
     initializeDecimalInputMask(".decimalInputMask5", 2);
 
-/*    initializeSelectizeDev();*/
+    $("#btn_save").attr('disabled', true);
 
-    var developerVal = $('[name="PropertyDeveloperName"]').attr('data-value'),
+    /*    initializeSelectizeDev();*/
 
+    var locationVal = $('[name="PropertyLocationId"]').attr('data-value');
+    var houseUnitVal = $('[name="PropertyUnitId"]').attr('data-value');
+    var projectVal = $('[name="PropertyProjectId"]').attr('data-value');
+    var developerVal = $('[name="PropertyDeveloperId"]').attr('data-value');
 
+    $locationDropdown = $(`[name='PropertyLocationId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
 
-    $developerDropdown = $(`[name='PropertyDeveloperName']`).selectize({
-        valueField: 'PropertyDeveloperName',
-        labelField: 'PropertyDeveloperName',
-        searchField: 'PropertyDeveloperName',
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetLocations',
+                data: {
+                    projectId: $('[name="PropertyProjectId"]').val(),
+                    developerId: $('[name="PropertyDeveloperId"]').val()
+                },
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+        onChange: function (value) {
+            houseUnitDropdown.setValue("");
+            houseUnitDropdown.disable();
+            houseUnitDropdown.clearOptions();
+            houseUnitDropdown.load(function (callback) {
+                xhr2 && xhr2.abort();
+                xhr2 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetUnits",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                        console.log(results)
+
+                        try {
+                            if (!results.length) houseUnitDropdown.disable();
+                            else houseUnitDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+
+        //render: {
+        //    item: function (item, escape) {
+        //        return ("<div>" +
+        //            escape(item.Name) +
+        //            "</div>"
+        //        );
+        //    },
+        //    option: function (item, escape) {
+        //        return ("<div class='py-1 px-2'>" +
+        //            escape(item.Name) +
+        //            "</div>"
+        //        );
+        //    }
+        //},
+    });
+
+    locationDropdown = $locationDropdown[0].selectize;
+
+    $houseUnitDropdown = $(`[name='PropertyUnitId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Description',
+        searchField: 'Description',
         preload: true,
         search: false,
         load: function (query, callback) {
             $.ajax({
-                url: baseUrl + 'Beneficiary/GetPropertyDevelopers',
+                url: baseUrl + 'Beneficiary/GetUnits',
+                data: {
+                    projectId: $('[name="PropertyProjectId"]').val(),
+                    developerId: $('[name="PropertyDeveloperId"]').val()
+                },
+
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        //render: {
+        //    item: function (item, escape) {
+        //        return ("<div>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    },
+        //    option: function (item, escape) {
+        //        return ("<div class='py-1 px-2'>" +
+        //            escape(item.Description) +
+        //            "</div>"
+        //        );
+        //    }
+        //},
+    });
+
+    houseUnitDropdown = $houseUnitDropdown[0].selectize;
+
+    $projectDropdown = $(`[name='PropertyProjectId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetProjects',
+                data: {
+                    developerId: $('[name="PropertyDeveloperId"]').val()
+                },
+                success: function (results) {
+                    try {
+                        callback(results);
+                    } catch (e) {
+                        callback();
+                    }
+                },
+                error: function () {
+                    callback();
+                }
+            });
+        },
+
+        onChange: function (value) {
+
+
+
+            locationDropdown.setValue("");
+            locationDropdown.disable();
+            locationDropdown.clearOptions();
+            locationDropdown.load(function (callback) {
+                xhr1 && xhr1.abort();
+                xhr1 = $.ajax({
+                    url: baseUrl + "Beneficiary/GetLocations",
+                    data: {
+                        projectId: value,
+                        developerId: $('[name="PropertyDeveloperId"]').val()
+                    },
+                    success: function (results) {
+                 
+
+                        try {
+                            if (!results.length) locationDropdown.disable();
+                            else locationDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(locationVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
+        },
+    });
+
+    projectDropdown = $projectDropdown[0].selectize;
+
+    $developerDropdown = $(`[name='PropertyDeveloperId']`).selectize({
+        valueField: 'Id',
+        labelField: 'Name',
+        searchField: 'Name',
+        preload: true,
+        search: false,
+
+        load: function (query, callback) {
+            $.ajax({
+                url: baseUrl + 'Beneficiary/GetDevelopers',
+
                 success: function (results) {
                     try {
                         callback(results);
@@ -48,26 +247,94 @@ $(function () {
         render: {
             item: function (item, escape) {
                 return ("<div>" +
-                    escape(item.PropertyDeveloperName) +
+                    escape(item.Name) +
                     "</div>"
                 );
             },
             option: function (item, escape) {
                 return ("<div class='py-1 px-2'>" +
-                    escape(item.PropertyDeveloperName) +
+                    escape(item.Name) +
                     "</div>"
                 );
             }
+        },
+        onChange: function (value) {
+            projectDropdown.setValue("");
+            projectDropdown.disable();
+            projectDropdown.clearOptions();
+            projectDropdown.load(function (callback) {
+                xhr && xhr.abort();
+                xhr = $.ajax({
+                    url: baseUrl + "Beneficiary/GetProjects/",
+                    data: {
+                        developerId: value
+                    },
+                    success: function (results) {
+                        try {
+                            if (!results.length) projectDropdown.disable();
+                            else projectDropdown.enable();
+                            callback(results)
+                        } catch {
+                            callback(results);
+                        }
+                    },
+                    onComplete: function () {
+                        this.setValue(projectVal);
+                    },
+                    error: function () {
+                        callback();
+                    }
+                })
+            });
         },
     });
 
     developerDropdown = $developerDropdown[0].selectize;
 
     developerDropdown.on('load', function (options) {
+        if (developerVal > 0) developerDropdown.lock();
+
         developerDropdown.setValue(developerVal || '');
 
+        resourceCounter("developer");
         developerDropdown.off('load');
     });
+
+    projectDropdown.on('load', function (options) {
+        if (developerVal > 0) projectDropdown.lock();
+
+        setTimeout(function () {
+            projectDropdown.setValue(projectVal || '');
+            resourceCounter("project");
+        }, 800)
+
+        projectDropdown.off('load');
+    });
+
+    locationDropdown.on('load', function (options) {
+        setTimeout(function () {
+            locationDropdown.setValue(locationVal || '');
+            locationDropdown.lock();
+            resourceCounter("location");
+        }, 1000)
+
+        locationDropdown.off('load');
+    });
+
+    houseUnitDropdown.on('load', function (options) {
+        setTimeout(function () {
+            houseUnitDropdown.setValue(houseUnitVal || '');
+            houseUnitDropdown.lock();
+            resourceCounter("unit");
+        }, 1200)
+
+        houseUnitDropdown.off('load');
+    });
+
+    //setTimeout(function () {
+    //    houseUnitDropdown.setValue(houseUnitVal || '');
+    //    houseUnitDropdown.lock();
+    //}, 1000)
 
     //function initializeSelectizeDev() {
     //    developerInput = $(`[id="PropertyDeveloperName"]`).selectize({
@@ -298,6 +565,15 @@ $(function () {
                 }
             }
         });
+    }
+
+    const resourceCounter = (item) => {
+        if (resources.indexOf(item) == -1)
+            resources.push(item);
+
+        if (resources.length == 4) {
+            $("#btn_save").attr('disabled', false);
+        }
     }
 
     //#endregion

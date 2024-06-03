@@ -3,6 +3,8 @@
 $(function () {
     console.log(pagibigNumber);
 
+    loadBeneficiaryDetailsAge();
+
     var tbl_applicants = $("#tbl_applicants").DataTable({
         ajax: {
             url: baseUrl + 'Applicants/GetAllApplicationByPagibigNum/' + pagibigNumber,
@@ -174,4 +176,25 @@ $(function () {
         dom: 'lrtip',
         processing: true
     });
+
+    function loadBeneficiaryDetailsAge() {
+        // Get the birthday string
+        var birthdayStr = $('#birthday-profile').text();
+
+        // Parse the birthday string to a Date object
+        var birthday = new Date(birthdayStr);
+
+        // Get the current date
+        var currentDate = new Date();
+
+        // Calculate the difference in years
+        var age = currentDate.getFullYear() - birthday.getFullYear();
+
+        // Adjust age if the birthday hasn't occurred yet this year
+        if (currentDate.getMonth() < birthday.getMonth() || (currentDate.getMonth() === birthday.getMonth() && currentDate.getDate() < birthday.getDate())) {
+            age--;
+        }
+
+        $('#age-profile').text(age);
+    }
 });

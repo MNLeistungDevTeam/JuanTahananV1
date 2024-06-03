@@ -311,6 +311,41 @@ $(function () {
         }
     });
 
+
+    $('input[name="paymentSchemeRbtn"]').on('change ', function () {
+        if ($(this).is(':checked')) {
+            $("#LoanParticularsInformationModel_PaymentScheme").val($(this).attr('radio-value'));
+        }
+    });
+
+    var paymentschemeVal = $("#LoanParticularsInformationModel_PaymentScheme").val();
+
+    if (paymentschemeVal == 'GAP') {
+        $('#pysRbtn1').prop('checked', true);
+    }
+    else if (paymentschemeVal == 'LAP') {
+        $('#pysRbtn2').prop('checked', true);
+    }
+
+    $('input[name="mriPropBtn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            var selectedValue = $(this).attr('radio-value');
+
+            $('#LoanParticularsInformationModel_IsEnrolledToMRI').attr('value', selectedValue);
+        }
+    });
+
+    var enrolledMRI = $("#LoanParticularsInformationModel_IsEnrolledToMRI").val();
+
+    if (enrolledMRI == 'True') {
+        $('#enrolledMRIRbtn1').prop('checked', true);
+    }
+    else if (enrolledMRI == 'False') {
+        $('#enrolledMRIRbtn2').prop('checked', true);
+    }
+
+
+
     //#endregion
 
     //#endregion
@@ -632,7 +667,7 @@ $(function () {
         if ($("#pcRadioBtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -642,7 +677,7 @@ $(function () {
         if ($("#pdRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -652,7 +687,7 @@ $(function () {
         if ($("#bcRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -662,7 +697,7 @@ $(function () {
         if ($("#maRbtn1").is(":checked")) {
             $inputField.prop('disabled', false).prop('required', true);
         } else {
-            $inputField.prop('disabled', true).prop('required', false);
+            $inputField.prop('disabled', true).prop('required', false).val(null);
         }
     });
 
@@ -1101,6 +1136,13 @@ $(function () {
 
                 console.log('trigger');
                 return;
+            }
+
+            if (currentFormName = "collateraldata") {
+                let field = $("#BarrowersInformationModel_ContactDetailEmail");
+                if (!field.attr("readonly")) {
+                    $("#BarrowersInformationModel_ContactDetailEmail").val(field.val() === '' ? $("#BarrowersInformationModel_Email").val() : null);
+                }
             }
 
             //if (currentFormName == "spousedata" && applicantInfoIdVal != 0) {

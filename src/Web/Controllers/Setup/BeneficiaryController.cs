@@ -1,5 +1,7 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.CompanyRepo;
+using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Interfaces.Setup.RoleRepository;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
@@ -10,6 +12,7 @@ using DMS.Domain.Enums;
 using DMS.Web.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -34,6 +37,10 @@ public class BeneficiaryController : Controller
     private readonly IApplicantsPersonalInformationRepository _applicantsPersonalInformationRepo;
     private readonly IRoleAccessRepository _roleAccessRepo;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly ICompanyRepository _companyRepo;
+    private readonly IPropertyUnitRepository _propertyUnitRepo;
+    private readonly IPropertyProjectRepository _propertyProjectRepo;
+    private readonly IPropertyLocationRepository _propertyLocationRepo;
 
     public BeneficiaryController(
         IUserRepository userRepo,
@@ -45,7 +52,11 @@ public class BeneficiaryController : Controller
         IEmailService emailService,
         IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
         IRoleAccessRepository roleAccessRepo,
-        IWebHostEnvironment webHostEnvironment)
+        IWebHostEnvironment webHostEnvironment,
+        ICompanyRepository companyRepo,
+        IPropertyUnitRepository propertyUnitRepo,
+        IPropertyProjectRepository propertyProjectRepo,
+        IPropertyLocationRepository propertyLocationRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
@@ -57,6 +68,10 @@ public class BeneficiaryController : Controller
         _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
         _roleAccessRepo = roleAccessRepo;
         _webHostEnvironment = webHostEnvironment;
+        _companyRepo = companyRepo;
+        _propertyUnitRepo = propertyUnitRepo;
+        _propertyProjectRepo = propertyProjectRepo;
+        _propertyLocationRepo = propertyLocationRepo;
     }
 
     #endregion Fields
@@ -89,7 +104,7 @@ public class BeneficiaryController : Controller
 
             if (beneficiaryData == null)
             {
-                throw new Exception($"Transaction No: { pagibigNumber}: no record Found!");
+                throw new Exception($"Transaction No: {pagibigNumber}: no record Found!");
             }
 
             //if the application is not access by beneficiary
@@ -110,14 +125,26 @@ public class BeneficiaryController : Controller
     [Route("[controller]/BeneficiaryInformation/{pagibigNumber?}")]
     public async Task<IActionResult> Beneficiary(string? pagibigNumber = null)
     {
+        //must not accessible by beneficiary
+
         var vwModel = new BeneficiaryInformationModel();
 
-        //var userData = await _userRepo.GetByPagibigNumberAsync(pagibigNumber);
-        var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+        int userId = int.Parse(User.Identity.Name);
 
-        if (beneficiaryData != null)
+        var userData = await _userRepo.GetUserAsync(userId);
+
+        if (pagibigNumber is not null)
         {
-            vwModel = beneficiaryData;
+            var beneficiaryData = await _beneficiaryInformationRepo.GetByPagibigNumberAsync(pagibigNumber);
+
+            if (beneficiaryData != null)
+            {
+                vwModel = beneficiaryData;
+            }
+        }
+        else
+        {
+            vwModel.PropertyDeveloperId = userData.PropertyDeveloperId ?? 0;
         }
 
         return View(vwModel);
@@ -174,10 +201,8 @@ public class BeneficiaryController : Controller
 
                 userModel.Action = "created";
 
-
                 userModel.SenderId = userId;
-            
-          
+
                 //// make the usage of hangfire
                 _backgroundJobClient.Enqueue(() => _emailService.SendUserCredential2(userModel, _webHostEnvironment.WebRootPath));
 
@@ -207,10 +232,58 @@ public class BeneficiaryController : Controller
         }
     }
 
-    public async Task<IActionResult> GetPropertyDevelopers()
+    public async Task<IActionResult> GetDevelopers()
     {
-        var data = await _beneficiaryInformationRepo.GetPropertyDeveloperNames();
-        return Ok(data);
+        var companies = await _companyRepo.GetCompanies();
+        var filteredCompanies = companies
+      .Where(company => company.Id != 1 && company.Code != "JTH-PH")
+      .ToList();
+
+        return Ok(filteredCompanies);
+    }
+
+    public async Task<IActionResult> GetProjects(int? developerId)
+    {
+        if (developerId is null)
+        {
+            var data = await _propertyProjectRepo.GetAll();
+            return Ok(data);
+        }
+        else
+        {
+            var data = await _propertyProjectRepo.GetByCompanyAsync(developerId.Value, null);
+            return Ok(data);
+        }
+    }
+
+    public async Task<IActionResult> GetUnits(int? projectId, int? developerId)
+    {
+        if (projectId is null)
+        {
+            var data = await _propertyUnitRepo.GetAll();
+            return Ok(data);
+        }
+        else
+        {
+            var data = await _propertyUnitRepo.GetUnitByProjectAsync(projectId.Value, developerId);
+
+            return Ok(data);
+        }
+    }
+
+    public async Task<IActionResult> GetLocations(int? projectId, int? developerId)
+    {
+        if (projectId is null)
+        {
+            var data = await _propertyLocationRepo.GetAll();
+            return Ok(data);
+        }
+        else
+        {
+            var data = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId.Value, developerId);
+
+            return Ok(data);
+        }
     }
 
     #endregion API Operation

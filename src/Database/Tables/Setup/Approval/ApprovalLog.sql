@@ -9,7 +9,8 @@
     [DateCreated] DATETIME2 NOT NULL, 
     [ModifiedById] INT NULL, 
     [DateModified] DATETIME2 NULL, 
-    [ApprovalLevelId] INT NULL 
+    [ApprovalLevelId] INT NULL,
+    [ApprovalStatusId] INT NULL 
 )
 
 GO

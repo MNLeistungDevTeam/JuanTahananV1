@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DMS.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace DMS.Application.Services;
 
@@ -25,4 +26,6 @@ public interface IFileUploadService
     Task BatchDeleteFileAsync(int[] documentIds, string rootFolder);
 
     Task UploadFilesAsync(List<IFormFile>? files, string saveLocation, string rootPath, int referenceId, string referenceNo, int referenceType, int documentTypeId, int userId, int companyId);
+    Task<Document> UploadDocumentFilesAsync(List<IFormFile>? files, string saveLocation, string rootPath, int referenceId, string referenceNo, int referenceType, int documentTypeId, int userId, int companyId);
+    Task<string?> SaveLogoAsync(IFormFile? file, string userName, string location, string rootPath);
 }

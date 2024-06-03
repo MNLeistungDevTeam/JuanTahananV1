@@ -5,18 +5,22 @@ using DMS.Domain.Dto.ApprovalLevelDto;
 using DMS.Domain.Dto.ApprovalLogDto;
 using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
+using DMS.Domain.Dto.BuyerConfirmationDocumentDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.CompanyDto;
 using DMS.Domain.Dto.DocumentDto;
 using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Dto.EmailLogDto;
 using DMS.Domain.Dto.EmailSetupDto;
 using DMS.Domain.Dto.EntityDto;
+using DMS.Domain.Dto.LockedTransactionDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageApproverDto;
 using DMS.Domain.Dto.ModuleStageDto;
 using DMS.Domain.Dto.ModuleTypeDto;
 using DMS.Domain.Dto.NotificationDto;
 using DMS.Domain.Dto.NotificationReceiverDto;
+using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Dto.RoleDto;
 using DMS.Domain.Dto.TemporaryLinkDto;
 using DMS.Domain.Dto.UserDto;
@@ -69,5 +73,14 @@ public class MappingProfile : Profile
         CreateMap<TemporaryLink, TemporaryLinkModel>().ReverseMap();
         CreateMap<EmailSetup, EmailSetupModel>().ReverseMap();
         CreateMap<EmailLog, EmailLogModel>().ReverseMap();
+
+        CreateMap<PropertyProject, PropertyProjectModel>().ReverseMap();
+        CreateMap<PropertyLocation, PropertyLocationModel>().ReverseMap();
+        CreateMap<PropertyProjectLocation, PropertyProjectLocationModel>().ReverseMap();
+        CreateMap<PropertyUnit, PropertyUnitModel>().ReverseMap();
+        CreateMap<PropertyUnitProject, PropertyUnitProjectModel>().ReverseMap();
+        CreateMap<BuyerConfirmation, BuyerConfirmationModel>().ReverseMap();
+        CreateMap<BuyerConfirmationDocument, BuyerConfirmationDocumentModel>().ReverseMap();
+        CreateMap<LockedTransaction, LockedTransactionModel>().ReverseMap();
     }
 }

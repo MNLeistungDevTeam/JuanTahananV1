@@ -35,7 +35,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="leftside-menu rounded-4 overflow-hidden">
+    <div class="leftside-menu rounded-4 overflow-hidden py-2" id="sidebar-menu" style="position: fixed;">
 
         <!-- Brand Logo Light -->
         <a asp-controller="Home" asp-action="Index" class="logo logo-light">
@@ -53,7 +53,7 @@
                 <img src="~/images/JuanTahananAssets/Logo/JuanTahananLogo.png" alt="dark logo" style="height:40px;">
             </span>
             <span class="logo-sm">
-                <img src="~/images/companylogo/mnl_logo_dark.png" alt="small logo">
+                <img src="~/images/companylogo/mnl_logo_light.png" alt="small logo">
             </span>
         </a>
 
@@ -66,7 +66,7 @@
         <div class="h-100" id="leftside-menu-container" data-simplebar>
 
             <!--- Sidemenu -->
-            <ul class="side-nav">
+            <ul class="side-nav pt-1">
                 <li class="side-nav-item d-flex align-items-center justify-content-center">
                     <div class="side-profile mb-3">
                         <div class="auth-avatar text-center">
@@ -85,20 +85,24 @@
                             Dictionary<string, string> btnParameters = new()
                             {
                                 { "text", "Continue Loan Application" },
+                                // { "link", $"/Applicants/HousingLoanForm/{userInfo.PagibigNumber}" },
                                 { "link", $"/Applicants/HousingLoanForm/{userInfo.PagibigNumber}" },
                                 { "color", "primary" },
                                 { "icon", "mdi-clipboard-plus-outline" }
                             };
 
                             // Beneficiary
-                            int[] inactiveStatus = { 2, 5, 9, 10 };
+                            int[] inactiveStatus = { 2, 5, 9, 10, 11 };
 
+                            string bcfClass = "btn-application-bcf";
                             var applicationData = await _applicantsPersonalInformationRepo.GetCurrentApplicationByUser(userId, companyId);
 
                             // Runs if data is not null and status is active (warning button)
                             if (applicationData is not null && !inactiveStatus.Contains(applicationData.ApprovalStatus.Value))
                             {
+                                bcfClass = string.Empty;
                                 btnParameters["text"] = "View my application";
+                                // btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
                                 btnParameters["link"] = $"/Applicants/Details/{applicationData.Code}";
                                 btnParameters["color"] = "warning";
                                 btnParameters["icon"] = "mdi-clipboard-edit-outline";
@@ -107,7 +111,15 @@
                             // check if url is the same as the current one
                             var urlCheck = Context.Request.Path == btnParameters["link"];
 
-                            <button class="btn-application align-items-center btn btn-@btnParameters["color"]" onclick="location.href='@btnParameters["link"]'" style="border-radius: 8px!important;">
+                            // <button class="btn-application align-items-center btn btn-@btnParameters["color"]" onclick="location.href='@btnParameters["link"]'" style="border-radius: 8px!important;">
+                            //     <span class="text-btn-application text-wrap">@btnParameters["text"]</span>
+                            // </button>
+
+                            <button 
+                                class="btn-application @bcfClass align-items-center btn btn-@btnParameters["color"]" 
+                                style="border-radius: 8px!important;"
+                                onclick=@(string.IsNullOrEmpty(bcfClass) ? $"location.href='{btnParameters["link"]}'" : "loadBcfPrompt();")>
+
                                 <span class="text-btn-application text-wrap">@btnParameters["text"]</span>
                             </button>
                         }

@@ -6,8 +6,13 @@ using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.Web.ReportDesigner;
 using DevExpress.XtraReports.Web.WebDocumentViewer;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
+using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
+using DMS.Domain.Dto.ReportDto;
+using DMS.Domain.Entities;
 using DMS.Infrastructure.Persistence;
 using DMS.Infrastructure.PredefinedReports;
 using DMS.Web.Models;
@@ -17,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -39,6 +45,7 @@ public class ReportController : Controller
     private readonly IForm2PageRepository _form2PageRepo;
     private DMSDBContext _tmpcontext;
     private readonly IReportsService _reportService;
+    private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
     public ReportController(ReportDbContext context,
         IWebHostEnvironment hostingEnvironment,
@@ -49,7 +56,8 @@ public class ReportController : Controller
         IBarrowersInformationRepository barrowersInformationRepo,
         ISpouseRepository spouseRepo, IMapper mapper,
         IForm2PageRepository form2PageRepo, DMSDBContext tmpcontext,
-        IReportsService reportService)
+        IReportsService reportService,
+        IBuyerConfirmationRepository buyerConfirmationRepo)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
@@ -63,6 +71,7 @@ public class ReportController : Controller
         _form2PageRepo = form2PageRepo;
         _tmpcontext = tmpcontext;
         _reportService = reportService;
+        _buyerConfirmationRepo = buyerConfirmationRepo;
     }
 
     [Route("[controller]/LatestHousingForm/{applicantCode?}")]
@@ -82,6 +91,131 @@ public class ReportController : Controller
             var report = await _reportService.GenerateHousingLoanForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
 
             return View("RptHousingLoanApplication", report);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+    [Route("[controller]/LatestBuyerConfirmationForm/{applicantCode?}")]
+    public async Task<IActionResult> LatestBuyerConfirmationForm(string? applicantCode = null)
+    {
+        try
+        {
+            var applicationInfo = await _buyerConfirmationRepo.GetByCodeAsync(applicantCode);
+
+            int userId = 0;
+
+            if (applicationInfo != null)
+            {
+                userId = applicationInfo.UserId.Value;
+            }
+
+            var report = await _reportService.GenerateBuyerConfirmationForm(applicationInfo.Code, _hostingEnvironment.WebRootPath);
+
+            return View("RptBuyerConfirmation", report);
+        }
+        catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
+    }
+
+    #region BCF-HLAF Review Beneficiary
+
+    [HttpPost]
+    public async Task<IActionResult> LatestBCFB64(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            ApplicantInformationReportModel reportModel = new()
+            {
+                BuyerConfirmationModel = vwModel.BuyerConfirmationModel
+            };
+
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateBuyerConfirmationPDF(reportModel, _hostingEnvironment.WebRootPath);
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+
+            //// Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "BuyerConfirmationForm.pdf");
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LatestHousingFormB64(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            vwModel.ApplicantsPersonalInformationModel.PagibigNumber = vwModel.ApplicantsPersonalInformationModel.PagibigNumber.Replace("-", "") ?? string.Empty;
+
+            ApplicantInformationReportModel reportModel = new()
+            {
+                ApplicantsPersonalInformationModel = vwModel.ApplicantsPersonalInformationModel,
+                LoanParticularsInformationModel = vwModel.LoanParticularsInformationModel,
+                CollateralInformationModel = vwModel.CollateralInformationModel,
+                BarrowersInformationModel = vwModel.BarrowersInformationModel,
+                SpouseModel = vwModel.SpouseModel,
+                Form2PageModel = vwModel.Form2PageModel
+            };
+
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateHousingLoanPDF(reportModel, _hostingEnvironment.WebRootPath);
+
+            // Return the byte array as a FileStreamResult with the appropriate content type and file name
+            //return File(reportStream, "application/pdf", "HousingLoanForm.pdf");
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
+    }
+
+    #endregion BCF-HLAF Review Beneficiary
+
+    #region BCF Review Developer
+
+    [HttpPost]
+    public async Task<IActionResult> LatestBCFB64ForDeveloper(ApplicantViewModel vwModel)
+    {
+        try
+        {
+            // Generate the report as a MemoryStream
+            var reportStream = await _reportService.GenerateBuyerConfirmationFormB64ForDeveloper(vwModel.BuyerConfirmationModel, _hostingEnvironment.WebRootPath);
+
+            var b64 = Convert.ToBase64String(reportStream);
+            return Ok(b64);
+        }
+        catch (Exception ex)
+        {
+            return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex });
+        }
+    }
+
+    #endregion BCF Review Developer
+
+    [Route("[controller]/PrintedBCF/{buyerConfirmationCode?}")]
+    public async Task<IActionResult> PrintedBCF(string? buyerConfirmationCode = null)
+    {
+        try
+        {
+            var bcfInfo = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+            int userId = 0;
+
+            if (bcfInfo != null)
+            {
+                userId = bcfInfo.UserId.Value;
+            }
+
+            var report = await _reportService.GeneratePrintedBCF(bcfInfo.Code, _hostingEnvironment.WebRootPath);
+
+            var b64 = Convert.ToBase64String(report);
+            return Ok(b64);
         }
         catch (Exception ex) { return View("Error", new ErrorViewModel { Message = ex.Message, Exception = ex }); }
     }
@@ -125,6 +259,9 @@ public class ReportController : Controller
         var dataSources = new Dictionary<string, object>();
         return dataSources;
     }
+
+
+
 
     public static async Task<ReportDesignerModel> CreateDefaultReportDesignerModel(IReportDesignerClientSideModelGenerator clientSideModelGenerator, string reportName, XtraReport report)
     {

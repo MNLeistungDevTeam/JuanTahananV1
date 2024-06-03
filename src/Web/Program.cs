@@ -56,32 +56,7 @@ try
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
 
-    #region Localization
-
-    //builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-    builder.Services.AddMvc()
-        .AddViewLocalization()
-        .AddDataAnnotationsLocalization();
-
-    builder.Services.AddHttpContextAccessor();
-
-    builder.Services.Configure<RequestLocalizationOptions>(options =>
-    {
-        var supportedCultures = new[]
-        {
-            new CultureInfo("en-US"),
-            new CultureInfo("de-DE")
-            // Add other supported cultures here
-        };
-
-        options.DefaultRequestCulture = new RequestCulture("en-US");
-        options.SupportedCultures = supportedCultures;
-        options.SupportedUICultures = supportedCultures;
-
-        options.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
-    });
-
-    #endregion Localization
+   
 
     #region Hangfire
 
@@ -197,11 +172,61 @@ try
         });
 
     #endregion Authentication
+ 
+    #region Localization
+
+    //builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+    builder.Services.AddMvc()
+        .AddViewLocalization()
+        .AddDataAnnotationsLocalization();
+
+    builder.Services.AddHttpContextAccessor();
+
+    builder.Services.Configure<RequestLocalizationOptions>(options =>
+    {
+        var supportedCultures = new[]
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("de-DE")
+            // Add other supported cultures here
+        };
+
+        options.DefaultRequestCulture = new RequestCulture("en-US");
+        options.SupportedCultures = supportedCultures;
+        options.SupportedUICultures = supportedCultures;
+
+        options.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+    });
+
+    #endregion Localization
+
+    #region CORS Policy
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAnyOrigin",
+            policy =>
+            {
+                policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+    });
+
+    #endregion CORS Policy
 
     var app = builder.Build();
 
+
+    #region Localization
+
     var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
     app.UseRequestLocalization(localizationOptions.Value);
+
+    #endregion Localization
+
+
+   
 
     #region DevExpress
 
@@ -259,6 +284,7 @@ try
     app.UseStaticFiles();
 
     app.UseRouting();
+ 
 
     app.UseAuthentication();
     app.UseAuthorization();
@@ -273,6 +299,7 @@ try
     app.MapHub<UploaderHub>("/uploaderHub");
     app.MapHub<NotificationHub>("/notificationHub");
     app.MapHub<OnlineUserHub>("/onlineUserHub");
+    app.UseCors("AllowAnyOrigin");
 
     using (var scope = app.Services.CreateScope())
     {

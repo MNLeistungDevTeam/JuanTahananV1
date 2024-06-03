@@ -24,20 +24,20 @@
         <div class="row gy-2 p-3">
             <div class="col-md-9">
                 <a class="btn btn-primary waves-effect mb-2" asp-action="Create" hidden>
-                    <span class="fe-plus"></span> Add User
+                    <span class="mdi mdi-account-plus-outline"></span> Add User
                 </a>
                 <button class="btn btn-primary waves-effect mb-2" id="btnAdd">
-                    <span class="fe-plus"></span> Add User
+                    <span class="mdi mdi-account-plus-outline"></span> Add User
                 </button>
 
                 <button class="btn btn-primary waves-effect mb-2" id="btnRefresh">
-                    <span class="fe-refresh-cw"></span> Refresh
+                    <span class="mdi mdi-refresh"></span> Refresh
                 </button>
             </div>
             <div class="col-md-3 text-end">
                 <div class="input-group float-end" style="width:250px;">
                     <input id="txtSearch" type="search" class="form-control form-control-sm" placeholder="Search..." spellcheck="false" data-ms-editor="true">
-                    <span class="input-group-text"><i class="fe-search"></i></span>
+                    <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
                 </div>
             </div>
             <div class="col-12" id="div-user-container">
@@ -56,7 +56,7 @@
                 <span class='spinner-border spinner-border-lg'></span>
             </div>
             <div class="modal-header bg-soft-light border-bottom">
-                <h4 class="modal-title" id="user-modalLabel"><span class="fe-plus"></span> Add User</h4>
+                <h4 class="modal-title" id="user-modalLabel"><span class="mdi mdi-account-plus-outline"></span> Add User</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -131,25 +131,36 @@
                                             <input asp-for="User.Suffix" class="form-control" placeholder="Suffix" />
                                             <span asp-validation-for="User.Suffix" class="text-danger"></span>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-6 mb-2">
                                             <label asp-for="User.Gender" class="form-label"></label>
                                             <select class="form-control selectize" asp-for="User.Gender" asp-items="@(new SelectList(Model.User.Genders, "Description", "Description"))">
                                                 <option value="">Select Gender...</option>
                                             </select>
                                             <span asp-validation-for="User.Gender" class="text-danger"></span>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-6 mb-2">
                                             <label asp-for="User.Position" class="form-label"></label>
                                             <input asp-for="User.Position" class="form-control" placeholder="Position" />
                                             <span asp-validation-for="User.Position" class="text-danger"></span>
                                         </div>
-                                        <div class="col-md-4 mb-2" id="userrole_div">
+                                        <div class="col-md-6 mb-2" id="userrole_div">
                                             <label asp-for="User.UserRoleId" class="form-label"></label>
                                             <select class="form-control" asp-for="User.UserRoleId">
                                                 <option value="">Select Role...</option>
                                             </select>
                                             <span asp-validation-for="User.UserRoleId" class="text-danger"></span>
                                         </div>
+
+
+                                        <div class="col-md-6 mb-2" id="userdeveloper_div">
+                                            <label asp-for="User.PropertyDeveloperId" class="form-label"></label>
+                                            <select class="form-control" asp-for="User.PropertyDeveloperId">
+                                                <option value="">Select Developer...</option>
+                                            </select>
+                                            <span asp-validation-for="User.PropertyDeveloperId" class="text-danger"></span>
+                                        </div>
+
+                                        
                                         <div class="col-md-12 mb-2">
                                             <label asp-for="User.Email" class="form-label"></label>
                                             <input asp-for="User.Email" class="form-control" placeholder="sample@email.com" />
@@ -177,7 +188,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="user-approver" role="tabpanel" aria-labelledby="user-approver">
+                                <div class="tab-pane fade" id="user-approver" role="tabpanel" aria-labelledby="user-approver" hidden>
                                     <div class="" style="max-height: 65vh;">
                                         <table class="table table-sm text-sm nowrap table-bordered" id="tbl_user_approver">
                                             <thead class="table-light">

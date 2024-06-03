@@ -1,13 +1,18 @@
 ﻿using DMS.Application.Interfaces.Setup.ApplicantsRepository;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
+using DMS.Application.Interfaces.Setup.CompanyRepo;
+using DMS.Application.Interfaces.Setup.PropertyManagementRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
 using DMS.Domain.Dto.BasicBeneficiaryDto;
 using DMS.Domain.Dto.BeneficiaryInformationDto;
+using DMS.Domain.Dto.CompanyDto;
+using DMS.Domain.Dto.PropertyManagementDto;
 using DMS.Domain.Dto.UserDto;
 using DMS.Domain.Enums;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DMS.Infrastructure.Services
 {
@@ -21,6 +26,10 @@ namespace DMS.Infrastructure.Services
         private readonly INotificationService _notificationService;
         private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
+        private readonly ICompanyRepository _companyRepo;
+        private readonly IPropertyProjectRepository _propertyProjectRepo;
+        private readonly IPropertyLocationRepository _propertyLocationRepo;
+        private readonly IPropertyUnitRepository _propertyUnitRepo;
 
         public HousingLoanIntegrationService(IBarrowersInformationRepository barrowersInformationRepo,
             IApplicantsPersonalInformationRepository applicantsPersonalInformationRepo,
@@ -29,7 +38,11 @@ namespace DMS.Infrastructure.Services
             IEmailService emailService,
             INotificationService notificationService,
             IBackgroundJobClient backgroundJobClient,
-            IBeneficiaryInformationRepository beneficiaryInformationRepo)
+            IBeneficiaryInformationRepository beneficiaryInformationRepo,
+            ICompanyRepository companyRepo,
+            IPropertyProjectRepository propertyProjectRepo,
+            IPropertyLocationRepository propertyLocationRepo,
+            IPropertyUnitRepository propertyUnitRepo)
         {
             _barrowersInformationRepo = barrowersInformationRepo;
             _applicantsPersonalInformationRepo = applicantsPersonalInformationRepo;
@@ -39,6 +52,10 @@ namespace DMS.Infrastructure.Services
             _notificationService = notificationService;
             _backgroundJobClient = backgroundJobClient;
             _beneficiaryInformationRepo = beneficiaryInformationRepo;
+            _companyRepo = companyRepo;
+            _propertyProjectRepo = propertyProjectRepo;
+            _propertyLocationRepo = propertyLocationRepo;
+            _propertyUnitRepo = propertyUnitRepo;
         }
 
         public async Task SaveBeneficiaryAsync(BasicBeneficiaryInformationModel model, string? rootFolder)
@@ -122,6 +139,11 @@ namespace DMS.Infrastructure.Services
             beneficiaryModel.IsPermanentAddressAbroad = false; // no condition because all address is required
             beneficiaryModel.IsPresentAddressAbroad = false; // no condition because all address is required
 
+            beneficiaryModel.PropertyDeveloperId = model.PropertyDeveloperId;
+            beneficiaryModel.PropertyLocationId = model.PropertyLocationId;
+            beneficiaryModel.PropertyProjectId = model.PropertyProjectId;
+            beneficiaryModel.PropertyUnitId = model.PropertyUnitId;
+
             await _beneficiaryInformationRepo.SaveAsync(beneficiaryModel, 1);
 
             #endregion Create BeneficiaryInformation
@@ -137,47 +159,6 @@ namespace DMS.Infrastructure.Services
 
             #endregion Create Applicant
 
-            #region Barrow Data Transfer
-
-            //barrowerModel.LastName = model.LastName;
-            //barrowerModel.FirstName = model.FirstName;
-            //barrowerModel.MiddleName = model.MiddleName;
-            //barrowerModel.MobileNumber = model.MobileNumber;
-            //barrowerModel.BirthDate = model.BirthDate;
-            //barrowerModel.MobileNumber = model.MobileNumber;
-            //barrowerModel.Sex = model.Gender;
-            //barrowerModel.ApplicantsPersonalInformationId = applicantInfoData.Id;
-            //barrowerModel.Email = model.Email;
-            //barrowerModel.PresentUnitName = model.PresentUnitName;
-            //barrowerModel.PresentBuildingName = model.PresentBuildingName;
-            //barrowerModel.PresentLotName = model.PresentLotName;
-            //barrowerModel.PresentSubdivisionName = model.PresentSubdivisionName;
-            //barrowerModel.PresentBaranggayName = model.PresentBarangayName;
-            //barrowerModel.PresentMunicipalityName = model.PresentMunicipalityName;
-            //barrowerModel.PresentProvinceName = model.PresentProvinceName;
-            //barrowerModel.PresentZipCode = model.PresentZipCode;
-
-            //barrowerModel.PermanentUnitName = model.PermanentUnitName;
-            //barrowerModel.PermanentBuildingName = model.PermanentBuildingName;
-            //barrowerModel.PermanentLotName = model.PermanentLotName;
-            //barrowerModel.PermanentSubdivisionName = model.PermanentSubdivisionName;
-            //barrowerModel.PermanentBaranggayName = model.PermanentBarangayName;
-            //barrowerModel.PermanentMunicipalityName = model.PermanentMunicipalityName;
-            //barrowerModel.PermanentProvinceName = model.PermanentProvinceName;
-            //barrowerModel.PermanentZipCode = model.PermanentZipCode;
-
-            //barrowerModel.PropertyDeveloperName = model.PropertyDeveloperName;
-            //barrowerModel.PropertyLocation = model.PropertyLocation;
-            //barrowerModel.PropertyUnitLevelName = model.PropertyUnitLevelName;
-
-            //barrowerModel.IsPermanentAddressAbroad = true; // no condition because all address is required
-            //barrowerModel.IsPresentAddressAbroad = true; // no condition because all address is required
-
-            #endregion Barrow Data Transfer
-
-            //save Barrower
-            // await _barrowersInformationRepo.SaveAsync(barrowerModel);
-
             #region Notification
 
             var type = "Added";
@@ -188,6 +169,46 @@ namespace DMS.Infrastructure.Services
             await _notificationService.NotifyUsersByRoleAccess(ModuleCodes2.CONST_BENEFICIARY_MGMT, actionlink, actiontype, model.PagibigMidNumber, 1, 1);
 
             #endregion Notification
+        }
+
+        public async Task<IEnumerable<CompanyModel>> GetDevelopers()
+        {
+            var companies = await _companyRepo.GetCompanies();
+            var filteredCompanies = companies
+                .Where(company => company.Id != 1 && company.Code != "JTH-PH")
+                .ToList();
+
+            return filteredCompanies;
+        }
+
+        public async Task<CompanyModel> GetDeveloperByCode(string? Code)
+        {
+            var companies = await _companyRepo.GetCompanies();
+            var company = companies
+                .Where(company => company.Id != 1 && company.Code == Code).SingleOrDefault();
+
+            return company;
+        }
+
+        public async Task<IEnumerable<PropertyProjectModel>> GetProjectsByCompany(int companyId, int? locationId)
+        {
+            var projects = await _propertyProjectRepo.GetByCompanyAsync(companyId, locationId);
+
+            return projects;
+        }
+
+        public async Task<IEnumerable<PropertyLocationModel>> GetLocationsByProject(int? projectId, int? developerId)
+        {
+            var projects = await _propertyLocationRepo.GetPropertyLocationByProjectAsync(projectId, developerId);
+
+            return projects;
+        }
+
+        public async Task<IEnumerable<PropertyUnitModel>> GetUnitsByProject(int? projectId, int? developerId)
+        {
+            var projects = await _propertyUnitRepo.GetUnitByProjectAsync(projectId, developerId);
+
+            return projects;
         }
     }
 }

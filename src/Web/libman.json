@@ -60,6 +60,26 @@
       "provider": "unpkg",
       "library": "intl-tel-input@21.1.4",
       "destination": "wwwroot/lib/intl-tel-input/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "pdfjs-dist@4.2.67",
+      "destination": "wwwroot/lib/pdfjs-dist/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap-fileinput@5.5.4",
+      "destination": "wwwroot/lib/bootstrap-fileinput/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "dropzone@6.0.0-beta.2",
+      "destination": "wwwroot/lib/dropzone/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap-icons@1.11.3",
+      "destination": "wwwroot/lib/bootstrap-icons/"
     }
   ]
 }

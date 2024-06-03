@@ -1,9 +1,12 @@
 ﻿using DevExpress.XtraReports.UI;
 using DMS.Application.Interfaces.Setup.ApplicantsRepository;
+using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.DocumentRepository;
+using DMS.Application.PredefinedReports.BuyerConfirmation;
 using DMS.Application.PredefinedReports.HousingLoanApplication;
 using DMS.Application.Services;
 using DMS.Domain.Dto.ApplicantsDto;
+using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Dto.ReportDto;
 using System.Reflection;
 
@@ -19,6 +22,7 @@ namespace DMS.Infrastructure.Services
         private readonly ICollateralInformationRepository _collateralInfoRepo;
 
         private readonly IDocumentRepository _documentRepo;
+        private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
 
         public ReportsService(IApplicantsPersonalInformationRepository applicantpersonalInfoRepo,
             IBarrowersInformationRepository barrowersInfoRepo,
@@ -26,7 +30,8 @@ namespace DMS.Infrastructure.Services
             ILoanParticularsInformationRepository loanParticularsInfoRepo,
             IForm2PageRepository form2PageRepo,
             ICollateralInformationRepository collateralInfoRepo,
-            IDocumentRepository documentRepo)
+            IDocumentRepository documentRepo,
+            IBuyerConfirmationRepository buyerConfirmationRepo)
         {
             _applicantpersonalInfoRepo = applicantpersonalInfoRepo;
             _barrowersInfoRepo = barrowersInfoRepo;
@@ -36,6 +41,7 @@ namespace DMS.Infrastructure.Services
             _collateralInfoRepo = collateralInfoRepo;
             _loanParticularsInfoRepo = loanParticularsInfoRepo;
             _documentRepo = documentRepo;
+            _buyerConfirmationRepo = buyerConfirmationRepo;
         }
 
         public async Task<LoanApplicationForm> GenerateHousingLoanForm(string? applicationCode, string? rootFolder)
@@ -126,7 +132,6 @@ namespace DMS.Infrastructure.Services
                     }
                 }
 
-             
                 List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
                 List<string> excludedSpouse = new List<string> { "OccupationStatus" };
 
@@ -158,6 +163,272 @@ namespace DMS.Infrastructure.Services
                 housingFormDetail.DataSource = dataSource;
 
                 return housingFormDetail;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GenerateHousingLoanPDF(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
+        {
+            try
+            {
+                var housingFormDetail = new LoanApplicationForm();
+
+                XRSubreport formPage1 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage1", true) as XRSubreport;
+                XRSubreport formPage2 = housingFormDetail.Bands[BandKind.Detail].FindControl("subReportFormPage2", true) as XRSubreport;
+
+                ApplicantsPersonalInformationModel applicantInfoModel = new();
+                BarrowersInformationModel barrowerInfoModel = new();
+                SpouseModel spouseInfoModel = new();
+                LoanParticularsInformationModel loanParticularsInfoModel = new();
+                Form2PageModel form2InfoModel = new();
+                CollateralInformationModel collateralInfoModel = new();
+
+                List<string> excludedBarrower = new List<string> { "Sex", "MaritalStatus", "HomeOwnerShip", "OccupationStatus", "PreparedMailingAddress" };
+                List<string> excludedSpouse = new List<string> { "OccupationStatus" };
+
+                applicantInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.ApplicantsPersonalInformationModel);
+                barrowerInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BarrowersInformationModel, excludedBarrower);
+                spouseInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.SpouseModel, excludedSpouse);
+                loanParticularsInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.LoanParticularsInformationModel);
+                form2InfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.Form2PageModel);
+                collateralInfoModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.CollateralInformationModel);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                    //FormalPicture =  formalPicture,
+
+                      ApplicantsPersonalInformationModel =   applicantInfoModel,
+                        SpouseModel = spouseInfoModel,
+                        BarrowersInformationModel =  barrowerInfoModel,
+                        LoanParticularsInformationModel = loanParticularsInfoModel,
+                        Form2PageModel = form2InfoModel,
+                        CollateralInformationModel = collateralInfoModel,
+                    }
+                };
+
+                formPage1.ReportSource.DataSource = dataSource;
+                formPage2.ReportSource.DataSource = dataSource;
+                housingFormDetail.DataSource = dataSource;
+
+                housingFormDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "hlafgenerated.pdf");
+
+                //Save the document to a file
+                housingFormDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GenerateBuyerConfirmationPDF(ApplicantInformationReportModel aplicantInfoModel, string? rootFolder)
+        {
+            try
+            {
+                var bcfDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel buyerconfirmModel = new();
+
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+                buyerconfirmModel = ConvertStringPropertiesToUppercase(aplicantInfoModel.BuyerConfirmationModel, excludedBcf);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                          BuyerConfirmationModel = buyerconfirmModel,
+                    }
+                };
+
+                bcfDetail.DataSource = dataSource;
+
+                bcfDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
+
+                //Save the document to a file
+                bcfDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<BuyerConfirmation> GenerateBuyerConfirmationForm(string? buyerConfirmationCode, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (buyerConfirmationCode != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                    }
+                }
+
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                return buyerConfirmationFormDetail;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GenerateBuyerConfirmationFormB64ForDeveloper(BuyerConfirmationModel model, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (model.Code != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(model.Code);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                        bcfInforModel.SellingPrice = model.SellingPrice;
+                        bcfInforModel.MonthlyAmortization = model.MonthlyAmortization;
+                    }
+                }
+
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                buyerConfirmationFormDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
+
+                //Save the document to a file
+                buyerConfirmationFormDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<byte[]> GeneratePrintedBCF(string? buyerConfirmationCode, string? rootFolder)
+        {
+            try
+            {
+                var buyerConfirmationFormDetail = new BuyerConfirmation();
+
+                BuyerConfirmationModel bcfInforModel = new();
+
+                if (buyerConfirmationCode != null)
+                {
+                    var bcfData = await _buyerConfirmationRepo.GetByCodeAsync(buyerConfirmationCode);
+
+                    if (bcfData != null)
+                    {
+                        bcfInforModel = bcfData;
+                    }
+                }
+
+                List<string> excludedBcf = new List<string> { "MaritalStatus", "OccupationStatus" };
+
+                bcfInforModel = ConvertStringPropertiesToUppercase(bcfInforModel, excludedBcf);
+
+                List<ApplicantInformationReportModel> dataSource = new()
+
+                {
+                    new ApplicantInformationReportModel()
+                    {
+                        BuyerConfirmationModel = bcfInforModel
+                    }
+                };
+                buyerConfirmationFormDetail.DataSource = dataSource;
+
+                buyerConfirmationFormDetail.CreateDocument(); // Ensure document creation
+
+                //Generate a unique file name for the temporary PDF file
+
+                string filePath = Path.Combine(rootFolder ?? "", "images", "user", "bcfgenerated.pdf");
+
+                //Save the document to a file
+                buyerConfirmationFormDetail.ExportToPdf(filePath);
+
+                //Read the saved file into a byte array
+                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+
+                // Delete the temporary file after reading its content
+                File.Delete(filePath);
+
+                return fileBytes;
             }
             catch (Exception)
             {

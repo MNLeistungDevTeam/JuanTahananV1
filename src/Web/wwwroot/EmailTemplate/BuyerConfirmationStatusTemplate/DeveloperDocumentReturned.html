@@ -1,0 +1,133 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Returned by Developer</title>
+    <style>
+        .email-sec {
+            max-width: 980px;
+            margin: 0 auto;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .email-header {
+            font-family: 'Poppins', Georgia, Times, 'Times New Roman', serif;
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        .email-head {
+            background: #f8f8ff;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+            .email-head span {
+                padding-top: 10px;
+                padding-bottom: 0px;
+                margin: auto;
+            }
+
+            .email-head img {
+                text-align: center;
+                min-height: 40px !important;
+                min-width: 100px !important;
+            }
+
+        .email-body {
+            background-color: white;
+            padding: 15px;
+            text-align: justify;
+            font-family: 'Poppins', Georgia, Times, 'Times New Roman', serif;
+            margin-bottom: 8%;
+        }
+
+        .div_login {
+            font-family: 'Poppins', Georgia, Times, 'Times New Roman', serif;
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        .email-footer {
+            text-align: center;
+            font-family: 'Poppins', Georgia, Times, 'Times New Roman', serif;
+            font-size: 10px;
+            color: #000000;
+            width: 100%;
+            display: block;
+            background-color: #f8f8ff;
+        }
+
+        .email-footer-container {
+            padding: 1% 0 3% 0;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            width: 50%;
+        }
+
+        .email-body span {
+            color: rgb(0, 0, 0) !important;
+        }
+
+        .email-body p {
+            color: rgb(0, 0, 0) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-sec">
+        <div class="email-head">
+            <span>
+                <a href="https://testjuantahanan.mnleistung.ph/" title="logo" target="_blank">
+                    <img width="400"
+                         src="https://i.ibb.co/hy7tVzG/Juan-Tahanan-Logo.png" title="logo" alt="logo">
+                </a>
+            </span>
+        </div>
+        <div class="email-body">
+
+            <p>Update on your housing loan application.</p>
+
+            <p>
+
+                We regret to inform you that your  submitted BuyerConfirmation Document with Juan Tahanan has been returned.
+            </p>
+            <p>
+                To complete the application process, please review and correct the faulty documents promptly. Once rectified, resubmit your BuyerConfirmation Document for further processing.
+            </p>
+
+            <p>Below are the details of your application.<p>
+
+            <p>
+                Reference ID:
+                <strong style="font-family: Consolas, Courier, monospace; font-weight: bold; font-size: 16px;">{buyerConfirmationCode}</strong>
+            </p>
+            <p style="margin-bottom: 1em;"></p> <!-- Add 1 line spacing -->
+
+            <p>
+                Status:
+                <strong>{buyerConfirmationStatus}</strong>
+            </p>
+            <p style="margin-bottom: 1em;"></p> <!-- Add 1 line spacing -->
+            <p>
+                Remarks:
+                <strong>{buyerConfirmationRemarks}</strong>
+            </p>
+        </div>
+
+        <div class="email-footer">
+            <div class="email-footer-container">
+                <h4 class="footer-header" style="margin-bottom: 0;">Important Note:</h4>
+                <div class="footer-box" style="display: block; margin-top: 0; ">
+                    This message is sent from an automated system.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
