@@ -200,7 +200,7 @@ $(async function () {
             }
         ];
 
-        let noFileString = "No file uploaded yet. Click here to upload.";
+        let noFileString = Number($(`[id="txt_roleId"]`).val()) !== 4 ? "No file uploaded yet" : "No file uploaded yet. Click here to upload.";
 
         // Append grouped items without subdocument or parent items
         for (const groupName in groupedItems) {
@@ -374,7 +374,7 @@ $(async function () {
             }
         ];
 
-        let noFileString = "No file uploaded yet. Click here to upload.";
+        let noFileString = Number($(`[id="txt_roleId"]`).val()) !== 4 ? "No file uploaded yet" : "No file uploaded yet. Click here to upload.";
 
         // Append grouped items
         for (const groupName in groupedItems) {
