@@ -3,7 +3,7 @@ const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
 
 const encodedStageVal = $("#ApplicantsPersonalInformationModel_EncodedStage").val();
-
+const aplPersonalInfo = $("#ApplicantsPersonalInformationModel_Code").val();
 const currentStatusVal = $(`[name='ApplicantsPersonalInformationModel.EncodedPartialStatus']`).attr('data-value');
 
 $(function () {
@@ -1622,105 +1622,14 @@ $(function () {
                 }
             }
         });
+
+        //if (!aplPersonalInfo) {
+        //    $("#beneficiary-propInfo").prop("hidden", true);
+        //    $("#BarrowersInformationModel_PropertyDeveloperId").prop("required", false);
+        //}
     });
 
     //#region Methods
-
-    //$(document).ready(function () {
-    //    loadloanParticularInformation(applicantInfoIdVal);
-    //    loadSpouseInformation(applicantInfoIdVal);
-    //    loadBorrowerInformation(applicantInfoIdVal);
-    //    loadCollateralInformation(applicantInfoIdVal);
-    //    loadForm2PageInformation(applicantInfoIdVal);
-    //    initializeRadioBtnMisc();
-    //});
-
-    function loadloanParticularInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetLoanParticularsByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-                //$(`select[name='LoanParticularsInformationModel.PurposeOfLoanId']`).data('selectize').setValue(response.PurposeOfLoanId);
-
-                //purposeOfLoanDropdown.setValue(response.PurposeOfLoanId);
-
-                //$(`[name='LoanParticularsInformationModel.ExistingHousingApplicationNumber']`).val(response.ExistingHousingApplicationNumber);
-                //$(`[name='LoanParticularsInformationModel.ExistingChecker']`).prop("checked", response.ExistingChecker);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanAmount']`).val(response.DesiredLoanAmount);
-                //$(`[name='LoanParticularsInformationModel.DesiredLoanTermYears']`).val(response.DesiredLoanTermYears);
-                //$(`[name='LoanParticularsInformationModel.RepricingPeriod']`).val(response.RepricingPeriod);
-
-                //modeofPaymentDropdown.setValue(response.ModeOfPaymentId);
-
-                //CollateralInformationModel.Province
-                //CollateralInformationModel.Municipality
-                //CollateralInformationModel.Street
-                //CollateralInformationModel.DeveloperName
-                //CollateralInformationModel.PropertyTypeId
-                //CollateralInformationModel.TctOctCctNumber
-                //CollateralInformationModel.TaxDeclrationNumber
-                //CollateralInformationModel.LotUnitNumber
-                //CollateralInformationModel.BlockBuildingNumber
-                //CollateralInformationModel.IsMortgage
-                //CollateralInformationModel.LandArea
-                //CollateralInformationModel.HouseAge
-                //CollateralInformationModel.ExistingReasonChecker
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.CollateralReason
-                //CollateralInformationModel.NumberOfStoreys
-                //CollateralInformationModel.ProposedNoOfStoreys
-                //CollateralInformationModel.ExistingTotalFloorArea
-                //CollateralInformationModel.ProposedTotalFloorArea
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadSpouseInformation(id) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetSpouseByApplicantInfoData/" + id,
-            method: 'Get',
-            success: function (response) {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadBorrowerInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetBarrowerByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadForm2PageInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetForm2ByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
-    function loadCollateralInformation(applicantId) {
-        $.ajax({
-            url: baseUrl + "Applicants/GetCollateralByApplicantInfoData/" + applicantId,
-            method: 'Get',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-    }
-
     function validateForm(form) {
         var isValid = true;
 
@@ -1879,71 +1788,6 @@ $(function () {
                     button.attr({ disabled: false });
                 }
             });
-
-            // Use SweetAlert for confirmation
-            //Swal.fire({
-            //    title: 'Are you sure?',
-            //    text: "You are about to submit the form. Proceed?",
-            //    icon: 'warning',
-            //    showCancelButton: true,
-            //    confirmButtonColor: '#3085d6',
-            //    cancelButtonColor: '#d33',
-            //    confirmButtonText: 'Yes, submit',
-            //    cancelButtonText: 'No, cancel'
-            //}).then((result) => {
-            //    if (result.isConfirmed) {
-            //        // User confirmed, proceed with form submission
-            //        $.ajax({
-            //            url: $(this).attr("action"),
-            //            method: $(this).attr("method"),
-            //            data: formData,
-            //            cache: false,
-            //            contentType: false,
-            //            processData: false,
-            //            beforeSend: function () {
-            //                button.html("<span class='spinner-border spinner-border-sm'></span> Saving...");
-            //                button.attr({ disabled: true });
-            //                $("#beneficiary-overlay").removeClass('d-none');
-            //            },
-            //            success: function (response) {
-            //                // Success message handling
-            //                let recordId = $("input[name='User.Id']").val();
-            //                console.log(recordId);
-            //                let type = (recordId == 0 ? "Added!" : "Updated!");
-            //                let successMessage = `Beneficiary Successfully ${type}`;
-            //                messageBox(successMessage, "success", true);
-
-            //                // Redirect handling
-            //                if (applicantInfoIdVal == 0) {
-            //                    setTimeout(function () {
-            //                        $("#beneficiary-overlay").addClass('d-none');
-            //                        window.location.href = "/Applicants/HLF068/" + response;
-            //                    }, 2000);
-            //                } else {
-            //                    var link = "Applicants/Beneficiary";
-            //                    if (roleName != 'Beneficiary') {
-            //                        link = "Applicants/ApplicantRequests";
-            //                    }
-            //                    setTimeout(function () {
-            //                        $("#beneficiary-overlay").addClass('d-none');
-            //                        // Redirect to the specified location
-            //                        window.location.href = baseUrl + link;
-            //                    }, 2000);
-            //                }
-            //                // Reset button state
-            //                button.attr({ disabled: false });
-            //                button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-            //            },
-            //            error: function (response) {
-            //                // Error message handling
-            //                messageBox(response.responseText, "danger");
-            //                $("#beneficiary-overlay").addClass('d-none');
-            //                button.html("<span class='mdi mdi-content-save-outline'></span> Submit");
-            //                button.attr({ disabled: false });
-            //            }
-            //        });
-            //    }
-            //});
         });
     }
 
@@ -1952,31 +1796,6 @@ $(function () {
         if (dataValue && dataValue.trim() !== '') {
             $(selector).val(moment(dataValue).format("MM/DD/YYYY"));
         }
-    }
-
-    function lengthValidator() {
-        var isValid = true;
-        var elements = [
-            { name: 'ApplicantsPersonalInformationModel.PagibigNumber', requiredLength: 12, message: "Mobile number" },
-            //{ name: 'Company.TelNo', requiredLength: 8, message: "Telephone number" },
-            //{ name: 'Company.FaxNo', requiredLength: 10, message: "Fax number" },
-            //{ name: 'Company.Tin', requiredLength: 13, message: "TIN number" },
-            //{ name: 'Company.RepresentativeTin', requiredLength: 13, message: "Company Representative TIN number" }
-        ];
-
-        elements.forEach(function (element) {
-            var inputValue = $("[name='" + element.name + "']").inputmask('unmaskedvalue'); // Get the unmasked value
-            var alphanumericLength = inputValue.replace(/[^a-zA-Z0-9]/g, '').length; // Count only alphanumeric characters
-            if (alphanumericLength !== element.requiredLength) {
-                $("[data-valmsg-for='" + element.name + "']").text(element.message + " length should be " + element.requiredLength + " characters.");
-                isValid = false;
-            } else {
-                $("[data-valmsg-for='" + element.name + "']").text("");
-                isValid = isValid != false ? true : false;
-            }
-        });
-
-        return isValid;
     }
 
     function initializeLoanCreditDate() {
@@ -2024,54 +1843,6 @@ $(function () {
                 }
             }
         });
-    }
-
-    function initializeIntlTelInput() {
-        //var homeNum = intlTelInput(document.getElementById(`BarrowersInformationModel_HomeNumber`), intlTelConfig);
-        //var mobileNum = intlTelInput(document.getElementById(`BarrowersInformationModel_MobileNumber`), intlTelConfig);
-        //var businessDirectLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessDirectLineNumber`), intlTelConfig);
-        //var businessTruckLineNum = intlTelInput(document.getElementById(`BarrowersInformationModel_BusinessTruckLineNumber`), intlTelConfig);
-        //var businessTelNum = intlTelInput(document.getElementById(`SpouseModel_BusinessTelNo`), intlTelConfig);
-
-        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.HomeNumber`)[0], intlTelConfig));
-        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.MobileNumber`)[0], intlTelConfig));
-        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessDirectLineNumber`)[0], intlTelConfig));
-        telNoArray.push(intlTelInput(document.getElementsByName(`BarrowersInformationModel.BusinessTruckLineNumber`)[0], intlTelConfig));
-        telNoArray.push(intlTelInput(document.getElementsByName(`SpouseModel.BusinessTelNo`)[0], intlTelConfig));
-
-        $.each($(`input[name^="Form2PageModel.TradeTellNo"]`), function (i, element) {
-            let elem = intlTelInput(element, intlTelConfig);
-            telNoArray.push(elem);
-        });
-
-        $.each($(`input[name^="Form2PageModel.CharacterTellNo"]`), function (i, element) {
-            let elem = intlTelInput(element, intlTelConfig);
-            telNoArray.push(elem);
-        });
-
-        console.log(telNoArray);
-
-        // apply validation
-        for (var index in telNoArray) {
-            let itiElement = telNoArray[index];
-
-            $(`[name="${itiElement.a.name}"]`).on('input', function () {
-                let id = $(this).attr('id');
-                let itiInstance = window.intlTelInputGlobals.getInstance(document.getElementById(id));
-
-                console.log(itiInstance.isValidNumberPrecise());
-
-                if (!itiInstance.isValidNumberPrecise() && (itiInstance.a.hasAttribute('required') || itiInstance.a.value)) {
-                    console.log(itiInstance.getValidationError());
-                    $(`span[name="${itiInstance.a.name}.Error"]`).html(intlTelErrors[itiInstance.getValidationError()]);
-                }
-                else {
-                    $(`span[name="${itiInstance.a.name}.Error"]`).html("");
-                }
-            });
-        }
-
-        //itiFlag = true;
     }
 
     function initializeBasicTelInput() {
