@@ -21,6 +21,7 @@ let stageNo = $('#txt_stageNo').val();
 let ApplicationId = $('#applicationId').val();
 let DocumentTypeId = 0;
 
+const IsTransactionLock = $("#txt_IsTransactionLock").val();
 const FileFormats = {
     1: ['.pdf'],
     2: ['.docx'],
@@ -627,7 +628,7 @@ $(async function () {
 
                             $approverModal.modal("hide");
 
-                            location.reload();
+                           location.reload();
 
                             $("#btnSubmitApplication").prop('disabled', false);
                         },
@@ -635,7 +636,9 @@ $(async function () {
                             // Error message handling
                             $btnSave.attr({ disabled: false });
 
-                            messageBox(response.responseText, "danger", true);
+
+                            let messageConflict = response.responseText + action;
+                            messageBox(messageConflict, "danger", true);
                         }
                     });
                 }
@@ -788,6 +791,14 @@ $(async function () {
 
         return response;
     }
+
+    //if (IsTransactionLock == "True") {
+    //    let transactionNo = $("#txt_applicantCode").val();
+
+    //    let lockStatusInterval = setInterval(function () {
+    //        updateLockedStatus(transactionNo);
+    //    }, 5000);
+    //}
 
     //#endregion Getters Function
 });

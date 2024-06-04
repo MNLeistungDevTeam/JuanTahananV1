@@ -11,6 +11,7 @@ $(function () {
     const CONST_TRANSACTIONID = $("#BuyerConfirmation_Id").val();
     const buyerConfirmationCode = $("#BuyerConfirmationModel_Code").val();
     const approvalStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
+    const mode = $("#BuyerConfirmationModel_Mode").val();
 
     var currentStep = 0;
     //document.ready
@@ -93,7 +94,6 @@ $(function () {
 
         $(this).addClass(inputLock ? "btn-outline-info" : "btn-info");
         $(this).removeClass(!inputLock ? "btn-outline-info" : "btn-info");
-
 
         $(`[id="bcfPreviewBtn"]`).addClass(!inputLock ? "btn-outline-info" : "btn-info");
         $(`[id="bcfPreviewBtn"]`).removeClass(inputLock ? "btn-outline-info" : "btn-info");
@@ -186,8 +186,6 @@ $(function () {
             $(`[id="bcfSetAmount"]`).attr('disabled', monthlyAmort > sellingPrice);
             //$(`[id="bcfPreviewBtn"]`).attr('disabled', (monthlyAmort > sellingPrice) && !inputLock); // remove if bugs occurred
         });
-
-
     }
 
     function initializeInputMasks() {
@@ -532,5 +530,10 @@ $(function () {
         }
     }
 
+     
+        //let lockStatusInterval = setInterval(function () {
+        //    updateLockedStatus(buyerConfirmationCode);
+        //}, 5000);
+   
     //#endregion
 });

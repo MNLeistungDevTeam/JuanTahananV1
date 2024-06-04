@@ -39,8 +39,13 @@ public class BuyerConfirmationDocumentRepository : IBuyerConfirmationDocumentRep
     public async Task<BuyerConfirmationDocument?> GetByReferenceIdAsync(int documentId) =>
         await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.ReferenceId == documentId);
 
-    public async Task<BuyerConfirmationDocument?> GetByIdAsync(int id) =>
-        await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+
+        public async Task<BuyerConfirmationDocumentModel?> GetByReferenceAsync(int documentId) =>
+            await _db.LoadSingleAsync<BuyerConfirmationDocumentModel, dynamic>("spBuyerConfirmationDocument_GetByDocumentId", new { documentId });
+
+        public async Task<BuyerConfirmationDocument?> GetByIdAsync(int id) =>
+            await _context.BuyerConfirmationDocuments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
     #endregion Getter Methods
 

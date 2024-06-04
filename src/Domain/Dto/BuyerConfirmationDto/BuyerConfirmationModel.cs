@@ -278,6 +278,7 @@ namespace DMS.Domain.Dto.BuyerConfirmationDto
         public string? PropertyProjectLogo { get; set; }
         public string? PropertyUnitLogo { get; set; }
 
+        public int? Mode { get; set; }
 
     }
 }

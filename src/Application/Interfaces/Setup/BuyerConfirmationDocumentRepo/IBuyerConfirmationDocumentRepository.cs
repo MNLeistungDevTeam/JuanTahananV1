@@ -10,6 +10,7 @@ namespace DMS.Application.Interfaces.Setup.BuyerConfirmationDocumentRepo
 {
     public interface IBuyerConfirmationDocumentRepository
     {
+        Task<BuyerConfirmationDocumentModel?> GetByReferenceAsync(int documentId);
         Task<BuyerConfirmationDocument?> GetByIdAsync(int id);
         Task<BuyerConfirmationDocument?> GetByReferenceIdAsync(int documentId);
         Task<BuyerConfirmationDocument> SaveAsync(BuyerConfirmationDocumentModel bcModel, int userId);

@@ -1,8 +1,8 @@
 ﻿using ClosedXML.Excel;
+using DMS.Application.Interfaces.AdditionalFeature.LockedTransactionRepo;
 using DMS.Application.Interfaces.Setup.BeneficiaryInformationRepo;
 using DMS.Application.Interfaces.Setup.BuyerConfirmationRepo;
 using DMS.Application.Interfaces.Setup.UserRepository;
-using DMS.Domain.Dto.ApprovalStatusDto;
 using DMS.Domain.Dto.BuyerConfirmationDto;
 using DMS.Domain.Enums;
 using DMS.Web.Models;
@@ -27,16 +27,19 @@ public class BuyerConfirmationController : Controller
     private readonly IBeneficiaryInformationRepository _beneficiaryInformationRepo;
     private readonly IBuyerConfirmationRepository _buyerConfirmationRepo;
     private readonly IWebHostEnvironment _webhost;
+    private readonly ILockedTransactionRepository _transactionLockRepo;
 
     public BuyerConfirmationController(
         IUserRepository userRepo,
         IBeneficiaryInformationRepository beneficiaryInformationRepo,
-        IBuyerConfirmationRepository buyerConfirmationRepo, IWebHostEnvironment webhost)
+        IBuyerConfirmationRepository buyerConfirmationRepo, IWebHostEnvironment webhost,
+        ILockedTransactionRepository transactionLockRepo)
     {
         _userRepo = userRepo;
         _beneficiaryInformationRepo = beneficiaryInformationRepo;
         _buyerConfirmationRepo = buyerConfirmationRepo;
         _webhost = webhost;
+        _transactionLockRepo = transactionLockRepo;
     }
 
     #endregion Fields
@@ -144,6 +147,7 @@ public class BuyerConfirmationController : Controller
 
         try
         {
+            
             int userId = int.Parse(User.Identity.Name);
 
             var userInfo = await _userRepo.GetUserAsync(userId);
@@ -159,6 +163,9 @@ public class BuyerConfirmationController : Controller
             {
                 throw new Exception($"Transaction: {bcfCode}: no record Found!");
             }
+            buyerConfirmation.Mode = buyerConfirmation.SellingPrice != null ? 1 : 0;
+
+            //await _transactionLockRepo.UpdateLockedTransaction(userId, buyerConfirmation.Code);
 
             var viewModel = new ApplicantViewModel()
             {

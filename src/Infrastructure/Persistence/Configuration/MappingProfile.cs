@@ -13,6 +13,7 @@ using DMS.Domain.Dto.DocumentVerificationDto;
 using DMS.Domain.Dto.EmailLogDto;
 using DMS.Domain.Dto.EmailSetupDto;
 using DMS.Domain.Dto.EntityDto;
+using DMS.Domain.Dto.LockedTransactionDto;
 using DMS.Domain.Dto.ModuleDto;
 using DMS.Domain.Dto.ModuleStageApproverDto;
 using DMS.Domain.Dto.ModuleStageDto;
@@ -80,5 +81,6 @@ public class MappingProfile : Profile
         CreateMap<PropertyUnitProject, PropertyUnitProjectModel>().ReverseMap();
         CreateMap<BuyerConfirmation, BuyerConfirmationModel>().ReverseMap();
         CreateMap<BuyerConfirmationDocument, BuyerConfirmationDocumentModel>().ReverseMap();
+        CreateMap<LockedTransaction, LockedTransactionModel>().ReverseMap();
     }
 }

@@ -1,5 +1,4 @@
-﻿ 
-@inject IStringLocalizer<SharedResources> localizer
+﻿@inject IStringLocalizer<SharedResources> localizer
  @using DMS.Domain.Enums
 @model ApplicantViewModel
 @{
@@ -46,7 +45,8 @@
         <form id="frm_bcf" method="post" asp-action="UpdateBCF" asp-controller="BuyerConfirmation" class="form-horizontal needs-validation" role="form" novalidate enctype="multipart/form-data">
             <input type="hidden" asp-for="BuyerConfirmationModel.Code" />
             <input type="hidden" asp-for="BuyerConfirmationModel.Id" />
-            <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus"/>
+            <input type="hidden" asp-for="BuyerConfirmationModel.ApprovalStatus" />
+            <input type="hidden" asp-for="BuyerConfirmationModel.Mode" />
 
             <div class="row" id="inputBcf">
                 <div class="col-12 d-flex align-items-center justify-content-center">
@@ -102,7 +102,7 @@
 
                                 @if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.Draft)
                                 {
-                                    //approval process
+                                //approval process
                                     <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
                                         <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
                                         <span class="text-center ms-2">Return BCF</span>
@@ -115,8 +115,8 @@
                                 }
                                 else if (Model.BuyerConfirmationModel.ApprovalStatus == (int)AppStatusType.DeveloperVerified)
                                 {
-                                    //approved
-                                    
+                                //approved
+
 
                                     <button type="button" class="btn btn-warning btn-lg waves-effect waves-light" id="btnReturn" data-value="11">
                                         <span class="float-start"><i class="mdi mdi-keyboard-return"></i></span>
