@@ -68,7 +68,7 @@ $(function () {
                 xhr2 = $.ajax({
                     url: baseUrl + "Beneficiary/GetUnits",
                     data: {
-                        projectId: value,
+                        projectId: $('[name="PropertyProjectId"]').val(),
                         developerId: $('[name="PropertyDeveloperId"]').val()
                     },
                     success: function (results) {
@@ -90,6 +90,7 @@ $(function () {
                     }
                 })
             });
+
         },
 
         //render: {
