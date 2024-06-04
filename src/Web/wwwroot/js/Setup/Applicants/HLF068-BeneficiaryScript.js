@@ -1,6 +1,9 @@
 ﻿const applicantInfoIdVal = $(`[name='ApplicantsPersonalInformationModel.Id']`).val();
 const roleName = $("#txt_role_name").val();
 const roleId = $("#txt_roleId").val();
+
+const buyerConfirmationId = $("#BuyerConfirmationModel_Id").val();
+const buyerconfirmationCode = $("#BuyerConfirmationModel_Code").val();
 const hasBcf = $("#BarrowersInformationModel_IsBcfCreated").val();
 const buyerconfirmationAppStatus = $("#BuyerConfirmationModel_ApprovalStatus").val();
 
@@ -2005,7 +2008,7 @@ $(function () {
             $("#maRbtn2").prop("checked", !medicalAdviceValue).addClass('valid');
         }
 
-        if (hasBcf == "False") {
+        if (buyerConfirmationId !== '0') {
             console.log("Trigger");
             // Set checked status for BCF Additional income radio buttons
             $("#isRbtn1").prop("checked", !!bcfAdditionalSourceIncome).addClass('valid');
@@ -2038,7 +2041,7 @@ $(function () {
             //$("#itcRbtn2").prop("checked", !termConditions).addClass('valid');
 
             setCheckedAndValidStatus("#itcRbtn1", "#itcRbtn2", pagibigAvailedLoan);
-
+        } else {
             $("#pagibigRbtn1").prop("checked", bcfPagibigNumber.length > 0);
         }
 
