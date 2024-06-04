@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DMS.Web.Controllers.Setup;
@@ -136,6 +137,21 @@ public class UserController : Controller
             var data = await _userRepo.GetUserAsync(id);
 
             return Ok(data);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    public async Task<IActionResult> GetUsersByCompany() {
+        try
+        {
+            int userId = int.Parse(User.Identity.Name);
+
+            var result = await _userRepo.GetUserByCompanyId(userId);
+            
+            return Ok(result);
         }
         catch (Exception ex)
         {

@@ -602,7 +602,7 @@ $(function () {
 
     async function loadUsers() {
         const users = await $.ajax({
-            url: baseUrl + "User/GetUsers",
+            url: baseUrl + "User/GetUsersByCompany",
             method: "get",
             dataType: 'json'
         });

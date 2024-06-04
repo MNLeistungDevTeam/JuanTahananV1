@@ -274,6 +274,7 @@
     <Build Include="Tables\Additional Features\TransactionLocking\LockedTransaction.sql" />
     <Build Include="Stored Procedures\Others\LockedTransaction\spLockedTransaction_Get.sql" />
     <Build Include="Stored Procedures\Setup\BuyerConfirmationDocument\spBuyerConfirmationDocument_GetByDocumentId.sql" />
+    <Build Include="Stored Procedures\Setup\User\spUser_GetUsersByCompanyId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
