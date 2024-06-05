@@ -1,12 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spUser_GetUsersByCompanyId]
-	@userId INT,
-	@companyId INT = 0
+ 
+	@companyId INT 
 AS
-	SELECT 
-        @companyId = uc.CompanyId
-    FROM [User] u
-    LEFT JOIN UserCompany uc ON uc.UserId = u.Id
-    WHERE u.Id = @userId;
+	 SELECT * FROM (
 
     SELECT 
         u.*,
@@ -18,13 +14,27 @@ AS
 		r.[Name] UserRoleName,
 		ur.RoleId as UserRoleId,
 		c.[Name],
-		bi.PropertyDeveloperId
+		bi.PropertyDeveloperId,
+		CASE WHEN bi.PropertyDeveloperId IS NOT NULL THEN bi.PropertyDeveloperId
+		WHEN bi.PropertyDeveloperId IS NULL THEN uc.CompanyId
+		ELSE null
+		END CompanyId
+
     FROM [User] u
     LEFT JOIN [UserRole] ur ON ur.UserId = u.Id
     LEFT JOIN [Role] r ON ur.RoleId = r.Id
     LEFT JOIN UserCompany uc ON uc.UserId = u.Id
     LEFT JOIN Company c ON c.Id = uc.CompanyId
-    LEFT JOIN BeneficiaryInformation bi ON bi.UserId = u.Id AND c.Id = bi.PropertyDeveloperId
-    WHERE @userId = 1 OR (RoleId IN (5, 1, 4) AND uc.CompanyId = @companyId);
+    LEFT JOIN BeneficiaryInformation bi ON bi.UserId = u.Id
+ 
+ ) main
+
+
+ WHERE
+ 1 = (CASE WHEN @companyId IS NULL  THEN 1
+	WHEN @companyId IS NOT NULL AND  main.CompanyId = @companyId THEN 1 END)
+ 
+
+ 
 
 RETURN 0

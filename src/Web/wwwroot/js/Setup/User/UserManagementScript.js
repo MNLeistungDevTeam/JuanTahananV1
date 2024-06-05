@@ -3,6 +3,7 @@ const tbl_user_tbody = "#tbl_user tbody";
 const changePassModal = $("#change-pass-modal");
 const frmChangePass = $("#frm_change_pass");
 const currentUserId = $("#txt_userId").val();
+const userDeveloperId = $("#txt_developerId").val();
 
 var predefinedRoles = [];
 var tbl_user;
@@ -109,6 +110,8 @@ $(function () {
 
     developerDropdown = $developerDropdown[0].selectize;
 
+
+    
     //#endregion
 
     //#region Events
@@ -312,6 +315,13 @@ $(function () {
             //$("#user-approver-tab").show();
             // $("#userrole_div").attr('hidden', true);
             $("#div_userpassword").attr('hidden', false);
+
+            if (userDeveloperId != 0) {
+
+                developerDropdown.setValue(userDeveloperId);
+                developerDropdown.lock();
+            }
+
         }
 
         else {
@@ -349,6 +359,13 @@ $(function () {
 
             developerDropdown.unlock();
             developerDropdown.setValue(userInfo.PropertyDeveloperId);
+
+
+            if (userDeveloperId != 0) {
+
+                developerDropdown.setValue(userDeveloperId);
+                developerDropdown.lock();
+            }
 
             //userRoleDropdown.lock();
 
@@ -531,8 +548,8 @@ $(function () {
         let unlockButton = "";
 
         //if (item.LockStatus != "Unlocked")
-        unlockButton = `<a href="javascript:void(0);" class="dropdown-item js-unlock" data-id="${item.Id}" data-name="${item.Name}"
-            ${item.LockStatus == "Unlocked" ? "disabled" : ""}>Unlock</a>`
+        unlockButton = `<a href="javascript:void(0);" class="dropdown-item js-unlock ${item.CompanyId == null ? 'disabled' : ''}" data-id="${item.Id}" data-name="${item.Name}"
+            ${item.LockStatus == "Unlocked" ? "hidden" : ""}>Unlock</a>`
 
         if (convertDate(item.LastOnlineTime) == "") {
             timePassed = "";

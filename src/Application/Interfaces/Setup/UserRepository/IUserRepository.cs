@@ -32,5 +32,5 @@ public interface IUserRepository
     Task<User> UpdateNoExclusionAsync(User user, int updatedById);
     Task<UserModel?> GetByPagibigNumberAsync(string? pagibigNumber);
     Task ValidateEmailAsync(UserModel model);
-    Task<List<UserModel>> GetUserByCompanyId(int userId);
+    Task<List<UserModel>> GetUserByCompanyId(int? companyId);
 }

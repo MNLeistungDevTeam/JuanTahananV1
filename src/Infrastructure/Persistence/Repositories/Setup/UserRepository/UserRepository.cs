@@ -70,8 +70,8 @@ public class UserRepository : IUserRepository
     public async Task<List<UserModel>> GetUserByUserRoleIdAsync(int userRoleId) =>
         (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetByUserRoleId", new { userRoleId })).ToList();
 
-    public async Task<List<UserModel>> GetUserByCompanyId(int userId) =>
-        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetUsersByCompanyId", new { userId })).ToList();
+    public async Task<List<UserModel>> GetUserByCompanyId(int? companyId) =>
+        (await _db.LoadDataAsync<UserModel, dynamic>("spUser_GetUsersByCompanyId", new { companyId })).ToList();
 
     public async Task<User?> SaveUserAsync(UserModel user, List<UserApproverModel?> userApprovers, int userId)
     {

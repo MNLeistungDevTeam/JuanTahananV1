@@ -149,7 +149,13 @@ public class UserController : Controller
         {
             int userId = int.Parse(User.Identity.Name);
 
-            var result = await _userRepo.GetUserByCompanyId(userId);
+            var userInfo = await _userRepo.GetUserAsync(userId);
+
+            int? developerId = userInfo.PropertyDeveloperId ?? null;
+
+
+
+            var result = await _userRepo.GetUserByCompanyId(developerId);
             
             return Ok(result);
         }
