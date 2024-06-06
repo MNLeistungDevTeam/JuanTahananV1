@@ -282,6 +282,8 @@
     <None Include="PostDeploymentScript\Script.PostDeployment_ModuleStatus.sql" />
     <None Include="Stored Procedures\Setup\Document\spDocument_GetAllDocumentsByIds.sql" />
     <None Include="Stored Procedures\Setup\Company\spCompany_GetInfo.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_CompanyLogo.sql" />
+    <None Include="PostDeploymentScript\Script.PostDeployment_PropertyProject.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Setup\User\UserRole.sql" />
