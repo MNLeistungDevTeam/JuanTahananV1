@@ -5,6 +5,8 @@ const frmChangePass = $("#frm_change_pass");
 const currentUserId = $("#txt_userId").val();
 const userDeveloperId = $("#txt_developerId").val();
 
+var developerFilterVal;
+
 var predefinedRoles = [];
 var tbl_user;
 var userModal = $("#user-modal");
@@ -22,7 +24,7 @@ $(function () {
     $(".selectize").selectize();
     rebindValidators();
 
-    loadUsers();
+    loadDeveloperFilterSelect();
 
     //#endregion
 
@@ -110,9 +112,28 @@ $(function () {
 
     developerDropdown = $developerDropdown[0].selectize;
 
-
-    
     //#endregion
+
+    if (userDeveloperId != 0) {
+        loadUsers(userDeveloperId);
+        $("#btnAdd").attr("hidden", true);
+        $("#select_developerFilter").attr("hidden", true);
+    }
+
+    else {
+        //superadmin
+        loadUsers();
+        $("#select_developerFilter").attr("hidden", false);
+        $("#btnAdd").attr("hidden", false);
+    }
+
+    $("#select_developerFilter").on("change", function () {
+        var val = $(this).val();
+
+        developerFilterVal = val;
+
+        loadUsers(developerFilterVal);
+    });
 
     //#region Events
 
@@ -132,7 +153,13 @@ $(function () {
     });
 
     $("#btnRefresh").on("click", async function () {
-        await loadUsers();
+        if (userDeveloperId != 0) {
+            await loadUsers(userDeveloperId);
+        }
+
+        else {
+            await loadUsers(developerFilterVal);
+        }
     });
     $("#btnAdd").on("click", async function () {
         await openUserModal();
@@ -317,11 +344,9 @@ $(function () {
             $("#div_userpassword").attr('hidden', false);
 
             if (userDeveloperId != 0) {
-
                 developerDropdown.setValue(userDeveloperId);
                 developerDropdown.lock();
             }
-
         }
 
         else {
@@ -360,9 +385,7 @@ $(function () {
             developerDropdown.unlock();
             developerDropdown.setValue(userInfo.PropertyDeveloperId);
 
-
             if (userDeveloperId != 0) {
-
                 developerDropdown.setValue(userDeveloperId);
                 developerDropdown.lock();
             }
@@ -617,11 +640,12 @@ $(function () {
         changePassModal.modal("show");
     }
 
-    async function loadUsers() {
+    async function loadUsers(developerIdVal) {
         const users = await $.ajax({
             url: baseUrl + "User/GetUsersByCompany",
             method: "get",
-            dataType: 'json'
+            dataType: 'json',
+            data: { developerId: developerIdVal }
         });
 
         $("#div-user-cards").empty();
@@ -665,6 +689,32 @@ $(function () {
         $("#ChangePassword_NewPassword").val('');
         $("#ChangePassword_ConfirmPassword").val('');
     }
+
+
+
+
+    async function loadDeveloperFilterSelect() {
+        try {
+            const developers = await $.ajax({
+                url: baseUrl + "Company/GetDevelopers",
+                method: "GET",
+                dataType: 'json'
+            });
+
+            // Handle the developers data as needed
+            console.log(developers);
+            // For example, populate a dropdown
+            const $developerDropdown = $("#select_developerFilter");
+            developers.forEach(developer => {
+                $developerDropdown.append(new Option(developer.Name, developer.Id));
+            });
+        } catch (error) {
+            console.error("Error loading developers:", error);
+        }
+    }
+
+
+
 
     //#endregion Methods
 });

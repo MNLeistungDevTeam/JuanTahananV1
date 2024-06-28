@@ -144,19 +144,16 @@ public class UserController : Controller
         }
     }
 
-    public async Task<IActionResult> GetUsersByCompany() {
+    public async Task<IActionResult> GetUsersByCompany(int? developerId)
+    {
         try
         {
             int userId = int.Parse(User.Identity.Name);
 
             var userInfo = await _userRepo.GetUserAsync(userId);
 
-            int? developerId = userInfo.PropertyDeveloperId ?? null;
-
-
-
             var result = await _userRepo.GetUserByCompanyId(developerId);
-            
+
             return Ok(result);
         }
         catch (Exception ex)
